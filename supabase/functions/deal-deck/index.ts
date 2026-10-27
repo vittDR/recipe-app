@@ -95,6 +95,7 @@ Deno.serve(async (req) => {
       userId: uid,
       dinnerKcal: g?.dinner_kcal ?? null,
       dinnerProteinG: g?.dinner_protein_g ?? null,
+      servings: g?.servings ?? null,
       never: mine.filter((x) => x.kind === 'never').map((x) => x.value),
       loves: mine.filter((x) => x.kind === 'love').map((x) => x.value),
       diet: (mine.find((x) => x.kind === 'diet')?.value ?? 'everything') as Diet,

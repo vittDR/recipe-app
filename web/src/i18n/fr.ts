@@ -92,10 +92,12 @@ export const fr: Dictionary = {
   },
   goals: {
     title: 'Votre assiette',
-    subtitle: 'Sert à calculer votre part de la casserole.',
+    subtitle: 'Ce que vous mangez, et les objectifs qui décident de ce qui vous convient.',
     lean: 'Affiner',
     maintain: 'Maintenir',
     build: 'Prendre du muscle',
+    servings: 'Portions que je mange',
+    servingsUnit: '× portion',
     kcal: 'Calories au dîner',
     protein: 'Protéines au dîner',
     kcalUnit: 'kcal',

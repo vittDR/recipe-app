@@ -12,7 +12,7 @@ const SWIPE_X = 100;
 const SWIPE_UP = 120;
 
 function CardFace({ card, data, drag }: { card: DeckCard; data: DeckData; drag?: { dx: number; dy: number } }) {
-  const { t } = useI18n();
+  const { t, tn } = useI18n();
   const { userId } = useSession();
   const r = card.recipe;
   const plate = data.portions.get(card.recipe_id);
@@ -40,7 +40,7 @@ function CardFace({ card, data, drag }: { card: DeckCard; data: DeckData; drag?:
         </div>
         {plate?.kcal != null && (
           <div className="macros">
-            <span className="macros__label">{t('swipe.yourPlate')}</span>
+            <span className="macros__label">{t('swipe.yourPlate')}{plate.servings != null && plate.servings !== 1 && ` · ${tn('recipe.servings', plate.servings)}`}</span>
             <span><strong>{plate.kcal}</strong> kcal</span>
             <span><strong>{plate.protein_g}</strong> g {t('swipe.protein')}</span>
             {r.macros_estimated && <span className="muted small">({t('swipe.estimated')})</span>}

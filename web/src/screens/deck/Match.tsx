@@ -72,7 +72,7 @@ export function MatchView({ data }: { data: DeckData }) {
 
       <div className="plates">
         <div className="card stack">
-          <span className="small muted">{t('match.yourPlate')}</span>
+          <span className="small muted">{t('match.yourPlate')}{portion && portion.servings !== 1 && ` · ${tn('recipe.servings', portion.servings)}`}</span>
           {portion ? (
             <>
               <span className="title3">{Math.round(portion.kcal)} kcal</span>

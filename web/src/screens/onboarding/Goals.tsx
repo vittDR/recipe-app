@@ -19,6 +19,7 @@ export function GoalsScreen({ editing }: { editing?: boolean }) {
   const [goal, setGoal] = useState<Goal>(goals?.goal ?? 'maintain');
   const [kcal, setKcal] = useState(goals?.dinner_kcal ?? DEFAULTS.maintain.kcal);
   const [protein, setProtein] = useState(goals?.dinner_protein_g ?? DEFAULTS.maintain.protein);
+  const [servings, setServings] = useState(goals?.servings ?? 1);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -31,7 +32,7 @@ export function GoalsScreen({ editing }: { editing?: boolean }) {
   const save = async () => {
     setBusy(true);
     const { error: err } = await supabase.from('member_goals').upsert({
-      user_id: userId, goal, dinner_kcal: kcal, dinner_protein_g: protein, updated_at: new Date().toISOString(),
+      user_id: userId, goal, dinner_kcal: kcal, dinner_protein_g: protein, servings, updated_at: new Date().toISOString(),
     });
     if (err) {
       setError(err.message);
@@ -51,6 +52,7 @@ export function GoalsScreen({ editing }: { editing?: boolean }) {
           { value: 'maintain', label: t('goals.maintain') },
           { value: 'build', label: t('goals.build') },
         ]} />
+        <Stepper label={t('goals.servings')} unit={t('goals.servingsUnit')} value={servings} onChange={setServings} step={0.25} min={0.25} max={4} />
         <Stepper label={t('goals.kcal')} unit={t('goals.kcalUnit')} value={kcal} onChange={setKcal} step={25} min={250} max={2000} />
         <Stepper label={t('goals.protein')} unit={t('goals.gramsUnit')} value={protein} onChange={setProtein} step={5} min={0} max={200} />
         <p className="notice notice--info small">🔒 {t('goals.privacy')}</p>
