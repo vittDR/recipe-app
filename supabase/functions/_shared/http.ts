@@ -14,15 +14,19 @@ export function json(body: unknown, status = 200): Response {
   });
 }
 
+// Projects on the newer API keys may not expose the legacy anon / service_role
+// keys to functions; SECRET_KEY and PUBLISHABLE_KEY are then set as function
+// secrets (the CLI refuses names starting with SUPABASE_).
 export function serviceClient(): SupabaseClient {
-  return createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!, {
+  const key = Deno.env.get('SECRET_KEY') ?? Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+  return createClient(Deno.env.get('SUPABASE_URL')!, key, {
     auth: { persistSession: false },
   });
 }
 
 /** Client acting as the caller, so RLS applies. */
 export function userClient(req: Request): SupabaseClient {
-  const key = Deno.env.get('SUPABASE_ANON_KEY') ?? Deno.env.get('SUPABASE_PUBLISHABLE_KEY')!;
+  const key = Deno.env.get('PUBLISHABLE_KEY') ?? Deno.env.get('SUPABASE_ANON_KEY')!;
   return createClient(Deno.env.get('SUPABASE_URL')!, key, {
     auth: { persistSession: false },
     global: { headers: { Authorization: req.headers.get('Authorization') ?? '' } },
