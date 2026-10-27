@@ -65,55 +65,42 @@ All commands run from the `recipe-app` folder. `npx supabase` downloads the Supa
 
 ---
 
-## Step 2: Sign-in by email code
+## Step 2: Sign-in with email + password
 
-The app signs you in with a 6-digit code sent by email. There's no password, and the code works inside the installed iPhone app.
+DINEAMITE signs you in with your email and a password. Supabase never sends any email, so you don't need a mail service or SMTP.
 
-### 2a. Put the code in the emails
+1. In the dashboard, open **Authentication → Sign In / Providers**.
+2. Under **User Signups**, keep **Allow new users to sign up** **on** for now.
+3. Click **Email** in the provider list and set:
+   - **Enable Email provider**: on
+   - **Confirm email**: **off**. This is the important one: with it on, Supabase would try to send a confirmation email.
+   - **Minimum password length**: `8`, if the field is there.
+4. Click **Save**.
 
-Supabase sends one of two emails, so edit both:
-- **Confirm signup**: someone's first sign-in.
-- **Magic Link**: every sign-in after that.
+**Test it on your Mac.** From the `recipe-app` folder:
 
-1. Open **Authentication → Emails → Templates**.
-2. Open **Confirm signup** and replace the whole body with:
-   ```html
-   <h2>DINEAMITE</h2>
-   <p>Your code / Votre code : <strong style="font-size:24px">{{ .Token }}</strong></p>
-   <p>It expires in one hour. / Il expire dans une heure.</p>
+```bash
+cd web
+npm install
+npm run dev
+```
+
+1. Open http://localhost:5173.
+2. Click **Get started**, then enter your email and a password of 8 or more characters.
+3. You should land straight on the "About you" screen. Your account now exists, and **Authentication → Users** lists it.
+4. Press `Ctrl+C` in the terminal to stop.
+
+**Once you've both created accounts** (Step 5), go back to **Authentication → Sign In / Providers** and turn **Allow new users to sign up** **off**. Nobody else can then create an account. Strangers couldn't see your data anyway, but this keeps the app to just the two of you.
+
+**Forgotten password.** There's no reset email, so set a new password from the dashboard:
+1. Open **SQL Editor** and run this, with the person's email and a new password:
+   ```sql
+   update auth.users
+   set encrypted_password = extensions.crypt('NewPassword123', extensions.gen_salt('bf'))
+   where email = 'someone@example.com';
    ```
-   Change the subject to something like `Your DINEAMITE code`, then click **Save**.
-3. Do the same for **Magic Link**.
-
-### 2b. Check the code settings
-
-1. Open **Authentication → Sign In / Providers → Email**.
-2. Make sure **Enable Email provider** is on.
-3. Make sure **Email OTP Length** is **6**. The app expects 6 digits.
-
-### 2c. Make sure the emails actually arrive (important)
-
-Supabase's built-in mailer only delivers to the email addresses of your Supabase organisation's team members, and only sends a couple per hour. Your partner's email would never arrive. Fix it with free custom SMTP. Gmail is the easiest because you don't need a domain:
-
-1. **Create a Gmail app password:**
-   1. Go to https://myaccount.google.com/security and make sure **2-Step Verification** is on.
-   2. Go to https://myaccount.google.com/apppasswords, create an app password named `DINEAMITE`, and copy the 16-character password.
-2. **Enter it in Supabase:** open **Authentication → Emails → SMTP Settings**, turn on **Enable custom SMTP**, and fill in:
-   - Sender email: `vittorioderisi@gmail.com`
-   - Sender name: `DINEAMITE`
-   - Host: `smtp.gmail.com`
-   - Port: `465`
-   - Username: `vittorioderisi@gmail.com`
-   - Password: the 16-character app password
-
-   Then click **Save**.
-3. **Raise the sending limit:** open **Authentication → Rate Limits** and raise the email limit from its low default, for example to 30 per hour.
-
-Gmail allows about 500 emails a day, far more than two people need. Sessions also stay signed in, so you'll rarely get a code after the first time.
-
-### 2d. Site URL
-
-You'll set this in Step 4, once you have the app's address.
+2. They sign in with that password.
+3. They change it in the app under **Us → Change password**.
 
 ---
 
@@ -214,10 +201,7 @@ If you ever need to change one of these values, delete it first under **Project 
 
    The Supabase URL, publishable key and VAPID public key come from `web/.env` in the repo, so you don't need to add them here.
 5. **Deploy:** click **Save and Deploy**. The first build takes 1–2 minutes. Every later push to `main` redeploys automatically.
-6. **Go back to Supabase** and open **Authentication → URL Configuration**:
-   - Set **Site URL** to your Pages address, for example `https://dineamite.pages.dev`.
-   - Under **Redirect URLs**, add `https://dineamite.pages.dev/**`.
-   - Click **Save**.
+6. Optional: go back to Supabase, open **Authentication → URL Configuration**, set **Site URL** to your Pages address (for example `https://dineamite.pages.dev`), and click **Save**. Password sign-in doesn't depend on it.
 
 ---
 
@@ -230,13 +214,13 @@ Both of you do this.
    2. Tap **Share** (the square with the arrow), then **Add to Home Screen**, then **Add**.
    3. Open DINEAMITE **from the Home Screen icon**. Do everything from here on inside that app, not in Safari: the installed app keeps its own sign-in, separate from Safari's.
 2. **You (first):**
-   1. Tap **Get started**, enter your email, then enter the 6-digit code.
+   1. Tap **Get started** if you haven't created your account yet, or **I already have an account** if you did in Step 2. Then enter your email and password.
    2. Enter your first name and choose a colour and language.
    3. Create the household, for example "Chez nous".
    4. On the invite screen, tap **Share invite** and send it to your partner. Or read the 6-character code to them; it's valid for 48 hours.
 3. **Your partner:**
    1. Install the app from the Home Screen first, as in item 1.
-   2. Open it and tap **I have an invite code**, then sign in with their email and code.
+   2. Open it and tap **I have an invite code**, then create their account with their email and a password.
    3. After the name step, the join screen appears. Enter the code and tap **Join**.
 
    The invite link works too, but it opens in Safari, so entering the code inside the installed app is simpler.
@@ -265,8 +249,8 @@ If the project ever does pause, go to **Restore project** on the Supabase dashbo
 
 | Symptom | Likely cause / fix |
 | --- | --- |
-| No code email arrives | Step 2c isn't done, or the email is in spam. Check **Authentication → Logs**. |
-| "That code didn't work" | The OTP length isn't 6, or you used an older code. Tap **Send a new code**. |
+| "Account created, but email confirmation is still on" | Turn off **Confirm email** (Step 2). Then delete the half-created user in **Authentication → Users** and sign up again. |
+| "Wrong email or password" | Check for a typo. Forgotten password: see the end of Step 2. |
 | "Deal the deck" fails | Open **Edge Functions → deal-deck → Logs**. A missing key error means Step 3c is incomplete. "no_recipes" means the seed wasn't loaded (Step 1.4), or your filters are too strict. |
 | No notifications | The app isn't installed from the Home Screen, notifications are off in **Us**, or the VAPID key in `web/.env` differs from the one in the secrets. Look at **Edge Functions → push-dispatch → Logs** and the `push_outbox` table: its `error` column shows why a send failed. |
 | Link import says "no recipe data" | That site doesn't publish structured recipe data. Type the recipe in; the link is kept. |

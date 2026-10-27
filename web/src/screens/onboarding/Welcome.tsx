@@ -16,6 +16,7 @@ export function WelcomeScreen() {
       <div className="stack">
         {isIosBrowserTab() && <p className="notice notice--info small">{t('welcome.install')}</p>}
         <Button block onClick={() => navigate('/signin')}>{t('welcome.getStarted')}</Button>
+        <Button block variant="secondary" onClick={() => navigate('/signin?mode=signin')}>{t('welcome.signIn')}</Button>
         <Button block variant="text" onClick={() => navigate('/join')}>{t('welcome.haveCode')}</Button>
       </div>
     </Screen>
