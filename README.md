@@ -40,7 +40,7 @@ Key rules from the handover, and where they live:
 
 ## One-time setup
 
-Follow **[docs/SETUP.md](docs/SETUP.md)** step by step: database, email-code sign-in, functions and notifications, Cloudflare Pages, installing on the iPhones, and keep-alive.
+Follow **[docs/SETUP.md](docs/SETUP.md)** step by step: database, email + password sign-in (no emails sent), functions and notifications, Cloudflare Pages, installing on the iPhones, and keep-alive.
 
 ## Development
 
