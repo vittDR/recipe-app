@@ -81,9 +81,9 @@ select pg_temp.check((select quantity = 150 and aisle = 'produce' from grocery_i
                      'same name and unit merge, aisle from catalogue');
 select pg_temp.check((select count(*) = 2 from grocery_items), 'two distinct items');
 
--- Portions: A (800 kcal) and B (500 kcal) share a 560 kcal / 42 g protein-per-serving recipe.
-select id as rid from recipes where title = 'Lemon chicken with spinach rice' \gset
-select pg_temp.check((select abs(kcal - 800) < 0.01 and abs(pot_servings - 1300.0/560) < 0.01
+-- Portions: A (800 kcal) and B (500 kcal) share one seed recipe's pot.
+select id as rid, kcal_per_serving as rkcal from recipes where title = 'Spaghetti alle vongole' \gset
+select pg_temp.check((select abs(kcal - 800) < 0.01 and abs(pot_servings - 1300.0 / :rkcal) < 0.01
                       from my_portion(:'rid')), 'plate sized by own target, pot by both');
 
 -- Deal a deck the way the deal-deck function does (service role).

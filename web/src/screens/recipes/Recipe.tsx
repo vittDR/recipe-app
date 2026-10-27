@@ -113,7 +113,7 @@ export function RecipeScreen() {
 
       {recipe.source_url && (
         <p className="small muted" style={{ marginTop: 'var(--s-4)' }}>
-          {t('recipe.source')}: <a href={recipe.source_url} target="_blank" rel="noreferrer">{new URL(recipe.source_url).hostname}</a>
+          {t('recipe.source')}: <a href={recipe.source_url} target="_blank" rel="noreferrer">{recipe.source_name ?? new URL(recipe.source_url).hostname}</a>
         </p>
       )}
 

@@ -265,6 +265,7 @@ export function recipeEmoji(title: string, tags: string[] = []): string {
   return table.find(([re]) => re.test(t))?.[1] ?? '🍽️';
 }
 
+/** Absolute URLs, or photos served by the app itself ("/recipe-photos/…"). */
 export function imageStyle(path: string | null): React.CSSProperties | undefined {
-  return path && /^https?:\/\//.test(path) ? { backgroundImage: `url("${path.replace(/"/g, '%22')}")` } : undefined;
+  return path && /^(https?:\/\/|\/(?!\/))/.test(path) ? { backgroundImage: `url("${path.replace(/"/g, '%22')}")` } : undefined;
 }

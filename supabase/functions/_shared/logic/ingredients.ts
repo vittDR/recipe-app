@@ -1,6 +1,6 @@
 // Ingredient lines -> quantity + unit + name, matched to the catalogue for
 // aisle grouping, staple detection, list merging and macro estimates.
-// Handles common English and French recipe phrasing.
+// Handles common English, French and Italian recipe phrasing.
 
 export type Aisle =
   | 'produce' | 'meat_fish' | 'dairy_eggs' | 'bakery' | 'pantry' | 'spices'
@@ -9,6 +9,7 @@ export type Aisle =
 export interface CatalogEntry {
   name: string;
   name_fr?: string | null;
+  name_it?: string | null;
   aliases?: string[] | null;
   default_aisle: Aisle;
   is_staple: boolean;
@@ -39,17 +40,17 @@ const UNIT_SPELLINGS: Record<string, string[]> = {
   ml: ['ml', 'millilitre', 'millilitres', 'milliliter', 'milliliters'],
   cl: ['cl', 'centilitre', 'centilitres'],
   l: ['l', 'litre', 'litres', 'liter', 'liters'],
-  tbsp: ['tbsp', 'tbs', 'tablespoon', 'tablespoons', 'cs', 'c.s', 'c. à soupe', 'c.à.s', 'cuillère à soupe', 'cuillères à soupe', 'cas'],
-  tsp: ['tsp', 'teaspoon', 'teaspoons', 'cc', 'c.c', 'c. à café', 'c.à.c', 'cuillère à café', 'cuillères à café', 'cac'],
+  tbsp: ['tbsp', 'tbs', 'tablespoon', 'tablespoons', 'cs', 'c.s', 'c. à soupe', 'c.à.s', 'cuillère à soupe', 'cuillères à soupe', 'cas', 'cucchiaio', 'cucchiai'],
+  tsp: ['tsp', 'teaspoon', 'teaspoons', 'cc', 'c.c', 'c. à café', 'c.à.c', 'cuillère à café', 'cuillères à café', 'cac', 'cucchiaino', 'cucchiaini'],
   cup: ['cup', 'cups', 'tasse', 'tasses'],
   oz: ['oz', 'ounce', 'ounces'],
   lb: ['lb', 'lbs', 'pound', 'pounds'],
-  clove: ['clove', 'cloves', 'gousse', 'gousses'],
-  pinch: ['pinch', 'pinches', 'pincée', 'pincées'],
-  can: ['can', 'cans', 'tin', 'tins', 'boîte', 'boîtes', 'conserve'],
-  bunch: ['bunch', 'bunches', 'botte', 'bottes', 'bouquet'],
-  slice: ['slice', 'slices', 'tranche', 'tranches'],
-  piece: ['piece', 'pieces', 'pièce', 'pièces', 'pc', 'pcs'],
+  clove: ['clove', 'cloves', 'gousse', 'gousses', 'spicchio', 'spicchi'],
+  pinch: ['pinch', 'pinches', 'pincée', 'pincées', 'pizzico', 'pizzichi'],
+  can: ['can', 'cans', 'tin', 'tins', 'boîte', 'boîtes', 'conserve', 'scatola', 'scatole'],
+  bunch: ['bunch', 'bunches', 'botte', 'bottes', 'bouquet', 'mazzetto', 'mazzetti'],
+  slice: ['slice', 'slices', 'tranche', 'tranches', 'fetta', 'fette'],
+  piece: ['piece', 'pieces', 'pièce', 'pièces', 'pc', 'pcs', 'pezzo', 'pezzi'],
 };
 
 const UNIT_LOOKUP = new Map<string, string>();
@@ -68,7 +69,7 @@ const UNICODE_FRACTIONS: Record<string, number> = {
   '½': 0.5, '¼': 0.25, '¾': 0.75, '⅓': 1 / 3, '⅔': 2 / 3, '⅛': 0.125,
 };
 
-const FILLER_WORDS = /^(?:(?:of|de|du|des|la|le|les)\s+|[dl]['’]\s*)/i;
+const FILLER_WORDS = /^(?:(?:of|de|du|des|la|le|les|di|del|della|dello|dei|degli|delle)\s+|[dl]['’]\s*)/i;
 
 function escapeRegExp(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -89,7 +90,8 @@ function parseQuantity(text: string): { quantity: number | null; rest: string } 
   return { quantity: q, rest: s.slice(m[0].length).trim() };
 }
 
-export function parseIngredientLine(line: string): ParsedIngredient {
+/** `units: false` reads the whole text after the quantity as the name ("1 bouquet garni"). */
+export function parseIngredientLine(line: string, { units = true } = {}): ParsedIngredient {
   const raw_text = line.trim().replace(/\s+/g, ' ');
   // Drop bullets and parenthetical notes: "(about 2 cups)".
   let s = raw_text.replace(/^[-•*·]\s*/, '').replace(/\([^)]*\)/g, ' ').replace(/\s+/g, ' ').trim();
@@ -99,7 +101,7 @@ export function parseIngredientLine(line: string): ParsedIngredient {
 
   let unit: string | null = null;
   const lower = s.toLowerCase();
-  for (const spelling of UNIT_PATTERNS) {
+  for (const spelling of units ? UNIT_PATTERNS : []) {
     const re = new RegExp(`^${escapeRegExp(spelling)}\\.?(?=\\s|$|\\b)`, 'i');
     if (re.test(lower)) {
       // Single letters are units only when a quantity precedes them ("2 l", not "l'ail").
@@ -138,7 +140,7 @@ export class Catalog {
 
   constructor(entries: CatalogEntry[]) {
     for (const e of entries) {
-      for (const n of [e.name, e.name_fr, ...(e.aliases ?? [])]) {
+      for (const n of [e.name, e.name_fr, e.name_it, ...(e.aliases ?? [])]) {
         if (!n) continue;
         const k = keyOf(n);
         if (!this.byKey.has(k)) this.byKey.set(k, e);
@@ -161,7 +163,13 @@ export class Catalog {
   }
 
   normalise(p: ParsedIngredient): NormalisedIngredient {
-    const entry = this.find(p.name);
+    let entry = this.find(p.name);
+    if (!entry && p.unit && p.unit !== 'piece') {
+      // A unit word can start a name: "bouquet garni", "mazzetto aromatico".
+      const whole = parseIngredientLine(p.raw_text, { units: false });
+      entry = this.find(whole.name);
+      if (entry) p = whole;
+    }
     return {
       ...p,
       name: entry?.name ?? p.name,

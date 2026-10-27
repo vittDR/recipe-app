@@ -10,5 +10,6 @@ run() { $PSQL -q -o /dev/null -v ON_ERROR_STOP=1 -d "$DB" -f "$1"; }
 run tests/stub_supabase.sql
 for f in migrations/*.sql; do run "$f"; done
 run seed.sql
+run seed_library.sql
 for f in tests/*_test.sql; do echo "== $f"; run "$f"; done
 echo "All SQL tests passed."

@@ -1,6 +1,7 @@
 {
   "name": "dineamite",
   "private": true,
+  "type": "module",
   "scripts": {
     "test:logic": "node --test supabase/functions/_shared/logic/tests/*.test.ts",
     "test:sql": "supabase/tests/run_local.sh"

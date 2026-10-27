@@ -35,7 +35,11 @@ export default defineConfig({
           { src: '/icons/icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
         ],
       },
-      injectManifest: { globPatterns: ['**/*.{js,css,html,svg,png,webp,woff2}'] },
+      injectManifest: {
+        globPatterns: ['**/*.{js,css,html,svg,png,webp,woff2}'],
+        // Recipe photos load on demand; precaching them would download ~20 MB on install.
+        globIgnores: ['recipe-photos/**'],
+      },
       devOptions: { enabled: false },
     }),
   ],

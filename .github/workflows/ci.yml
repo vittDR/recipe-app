@@ -27,6 +27,8 @@ jobs:
         run: npm run test:logic
       - name: Database migrations and rules
         run: npm run test:sql
+      - name: Seed library is up to date with recipes.json
+        run: node scripts/build-seed-library.ts && git diff --exit-code supabase/seed_library.sql
       - name: Web app typecheck and build
         working-directory: web
         run: |
