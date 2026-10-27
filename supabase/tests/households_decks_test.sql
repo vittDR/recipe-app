@@ -222,3 +222,14 @@ delete from decks where for_date = (now() at time zone 'Europe/Paris')::date;
 select enqueue_due_prompts() as n1 \gset
 select enqueue_due_prompts() as n2 \gset
 select pg_temp.check(:n1 = 1 and :n2 = 0, 'prompt queued exactly once');
+
+-- A window that crosses midnight still fires, once, for the day it started.
+update households set prompt_time = '23:30', reminder_time = '12:00', last_prompt_on = null;
+update households set timezone = (select name from pg_timezone_names
+  where (now() at time zone name)::time between '00:05' and '01:00' limit 1);
+delete from decks where household_id = :'hid';
+select enqueue_due_prompts() as n3 \gset
+select enqueue_due_prompts() as n4 \gset
+select pg_temp.check(:n3 = 1 and :n4 = 0
+                     and (select last_prompt_on = ((now() at time zone timezone) - interval '1 day')::date from households),
+                     'a window past midnight fires once, for the day before');
