@@ -287,3 +287,11 @@ values
   ('worcestershire sauce', 'sauce Worcestershire', 'salsa Worcestershire', '{}', 'pantry', true, 78, 0, null, 'fish')
 on conflict (name) do nothing;
 
+
+-- Exotic: not sold in most French supermarkets, so it needs an Asian or
+-- specialty shop (or online). Drives the "Everyday ingredients" filter.
+update public.ingredient_catalog set exotic = (name in (
+  'berbere', 'cheese curds', 'dried fenugreek leaves', 'galangal', 'gochujang', 'gravy mix', 'jerk seasoning',
+  'kaffir lime leaves', 'kimchi', 'korean rice cakes', 'mirin', 'msg', 'nasi goreng paste', 'perilla leaves',
+  'rice syrup', 'rice wine', 'sichuan pepper', 'ssamjang', 'tamarind paste'
+));

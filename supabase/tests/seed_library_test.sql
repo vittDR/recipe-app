@@ -24,6 +24,10 @@ select pg_temp.check(not exists (select 1 from lib where kcal_per_serving is nul
 select pg_temp.check(not exists (select 1 from lib where source_name is null or cuisine is null or original_servings is null),
                      'source name, cuisine and original yield are set');
 select pg_temp.check((select count(*) = 99 from lib where image_path like '/recipe-photos/%.webp'), '99 recipes have a photo served by the app');
+select pg_temp.check(not exists (select 1 from lib where difficulty is null or equipment is null),
+                     'every recipe has a difficulty and equipment');
+select pg_temp.check((select count(*) > 0 from ingredient_catalog where exotic)
+                     and not (select exotic from ingredient_catalog where name = 'soy sauce'), 'exotic ingredients are flagged');
 select pg_temp.check((select count(*) = 1334 from recipe_ingredients i join lib r on r.id = i.recipe_id
                       where i.original_text is not null), 'every line keeps the source''s original text');
 
@@ -64,4 +68,14 @@ select pg_temp.check((select source_name = 'Dissapore' and cuisine = 'italian' a
                       from recipes where id = :'cp'), 'copy keeps source name, cuisine, yield and language');
 select pg_temp.check((select count(*) = count(original_text) and count(*) > 0 from recipe_ingredients where recipe_id = :'cp'),
                      'copy keeps each line''s original text');
+select pg_temp.check((select r.difficulty = s.difficulty and r.equipment = s.equipment and r.equipment is not null
+                      from recipes r join recipes s on s.id = r.copied_from where r.id = :'cp'),
+                     'copy keeps difficulty and equipment');
+select pg_temp.check((select equipment is not null from library_recipes where id = :'cp'), 'library view has the new columns');
 reset role;
+
+-- Seed recipes (and copies) loaded before these fields existed are filled in by re-running seed_library.sql.
+update recipes set difficulty = null, equipment = null where id = :'cp' or id = :'src';
+\i seed_library.sql
+select pg_temp.check((select count(*) = 2 from recipes where (id = :'cp' or id = :'src') and difficulty is not null
+                      and equipment is not null), 're-running seed_library.sql fills difficulty and equipment');

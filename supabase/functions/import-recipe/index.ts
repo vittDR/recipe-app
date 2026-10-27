@@ -9,6 +9,7 @@
 
 import { corsHeaders, json, requireMember, serviceClient } from '../_shared/http.ts';
 import { extractJsonLdRecipe } from '../_shared/logic/jsonld.ts';
+import { DIFFICULTIES, normaliseEquipment, type Difficulty, type Equipment } from '../_shared/logic/facets.ts';
 import { Catalog, estimateMacros, parseIngredientLine, type CatalogEntry } from '../_shared/logic/ingredients.ts';
 
 const FETCH_TIMEOUT_MS = 10_000;
@@ -30,6 +31,9 @@ interface SaveBody {
   original_servings?: number | null;
   cuisine?: string | null;
   image_source_url?: string | null;
+  difficulty?: Difficulty | null;
+  /** { pots, oven, special }: see logic/facets.ts. */
+  equipment?: Equipment | null;
   /** Lines as typed or reviewed; `guessed` marks amounts the person was unsure about.
    *  `original_text` is the source's unscaled line, kept for reference only. */
   ingredients: { text: string; original_text?: string | null; guessed?: boolean }[];
@@ -135,6 +139,8 @@ Deno.serve(async (req) => {
       original_servings: r.original_servings && r.original_servings > 0 ? r.original_servings : null,
       cuisine: r.cuisine?.toLowerCase().trim() || null,
       image_source_url: r.image_source_url ?? null,
+      difficulty: r.difficulty && DIFFICULTIES.includes(r.difficulty) ? r.difficulty : null,
+      equipment: r.equipment ? normaliseEquipment(r.equipment) : null,
       created_by: caller.userId,
     }).select('id').single();
     if (error) {

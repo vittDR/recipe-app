@@ -14,6 +14,7 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import {
   Catalog, estimateMacros, gramsOf, parseIngredientLine, type CatalogEntry,
 } from '../supabase/functions/_shared/logic/ingredients.ts';
+import { DIFFICULTIES, SPECIAL_EQUIPMENT, normaliseEquipment, type Difficulty, type Equipment } from '../supabase/functions/_shared/logic/facets.ts';
 
 interface SeedIngredient { text: string; original_text?: string; guessed?: boolean }
 interface SeedRecipe {
@@ -29,6 +30,8 @@ interface SeedRecipe {
   image_source_url?: string | null;
   cuisine?: string;
   tags: string[];
+  difficulty: Difficulty;
+  equipment: Equipment;
   ingredients: SeedIngredient[];
   steps: string[];
 }
@@ -60,6 +63,7 @@ const out: string[] = [
   'begin;',
 ];
 const summary: string[] = [];
+const facets: string[] = [];
 
 for (const r of recipes) {
   const where = `${r.title}:`;
@@ -72,6 +76,15 @@ for (const r of recipes) {
   if (r.tags.some((t) => t !== t.toLowerCase().trim())) errors.push(`${where} tags must be lowercase`);
   if (r.cuisine && !r.tags.includes(r.cuisine)) warnings.push(`${where} cuisine "${r.cuisine}" missing from tags`);
   if (!r.steps.length) errors.push(`${where} no steps`);
+  if (!DIFFICULTIES.includes(r.difficulty)) errors.push(`${where} difficulty ${r.difficulty}`);
+  const equipment = normaliseEquipment(r.equipment);
+  if (JSON.stringify(equipment) !== JSON.stringify(r.equipment)) {
+    errors.push(`${where} equipment must be { pots: whole number, oven: true/false, special: [...] } in display order`);
+  }
+  if (!equipment.pots && !equipment.special.includes('barbecue')) errors.push(`${where} no pots, pans or barbecue`);
+  for (const k of equipment.special) {
+    if (!(SPECIAL_EQUIPMENT as readonly string[]).includes(k)) errors.push(`${where} unknown special equipment "${k}"`);
+  }
   if (r.image_url?.startsWith('/')) {
     // Photos the app serves itself live in web/public.
     if (!existsSync(`${root}web/public${r.image_url}`)) errors.push(`${where} photo ${r.image_url} not found in web/public`);
@@ -105,11 +118,11 @@ for (const r of recipes) {
   out.push('', `-- ${r.title.replace(/\n/g, ' ')}`, 'with r as (',
     '  insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,',
     '    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,',
-    '    macros_estimated, language)',
+    '    macros_estimated, language, difficulty, equipment)',
     `  select null, ${lit(r.title.trim().slice(0, 200))}, 'seed', ${lit(r.source_url)}, ${lit(r.source_name)}, ${lit(r.image_url)}, ${lit(r.image_source_url ?? r.image_url)},`,
     `    ${r.servings}, ${lit(r.original_servings)}, ${lit(r.total_min ? Math.round(r.total_min) : null)}, ${lit(JSON.stringify(r.steps))}::jsonb,`,
     `    array[${r.tags.map(lit).join(', ')}]::text[], ${lit(r.cuisine)}, ${lit(macros.kcalPerServing)}, ${lit(macros.proteinGPerServing)},`,
-    `    ${lit(macros.estimated)}, ${lit(r.language)}`,
+    `    ${lit(macros.estimated)}, ${lit(r.language)}, ${lit(r.difficulty)}, ${lit(JSON.stringify(equipment))}::jsonb`,
     `  where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = ${lit(r.source_url)})`,
     '  returning id',
     ')',
@@ -117,7 +130,14 @@ for (const r of recipes) {
     'select r.id, v.* from r, (values',
     ingredients.map((i) => `  (${i.position}, ${lit(i.name)}, ${lit(i.quantity)}::real, ${lit(i.unit)}, ${lit(i.aisle)}::public.aisle, ${lit(i.is_staple)}, ${lit(i.guessed)}, ${lit(i.raw_text)}, ${lit(i.original_text)})`).join(',\n'),
     ') as v(position, name, quantity, unit, aisle, is_staple, guessed, raw_text, original_text);');
+  // Recipes loaded before difficulty and equipment existed, and households' copies of them, get them now.
+  facets.push(`  (${lit(r.source_url)}, ${lit(r.difficulty)}, ${lit(JSON.stringify(equipment))}::jsonb)`);
 }
+out.push('', '-- Difficulty and equipment for seed recipes (and copies) loaded before those fields existed.',
+  'update public.recipes x set difficulty = v.difficulty, equipment = v.equipment',
+  'from public.recipes s, (values', facets.join(',\n'), ') as v(source_url, difficulty, equipment)',
+  'where s.household_id is null and s.source_url = v.source_url',
+  "  and (x.id = s.id or x.copied_from = s.id) and x.difficulty is null and x.equipment is null;");
 out.push('', 'commit;', '');
 
 console.log(`${recipes.length} recipes, ${recipes.reduce((n, r) => n + r.ingredients.length, 0)} ingredient lines\n`);

@@ -5,6 +5,9 @@ import { AddToListSheet, formatQuantity, loadProposals } from '../../components/
 import { Icon } from '../../components/Icon.tsx';
 import { Button, Screen, Spinner, Tag, imageStyle, recipeEmoji } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
+import { MANY_POTS } from '@logic/facets.ts';
+import { equipmentLabels, exoticIngredients } from '../../lib/facets.ts';
+import { useCatalog } from '../../lib/hooks.ts';
 import { useSession } from '../../lib/session.tsx';
 import { must, supabase } from '../../lib/supabase.ts';
 import type { Recipe, RecipeIngredient } from '../../lib/types.ts';
@@ -18,7 +21,9 @@ interface Portion {
 
 export function RecipeScreen() {
   const { id } = useParams();
-  const { t, tn } = useI18n();
+  const i18n = useI18n();
+  const { t, tn } = i18n;
+  const catalog = useCatalog();
   const { household } = useSession();
   const navigate = useNavigate();
   const [recipe, setRecipe] = useState<Recipe | null>(null);
@@ -48,6 +53,9 @@ export function RecipeScreen() {
   if (!recipe) return <Screen back><Spinner /></Screen>;
 
   const own = recipe.household_id === household!.id;
+  const exotic = new Set(catalog ? exoticIngredients(ingredients.map((i) => i.name), catalog) : []);
+  const equipment = equipmentLabels(recipe.equipment, i18n);
+  const manyPots = (recipe.equipment?.pots ?? 0) >= MANY_POTS;
   const remove = async () => {
     if (!confirm(t('recipe.removeConfirm'))) return;
     await supabase.from('recipes').delete().eq('id', recipe.id);
@@ -66,6 +74,7 @@ export function RecipeScreen() {
       <div className="row row--wrap" style={{ marginBottom: 'var(--s-4)' }}>
         {recipe.total_min && <Tag><Icon name="clock" size={14} /> {recipe.total_min} min</Tag>}
         <Tag>{tn('recipe.servings', recipe.servings)}</Tag>
+        {recipe.difficulty && <Tag tone={recipe.difficulty === 'hard' ? 'warning' : undefined}>{t(`recipe.${recipe.difficulty}`)}</Tag>}
         {recipe.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
         {!recipe.household_id && <Tag>{t('recipe.seed')}</Tag>}
       </div>
@@ -89,6 +98,16 @@ export function RecipeScreen() {
         {recipe.macros_estimated && <span className="small" style={{ color: 'var(--c-warning)' }}>⚠︎ {t('recipe.estimated')}</span>}
       </div>
 
+      {equipment.length > 0 && (
+        <>
+          <h2 className="section-label">{t('recipe.equipment')}</h2>
+          <div className="row row--wrap">
+            {equipment.map((e) => <Tag key={e.label} tone={e.tedious ? 'warning' : undefined}>{e.label}</Tag>)}
+          </div>
+          {manyPots && <span className="small muted">{t('equipment.manyPots')}</span>}
+        </>
+      )}
+
       <div className="row row--between">
         <h2 className="section-label">{t('recipe.ingredients')}</h2>
         <Button small variant="text" onClick={() => setSheet(true)}><Icon name="cart" size={18} /> {t('match.addToList')}</Button>
@@ -101,7 +120,9 @@ export function RecipeScreen() {
               <div className="list-row__main">
                 <div className="list-row__title">{i.name}</div>
                 {i.guessed && <div className="list-row__meta" style={{ color: 'var(--c-warning)' }}>{t('recipe.guessed')}</div>}
+                {exotic.has(i.name) && <div className="list-row__meta">{t('recipe.exoticHint')}</div>}
               </div>
+              {exotic.has(i.name) && <Tag tone="warning">{t('recipe.exotic')}</Tag>}
               {p?.why === 'on_list' && <Tag>{t('recipe.onList')}</Tag>}
               {(p?.why === 'bought_recently' || p?.why === 'staple') && <Tag tone="success">{t('recipe.atHome')}</Tag>}
               <span className="muted small">{formatQuantity(i.quantity, i.unit)}</span>

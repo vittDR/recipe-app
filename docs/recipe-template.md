@@ -23,6 +23,8 @@ The catalogue is a JSON list of these objects. Copy this one and replace the val
     "image_source_url": "https://www.example.com/wp-content/uploads/red-curry.jpg",
     "cuisine": "thai",
     "tags": ["chicken", "curry", "comfort", "asian", "thai"],
+    "difficulty": "easy",
+    "equipment": { "pots": 2, "oven": false, "special": [] },
     "ingredients": [
       { "text": "350 g chicken thigh, diced", "original_text": "700 g chicken thigh, diced" },
       { "text": "2 tbsp red curry paste", "original_text": "4 tbsp red curry paste" },
@@ -61,6 +63,8 @@ Each field is one of three kinds:
 | `ingredients` | You | **yes**, at least 1 | List of `{ "text": "...", "guessed": false }`. See below. | Everything computed below |
 | `steps` | You | yes | List of strings, one action per step, in order | Cooking mode, one step per screen |
 | `tags` | You | recommended | Up to 12, lowercase. See the tag list below. | Mood matching, "never"/"love" taste rules, learned patterns |
+| `difficulty` | You | **yes** for seed recipes | `"easy"`, `"medium"` or `"hard"`. Easy = basic techniques, forgiving. Medium = several components or timing to juggle (sear then braise, a sauce, marinating). Hard = delicate technique (dough, deep-frying, emulsions, many components); use it sparingly. | "Easy" filter, recipe tile and detail |
+| `equipment` | You | **yes** for seed recipes | `{ "pots": n, "oven": true/false, "special": [...] }`. Keep it coarse: it's there to tell an easy cook from a tedious one. See below. | "One pot" filter; 3+ pots and special equipment are flagged on tiles |
 | `image_url` | You | recommended | Absolute `https://` URL. See image specs. | Swipe card, recipe tile, detail hero |
 | `image_source_url` | You | optional | URL the photo was originally taken from. Stays the same after you re-host the image under `image_url`. | Photo credit, re-downloading |
 | `source_name` | You | recommended with `source_url` | Display name of the website, e.g. `GialloZafferano`, `Marmiton`, `RecipeTin Eats`. | "From GialloZafferano" credit line |
@@ -70,8 +74,17 @@ Each field is one of three kinds:
 | `kcal_per_serving` | Computed | — | — | Worked out from ingredients, never copied from the source site |
 | `protein_g_per_serving` | Computed | — | — | Same as above |
 | `macros_estimated` | Computed | — | — | True if any ingredient was guessed, unknown, or had no amount |
+| exotic ingredients | Computed | — | — | Ingredients whose catalogue entry has `exotic` set (not sold in most French supermarkets). Flagged on the recipe and drive the "Everyday ingredients" filter. |
 | diet class (veg/fish/meat) | Computed | — | — | Worked out from the ingredients each time a deck is dealt. Not stored. |
 | `id`, `household_id`, `created_by`, `created_at`, `updated_at`, `copied_from` | System | — | — | — |
+
+## Equipment
+
+| Key | Rules |
+| --- | --- |
+| `pots` | Every pot, pan, wok and oven dish or tray that gets dirty. A vessel reused after emptying counts once. Count the vessel for a side the recipe cooks (rice, pasta…). `1` makes it a one-pot recipe; `3` or more is flagged as a lot of washing up. `0` only for barbecue-only recipes. |
+| `oven` | `true` if the oven (or its grill) is used. |
+| `special` | Only equipment many kitchens lack, from: `blender` (incl. stick blender), `food processor`, `stand mixer`, `thermometer`, `mortar and pestle`, `barbecue`, `mandoline`, `rolling pin`, `steamer`, `rice cooker`, `slow cooker`, `pressure cooker`, `air fryer`. In that order. Never list basics: baking tray, sieve, grater, string, whisk, skewers. |
 
 ## Ingredient lines
 
@@ -149,6 +162,7 @@ against `name`, `name_fr`, `name_it` and `aliases`.
 | `kcal_100g` | yes | `455` | Raw weight, per 100 g |
 | `protein_100g` | yes | `24` | Raw weight, per 100 g |
 | `grams_per_unit` | yes if counted in pieces/cloves/cans | `60` | Grams in one `piece` (or clove, can…) |
+| `exotic` | optional | `false` | `true` when most French supermarkets don't sell it (needs an Asian or specialty shop). Set in the `update … set exotic` list at the end of `seed.sql`. |
 | `diet_class` | **yes** | `meat` | `veg`, `fish` or `meat`. This drives the diet filters. |
 
 ## Tags
@@ -215,5 +229,6 @@ One image per recipe. The app shows the same file in three crops, each with
 - [ ] if scaled: every ingredient has an `original_text` with the source's quantities
 - [ ] any missing catalogue ingredient added, with its `diet_class`
 - [ ] steps in order, one action each
+- [ ] difficulty and equipment (pots, oven, special only if uncommon)
 - [ ] 3–8 tags, using the mood words where they apply
 - [ ] 4:3 image, at least 1200 × 900, dish centred, under 500 KB

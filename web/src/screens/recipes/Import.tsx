@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
-import { Button, Field, Screen, Segmented, toast } from '../../components/ui.tsx';
+import { DIFFICULTIES, SPECIAL_EQUIPMENT, type Difficulty } from '@logic/facets.ts';
+import { Button, Chip, Field, Screen, Segmented, toast } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { callFunction } from '../../lib/supabase.ts';
 
@@ -15,11 +16,17 @@ interface Draft {
   source_type: 'web' | 'instagram' | 'typed';
   image_url: string | null;
   language: string | null;
+  difficulty: Difficulty | null;
+  /** 0 = not said. */
+  pots: number;
+  oven: boolean;
+  special: string[];
 }
 
 const EMPTY: Draft = {
   title: '', servings: '2', minutes: '', ingredients: '', steps: '', tags: '',
   source_url: null, source_type: 'typed', image_url: null, language: null,
+  difficulty: null, pots: 0, oven: false, special: [],
 };
 
 interface Preview {
@@ -53,6 +60,7 @@ export function ImportScreen() {
     try {
       const { recipe } = await callFunction<{ recipe: Preview }>('import-recipe', { action: 'preview', url: link });
       setDraft({
+        ...EMPTY,
         title: recipe.title,
         servings: String(recipe.servings ?? 2),
         minutes: recipe.totalMin ? String(recipe.totalMin) : '',
@@ -96,6 +104,9 @@ export function ImportScreen() {
           steps: lines(draft.steps),
           tags: draft.tags.split(',').map((x) => x.trim()).filter(Boolean),
           language: draft.language ?? locale,
+          difficulty: draft.difficulty,
+          equipment: draft.pots || draft.oven || draft.special.length
+            ? { pots: draft.pots, oven: draft.oven, special: draft.special } : null,
           // A trailing "?" marks an amount the person wasn't sure about.
           ingredients: lines(draft.ingredients).map((l) => ({ text: l.replace(/\s*\?$/, ''), guessed: l.endsWith('?') })),
         },
@@ -112,6 +123,10 @@ export function ImportScreen() {
 
   const set = (k: keyof Draft) => (e: { target: { value: string } }) => setDraft((d) => ({ ...(d ?? EMPTY), [k]: e.target.value }));
   const form = draft ?? (mode === 'type' ? EMPTY : null);
+  const update = (patch: Partial<Draft>) => setDraft((d) => ({ ...(d ?? EMPTY), ...patch }));
+  const toggleSpecial = (item: string) => update({
+    special: form!.special.includes(item) ? form!.special.filter((x) => x !== item) : [...form!.special, item],
+  });
 
   return (
     <Screen back title={t('import.title')}>
@@ -156,6 +171,28 @@ export function ImportScreen() {
             <Field label={t('import.tagsField')}>
               <input className="input" value={form.tags} onChange={set('tags')} />
             </Field>
+            <div className="field">
+              <span className="field__label">{t('import.difficultyField')}</span>
+              <Segmented label={t('import.difficultyField')} value={form.difficulty ?? ''} onChange={(v) => update({ difficulty: v as Difficulty })}
+                options={DIFFICULTIES.map((d) => ({ value: d, label: t(`recipe.${d}`) }))} />
+            </div>
+            <div className="field">
+              <span className="field__label">{t('import.potsField')}</span>
+              <div className="chips">
+                {[1, 2, 3, 4].map((n) => (
+                  <Chip key={n} pressed={form.pots === n} onClick={() => update({ pots: form.pots === n ? 0 : n })}>{n === 4 ? '4+' : n}</Chip>
+                ))}
+                <Chip pressed={form.oven} onClick={() => update({ oven: !form.oven })}>{t('import.ovenField')}</Chip>
+              </div>
+            </div>
+            <div className="field">
+              <span className="field__label">{t('import.specialField')}</span>
+              <div className="chips">
+                {SPECIAL_EQUIPMENT.map((item) => (
+                  <Chip key={item} pressed={form.special.includes(item)} onClick={() => toggleSpecial(item)}>{t(`equipment.${item}`)}</Chip>
+                ))}
+              </div>
+            </div>
             <Button block type="submit" disabled={busy || !form.title.trim() || !form.ingredients.trim()}>{t('import.save')}</Button>
           </form>
         )}
