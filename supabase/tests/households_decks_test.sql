@@ -81,10 +81,17 @@ select pg_temp.check((select quantity = 150 and aisle = 'produce' from grocery_i
                      'same name and unit merge, aisle from catalogue');
 select pg_temp.check((select count(*) = 2 from grocery_items), 'two distinct items');
 
--- Portions: A (800 kcal) and B (500 kcal) share one seed recipe's pot.
-select id as rid, kcal_per_serving as rkcal from recipes where title = 'Spaghetti alle vongole' \gset
-select pg_temp.check((select abs(kcal - 800) < 0.01 and abs(pot_servings - 1300.0 / :rkcal) < 0.01
-                      from my_portion(:'rid')), 'plate sized by own target, pot by both');
+-- Portions: A eats 1.5 servings, B the default 1; the pot is both plates.
+select id as rid, kcal_per_serving as rkcal, protein_g_per_serving as rprot
+from recipes where title = 'Spaghetti alle vongole' \gset
+update member_goals set servings = 1.5 where user_id = auth.uid();
+select pg_temp.check((select abs(kcal - 1.5 * :rkcal) < 0.01 and abs(protein_g - 1.5 * :rprot) < 0.01
+                             and servings = 1.5 and pot_servings = 2.5
+                      from my_portion(:'rid')), 'plate is own servings, pot is everyone''s');
+-- A's target is 800 kcal / 50 g: fits needs 640-960 kcal and at least 42.5 g protein.
+select pg_temp.check((select fits = (abs(1.5 * :rkcal - 800) <= 160 and 1.5 * :rprot >= 42.5)
+                      from my_portion(:'rid')), 'fits: calories within 20%, enough protein');
+update member_goals set servings = 1 where user_id = auth.uid();
 
 -- Deal a deck the way the deal-deck function does (service role).
 reset role;

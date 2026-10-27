@@ -35,7 +35,7 @@ Key rules from the handover, and where they live:
 | First mutual yes in deck order wins; others offered | `resolve_deck()`, `deck_matches()` |
 | Tie-break: 3 near-misses, Must-have counts double; same pick wins, else best fit | `tiebreak_options()`, `on_tiebreak_pick()` |
 | Just-me deck skips matching | `on_swipe()` |
-| One pot, plates sized by calorie target; fits within 15% protein | `logic/portions.ts`, `my_portion()` |
+| One pot; each plate is that person's servings (1 by default); fits = calories within 20% of target and protein at least 85% | `logic/portions.ts`, `my_portion()` |
 | 12 cards, ~8 known + 4 new, never/diet/time/recently-cooked filters | `logic/deck.ts` |
 | Patterns suggested at 8 of the last 10 exposures; apply only once accepted | `logic/preferences.ts`, Us tab |
 | List merges same name + unit; staples start unchecked | `add_grocery_items()`, `logic/groceries.ts` |

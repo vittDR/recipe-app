@@ -93,10 +93,12 @@ export const en = {
   },
   goals: {
     title: 'Size your plate',
-    subtitle: 'Used to size your portion of the pot.',
+    subtitle: 'How much you eat, and the targets that decide what fits you.',
     lean: 'Lean out',
     maintain: 'Maintain',
     build: 'Build',
+    servings: 'Servings I eat',
+    servingsUnit: '× serving',
     kcal: 'Dinner calories',
     protein: 'Dinner protein',
     kcalUnit: 'kcal',

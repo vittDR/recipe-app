@@ -19,7 +19,7 @@ const samePattern = (a: { kind: string; value: string }, b: { kind: string; valu
   a.kind === b.kind && a.value === b.value;
 
 export function UsScreen() {
-  const { t, locale, setLocale } = useI18n();
+  const { t, tn, locale, setLocale } = useI18n();
   const { userId, members, goals, household, signOut } = useSession();
   const [rules, setRules] = useState<TasteRule[]>([]);
   const [suggestions, setSuggestions] = useState<PatternSuggestion[]>([]);
@@ -128,7 +128,7 @@ export function UsScreen() {
         <Link to="/us/goals" className="list-row">
           <span className="list-row__main">
             <span className="list-row__title">{t('us.yourGoals')}</span>
-            {goals && <span className="list-row__meta">{t(`goals.${goals.goal}`)} · {goals.dinner_kcal} kcal · {goals.dinner_protein_g} g</span>}
+            {goals && <span className="list-row__meta">{t(`goals.${goals.goal}`)} · {goals.dinner_kcal} kcal · {goals.dinner_protein_g} g · {tn('recipe.servings', goals.servings)}</span>}
           </span>
           <span className="chevron"><Icon name="chevron" size={18} /></span>
         </Link>

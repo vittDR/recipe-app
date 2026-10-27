@@ -37,6 +37,8 @@ export interface MemberGoals {
   goal: Goal;
   dinner_kcal: number;
   dinner_protein_g: number;
+  /** Servings on this person's plate. */
+  servings: number;
 }
 
 export interface TasteRule {

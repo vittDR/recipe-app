@@ -12,6 +12,7 @@ import type { Recipe, RecipeIngredient } from '../../lib/types.ts';
 interface Portion {
   kcal: number;
   protein_g: number;
+  servings: number;
   fits: boolean;
 }
 
@@ -70,13 +71,20 @@ export function RecipeScreen() {
       </div>
 
       <div className="card stack">
-        <span className="small muted">{t('recipe.yourMacros')}</span>
+        <span className="small muted">{t('recipe.yourMacros')} · {tn('recipe.servings', portion?.servings ?? 1)}</span>
         {portion ? (
-          <div className="macros">
-            <span><strong>{Math.round(portion.kcal)}</strong> kcal</span>
-            <span><strong>{Math.round(portion.protein_g)}</strong> g {t('swipe.protein')}</span>
-            {portion.fits && <Tag tone="success">{t('swipe.fitsYou')}</Tag>}
-          </div>
+          <>
+            <div className="macros">
+              <span><strong>{Math.round(portion.kcal)}</strong> kcal</span>
+              <span><strong>{Math.round(portion.protein_g)}</strong> g {t('swipe.protein')}</span>
+              {portion.fits && <Tag tone="success">{t('swipe.fitsYou')}</Tag>}
+            </div>
+            {portion.servings !== 1 && recipe.kcal_per_serving != null && (
+              <span className="small muted">
+                {Math.round(recipe.kcal_per_serving)} kcal · {Math.round(recipe.protein_g_per_serving ?? 0)} g {t('swipe.protein')} {t('recipe.perServing')}
+              </span>
+            )}
+          </>
         ) : <span className="muted">{t('recipe.noMacros')}</span>}
         {recipe.macros_estimated && <span className="small" style={{ color: 'var(--c-warning)' }}>⚠︎ {t('recipe.estimated')}</span>}
       </div>
