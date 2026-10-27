@@ -1,0 +1,7 @@
+node_modules/
+.DS_Store
+# Supabase CLI local state and function secrets
+supabase/.branches/
+supabase/.temp/
+supabase/functions/.env
+supabase/.env
