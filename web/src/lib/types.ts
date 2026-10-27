@@ -53,6 +53,7 @@ export interface Recipe {
   title: string;
   source_type: 'web' | 'instagram' | 'photo' | 'typed' | 'ai' | 'seed';
   source_url: string | null;
+  source_name: string | null;
   image_path: string | null;
   servings: number;
   total_min: number | null;

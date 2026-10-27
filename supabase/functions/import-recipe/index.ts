@@ -25,8 +25,14 @@ interface SaveBody {
   steps?: string[];
   tags?: string[];
   language?: string | null;
-  /** Lines as typed or reviewed; `guessed` marks amounts the person was unsure about. */
-  ingredients: { text: string; guessed?: boolean }[];
+  source_name?: string | null;
+  /** Yield the source was written for, when `ingredients` were scaled to `servings`. */
+  original_servings?: number | null;
+  cuisine?: string | null;
+  image_source_url?: string | null;
+  /** Lines as typed or reviewed; `guessed` marks amounts the person was unsure about.
+   *  `original_text` is the source's unscaled line, kept for reference only. */
+  ingredients: { text: string; original_text?: string | null; guessed?: boolean }[];
 }
 
 async function sha256(s: string): Promise<string> {
@@ -104,7 +110,11 @@ Deno.serve(async (req) => {
 
     const ingredients = r.ingredients
       .filter((i) => i.text?.trim())
-      .map((i) => ({ ...catalog.normalise(parseIngredientLine(i.text)), guessed: !!i.guessed }));
+      .map((i) => ({
+        ...catalog.normalise(parseIngredientLine(i.text)),
+        guessed: !!i.guessed,
+        original_text: i.original_text?.trim() || null,
+      }));
     const macros = estimateMacros(ingredients, servings);
 
     const { data: saved, error } = await caller.db.from('recipes').insert({
@@ -120,7 +130,11 @@ Deno.serve(async (req) => {
       kcal_per_serving: macros.kcalPerServing,
       protein_g_per_serving: macros.proteinGPerServing,
       macros_estimated: macros.estimated,
-      language: r.language === 'fr' ? 'fr' : 'en',
+      language: r.language === 'fr' || r.language === 'it' ? r.language : 'en',
+      source_name: r.source_name?.trim() || null,
+      original_servings: r.original_servings && r.original_servings > 0 ? r.original_servings : null,
+      cuisine: r.cuisine?.toLowerCase().trim() || null,
+      image_source_url: r.image_source_url ?? null,
       created_by: caller.userId,
     }).select('id').single();
     if (error) {
@@ -130,7 +144,7 @@ Deno.serve(async (req) => {
 
     const { error: ingErr } = await caller.db.from('recipe_ingredients').insert(ingredients.map((i, position) => ({
       recipe_id: saved.id, position, name: i.name, quantity: i.quantity, unit: i.unit,
-      aisle: i.aisle, is_staple: i.is_staple, guessed: i.guessed, raw_text: i.raw_text,
+      aisle: i.aisle, is_staple: i.is_staple, guessed: i.guessed, raw_text: i.raw_text, original_text: i.original_text,
     })));
     if (ingErr) {
       await caller.db.from('recipes').delete().eq('id', saved.id);
