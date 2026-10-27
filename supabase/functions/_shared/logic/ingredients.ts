@@ -17,6 +17,8 @@ export interface CatalogEntry {
   protein_100g?: number | null;
   grams_per_unit?: number | null;
   diet_class?: 'veg' | 'fish' | 'meat';
+  /** Not sold in most French supermarkets. */
+  exotic?: boolean;
 }
 
 export interface ParsedIngredient {

@@ -1,4 +1,5 @@
 // Row shapes used by the app (subset of columns it reads).
+import type { Difficulty, Equipment } from '@logic/facets.ts';
 import type { Aisle } from '@logic/ingredients.ts';
 
 export type { Aisle };
@@ -64,6 +65,9 @@ export interface Recipe {
   kcal_per_serving: number | null;
   protein_g_per_serving: number | null;
   macros_estimated: boolean;
+  difficulty: Difficulty | null;
+  /** Null when unknown. */
+  equipment: Equipment | null;
   created_at: string;
 }
 

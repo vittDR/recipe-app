@@ -1,9 +1,11 @@
 import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { Icon } from '../../components/Icon.tsx';
-import { Chip, Screen, Spinner, imageStyle, recipeEmoji } from '../../components/ui.tsx';
+import { Button, Chip, Screen, Spinner, imageStyle, recipeEmoji } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
-import { useLive } from '../../lib/hooks.ts';
+import { RECIPE_FILTERS, type RecipeFilter, matchesFilters } from '@logic/facets.ts';
+import { effortLabels, facetsOf } from '../../lib/facets.ts';
+import { useCatalog, useLive } from '../../lib/hooks.ts';
 import { useSession } from '../../lib/session.tsx';
 import { must, supabase } from '../../lib/supabase.ts';
 import type { Recipe } from '../../lib/types.ts';
@@ -14,11 +16,14 @@ type Row = Recipe & { recipe_ingredients: { name: string }[] };
 const normalise = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 
 export function RecipesScreen() {
-  const { t, tn } = useI18n();
+  const i18n = useI18n();
+  const { t, tn } = i18n;
   const { household } = useSession();
   const navigate = useNavigate();
   const [query, setQuery] = useState('');
   const [filter, setFilter] = useState<Filter>('all');
+  const [facets, setFacets] = useState<Set<RecipeFilter>>(new Set());
+  const catalog = useCatalog();
 
   const { data, loading } = useLive<Row[]>(`recipes:${household!.id}`, async () =>
     must(await supabase.from('library_recipes').select('*, recipe_ingredients(name)').order('created_at', { ascending: false })) as Row[],
@@ -27,15 +32,23 @@ export function RecipesScreen() {
   const shown = useMemo(() => {
     // Every word must match the title, a tag or an ingredient: "quick chicken" works.
     const words = normalise(query).split(/\s+/).filter(Boolean);
+    if (!catalog) return [];
     return (data ?? []).filter((r) => {
       if (filter === 'mine' && !r.household_id) return false;
       if (filter === 'library' && r.household_id) return false;
       if (filter === 'web' && !['web', 'instagram'].includes(r.source_type)) return false;
       if (filter === 'typed' && r.source_type !== 'typed') return false;
+      if (facets.size && !matchesFilters(facetsOf(r, r.recipe_ingredients.map((i) => i.name), catalog), facets)) return false;
       const hay = normalise([r.title, ...r.tags, ...r.recipe_ingredients.map((i) => i.name)].join(' '));
       return words.every((w) => hay.includes(w));
     });
-  }, [data, query, filter]);
+  }, [data, query, filter, facets, catalog]);
+
+  const toggle = (f: RecipeFilter) => setFacets((cur) => {
+    const next = new Set(cur);
+    if (!next.delete(f)) next.add(f);
+    return next;
+  });
 
   const filters: Filter[] = ['all', 'mine', 'library', 'web', 'typed'];
   return (
@@ -54,9 +67,15 @@ export function RecipesScreen() {
         <div className="chips chips--scroll">
           {filters.map((f) => <Chip key={f} pressed={filter === f} onClick={() => setFilter(f)}>{t(`recipes.${f}`)}</Chip>)}
         </div>
-        {loading && !data ? <Spinner /> : (
+        <div className="chips chips--scroll" role="group" aria-label={t('recipes.filters')}>
+          {RECIPE_FILTERS.map((f) => <Chip key={f} pressed={facets.has(f)} onClick={() => toggle(f)}>{t(`recipes.${f}`)}</Chip>)}
+        </div>
+        {(loading && !data) || !catalog ? <Spinner /> : (
           <>
-            <span className="small muted">{tn('recipes.count', shown.length)}</span>
+            <div className="row row--between">
+              <span className="small muted">{tn('recipes.count', shown.length)}</span>
+              {facets.size > 0 && <Button small variant="text" onClick={() => setFacets(new Set())}>{t('recipes.clear')}</Button>}
+            </div>
             {shown.length === 0 ? <p className="muted center">{t('recipes.empty')}</p> : (
               <div className="grid">
                 {shown.map((r) => (
@@ -67,8 +86,12 @@ export function RecipesScreen() {
                     <div className="tile__body">
                       <span className="tile__title">{r.title}</span>
                       <span className="small muted">
-                        {[r.total_min && `${r.total_min} min`, r.kcal_per_serving && `${Math.round(r.kcal_per_serving)} kcal`].filter(Boolean).join(' · ')}
+                        {[r.total_min && `${r.total_min} min`, r.kcal_per_serving && `${Math.round(r.kcal_per_serving)} kcal`,
+                          r.difficulty && t(`recipe.${r.difficulty}`)].filter(Boolean).join(' · ')}
                       </span>
+                      {effortLabels(r.equipment, i18n).length > 0 && (
+                        <span className="small" style={{ color: 'var(--c-warning)' }}>{effortLabels(r.equipment, i18n).join(' · ')}</span>
+                      )}
                     </div>
                   </Link>
                 ))}

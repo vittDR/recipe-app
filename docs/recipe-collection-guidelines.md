@@ -48,6 +48,8 @@ Write ONE file (path of your choice):
   "image_url": "https://images.dissapore.com/.../petto-di-pollo-alla-cacciatora.jpg?width=1280&height=720&quality=75",
   "cuisine": "italian",
   "tags": ["chicken", "italian", "stew", "comfort"],
+  "difficulty": "easy",
+  "equipment": { "pots": 1, "oven": false, "special": [] },
   "ingredients": [
     { "text": "300 g petto di pollo, a pezzi", "original_text": "600 g petto di pollo, a pezzi", "guessed": false,
       "_catalog": "chicken breast", "_qty": 300, "_unit": "g" },
@@ -74,6 +76,7 @@ Field rules:
   - main protein: one of `chicken beef pork lamb turkey veal duck fish salmon tuna cod prawns seafood eggs tofu tempeh lentils chickpeas beans`
   - format: `pasta rice noodles traybake stew soup curry salad bowl stir-fry grill oven one-pot wrap burger risotto`
   - mood words exactly as defined: `comfort` `light` `quick` (only if total_min <= 25) `fancy` (special / date-night dishes) ; `vegetarian` when there is no meat/fish.
+- `difficulty` and `equipment`: see [recipe-template.md](recipe-template.md#equipment). Keep equipment coarse: count pots/pans/dishes, say whether the oven is on, and list only uncommon equipment under `special`.
 - `steps`: rewrite in YOUR OWN WORDS (never copy the site's sentences), in the recipe language, one action per step, in order, keeping concrete temps/times/doneness cues. Typically 4–10 steps. Steps refer to 2 servings implicitly (don't mention quantities that only apply to the original yield).
 - `image_url`: exact source main photo URL or null.
 

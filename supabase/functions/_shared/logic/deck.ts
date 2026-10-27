@@ -55,7 +55,7 @@ export interface DeckCard {
   reason: string | null;
 }
 
-const MOOD_TAGS: Record<Exclude<Mood, 'any'>, string[]> = {
+export const MOOD_TAGS: Record<Exclude<Mood, 'any'>, string[]> = {
   comfort: ['comfort', 'curry', 'stew', 'pasta', 'soup', 'réconfortant'],
   light: ['light', 'salad', 'bowl', 'fish', 'léger', 'salade'],
   quick: ['quick', 'rapide', '15 min', '20 min'],
