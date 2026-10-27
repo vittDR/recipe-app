@@ -27,7 +27,7 @@ git checkout main && git pull
 
 ---
 
-## Step 1: Database (schema, rules, starter recipes)
+## Step 1: Database (schema, rules, recipes)
 
 All commands run from the `recipe-app` folder. `npx supabase` downloads the Supabase CLI on first use.
 
@@ -56,14 +56,14 @@ All commands run from the `recipe-app` folder. `npx supabase` downloads the Supa
 
 4. **Load the ingredient catalogue and the recipes:**
    1. In the dashboard, open **SQL Editor → New query**.
-   2. Open `supabase/seed.sql` in a text editor, copy everything, paste it into the editor and click **Run**. It should say *Success. No rows returned*. This is the ingredient catalogue and 14 starter recipes.
-   3. Open a new query and do the same with `supabase/seed_library.sql`: the 110 recipes of the seed library. It's a big file (about 400 KB), so give the editor a few seconds after pasting.
+   2. Open `supabase/seed.sql` in a text editor, copy everything, paste it into the editor and click **Run**. It should say *Success. No rows returned*. This is the ingredient catalogue.
+   3. Open a new query and do the same with `supabase/seed_library.sql`: the 110 recipes. It's a big file (about 400 KB), so give the editor a few seconds after pasting.
 
    Both files are safe to run again: they skip whatever is already loaded. If your project was set up before the seed library existed, run `npx supabase db push` first, then both files.
 
 5. **Check it worked:**
    - **Table Editor** lists `households`, `recipes`, `grocery_items` and the other tables.
-   - `recipes` has 124 rows (14 starter + 110 library).
+   - `recipes` has 110 rows.
    - **Integrations → Cron** (or **Database → Cron Jobs**) shows three jobs: `dineamite-prompts`, `dineamite-purge-invites` and `dineamite-push-dispatch`.
 
 ---

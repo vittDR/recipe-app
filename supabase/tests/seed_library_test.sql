@@ -33,6 +33,13 @@ select pg_temp.check(not exists (
     select 1 from recipe_ingredients i join ingredient_catalog c on c.name = i.name
     where i.recipe_id = r.id and c.diet_class <> 'veg')), 'vegetarian recipes have no meat or fish');
 
+-- The old placeholder starters (seed recipes with no source) are removed by their migration.
+insert into recipes (title, source_type) values ('Placeholder starter', 'seed');
+\i migrations/20261028000002_remove_starter_recipes.sql
+select pg_temp.check(not exists (select 1 from recipes where household_id is null and source_url is null),
+                     'placeholder starter recipes are gone');
+select pg_temp.check((select count(*) = 110 from lib), 'library recipes are kept');
+
 -- Loading it again adds nothing.
 \i seed_library.sql
 select pg_temp.check((select count(*) = 110 from lib), 're-running seed_library.sql adds no duplicates');

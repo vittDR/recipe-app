@@ -13,7 +13,7 @@ web/                    Vite + React + TypeScript PWA (Cloudflare Pages)
   src/sw.ts             service worker: offline shell, push, notification taps
 supabase/
   migrations/           schema, server rules (matching, tie-break, lists), RLS, cron
-  seed.sql              ingredient catalogue (EN/FR/IT) + 14 starter recipes
+  seed.sql              ingredient catalogue (EN/FR/IT)
   seed_library.sql      110 seed recipes, generated from seed/recipes.json (don't edit)
   seed/                 the seed library source: recipes.json + review sheet
   functions/            edge functions (Deno)

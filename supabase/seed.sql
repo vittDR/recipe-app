@@ -1,7 +1,6 @@
--- Ingredient catalogue and a small starter library so decks work in development.
--- Nutrition values are approximate per 100 g (raw), good enough for estimates.
--- The real seed library is in seed_library.sql, generated from seed/recipes.json
--- by scripts/build-seed-library.ts.
+-- Ingredient catalogue. Nutrition values are approximate per 100 g (raw),
+-- good enough for estimates. The recipes are in seed_library.sql, generated
+-- from seed/recipes.json by scripts/build-seed-library.ts.
 
 insert into public.ingredient_catalog
   (name, name_fr, aliases, default_aisle, is_staple, kcal_100g, protein_100g, grams_per_unit, diet_class)
@@ -288,63 +287,3 @@ values
   ('worcestershire sauce', 'sauce Worcestershire', 'salsa Worcestershire', '{}', 'pantry', true, 78, 0, null, 'fish')
 on conflict (name) do nothing;
 
--- Starter library. Macros are per serving and marked as estimated.
-with r (title, tags, mins, kcal, protein, steps, ingredients) as (values
-  ('Lemon chicken with spinach rice', '{chicken,rice,quick,light}'::text[], 30, 560, 42,
-   '["Cook the rice.","Season and pan-fry the chicken in olive oil, 6 min per side.","Wilt the spinach with garlic and lemon, stir into the rice.","Slice the chicken over the rice."]',
-   '[["chicken breast",300,"g"],["rice",150,"g"],["spinach",150,"g"],["lemon",1,"piece"],["garlic",2,"clove"],["olive oil",1,"tbsp"]]'),
-  ('Salmon, broccoli and sesame noodles', '{fish,noodles,quick,asian}', 25, 640, 38,
-   '["Roast the salmon at 200°C for 12 min.","Boil noodles and broccoli together for 4 min.","Toss with soy sauce, sesame oil and ginger.","Flake the salmon on top."]',
-   '[["salmon fillet",260,"g"],["noodles",150,"g"],["broccoli",250,"g"],["soy sauce",2,"tbsp"],["sesame oil",1,"tbsp"],["ginger",10,"g"]]'),
-  ('Red lentil coconut dal', '{vegetarian,lentils,comfort,curry}', 35, 520, 24,
-   '["Soften onion, garlic and ginger.","Add lentils, coconut milk, canned tomatoes and cumin.","Simmer 20 min, season, serve with rice."]',
-   '[["red lentils",200,"g"],["coconut milk",200,"ml"],["canned tomatoes",400,"g"],["onion",1,"piece"],["garlic",2,"clove"],["ginger",10,"g"],["cumin",1,"tsp"],["rice",120,"g"]]'),
-  ('Beef and black bean tacos', '{beef,mexican,quick,comfort}', 25, 690, 40,
-   '["Brown the beef with onion, cumin and paprika.","Add black beans and a splash of water, cook 5 min.","Warm tortillas, fill with beef, avocado and lime."]',
-   '[["ground beef",300,"g"],["black beans",240,"g"],["tortillas",6,"piece"],["onion",1,"piece"],["avocado",1,"piece"],["lime",1,"piece"],["cumin",1,"tsp"],["paprika",1,"tsp"]]'),
-  ('Prawn and courgette linguine', '{fish,pasta,quick}', 20, 610, 36,
-   '["Cook the pasta.","Sauté prawns with garlic and chili flakes.","Add grated courgette and lemon, toss with pasta and some cooking water."]',
-   '[["prawns",250,"g"],["pasta",180,"g"],["zucchini",1,"piece"],["garlic",2,"clove"],["lemon",1,"piece"],["chili flakes",1,"pinch"],["olive oil",2,"tbsp"]]'),
-  ('Chickpea, feta and roasted veg traybake', '{vegetarian,traybake,light,mediterranean}', 40, 540, 22,
-   '["Roast peppers, courgette and onion with chickpeas and oregano at 210°C for 25 min.","Crumble feta on top and roast 5 min more."]',
-   '[["chickpeas",240,"g"],["feta",150,"g"],["bell pepper",2,"piece"],["zucchini",1,"piece"],["onion",1,"piece"],["dried oregano",1,"tsp"],["olive oil",2,"tbsp"]]'),
-  ('Chicken thigh red curry', '{chicken,curry,comfort,asian}', 35, 680, 38,
-   '["Fry curry paste in a little oil.","Add chicken, then coconut milk; simmer 15 min.","Add peppers and spinach, serve with rice and lime."]',
-   '[["chicken thigh",350,"g"],["curry paste",2,"tbsp"],["coconut milk",400,"ml"],["bell pepper",1,"piece"],["spinach",100,"g"],["rice",150,"g"],["lime",1,"piece"]]'),
-  ('Mushroom and spinach omelette', '{vegetarian,eggs,quick,light}', 15, 420, 30,
-   '["Sauté mushrooms and spinach in butter.","Pour in beaten eggs, cook until just set, fold with parmesan."]',
-   '[["eggs",6,"piece"],["mushrooms",200,"g"],["spinach",100,"g"],["parmesan",30,"g"],["butter",1,"tbsp"]]'),
-  ('Cod with tomato and olive sauce', '{fish,light,mediterranean}', 25, 430, 40,
-   '["Simmer canned tomatoes with garlic and oregano for 10 min.","Nestle the cod in, cover and cook 8 min.","Serve with potatoes or bread."]',
-   '[["cod fillet",320,"g"],["canned tomatoes",400,"g"],["garlic",2,"clove"],["dried oregano",1,"tsp"],["potato",400,"g"],["olive oil",1,"tbsp"]]'),
-  ('Tofu and broccoli stir-fry', '{vegetarian,tofu,quick,asian}', 20, 520, 28,
-   '["Crisp cubed tofu in a hot pan.","Stir-fry broccoli, ginger and garlic.","Add soy sauce and honey, toss with tofu, serve on rice."]',
-   '[["tofu",300,"g"],["broccoli",300,"g"],["ginger",10,"g"],["garlic",2,"clove"],["soy sauce",3,"tbsp"],["honey",1,"tbsp"],["rice",150,"g"]]'),
-  ('Pesto pasta with peas and parmesan', '{vegetarian,pasta,quick,comfort}', 15, 650, 24,
-   '["Cook the pasta, adding peas for the last 2 minutes.","Toss with pesto, parmesan and lemon."]',
-   '[["pasta",200,"g"],["frozen peas",150,"g"],["pesto",60,"g"],["parmesan",30,"g"],["lemon",1,"piece"]]'),
-  ('Pork tenderloin with sweet potato mash', '{pork,comfort}', 40, 590, 44,
-   '["Sear the pork, roast at 200°C for 18 min.","Boil and mash the sweet potato with butter.","Rest and slice the pork."]',
-   '[["pork tenderloin",400,"g"],["sweet potato",500,"g"],["butter",1,"tbsp"],["paprika",1,"tsp"]]'),
-  ('Greek chicken bowls', '{chicken,bowl,light,mediterranean}', 30, 580, 46,
-   '["Marinate chicken in yogurt, lemon and oregano, then grill.","Cook couscous.","Serve with cucumber, tomato and a spoon of yogurt."]',
-   '[["chicken breast",320,"g"],["greek yogurt",150,"g"],["couscous",120,"g"],["cucumber",1,"piece"],["tomato",2,"piece"],["lemon",1,"piece"],["dried oregano",1,"tsp"]]'),
-  ('Shakshuka', '{vegetarian,eggs,comfort}', 30, 410, 22,
-   '["Soften onion and pepper with cumin and paprika.","Add canned tomatoes, simmer 10 min.","Crack in eggs, cover until set, top with feta and parsley."]',
-   '[["eggs",5,"piece"],["canned tomatoes",400,"g"],["onion",1,"piece"],["bell pepper",1,"piece"],["feta",80,"g"],["cumin",1,"tsp"],["paprika",1,"tsp"],["parsley",5,"g"],["bread",120,"g"]]')
-),
-inserted as (
-  insert into public.recipes (household_id, title, source_type, servings, total_min, steps, tags,
-                              kcal_per_serving, protein_g_per_serving, macros_estimated, language)
-  select null, r.title, 'seed', 2, r.mins, r.steps::jsonb, r.tags, r.kcal, r.protein, true, 'en'
-  from r
-  where not exists (select 1 from public.recipes x where x.household_id is null and x.title = r.title)
-  returning id, title
-)
-insert into public.recipe_ingredients (recipe_id, position, name, quantity, unit, aisle, is_staple)
-select i.id, ord::int - 1, e ->> 0, (e ->> 1)::real, e ->> 2,
-       coalesce(c.default_aisle, 'other'), coalesce(c.is_staple, false)
-from inserted i
-join r on r.title = i.title
-cross join lateral jsonb_array_elements(r.ingredients::jsonb) with ordinality as t(e, ord)
-left join public.ingredient_catalog c on c.name = e ->> 0;
