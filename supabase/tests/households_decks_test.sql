@@ -214,22 +214,29 @@ select pg_temp.act_as('00000000-0000-0000-0000-00000000000b');
 select pg_temp.check((select owner_id = '00000000-0000-0000-0000-00000000000b' from households),
                      'ownership passes on when the owner leaves');
 
--- Scheduler: prompt queued once per local day on cook days.
+-- Scheduler: prompt queued once per local day on cook days. The clock is
+-- pinned (Paris is UTC+1 in January) so the result never depends on when the
+-- suite runs; dates are far from the decks created above.
 reset role;
-update households set prompt_time = ((now() at time zone timezone) - interval '1 minute')::time,
-                      reminder_time = ((now() at time zone timezone) + interval '3 hours')::time;
-delete from decks where for_date = (now() at time zone 'Europe/Paris')::date;
-select enqueue_due_prompts() as n1 \gset
-select enqueue_due_prompts() as n2 \gset
+update households set prompt_time = '18:00', reminder_time = '21:00',
+                      last_prompt_on = null, last_reminder_on = null;
+select enqueue_due_prompts('2030-01-07 18:01+01') as n1 \gset
+select enqueue_due_prompts('2030-01-07 18:01+01') as n2 \gset
 select pg_temp.check(:n1 = 1 and :n2 = 0, 'prompt queued exactly once');
+select pg_temp.check((select count(*) = 0 from households where last_reminder_on is not null),
+                     'reminder waits for its time');
 
--- A window that crosses midnight still fires, once, for the day it started.
-update households set prompt_time = '23:30', reminder_time = '12:00', last_prompt_on = null;
-update households set timezone = (select name from pg_timezone_names
-  where (now() at time zone name)::time between '00:05' and '01:00' limit 1);
-delete from decks where household_id = :'hid';
-select enqueue_due_prompts() as n3 \gset
-select enqueue_due_prompts() as n4 \gset
-select pg_temp.check(:n3 = 1 and :n4 = 0
-                     and (select last_prompt_on = ((now() at time zone timezone) - interval '1 day')::date from households),
-                     'a window past midnight fires once, for the day before');
+-- Windows that cross midnight still fire, once, for the evening they belong to.
+update households set prompt_time = '23:30', reminder_time = '22:30',
+                      last_prompt_on = null, last_reminder_on = null;
+select enqueue_due_prompts('2030-01-08 23:45+01') as n1 \gset
+select enqueue_due_prompts('2030-01-09 00:15+01') as n2 \gset
+select pg_temp.check(:n1 = 2 and :n2 = 0, 'late prompt and reminder fire once across midnight');
+select pg_temp.check((select bool_and(last_prompt_on = '2030-01-08' and last_reminder_on = '2030-01-08')
+                      from households), 'late sends count for the evening they belong to');
+select enqueue_due_prompts('2030-01-10 00:15+01') as n1 \gset
+select pg_temp.check(:n1 = 2 and (select bool_and(last_prompt_on = '2030-01-09') from households),
+                     'window opened before midnight is honoured after it');
+select enqueue_due_prompts('2030-01-10 01:20+01') as n1 \gset
+select enqueue_due_prompts('2030-01-10 23:31+01') as n2 \gset
+select pg_temp.check(:n1 = 0 and :n2 = 2, 'next evening fires again, closed window does not');
