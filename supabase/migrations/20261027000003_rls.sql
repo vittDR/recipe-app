@@ -10,7 +10,7 @@ alter table public.invites enable row level security;
 alter table public.member_goals enable row level security;
 alter table public.taste_rules enable row level security;
 alter table public.learned_patterns enable row level security;
-alter table public.push_tokens enable row level security;
+alter table public.push_subscriptions enable row level security;
 alter table public.ingredient_catalog enable row level security;
 alter table public.recipes enable row level security;
 alter table public.recipe_ingredients enable row level security;
@@ -41,8 +41,11 @@ create policy households_update on public.households for update to authenticated
   using (public.is_member(id)) with check (public.is_member(id));
 create policy households_delete on public.households for delete to authenticated
   using (owner_id = auth.uid());
--- Owner can only change via leave_household(); members cannot reassign it.
-revoke update (owner_id, last_prompt_on, last_reminder_on) on public.households from authenticated;
+-- Members edit settings only; ownership changes via leave_household() and the
+-- scheduler's bookkeeping columns are server-only. (A column-level revoke would
+-- not override the table-level grant, so grant the editable columns instead.)
+revoke update on public.households from anon, authenticated;
+grant update (name, timezone, store_name, prompt_time, reminder_time) on public.households to authenticated;
 
 -- household_members: members read. Changes go through RPCs.
 create policy members_select on public.household_members for select to authenticated
@@ -59,7 +62,7 @@ create policy taste_all on public.taste_rules for all to authenticated
   using (user_id = auth.uid()) with check (user_id = auth.uid());
 create policy patterns_all on public.learned_patterns for all to authenticated
   using (user_id = auth.uid()) with check (user_id = auth.uid());
-create policy tokens_all on public.push_tokens for all to authenticated
+create policy push_subscriptions_all on public.push_subscriptions for all to authenticated
   using (user_id = auth.uid()) with check (user_id = auth.uid());
 
 -- ingredient_catalog: read all.

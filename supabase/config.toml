@@ -1,0 +1,18 @@
+# Supabase CLI config. Only the settings DINEAMITE relies on are listed;
+# everything else uses the CLI defaults.
+project_id = "grvkstzctekisscvfroy"
+
+[auth]
+site_url = "http://localhost:5173"
+additional_redirect_urls = ["http://localhost:5173/**"]
+
+# The functions check the caller themselves (auth.getUser() or CRON_SECRET),
+# which works with both legacy and new JWT signing keys.
+[functions.deal-deck]
+verify_jwt = false
+
+[functions.import-recipe]
+verify_jwt = false
+
+[functions.push-dispatch]
+verify_jwt = false

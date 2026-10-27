@@ -1,0 +1,128 @@
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router';
+import type { ListProposal } from '@logic/groceries.ts';
+import { AddToListSheet, formatQuantity, loadProposals } from '../../components/AddToListSheet.tsx';
+import { Icon } from '../../components/Icon.tsx';
+import { Button, Screen, Spinner, Tag, imageStyle, recipeEmoji } from '../../components/ui.tsx';
+import { useI18n } from '../../i18n/index.tsx';
+import { useSession } from '../../lib/session.tsx';
+import { must, supabase } from '../../lib/supabase.ts';
+import type { Recipe, RecipeIngredient } from '../../lib/types.ts';
+
+interface Portion {
+  kcal: number;
+  protein_g: number;
+  fits: boolean;
+}
+
+export function RecipeScreen() {
+  const { id } = useParams();
+  const { t, tn } = useI18n();
+  const { household } = useSession();
+  const navigate = useNavigate();
+  const [recipe, setRecipe] = useState<Recipe | null>(null);
+  const [ingredients, setIngredients] = useState<RecipeIngredient[]>([]);
+  const [portion, setPortion] = useState<Portion | null>(null);
+  const [proposals, setProposals] = useState<Map<string, ListProposal<RecipeIngredient>>>(new Map());
+  const [sheet, setSheet] = useState(false);
+
+  const load = async () => {
+    const [r, ings, p] = await Promise.all([
+      supabase.from('recipes').select('*').eq('id', id!).single(),
+      supabase.from('recipe_ingredients').select('*').eq('recipe_id', id!).order('position'),
+      supabase.rpc('my_portion', { p_recipe: id }),
+    ]);
+    setRecipe(must(r) as Recipe);
+    const list = must(ings) as RecipeIngredient[];
+    setIngredients(list);
+    setPortion(((p.data ?? []) as Portion[])[0] ?? null);
+    const props = await loadProposals(household!.id, list);
+    setProposals(new Map(props.map((x) => [x.ingredient.id, x])));
+  };
+
+  useEffect(() => {
+    void load();
+  }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (!recipe) return <Screen back><Spinner /></Screen>;
+
+  const own = recipe.household_id === household!.id;
+  const remove = async () => {
+    if (!confirm(t('recipe.removeConfirm'))) return;
+    await supabase.from('recipes').delete().eq('id', recipe.id);
+    navigate('/recipes', { replace: true });
+  };
+
+  return (
+    <main className="screen">
+      <div className="hero" style={imageStyle(recipe.image_path)}>
+        {!imageStyle(recipe.image_path) && <span aria-hidden>{recipeEmoji(recipe.title, recipe.tags)}</span>}
+        <button type="button" className="icon-btn icon-btn--filled hero__back" aria-label={t('app.back')} onClick={() => navigate(-1)}>
+          <Icon name="back" />
+        </button>
+      </div>
+      <h1 className="screen__title" style={{ marginTop: 0 }}>{recipe.title}</h1>
+      <div className="row row--wrap" style={{ marginBottom: 'var(--s-4)' }}>
+        {recipe.total_min && <Tag><Icon name="clock" size={14} /> {recipe.total_min} min</Tag>}
+        <Tag>{tn('recipe.servings', recipe.servings)}</Tag>
+        {recipe.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+        {!recipe.household_id && <Tag>{t('recipe.seed')}</Tag>}
+      </div>
+
+      <div className="card stack">
+        <span className="small muted">{t('recipe.yourMacros')}</span>
+        {portion ? (
+          <div className="macros">
+            <span><strong>{Math.round(portion.kcal)}</strong> kcal</span>
+            <span><strong>{Math.round(portion.protein_g)}</strong> g {t('swipe.protein')}</span>
+            {portion.fits && <Tag tone="success">{t('swipe.fitsYou')}</Tag>}
+          </div>
+        ) : <span className="muted">{t('recipe.noMacros')}</span>}
+        {recipe.macros_estimated && <span className="small" style={{ color: 'var(--c-warning)' }}>⚠︎ {t('recipe.estimated')}</span>}
+      </div>
+
+      <div className="row row--between">
+        <h2 className="section-label">{t('recipe.ingredients')}</h2>
+        <Button small variant="text" onClick={() => setSheet(true)}><Icon name="cart" size={18} /> {t('match.addToList')}</Button>
+      </div>
+      <div className="list">
+        {ingredients.map((i) => {
+          const p = proposals.get(i.id);
+          return (
+            <div key={i.id} className="list-row">
+              <div className="list-row__main">
+                <div className="list-row__title">{i.name}</div>
+                {i.guessed && <div className="list-row__meta" style={{ color: 'var(--c-warning)' }}>{t('recipe.guessed')}</div>}
+              </div>
+              {p?.why === 'on_list' && <Tag>{t('recipe.onList')}</Tag>}
+              {(p?.why === 'bought_recently' || p?.why === 'staple') && <Tag tone="success">{t('recipe.atHome')}</Tag>}
+              <span className="muted small">{formatQuantity(i.quantity, i.unit)}</span>
+            </div>
+          );
+        })}
+      </div>
+
+      {recipe.steps.length > 0 && (
+        <>
+          <h2 className="section-label">{t('recipe.steps')}</h2>
+          <ol className="card stack" style={{ paddingLeft: 'var(--s-8)', margin: 0 }}>
+            {recipe.steps.map((s, i) => <li key={i}>{s}</li>)}
+          </ol>
+        </>
+      )}
+
+      {recipe.source_url && (
+        <p className="small muted" style={{ marginTop: 'var(--s-4)' }}>
+          {t('recipe.source')}: <a href={recipe.source_url} target="_blank" rel="noreferrer">{new URL(recipe.source_url).hostname}</a>
+        </p>
+      )}
+
+      <div className="stack" style={{ marginTop: 'var(--s-5)' }}>
+        <Button block onClick={() => navigate(`/recipes/${recipe.id}/cook`)}><Icon name="pot" /> {t('recipe.cookingMode')}</Button>
+        {own && <Button block variant="text" onClick={() => void remove()} style={{ color: 'var(--c-danger)' }}>{t('recipe.remove')}</Button>}
+      </div>
+
+      <AddToListSheet open={sheet} onClose={() => { setSheet(false); void load(); }} recipe={recipe} ingredients={ingredients} />
+    </main>
+  );
+}

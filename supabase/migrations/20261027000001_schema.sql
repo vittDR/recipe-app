@@ -112,13 +112,16 @@ create table public.learned_patterns (
 );
 create unique index learned_patterns_unique on public.learned_patterns (user_id, (pattern));
 
-create table public.push_tokens (
+-- Web Push subscriptions (one per installed device/browser).
+create table public.push_subscriptions (
+  endpoint text primary key,
   user_id uuid not null references public.profiles (id) on delete cascade,
-  token text not null,
-  platform text not null default 'ios',
-  updated_at timestamptz not null default now(),
-  primary key (user_id, token)
+  p256dh text not null,
+  auth text not null,
+  user_agent text,
+  updated_at timestamptz not null default now()
 );
+create index push_subscriptions_user on public.push_subscriptions (user_id);
 
 -- ---------------------------------------------------------------------------
 -- Recipes
