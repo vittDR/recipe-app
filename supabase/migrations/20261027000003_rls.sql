@@ -41,8 +41,11 @@ create policy households_update on public.households for update to authenticated
   using (public.is_member(id)) with check (public.is_member(id));
 create policy households_delete on public.households for delete to authenticated
   using (owner_id = auth.uid());
--- Owner can only change via leave_household(); members cannot reassign it.
-revoke update (owner_id, last_prompt_on, last_reminder_on) on public.households from authenticated;
+-- Members edit settings only; ownership changes via leave_household() and the
+-- scheduler's bookkeeping columns are server-only. (A column-level revoke would
+-- not override the table-level grant, so grant the editable columns instead.)
+revoke update on public.households from anon, authenticated;
+grant update (name, timezone, store_name, prompt_time, reminder_time) on public.households to authenticated;
 
 -- household_members: members read. Changes go through RPCs.
 create policy members_select on public.household_members for select to authenticated
