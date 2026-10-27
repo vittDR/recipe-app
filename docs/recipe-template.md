@@ -1,8 +1,43 @@
 # Recipe data template
 
 Use this to build the recipe catalogue. Each recipe is one JSON object in the
-shape of `docs/recipe-template.json`. That's the same shape the `import-recipe`
+shape of the example below. That's the same shape the `import-recipe`
 function's `save` action takes, so a bulk import can send each object as it is.
+
+## Example
+
+The catalogue is a JSON list of these objects. Copy this one and replace the values.
+
+```json
+[
+  {
+    "title": "Chicken thigh red curry",
+    "language": "en",
+    "servings": 2,
+    "total_min": 35,
+    "source_type": "seed",
+    "source_url": null,
+    "image_url": "https://example.com/images/chicken-thigh-red-curry.webp",
+    "tags": ["chicken", "curry", "comfort", "asian"],
+    "ingredients": [
+      { "text": "350 g chicken thigh, diced" },
+      { "text": "2 tbsp red curry paste" },
+      { "text": "400 ml coconut milk" },
+      { "text": "1 bell pepper, sliced" },
+      { "text": "100 g spinach" },
+      { "text": "150 g rice" },
+      { "text": "1 lime", "guessed": false },
+      { "text": "olive oil" }
+    ],
+    "steps": [
+      "Fry the curry paste in a little oil for 1 min.",
+      "Add the chicken, then the coconut milk; simmer 15 min.",
+      "Add the pepper and spinach and cook 3 min more.",
+      "Serve with rice and lime wedges."
+    ]
+  }
+]
+```
 
 Each field is one of three kinds:
 
