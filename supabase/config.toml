@@ -1,0 +1,11 @@
+# Supabase CLI config. Only the settings DINEAMITE relies on are listed;
+# everything else uses the CLI defaults.
+project_id = "grvkstzctekisscvfroy"
+
+[auth]
+site_url = "http://localhost:5173"
+additional_redirect_urls = ["http://localhost:5173/**"]
+
+# Called by pg_cron with CRON_SECRET, not with a user JWT.
+[functions.push-dispatch]
+verify_jwt = false
