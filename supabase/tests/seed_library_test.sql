@@ -23,7 +23,7 @@ select pg_temp.check(not exists (select 1 from lib where kcal_per_serving is nul
                      'every recipe has estimated macros');
 select pg_temp.check(not exists (select 1 from lib where source_name is null or cuisine is null or original_servings is null),
                      'source name, cuisine and original yield are set');
-select pg_temp.check((select count(*) = 101 from lib where image_path like 'https://%'), '101 recipes have a photo');
+select pg_temp.check((select count(*) = 99 from lib where image_path like '/recipe-photos/%.webp'), '99 recipes have a photo served by the app');
 select pg_temp.check((select count(*) = 1334 from recipe_ingredients i join lib r on r.id = i.recipe_id
                       where i.original_text is not null), 'every line keeps the source''s original text');
 

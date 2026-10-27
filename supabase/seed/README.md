@@ -25,14 +25,14 @@ The script runs each ingredient line through the app's parser and catalogue, the
 
 ## Photos
 
-`image_path` points at each source site's own photo (9 recipes have none and show the emoji). Some sites block hotlinking. To host your own copies at the app's 4:3 spec:
+The photos are in `web/public/recipe-photos/` and ship with the app, so `image_url` is a path like `/recipe-photos/spaghetti-alle-vongole.webp`. `image_source_url` keeps where each photo came from, and `photos-report.csv` has the download log.
 
-```bash
-pip install requests pillow
-python3 scripts/download_images.py supabase/seed/recipes.json images/ --base-url <public URL of your storage folder>
-```
+- 99 recipes have a photo. 11 have none and show the emoji: 9 sources had no photo, and 2 photo links are dead (Blanc de poulet à la basquaise, Rösti with fried eggs).
+- 72 source photos were smaller than 1200×900 and were upscaled, so some look soft.
+- A few carry the source blog's watermark (Arrosto di tacchino, Blanquette de veau légère, Frittata di zucchine, Saltimbocca).
+- The service worker doesn't precache them: each loads the first time a card shows it.
 
-Upload `images/`, then load the written `recipes.hosted.json` instead (copy it over `recipes.json` and regenerate).
+To replace or add photos, run `scripts/download_images.py` (needs `pip install requests pillow`), or drop a 4:3 WebP into the folder and point `image_url` at it.
 
 ## Known limits
 

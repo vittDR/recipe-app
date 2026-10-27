@@ -10,7 +10,7 @@
 // Exits 1 when a line doesn't match the catalogue or a recipe is malformed.
 
 import { execFileSync } from 'node:child_process';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import {
   Catalog, estimateMacros, gramsOf, parseIngredientLine, type CatalogEntry,
 } from '../supabase/functions/_shared/logic/ingredients.ts';
@@ -72,6 +72,10 @@ for (const r of recipes) {
   if (r.tags.some((t) => t !== t.toLowerCase().trim())) errors.push(`${where} tags must be lowercase`);
   if (r.cuisine && !r.tags.includes(r.cuisine)) warnings.push(`${where} cuisine "${r.cuisine}" missing from tags`);
   if (!r.steps.length) errors.push(`${where} no steps`);
+  if (r.image_url?.startsWith('/')) {
+    // Photos the app serves itself live in web/public.
+    if (!existsSync(`${root}web/public${r.image_url}`)) errors.push(`${where} photo ${r.image_url} not found in web/public`);
+  } else if (r.image_url && !r.image_url.startsWith('https://')) errors.push(`${where} image_url must be https:// or /recipe-photos/…`);
   const ratio = r.original_servings ? r.servings / r.original_servings : 1;
 
   const ingredients = r.ingredients.map((i, position) => {

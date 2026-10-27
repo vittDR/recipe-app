@@ -200,7 +200,7 @@ One image per recipe. The app shows the same file in three crops, each with
 | Format | WebP (quality ~80) or JPEG (quality ~82), progressive. sRGB. |
 | File size | Under 300 KB is the target, 500 KB at most. Cards load over mobile data. |
 | Content | The finished dish, top-down or 45°, plated as served. No text, logos, watermarks or borders. The title is drawn by the app. |
-| Hosting | An absolute `https://` URL you're allowed to reuse, and that will stay up. For the seed library, `scripts/download_images.py` downloads each `image_source_url`, crops it to this spec and can rewrite `image_url` to your own storage. |
+| Hosting | An absolute `https://` URL you're allowed to reuse, and that will stay up. Seed library photos live in `web/public/recipe-photos/` and are referenced as `/recipe-photos/<file>.webp`; `scripts/download_images.py` makes them from each `image_source_url` |
 | Missing image | Allowed. The app shows a food emoji picked from the title and tags. |
 
 > **Note:** `image_path` can also hold a path in the private `recipe-images`

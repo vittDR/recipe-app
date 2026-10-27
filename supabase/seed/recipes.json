@@ -8,7 +8,7 @@
     "source_type": "seed",
     "source_name": "GialloZafferano",
     "source_url": "https://blog.giallozafferano.it/ricettechepassione/arrosto-di-tacchino/",
-    "image_url": "https://blog.giallozafferano.it/ricettechepassione/wp-content/uploads/2018/04/arrosto-di-tacchino-perfettoo-oo.jpg",
+    "image_url": "/recipe-photos/arrosto-di-tacchino-alle-erbe.webp",
     "image_source_url": "https://blog.giallozafferano.it/ricettechepassione/wp-content/uploads/2018/04/arrosto-di-tacchino-perfettoo-oo.jpg",
     "cuisine": "italian",
     "tags": [
@@ -98,7 +98,7 @@
     "source_type": "seed",
     "source_name": "Dissapore",
     "source_url": "https://www.dissapore.com/ricette/coniglio-alla-ligure-la-ricetta-originale-con-olive-taggiasche/",
-    "image_url": "https://images.dissapore.com/wp-content/uploads/2023/02/coniglio-alla-ligure-ricetta.jpg?width=1280&height=720&quality=75",
+    "image_url": "/recipe-photos/coniglio-alla-ligure-con-olive-taggiasche.webp",
     "image_source_url": "https://images.dissapore.com/wp-content/uploads/2023/02/coniglio-alla-ligure-ricetta.jpg?width=1280&height=720&quality=75",
     "cuisine": "italian",
     "tags": [
@@ -173,7 +173,7 @@
     "source_type": "seed",
     "source_name": "Dissapore",
     "source_url": "https://www.dissapore.com/ricette/cozze-alla-tarantina-al-sugo",
-    "image_url": "https://images.dissapore.com/wp-content/uploads/2023/03/cozze-alla-tarantina-ricetta.jpg?width=1280&height=720&quality=75",
+    "image_url": "/recipe-photos/cozze-alla-tarantina.webp",
     "image_source_url": "https://images.dissapore.com/wp-content/uploads/2023/03/cozze-alla-tarantina-ricetta.jpg?width=1280&height=720&quality=75",
     "cuisine": "italian",
     "tags": [
@@ -239,7 +239,7 @@
     "source_type": "seed",
     "source_name": "GialloZafferano",
     "source_url": "https://blog.giallozafferano.it/cottoinunclick/ricetta-frittata-zucchine-e-ricotta-al-forno/",
-    "image_url": "https://blog.giallozafferano.it/cottoinunclick/wp-content/uploads/2025/05/phonto-frittata-zucchine-e-ricotta-al-forno.jpg",
+    "image_url": "/recipe-photos/frittata-di-zucchine-e-ricotta-al-forno.webp",
     "image_source_url": "https://blog.giallozafferano.it/cottoinunclick/wp-content/uploads/2025/05/phonto-frittata-zucchine-e-ricotta-al-forno.jpg",
     "cuisine": "italian",
     "tags": [
@@ -293,7 +293,7 @@
     "source_type": "seed",
     "source_name": "GialloZafferano",
     "source_url": "https://blog.giallozafferano.it/studentiaifornelli/insalata-di-farro-tonno-e-ceci/",
-    "image_url": "https://blog.giallozafferano.it/studentiaifornelli/wp-content/uploads/2020/08/ANT-FB-insalata-di-farro-tonno-e-ceci-ricetta-scaled.jpg",
+    "image_url": "/recipe-photos/insalata-di-farro-con-tonno-e-ceci.webp",
     "image_source_url": "https://blog.giallozafferano.it/studentiaifornelli/wp-content/uploads/2020/08/ANT-FB-insalata-di-farro-tonno-e-ceci-ricetta-scaled.jpg",
     "cuisine": "italian",
     "tags": [
@@ -354,7 +354,7 @@
     "source_type": "seed",
     "source_name": "Dissapore",
     "source_url": "https://www.dissapore.com/ricette/involtini-di-pollo-al-forno/",
-    "image_url": "https://images.dissapore.com/wp-content/uploads/2022/04/shutterstock_1930525085.jpg?width=1280&height=720&quality=50",
+    "image_url": "/recipe-photos/involtini-di-pollo-al-forno.webp",
     "image_source_url": "https://images.dissapore.com/wp-content/uploads/2022/04/shutterstock_1930525085.jpg?width=1280&height=720&quality=50",
     "cuisine": "italian",
     "tags": [
@@ -422,7 +422,7 @@
     "source_type": "seed",
     "source_name": "Dissapore",
     "source_url": "https://www.dissapore.com/ricette/medaglioni-di-filetto-di-maiale/",
-    "image_url": "https://images.dissapore.com/wp-content/uploads/2024/01/Medaglioni-di-filetto-di-maiale-ricetta.jpg?width=1280&height=720&quality=75",
+    "image_url": "/recipe-photos/medaglioni-di-filetto-di-maiale-ai-funghi.webp",
     "image_source_url": "https://images.dissapore.com/wp-content/uploads/2024/01/Medaglioni-di-filetto-di-maiale-ricetta.jpg?width=1280&height=720&quality=75",
     "cuisine": "italian",
     "tags": [
@@ -488,7 +488,7 @@
     "source_type": "seed",
     "source_name": "Dissapore",
     "source_url": "https://www.dissapore.com/ricette/merluzzo-alla-livornese/",
-    "image_url": "https://images.dissapore.com/wp-content/uploads/2022/05/shutterstock_620172806.jpg?width=1280&height=720&quality=75",
+    "image_url": "/recipe-photos/merluzzo-alla-livornese.webp",
     "image_source_url": "https://images.dissapore.com/wp-content/uploads/2022/05/shutterstock_620172806.jpg?width=1280&height=720&quality=75",
     "cuisine": "italian",
     "tags": [
@@ -558,7 +558,7 @@
     "source_type": "seed",
     "source_name": "Dissapore",
     "source_url": "https://www.dissapore.com/ricette/orata-al-cartoccio/",
-    "image_url": "https://images.dissapore.com/wp-content/uploads/2021/12/shutterstock_226434073.jpg?width=1280&height=720&quality=75",
+    "image_url": "/recipe-photos/orata-al-cartoccio.webp",
     "image_source_url": "https://images.dissapore.com/wp-content/uploads/2021/12/shutterstock_226434073.jpg?width=1280&height=720&quality=75",
     "cuisine": "italian",
     "tags": [
@@ -636,7 +636,7 @@
     "source_type": "seed",
     "source_name": "GialloZafferano",
     "source_url": "https://blog.giallozafferano.it/allacciateilgrembiule/pasta-e-lenticchie/",
-    "image_url": "https://blog.giallozafferano.it/allacciateilgrembiule/wp-content/uploads/2017/10/PASTA-E-LENTICCHIEFB.jpg",
+    "image_url": "/recipe-photos/pasta-e-lenticchie.webp",
     "image_source_url": "https://blog.giallozafferano.it/allacciateilgrembiule/wp-content/uploads/2017/10/PASTA-E-LENTICCHIEFB.jpg",
     "cuisine": "italian",
     "tags": [
@@ -717,7 +717,7 @@
     "source_type": "seed",
     "source_name": "GialloZafferano",
     "source_url": "https://blog.giallozafferano.it/adryincucina/pasta-tonno-e-ceci/",
-    "image_url": "https://blog.giallozafferano.it/adryincucina/wp-content/uploads/2019/05/pasta-tonno-e-ceci.jpg",
+    "image_url": "/recipe-photos/pasta-tonno-e-ceci-cremosa.webp",
     "image_source_url": "https://blog.giallozafferano.it/adryincucina/wp-content/uploads/2019/05/pasta-tonno-e-ceci.jpg",
     "cuisine": "italian",
     "tags": [
@@ -779,7 +779,7 @@
     "source_type": "seed",
     "source_name": "GialloZafferano",
     "source_url": "https://blog.giallozafferano.it/chezbibia/ricetta-pesce-spada-alla-siciliana/",
-    "image_url": "https://blog.giallozafferano.it/chezbibia/wp-content/uploads/2024/08/pesce-spada-alla-siciliana.jpg",
+    "image_url": "/recipe-photos/pesce-spada-alla-siciliana.webp",
     "image_source_url": "https://blog.giallozafferano.it/chezbibia/wp-content/uploads/2024/08/pesce-spada-alla-siciliana.jpg",
     "cuisine": "italian",
     "tags": [
@@ -850,7 +850,7 @@
     "source_type": "seed",
     "source_name": "Dissapore",
     "source_url": "https://www.dissapore.com/ricette/petto-di-pollo-alla-cacciatora/",
-    "image_url": "https://images.dissapore.com/wp-content/uploads/2022/09/petto-di-pollo-alla-cacciatora.jpg?width=1280&height=720&quality=75",
+    "image_url": "/recipe-photos/petto-di-pollo-alla-cacciatora.webp",
     "image_source_url": "https://images.dissapore.com/wp-content/uploads/2022/09/petto-di-pollo-alla-cacciatora.jpg?width=1280&height=720&quality=75",
     "cuisine": "italian",
     "tags": [
@@ -927,7 +927,7 @@
     "source_type": "seed",
     "source_name": "GialloZafferano",
     "source_url": "https://blog.giallozafferano.it/lacucinasottosopra/petto-di-pollo-alla-pizzaiola-light/",
-    "image_url": "https://blog.giallozafferano.it/lacucinasottosopra/wp-content/uploads/2018/09/IMG_5671jpg.jpg",
+    "image_url": "/recipe-photos/petto-di-pollo-alla-pizzaiola-light.webp",
     "image_source_url": "https://blog.giallozafferano.it/lacucinasottosopra/wp-content/uploads/2018/09/IMG_5671jpg.jpg",
     "cuisine": "italian",
     "tags": [
@@ -989,7 +989,7 @@
     "source_type": "seed",
     "source_name": "GialloZafferano",
     "source_url": "https://blog.giallozafferano.it/cucinoperpassione/ricetta-polpo-in-umido-con-patate/",
-    "image_url": "https://blog.giallozafferano.it/cucinoperpassione/wp-content/uploads/2026/09/Polpo-in-umido-con-patate.jpg",
+    "image_url": "/recipe-photos/polpo-in-umido-con-patate.webp",
     "image_source_url": "https://blog.giallozafferano.it/cucinoperpassione/wp-content/uploads/2026/09/Polpo-in-umido-con-patate.jpg",
     "cuisine": "italian",
     "tags": [
@@ -1064,7 +1064,7 @@
     "source_type": "seed",
     "source_name": "Ricette dal Mondo",
     "source_url": "https://www.ricettedalmondo.it/risotto-ai-gamberi.html",
-    "image_url": "https://www.ricettedalmondo.it/images/foto-ricette/r/30332-risotto-ai-gamberi.jpg",
+    "image_url": "/recipe-photos/risotto-ai-gamberi-e-arancia.webp",
     "image_source_url": "https://www.ricettedalmondo.it/images/foto-ricette/r/30332-risotto-ai-gamberi.jpg",
     "cuisine": "italian",
     "tags": [
@@ -1143,7 +1143,7 @@
     "source_type": "seed",
     "source_name": "Dissapore",
     "source_url": "https://www.dissapore.com/ricette/ricetta-salmone-in-crosta-di-pistacchi-e-mandorle/",
-    "image_url": "https://images.dissapore.com/wp-content/uploads/2020/10/salmone-in-crosta-di-pistacchi-e-mandorle.jpg?width=1280&height=720&quality=50",
+    "image_url": "/recipe-photos/salmone-in-crosta-di-pistacchi-e-mandorle.webp",
     "image_source_url": "https://images.dissapore.com/wp-content/uploads/2020/10/salmone-in-crosta-di-pistacchi-e-mandorle.jpg?width=1280&height=720&quality=50",
     "cuisine": "italian",
     "tags": [
@@ -1198,7 +1198,7 @@
     "source_type": "seed",
     "source_name": "GialloZafferano",
     "source_url": "https://blog.giallozafferano.it/valeriaciccotti/saltimbocca-alla-romana/",
-    "image_url": "https://blog.giallozafferano.it/valeriaciccotti/wp-content/uploads/2022/02/SALTIMBOCCA-ALLA-ROMANA.jpg",
+    "image_url": "/recipe-photos/saltimbocca-alla-romana.webp",
     "image_source_url": "https://blog.giallozafferano.it/valeriaciccotti/wp-content/uploads/2022/02/SALTIMBOCCA-ALLA-ROMANA.jpg",
     "cuisine": "italian",
     "tags": [
@@ -1256,7 +1256,7 @@
     "source_type": "seed",
     "source_name": "GialloZafferano",
     "source_url": "https://blog.giallozafferano.it/ilcaldosaporedelsud/scaloppine-di-pollo-al-limone-facili-e-veloci/",
-    "image_url": "https://blog.giallozafferano.it/ilcaldosaporedelsud/wp-content/uploads/2019/05/IMG_7363-scaled-e1647363898939.jpg",
+    "image_url": "/recipe-photos/scaloppine-di-pollo-al-limone.webp",
     "image_source_url": "https://blog.giallozafferano.it/ilcaldosaporedelsud/wp-content/uploads/2019/05/IMG_7363-scaled-e1647363898939.jpg",
     "cuisine": "italian",
     "tags": [
@@ -1331,7 +1331,7 @@
     "source_type": "seed",
     "source_name": "GialloZafferano",
     "source_url": "https://blog.giallozafferano.it/ilcaldosaporedelsud/sovracoscia-di-tacchino-in-padella/",
-    "image_url": "https://blog.giallozafferano.it/ilcaldosaporedelsud/wp-content/uploads/2025/03/IMG_0822.jpg",
+    "image_url": "/recipe-photos/sovracoscia-di-tacchino-al-limone-in-padella.webp",
     "image_source_url": "https://blog.giallozafferano.it/ilcaldosaporedelsud/wp-content/uploads/2025/03/IMG_0822.jpg",
     "cuisine": "italian",
     "tags": [
@@ -1395,7 +1395,7 @@
     "source_type": "seed",
     "source_name": "Dissapore",
     "source_url": "https://www.dissapore.com/ricette/spaghetti-alle-vongole",
-    "image_url": "https://images.dissapore.com/wp-content/uploads/2024/02/spaghetti-alle-vongole-ricetta.jpg?width=1280&height=720&quality=50",
+    "image_url": "/recipe-photos/spaghetti-alle-vongole.webp",
     "image_source_url": "https://images.dissapore.com/wp-content/uploads/2024/02/spaghetti-alle-vongole-ricetta.jpg?width=1280&height=720&quality=50",
     "cuisine": "italian",
     "tags": [
@@ -1461,7 +1461,7 @@
     "source_type": "seed",
     "source_name": "Dissapore",
     "source_url": "https://www.dissapore.com/ricette/spezzatino-di-vitello-con-patate/",
-    "image_url": "https://images.dissapore.com/wp-content/uploads/2021/11/spezzatino-di-vitello-con-patate-ricetta-1.jpg?width=1280&height=720&quality=50",
+    "image_url": "/recipe-photos/spezzatino-di-vitello-con-patate.webp",
     "image_source_url": "https://images.dissapore.com/wp-content/uploads/2021/11/spezzatino-di-vitello-con-patate-ricetta-1.jpg?width=1280&height=720&quality=50",
     "cuisine": "italian",
     "tags": [
@@ -1551,7 +1551,7 @@
     "source_type": "seed",
     "source_name": "GialloZafferano",
     "source_url": "https://blog.giallozafferano.it/renatabriano/ricetta-straccetti-di-manzo-con-rucola-pomodorini-e-aceto-balsamico/",
-    "image_url": "https://blog.giallozafferano.it/renatabriano/wp-content/uploads/2022/08/straccetti-di-manzo-rucola-scaled.jpg",
+    "image_url": "/recipe-photos/straccetti-di-manzo-con-rucola-e-pomodorini.webp",
     "image_source_url": "https://blog.giallozafferano.it/renatabriano/wp-content/uploads/2022/08/straccetti-di-manzo-rucola-scaled.jpg",
     "cuisine": "italian",
     "tags": [
@@ -1622,7 +1622,7 @@
     "source_type": "seed",
     "source_name": "GialloZafferano",
     "source_url": "https://blog.giallozafferano.it/pelledipollo/ricetta-straccetti-di-manzo-con-verdure/",
-    "image_url": "https://blog.giallozafferano.it/pelledipollo/wp-content/uploads/2026/04/stracc_manzo_verdure1.jpg",
+    "image_url": "/recipe-photos/straccetti-di-manzo-con-verdure.webp",
     "image_source_url": "https://blog.giallozafferano.it/pelledipollo/wp-content/uploads/2026/04/stracc_manzo_verdure1.jpg",
     "cuisine": "chinese",
     "tags": [
@@ -1697,7 +1697,7 @@
     "source_type": "seed",
     "source_name": "Dissapore",
     "source_url": "https://www.dissapore.com/ricette/tagliata-di-manzo/",
-    "image_url": "https://images.dissapore.com/wp-content/uploads/2022/10/tagliata-di-manzo.jpg?width=1280&height=720&quality=50",
+    "image_url": "/recipe-photos/tagliata-di-manzo-con-rucola-e-parmigiano.webp",
     "image_source_url": "https://images.dissapore.com/wp-content/uploads/2022/10/tagliata-di-manzo.jpg?width=1280&height=720&quality=50",
     "cuisine": "italian",
     "tags": [
@@ -1753,7 +1753,7 @@
     "source_type": "seed",
     "source_name": "Evous",
     "source_url": "https://www.evous.fr/recettes-de-cuisine/Recettes-Plat/Recette-Blanc-de-poulet-a-la,1116941/",
-    "image_url": "https://www.evous.fr/IMG/jpg/poulet_basquaise-675ed.jpg",
+    "image_url": null,
     "image_source_url": "https://www.evous.fr/IMG/jpg/poulet_basquaise-675ed.jpg",
     "cuisine": "french",
     "tags": [
@@ -1829,7 +1829,7 @@
     "source_type": "seed",
     "source_name": "750g",
     "source_url": "https://www.750g.com/blanquette-de-veau-version-light-r32377.htm",
-    "image_url": "https://static.750g.com/images/1200-630/6efbcb2a37e754e7afaddb1888ac0799/blanquette-de-veau-version-light.png",
+    "image_url": "/recipe-photos/blanquette-de-veau-legere.webp",
     "image_source_url": "https://static.750g.com/images/1200-630/6efbcb2a37e754e7afaddb1888ac0799/blanquette-de-veau-version-light.png",
     "cuisine": "french",
     "tags": [
@@ -1900,7 +1900,7 @@
     "source_type": "seed",
     "source_name": "Croq'Kilos",
     "source_url": "https://www.croq-kilos.com/actus/recette-de-one-pot-blanquette",
-    "image_url": "https://www.croq-kilos.com/sites/default/files/styles/1920px/public/2026-01/40698-one-pot-facon-blanquettejpg.jpg",
+    "image_url": "/recipe-photos/blanquette-de-veau-one-pot.webp",
     "image_source_url": "https://www.croq-kilos.com/sites/default/files/styles/1920px/public/2026-01/40698-one-pot-facon-blanquettejpg.jpg",
     "cuisine": "french",
     "tags": [
@@ -2003,7 +2003,7 @@
     "source_type": "seed",
     "source_name": "Croq'Kilos",
     "source_url": "https://www.croq-kilos.com/actus/recette-de-brandade-de-morue-leger",
-    "image_url": "https://www.croq-kilos.com/sites/default/files/styles/1920px/public/2025-03/23708-2937-comment-faire-une-brandade-de-morue-legere.jpg",
+    "image_url": "/recipe-photos/brandade-de-morue-legere.webp",
     "image_source_url": "https://www.croq-kilos.com/sites/default/files/styles/1920px/public/2025-03/23708-2937-comment-faire-une-brandade-de-morue-legere.jpg",
     "cuisine": "french",
     "tags": [
@@ -2073,7 +2073,7 @@
     "source_type": "seed",
     "source_name": "Demotivateur Food",
     "source_url": "https://www.demotivateur.fr/food/recette/boeuf-bourguignon-traditionnel-2988",
-    "image_url": "https://www.demotivateur.fr/images/cover_recette/1759238345-boeuf_bourguignon_familial.jpg",
+    "image_url": "/recipe-photos/boeuf-bourguignon.webp",
     "image_source_url": "https://www.demotivateur.fr/images/cover_recette/1759238345-boeuf_bourguignon_familial.jpg",
     "cuisine": "french",
     "tags": [
@@ -2179,7 +2179,7 @@
     "source_type": "seed",
     "source_name": "Demotivateur Food",
     "source_url": "https://www.demotivateur.fr/food/cabillaud-epice-au-four-43138",
-    "image_url": "https://www.demotivateur.fr/images-buzz/cover/181198235267d06a38b7603_cabillaud-epices-au-four.jpg",
+    "image_url": "/recipe-photos/cabillaud-epice-au-four-et-ses-legumes.webp",
     "image_source_url": "https://www.demotivateur.fr/images-buzz/cover/181198235267d06a38b7603_cabillaud-epices-au-four.jpg",
     "cuisine": "french",
     "tags": [
@@ -2275,7 +2275,7 @@
     "source_type": "seed",
     "source_name": "WW",
     "source_url": "https://www.weightwatchers.com/fr/recette/dos-de-cabillaud-a-la-basquaise/5625ac93b7878c0b34e6abdf",
-    "image_url": "https://v.cdn.ww.com/media/system/wine/57f2fa60dce32ff313afe3be/9dbfa72d-7d8b-447f-9afe-61d84ce8da59/srhiwo05o7yvqnwkidit.jpg?fit=crop&height=800&width=800&enable=upscale&quality=80",
+    "image_url": "/recipe-photos/dos-de-cabillaud-a-la-basquaise.webp",
     "image_source_url": "https://v.cdn.ww.com/media/system/wine/57f2fa60dce32ff313afe3be/9dbfa72d-7d8b-447f-9afe-61d84ce8da59/srhiwo05o7yvqnwkidit.jpg?fit=crop&height=800&width=800&enable=upscale&quality=80",
     "cuisine": "french",
     "tags": [
@@ -2347,7 +2347,7 @@
     "source_type": "seed",
     "source_name": "750g",
     "source_url": "https://www.750g.com/filet-mignon-de-porc-a-la-moutarde-r74670.htm",
-    "image_url": "https://static.750g.com/images/1200-630/1891f1b9d47a53796fe6d9de441cc8b6/filet-mignon-de-porc-a-la-moutarde-r74670.png",
+    "image_url": "/recipe-photos/filet-mignon-de-porc-a-la-moutarde.webp",
     "image_source_url": "https://static.750g.com/images/1200-630/1891f1b9d47a53796fe6d9de441cc8b6/filet-mignon-de-porc-a-la-moutarde-r74670.png",
     "cuisine": "french",
     "tags": [
@@ -2415,7 +2415,7 @@
     "source_type": "seed",
     "source_name": "Jow",
     "source_url": "https://jow.com/fr/recipes/filet-mignon-a-la-moutarde-pommes-de-terre-et-brocoli-8v4x3uwufp5c03fx11wy/print",
-    "image_url": "https://static.jow.fr/550x550/patterns/kale-04-202309.png_merge_recipes/Y3e0SkaQQVJSww.png.jpg",
+    "image_url": "/recipe-photos/filet-mignon-moutarde-pommes-de-terre-et-brocoli.webp",
     "image_source_url": "https://static.jow.fr/550x550/patterns/kale-04-202309.png_merge_recipes/Y3e0SkaQQVJSww.png.jpg",
     "cuisine": "french",
     "tags": [
@@ -2487,7 +2487,7 @@
     "source_type": "seed",
     "source_name": "750g",
     "source_url": "https://www.750g.com/la-meilleure-facon-de-faire-des-moules-marinieres-r207667.htm",
-    "image_url": "https://static.750g.com/images/1200-630/51b65ce9ef864989f3d27004babc49c2/w6a9050.jpg",
+    "image_url": "/recipe-photos/moules-marinieres.webp",
     "image_source_url": "https://static.750g.com/images/1200-630/51b65ce9ef864989f3d27004babc49c2/w6a9050.jpg",
     "cuisine": "french",
     "tags": [
@@ -2551,7 +2551,7 @@
     "source_type": "seed",
     "source_name": "Croq'Kilos",
     "source_url": "https://www.croq-kilos.com/actus/recette-du-navarin-d-agneau-leger",
-    "image_url": "https://www.croq-kilos.com/sites/default/files/styles/1920px/public/2025-03/23468-1633-recette-du-navarin-dagneau-leger.jpg",
+    "image_url": "/recipe-photos/navarin-d-agneau-leger.webp",
     "image_source_url": "https://www.croq-kilos.com/sites/default/files/styles/1920px/public/2025-03/23468-1633-recette-du-navarin-dagneau-leger.jpg",
     "cuisine": "french",
     "tags": [
@@ -2647,7 +2647,7 @@
     "source_type": "seed",
     "source_name": "750g",
     "source_url": "https://www.750g.com/navarin-printanier-r204373.htm",
-    "image_url": "https://static.750g.com/images/1200-630/9c7fb919b249237bd4324f165cb64768/navarin.jpg",
+    "image_url": "/recipe-photos/navarin-d-agneau-printanier.webp",
     "image_source_url": "https://static.750g.com/images/1200-630/9c7fb919b249237bd4324f165cb64768/navarin.jpg",
     "cuisine": "french",
     "tags": [
@@ -2753,7 +2753,7 @@
     "source_type": "seed",
     "source_name": "Qui veut du fromage",
     "source_url": "https://www.quiveutdufromage.com/r-papillote-de-cabillaud-au-fromage-et-aux-poivrons",
-    "image_url": "https://www.quiveutdufromage.com/api/dam/schema-image/fix635d9eidk98dkmqgfthhiidnzepkdhxmzjze.webp",
+    "image_url": "/recipe-photos/papillote-de-cabillaud-au-fromage-et-aux-poivrons.webp",
     "image_source_url": "https://www.quiveutdufromage.com/api/dam/schema-image/fix635d9eidk98dkmqgfthhiidnzepkdhxmzjze.webp",
     "cuisine": "french",
     "tags": [
@@ -2814,7 +2814,7 @@
     "source_type": "seed",
     "source_name": "WW",
     "source_url": "https://www.weightwatchers.com/be/fr/recipe/papillote-cabillaud-au-gingembre-citron-vert/5d67b72532f27600dc549bec",
-    "image_url": "https://v.cdn.ww.com/media/system/wine/5d67b71bb602ed002b6210f9/6a82d9ce-876f-4f9b-ae06-3aa8c51eaaf2/ukzjopwzxn39llpabaao.jpg?fit=crop&height=800&width=800&enable=upscale&quality=80",
+    "image_url": "/recipe-photos/papillote-de-cabillaud-au-gingembre-et-citron-vert.webp",
     "image_source_url": "https://v.cdn.ww.com/media/system/wine/5d67b71bb602ed002b6210f9/6a82d9ce-876f-4f9b-ae06-3aa8c51eaaf2/ukzjopwzxn39llpabaao.jpg?fit=crop&height=800&width=800&enable=upscale&quality=80",
     "cuisine": "french",
     "tags": [
@@ -2892,7 +2892,7 @@
     "source_type": "seed",
     "source_name": "Ricardo",
     "source_url": "https://www.ricardocuisine.com/recettes/551-paves-de-saumon-sur-lit-de-lentilles",
-    "image_url": "https://images.ricardocuisine.com/services/recipes/551.jpg",
+    "image_url": "/recipe-photos/paves-de-saumon-sur-lit-de-lentilles.webp",
     "image_source_url": "https://images.ricardocuisine.com/services/recipes/551.jpg",
     "cuisine": "french",
     "tags": [
@@ -2981,7 +2981,7 @@
     "source_type": "seed",
     "source_name": "Demotivateur Food",
     "source_url": "https://www.demotivateur.fr/food/petit-sale-aux-lentilles-38097",
-    "image_url": "https://www.demotivateur.fr/images-buzz/cover/34189379565d5d97f27cb6_petit-sale-lentilles.jpg",
+    "image_url": "/recipe-photos/petit-sale-aux-lentilles.webp",
     "image_source_url": "https://www.demotivateur.fr/images-buzz/cover/34189379565d5d97f27cb6_petit-sale-lentilles.jpg",
     "cuisine": "french",
     "tags": [
@@ -3069,7 +3069,7 @@
     "source_type": "seed",
     "source_name": "WW",
     "source_url": "https://www.weightwatchers.com/ch/fr/recette/poulet-sauce-au-vin-et-lestragon/659fabb3ce8846a01bc40d10",
-    "image_url": "https://v.cdn.ww.com/media/system/wine/659fabab75cab8006305628f/60271476-5e04-4358-b839-0668f944e2c1/mlfnxi62hm0o3jeceqg9.jpg?fit=crop&height=800&width=800&enable=upscale&quality=80",
+    "image_url": "/recipe-photos/poulet-au-vin-blanc-et-a-l-estragon-carottes.webp",
     "image_source_url": "https://v.cdn.ww.com/media/system/wine/659fabab75cab8006305628f/60271476-5e04-4358-b839-0668f944e2c1/mlfnxi62hm0o3jeceqg9.jpg?fit=crop&height=800&width=800&enable=upscale&quality=80",
     "cuisine": "french",
     "tags": [
@@ -3150,7 +3150,7 @@
     "source_type": "seed",
     "source_name": "Chef Simon",
     "source_url": "https://chefsimon.com/gourmets/chef-simon/recettes/poulet-basquaise--17",
-    "image_url": "https://res.cloudinary.com/hv9ssmzrz/image/fetch/c_fill,f_auto,h_675,q_auto:eco,w_1200/https://s3-eu-west-1.amazonaws.com/images-ca-1-0-1-eu/recipe_photos/original/826/poulet-basquaise-3000x2000.jpg",
+    "image_url": "/recipe-photos/poulet-basquaise.webp",
     "image_source_url": "https://res.cloudinary.com/hv9ssmzrz/image/fetch/c_fill,f_auto,h_675,q_auto:eco,w_1200/https://s3-eu-west-1.amazonaws.com/images-ca-1-0-1-eu/recipe_photos/original/826/poulet-basquaise-3000x2000.jpg",
     "cuisine": "french",
     "tags": [
@@ -3228,7 +3228,7 @@
     "source_type": "seed",
     "source_name": "Demotivateur Food",
     "source_url": "https://www.demotivateur.fr/food/recette/poulet-mijote-aux-olives-1947",
-    "image_url": "https://www.demotivateur.fr/images/cover_recette/1689240958-poulet_mijote_olives.jpg",
+    "image_url": "/recipe-photos/poulet-mijote-aux-olives.webp",
     "image_source_url": "https://www.demotivateur.fr/images/cover_recette/1689240958-poulet_mijote_olives.jpg",
     "cuisine": "french",
     "tags": [
@@ -3300,7 +3300,7 @@
     "source_type": "seed",
     "source_name": "Île aux épices",
     "source_url": "https://ileauxepices.com/blog/2014/09/25/recette-poulet-a-lestragon/wpid5861/",
-    "image_url": "https://ileauxepices.com/blog/wp-content/uploads/2014/09/poulet-à-lestragon.jpg",
+    "image_url": "/recipe-photos/poulet-a-l-estragon.webp",
     "image_source_url": "https://ileauxepices.com/blog/wp-content/uploads/2014/09/poulet-à-lestragon.jpg",
     "cuisine": "french",
     "tags": [
@@ -3369,7 +3369,7 @@
     "source_type": "seed",
     "source_name": "Demotivateur Food",
     "source_url": "https://www.demotivateur.fr/food/recette/roti-de-porc-a-la-moutarde-1256",
-    "image_url": "https://www.demotivateur.fr/images/cover_recette/1641317473-roti_porc_lait_moutarde.jpg",
+    "image_url": "/recipe-photos/roti-de-porc-au-lait-et-a-la-moutarde.webp",
     "image_source_url": "https://www.demotivateur.fr/images/cover_recette/1641317473-roti_porc_lait_moutarde.jpg",
     "cuisine": "french",
     "tags": [
@@ -3436,7 +3436,7 @@
     "source_type": "seed",
     "source_name": "La Cuisine de Julie",
     "source_url": "https://lacuisinedejulie.fr/recette/saumon-roti-aux-lentilles-vertes/",
-    "image_url": "https://lacuisinedejulie.fr/wp-content/uploads/2022/10/Saumon-roti-aux-lentilles-vertes.jpg",
+    "image_url": "/recipe-photos/saumon-roti-aux-lentilles-vertes.webp",
     "image_source_url": "https://lacuisinedejulie.fr/wp-content/uploads/2022/10/Saumon-roti-aux-lentilles-vertes.jpg",
     "cuisine": "french",
     "tags": [
@@ -3512,7 +3512,7 @@
     "source_type": "seed",
     "source_name": "Gilles Pudlowski",
     "source_url": "https://www.gillespudlowski.com/257271/recettes/recette-de-confinement-le-saumon-a-loseille-des-freres-troisgros",
-    "image_url": "https://www.gillespudlowski.com/wp-content/uploads/2020/04/saumon-a-loseille-1.jpg",
+    "image_url": "/recipe-photos/saumon-a-l-oseille-des-freres-troisgros.webp",
     "image_source_url": "https://www.gillespudlowski.com/wp-content/uploads/2020/04/saumon-a-loseille-1.jpg",
     "cuisine": "french",
     "tags": [
@@ -3584,7 +3584,7 @@
     "source_type": "seed",
     "source_name": "Noovo Moi",
     "source_url": "https://www.noovomoi.ca/cuisiner/recettes/recette.turbot-sauce-vierge.1.1423555.html",
-    "image_url": "https://www.noovomoi.ca/resizer/v2/QLP6DNZDNS7CBGY25ZADPA7FCY.jpg?smart=true&auth=efb274cad985b370ed3e8f21089e9d8632fa71a131069e1f05f3912ec1c478e6&width=1200&height=630",
+    "image_url": "/recipe-photos/turbot-sauce-vierge.webp",
     "image_source_url": "https://www.noovomoi.ca/resizer/v2/QLP6DNZDNS7CBGY25ZADPA7FCY.jpg?smart=true&auth=efb274cad985b370ed3e8f21089e9d8632fa71a131069e1f05f3912ec1c478e6&width=1200&height=630",
     "cuisine": "french",
     "tags": [
@@ -3650,7 +3650,7 @@
     "source_type": "seed",
     "source_name": "Ricardo",
     "source_url": "https://www.ricardocuisine.com/recettes/8946-oeufs-poches-epinards-et-lentilles",
-    "image_url": "https://images.ricardocuisine.com/services/recipes/8946.jpg",
+    "image_url": "/recipe-photos/oeufs-poches-epinards-et-lentilles.webp",
     "image_source_url": "https://images.ricardocuisine.com/services/recipes/8946.jpg",
     "cuisine": "french",
     "tags": [
@@ -3738,7 +3738,7 @@
     "source_type": "seed",
     "source_name": "The Woks of Life",
     "source_url": "https://thewoksoflife.com/bulgogi-bowls",
-    "image_url": "https://thewoksoflife.com/wp-content/uploads/2015/12/bulgogi-10.jpg",
+    "image_url": "/recipe-photos/beef-bulgogi-rice-bowls.webp",
     "image_source_url": "https://thewoksoflife.com/wp-content/uploads/2015/12/bulgogi-10.jpg",
     "cuisine": "korean",
     "tags": [
@@ -3849,7 +3849,7 @@
     "source_type": "seed",
     "source_name": "RecipeTin Eats",
     "source_url": "https://recipetineats.com/beef-rendang",
-    "image_url": "https://www.recipetineats.com/tachyon/2014/11/Beef-Rendang-13.jpg",
+    "image_url": "/recipe-photos/beef-rendang.webp",
     "image_source_url": "https://www.recipetineats.com/tachyon/2014/11/Beef-Rendang-13.jpg",
     "cuisine": "indonesian",
     "tags": [
@@ -3969,7 +3969,7 @@
     "source_type": "seed",
     "source_name": "RecipeTin Eats",
     "source_url": "https://www.recipetineats.com/wprm_print/37012",
-    "image_url": "https://www.recipetineats.com/tachyon/2019/05/Bibimbap_3.jpg",
+    "image_url": "/recipe-photos/bibimbap-with-korean-beef.webp",
     "image_source_url": "https://www.recipetineats.com/tachyon/2019/05/Bibimbap_3.jpg",
     "cuisine": "korean",
     "tags": [
@@ -4122,7 +4122,7 @@
     "source_type": "seed",
     "source_name": "The Woks of Life",
     "source_url": "https://thewoksoflife.com/cantonese-steamed-fish/",
-    "image_url": "https://thewoksoflife.com/wp-content/uploads/2020/12/cantonese-steamed-fish-17.jpg",
+    "image_url": "/recipe-photos/cantonese-steamed-fish-with-ginger-and-scallion.webp",
     "image_source_url": "https://thewoksoflife.com/wp-content/uploads/2020/12/cantonese-steamed-fish-17.jpg",
     "cuisine": "chinese",
     "tags": [
@@ -4185,7 +4185,7 @@
     "source_type": "seed",
     "source_name": "The Woks of Life",
     "source_url": "https://thewoksoflife.com/chicken-larb/",
-    "image_url": "https://thewoksoflife.com/wp-content/uploads/2019/08/chicken-larb-13.jpg",
+    "image_url": "/recipe-photos/chicken-larb-in-lettuce-cups.webp",
     "image_source_url": "https://thewoksoflife.com/wp-content/uploads/2019/08/chicken-larb-13.jpg",
     "cuisine": "thai",
     "tags": [
@@ -4273,7 +4273,7 @@
     "source_type": "seed",
     "source_name": "RecipeTin Eats",
     "source_url": "https://www.recipetineats.com/chinese-beef-and-broccoli/",
-    "image_url": "https://www.recipetineats.com/tachyon/2015/03/Chinese-Beef-and-Broccoli_3.jpg",
+    "image_url": "/recipe-photos/chinese-beef-and-broccoli.webp",
     "image_source_url": "https://www.recipetineats.com/tachyon/2015/03/Chinese-Beef-and-Broccoli_3.jpg",
     "cuisine": "chinese",
     "tags": [
@@ -4362,7 +4362,7 @@
     "source_type": "seed",
     "source_name": "RecipeTin Eats",
     "source_url": "https://www.recipetineats.com/chinese-cashew-chicken/comment-page-24/",
-    "image_url": "https://www.recipetineats.com/tachyon/2015/10/Cashew-Chicken_6.jpg",
+    "image_url": "/recipe-photos/chinese-cashew-chicken.webp",
     "image_source_url": "https://www.recipetineats.com/tachyon/2015/10/Cashew-Chicken_6.jpg",
     "cuisine": "chinese",
     "tags": [
@@ -4442,7 +4442,7 @@
     "source_type": "seed",
     "source_name": "The Woks of Life",
     "source_url": "https://thewoksoflife.com/scallion-ginger-salmon/",
-    "image_url": "https://thewoksoflife.com/wp-content/uploads/2017/03/scallion-ginger-salmon-7.jpg",
+    "image_url": "/recipe-photos/crispy-scallion-ginger-salmon.webp",
     "image_source_url": "https://thewoksoflife.com/wp-content/uploads/2017/03/scallion-ginger-salmon-7.jpg",
     "cuisine": "chinese",
     "tags": [
@@ -4510,7 +4510,7 @@
     "source_type": "seed",
     "source_name": "Delightful Plate",
     "source_url": "https://delightfulplate.com/?p=84242",
-    "image_url": "https://delightfulplate.com/wp-content/uploads/2024/11/Ca-Kho-Recipe-Traditional-Vietnamese-Caramelized-Fish.jpg",
+    "image_url": "/recipe-photos/ca-kho-vietnamese-caramelised-braised-mackerel.webp",
     "image_source_url": "https://delightfulplate.com/wp-content/uploads/2024/11/Ca-Kho-Recipe-Traditional-Vietnamese-Caramelized-Fish.jpg",
     "cuisine": "vietnamese",
     "tags": [
@@ -4692,7 +4692,7 @@
     "source_type": "seed",
     "source_name": "Panlasang Pinoy",
     "source_url": "https://panlasangpinoy.com/filipino-chicken-adobo-recipe",
-    "image_url": "https://panlasangpinoy.com/wp-content/uploads/2026/05/Chicken-Adobo-in-a-Bowl.jpg",
+    "image_url": "/recipe-photos/filipino-chicken-adobo.webp",
     "image_source_url": "https://panlasangpinoy.com/wp-content/uploads/2026/05/Chicken-Adobo-in-a-Bowl.jpg",
     "cuisine": "filipino",
     "tags": [
@@ -4852,7 +4852,7 @@
     "source_type": "seed",
     "source_name": "The Woks of Life",
     "source_url": "https://thewoksoflife.com/gyudon-recipe-beef-rice/",
-    "image_url": "https://thewoksoflife.com/wp-content/uploads/2023/07/gyudon-7.jpg",
+    "image_url": "/recipe-photos/gyudon-beef-and-onion-rice-bowl.webp",
     "image_source_url": "https://thewoksoflife.com/wp-content/uploads/2023/07/gyudon-7.jpg",
     "cuisine": "japanese",
     "tags": [
@@ -4930,7 +4930,7 @@
     "source_type": "seed",
     "source_name": "Vietnamese Food Recipes",
     "source_url": "https://www.vietnamesefoodrecipes.com/vietnamese-grilled-chicken-with-lemongrass-ga-nuong-sa/",
-    "image_url": "https://www.vietnamesefoodrecipes.com/wp-content/uploads/2025/06/IMG_1293.jpg",
+    "image_url": "/recipe-photos/ga-nuong-sa-vietnamese-lemongrass-grilled-chicken.webp",
     "image_source_url": "https://www.vietnamesefoodrecipes.com/wp-content/uploads/2025/06/IMG_1293.jpg",
     "cuisine": "vietnamese",
     "tags": [
@@ -5015,7 +5015,7 @@
     "source_type": "seed",
     "source_name": "BBC Good Food",
     "source_url": "https://bbcgoodfoodme.com/recipes/healthy-tikka-masala",
-    "image_url": "https://www.bbcgoodfoodme.com/assets/legacy/recipe/recipe-image/2019/10/healthy-tikka-masala.jpg",
+    "image_url": "/recipe-photos/healthy-chicken-tikka-masala-with-spinach.webp",
     "image_source_url": "https://www.bbcgoodfoodme.com/assets/legacy/recipe/recipe-image/2019/10/healthy-tikka-masala.jpg",
     "cuisine": "indian",
     "tags": [
@@ -5106,7 +5106,7 @@
     "source_type": "seed",
     "source_name": "The Woks of Life",
     "source_url": "https://www.thewoksoflife.com/kung-pao-chicken/",
-    "image_url": "https://thewoksoflife.com/wp-content/uploads/2019/05/kung-pao-chicken-14.jpg",
+    "image_url": "/recipe-photos/kung-pao-chicken.webp",
     "image_source_url": "https://thewoksoflife.com/wp-content/uploads/2019/05/kung-pao-chicken-14.jpg",
     "cuisine": "chinese",
     "tags": [
@@ -5214,7 +5214,7 @@
     "source_type": "seed",
     "source_name": "Ayam",
     "source_url": "https://ayam.com/recipes/malaysian-nasi-goreng",
-    "image_url": "https://ayam.com/images/Ayam-Recipe-2019/main-pix/malaysian-nasi-goreng.jpg",
+    "image_url": "/recipe-photos/malaysian-nasi-goreng-with-chicken-prawns-and-egg.webp",
     "image_source_url": "https://ayam.com/images/Ayam-Recipe-2019/main-pix/malaysian-nasi-goreng.jpg",
     "cuisine": "malaysian",
     "tags": [
@@ -5289,7 +5289,7 @@
     "source_type": "seed",
     "source_name": "Olive Magazine",
     "source_url": "https://www.olivemagazine.com/recipes/healthy/miso-salmon/",
-    "image_url": "https://images.immediate.co.uk/production/volatile/sites/2/2020/08/OLI-0920-Healthy-MisoSalmon_05631_preview-ca3e82c.jpg?crop=2px%2C746px%2C1195px%2C514px&resize=1199%2C628",
+    "image_url": "/recipe-photos/miso-salmon-with-rice-and-greens.webp",
     "image_source_url": "https://images.immediate.co.uk/production/volatile/sites/2/2020/08/OLI-0920-Healthy-MisoSalmon_05631_preview-ca3e82c.jpg?crop=2px%2C746px%2C1195px%2C514px&resize=1199%2C628",
     "cuisine": "japanese",
     "tags": [
@@ -5368,7 +5368,7 @@
     "source_type": "seed",
     "source_name": "Swasthi's Recipes",
     "source_url": "https://www.indianhealthyrecipes.com/tandoori-chicken/",
-    "image_url": "https://www.indianhealthyrecipes.com/wp-content/uploads/2025/09/tandoori-chicken-recipe-new.jpg",
+    "image_url": "/recipe-photos/oven-tandoori-chicken.webp",
     "image_source_url": "https://www.indianhealthyrecipes.com/wp-content/uploads/2025/09/tandoori-chicken-recipe-new.jpg",
     "cuisine": "indian",
     "tags": [
@@ -5542,7 +5542,7 @@
     "source_type": "seed",
     "source_name": "Eating Thai Food",
     "source_url": "https://eatingthaifood.com/thai-basil-chicken-recipe",
-    "image_url": "https://www.eatingthaifood.com/wp-content/uploads/2014/01/thai-chicken-basil-recipe.jpg",
+    "image_url": "/recipe-photos/pad-krapow-gai-thai-basil-chicken-with-fried-egg.webp",
     "image_source_url": "https://www.eatingthaifood.com/wp-content/uploads/2014/01/thai-chicken-basil-recipe.jpg",
     "cuisine": "thai",
     "tags": [
@@ -5626,7 +5626,7 @@
     "source_type": "seed",
     "source_name": "RecipeTin Eats",
     "source_url": "https://www.recipetineats.com/satay-chicken-legs-with-peanut-sauce/",
-    "image_url": "https://www.recipetineats.com/tachyon/2026/08/Satay-chicken-legs-with-peanut-sauce-v2-3.jpg",
+    "image_url": "/recipe-photos/satay-chicken-drumsticks-with-peanut-sauce.webp",
     "image_source_url": "https://www.recipetineats.com/tachyon/2026/08/Satay-chicken-legs-with-peanut-sauce-v2-3.jpg",
     "cuisine": "thai",
     "tags": [
@@ -5724,7 +5724,7 @@
     "source_type": "seed",
     "source_name": "RecipeTin Eats",
     "source_url": "https://www.recipetineats.com/taiwanese-three-cup-chicken/",
-    "image_url": "https://www.recipetineats.com/tachyon/2026/07/Taiwanese-Three-Cup-Chicken-9a.jpg",
+    "image_url": "/recipe-photos/taiwanese-three-cup-chicken.webp",
     "image_source_url": "https://www.recipetineats.com/tachyon/2026/07/Taiwanese-Three-Cup-Chicken-9a.jpg",
     "cuisine": "taiwanese",
     "tags": [
@@ -5799,7 +5799,7 @@
     "source_type": "seed",
     "source_name": "BBC Good Food",
     "source_url": "https://www.bbcgoodfoodme.com/recipes/teriyaki-chicken/",
-    "image_url": "https://images.immediate.co.uk/production/volatile/sites/30/2023/08/TERIYAKICHICKEN-f626817.jpg",
+    "image_url": "/recipe-photos/teriyaki-chicken-with-rice.webp",
     "image_source_url": "https://images.immediate.co.uk/production/volatile/sites/30/2023/08/TERIYAKICHICKEN-f626817.jpg",
     "cuisine": "japanese",
     "tags": [
@@ -5873,7 +5873,7 @@
     "source_type": "seed",
     "source_name": "RecipeTin Eats",
     "source_url": "https://www.recipetineats.com/thai-green-curry/",
-    "image_url": "https://www.recipetineats.com/tachyon/2019/02/Thai-Green-Curry_5.jpg",
+    "image_url": "/recipe-photos/thai-green-curry-with-chicken.webp",
     "image_source_url": "https://www.recipetineats.com/tachyon/2019/02/Thai-Green-Curry_5.jpg",
     "cuisine": "thai",
     "tags": [
@@ -6168,7 +6168,7 @@
     "source_type": "seed",
     "source_name": "Olive Magazine",
     "source_url": "https://www.olivemagazine.com/recipes/fish-and-seafood/cajun-salmon-with-rosemary-sweet-potato-wedges/",
-    "image_url": "https://images.immediate.co.uk/production/volatile/sites/2/2018/08/Cajun-salmon-f26325e.jpg?resize=1200%2C630",
+    "image_url": "/recipe-photos/cajun-salmon-with-sweet-potato-wedges.webp",
     "image_source_url": "https://images.immediate.co.uk/production/volatile/sites/2/2018/08/Cajun-salmon-f26325e.jpg?resize=1200%2C630",
     "cuisine": "american",
     "tags": [
@@ -6228,7 +6228,7 @@
     "source_type": "seed",
     "source_name": "Whitney Bond",
     "source_url": "https://whitneybond.com/carne-asada-bowl/",
-    "image_url": "https://whitneybond.com/wp-content/uploads/2021/03/Carne-Asada-Bowl-8.jpg",
+    "image_url": "/recipe-photos/carne-asada-bowls-with-chipotle-crema.webp",
     "image_source_url": "https://whitneybond.com/wp-content/uploads/2021/03/Carne-Asada-Bowl-8.jpg",
     "cuisine": "mexican",
     "tags": [
@@ -6356,7 +6356,7 @@
     "source_type": "seed",
     "source_name": "Tesco Real Food",
     "source_url": "https://www.tesco.com/recipes/en-GB/recipe/chicken-and-sweet-potato-traybake",
-    "image_url": "https://digitalcontent.api.tesco.com/v2/media/realfood/19e08c95-7d83-465b-be81-3cd80666291e/RFO+1400x919+ChickenTrayBake.jpeg",
+    "image_url": "/recipe-photos/chicken-and-sweet-potato-traybake.webp",
     "image_source_url": "https://digitalcontent.api.tesco.com/v2/media/realfood/19e08c95-7d83-465b-be81-3cd80666291e/RFO+1400x919+ChickenTrayBake.jpeg",
     "cuisine": "british",
     "tags": [
@@ -6437,7 +6437,7 @@
     "source_type": "seed",
     "source_name": "SBS Food",
     "source_url": "https://www.sbs.com.au/food/recipe/chicken-souvlaki/j847ixvsa",
-    "image_url": "https://assets.sbs.com.au/dims4/default/da1f801/2147483647/strip/true/crop/3000x1688+0+225/resize/1280x720!/quality/90/?url=https%3A%2F%2Fsbs-au-brightspot.s3.ap-southeast-2.amazonaws.com%2Fdrupal%2Ffood%2Fpublic%2Fowk_3076_chicken_souvlaki_and_tzatziki_horizontal_2.jpg",
+    "image_url": "/recipe-photos/chicken-souvlaki-with-tzatziki.webp",
     "image_source_url": "https://assets.sbs.com.au/dims4/default/da1f801/2147483647/strip/true/crop/3000x1688+0+225/resize/1280x720!/quality/90/?url=https%3A%2F%2Fsbs-au-brightspot.s3.ap-southeast-2.amazonaws.com%2Fdrupal%2Ffood%2Fpublic%2Fowk_3076_chicken_souvlaki_and_tzatziki_horizontal_2.jpg",
     "cuisine": "greek",
     "tags": [
@@ -6510,7 +6510,7 @@
     "source_type": "seed",
     "source_name": "Mexico in My Kitchen",
     "source_url": "https://www.mexicoinmykitchen.com/chicken-tinga-recipe/",
-    "image_url": "https://www.mexicoinmykitchen.com/wp-content/uploads/2020/12/Chicken-Tinga-recipe-3-ing.jpg",
+    "image_url": "/recipe-photos/chicken-tinga.webp",
     "image_source_url": "https://www.mexicoinmykitchen.com/wp-content/uploads/2020/12/Chicken-Tinga-recipe-3-ing.jpg",
     "cuisine": "mexican",
     "tags": [
@@ -6576,7 +6576,7 @@
     "source_type": "seed",
     "source_name": "Eggs.ca",
     "source_url": "https://eggs.ca/recipes/doro-wat/",
-    "image_url": "https://eggs.ca/wp-content/uploads/2024/06/EFC-doro-wat-hero-1280x720-1.jpg",
+    "image_url": "/recipe-photos/doro-wat.webp",
     "image_source_url": "https://eggs.ca/wp-content/uploads/2024/06/EFC-doro-wat-hero-1280x720-1.jpg",
     "cuisine": "ethiopian",
     "tags": [
@@ -6751,7 +6751,7 @@
     "source_type": "seed",
     "source_name": "Olive Magazine",
     "source_url": "https://olivemagazine.com/recipes/fish-and-seafood/harissa-roast-salmon-with-warm-herby-grains-and-yogurt-dressing",
-    "image_url": "https://images.immediate.co.uk/production/volatile/sites/2/2024/10/HarissaRoastedSalmonGrainSalad004preview-9e2cc18.jpg?resize=1200%2C630",
+    "image_url": "/recipe-photos/harissa-roast-salmon-with-herby-grains.webp",
     "image_source_url": "https://images.immediate.co.uk/production/volatile/sites/2/2024/10/HarissaRoastedSalmonGrainSalad004preview-9e2cc18.jpg?resize=1200%2C630",
     "cuisine": "north african",
     "tags": [
@@ -6841,7 +6841,7 @@
     "source_type": "seed",
     "source_name": "Supergolden Bakes",
     "source_url": "https://www.supergoldenbakes.com/wprm_print/healthy-cottage-pie",
-    "image_url": "https://www.supergoldenbakes.com/wordpress/wp-content/uploads/2019/09/Slimming_World_Cottage_pie-1-3.jpg",
+    "image_url": "/recipe-photos/healthy-cottage-pie.webp",
     "image_source_url": "https://www.supergoldenbakes.com/wordpress/wp-content/uploads/2019/09/Slimming_World_Cottage_pie-1-3.jpg",
     "cuisine": "british",
     "tags": [
@@ -6962,7 +6962,7 @@
     "source_type": "seed",
     "source_name": "Ambitious Kitchen",
     "source_url": "https://ambitiouskitchen.com/seriously-the-best-healthy-turkey-chili",
-    "image_url": "https://www.ambitiouskitchen.com/wp-content/uploads/2015/11/The-Best-Turkey-Chili-3long.jpg",
+    "image_url": "/recipe-photos/healthy-turkey-chili.webp",
     "image_source_url": "https://www.ambitiouskitchen.com/wp-content/uploads/2015/11/The-Best-Turkey-Chili-3long.jpg",
     "cuisine": "american",
     "tags": [
@@ -7049,7 +7049,7 @@
     "source_type": "seed",
     "source_name": "IrishCentral",
     "source_url": "https://irishcentral.com/culture/food-drink/healthy-lamb-stew-recipe",
-    "image_url": "https://www.irishcentral.com/uploads/article/11423/resized_irish_stew___getty.jpg?t=1768384752",
+    "image_url": "/recipe-photos/irish-lamb-stew.webp",
     "image_source_url": "https://www.irishcentral.com/uploads/article/11423/resized_irish_stew___getty.jpg?t=1768384752",
     "cuisine": "irish",
     "tags": [
@@ -7143,7 +7143,7 @@
     "source_type": "seed",
     "source_name": "BBC Good Food",
     "source_url": "https://www.bbcgoodfoodme.com/recipes/jerk-chicken-curry-with-beans",
-    "image_url": "https://www.bbcgoodfoodme.com/assets/legacy/recipe_images/recipe-image-legacy-id--19058_11.jpg",
+    "image_url": "/recipe-photos/jerk-chicken-curry-with-beans.webp",
     "image_source_url": "https://www.bbcgoodfoodme.com/assets/legacy/recipe_images/recipe-image-legacy-id--19058_11.jpg",
     "cuisine": "caribbean",
     "tags": [
@@ -7215,7 +7215,7 @@
     "source_type": "seed",
     "source_name": "Abel & Cole",
     "source_url": "https://www.abelandcole.co.uk/box-recipes/jerked-chicken-with-sweet-potato-fries-tomato-salad",
-    "image_url": "https://www.abelandcole.co.uk/media/3676_18875_z.jpg",
+    "image_url": "/recipe-photos/jerk-chicken-with-sweet-potato-fries.webp",
     "image_source_url": "https://www.abelandcole.co.uk/media/3676_18875_z.jpg",
     "cuisine": "caribbean",
     "tags": [
@@ -7286,7 +7286,7 @@
     "source_type": "seed",
     "source_name": "Hampshire Fare",
     "source_url": "https://hampshirefare.co.uk/recipes/lamb-kofta-with-herby-yogurt-and-flatbreads/",
-    "image_url": "https://hampshirefare.co.uk/wp-content/uploads/2025/07/Koftas-recipe-hampshire-fare.png",
+    "image_url": "/recipe-photos/lamb-kofta-with-herby-yogurt.webp",
     "image_source_url": "https://hampshirefare.co.uk/wp-content/uploads/2025/07/Koftas-recipe-hampshire-fare.png",
     "cuisine": "middle eastern",
     "tags": [
@@ -7405,7 +7405,7 @@
     "source_type": "seed",
     "source_name": "Munaty Cooking",
     "source_url": "https://www.munatycooking.com/chicken-shawarma/",
-    "image_url": "https://www.munatycooking.com/wp-content/uploads/2023/12/chicken-shawarma-image-1-2023.jpg",
+    "image_url": "/recipe-photos/lebanese-chicken-shawarma-wraps.webp",
     "image_source_url": "https://www.munatycooking.com/wp-content/uploads/2023/12/chicken-shawarma-image-1-2023.jpg",
     "cuisine": "lebanese",
     "tags": [
@@ -7503,7 +7503,7 @@
     "source_type": "seed",
     "source_name": "Skinnytaste",
     "source_url": "https://www.skinnytaste.com/swedish-meatballs/",
-    "image_url": "https://www.skinnytaste.com/wp-content/uploads/2011/05/Swedish-Meatballs-5.jpg",
+    "image_url": "/recipe-photos/lighter-swedish-meatballs.webp",
     "image_source_url": "https://www.skinnytaste.com/wp-content/uploads/2011/05/Swedish-Meatballs-5.jpg",
     "cuisine": "swedish",
     "tags": [
@@ -7589,7 +7589,7 @@
     "source_type": "seed",
     "source_name": "Recipe Runner",
     "source_url": "https://reciperunner.com/easy-smokey-chicken-paprikash/",
-    "image_url": "https://reciperunner.com/wp-content/uploads/2018/02/Easy-Smokey-Chicken-Paprikash-Photo.jpg",
+    "image_url": "/recipe-photos/lighter-chicken-paprikash.webp",
     "image_source_url": "https://reciperunner.com/wp-content/uploads/2018/02/Easy-Smokey-Chicken-Paprikash-Photo.jpg",
     "cuisine": "hungarian",
     "tags": [
@@ -7676,7 +7676,7 @@
     "source_type": "seed",
     "source_name": "America's Test Kitchen",
     "source_url": "https://www.americastestkitchen.com/recipes/5189-moroccan-chicken-tagine-with-olives-and-lemon-djej-emshmel",
-    "image_url": "https://res.cloudinary.com/hksqkdlah/image/upload/c_fill,dpr_2.0,f_auto,fl_lossy.progressive.strip_profile,g_faces:auto,q_auto:low/8112_sfs-chicken-tangine-with-olives-and-lemon-article",
+    "image_url": "/recipe-photos/moroccan-chicken-tagine-with-olives-and-lemon.webp",
     "image_source_url": "https://res.cloudinary.com/hksqkdlah/image/upload/c_fill,dpr_2.0,f_auto,fl_lossy.progressive.strip_profile,g_faces:auto,q_auto:low/8112_sfs-chicken-tangine-with-olives-and-lemon-article",
     "cuisine": "moroccan",
     "tags": [
@@ -7786,7 +7786,7 @@
     "source_type": "seed",
     "source_name": "Once Upon a Chef",
     "source_url": "https://onceuponachef.com/recipes/peruvian-style-roast-chicken-with-green-sauce.html/comment-page-4",
-    "image_url": "https://www.onceuponachef.com/images/2013/01/peruvian-chicken-3-1200x873.jpg",
+    "image_url": "/recipe-photos/peruvian-roast-chicken-with-green-sauce.webp",
     "image_source_url": "https://www.onceuponachef.com/images/2013/01/peruvian-chicken-3-1200x873.jpg",
     "cuisine": "peruvian",
     "tags": [
@@ -7895,7 +7895,7 @@
     "source_type": "seed",
     "source_name": "America's Test Kitchen",
     "source_url": "https://www.americastestkitchen.com/recipes/16707-one-pan-seared-salmon-with-cauliflower-chickpeas-and-harissa",
-    "image_url": "https://res.cloudinary.com/hksqkdlah/image/upload/c_fill,dpr_2.0,f_auto,fl_lossy.progressive.strip_profile,g_faces:auto,q_auto:low/SFS_One-Pan-Seared-Salmon-with-Cauliflower-Chickpeas-and-Harissa_617_nsowls",
+    "image_url": "/recipe-photos/seared-harissa-salmon-with-cauliflower-and-chickpeas.webp",
     "image_source_url": "https://res.cloudinary.com/hksqkdlah/image/upload/c_fill,dpr_2.0,f_auto,fl_lossy.progressive.strip_profile,g_faces:auto,q_auto:low/SFS_One-Pan-Seared-Salmon-with-Cauliflower-Chickpeas-and-Harissa_617_nsowls",
     "cuisine": "north african",
     "tags": [
@@ -7985,7 +7985,7 @@
     "source_type": "seed",
     "source_name": "Sainsbury's Magazine",
     "source_url": "https://sainsburysmagazine.co.uk/recipes/mains/sherry-braised-chicken-with-chorizo-and-chickpeas",
-    "image_url": "https://www.sainsburysmagazine.co.uk/media/14642/download/Sherry-chicken.jpg?v=1",
+    "image_url": "/recipe-photos/sherry-braised-chicken-with-chorizo-and-chickpeas.webp",
     "image_source_url": "https://www.sainsburysmagazine.co.uk/media/14642/download/Sherry-chicken.jpg?v=1",
     "cuisine": "spanish",
     "tags": [
@@ -8066,7 +8066,7 @@
     "source_type": "seed",
     "source_name": "Tesco Real Food",
     "source_url": "https://www.tesco.com/recipes/en-GB/recipe/west-african-style-chicken-peanut-stew",
-    "image_url": "https://digitalcontent.api.tesco.com/v2/media/realfood/c41639d6-6ddb-4ff3-8f09-952f5151e6b7/RFO+1400x919+ChickenPeanutStew.jpeg",
+    "image_url": "/recipe-photos/west-african-chicken-peanut-stew.webp",
     "image_source_url": "https://digitalcontent.api.tesco.com/v2/media/realfood/c41639d6-6ddb-4ff3-8f09-952f5151e6b7/RFO+1400x919+ChickenPeanutStew.jpeg",
     "cuisine": "african",
     "tags": [
@@ -8159,7 +8159,7 @@
     "source_type": "seed",
     "source_name": "Olive Magazine",
     "source_url": "https://olivemagazine.com/recipes/vegetarian/cilbir-turkish-style-poached-eggs-in-garlicky-yogurt",
-    "image_url": "https://images.immediate.co.uk/production/volatile/sites/2/2024/03/turkish-poached-eggs-f93f073.gif?resize=1200%2C630",
+    "image_url": "/recipe-photos/cilbir-turkish-eggs-in-garlic-yogurt.webp",
     "image_source_url": "https://images.immediate.co.uk/production/volatile/sites/2/2024/03/turkish-poached-eggs-f93f073.gif?resize=1200%2C630",
     "cuisine": "turkish",
     "tags": [
@@ -8228,7 +8228,7 @@
     "source_type": "seed",
     "source_name": "Saveur",
     "source_url": "https://www.saveur.com/adjaruli-khachapuri-georgian-cheese-bread-recipe",
-    "image_url": "https://www.saveur.com/uploads/2017/03/mTG_khachapuri-adjaruli_2000x1500_02.webp?auto=webp",
+    "image_url": "/recipe-photos/adjaruli-khachapuri.webp",
     "image_source_url": "https://www.saveur.com/uploads/2017/03/mTG_khachapuri-adjaruli_2000x1500_02.webp?auto=webp",
     "cuisine": "georgian",
     "tags": [
@@ -8299,7 +8299,7 @@
     "source_type": "seed",
     "source_name": "An Affair from the Heart",
     "source_url": "https://anaffairfromtheheart.com/wprm_print/canadian-poutine-recipe",
-    "image_url": "https://anaffairfromtheheart.com/wp-content/uploads/2022/04/Canadian-Poutine-MAIN.jpg",
+    "image_url": "/recipe-photos/canadian-poutine.webp",
     "image_source_url": "https://anaffairfromtheheart.com/wp-content/uploads/2022/04/Canadian-Poutine-MAIN.jpg",
     "cuisine": "canadian",
     "tags": [
@@ -8345,7 +8345,7 @@
     "source_type": "seed",
     "source_name": "Demotivateur Food",
     "source_url": "https://www.demotivateur.fr/food/recette/croque-monsieur-maison-2990",
-    "image_url": "https://www.demotivateur.fr/images/cover_recette/1759999281-croque_monsieur_maison.jpg",
+    "image_url": "/recipe-photos/croque-monsieur-maison.webp",
     "image_source_url": "https://www.demotivateur.fr/images/cover_recette/1759999281-croque_monsieur_maison.jpg",
     "cuisine": "french",
     "tags": [
@@ -8593,7 +8593,7 @@
     "source_type": "seed",
     "source_name": "Scatti di Gusto",
     "source_url": "https://www.scattidigusto.it/2021/02/11/lasagne-alla-bolognese-ricetta-originale-con-ragu-cremoso-e-sfoglia-verde/",
-    "image_url": "https://www.scattidigusto.it/wp-content/uploads/2021/02/lasagne-verdi-con-ragu-alla-bolognese.jpg",
+    "image_url": "/recipe-photos/lasagne-verdi-alla-bolognese.webp",
     "image_source_url": "https://www.scattidigusto.it/wp-content/uploads/2021/02/lasagne-verdi-con-ragu-alla-bolognese.jpg",
     "cuisine": "italian",
     "tags": [
@@ -8701,7 +8701,7 @@
     "source_type": "seed",
     "source_name": "Dissapore",
     "source_url": "https://www.dissapore.com/ricette/parmigiana-di-melanzane-in-padella-ricetta/",
-    "image_url": "https://images.dissapore.com/wp-content/uploads/2019/03/Parmigiana-di-melanzane-in-padella-pane.jpg?width=1280&height=720&quality=75",
+    "image_url": "/recipe-photos/parmigiana-di-melanzane-in-padella.webp",
     "image_source_url": "https://images.dissapore.com/wp-content/uploads/2019/03/Parmigiana-di-melanzane-in-padella-pane.jpg?width=1280&height=720&quality=75",
     "cuisine": "italian",
     "tags": [
@@ -8855,7 +8855,7 @@
     "source_type": "seed",
     "source_name": "Based Cooking",
     "source_url": "https://git.pikami.org/random-mirrors/based.cooking/src/branch/master/content/roesti.md",
-    "image_url": "https://git.pikami.org/random-mirrors/based.cooking/media/branch/master/pix/roesti.webp",
+    "image_url": null,
     "image_source_url": "https://git.pikami.org/random-mirrors/based.cooking/media/branch/master/pix/roesti.webp",
     "cuisine": "swiss",
     "tags": [
@@ -8912,7 +8912,7 @@
     "source_type": "seed",
     "source_name": "Demotivateur Food",
     "source_url": "https://www.demotivateur.fr/food/recette/tartiflette-traditionnelle-2597",
-    "image_url": "https://www.demotivateur.fr/images/cover_recette/1734022037-tartiflette_traditionnelle.jpg",
+    "image_url": "/recipe-photos/tartiflette-traditionnelle.webp",
     "image_source_url": "https://www.demotivateur.fr/images/cover_recette/1734022037-tartiflette_traditionnelle.jpg",
     "cuisine": "french",
     "tags": [
