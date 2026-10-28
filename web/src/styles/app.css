@@ -630,6 +630,7 @@ textarea.input {
   inset: 0;
   background: rgba(20, 14, 10, 0.4);
   z-index: 40;
+  touch-action: none;
   animation: fade-in 0.2s ease;
 }
 

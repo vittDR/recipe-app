@@ -200,6 +200,31 @@ export function Stepper({
   );
 }
 
+let scrollLocks = 0;
+let lockedScrollY = 0;
+
+/**
+ * Freezes the page behind open sheets: the window is the app's scroller, and
+ * iOS ignores overflow: hidden on body, so the body is pinned in place and the
+ * scroll position restored when the last sheet closes.
+ */
+function useScrollLock(active: boolean) {
+  useEffect(() => {
+    if (!active) return;
+    const body = document.body;
+    if (scrollLocks++ === 0) {
+      lockedScrollY = window.scrollY;
+      Object.assign(body.style, { position: 'fixed', top: `-${lockedScrollY}px`, left: '0', right: '0' });
+    }
+    return () => {
+      if (--scrollLocks === 0) {
+        Object.assign(body.style, { position: '', top: '', left: '', right: '' });
+        window.scrollTo(0, lockedScrollY);
+      }
+    };
+  }, [active]);
+}
+
 /** Dragged this far down (px), or flicked faster than this (px/ms), the sheet closes. */
 const SHEET_CLOSE_DISTANCE = 120;
 const SHEET_CLOSE_SPEED = 0.6;
@@ -209,6 +234,7 @@ export function Sheet({ open, onClose, children, label }: { open: boolean; onClo
   const backdropRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef(onClose);
   closeRef.current = onClose;
+  useScrollLock(open);
 
   useEffect(() => {
     if (!open) return;
