@@ -7,10 +7,13 @@
 // Pages without structured data return { error: 'no_recipe_data' } and the
 // app falls back to typing the recipe in.
 
-import { corsHeaders, json, requireMember, serviceClient } from '../_shared/http.ts';
+import { corsHeaders, json, requireMember, serviceClient, type Caller } from '../_shared/http.ts';
 import { extractJsonLdRecipe } from '../_shared/logic/jsonld.ts';
 import { DIFFICULTIES, normaliseEquipment, type Difficulty, type Equipment } from '../_shared/logic/facets.ts';
-import { Catalog, estimateMacros, parseIngredientLine, type CatalogEntry } from '../_shared/logic/ingredients.ts';
+import {
+  Catalog, estimateMacros, parseIngredientLine, type CatalogEntry, type NormalisedIngredient,
+} from '../_shared/logic/ingredients.ts';
+import { productKey } from '../_shared/logic/products.ts';
 
 const FETCH_TIMEOUT_MS = 10_000;
 const MAX_HTML_BYTES = 3_000_000;
@@ -35,8 +38,13 @@ interface SaveBody {
   /** { pots, oven, special }: see logic/facets.ts. */
   equipment?: Equipment | null;
   /** Lines as typed or reviewed; `guessed` marks amounts the person was unsure about.
-   *  `original_text` is the source's unscaled line, kept for reference only. */
-  ingredients: { text: string; original_text?: string | null; guessed?: boolean }[];
+   *  `original_text` is the source's unscaled line, kept for reference only.
+   *  `product_id` is the item the person picked or accepted; `new_item` asks for a
+   *  new household item even if a name matches. Neither: matched on save. */
+  ingredients: {
+    text: string; original_text?: string | null; guessed?: boolean;
+    product_id?: string | null; new_item?: boolean;
+  }[];
 }
 
 async function sha256(s: string): Promise<string> {
@@ -75,6 +83,17 @@ async function fetchPage(url: string): Promise<string> {
   return text.slice(0, MAX_HTML_BYTES);
 }
 
+/** A household item named after the line, or the one it already has with that name. */
+async function createItem(caller: Caller, name: string): Promise<string | null> {
+  const { data, error } = await caller.db.from('products')
+    .insert({ household_id: caller.householdId, name_fr: name, created_by: caller.userId })
+    .select('id').single();
+  if (!error) return data.id as string;
+  // Same name already (any case or accents): use it.
+  const { data: own } = await caller.db.from('products').select('id, name_fr').eq('household_id', caller.householdId);
+  return (own ?? []).find((p) => productKey(p.name_fr) === productKey(name))?.id ?? null;
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
   const caller = await requireMember(req);
@@ -110,15 +129,36 @@ Deno.serve(async (req) => {
     }
     const { data: entries } = await admin.from('ingredient_catalog').select('*');
     const catalog = new Catalog((entries ?? []) as CatalogEntry[]);
+    const byName = new Map(((entries ?? []) as CatalogEntry[]).map((e) => [e.name, e]));
     const servings = r.servings && r.servings > 0 ? r.servings : 2;
+    const lines = r.ingredients.filter((i) => i.text?.trim());
 
-    const ingredients = r.ingredients
-      .filter((i) => i.text?.trim())
-      .map((i) => ({
-        ...catalog.normalise(parseIngredientLine(i.text)),
-        guessed: !!i.guessed,
-        original_text: i.original_text?.trim() || null,
-      }));
+    // Items picked in the app; RLS hides other households' items.
+    const ids = [...new Set(lines.map((i) => i.product_id).filter(Boolean))] as string[];
+    const { data: picked } = ids.length
+      ? await caller.db.from('products').select('id, name_fr, ingredient, default_aisle').in('id', ids)
+      : { data: [] };
+    const products = new Map((picked ?? []).map((p) => [p.id as string, p]));
+
+    const ingredients: (NormalisedIngredient & { guessed: boolean; original_text: string | null; product_id: string | null })[] = [];
+    for (const i of lines) {
+      const parsed = parseIngredientLine(i.text);
+      const product = i.product_id ? products.get(i.product_id) : undefined;
+      let norm: NormalisedIngredient;
+      let productId: string | null = product?.id ?? null;
+      const entry = product?.ingredient ? byName.get(product.ingredient) : undefined;
+      if (entry) {
+        norm = { ...parsed, name: entry.name, aisle: entry.default_aisle, is_staple: entry.is_staple, catalog: entry };
+      } else if (product) {
+        norm = { ...parsed, name: product.name_fr, aisle: product.default_aisle, is_staple: false };
+      } else if (i.new_item && parsed.name) {
+        norm = { ...parsed, aisle: 'other', is_staple: false };
+        productId = await createItem(caller, parsed.name);
+      } else {
+        norm = catalog.normalise(parsed); // the database links it to an item on insert
+      }
+      ingredients.push({ ...norm, guessed: !!i.guessed, original_text: i.original_text?.trim() || null, product_id: productId });
+    }
     const macros = estimateMacros(ingredients, servings);
 
     const { data: saved, error } = await caller.db.from('recipes').insert({
@@ -151,6 +191,7 @@ Deno.serve(async (req) => {
     const { error: ingErr } = await caller.db.from('recipe_ingredients').insert(ingredients.map((i, position) => ({
       recipe_id: saved.id, position, name: i.name, quantity: i.quantity, unit: i.unit,
       aisle: i.aisle, is_staple: i.is_staple, guessed: i.guessed, raw_text: i.raw_text, original_text: i.original_text,
+      product_id: i.product_id,
     })));
     if (ingErr) {
       await caller.db.from('recipes').delete().eq('id', saved.id);

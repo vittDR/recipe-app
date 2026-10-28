@@ -116,6 +116,16 @@ select pg_temp.check((select p.household_id = :'hid'::uuid and p.name_fr = 'siro
                       where i.recipe_id = :'rid' and i.position = 3), 'only unknown lines create an item');
 select pg_temp.check((select count(*) = 1 from products where search_key = 'sirop de sureau'), 'created once');
 
+-- A picked item is kept; another household's item isn't.
+insert into products (household_id, name_fr) values (:'eve_hid', 'Secret d''Eve') returning id as eve_item \gset
+insert into recipe_ingredients (recipe_id, position, name, product_id) values
+  (:'rid', 4, 'framboises', :'swiffer'),
+  (:'rid', 5, 'framboises', :'eve_item');
+select pg_temp.check((select product_id = :'swiffer'::uuid from recipe_ingredients where recipe_id = :'rid' and position = 4),
+                     'the item picked in the app is kept');
+select pg_temp.check((select product_id = :'framboises'::uuid from recipe_ingredients where recipe_id = :'rid' and position = 5),
+                     'another household''s item is replaced by a name match');
+
 -- Leave the database as the other suites expect it.
 delete from households where id in (:'hid', :'eve_hid');
 delete from auth.users where id in ('00000000-0000-0000-0000-00000000000d', '00000000-0000-0000-0000-00000000000e');
