@@ -44,7 +44,7 @@ Key rules from the handover, and where they live:
 
 ## One-time setup
 
-Follow **[docs/SETUP.md](docs/SETUP.md)** step by step: database, email + password sign-in (no emails sent), functions and notifications, Cloudflare Pages, installing on the iPhones, and keep-alive.
+Follow **[docs/SETUP.md](docs/SETUP.md)** step by step to run your own copy: Supabase project and database, email + password sign-in (no emails sent), functions and notifications, Cloudflare Pages, installing on phones, and keep-alive. It also documents the database structure and how to add recipes and ingredients.
 
 ## Development
 
