@@ -32,7 +32,7 @@ The photos are in `web/public/recipe-photos/` and ship with the app, so `image_u
 - A few carry the source blog's watermark (Arrosto di tacchino, Blanquette de veau légère, Frittata di zucchine, Saltimbocca).
 - The service worker doesn't precache them: each loads the first time a card shows it.
 
-To replace or add photos, run `scripts/download_images.py` (needs `pip install requests pillow`), or drop a 4:3 WebP into the folder and point `image_url` at it.
+To replace or add photos, run `scripts/download_images.py` (needs `pip install requests pillow`), or drop a 4:3 WebP into the folder and point `image_url` at it. Then run `python3 scripts/make_thumbnails.py web/public/recipe-photos` to refresh the small copies in `recipe-photos/thumb/` that the Recipes grid uses.
 
 ## Known limits
 

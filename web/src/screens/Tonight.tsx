@@ -64,7 +64,7 @@ export function TonightScreen() {
       const whoEating = who === 'me' || partners.length === 0 ? [userId] : [userId, ...partners.map((p) => p.user_id)];
       const res = await callFunction<{ deck_id: string }>('deal-deck', {
         who_eating: whoEating, max_minutes: maxMinutes, mood, for_date: today,
-      });
+      }, 30_000);
       navigate(`/deck/${res.deck_id}`);
     } catch (e) {
       setError(e instanceof Error && e.message === 'no_recipes' ? t('tonight.noRecipes') : t('app.error'));
