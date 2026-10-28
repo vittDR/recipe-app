@@ -392,8 +392,12 @@ auth.users ──1:1── profiles ──1:1── member_goals            (pri
                       │      ──1:n── grocery_items
                       │      ──1:n── household_staples
                       │      ──1:n── household_aisle_order
+                      │      ──1:n── household_stores
+                      │      ──1:n── household_products ──n:1── products
+                      │      ──1:n── products (the household's own items)
 
 ingredient_catalog   (shared by everyone; recipe_ingredients.name points at it by name)
+products with household_id = null   (the shared shopping catalogue; one per catalogue ingredient)
 recipes with household_id = null   (the seed library, readable by everyone)
 push_outbox, ai_cache   (server only)
 ```
@@ -412,7 +416,7 @@ push_outbox, ai_cache   (server only)
 | `deck_mood` | `any`, `comfort`, `light`, `quick`, `fancy` |
 | `verdict` | `pass`, `yes`, `must` |
 | `meal_status` | `planned`, `cooked`, `skipped` |
-| `aisle` | `produce`, `meat_fish`, `dairy_eggs`, `bakery`, `pantry`, `spices`, `frozen`, `drinks`, `household`, `other` |
+| `aisle` | `produce`, `meat_fish`, `dairy_eggs`, `bakery`, `pantry`, `spices`, `frozen`, `drinks`, `hygiene`, `household`, `other` |
 
 ### People and households
 
@@ -440,7 +444,7 @@ Only the person themselves can read or write these rows.
 | --- | --- |
 | `ingredient_catalog` | Canonical ingredients. `name` (lowercase English, primary key), `name_fr`, `name_it`, `aliases[]`, `default_aisle`, `is_staple`, `kcal_100g`, `protein_100g`, `grams_per_unit`, `diet_class` (`veg`/`fish`/`meat`), `exotic`. Readable by every signed-in user. |
 | `recipes` | `household_id` (**null = seed library**, shared by everyone), `copied_from`, `title`, `source_type`, `source_url`, `source_name`, `image_path`, `image_source_url`, `servings`, `original_servings`, `total_min`, `steps` (JSON array of strings), `tags[]`, `cuisine`, `language` (`en`/`fr`/`it`), `kcal_per_serving`, `protein_g_per_serving`, `macros_estimated`, `difficulty` (`easy`/`medium`/`hard`), `equipment` (JSON, e.g. `{"pots":2,"oven":true,"special":["blender"]}`). `source_url` is unique per household. |
-| `recipe_ingredients` | One row per line: `position`, `name` (the catalogue name when matched), `quantity`, `unit`, `aisle`, `is_staple`, `guessed`, `raw_text` (the line as written), `original_text` (the source's unscaled line). |
+| `recipe_ingredients` | One row per line: `position`, `name` (the catalogue name when matched), `product_id`, `quantity`, `unit`, `aisle`, `is_staple`, `guessed`, `raw_text` (the line as written), `original_text` (the source's unscaled line). A trigger sets `product_id` on save: the catalogue ingredient's product, else a product whose name or alias matches (the household's own first), else a new household item. Seed recipes only use shared products. |
 | `library_recipes` (view) | What a household sees on the Recipes tab: its own recipes plus the seed library, minus seed recipes it has already copied. |
 
 Households never edit seed recipes directly: `copy_recipe(recipe_id)` makes a
@@ -468,7 +472,10 @@ each time a deck is dealt.
 
 | Table | What it holds |
 | --- | --- |
-| `grocery_items` | The shared list: `name`, `quantity`, `unit`, `aisle`, `recipe_id`, who added/checked it, `sort_key`. Cleared items keep a `cleared_at` and stay for "probably at home" hints. |
+| `products` | The real items behind list lines: `name_fr` (French first), `name_en`, `aliases[]` (other words and brands: *sopalin*, *pq*), `ingredient` (the catalogue ingredient it is, so recipe lines land on it), `default_aisle`. `household_id` null = the shared catalogue (catalogue ingredients plus everyday non-food items); otherwise an item a household created by typing it. |
+| `grocery_items` | The shared list: `product_id`, `name` (the product's French name when added), `quantity`, `unit`, `aisle`, `store_id`, `recipe_id`, who added/checked it, `sort_key`. Cleared items keep a `cleared_at` and stay for "probably at home" hints. |
+| `household_stores` | Stores like Picard. Each is a section of the list, ordered among the aisles (same `position` space as `household_aisle_order`). |
+| `household_products` | Per household and product: remembered `aisle` or `store_id`, `add_count`, `last_added_at`, and `pinned` / `hidden` for "Frequently bought" (shown when pinned or added at least twice, unless hidden). |
 | `household_staples` | Names the household always has at home. |
 | `household_aisle_order` | The household's aisle order for their store. |
 
@@ -490,14 +497,15 @@ each time a deck is dealt.
 | `my_portion(recipe, eaters)` | The caller's plate and whether it fits their goals |
 | `member_fits(deck)` | Per card, whether each person fits, without revealing their numbers |
 | `deck_matches(deck)`, `tiebreak_options(deck)`, `choose_match(deck, recipe)`, `close_deck(deck)`, `nudge(deck)` | The Tonight flow |
-| `add_grocery_items(items)`, `clear_checked_items()` | The list. Same name + unit merge into one line. |
+| `add_grocery_items(items)`, `clear_checked_items()` | The list. Items are `{product_id}` or `{name}` (any language or alias; unknown names become a household item). Same product + unit merge into one line. |
+| `set_product_section(product, aisle, store)`, `set_frequent(product, on)`, `add_store(name)` | Where a product goes for the household (remembered), "Frequently bought" pin/hide, a new store. |
 
 `enqueue_due_prompts()` and `purge_expired_invites()` are run by `pg_cron`, not by the app.
 
 ### Security, live updates, storage and scheduled jobs
 
 - **Row-level security** is on for every table (`…_rls.sql`). The rule of thumb: household data is readable by its members, personal data only by its owner, the catalogue and seed library by everyone signed in, and server tables by nobody but the functions.
-- **Realtime** is enabled for `grocery_items`, `decks`, `deck_members`, `tiebreak_picks` and `meals`, so both phones update live.
+- **Realtime** is enabled for `grocery_items`, `household_products`, `household_stores`, `decks`, `deck_members`, `tiebreak_picks` and `meals`, so both phones update live.
 - **Storage**: a private `recipe-images` bucket, with files under `<household_id>/…` readable only by that household.
 - **pg_cron jobs**: `dineamite-prompts` (every 5 minutes, queues the evening prompt and reminder), `dineamite-push-dispatch` (every minute, only does anything when `push_outbox` has unsent rows), `dineamite-purge-invites` (nightly).
 
@@ -656,6 +664,23 @@ on conflict (name) do nothing;
 | `grams_per_unit` | Grams in one piece, clove, can… Needed if recipes count it rather than weigh it |
 | `diet_class` | `veg`, `fish` or `meat`. **This drives the diet filters**, so get it right. |
 | `exotic` | `true` if most French supermarkets don't sell it. Drives the "Everyday ingredients" filter. |
+
+Re-running `seed.sql` also gives each new ingredient its grocery product
+(`sync_products_from_catalog()`), taking over a shared product that already
+has its name (so a new `green lentils` becomes the existing *Lentilles*).
+
+To split an ingredient that covers two things you'd buy separately (vegetable
+stock was once an alias of chicken stock), add the new row, remove its names
+from the old one's `aliases` with an `update` (for databases seeded before),
+point the seed lines at it in `recipes.json` and regenerate
+`seed_library.sql`. Reloading `seed_library.sql` renames the lines of seed
+recipes already loaded, and of households' copies, and refreshes their macros.
+
+`supabase/reports/unmatched_ingredients.sql` lists the recipe lines (from
+imported recipes) the catalogue doesn't know yet, most used first: the
+candidates to add. Everyday items that aren't recipe
+ingredients (shampoo, sopalin…) are rows in `products` with `household_id`
+null and no `ingredient`; add them to a new migration.
 
 ---
 

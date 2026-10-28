@@ -5,6 +5,7 @@ import { Icon } from '../../components/Icon.tsx';
 import { Avatar, Button, imageStyle, recipeEmoji } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { useSession } from '../../lib/session.tsx';
+import { INGREDIENT_SELECT } from '../../lib/products.ts';
 import { must, supabase } from '../../lib/supabase.ts';
 import type { RecipeIngredient } from '../../lib/types.ts';
 import type { DeckData } from './data.ts';
@@ -34,7 +35,7 @@ export function MatchView({ data }: { data: DeckData }) {
     void (async () => {
       const [r, ings, p, m] = await Promise.all([
         card ? Promise.resolve({ data: card.recipe, error: null }) : supabase.from('recipes').select('*').eq('id', recipeId).single(),
-        supabase.from('recipe_ingredients').select('*').eq('recipe_id', recipeId).order('position'),
+        supabase.from('recipe_ingredients').select(INGREDIENT_SELECT).eq('recipe_id', recipeId).order('position'),
         supabase.rpc('my_portion', { p_recipe: recipeId, p_eaters: data.deck.who_eating }),
         supabase.rpc('deck_matches', { p_deck: data.deck.id }),
       ]);

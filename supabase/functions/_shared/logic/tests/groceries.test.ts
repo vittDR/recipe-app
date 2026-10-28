@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { groupGroceries, proposeListItems, scaleQuantity, type GroceryItem } from '../groceries.ts';
+import { groupGroceries, proposeListItems, scaleQuantity, storeKey, type GroceryItem } from '../groceries.ts';
 
 const item = (name: string, over: Partial<GroceryItem> = {}): GroceryItem => ({
   id: name, name, quantity: null, unit: null, aisle: 'other', recipe_id: null, checked_at: null, sort_key: 0, ...over,
@@ -53,4 +53,38 @@ test('scales quantities to the pot', () => {
   assert.equal(scaleQuantity(300, 2, 2.6), 390);
   assert.equal(scaleQuantity(1, 2, 2.6), 1.25);
   assert.equal(scaleQuantity(null, 2, 3), null);
+});
+
+test('stores are sections in the household order; unknown stores fall back to the aisle', () => {
+  const g = groupGroceries([
+    item('framboises', { aisle: 'produce', store_id: 'picard' }),
+    item('citron', { aisle: 'produce' }),
+    item('pain', { aisle: 'bakery', store_id: 'gone' }),
+  ], 'aisle', [storeKey('picard'), 'produce', 'bakery']);
+  assert.deepEqual(g.map((s) => [s.key, s.items.map((i) => i.name)]), [
+    ['store:picard', ['framboises']], ['produce', ['citron']], ['bakery', ['pain']],
+  ]);
+});
+
+test('recipe ingredients match list items through their product', () => {
+  const p = proposeListItems(
+    [{ name: 'chicken breast', quantity: 2, unit: 'piece', aisle: 'meat_fish' as const, is_staple: false }],
+    [item('blanc de poulet', { ingredient: 'chicken breast' })],
+    [],
+  );
+  assert.equal(p[0].why, 'on_list');
+});
+
+test('A-Z folds accents and œ', () => {
+  const az = groupGroceries([item('Éponges'), item('Œufs'), item('Oignon')], 'az');
+  assert.deepEqual(az.map((s) => [s.key, s.items.length]), [['E', 1], ['O', 2]]);
+});
+
+test('recipe ingredients match list items by product', () => {
+  const p = proposeListItems(
+    [{ name: 'framboises', product_id: 'p-framboises', quantity: 125, unit: 'g', aisle: 'produce' as const, is_staple: false }],
+    [item('Framboises', { product_id: 'p-framboises' })],
+    [],
+  );
+  assert.equal(p[0].why, 'on_list');
 });

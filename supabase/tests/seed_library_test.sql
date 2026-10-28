@@ -79,3 +79,19 @@ update recipes set difficulty = null, equipment = null where id = :'cp' or id = 
 \i seed_library.sql
 select pg_temp.check((select count(*) = 2 from recipes where (id = :'cp' or id = :'src') and difficulty is not null
                       and equipment is not null), 're-running seed_library.sql fills difficulty and equipment');
+
+-- When the catalogue gets finer, re-running seed_library.sql renames lines in
+-- recipes already loaded (and copies) and they find their new product.
+select id as pel from recipes where title = 'Pasta e lenticchie' and household_id is null \gset
+update recipe_ingredients set name = 'chicken stock', product_id = null where recipe_id = :'pel' and raw_text like '%brodo vegetale%';
+update recipes set kcal_per_serving = 1 where id = :'pel';
+\i seed_library.sql
+select pg_temp.check((select i.name = 'vegetable stock' and p.ingredient = 'vegetable stock'
+                      from recipe_ingredients i join products p on p.id = i.product_id
+                      where i.recipe_id = :'pel' and i.raw_text like '%brodo vegetale%'), 're-running seed_library.sql follows a split ingredient');
+select pg_temp.check((select kcal_per_serving > 1 from recipes where id = :'pel'), 'and refreshes macros');
+select pg_temp.check(not exists (select 1 from recipe_ingredients where product_id is null), 'every recipe line has a product');
+select pg_temp.check(not exists (select 1 from products where household_id is null and ingredient is null
+                                 and name_fr in ('Lentilles', 'Butternut', 'Yaourts nature')),
+                     'new catalogue ingredients take over shared products with their name');
+select pg_temp.check((select diet_class = 'meat' from ingredient_catalog where name = 'chicken stock'), 'chicken stock is not vegetarian');

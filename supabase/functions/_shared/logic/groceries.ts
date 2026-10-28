@@ -4,8 +4,11 @@
 import type { Aisle } from './ingredients.ts';
 
 export const DEFAULT_AISLE_ORDER: Aisle[] = [
-  'produce', 'meat_fish', 'dairy_eggs', 'bakery', 'pantry', 'spices', 'frozen', 'drinks', 'household', 'other',
+  'produce', 'meat_fish', 'dairy_eggs', 'bakery', 'pantry', 'spices', 'frozen', 'drinks', 'hygiene', 'household', 'other',
 ];
+
+/** Section key of a store, next to aisle keys in the list and its order. */
+export const storeKey = (storeId: string): string => `store:${storeId}`;
 
 export const AT_HOME_DAYS = 7;
 
@@ -15,6 +18,11 @@ export interface GroceryItem {
   quantity: number | null;
   unit: string | null;
   aisle: Aisle;
+  /** A store (Picard...) puts the item in that store's section instead of its aisle. */
+  store_id?: string | null;
+  product_id?: string | null;
+  /** Catalogue ingredient of the item's product, to match recipe ingredients. */
+  ingredient?: string | null;
   recipe_id: string | null;
   checked_at: string | null;
   cleared_at?: string | null;
@@ -24,19 +32,26 @@ export interface GroceryItem {
 export type GroupMode = 'aisle' | 'recipe' | 'az';
 
 export interface GrocerySection<T extends GroceryItem = GroceryItem> {
-  key: string; // aisle key, recipe id, letter, or '' for "no recipe"
+  key: string; // aisle key, storeKey(id), recipe id, letter, or '' for "no recipe"
   items: T[];
 }
 
-/** Groups the live list; checked items sink to the bottom of their group. */
+/**
+ * Groups the live list; checked items sink to the bottom of their group.
+ * `sectionOrder` holds aisle keys and storeKey()s in the household's order.
+ */
 export function groupGroceries<T extends GroceryItem>(
   items: T[],
   mode: GroupMode,
-  aisleOrder: Aisle[] = DEFAULT_AISLE_ORDER,
+  sectionOrder: string[] = DEFAULT_AISLE_ORDER,
 ): GrocerySection<T>[] {
   const live = items.filter((i) => !i.cleared_at);
+  const known = new Set(sectionOrder);
+  const sectionOf = (i: T): string => (i.store_id && known.has(storeKey(i.store_id)) ? storeKey(i.store_id) : i.aisle);
   const keyOf = (i: T): string =>
-    mode === 'aisle' ? i.aisle : mode === 'recipe' ? (i.recipe_id ?? '') : (i.name[0] ?? '#').toUpperCase();
+    mode === 'aisle' ? sectionOf(i)
+      : mode === 'recipe' ? (i.recipe_id ?? '')
+        : (i.name.normalize('NFD').replace(/^œ/i, 'o')[0] ?? '#').toUpperCase();
 
   const groups = new Map<string, T[]>();
   for (const item of live) {
@@ -46,14 +61,14 @@ export function groupGroceries<T extends GroceryItem>(
 
   const rank = (k: string): number => {
     if (mode === 'aisle') {
-      const i = aisleOrder.indexOf(k as Aisle);
-      return i === -1 ? aisleOrder.length : i;
+      const i = sectionOrder.indexOf(k);
+      return i === -1 ? sectionOrder.length : i;
     }
     return 0;
   };
   const sectionKeys = [...groups.keys()].sort((a, b) => {
     if (mode === 'recipe') return a === '' ? 1 : b === '' ? -1 : 0; // keep insertion order, loose items last
-    return rank(a) - rank(b) || a.localeCompare(b);
+    return rank(a) - rank(b) || a.localeCompare(b, 'fr');
   });
 
   return sectionKeys.map((key) => ({
@@ -62,13 +77,14 @@ export function groupGroceries<T extends GroceryItem>(
       const ca = a.checked_at ? 1 : 0;
       const cb = b.checked_at ? 1 : 0;
       if (ca !== cb) return ca - cb;
-      return mode === 'az' ? a.name.localeCompare(b.name) : a.sort_key - b.sort_key;
+      return mode === 'az' ? a.name.localeCompare(b.name, 'fr') : a.sort_key - b.sort_key;
     }),
   }));
 }
 
 export interface RecipeIngredientLike {
   name: string;
+  product_id?: string | null;
   quantity: number | null;
   unit: string | null;
   aisle: Aisle;
@@ -96,16 +112,17 @@ export function proposeListItems<T extends RecipeIngredientLike>(
 ): ListProposal<T>[] {
   const since = now.getTime() - atHomeDays * 86_400_000;
   const stapleSet = new Set(staples.map((s) => s.toLowerCase()));
-  const onList = new Set(list.filter((i) => !i.checked_at && !i.cleared_at).map((i) => i.name.toLowerCase()));
-  const bought = new Set(
-    list.filter((i) => i.checked_at && Date.parse(i.checked_at) >= since).map((i) => i.name.toLowerCase()),
-  );
+  // Same product, or for older rows the same catalogue ingredient or name.
+  const keysOf = (i: GroceryItem) => [i.product_id, (i.ingredient ?? i.name).toLowerCase()].filter(Boolean) as string[];
+  const onList = new Set(list.filter((i) => !i.checked_at && !i.cleared_at).flatMap(keysOf));
+  const bought = new Set(list.filter((i) => i.checked_at && Date.parse(i.checked_at) >= since).flatMap(keysOf));
 
   return ingredients.map((ingredient) => {
     const n = ingredient.name.toLowerCase();
-    if (onList.has(n)) return { ingredient, add: false, why: 'on_list' as const };
+    const has = (set: Set<string>) => set.has(n) || (!!ingredient.product_id && set.has(ingredient.product_id));
+    if (has(onList)) return { ingredient, add: false, why: 'on_list' as const };
     if (ingredient.is_staple || stapleSet.has(n)) return { ingredient, add: false, why: 'staple' as const };
-    if (bought.has(n)) return { ingredient, add: false, why: 'bought_recently' as const };
+    if (has(bought)) return { ingredient, add: false, why: 'bought_recently' as const };
     return { ingredient, add: true, why: 'to_buy' as const };
   });
 }

@@ -4,7 +4,7 @@
 
 export type Aisle =
   | 'produce' | 'meat_fish' | 'dairy_eggs' | 'bakery' | 'pantry' | 'spices'
-  | 'frozen' | 'drinks' | 'household' | 'other';
+  | 'frozen' | 'drinks' | 'hygiene' | 'household' | 'other';
 
 export interface CatalogEntry {
   name: string;

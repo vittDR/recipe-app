@@ -64,6 +64,8 @@ const out: string[] = [
 ];
 const summary: string[] = [];
 const facets: string[] = [];
+const names: string[] = [];
+const macroRows: string[] = [];
 
 for (const r of recipes) {
   const where = `${r.title}:`;
@@ -132,12 +134,29 @@ for (const r of recipes) {
     ') as v(position, name, quantity, unit, aisle, is_staple, guessed, raw_text, original_text);');
   // Recipes loaded before difficulty and equipment existed, and households' copies of them, get them now.
   facets.push(`  (${lit(r.source_url)}, ${lit(r.difficulty)}, ${lit(JSON.stringify(equipment))}::jsonb)`);
+  for (const i of ingredients) {
+    names.push(`  (${lit(r.source_url)}, ${i.position}, ${lit(i.name)}, ${lit(i.aisle)}::public.aisle, ${lit(i.is_staple)})`);
+  }
+  macroRows.push(`  (${lit(r.source_url)}, ${lit(macros.kcalPerServing)}::real, ${lit(macros.proteinGPerServing)}::real, ${lit(macros.estimated)})`);
 }
 out.push('', '-- Difficulty and equipment for seed recipes (and copies) loaded before those fields existed.',
   'update public.recipes x set difficulty = v.difficulty, equipment = v.equipment',
   'from public.recipes s, (values', facets.join(',\n'), ') as v(source_url, difficulty, equipment)',
   'where s.household_id is null and s.source_url = v.source_url',
   "  and (x.id = s.id or x.copied_from = s.id) and x.difficulty is null and x.equipment is null;");
+// When the catalogue gets finer (vegetable stock split from chicken stock),
+// recipes already loaded follow: renamed lines find their product again.
+out.push('', '-- Ingredient names for seed recipes (and copies) loaded before the catalogue last changed.',
+  'update public.recipe_ingredients i set name = v.name, aisle = v.aisle, is_staple = v.is_staple',
+  'from public.recipes s, public.recipes x, (values', names.join(',\n'),
+  ') as v(source_url, position, name, aisle, is_staple)',
+  'where s.household_id is null and s.source_url = v.source_url and (x.id = s.id or x.copied_from = s.id)',
+  '  and i.recipe_id = x.id and i.position = v.position and i.name is distinct from v.name;');
+out.push('', '-- Their macros follow the catalogue too.',
+  'update public.recipes x set kcal_per_serving = v.kcal, protein_g_per_serving = v.protein, macros_estimated = v.estimated',
+  'from public.recipes s, (values', macroRows.join(',\n'), ') as v(source_url, kcal, protein, estimated)',
+  'where s.household_id is null and s.source_url = v.source_url and (x.id = s.id or x.copied_from = s.id)',
+  '  and (x.kcal_per_serving, x.protein_g_per_serving) is distinct from (v.kcal, v.protein);');
 out.push('', 'commit;', '');
 
 console.log(`${recipes.length} recipes, ${recipes.reduce((n, r) => n + r.ingredients.length, 0)} ingredient lines\n`);

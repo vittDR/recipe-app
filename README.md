@@ -13,7 +13,8 @@ web/                    Vite + React + TypeScript PWA (Cloudflare Pages)
   src/sw.ts             service worker: offline shell, push, notification taps
 supabase/
   migrations/           schema, server rules (matching, tie-break, lists), RLS, cron
-  seed.sql              ingredient catalogue (EN/FR/IT)
+  seed.sql              ingredient catalogue (EN/FR/IT) and its grocery products
+  personal/             one-off data for a household (a frequently-bought list)
   seed_library.sql      110 seed recipes, generated from seed/recipes.json (don't edit)
   seed/                 the seed library source: recipes.json + review sheet
   functions/            edge functions (Deno)
@@ -39,7 +40,8 @@ Key rules from the handover, and where they live:
 | 12 cards, ~8 known + 4 new, never/diet/time/recently-cooked filters | `logic/deck.ts` |
 | Patterns suggested at 8 of the last 10 exposures; apply only once accepted | `logic/preferences.ts`, Us tab |
 | Recipes tab filters (healthy, comfort, high protein, diet, veggie, fish, quick, one pot, easy, everyday ingredients); difficulty, coarse equipment, exotic ingredients | `logic/facets.ts`, `ingredient_catalog.exotic` |
-| List merges same name + unit; staples start unchecked | `add_grocery_items()`, `logic/groceries.ts` |
+| List lines are real products (chicken breast = Blanc de poulet = poulet), French first; merge on product + unit; staples start unchecked | `products`, `add_grocery_items()`, `logic/products.ts`, `logic/groceries.ts` |
+| Stores (Picard…) are list sections among the aisles; "Frequently bought" = pinned or added twice | `household_stores`, `household_products`, `set_product_section()` |
 | 17:30 prompt on cook days, reminder later, once per local day | `enqueue_due_prompts()` + pg_cron |
 
 ## One-time setup
