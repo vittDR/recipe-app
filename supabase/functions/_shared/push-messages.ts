@@ -11,6 +11,9 @@ interface Message {
 
 const name = (p: Payload) => String(p.name ?? '').trim();
 
+const count = (p: Payload) => Number(p.count ?? 0);
+const item = (p: Payload, key: 'item_fr' | 'item_en') => String(p[key] ?? '').trim().toLocaleLowerCase();
+
 const MESSAGES: Record<string, Record<Locale, (p: Payload) => Message>> = {
   prompt: {
     en: () => ({ title: 'Eating in tonight?', body: 'Deal a deck and pick dinner together.', url: '/' }),
@@ -43,6 +46,22 @@ const MESSAGES: Record<string, Record<Locale, (p: Payload) => Message>> = {
   partner_joined: {
     en: (p) => ({ title: `${name(p) || 'Your partner'} joined your household`, body: 'You can now decide dinner together.', url: '/' }),
     fr: (p) => ({ title: `${name(p) || 'Votre partenaire'} a rejoint le foyer`, body: 'Vous pouvez choisir le dîner ensemble.', url: '/' }),
+  },
+  groceries_added: {
+    en: (p) => ({
+      title: 'Groceries',
+      body: count(p) === 1 && item(p, 'item_en')
+        ? `${name(p) || 'Your partner'} added ${item(p, 'item_en')} to the list`
+        : `${name(p) || 'Your partner'} added ${count(p)} items to the list`,
+      url: '/groceries',
+    }),
+    fr: (p) => ({
+      title: 'Courses',
+      body: count(p) === 1 && item(p, 'item_fr')
+        ? `${name(p) || 'Votre partenaire'} a ajouté ${item(p, 'item_fr')} à la liste`
+        : `${name(p) || 'Votre partenaire'} a ajouté ${count(p)} articles à la liste`,
+      url: '/groceries',
+    }),
   },
 };
 

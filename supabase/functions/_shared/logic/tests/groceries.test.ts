@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { groupGroceries, proposeListItems, scaleQuantity, storeKey, type GroceryItem } from '../groceries.ts';
+import { groupGroceries, proposeListItems, scaleQuantity, splitCart, storeKey, type GroceryItem } from '../groceries.ts';
 
 const item = (name: string, over: Partial<GroceryItem> = {}): GroceryItem => ({
   id: name, name, quantity: null, unit: null, aisle: 'other', recipe_id: null, checked_at: null, sort_key: 0, ...over,
@@ -87,4 +87,15 @@ test('recipe ingredients match list items by product', () => {
     [],
   );
   assert.equal(p[0].why, 'on_list');
+});
+
+test('checked items go to the cart, last checked first', () => {
+  const { toBuy, cart } = splitCart([
+    item('milk'),
+    item('eggs', { checked_at: '2026-01-01T10:00:00Z' }),
+    item('bread', { checked_at: '2026-01-01T11:00:00Z' }),
+    item('old', { checked_at: '2026-01-01T09:00:00Z', cleared_at: '2026-01-01T12:00:00Z' }),
+  ]);
+  assert.deepEqual(toBuy.map((i) => i.name), ['milk']);
+  assert.deepEqual(cart.map((i) => i.name), ['bread', 'eggs']);
 });

@@ -369,3 +369,7 @@ from (values
   ('lettuce', '{laitue,salade verte}')
 ) as v(ingredient, extra)
 where p.ingredient = v.ingredient;
+
+-- What you usually buy of each product (2 lemons, 2 l of milk): fills
+-- products that have no default yet, never overwrites one.
+select public.apply_product_defaults();

@@ -1,7 +1,8 @@
 // Household Warm components: Button, Chip, Segmented, ListRow, Checkbox,
-// Avatar, Screen, Field, Stepper, Sheet, Toast.
+// Switch, Avatar, Screen, Field, Stepper, Sheet, Toast.
 
 import { useEffect, useRef, useState, type ButtonHTMLAttributes, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router';
 import { useI18n } from '../i18n/index.tsx';
 import { Icon } from './Icon.tsx';
@@ -98,6 +99,20 @@ export function Checkbox({
       <span className="checkbox" aria-checked={checked} style={color ? ({ '--check-color': color } as React.CSSProperties) : undefined}>
         {checked && <Icon name="check" size={16} strokeWidth={3} />}
       </span>
+    </button>
+  );
+}
+
+export function Switch({ checked, onChange, label, disabled }: {
+  checked: boolean;
+  onChange: (v: boolean) => void;
+  label: string;
+  disabled?: boolean;
+}) {
+  return (
+    <button type="button" role="switch" className="switch" aria-checked={checked} aria-label={label} disabled={disabled}
+      onClick={() => onChange(!checked)}>
+      <span className="switch__knob" />
     </button>
   );
 }
@@ -301,43 +316,71 @@ export function Sheet({ open, onClose, children, label }: { open: boolean; onClo
   }, [open]);
 
   if (!open) return null;
-  return (
+  // On <body>, so a sheet opened from inside another (a keypad over the
+  // usuals) isn't positioned against the first one's transform.
+  return createPortal(
     <>
       <div className="sheet-backdrop" ref={backdropRef} onClick={onClose} />
       <div className="sheet" ref={sheetRef} role="dialog" aria-modal="true" aria-label={label}>
         <div className="sheet__grabber" />
         {children}
       </div>
-    </>
+    </>,
+    document.body,
   );
 }
 
-let showToastImpl: ((msg: string) => void) | null = null;
+interface ToastOptions {
+  /** A button in the toast, e.g. Undo or Retry; tapping it closes the toast. */
+  action?: { label: string; onClick: () => void };
+  /** How long it stays, in ms. */
+  duration?: number;
+}
+
+let showToastImpl: ((msg: string, opts: ToastOptions) => void) | null = null;
+let hideToastImpl: ((msg: string) => void) | null = null;
 
 /** Shows a short confirmation at the top of the screen. */
-export function toast(msg: string) {
-  showToastImpl?.(msg);
+export function toast(msg: string, opts: ToastOptions = {}) {
+  showToastImpl?.(msg, opts);
+}
+
+/** Hides the toast showing now, if its message is `msg`. */
+export function dismissToast(msg: string) {
+  hideToastImpl?.(msg);
 }
 
 export function ToastHost() {
-  const [msg, setMsg] = useState<string | null>(null);
+  const [current, setCurrent] = useState<{ msg: string; opts: ToastOptions } | null>(null);
   useEffect(() => {
     let timer: number | undefined;
-    showToastImpl = (m) => {
-      setMsg(m);
+    hideToastImpl = (msg) => setCurrent((c) => (c?.msg === msg ? null : c));
+    showToastImpl = (msg, opts) => {
+      setCurrent({ msg, opts });
       window.clearTimeout(timer);
-      timer = window.setTimeout(() => setMsg(null), 2400);
+      timer = window.setTimeout(() => setCurrent(null), opts.duration ?? (opts.action ? 5000 : 2400));
     };
     return () => {
       showToastImpl = null;
+      hideToastImpl = null;
       window.clearTimeout(timer);
     };
   }, []);
-  return msg ? (
-    <div className="toast" role="status" aria-live="polite">
-      {msg}
+  if (!current) return null;
+  const { msg, opts } = current;
+  return (
+    <div className={`toast${opts.action ? ' toast--action' : ''}`} role="status" aria-live="polite">
+      <span>{msg}</span>
+      {opts.action && (
+        <button type="button" className="toast__action" onClick={() => {
+          setCurrent(null);
+          opts.action!.onClick();
+        }}>
+          {opts.action.label}
+        </button>
+      )}
     </div>
-  ) : null;
+  );
 }
 
 export function Spinner() {

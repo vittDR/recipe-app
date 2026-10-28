@@ -2,7 +2,7 @@
 
 import { storeKey } from '@logic/groceries.ts';
 import { ProductIndex, productName, type HouseholdProduct, type Product } from '@logic/products.ts';
-import { cachedCatalogue, peekCatalogue, readCache, writeCache } from './cache.ts';
+import { cachedCatalogue, forgetCatalogueVersions, peekCatalogue, readCache, writeCache } from './cache.ts';
 import { useLive } from './hooks.ts';
 import { must, supabase } from './supabase.ts';
 import type { Aisle, RecipeIngredient, Store } from './types.ts';
@@ -37,6 +37,12 @@ function loadSharedProducts(): Promise<Product[]> {
     throw e;
   });
   return sharedProducts;
+}
+
+/** After editing the shared catalogue: the next load checks for the new version. */
+export function forgetSharedProducts(): void {
+  sharedProducts = null;
+  forgetCatalogueVersions();
 }
 
 /** The household's own grocery rows, as stored on the phone between visits. */
