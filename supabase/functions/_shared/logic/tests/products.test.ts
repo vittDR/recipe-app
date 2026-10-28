@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { isFrequent, matchProduct, ProductIndex, productKey, productName, type Product } from '../products.ts';
+import { defaultAmount, matchProduct, suggestAisle, unitsFor, ProductIndex, productKey, productName, type Product } from '../products.ts';
 
 const product = (name_fr: string, over: Partial<Product> = {}): Product => ({
   id: name_fr, household_id: null, name_fr, name_en: null, aliases: [], ingredient: null, default_aisle: 'other', ...over,
@@ -54,13 +54,6 @@ test('display names are French first and capitalised', () => {
   assert.equal(productName(product('Babybel'), 'en'), 'Babybel');
 });
 
-test('frequently bought: pinned or bought twice, unless hidden', () => {
-  const hp = { product_id: 'x', aisle: null, store_id: null, add_count: 0, last_added_at: null, pinned: false, hidden: false };
-  assert.equal(isFrequent(hp), false);
-  assert.equal(isFrequent({ ...hp, add_count: 2 }), true);
-  assert.equal(isFrequent({ ...hp, pinned: true }), true);
-  assert.equal(isFrequent({ ...hp, add_count: 9, hidden: true }), false);
-});
 
 test('recipe lines: exact, close or new', () => {
   const idx = new ProductIndex([
@@ -81,3 +74,18 @@ test('recipe lines: exact, close or new', () => {
 function pick(m: ReturnType<typeof matchProduct>) {
   return m && [m.product.name_fr, m.confidence];
 }
+
+test('what + adds: the usual amount, else the aisle\'s first unit', () => {
+  assert.deepEqual(defaultAmount(product('lait', { default_aisle: 'dairy_eggs', default_unit: 'l', default_qty: 2 })), { quantity: 2, unit: 'l' });
+  assert.deepEqual(defaultAmount(product('citronnelle', { default_aisle: 'produce', default_unit: 'stalk' })), { quantity: null, unit: 'stalk' });
+  assert.deepEqual(defaultAmount(product('Swiffer', { default_aisle: 'household' })), { quantity: null, unit: 'pack' });
+  assert.deepEqual(unitsFor(product('lait', { default_aisle: 'dairy_eggs', default_unit: 'l', suggested_units: ['bottle'] })), ['l', 'bottle']);
+  assert.deepEqual(unitsFor(product('x', { default_aisle: 'drinks' })), ['bottle', 'pack', 'l']);
+});
+
+test('a new item\'s aisle comes from a product in its name', () => {
+  const idx = new ProductIndex([product('citron', { default_aisle: 'produce' }), product('Lessive', { default_aisle: 'household' })]);
+  assert.equal(suggestAisle(idx, 'Citrons bio'), 'produce');
+  assert.equal(suggestAisle(idx, 'lessive écologique'), 'household');
+  assert.equal(suggestAisle(idx, 'Swiffer'), null);
+});

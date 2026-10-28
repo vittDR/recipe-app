@@ -82,6 +82,18 @@ export function groupGroceries<T extends GroceryItem>(
   }));
 }
 
+/**
+ * Splits the live list into what's left to buy and "In the cart": checked
+ * items leave their group for one flat section, last checked first.
+ */
+export function splitCart<T extends GroceryItem>(items: T[]): { toBuy: T[]; cart: T[] } {
+  const live = items.filter((i) => !i.cleared_at);
+  return {
+    toBuy: live.filter((i) => !i.checked_at),
+    cart: live.filter((i) => i.checked_at).sort((a, b) => Date.parse(b.checked_at!) - Date.parse(a.checked_at!)),
+  };
+}
+
 export interface RecipeIngredientLike {
   name: string;
   product_id?: string | null;

@@ -1,6 +1,7 @@
 // Grocery products: the real items behind list lines. Matching and
-// autocomplete for what people type ("2 blancs de poulet", "sopalin"), and the
-// "Frequently bought" selection. Merging happens in public.add_grocery_items().
+// autocomplete for what people type ("2 blancs de poulet", "sopalin"), and
+// what to prefill when one is added (2 lemons, 2 l of milk). Merging recipe
+// adds happens in public.add_grocery_items().
 
 import type { Aisle } from './ingredients.ts';
 
@@ -13,6 +14,11 @@ export interface Product {
   aliases: string[];
   ingredient: string | null;
   default_aisle: Aisle;
+  /** What one usually buys: unit (free text, see GROCERY_UNITS) and amount. */
+  default_unit?: string | null;
+  default_qty?: number | null;
+  /** Units that make sense for it, the default first. */
+  suggested_units?: string[];
 }
 
 /** What a household remembers about a product. */
@@ -168,14 +174,45 @@ export function matchProduct(index: ProductIndex, name: string, ingredient?: str
   return weak ? { product: weak, confidence: 'weak' } : null;
 }
 
-export const FREQUENT_MIN_ADDS = 2;
-
-/** "Frequently bought": pinned, or added at least twice, unless hidden. */
-export function isFrequent(hp: HouseholdProduct): boolean {
-  return !hp.hidden && (hp.pinned || hp.add_count >= FREQUENT_MIN_ADDS);
-}
-
 /** Where a product goes for a household: its store, else its aisle. */
 export function sectionOf(product: Product, hp?: HouseholdProduct): { aisle: Aisle; store_id: string | null } {
   return { aisle: hp?.aisle ?? product.default_aisle, store_id: hp?.store_id ?? null };
+}
+
+/** Shopping units the app names in both languages; anything else shows as typed. */
+export const GROCERY_UNITS = ['piece', 'g', 'kg', 'ml', 'cl', 'l', 'pack', 'jar', 'bottle', 'can', 'bunch', 'bag', 'stalk'] as const;
+
+// Same as the aisle defaults in public.apply_product_defaults().
+const AISLE_UNITS: Record<Aisle, string[]> = {
+  produce: ['piece', 'g', 'kg', 'bunch', 'bag', 'pack'],
+  meat_fish: ['g', 'kg', 'piece', 'pack'],
+  dairy_eggs: ['pack', 'piece', 'g', 'jar', 'l'],
+  bakery: ['piece', 'pack'],
+  pantry: ['pack', 'jar', 'can', 'bottle', 'g', 'kg'],
+  spices: ['jar', 'pack', 'g'],
+  frozen: ['pack', 'g', 'kg'],
+  drinks: ['bottle', 'pack', 'l'],
+  hygiene: ['piece', 'pack', 'bottle'],
+  household: ['pack', 'piece', 'bottle'],
+  other: ['piece', 'pack', 'g', 'kg'],
+};
+
+/** Units to offer first for a product: its own, else its aisle's. */
+export function unitsFor(p: Pick<Product, 'default_aisle' | 'default_unit' | 'suggested_units'>): string[] {
+  const own = p.suggested_units?.length ? p.suggested_units : AISLE_UNITS[p.default_aisle];
+  return p.default_unit && !own.includes(p.default_unit) ? [p.default_unit, ...own] : own;
+}
+
+/** What + adds: the product's usual amount, else no quantity in its first unit. */
+export function defaultAmount(p: Pick<Product, 'default_aisle' | 'default_unit' | 'default_qty' | 'suggested_units'>):
+  { quantity: number | null; unit: string | null } {
+  return { quantity: p.default_qty ?? null, unit: p.default_unit ?? unitsFor(p)[0] ?? null };
+}
+
+/**
+ * The aisle a new item's name suggests: a product with that name, else one
+ * named inside it ("jus de citron" -> citron). Null: no idea.
+ */
+export function suggestAisle(index: ProductIndex, name: string): Aisle | null {
+  return (index.find(name) ?? index.find(withoutQualifiers(name)) ?? index.contained(name))?.default_aisle ?? null;
 }
