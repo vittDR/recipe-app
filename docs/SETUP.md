@@ -525,12 +525,12 @@ There are three ways, from easiest to most hands-on.
 
 In the **Recipes** tab, tap **Add recipe**:
 
-- **Link.** Paste a recipe link. `import-recipe` reads the page's schema.org recipe data (most big recipe sites publish it), shows it for review, then saves it. Pages without that data fall back to typing.
-- **Type it.** One ingredient per line, such as `300 g chicken thigh, diced`.
+- **Link.** Paste a recipe link. `import-recipe` reads the page's schema.org recipe data (most big recipe sites publish it) and shows it for review, each ingredient already matched to an item: exact matches, likely ones flagged « à vérifier » (kept unless you change them), and new items, some with a « C'est … ? » guess you can accept in one tap. Pages without that data fall back to typing.
+- **Type it.** Add ingredients the way you add to the groceries list: type `300 g blanc de poulet`, pick a suggestion or add it as a new item.
 
-Either way, the server matches each line against the ingredient catalogue and
-works out the macros, aisles and diet. The recipe belongs to your household
-only.
+Either way, the app sends the item it picked for each line (`product_id`, or
+`new_item` for a new household item), and the server works out the macros,
+aisles and diet from the catalogue. The recipe belongs to your household only.
 
 ### 2. Into the seed library (every household, the recommended bulk route)
 

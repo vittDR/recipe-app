@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { groupGroceries, storeKey, type GroupMode } from '@logic/groceries.ts';
-import { parseIngredientLine } from '@logic/ingredients.ts';
+import type { ParsedIngredient } from '@logic/ingredients.ts';
 import { productName, sectionOf, type Product } from '@logic/products.ts';
 import { formatQuantity } from '../components/AddToListSheet.tsx';
 import { FrequentSheet, ItemSheet, useSectionTitle } from '../components/GrocerySheets.tsx';
 import { Icon } from '../components/Icon.tsx';
+import { ProductPicker } from '../components/ProductPicker.tsx';
 import { Avatar, Button, Checkbox, Screen, Segmented, Spinner } from '../components/ui.tsx';
 import { useI18n } from '../i18n/index.tsx';
 import { useLive } from '../lib/hooks.ts';
@@ -88,25 +89,13 @@ export function GroceriesScreen() {
     });
   };
 
-  // What's typed, split into amount and name, and the products it could be.
-  const parsed = parseIngredientLine(draft);
-  const exact = parsed.name ? catalog?.index.find(parsed.name) : undefined;
-  const suggestions = parsed.name && catalog
-    ? catalog.index.search(parsed.name, 5, (p) => catalog.prefs.get(p.id)?.add_count ?? 0)
-    : [];
-
-  const addProduct = async (product: Product | null, text = parsed) => {
+  const addProduct = async (product: Product | null, text: ParsedIngredient) => {
     const amount = { quantity: text.quantity, unit: text.unit === 'piece' ? null : text.unit };
     setDraft('');
     await supabase.rpc('add_grocery_items', {
       p_items: [product ? { product_id: product.id, ...amount } : { name: text.name, ...amount }],
     });
     await Promise.all([reload(), product ? null : reloadCatalog()]);
-  };
-
-  const submit = () => {
-    if (!parsed.name) return;
-    void addProduct(exact ?? null);
   };
 
   const clearChecked = async () => {
@@ -144,39 +133,9 @@ export function GroceriesScreen() {
         </p>
       )}
 
-      <form className="row" onSubmit={(e) => { e.preventDefault(); submit(); }}>
-        <input className="input" value={draft} placeholder={t('groceries.addPlaceholder')} aria-label={t('groceries.add')}
-          onChange={(e) => setDraft(e.target.value)} enterKeyHint="done" autoComplete="off" />
-        <button type="submit" className="icon-btn icon-btn--filled" aria-label={t('groceries.add')} disabled={!parsed.name}>
-          <Icon name="plus" />
-        </button>
-      </form>
-
-      {parsed.name && (
-        <div className="list" role="listbox" aria-label={t('groceries.suggestions')} style={{ marginTop: 'var(--s-2)' }}>
-          {suggestions.map((p) => (
-            <button key={p.id} type="button" role="option" aria-selected={p.id === exact?.id} className="list-row"
-              onClick={() => void addProduct(p)}>
-              <span className="list-row__main">
-                <span className="list-row__title">{productName(p, locale)}</span>
-                <span className="list-row__meta">
-                  {suggestionMeta(p)}{onList.has(p.id) ? ` · ${t('groceries.onList')}` : ''}
-                </span>
-              </span>
-              <Icon name="plus" size={20} />
-            </button>
-          ))}
-          {!exact && (
-            <button type="button" role="option" aria-selected={false} className="list-row" onClick={() => void addProduct(null)}>
-              <span className="list-row__main">
-                <span className="list-row__title">{t('groceries.create', { name: parsed.name })}</span>
-                <span className="list-row__meta">{t('groceries.newItem')}</span>
-              </span>
-              <Icon name="plus" size={20} />
-            </button>
-          )}
-        </div>
-      )}
+      <ProductPicker catalog={catalog} value={draft} onChange={setDraft} onPick={(p, parsed) => void addProduct(p, parsed)}
+        placeholder={t('groceries.addPlaceholder')} label={t('groceries.add')}
+        metaOf={(p) => `${suggestionMeta(p)}${onList.has(p.id) ? ` · ${t('groceries.onList')}` : ''}`} />
 
       <div className="row" style={{ margin: 'var(--s-4) 0' }}>
         <Button small variant="secondary" onClick={() => setFrequentOpen(true)}>

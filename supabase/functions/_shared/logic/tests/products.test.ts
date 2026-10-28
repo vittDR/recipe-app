@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { isFrequent, ProductIndex, productKey, productName, type Product } from '../products.ts';
+import { isFrequent, matchProduct, ProductIndex, productKey, productName, type Product } from '../products.ts';
 
 const product = (name_fr: string, over: Partial<Product> = {}): Product => ({
   id: name_fr, household_id: null, name_fr, name_en: null, aliases: [], ingredient: null, default_aisle: 'other', ...over,
@@ -61,3 +61,23 @@ test('frequently bought: pinned or bought twice, unless hidden', () => {
   assert.equal(isFrequent({ ...hp, pinned: true }), true);
   assert.equal(isFrequent({ ...hp, add_count: 9, hidden: true }), false);
 });
+
+test('recipe lines: exact, close or new', () => {
+  const idx = new ProductIndex([
+    product('blanc de poulet', { name_en: 'chicken breast', aliases: ['poulet'], ingredient: 'chicken breast' }),
+    product('Framboises'),
+    product('sirop d\'érable', { name_en: 'maple syrup', ingredient: 'maple syrup' }),
+  ]);
+  assert.deepEqual(pick(matchProduct(idx, 'Blancs de poulet')), ['blanc de poulet', 'exact']);
+  assert.deepEqual(pick(matchProduct(idx, 'framboises fraîches')), ['Framboises', 'exact']);
+  // The parser's catalogue guess (it found the name inside the line) is worth a look.
+  assert.deepEqual(pick(matchProduct(idx, 'blanc de poulet fermier', 'chicken breast')), ['blanc de poulet', 'close']);
+  assert.deepEqual(pick(matchProduct(idx, 'framboises du jardin')), ['Framboises', 'close']);
+  assert.deepEqual(pick(matchProduct(idx, 'sirop')), ['sirop d\'érable', 'weak']);
+  assert.deepEqual(pick(matchProduct(idx, 'sachet de sirop')), ['sirop d\'érable', 'weak']); // one of its words
+  assert.equal(matchProduct(idx, 'fleurs de sureau'), null);
+});
+
+function pick(m: ReturnType<typeof matchProduct>) {
+  return m && [m.product.name_fr, m.confidence];
+}

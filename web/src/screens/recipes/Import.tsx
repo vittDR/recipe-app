@@ -1,15 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { DIFFICULTIES, SPECIAL_EQUIPMENT, type Difficulty } from '@logic/facets.ts';
-import { Button, Chip, Field, Screen, Segmented, toast } from '../../components/ui.tsx';
+import { draftFromLine, IngredientEditor, type DraftIngredient } from '../../components/IngredientEditor.tsx';
+import { Button, Chip, Field, Screen, Segmented, Spinner, toast } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
+import { useCatalog } from '../../lib/hooks.ts';
+import { useGroceryCatalog } from '../../lib/products.ts';
+import { useSession } from '../../lib/session.tsx';
 import { callFunction } from '../../lib/supabase.ts';
 
 interface Draft {
   title: string;
   servings: string;
   minutes: string;
-  ingredients: string;
+  ingredients: DraftIngredient[];
+  /** Lines read from the page, matched once the catalogue has loaded. */
+  pendingLines: string[] | null;
   steps: string;
   tags: string;
   source_url: string | null;
@@ -24,7 +30,7 @@ interface Draft {
 }
 
 const EMPTY: Draft = {
-  title: '', servings: '2', minutes: '', ingredients: '', steps: '', tags: '',
+  title: '', servings: '2', minutes: '', ingredients: [], pendingLines: null, steps: '', tags: '',
   source_url: null, source_type: 'typed', image_url: null, language: null,
   difficulty: null, pots: 0, oven: false, special: [],
 };
@@ -46,6 +52,9 @@ interface Preview {
 export function ImportScreen() {
   const { t, locale } = useI18n();
   const navigate = useNavigate();
+  const { household } = useSession();
+  const { data: catalog } = useGroceryCatalog(household!.id);
+  const ingredientCatalog = useCatalog();
   const [params] = useSearchParams();
   const [mode, setMode] = useState<'link' | 'type'>('link');
   const [url, setUrl] = useState(params.get('url') ?? params.get('text') ?? '');
@@ -64,7 +73,7 @@ export function ImportScreen() {
         title: recipe.title,
         servings: String(recipe.servings ?? 2),
         minutes: recipe.totalMin ? String(recipe.totalMin) : '',
-        ingredients: recipe.ingredients.join('\n'),
+        pendingLines: recipe.ingredients,
         steps: recipe.steps.join('\n'),
         tags: recipe.tags.join(', '),
         source_url: recipe.source_url,
@@ -85,6 +94,13 @@ export function ImportScreen() {
       setBusy(false);
     }
   };
+
+  // Imported lines arrive pre-matched: exact matches, suggestions to check, new items.
+  useEffect(() => {
+    if (!draft?.pendingLines || !catalog || !ingredientCatalog) return;
+    const lines = draft.pendingLines.map((l) => l.trim()).filter(Boolean);
+    setDraft({ ...draft, pendingLines: null, ingredients: lines.map((l) => draftFromLine(l, catalog, ingredientCatalog)) });
+  }, [draft, catalog, ingredientCatalog]);
 
   const save = async () => {
     if (!draft) return;
@@ -107,8 +123,11 @@ export function ImportScreen() {
           difficulty: draft.difficulty,
           equipment: draft.pots || draft.oven || draft.special.length
             ? { pots: draft.pots, oven: draft.oven, special: draft.special } : null,
-          // A trailing "?" marks an amount the person wasn't sure about.
-          ingredients: lines(draft.ingredients).map((l) => ({ text: l.replace(/\s*\?$/, ''), guessed: l.endsWith('?') })),
+          // The item each line is: chosen, matched (suggestions count as accepted), or new.
+          ingredients: draft.ingredients.map((i) => ({
+            text: i.text, original_text: i.original_text ?? null, guessed: i.guessed,
+            product_id: i.product_id, new_item: i.match === 'new',
+          })),
         },
       });
       toast(res.unknown_ingredients.length
@@ -162,9 +181,12 @@ export function ImportScreen() {
                 <input className="input" inputMode="numeric" value={form.minutes} onChange={set('minutes')} />
               </Field>
             </div>
-            <Field label={t('import.ingredientsField')} hint={t('import.unsure')}>
-              <textarea className="input" required value={form.ingredients} placeholder={t('import.ingredientsHint')} onChange={set('ingredients')} />
-            </Field>
+            <div className="field">
+              <span className="field__label">{t('import.ingredientsField')}</span>
+              {form.pendingLines ? <Spinner /> : (
+                <IngredientEditor items={form.ingredients} catalog={catalog} onChange={(ingredients) => update({ ingredients })} />
+              )}
+            </div>
             <Field label={t('import.stepsField')}>
               <textarea className="input" value={form.steps} onChange={set('steps')} />
             </Field>
@@ -193,7 +215,7 @@ export function ImportScreen() {
                 ))}
               </div>
             </div>
-            <Button block type="submit" disabled={busy || !form.title.trim() || !form.ingredients.trim()}>{t('import.save')}</Button>
+            <Button block type="submit" disabled={busy || !form.title.trim() || form.ingredients.length === 0}>{t('import.save')}</Button>
           </form>
         )}
       </div>
