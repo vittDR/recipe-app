@@ -39,9 +39,31 @@ export async function enablePush(userId: string): Promise<PushState> {
   if (!pushSupported()) return 'unsupported';
   const permission = await Notification.requestPermission();
   if (permission !== 'granted') return permission === 'denied' ? 'denied' : 'off';
+  await subscribe(userId);
+  return 'on';
+}
+
+/**
+ * On app start, for a phone that already allowed notifications: re-subscribes
+ * when the subscription was made with another VAPID key (pushes to it would be
+ * rejected), and stores it again in case the server dropped it.
+ */
+export async function syncPush(userId: string): Promise<void> {
+  if (!pushSupported() || Notification.permission !== 'granted') return;
   const reg = await navigator.serviceWorker.ready;
-  const sub = (await reg.pushManager.getSubscription()) ??
-    (await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY!) }));
+  if (!(await reg.pushManager.getSubscription())) return;
+  await subscribe(userId);
+}
+
+async function subscribe(userId: string): Promise<void> {
+  const key = urlBase64ToUint8Array(VAPID_PUBLIC_KEY!);
+  const reg = await navigator.serviceWorker.ready;
+  let sub = await reg.pushManager.getSubscription();
+  if (sub && !sameKey(sub.options.applicationServerKey, key)) {
+    await sub.unsubscribe();
+    sub = null;
+  }
+  sub ??= await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: key });
   const json = sub.toJSON();
   const { error } = await supabase.from('push_subscriptions').upsert({
     endpoint: sub.endpoint,
@@ -52,5 +74,10 @@ export async function enablePush(userId: string): Promise<PushState> {
     updated_at: new Date().toISOString(),
   });
   if (error) throw new Error(error.message);
-  return 'on';
+}
+
+function sameKey(a: ArrayBuffer | null, b: Uint8Array): boolean {
+  if (!a) return true; // browser doesn't expose it: assume unchanged
+  const x = new Uint8Array(a);
+  return x.length === b.length && x.every((v, i) => v === b[i]);
 }

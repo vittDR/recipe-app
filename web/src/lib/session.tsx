@@ -4,6 +4,7 @@
 import type { Session } from '@supabase/supabase-js';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useI18n } from '../i18n/index.tsx';
+import { syncPush } from './push.ts';
 import { supabase } from './supabase.ts';
 import type { Household, Member, MemberGoals, Profile } from './types.ts';
 
@@ -93,6 +94,11 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       sub.subscription.unsubscribe();
     };
   }, [load]);
+
+  // Keep this phone's push subscription current (e.g. after a VAPID key change).
+  useEffect(() => {
+    if (userId) void syncPush(userId).catch(() => undefined);
+  }, [userId]);
 
   // Membership changes (partner joins, someone leaves) update live.
   useEffect(() => {

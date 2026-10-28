@@ -13,11 +13,17 @@ Deno.serve(async (req) => {
   if (!secret || req.headers.get('Authorization') !== `Bearer ${secret}`) {
     return json({ error: 'forbidden' }, 403);
   }
-  webpush.setVapidDetails(
-    Deno.env.get('VAPID_SUBJECT') ?? 'mailto:admin@example.com',
-    Deno.env.get('VAPID_PUBLIC_KEY')!,
-    Deno.env.get('VAPID_PRIVATE_KEY')!,
-  );
+  try {
+    webpush.setVapidDetails(
+      Deno.env.get('VAPID_SUBJECT') ?? 'mailto:admin@example.com',
+      Deno.env.get('VAPID_PUBLIC_KEY') ?? '',
+      Deno.env.get('VAPID_PRIVATE_KEY') ?? '',
+    );
+  } catch (e) {
+    // Malformed or missing VAPID secrets: nothing can be sent until they're fixed.
+    console.error('push-dispatch: bad VAPID secrets:', String(e));
+    return json({ error: 'bad_vapid_keys', detail: String(e) }, 500);
+  }
   const admin = serviceClient();
 
   const { data: pending, error } = await admin.from('push_outbox')
