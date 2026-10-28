@@ -10,7 +10,7 @@ values
   ('salt', 'sel', '{sel,sea salt}', 'spices', true, 0, 0, 6, 'veg'),
   ('black pepper', 'poivre noir', '{pepper,poivre}', 'spices', true, 251, 10, 2, 'veg'),
   ('garlic', 'ail', '{garlic clove,gousse d''ail}', 'produce', true, 149, 6.4, 5, 'veg'),
-  ('chicken stock', 'bouillon de volaille', '{stock,broth,bouillon,vegetable stock}', 'pantry', true, 7, 1, 240, 'veg'),
+  ('chicken stock', 'bouillon de volaille', '{stock,broth,bouillon,vegetable stock}', 'pantry', true, 7, 1, 240, 'meat'),
   ('butter', 'beurre', '{}', 'dairy_eggs', true, 717, 0.9, 14, 'veg'),
   ('soy sauce', 'sauce soja', '{soja}', 'pantry', true, 53, 8, 16, 'veg'),
   ('flour', 'farine', '{all-purpose flour}', 'pantry', true, 364, 10, 8, 'veg'),
@@ -306,6 +306,9 @@ values
   ('plain yogurt', 'yaourt nature', 'yogurt bianco', '{"yogurt","yaourt","natural yogurt","yogurt naturale"}', 'dairy_eggs', false, 61, 3.5, 125, 'veg'),
   ('pecorino', 'pecorino', 'pecorino romano', '{"pecorino sardo"}', 'dairy_eggs', false, 387, 32, 5, 'veg')
 on conflict (name) do nothing;
+
+-- Chicken stock is made from chicken (databases seeded before this said veg).
+update public.ingredient_catalog set diet_class = 'meat' where name = 'chicken stock';
 
 -- Their names come off the entries they were part of (databases seeded before the split).
 update public.ingredient_catalog c

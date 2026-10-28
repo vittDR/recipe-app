@@ -94,3 +94,4 @@ select pg_temp.check(not exists (select 1 from recipe_ingredients where product_
 select pg_temp.check(not exists (select 1 from products where household_id is null and ingredient is null
                                  and name_fr in ('Lentilles', 'Butternut', 'Yaourts nature')),
                      'new catalogue ingredients take over shared products with their name');
+select pg_temp.check((select diet_class = 'meat' from ingredient_catalog where name = 'chicken stock'), 'chicken stock is not vegetarian');

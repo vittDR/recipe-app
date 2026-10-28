@@ -2080,7 +2080,7 @@ with r as (
     macros_estimated, language, difficulty, equipment)
   select null, 'Brazilian fish stew (moqueca)', 'seed', 'https://www.feastingathome.com/brazilian-fish-stew-aka-moqueca', 'Feasting at Home', null, null,
     2, 4, 35, '["Pat the fish dry, cut into large chunks and rub with salt, lime zest and lime juice; set aside.","In a wide pan, sauté the onion in the oil with a pinch of salt until soft.","Add carrot, red pepper, garlic and jalapeño and cook a few minutes more.","Stir in the tomato paste, paprika, cumin and stock, bring to a simmer, add the tomatoes, cover and cook until the carrots are tender.","Pour in the coconut milk and adjust the salt.","Tuck the fish into the sauce and simmer gently, spooning broth over, until just cooked (thick pieces can finish in a 175°C oven).","Add a squeeze of lime, scatter with herbs and serve over rice."]'::jsonb,
-    array['brazilian', 'cod', 'stew', 'comfort', 'fish', 'high protein']::text[], 'brazilian', 767, 42.4,
+    array['brazilian', 'cod', 'stew', 'comfort', 'fish', 'high protein']::text[], 'brazilian', 768, 42.7,
     true, 'en', 'medium', '{"pots":2,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.feastingathome.com/brazilian-fish-stew-aka-moqueca')
   returning id
@@ -2100,7 +2100,7 @@ select r.id, v.* from r, (values
   (10, 'tomato paste', 0.5::real, 'tbsp', 'pantry'::public.aisle, false, false, '0.5 tbsp tomato paste', '1 tbsp tomato paste'),
   (11, 'paprika', 1::real, 'tsp', 'spices'::public.aisle, true, false, '1 tsp paprika', '2 tsp paprika'),
   (12, 'cumin', 0.5::real, 'tsp', 'spices'::public.aisle, true, false, '0.5 tsp cumin', '1 tsp cumin'),
-  (13, 'chicken stock', 120::real, 'ml', 'pantry'::public.aisle, true, false, '120 ml chicken stock, or fish stock', '240 ml chicken stock, or fish stock'),
+  (13, 'fish stock', 120::real, 'ml', 'pantry'::public.aisle, true, false, '120 ml fish stock', '240 ml fish stock'),
   (14, 'tomato', 135::real, 'g', 'produce'::public.aisle, false, true, '135 g tomato, diced', '270 g tomato, diced (1.5 cups)'),
   (15, 'coconut milk', 200::real, 'ml', 'pantry'::public.aisle, false, false, '200 ml coconut milk', '400 ml coconut milk (14 oz can)'),
   (16, 'parsley', 4::real, 'tbsp', 'produce'::public.aisle, false, false, '4 tbsp parsley, or coriander or spring onion, chopped', '8 tbsp parsley, or coriander or spring onion, chopped'),
@@ -3022,7 +3022,7 @@ with r as (
     macros_estimated, language, difficulty, equipment)
   select null, 'Prawn Okonomiyaki', 'seed', 'https://www.waitrose.com/content/waitrose/en/home/recipes/recipe_directory/o/okonomiyaki.html', 'Waitrose', null, null,
     2, 2, 30, '["Whisk together ketchup, Worcestershire sauce, oyster sauce and sugar to make the okonomiyaki sauce.","Combine flour, baking powder and salt in a large bowl, beat in the stock and eggs, then fold in the cabbage and most of the spring onions.","Heat half the oil in a nonstick pan with a lid over medium heat and spoon in half the batter as a thick round about 15 cm wide; don''t press it down.","Push half the prawns into the top, cover and cook 3-5 minutes until set and golden underneath.","Flip, cover again and cook another 3-5 minutes until golden and cooked through; give each side an extra minute if needed.","Slide onto a plate, drizzle with mayonnaise and sauce, scatter with spring onions and serve with pickled ginger.","Repeat with the remaining oil, batter and prawns for the second pancake."]'::jsonb,
-    array['japanese', 'asian', 'prawns', 'comfort', 'treat', 'fish']::text[], 'japanese', 742, 27.8,
+    array['japanese', 'asian', 'prawns', 'comfort', 'treat', 'fish']::text[], 'japanese', 743, 28.2,
     true, 'en', 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.waitrose.com/content/waitrose/en/home/recipes/recipe_directory/o/okonomiyaki.html')
   returning id
@@ -3032,7 +3032,7 @@ select r.id, v.* from r, (values
   (0, 'flour', 100::real, 'g', 'pantry'::public.aisle, true, false, '100 g flour, plain', '100 g flour, plain'),
   (1, 'baking powder', 0.25::real, 'tsp', 'pantry'::public.aisle, true, false, '0.25 tsp baking powder', '0.25 tsp baking powder'),
   (2, 'salt', 0.5::real, 'tsp', 'spices'::public.aisle, true, false, '0.5 tsp salt, sea salt', '0.5 tsp salt, sea salt'),
-  (3, 'chicken stock', 150::real, 'ml', 'pantry'::public.aisle, true, false, '150 ml stock, dashi or fish/vegetable', '150 ml stock, dashi or fish/vegetable'),
+  (3, 'fish stock', 150::real, 'ml', 'pantry'::public.aisle, true, false, '150 ml fish stock, dashi', '150 ml fish stock, dashi'),
   (4, 'eggs', 2::real, 'piece', 'dairy_eggs'::public.aisle, false, false, '2 eggs, free range', '2 eggs, free range'),
   (5, 'cabbage', 300::real, 'g', 'produce'::public.aisle, false, false, '300 g cabbage, white or pointed, finely shredded', '300 g cabbage, white or pointed, finely shredded'),
   (6, 'spring onion', 3::real, 'piece', 'produce'::public.aisle, false, false, '3 spring onion, very thinly sliced', '3 spring onion, very thinly sliced'),
@@ -4100,7 +4100,7 @@ from public.recipes s, public.recipes x, (values
   ('https://www.feastingathome.com/brazilian-fish-stew-aka-moqueca', 10, 'tomato paste', 'pantry'::public.aisle, false),
   ('https://www.feastingathome.com/brazilian-fish-stew-aka-moqueca', 11, 'paprika', 'spices'::public.aisle, true),
   ('https://www.feastingathome.com/brazilian-fish-stew-aka-moqueca', 12, 'cumin', 'spices'::public.aisle, true),
-  ('https://www.feastingathome.com/brazilian-fish-stew-aka-moqueca', 13, 'chicken stock', 'pantry'::public.aisle, true),
+  ('https://www.feastingathome.com/brazilian-fish-stew-aka-moqueca', 13, 'fish stock', 'pantry'::public.aisle, true),
   ('https://www.feastingathome.com/brazilian-fish-stew-aka-moqueca', 14, 'tomato', 'produce'::public.aisle, false),
   ('https://www.feastingathome.com/brazilian-fish-stew-aka-moqueca', 15, 'coconut milk', 'pantry'::public.aisle, false),
   ('https://www.feastingathome.com/brazilian-fish-stew-aka-moqueca', 16, 'parsley', 'produce'::public.aisle, false),
@@ -4520,7 +4520,7 @@ from public.recipes s, public.recipes x, (values
   ('https://www.waitrose.com/content/waitrose/en/home/recipes/recipe_directory/o/okonomiyaki.html', 0, 'flour', 'pantry'::public.aisle, true),
   ('https://www.waitrose.com/content/waitrose/en/home/recipes/recipe_directory/o/okonomiyaki.html', 1, 'baking powder', 'pantry'::public.aisle, true),
   ('https://www.waitrose.com/content/waitrose/en/home/recipes/recipe_directory/o/okonomiyaki.html', 2, 'salt', 'spices'::public.aisle, true),
-  ('https://www.waitrose.com/content/waitrose/en/home/recipes/recipe_directory/o/okonomiyaki.html', 3, 'chicken stock', 'pantry'::public.aisle, true),
+  ('https://www.waitrose.com/content/waitrose/en/home/recipes/recipe_directory/o/okonomiyaki.html', 3, 'fish stock', 'pantry'::public.aisle, true),
   ('https://www.waitrose.com/content/waitrose/en/home/recipes/recipe_directory/o/okonomiyaki.html', 4, 'eggs', 'dairy_eggs'::public.aisle, false),
   ('https://www.waitrose.com/content/waitrose/en/home/recipes/recipe_directory/o/okonomiyaki.html', 5, 'cabbage', 'produce'::public.aisle, false),
   ('https://www.waitrose.com/content/waitrose/en/home/recipes/recipe_directory/o/okonomiyaki.html', 6, 'spring onion', 'produce'::public.aisle, false),
@@ -4632,7 +4632,7 @@ from public.recipes s, (values
   ('https://www.recipetineats.com/taiwanese-three-cup-chicken/', 448::real, 28.8::real, true),
   ('https://www.bbcgoodfoodme.com/recipes/teriyaki-chicken/', 491::real, 26.6::real, false),
   ('https://www.recipetineats.com/thai-green-curry/', 787::real, 27.4::real, true),
-  ('https://www.feastingathome.com/brazilian-fish-stew-aka-moqueca', 767::real, 42.4::real, true),
+  ('https://www.feastingathome.com/brazilian-fish-stew-aka-moqueca', 768::real, 42.7::real, true),
   ('https://www.weightwatchers.com/us/recipe/cajun-salmon-sweet-potato-chowder/56d82afd0ac646df0ee3e08f', 433::real, 29.8::real, true),
   ('https://www.olivemagazine.com/recipes/fish-and-seafood/cajun-salmon-with-rosemary-sweet-potato-wedges/', 742::real, 30.5::real, false),
   ('https://whitneybond.com/carne-asada-bowl/', 1061::real, 59.9::real, true),
@@ -4664,7 +4664,7 @@ from public.recipes s, (values
   ('https://www.maangchi.com/?p=11562', 974::real, 63.1::real, true),
   ('https://www.scattidigusto.it/2021/02/11/lasagne-alla-bolognese-ricetta-originale-con-ragu-cremoso-e-sfoglia-verde/', 978::real, 42.6::real, true),
   ('https://www.dissapore.com/ricette/parmigiana-di-melanzane-in-padella-ricetta/', 294::real, 24.4::real, true),
-  ('https://www.waitrose.com/content/waitrose/en/home/recipes/recipe_directory/o/okonomiyaki.html', 742::real, 27.8::real, true),
+  ('https://www.waitrose.com/content/waitrose/en/home/recipes/recipe_directory/o/okonomiyaki.html', 743::real, 28.2::real, true),
   ('https://git.pikami.org/random-mirrors/based.cooking/src/branch/master/content/roesti.md', 450::real, 18.9::real, true),
   ('https://www.demotivateur.fr/food/recette/tartiflette-traditionnelle-2597', 772::real, 27.6::real, true)
 ) as v(source_url, kcal, protein, estimated)
