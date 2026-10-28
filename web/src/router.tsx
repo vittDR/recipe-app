@@ -17,6 +17,8 @@ import { ImportScreen } from './screens/recipes/Import.tsx';
 import { CookingScreen } from './screens/recipes/Cooking.tsx';
 import { RecipeScreen } from './screens/recipes/Recipe.tsx';
 import { RecipesScreen } from './screens/recipes/Recipes.tsx';
+import { CatalogScreen } from './screens/Catalog.tsx';
+import { NotificationsScreen } from './screens/Notifications.tsx';
 import { PlanScreen } from './screens/Plan.tsx';
 import { SettingsScreen } from './screens/Settings.tsx';
 import { TonightScreen } from './screens/Tonight.tsx';
@@ -108,6 +110,8 @@ export const router = createBrowserRouter([
       { path: '/recipes/:id/cook', element: <CookingScreen /> },
       { path: '/us/goals', element: <GoalsScreen editing /> },
       { path: '/us/tastes', element: <TastesScreen editing /> },
+      { path: '/us/notifications', element: <NotificationsScreen /> },
+      { path: '/us/catalog', element: <CatalogScreen /> },
       { path: '/invite', element: <InviteScreen editing /> },
       { path: '/plan', element: <PlanScreen /> },
       { path: '/settings', element: <SettingsScreen /> },

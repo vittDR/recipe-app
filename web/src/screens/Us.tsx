@@ -4,7 +4,7 @@ import { detectPatterns, recipeFeatures, type PatternSuggestion } from '@logic/p
 import { Icon } from '../components/Icon.tsx';
 import { Avatar, Button, Field, Screen, Segmented, toast } from '../components/ui.tsx';
 import { LOCALES, useI18n, type Locale } from '../i18n/index.tsx';
-import { enablePush, pushState, type PushState } from '../lib/push.ts';
+import { pushState, type PushState } from '../lib/push.ts';
 import { useSession } from '../lib/session.tsx';
 import { supabase } from '../lib/supabase.ts';
 import type { LearnedPattern, TasteRule } from '../lib/types.ts';
@@ -145,15 +145,17 @@ export function UsScreen() {
       </div>
 
       <h2 className="section-label">{t('us.notifications')}</h2>
-      <div className="card stack">
-        {push === 'on' && <span style={{ color: 'var(--c-success)' }}>✓ {t('us.notificationsOn')}</span>}
-        {push === 'denied' && <span className="muted">{t('us.notificationsDenied')}</span>}
-        {push === 'unsupported' && <span className="muted">{t('us.notificationsUnsupported')}</span>}
-        {push === 'off' && (
-          <Button variant="secondary" onClick={() => void enablePush(userId!).then(setPush).catch(() => setPush('off'))}>
-            <Icon name="bell" /> {t('us.enableNotifications')}
-          </Button>
-        )}
+      <div className="list">
+        <Link to="/us/notifications" className="list-row">
+          <Icon name="bell" />
+          <span className="list-row__main">
+            <span className="list-row__title">{t('notifications.title')}</span>
+            {push === 'on' && <span className="list-row__meta">{t('us.notificationsOn')}</span>}
+            {push === 'denied' && <span className="list-row__meta">{t('us.notificationsDenied')}</span>}
+            {push === 'unsupported' && <span className="list-row__meta">{t('us.notificationsUnsupported')}</span>}
+          </span>
+          <span className="chevron"><Icon name="chevron" size={18} /></span>
+        </Link>
       </div>
 
       <h2 className="section-label">{t('account.language')}</h2>
@@ -181,6 +183,16 @@ export function UsScreen() {
           <Icon name="gear" /> <span className="list-row__main">{t('us.settings')}</span>
           <span className="chevron"><Icon name="chevron" size={18} /></span>
         </Link>
+        {household?.owner_id === userId && (
+          <Link to="/us/catalog" className="list-row">
+            <Icon name="book" />
+            <span className="list-row__main">
+              <span className="list-row__title">{t('admin.entry')}</span>
+              <span className="list-row__meta">{t('admin.entryHint')}</span>
+            </span>
+            <span className="chevron"><Icon name="chevron" size={18} /></span>
+          </Link>
+        )}
       </div>
       <Button block variant="text" onClick={() => void signOut()} style={{ marginTop: 'var(--s-4)' }}>{t('us.signOut')}</Button>
     </Screen>

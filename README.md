@@ -41,7 +41,11 @@ Key rules from the handover, and where they live:
 | Patterns suggested at 8 of the last 10 exposures; apply only once accepted | `logic/preferences.ts`, Us tab |
 | Recipes tab filters (healthy, comfort, high protein, diet, veggie, fish, quick, one pot, easy, everyday ingredients); difficulty, coarse equipment, exotic ingredients | `logic/facets.ts`, `ingredient_catalog.exotic` |
 | List lines are real products (chicken breast = Blanc de poulet = poulet), French first; merge on product + unit; staples start unchecked | `products`, `add_grocery_items()`, `logic/products.ts`, `logic/groceries.ts` |
-| Stores (Picard…) are list sections among the aisles; "Frequently bought" = pinned or added twice | `household_stores`, `household_products`, `set_product_section()` |
+| Stores (Picard…) are list sections among the aisles | `household_stores`, `household_products`, `set_product_section()` |
+| List changes show at once and save in the background (ids made on the phone, retried 1 s / 3 s / 10 s, then 10 min) | `logic/listsync.ts`, `web/src/lib/listQueue.ts`, `put_grocery_item()` |
+| Products carry a usual amount and units; the household's creator edits the shared catalogue | `apply_product_defaults()`, `is_catalog_admin()`, Us > Edit the catalog |
+| Usuals = checked-off purchases, halving monthly; due again past the median gap | `logic/usuals.ts` |
+| "<name> added N items" pushed after 5 quiet minutes, not to people looking at the list; per-kind switches | `enqueue_grocery_pushes()`, `grocery_presence`, `profiles.push_muted` |
 | 17:30 prompt on cook days, reminder later, once per local day | `enqueue_due_prompts()` + pg_cron |
 
 ## One-time setup

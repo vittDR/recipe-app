@@ -51,6 +51,11 @@ function serverVersions(): Promise<Record<Catalogue, string>> {
   return versions;
 }
 
+/** Checks the server's versions again on next use, e.g. after editing a catalogue. */
+export function forgetCatalogueVersions(): void {
+  versions = null;
+}
+
 interface Versioned<T> {
   version: string;
   data: T;

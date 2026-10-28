@@ -33,7 +33,7 @@ interface Loaded<T> {
 export function useLive<T>(
   key: string | null,
   fetcher: () => Promise<T>,
-  tables: { table: string; filter?: string }[] = [],
+  tables: { table: string; filter?: string; event?: 'INSERT' | 'UPDATE' | 'DELETE' }[] = [],
   initial?: () => T | null,
 ): Loaded<T> {
   const [data, setData] = useState<T | null>(() => initial?.() ?? null);
@@ -61,7 +61,7 @@ export function useLive<T>(
     if (tables.length === 0) return;
     let channel = supabase.channel(`live:${key}:${Math.random().toString(36).slice(2)}`);
     for (const t of tables) {
-      channel = channel.on('postgres_changes', { event: '*', schema: 'public', table: t.table, filter: t.filter }, () => {
+      channel = channel.on('postgres_changes', { event: t.event ?? '*', schema: 'public', table: t.table, filter: t.filter }, () => {
         void reload();
       });
     }
