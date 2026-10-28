@@ -1,5 +1,5 @@
 # Free Supabase projects pause after a week without activity. One small
-# request a day keeps DINEAMITE awake. Uses the public (publishable) key only.
+# request a day keeps Dineamite awake. Uses the public (publishable) key only.
 name: Keep Supabase awake
 on:
   schedule:

@@ -3,7 +3,7 @@
 
 export const en = {
   app: {
-    name: 'DINEAMITE',
+    name: 'Dineamite',
     loading: 'Loading…',
     error: 'Something went wrong. Try again.',
     offline: 'You’re offline. Changes will sync when you’re back.',
@@ -31,7 +31,7 @@ export const en = {
     getStarted: 'Get started',
     haveCode: 'I have an invite code',
     signIn: 'I already have an account',
-    install: 'For notifications, add DINEAMITE to your Home Screen: tap Share, then “Add to Home Screen”.',
+    install: 'For notifications, add Dineamite to your Home Screen: tap Share, then “Add to Home Screen”.',
   },
   account: {
     title: 'Create your account',
@@ -71,7 +71,7 @@ export const en = {
     subtitle: 'Share this code. It works once and expires in 48 hours.',
     expires: 'Expires {time}',
     share: 'Share invite',
-    shareText: 'Join our household on DINEAMITE: {link} (code {code})',
+    shareText: 'Join our household on Dineamite: {link} (code {code})',
     copy: 'Copy code',
     copied: 'Copied',
     waiting: 'Waiting for your partner to join…',
@@ -355,7 +355,7 @@ export const en = {
     notifications: 'Notifications',
     enableNotifications: 'Turn on notifications',
     notificationsOn: 'Notifications are on',
-    notificationsUnsupported: 'Add DINEAMITE to your Home Screen to get notifications.',
+    notificationsUnsupported: 'Add Dineamite to your Home Screen to get notifications.',
     notificationsDenied: 'Notifications are blocked in your settings.',
   },
   plan: {

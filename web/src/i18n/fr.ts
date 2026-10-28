@@ -2,7 +2,7 @@ import type { Dictionary } from './en.ts';
 
 export const fr: Dictionary = {
   app: {
-    name: 'DINEAMITE',
+    name: 'Dineamite',
     loading: 'Chargement…',
     error: 'Un problème est survenu. Réessayez.',
     offline: 'Vous êtes hors ligne. Tout sera synchronisé au retour du réseau.',
@@ -30,7 +30,7 @@ export const fr: Dictionary = {
     getStarted: 'Commencer',
     haveCode: 'J’ai un code d’invitation',
     signIn: 'J’ai déjà un compte',
-    install: 'Pour les notifications, ajoutez DINEAMITE à l’écran d’accueil : Partager, puis « Sur l’écran d’accueil ».',
+    install: 'Pour les notifications, ajoutez Dineamite à l’écran d’accueil : Partager, puis « Sur l’écran d’accueil ».',
   },
   account: {
     title: 'Créer votre compte',
@@ -70,7 +70,7 @@ export const fr: Dictionary = {
     subtitle: 'Partagez ce code. Il ne sert qu’une fois et expire dans 48 heures.',
     expires: 'Expire {time}',
     share: 'Partager l’invitation',
-    shareText: 'Rejoins notre foyer sur DINEAMITE : {link} (code {code})',
+    shareText: 'Rejoins notre foyer sur Dineamite : {link} (code {code})',
     copy: 'Copier le code',
     copied: 'Copié',
     waiting: 'En attente de votre partenaire…',
@@ -354,7 +354,7 @@ export const fr: Dictionary = {
     notifications: 'Notifications',
     enableNotifications: 'Activer les notifications',
     notificationsOn: 'Notifications activées',
-    notificationsUnsupported: 'Ajoutez DINEAMITE à l’écran d’accueil pour recevoir des notifications.',
+    notificationsUnsupported: 'Ajoutez Dineamite à l’écran d’accueil pour recevoir des notifications.',
     notificationsDenied: 'Les notifications sont bloquées dans vos réglages.',
   },
   plan: {

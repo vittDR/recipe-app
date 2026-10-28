@@ -1,4 +1,4 @@
-# DINEAMITE
+# Dineamite
 
 A small installable web app (PWA) that helps a couple pick tonight's dinner together in under two minutes and keep one shared, live grocery list. It's in English and French.
 

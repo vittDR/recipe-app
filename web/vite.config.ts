@@ -17,8 +17,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       injectRegister: false,
       manifest: {
-        name: 'DINEAMITE',
-        short_name: 'DINEAMITE',
+        name: 'Dineamite',
+        short_name: 'Dineamite',
         description: 'Tonight’s dinner, decided together.',
         lang: 'en',
         start_url: '/',

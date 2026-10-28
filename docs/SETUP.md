@@ -1,4 +1,4 @@
-# DINEAMITE: setup guide
+# Dineamite: setup guide
 
 Do the steps in order. Plan for about an hour. You need a Mac or PC with:
 
@@ -70,7 +70,7 @@ All commands run from the `recipe-app` folder. `npx supabase` downloads the Supa
 
 ## Step 2: Sign-in with email + password
 
-DINEAMITE signs you in with your email and a password. Supabase never sends any email, so you don't need a mail service or SMTP.
+Dineamite signs you in with your email and a password. Supabase never sends any email, so you don't need a mail service or SMTP.
 
 1. In the dashboard, open **Authentication → Sign In / Providers**.
 2. Under **User Signups**, keep **Allow new users to sign up** **on** for now.
@@ -215,7 +215,7 @@ Both of you do this.
 1. **Install the app:**
    1. On the iPhone, open the Pages address in **Safari**. It has to be Safari.
    2. Tap **Share** (the square with the arrow), then **Add to Home Screen**, then **Add**.
-   3. Open DINEAMITE **from the Home Screen icon**. Do everything from here on inside that app, not in Safari: the installed app keeps its own sign-in, separate from Safari's.
+   3. Open Dineamite **from the Home Screen icon**. Do everything from here on inside that app, not in Safari: the installed app keeps its own sign-in, separate from Safari's.
 2. **You (first):**
    1. Tap **Get started** if you haven't created your account yet, or **I already have an account** if you did in Step 2. Then enter your email and password.
    2. Enter your first name and choose a colour and language.

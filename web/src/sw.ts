@@ -37,7 +37,7 @@ interface PushPayload {
 }
 
 self.addEventListener('push', (event) => {
-  let data: PushPayload = { title: 'DINEAMITE', body: '' };
+  let data: PushPayload = { title: 'Dineamite', body: '' };
   try {
     data = { ...data, ...(event.data?.json() as PushPayload) };
   } catch {

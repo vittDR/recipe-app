@@ -1,4 +1,4 @@
-# Supabase CLI config. Only the settings DINEAMITE relies on are listed;
+# Supabase CLI config. Only the settings Dineamite relies on are listed;
 # everything else uses the CLI defaults.
 project_id = "grvkstzctekisscvfroy"
 
