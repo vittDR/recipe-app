@@ -2,6 +2,7 @@
 
 import { storeKey } from '@logic/groceries.ts';
 import { ProductIndex, productName, type HouseholdProduct, type Product } from '@logic/products.ts';
+import { cachedCatalogue, peekCatalogue, readCache, writeCache } from './cache.ts';
 import { useLive } from './hooks.ts';
 import { must, supabase } from './supabase.ts';
 import type { Aisle, RecipeIngredient, Store } from './types.ts';
@@ -25,17 +26,40 @@ export interface GroceryCatalog {
 
 let sharedProducts: Promise<Product[]> | null = null;
 
-/** The shared catalogue never changes while the app runs: load it once. */
+/** The shared catalogue: kept on the phone, downloaded again only when it changed. */
 function loadSharedProducts(): Promise<Product[]> {
-  sharedProducts ??= (async () => {
-    try {
-      return must(await supabase.from('products').select('*').is('household_id', null)) as Product[];
-    } catch (e) {
-      sharedProducts = null;
-      throw e;
-    }
-  })();
+  sharedProducts ??= cachedCatalogue<Product[]>(
+    'products',
+    async () => must(await supabase.from('products').select('*').is('household_id', null)) as Product[],
+    (fresh) => { sharedProducts = Promise.resolve(fresh); },
+  ).catch((e) => {
+    sharedProducts = null;
+    throw e;
+  });
   return sharedProducts;
+}
+
+/** The household's own grocery rows, as stored on the phone between visits. */
+interface HouseholdRows {
+  own: Product[];
+  prefs: HouseholdProduct[];
+  stores: Store[];
+  aisles: { aisle: Aisle; position: number }[];
+}
+
+function buildCatalog(shared: Product[], h: HouseholdRows): GroceryCatalog {
+  const products = [...h.own, ...shared];
+  const sections = [
+    ...h.aisles.map((a) => ({ key: a.aisle as string, position: a.position })),
+    ...h.stores.map((s) => ({ key: storeKey(s.id), position: s.position })),
+  ].sort((a, b) => a.position - b.position);
+  return {
+    index: new ProductIndex(products),
+    products,
+    prefs: new Map(h.prefs.map((p) => [p.product_id, p])),
+    stores: [...h.stores].sort((a, b) => a.position - b.position),
+    sectionOrder: sections.map((s) => s.key),
+  };
 }
 
 export async function loadGroceryCatalog(hid: string): Promise<GroceryCatalog> {
@@ -46,24 +70,26 @@ export async function loadGroceryCatalog(hid: string): Promise<GroceryCatalog> {
     supabase.from('household_stores').select('id, name, position').eq('household_id', hid),
     supabase.from('household_aisle_order').select('aisle, position').eq('household_id', hid),
   ]);
-  const products = [...(must(own) as Product[]), ...shared];
-  const storeRows = must(stores) as Store[];
-  const sections = [
-    ...(must(aisles) as { aisle: Aisle; position: number }[]).map((a) => ({ key: a.aisle as string, position: a.position })),
-    ...storeRows.map((s) => ({ key: storeKey(s.id), position: s.position })),
-  ].sort((a, b) => a.position - b.position);
-  return {
-    index: new ProductIndex(products),
-    products,
-    prefs: new Map((must(prefs) as HouseholdProduct[]).map((p) => [p.product_id, p])),
-    stores: storeRows.sort((a, b) => a.position - b.position),
-    sectionOrder: sections.map((s) => s.key),
+  const rows: HouseholdRows = {
+    own: must(own) as Product[],
+    prefs: must(prefs) as HouseholdProduct[],
+    stores: must(stores) as Store[],
+    aisles: must(aisles) as HouseholdRows['aisles'],
   };
+  writeCache(`household:${hid}`, rows);
+  return buildCatalog(shared, rows);
+}
+
+/** Last session's catalogue, to show while the live one loads. */
+function storedGroceryCatalog(hid: string): GroceryCatalog | null {
+  const shared = peekCatalogue<Product[]>('products');
+  const rows = readCache<HouseholdRows>(`household:${hid}`);
+  return shared && rows ? buildCatalog(shared, rows) : null;
 }
 
 export function useGroceryCatalog(hid: string) {
   return useLive<GroceryCatalog>(`grocery-catalog:${hid}`, () => loadGroceryCatalog(hid), [
     { table: 'household_products', filter: `household_id=eq.${hid}` },
     { table: 'household_stores', filter: `household_id=eq.${hid}` },
-  ]);
+  ], () => storedGroceryCatalog(hid));
 }

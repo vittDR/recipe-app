@@ -4,6 +4,7 @@
 import type { Session } from '@supabase/supabase-js';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useI18n } from '../i18n/index.tsx';
+import { clearHouseholdCache } from './cache.ts';
 import { supabase } from './supabase.ts';
 import type { Household, Member, MemberGoals, Profile } from './types.ts';
 
@@ -121,6 +122,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       refresh: () => load(userId),
       signOut: async () => {
         await supabase.auth.signOut();
+        clearHouseholdCache();
       },
       memberName: (id) => (id ? byId.get(id)?.first_name ?? '' : ''),
       memberColor: (id) => (id ? byId.get(id)?.color ?? 'var(--c-muted)' : 'var(--c-muted)'),
