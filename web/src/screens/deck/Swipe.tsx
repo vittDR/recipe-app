@@ -1,7 +1,7 @@
-import { useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
+import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { useNavigate } from 'react-router';
 import { Icon } from '../../components/Icon.tsx';
-import { Tag, imageStyle, recipeEmoji } from '../../components/ui.tsx';
+import { Tag, imageStyle, photoUrl, recipeEmoji } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { useSession } from '../../lib/session.tsx';
 import { supabase } from '../../lib/supabase.ts';
@@ -75,6 +75,14 @@ export function SwipeView({ data, onDone }: { data: DeckData; onDone: () => Prom
   const [leaving, setLeaving] = useState<{ id: string; dx: number; dy: number } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const start = useRef<{ x: number; y: number } | null>(null);
+
+  // Fetch every card's photo up front, so each card shows at once when it comes to the top.
+  useEffect(() => {
+    for (const c of data.cards) {
+      const url = photoUrl(c.recipe.image_path);
+      if (url) new Image().src = url;
+    }
+  }, [data.cards]);
 
   const remaining = data.cards.filter((c) => !swiped.has(c.recipe_id));
   const top = remaining[0];
