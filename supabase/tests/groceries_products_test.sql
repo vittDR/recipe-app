@@ -45,6 +45,7 @@ select add_grocery_items('[{"name":"Recharges Swiffer poussière"}]');
 select id as swiffer from products where name_fr = 'Recharges Swiffer poussière' \gset
 select pg_temp.check((select household_id = :'hid'::uuid and default_aisle = 'other' from products where id = :'swiffer'),
                      'unknown names become household products');
+select pg_temp.check((select count(*) = 1 from grocery_items where product_id = :'swiffer'), 'and go on the list straight away');
 select add_grocery_items(format('[{"product_id":"%s"}]', :'swiffer')::jsonb);
 select pg_temp.check((select count(*) = 1 from grocery_items where product_id = :'swiffer'), 'adding by product id merges too');
 
@@ -94,6 +95,26 @@ select pg_temp.check((select count(*) = 7 from household_products hp join househ
                       where hp.household_id = :'hid' and s.name = 'Picard'), 'Picard items go to the Picard store');
 \i personal/frequent_items.sql
 select pg_temp.check((select count(*) = 1 from household_stores where household_id = :'hid'), 'import is re-runnable');
+
+-- A household's recipe: lines match catalogue ingredients, then any product,
+-- and only unknown ones become new household items.
+reset role;
+insert into recipes (household_id, title, source_type) values (:'hid', 'Pavlova', 'typed') returning id as rid \gset
+insert into recipe_ingredients (recipe_id, position, name, quantity, unit) values
+  (:'rid', 0, 'chicken breast', 1, 'piece'),
+  (:'rid', 1, 'framboises', 125, 'g'),
+  (:'rid', 2, 'Recharges Swiffer poussière', null, null),
+  (:'rid', 3, 'sirop de sureau', 2, 'tbsp');
+select pg_temp.check((select p.ingredient = 'chicken breast' from recipe_ingredients i join products p on p.id = i.product_id
+                      where i.recipe_id = :'rid' and i.position = 0), 'catalogue ingredient line uses its product');
+select pg_temp.check((select i.product_id = :'framboises'::uuid and i.aisle = 'produce' from recipe_ingredients i
+                      where i.recipe_id = :'rid' and i.position = 1), 'unmatched line finds a shared product and its aisle');
+select pg_temp.check((select i.product_id = :'swiffer'::uuid from recipe_ingredients i
+                      where i.recipe_id = :'rid' and i.position = 2), 'or the household''s own item');
+select pg_temp.check((select p.household_id = :'hid'::uuid and p.name_fr = 'sirop de sureau'
+                      from recipe_ingredients i join products p on p.id = i.product_id
+                      where i.recipe_id = :'rid' and i.position = 3), 'only unknown lines create an item');
+select pg_temp.check((select count(*) = 1 from products where search_key = 'sirop de sureau'), 'created once');
 
 -- Leave the database as the other suites expect it.
 delete from households where id in (:'hid', :'eve_hid');

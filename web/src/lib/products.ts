@@ -1,10 +1,18 @@
 // The household's grocery products, stores and section order, live on both phones.
 
 import { storeKey } from '@logic/groceries.ts';
-import { ProductIndex, type HouseholdProduct, type Product } from '@logic/products.ts';
+import { ProductIndex, productName, type HouseholdProduct, type Product } from '@logic/products.ts';
 import { useLive } from './hooks.ts';
 import { must, supabase } from './supabase.ts';
-import type { Aisle, Store } from './types.ts';
+import type { Aisle, RecipeIngredient, Store } from './types.ts';
+
+/** Recipe ingredient columns plus its product's names, for display. */
+export const INGREDIENT_SELECT = '*, product:products(name_fr, name_en)';
+
+/** A recipe line's name in the shopping language: its product's, else as saved. */
+export function ingredientName(i: Pick<RecipeIngredient, 'name' | 'product'>, locale: string): string {
+  return i.product ? productName(i.product, locale) : i.name;
+}
 
 export interface GroceryCatalog {
   index: ProductIndex;

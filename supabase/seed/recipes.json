@@ -161,8 +161,8 @@
         "original_text": "5 cucchiai olio d'oliva"
       },
       {
-        "text": "150 ml brodo, di carne",
-        "original_text": "300 ml brodo, di carne"
+        "text": "150 ml brodo di carne",
+        "original_text": "300 ml brodo di carne"
       },
       {
         "text": "sale",
@@ -1634,8 +1634,8 @@
         "original_text": "6 cucchiai olio d'oliva"
       },
       {
-        "text": "400 ml brodo",
-        "original_text": "1 l brodo"
+        "text": "400 ml brodo di carne",
+        "original_text": "1 l brodo di carne"
       },
       {
         "text": "40 ml vino rosso",
@@ -2320,8 +2320,8 @@
         "original_text": "1 c. à soupe concentré de tomate"
       },
       {
-        "text": "100 ml bouillon de volaille, de bœuf",
-        "original_text": "300 ml bouillon de volaille, de bœuf"
+        "text": "100 ml bouillon de bœuf",
+        "original_text": "300 ml bouillon de bœuf"
       },
       {
         "text": "1 pincée sucre",
@@ -3352,8 +3352,8 @@
         "guessed": true
       },
       {
-        "text": "90 ml bouillon de volaille, de légumes",
-        "original_text": "180 ml bouillon de volaille, de légumes"
+        "text": "90 ml bouillon de légumes",
+        "original_text": "180 ml bouillon de légumes"
       },
       {
         "text": "40 ml vin blanc, sec",
@@ -3838,8 +3838,8 @@
         "original_text": "8 cl vin blanc, type Sancerre"
       },
       {
-        "text": "16 cl bouillon, fumet de poisson",
-        "original_text": "32 cl bouillon, fumet de poisson"
+        "text": "16 cl fumet de poisson",
+        "original_text": "32 cl fumet de poisson"
       },
       {
         "text": "20 cl crème fraîche, double",
@@ -3912,8 +3912,8 @@
         "original_text": "2 c. à soupe câpres, hachées"
       },
       {
-        "text": "0.5 c. à café vinaigre, balsamique",
-        "original_text": "1 c. à café vinaigre, balsamique"
+        "text": "0.5 c. à café vinaigre balsamique",
+        "original_text": "1 c. à café vinaigre balsamique"
       },
       {
         "text": "1 pincée basilic, séché (ou thym)",
@@ -6095,8 +6095,8 @@
     },
     "ingredients": [
       {
-        "text": "750 g chicken thigh, drumsticks (about 5)",
-        "original_text": "1500 g chicken thigh, drumsticks (about 10)"
+        "text": "750 g chicken drumsticks (about 5)",
+        "original_text": "1500 g chicken drumsticks (about 10)"
       },
       {
         "text": "40 ml coconut milk, full-fat, for the marinade",
@@ -7120,8 +7120,8 @@
         "original_text": "4 chicken thigh, bone-in, skinless"
       },
       {
-        "text": "2 chicken thigh, drumsticks, bone-in, skinless",
-        "original_text": "4 chicken thigh, drumsticks, bone-in, skinless"
+        "text": "2 chicken drumsticks, bone-in, skinless",
+        "original_text": "4 chicken drumsticks, bone-in, skinless"
       },
       {
         "text": "1 lemon, juiced, to clean the chicken",
@@ -7440,8 +7440,8 @@
         "original_text": "140 g tomato paste"
       },
       {
-        "text": "0.5 tbsp vinegar, balsamic",
-        "original_text": "2 tbsp vinegar, balsamic"
+        "text": "0.5 tbsp balsamic vinegar",
+        "original_text": "2 tbsp balsamic vinegar"
       },
       {
         "text": "0.5 tbsp soy sauce",
@@ -7456,8 +7456,8 @@
         "original_text": "300 g butternut squash, peeled and cubed"
       },
       {
-        "text": "200 ml chicken stock, beef stock",
-        "original_text": "600 ml chicken stock, beef stock"
+        "text": "200 ml beef stock",
+        "original_text": "600 ml beef stock"
       },
       {
         "text": "1 tsp cornstarch",
@@ -7718,8 +7718,8 @@
     },
     "ingredients": [
       {
-        "text": "4 chicken thigh, drumsticks",
-        "original_text": "8 chicken thigh, drumsticks"
+        "text": "4 chicken drumsticks",
+        "original_text": "8 chicken drumsticks"
       },
       {
         "text": "2 tsp jerk seasoning",
@@ -8153,8 +8153,8 @@
         "original_text": "0.5 tsp allspice"
       },
       {
-        "text": "240 ml broth, reduced-sodium beef",
-        "original_text": "480 ml broth, reduced-sodium beef"
+        "text": "240 ml beef stock, reduced-sodium",
+        "original_text": "480 ml beef stock, reduced-sodium"
       },
       {
         "text": "45 g cream cheese, reduced-fat",

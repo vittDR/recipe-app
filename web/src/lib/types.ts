@@ -82,6 +82,9 @@ export interface RecipeIngredient {
   is_staple: boolean;
   guessed: boolean;
   raw_text: string | null;
+  product_id: string | null;
+  /** Embedded with `select('*, product:products(name_fr, name_en)')`. */
+  product?: { name_fr: string; name_en: string | null } | null;
 }
 
 export interface Deck {

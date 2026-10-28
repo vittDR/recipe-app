@@ -79,3 +79,12 @@ test('A-Z folds accents and œ', () => {
   const az = groupGroceries([item('Éponges'), item('Œufs'), item('Oignon')], 'az');
   assert.deepEqual(az.map((s) => [s.key, s.items.length]), [['E', 1], ['O', 2]]);
 });
+
+test('recipe ingredients match list items by product', () => {
+  const p = proposeListItems(
+    [{ name: 'framboises', product_id: 'p-framboises', quantity: 125, unit: 'g', aisle: 'produce' as const, is_staple: false }],
+    [item('Framboises', { product_id: 'p-framboises' })],
+    [],
+  );
+  assert.equal(p[0].why, 'on_list');
+});

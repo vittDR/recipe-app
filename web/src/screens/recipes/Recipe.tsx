@@ -8,6 +8,7 @@ import { useI18n } from '../../i18n/index.tsx';
 import { MANY_POTS } from '@logic/facets.ts';
 import { equipmentLabels, exoticIngredients } from '../../lib/facets.ts';
 import { useCatalog } from '../../lib/hooks.ts';
+import { INGREDIENT_SELECT, ingredientName } from '../../lib/products.ts';
 import { useSession } from '../../lib/session.tsx';
 import { must, supabase } from '../../lib/supabase.ts';
 import type { Recipe, RecipeIngredient } from '../../lib/types.ts';
@@ -22,7 +23,7 @@ interface Portion {
 export function RecipeScreen() {
   const { id } = useParams();
   const i18n = useI18n();
-  const { t, tn } = i18n;
+  const { t, tn, locale } = i18n;
   const catalog = useCatalog();
   const { household } = useSession();
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ export function RecipeScreen() {
   const load = async () => {
     const [r, ings, p] = await Promise.all([
       supabase.from('recipes').select('*').eq('id', id!).single(),
-      supabase.from('recipe_ingredients').select('*').eq('recipe_id', id!).order('position'),
+      supabase.from('recipe_ingredients').select(INGREDIENT_SELECT).eq('recipe_id', id!).order('position'),
       supabase.rpc('my_portion', { p_recipe: id }),
     ]);
     setRecipe(must(r) as Recipe);
@@ -118,7 +119,7 @@ export function RecipeScreen() {
           return (
             <div key={i.id} className="list-row">
               <div className="list-row__main">
-                <div className="list-row__title">{i.name}</div>
+                <div className="list-row__title">{ingredientName(i, locale)}</div>
                 {i.guessed && <div className="list-row__meta" style={{ color: 'var(--c-warning)' }}>{t('recipe.guessed')}</div>}
                 {exotic.has(i.name) && <div className="list-row__meta">{t('recipe.exoticHint')}</div>}
               </div>

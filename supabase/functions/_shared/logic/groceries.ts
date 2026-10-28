@@ -20,6 +20,7 @@ export interface GroceryItem {
   aisle: Aisle;
   /** A store (Picard...) puts the item in that store's section instead of its aisle. */
   store_id?: string | null;
+  product_id?: string | null;
   /** Catalogue ingredient of the item's product, to match recipe ingredients. */
   ingredient?: string | null;
   recipe_id: string | null;
@@ -83,6 +84,7 @@ export function groupGroceries<T extends GroceryItem>(
 
 export interface RecipeIngredientLike {
   name: string;
+  product_id?: string | null;
   quantity: number | null;
   unit: string | null;
   aisle: Aisle;
@@ -110,16 +112,17 @@ export function proposeListItems<T extends RecipeIngredientLike>(
 ): ListProposal<T>[] {
   const since = now.getTime() - atHomeDays * 86_400_000;
   const stapleSet = new Set(staples.map((s) => s.toLowerCase()));
-  // Items from products match on the catalogue ingredient; older rows on their name.
-  const nameOf = (i: GroceryItem) => (i.ingredient ?? i.name).toLowerCase();
-  const onList = new Set(list.filter((i) => !i.checked_at && !i.cleared_at).map(nameOf));
-  const bought = new Set(list.filter((i) => i.checked_at && Date.parse(i.checked_at) >= since).map(nameOf));
+  // Same product, or for older rows the same catalogue ingredient or name.
+  const keysOf = (i: GroceryItem) => [i.product_id, (i.ingredient ?? i.name).toLowerCase()].filter(Boolean) as string[];
+  const onList = new Set(list.filter((i) => !i.checked_at && !i.cleared_at).flatMap(keysOf));
+  const bought = new Set(list.filter((i) => i.checked_at && Date.parse(i.checked_at) >= since).flatMap(keysOf));
 
   return ingredients.map((ingredient) => {
     const n = ingredient.name.toLowerCase();
-    if (onList.has(n)) return { ingredient, add: false, why: 'on_list' as const };
+    const has = (set: Set<string>) => set.has(n) || (!!ingredient.product_id && set.has(ingredient.product_id));
+    if (has(onList)) return { ingredient, add: false, why: 'on_list' as const };
     if (ingredient.is_staple || stapleSet.has(n)) return { ingredient, add: false, why: 'staple' as const };
-    if (bought.has(n)) return { ingredient, add: false, why: 'bought_recently' as const };
+    if (has(bought)) return { ingredient, add: false, why: 'bought_recently' as const };
     return { ingredient, add: true, why: 'to_buy' as const };
   });
 }

@@ -95,18 +95,18 @@ update public.ingredient_catalog set name_it = 'pepe nero', aliases = (select ar
 update public.ingredient_catalog set name_it = 'pane' where name = 'bread';
 update public.ingredient_catalog set name_it = 'broccoli' where name = 'broccoli';
 update public.ingredient_catalog set name_it = 'burro' where name = 'butter';
-update public.ingredient_catalog set name_it = 'pomodori pelati', aliases = (select array(select distinct unnest(aliases || '{"pelati","passata di pomodoro","polpa di pomodoro"}'::text[]))) where name = 'canned tomatoes';
+update public.ingredient_catalog set name_it = 'pomodori pelati', aliases = (select array(select distinct unnest(aliases || '{"pelati","polpa di pomodoro"}'::text[]))) where name = 'canned tomatoes';
 update public.ingredient_catalog set name_it = 'carota', aliases = (select array(select distinct unnest(aliases || '{"carote"}'::text[]))) where name = 'carrot';
 update public.ingredient_catalog set name_it = 'pomodorini' where name = 'cherry tomatoes';
 update public.ingredient_catalog set name_it = 'petto di pollo', aliases = (select array(select distinct unnest(aliases || '{"pollo"}'::text[]))) where name = 'chicken breast';
-update public.ingredient_catalog set name_it = 'brodo', aliases = (select array(select distinct unnest(aliases || '{"brodo vegetale","brodo di pollo"}'::text[]))) where name = 'chicken stock';
+update public.ingredient_catalog set name_it = 'brodo', aliases = (select array(select distinct unnest(aliases || '{"brodo di pollo"}'::text[]))) where name = 'chicken stock';
 update public.ingredient_catalog set name_it = 'sovracosce di pollo', aliases = (select array(select distinct unnest(aliases || '{"cosce di pollo"}'::text[]))) where name = 'chicken thigh';
 update public.ingredient_catalog set name_it = 'ceci' where name = 'chickpeas';
 update public.ingredient_catalog set name_it = 'peperoncino' where name = 'chili flakes';
 update public.ingredient_catalog set name_it = 'latte di cocco' where name = 'coconut milk';
 update public.ingredient_catalog set name_it = 'merluzzo' where name = 'cod fillet';
 update public.ingredient_catalog set name_it = 'cous cous' where name = 'couscous';
-update public.ingredient_catalog set name_it = 'panna', aliases = (select array(select distinct unnest(aliases || '{"crème liquide"}'::text[]))) where name = 'crème fraîche';
+update public.ingredient_catalog set name_it = 'crème fraîche' where name = 'crème fraîche';
 update public.ingredient_catalog set name_it = 'cetriolo' where name = 'cucumber';
 update public.ingredient_catalog set name_it = 'cumino' where name = 'cumin';
 update public.ingredient_catalog set name_it = 'pasta di curry' where name = 'curry paste';
@@ -134,7 +134,7 @@ update public.ingredient_catalog set name_it = 'noodles' where name = 'noodles';
 update public.ingredient_catalog set name_it = 'olio d''oliva', aliases = (select array(select distinct unnest(aliases || '{"olio extravergine di oliva","olio evo"}'::text[]))) where name = 'olive oil';
 update public.ingredient_catalog set name_it = 'cipolla' where name = 'onion';
 update public.ingredient_catalog set name_it = 'paprika' where name = 'paprika';
-update public.ingredient_catalog set name_it = 'parmigiano', aliases = (select array(select distinct unnest(aliases || '{"parmigiano reggiano","grana padano","pecorino"}'::text[]))) where name = 'parmesan';
+update public.ingredient_catalog set name_it = 'parmigiano', aliases = (select array(select distinct unnest(aliases || '{"parmigiano reggiano","grana padano"}'::text[]))) where name = 'parmesan';
 update public.ingredient_catalog set name_it = 'prezzemolo' where name = 'parsley';
 update public.ingredient_catalog set name_it = 'pasta', aliases = (select array(select distinct unnest(aliases || '{"fusilli","rigatoni"}'::text[]))) where name = 'pasta';
 update public.ingredient_catalog set name_it = 'burro di arachidi' where name = 'peanut butter';
@@ -143,7 +143,7 @@ update public.ingredient_catalog set name_it = 'filetto di maiale', aliases = (s
 update public.ingredient_catalog set name_it = 'patata', aliases = (select array(select distinct unnest(aliases || '{"patate"}'::text[]))) where name = 'potato';
 update public.ingredient_catalog set name_it = 'gamberi', aliases = (select array(select distinct unnest(aliases || '{"gamberetti"}'::text[]))) where name = 'prawns';
 update public.ingredient_catalog set name_it = 'quinoa' where name = 'quinoa';
-update public.ingredient_catalog set name_it = 'lenticchie', aliases = (select array(select distinct unnest(aliases || '{"lenticchie rosse"}'::text[]))) where name = 'red lentils';
+update public.ingredient_catalog set name_it = 'lenticchie rosse', aliases = (select array(select distinct unnest(aliases || '{"lenticchie rosse"}'::text[]))) where name = 'red lentils';
 update public.ingredient_catalog set name_it = 'riso', aliases = (select array(select distinct unnest(aliases || '{"riso carnaroli","riso arborio"}'::text[]))) where name = 'rice';
 update public.ingredient_catalog set name_it = 'salmone', aliases = (select array(select distinct unnest(aliases || '{"filetto di salmone"}'::text[]))) where name = 'salmon fillet';
 update public.ingredient_catalog set name_it = 'sale' where name = 'salt';
@@ -159,7 +159,7 @@ update public.ingredient_catalog set name_it = 'pomodoro', aliases = (select arr
 update public.ingredient_catalog set name_it = 'concentrato di pomodoro' where name = 'tomato paste';
 update public.ingredient_catalog set name_it = 'tortillas' where name = 'tortillas';
 update public.ingredient_catalog set name_it = 'tonno' where name = 'tuna';
-update public.ingredient_catalog set name_it = 'aceto', aliases = (select array(select distinct unnest(aliases || '{"aceto balsamico"}'::text[]))) where name = 'vinegar';
+update public.ingredient_catalog set name_it = 'aceto' where name = 'vinegar';
 update public.ingredient_catalog set name_it = 'zucchina', aliases = (select array(select distinct unnest(aliases || '{"zucchine"}'::text[]))) where name = 'zucchini';
 
 -- Ingredients the seed library needs (kcal/protein per 100 g raw, approximate).
@@ -288,6 +288,55 @@ values
 on conflict (name) do nothing;
 
 
+-- Split out of broader entries, so a recipe asks for what you'd actually buy:
+-- vegetable stock isn't chicken stock, green lentils aren't red ones.
+insert into public.ingredient_catalog
+  (name, name_fr, name_it, aliases, default_aisle, is_staple, kcal_100g, protein_100g, grams_per_unit, diet_class)
+values
+  ('vegetable stock', 'bouillon de légumes', 'brodo vegetale', '{"vegetable broth","veggie stock","bouillon légumes"}', 'pantry', true, 5, 0.5, 240, 'veg'),
+  ('beef stock', 'bouillon de bœuf', 'brodo di carne', '{"beef broth","bouillon de boeuf","brodo di manzo","fond de veau"}', 'pantry', true, 7, 1.2, 240, 'meat'),
+  ('fish stock', 'fumet de poisson', 'fumetto di pesce', '{"fish broth","fumet"}', 'pantry', true, 8, 1.5, 240, 'fish'),
+  ('green lentils', 'lentilles vertes', 'lenticchie', '{"lentils","lentilles","lentilles du puy","puy lentils","brown lentils"}', 'pantry', false, 352, 24, 75, 'veg'),
+  ('butternut squash', 'butternut', 'zucca butternut', '{"courge butternut"}', 'produce', false, 45, 1, null, 'veg'),
+  ('ground turkey', 'dinde hachée', 'macinato di tacchino', '{"turkey mince","minced turkey","haché de dinde"}', 'meat_fish', false, 150, 20, null, 'meat'),
+  ('passata', 'coulis de tomate', 'passata di pomodoro', '{"tomato passata","passata de tomates","purée de tomates"}', 'pantry', false, 30, 1.5, null, 'veg'),
+  ('balsamic vinegar', 'vinaigre balsamique', 'aceto balsamico', '{"balsamic","crème de balsamique","glassa di aceto balsamico"}', 'pantry', true, 88, 0.5, 15, 'veg'),
+  ('chicken drumsticks', 'pilons de poulet', 'fusi di pollo', '{"drumsticks","chicken drumstick","pilon de poulet"}', 'meat_fish', false, 172, 18, 110, 'meat'),
+  ('cream', 'crème liquide', 'panna', '{"heavy cream","single cream","whipping cream","crème fleurette","panna da cucina","panna fresca"}', 'dairy_eggs', false, 292, 2.1, 15, 'veg'),
+  ('plain yogurt', 'yaourt nature', 'yogurt bianco', '{"yogurt","yaourt","natural yogurt","yogurt naturale"}', 'dairy_eggs', false, 61, 3.5, 125, 'veg'),
+  ('pecorino', 'pecorino', 'pecorino romano', '{"pecorino sardo"}', 'dairy_eggs', false, 387, 32, 5, 'veg')
+on conflict (name) do nothing;
+
+-- Their names come off the entries they were part of (databases seeded before the split).
+update public.ingredient_catalog c
+set aliases = array(select a from unnest(c.aliases) a where a <> all (v.gone))
+from (values
+  ('chicken stock', '{"vegetable stock","brodo vegetale"}'::text[]),
+  ('red lentils', '{"lentils","lentilles"}'),
+  ('pumpkin', '{"butternut squash"}'),
+  ('turkey breast', '{"ground turkey","turkey mince"}'),
+  ('canned tomatoes', '{"passata","passata di pomodoro"}'),
+  ('vinegar', '{"balsamic vinegar","aceto balsamico"}'),
+  ('crème fraîche', '{"cream","heavy cream","crème liquide"}'),
+  ('greek yogurt', '{"yogurt","yaourt"}'),
+  ('parmesan', '{"pecorino"}')
+) as v(name, gone)
+where c.name = v.name;
+update public.products p
+set aliases = array(select a from unnest(p.aliases) a where a <> all (v.gone))
+from (values
+  ('chicken stock', '{"vegetable stock","brodo vegetale","fond de veau"}'::text[]),
+  ('red lentils', '{"lentils","lentilles","lenticchie"}'),
+  ('pumpkin', '{"butternut squash"}'),
+  ('turkey breast', '{"ground turkey","turkey mince"}'),
+  ('canned tomatoes', '{"passata","passata di pomodoro"}'),
+  ('vinegar', '{"balsamic vinegar","aceto balsamico"}'),
+  ('crème fraîche', '{"cream","heavy cream","crème liquide","panna"}'),
+  ('greek yogurt', '{"yogurt","yaourt"}'),
+  ('parmesan', '{"pecorino"}')
+) as v(ingredient, gone)
+where p.ingredient = v.ingredient;
+
 -- Exotic: not sold in most French supermarkets, so it needs an Asian or
 -- specialty shop (or online). Drives the "Everyday ingredients" filter.
 update public.ingredient_catalog set exotic = (name in (
@@ -308,8 +357,8 @@ select public.sync_products_from_catalog();
 update public.products p
 set aliases = (select array_agg(distinct a order by a) from unnest(p.aliases || v.extra) a)
 from (values
-  ('crème fraîche', '{crème,crème liquide}'::text[]),
-  ('chicken stock', '{fond de volaille,fond de veau}'),
+  ('crème fraîche', '{crème}'::text[]),
+  ('chicken stock', '{fond de volaille}'),
   ('salmon fillet', '{saumon frais}'),
   ('bread', '{baguette,pain frais}'),
   ('tuna', '{thon en boîte}'),

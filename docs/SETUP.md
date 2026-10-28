@@ -444,7 +444,7 @@ Only the person themselves can read or write these rows.
 | --- | --- |
 | `ingredient_catalog` | Canonical ingredients. `name` (lowercase English, primary key), `name_fr`, `name_it`, `aliases[]`, `default_aisle`, `is_staple`, `kcal_100g`, `protein_100g`, `grams_per_unit`, `diet_class` (`veg`/`fish`/`meat`), `exotic`. Readable by every signed-in user. |
 | `recipes` | `household_id` (**null = seed library**, shared by everyone), `copied_from`, `title`, `source_type`, `source_url`, `source_name`, `image_path`, `image_source_url`, `servings`, `original_servings`, `total_min`, `steps` (JSON array of strings), `tags[]`, `cuisine`, `language` (`en`/`fr`/`it`), `kcal_per_serving`, `protein_g_per_serving`, `macros_estimated`, `difficulty` (`easy`/`medium`/`hard`), `equipment` (JSON, e.g. `{"pots":2,"oven":true,"special":["blender"]}`). `source_url` is unique per household. |
-| `recipe_ingredients` | One row per line: `position`, `name` (the catalogue name when matched), `quantity`, `unit`, `aisle`, `is_staple`, `guessed`, `raw_text` (the line as written), `original_text` (the source's unscaled line). |
+| `recipe_ingredients` | One row per line: `position`, `name` (the catalogue name when matched), `product_id`, `quantity`, `unit`, `aisle`, `is_staple`, `guessed`, `raw_text` (the line as written), `original_text` (the source's unscaled line). A trigger sets `product_id` on save: the catalogue ingredient's product, else a product whose name or alias matches (the household's own first), else a new household item. Seed recipes only use shared products. |
 | `library_recipes` (view) | What a household sees on the Recipes tab: its own recipes plus the seed library, minus seed recipes it has already copied. |
 
 Households never edit seed recipes directly: `copy_recipe(recipe_id)` makes a
@@ -666,7 +666,19 @@ on conflict (name) do nothing;
 | `exotic` | `true` if most French supermarkets don't sell it. Drives the "Everyday ingredients" filter. |
 
 Re-running `seed.sql` also gives each new ingredient its grocery product
-(`sync_products_from_catalog()`). Everyday items that aren't recipe
+(`sync_products_from_catalog()`), taking over a shared product that already
+has its name (so a new `green lentils` becomes the existing *Lentilles*).
+
+To split an ingredient that covers two things you'd buy separately (vegetable
+stock was once an alias of chicken stock), add the new row, remove its names
+from the old one's `aliases` with an `update` (for databases seeded before),
+point the seed lines at it in `recipes.json` and regenerate
+`seed_library.sql`. Reloading `seed_library.sql` renames the lines of seed
+recipes already loaded, and of households' copies, and refreshes their macros.
+
+`supabase/reports/unmatched_ingredients.sql` lists the recipe lines (from
+imported recipes) the catalogue doesn't know yet, most used first: the
+candidates to add. Everyday items that aren't recipe
 ingredients (shampoo, sopalin…) are rows in `products` with `household_id`
 null and no `ingredient`; add them to a new migration.
 
