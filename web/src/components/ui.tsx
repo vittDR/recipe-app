@@ -1,7 +1,7 @@
 // Household Warm components: Button, Chip, Segmented, ListRow, Checkbox,
 // Avatar, Screen, Field, Stepper, Sheet, Toast.
 
-import { useEffect, useState, type ButtonHTMLAttributes, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ButtonHTMLAttributes, type ReactNode } from 'react';
 import { useNavigate } from 'react-router';
 import { useI18n } from '../i18n/index.tsx';
 import { Icon } from './Icon.tsx';
@@ -200,18 +200,85 @@ export function Stepper({
   );
 }
 
+/** Dragged this far down (px), or flicked faster than this (px/ms), the sheet closes. */
+const SHEET_CLOSE_DISTANCE = 120;
+const SHEET_CLOSE_SPEED = 0.6;
+
 export function Sheet({ open, onClose, children, label }: { open: boolean; onClose: () => void; children: ReactNode; label: string }) {
+  const sheetRef = useRef<HTMLDivElement>(null);
+  const backdropRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef(onClose);
+  closeRef.current = onClose;
+
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [open, onClose]);
+
+  // Swipe down to close: from the top of the sheet's content, a downward drag
+  // moves the sheet instead of scrolling it. Non-passive listeners, so the
+  // drag can stop the page from scrolling underneath.
+  useEffect(() => {
+    const sheet = sheetRef.current;
+    if (!open || !sheet) return;
+    let startY = 0;
+    let dy = 0;
+    // Recent positions, to measure the flick at the end of the drag.
+    let samples: { y: number; t: number }[] = [];
+    let dragging = false;
+    let atTop = false;
+    const place = (y: number, animate: boolean) => {
+      sheet.style.transition = animate ? 'transform 0.22s ease' : 'none';
+      sheet.style.transform = y ? `translate(-50%, ${y}px)` : '';
+      if (backdropRef.current) backdropRef.current.style.opacity = y ? String(Math.max(0, 1 - y / 400)) : '';
+    };
+    const onStart = (e: TouchEvent) => {
+      startY = e.touches[0].clientY;
+      samples = [{ y: startY, t: e.timeStamp }];
+      dy = 0;
+      dragging = false;
+      atTop = sheet.scrollTop <= 0;
+    };
+    const onMove = (e: TouchEvent) => {
+      dy = e.touches[0].clientY - startY;
+      samples = [...samples.filter((s) => e.timeStamp - s.t < 100), { y: e.touches[0].clientY, t: e.timeStamp }];
+      if (!dragging && atTop && dy > 6) dragging = true;
+      if (!dragging) return;
+      e.preventDefault();
+      place(Math.max(0, dy), false);
+    };
+    const onEnd = () => {
+      if (!dragging) return;
+      dragging = false;
+      const first = samples[0];
+      const last = samples[samples.length - 1];
+      const speed = (last.y - first.y) / Math.max(16, last.t - first.t);
+      if (dy > SHEET_CLOSE_DISTANCE || speed > SHEET_CLOSE_SPEED) {
+        place(sheet.offsetHeight, true);
+        window.setTimeout(() => closeRef.current(), 180);
+      } else {
+        place(0, true);
+      }
+    };
+    sheet.addEventListener('touchstart', onStart, { passive: true });
+    sheet.addEventListener('touchmove', onMove, { passive: false });
+    sheet.addEventListener('touchend', onEnd);
+    sheet.addEventListener('touchcancel', onEnd);
+    return () => {
+      sheet.removeEventListener('touchstart', onStart);
+      sheet.removeEventListener('touchmove', onMove);
+      sheet.removeEventListener('touchend', onEnd);
+      sheet.removeEventListener('touchcancel', onEnd);
+    };
+  }, [open]);
+
   if (!open) return null;
   return (
     <>
-      <div className="sheet-backdrop" onClick={onClose} />
-      <div className="sheet" role="dialog" aria-modal="true" aria-label={label}>
+      <div className="sheet-backdrop" ref={backdropRef} onClick={onClose} />
+      <div className="sheet" ref={sheetRef} role="dialog" aria-modal="true" aria-label={label}>
         <div className="sheet__grabber" />
         {children}
       </div>

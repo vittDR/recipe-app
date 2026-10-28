@@ -642,6 +642,8 @@ textarea.input {
   max-width: 560px;
   max-height: 88dvh;
   overflow-y: auto;
+  /* Scrolling past the top drags the sheet, never the page or pull-to-refresh. */
+  overscroll-behavior: contain;
   background: var(--c-paper);
   border-radius: var(--r-xl) var(--r-xl) 0 0;
   padding: var(--s-2) var(--s-4) calc(env(safe-area-inset-bottom) + var(--s-5));
