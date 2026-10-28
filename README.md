@@ -22,7 +22,7 @@ supabase/
     push-dispatch/      sends queued notifications as Web Push (run by pg_cron)
     _shared/logic/      pure TypeScript shared with the web app, with tests
   tests/                runs every migration on plain Postgres and checks the rules
-scripts/                build-seed-library.ts, download_images.py
+scripts/                build-seed-library.ts, download_images.py, make_thumbnails.py
 design/tokens.json      Household Warm tokens (placeholder until the real file lands)
 ```
 

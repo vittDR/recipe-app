@@ -209,10 +209,10 @@ One image per recipe. The app shows the same file in three crops, each with
 | Spec | Value |
 | --- | --- |
 | Aspect ratio | **4:3 landscape** |
-| Size | **1600 × 1200 px** recommended, 1200 × 900 minimum (sharp on 3× screens) |
+| Size | **900 × 675 px** (sharp on a phone-width card; larger sources are scaled down) |
 | Safe area | Keep the dish inside the **central square** (the middle 75% of the width). Nothing important near the edges. |
 | Format | WebP (quality ~80) or JPEG (quality ~82), progressive. sRGB. |
-| File size | Under 300 KB is the target, 500 KB at most. Cards load over mobile data. |
+| File size | Under 100 KB is the target (WebP ~q70), 200 KB at most. Cards load over mobile data. |
 | Content | The finished dish, top-down or 45°, plated as served. No text, logos, watermarks or borders. The title is drawn by the app. |
 | Hosting | An absolute `https://` URL you're allowed to reuse, and that will stay up. Seed library photos live in `web/public/recipe-photos/` and are referenced as `/recipe-photos/<file>.webp`; `scripts/download_images.py` makes them from each `image_source_url` |
 | Missing image | Allowed. The app shows a food emoji picked from the title and tags. |
@@ -231,4 +231,4 @@ One image per recipe. The app shows the same file in three crops, each with
 - [ ] steps in order, one action each
 - [ ] difficulty and equipment (pots, oven, special only if uncommon)
 - [ ] 3–8 tags, using the mood words where they apply
-- [ ] 4:3 image, at least 1200 × 900, dish centred, under 500 KB
+- [ ] 4:3 image, 900 × 675, dish centred, under 200 KB

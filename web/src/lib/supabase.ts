@@ -7,9 +7,12 @@ export const supabase = createClient(url, key, {
   auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false },
 });
 
-/** Calls an edge function as the signed-in user; throws with the function's error code. */
-export async function callFunction<T>(name: string, body: Record<string, unknown>): Promise<T> {
-  const { data, error } = await supabase.functions.invoke(name, { body });
+/**
+ * Calls an edge function as the signed-in user; throws with the function's error code.
+ * `timeout` (ms) gives up on a stalled request instead of waiting out the platform's limit.
+ */
+export async function callFunction<T>(name: string, body: Record<string, unknown>, timeout?: number): Promise<T> {
+  const { data, error } = await supabase.functions.invoke(name, { body, timeout });
   if (error) {
     let code = error.message;
     const ctx = (error as { context?: Response }).context;

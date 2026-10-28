@@ -38,7 +38,7 @@ Deno.serve(async (req) => {
   const eaters = [...new Set([userId, ...requested])].filter((u) => householdUsers.includes(u));
 
   const since = (days: number) => new Date(Date.now() - days * 86_400_000).toISOString();
-  const [goals, rules, patterns, swipes, recipes, meals, pantry] = await Promise.all([
+  const [goals, rules, patterns, swipes, recipes, meals, pantry, catalog] = await Promise.all([
     admin.from('member_goals').select('*').in('user_id', eaters),
     admin.from('taste_rules').select('user_id, kind, value').in('user_id', eaters),
     admin.from('learned_patterns').select('user_id, pattern, weight').in('user_id', eaters).eq('status', 'accepted'),
@@ -49,13 +49,13 @@ Deno.serve(async (req) => {
       .or(`household_id.is.null,household_id.eq.${householdId}`),
     admin.from('meals').select('recipe_id, for_date, status').eq('household_id', householdId),
     admin.from('grocery_items').select('name').eq('household_id', householdId).gte('checked_at', since(PANTRY_DAYS)),
+    admin.from('ingredient_catalog').select('name, diet_class'),
   ]);
-  for (const r of [goals, rules, patterns, swipes, recipes, meals, pantry]) {
+  for (const r of [goals, rules, patterns, swipes, recipes, meals, pantry, catalog]) {
     if (r.error) return json({ error: r.error.message }, 500);
   }
 
-  const { data: catalog } = await admin.from('ingredient_catalog').select('name, diet_class');
-  const dietOf = new Map((catalog ?? []).map((c) => [c.name as string, c.diet_class as 'veg' | 'fish' | 'meat']));
+  const dietOf = new Map((catalog.data ?? []).map((c) => [c.name as string, c.diet_class as 'veg' | 'fish' | 'meat']));
 
   // Seed recipes the household copied are replaced by their copy.
   const copied = new Set((recipes.data ?? []).filter((r) => r.copied_from).map((r) => r.copied_from as string));

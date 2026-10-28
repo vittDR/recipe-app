@@ -1,7 +1,7 @@
-import { useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
+import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { useNavigate } from 'react-router';
 import { Icon } from '../../components/Icon.tsx';
-import { Tag, imageStyle, recipeEmoji } from '../../components/ui.tsx';
+import { Tag, imageStyle, photoUrl, recipeEmoji } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { useSession } from '../../lib/session.tsx';
 import { supabase } from '../../lib/supabase.ts';
@@ -10,6 +10,16 @@ import type { DeckData } from './data.ts';
 
 const SWIPE_X = 100;
 const SWIPE_UP = 120;
+const SAVE_TIMEOUT_MS = 15_000;
+const SAVE_RETRIES = 2;
+
+/** Aborts a request that hangs, so a stalled connection fails fast and is retried. */
+function timeoutSignal(ms: number): AbortSignal {
+  if (typeof AbortSignal.timeout === 'function') return AbortSignal.timeout(ms);
+  const ctrl = new AbortController();
+  window.setTimeout(() => ctrl.abort(), ms);
+  return ctrl.signal;
+}
 
 function CardFace({ card, data, drag }: { card: DeckCard; data: DeckData; drag?: { dx: number; dy: number } }) {
   const { t, tn } = useI18n();
@@ -66,29 +76,60 @@ export function SwipeView({ data, onDone }: { data: DeckData; onDone: () => Prom
   const [error, setError] = useState<string | null>(null);
   const start = useRef<{ x: number; y: number } | null>(null);
 
+  // Fetch every card's photo up front, so each card shows at once when it comes to the top.
+  useEffect(() => {
+    for (const c of data.cards) {
+      const url = photoUrl(c.recipe.image_path);
+      if (url) new Image().src = url;
+    }
+  }, [data.cards]);
+
   const remaining = data.cards.filter((c) => !swiped.has(c.recipe_id));
   const top = remaining[0];
   const total = data.cards.length;
   const done = total - remaining.length;
 
-  const decide = async (verdict: Verdict) => {
+  // Saves run one at a time, in order: the server counts each member's swipes
+  // to tell when they are done, and parallel inserts could each miss the other.
+  const queue = useRef<Promise<void>>(Promise.resolve());
+
+  /** Saves a verdict in the background; on failure the card comes back. */
+  const save = (recipeId: string, verdict: Verdict): Promise<void> => {
+    const run = queue.current.then(async () => {
+      for (let attempt = 0; ; attempt++) {
+        const { error: err } = await supabase.from('swipes')
+          .insert({ deck_id: data.deck.id, recipe_id: recipeId, user_id: userId, verdict })
+          .abortSignal(timeoutSignal(SAVE_TIMEOUT_MS));
+        // A duplicate means this card was already swiped (e.g. on another device).
+        if (!err || err.code === '23505') return;
+        if (attempt === SAVE_RETRIES) throw err;
+        await new Promise((r) => window.setTimeout(r, 1000 * 2 ** attempt));
+      }
+    }).catch(() => {
+      setSwiped((s) => {
+        const next = new Set(s);
+        next.delete(recipeId);
+        return next;
+      });
+      setError(t('app.error'));
+    });
+    queue.current = run;
+    return run;
+  };
+
+  const decide = (verdict: Verdict) => {
     if (!top || leaving) return;
     const off = verdict === 'yes' ? { dx: 600, dy: 0 } : verdict === 'pass' ? { dx: -600, dy: 0 } : { dx: 0, dy: -800 };
     setLeaving({ id: top.recipe_id, ...off });
     setDrag(null);
+    setError(null);
     navigator.vibrate?.(10);
-    const { error: err } = await supabase.from('swipes')
-      .insert({ deck_id: data.deck.id, recipe_id: top.recipe_id, user_id: userId, verdict });
-    // A duplicate means this card was already swiped (e.g. on another device).
-    if (err && err.code !== '23505') {
-      setError(t('app.error'));
-      setLeaving(null);
-      return;
-    }
+    const saved = save(top.recipe_id, verdict);
+    const last = remaining.length === 1;
     window.setTimeout(() => {
       setSwiped((s) => new Set(s).add(top.recipe_id));
       setLeaving(null);
-      if (remaining.length === 1) void onDone();
+      if (last) void saved.then(onDone);
     }, 220);
   };
 
@@ -103,9 +144,9 @@ export function SwipeView({ data, onDone }: { data: DeckData; onDone: () => Prom
   const onPointerUp = () => {
     start.current = null;
     if (!drag) return;
-    if (drag.dy < -SWIPE_UP && Math.abs(drag.dx) < 60) void decide('must');
-    else if (drag.dx > SWIPE_X) void decide('yes');
-    else if (drag.dx < -SWIPE_X) void decide('pass');
+    if (drag.dy < -SWIPE_UP && Math.abs(drag.dx) < 60) decide('must');
+    else if (drag.dx > SWIPE_X) decide('yes');
+    else if (drag.dx < -SWIPE_X) decide('pass');
     else setDrag(null);
   };
 
@@ -153,13 +194,13 @@ export function SwipeView({ data, onDone }: { data: DeckData; onDone: () => Prom
 
       {error && <p className="notice">{error}</p>}
       <div className="swipe-actions">
-        <button type="button" className="btn btn--round btn--lg pass" aria-label={t('swipe.pass')} onClick={() => void decide('pass')}>
+        <button type="button" className="btn btn--round btn--lg pass" aria-label={t('swipe.pass')} onClick={() => decide('pass')}>
           <Icon name="x" size={30} strokeWidth={2.5} />
         </button>
-        <button type="button" className="btn btn--round must" aria-label={t('swipe.must')} onClick={() => void decide('must')}>
+        <button type="button" className="btn btn--round must" aria-label={t('swipe.must')} onClick={() => decide('must')}>
           <Icon name="star" size={26} />
         </button>
-        <button type="button" className="btn btn--round btn--lg yes" aria-label={t('swipe.yes')} onClick={() => void decide('yes')}>
+        <button type="button" className="btn btn--round btn--lg yes" aria-label={t('swipe.yes')} onClick={() => decide('yes')}>
           <Icon name="heart" size={30} strokeWidth={2.5} />
         </button>
       </div>

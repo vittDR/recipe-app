@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Download each recipe's photo, crop it to the app's image spec and save it as WebP.
 
-Spec (recipe-template.md): 4:3 landscape, 1600x1200 (min 1200x900), dish centred,
-WebP ~q80, under 300 KB (500 KB max).
+Spec (recipe-template.md): 4:3 landscape, 900x675, dish centred, WebP ~q70,
+under 100 KB (200 KB max).
 
 Usage:
     pip install requests pillow
@@ -21,9 +21,8 @@ from urllib.parse import urlparse
 import requests
 from PIL import Image, ImageOps
 
-TARGET = (1600, 1200)
-MIN = (1200, 900)
-MAX_BYTES, GOAL_BYTES = 500_000, 300_000
+TARGET = MIN = (900, 675)
+MAX_BYTES, GOAL_BYTES = 200_000, 100_000
 UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/126.0 Safari/537.36")
 
@@ -56,7 +55,7 @@ def to_webp(data: bytes) -> tuple[bytes, tuple[int, int], str]:
     else:
         note = f"upscaled from {w}x{h} (source is small)"
         im = im.resize(MIN, Image.LANCZOS)
-    for q in (80, 75, 70, 65, 60, 55):
+    for q in (70, 65, 60, 55):
         buf = io.BytesIO()
         im.save(buf, "WEBP", quality=q, method=6)
         if buf.tell() <= GOAL_BYTES:

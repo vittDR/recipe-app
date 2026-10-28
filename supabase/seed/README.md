@@ -28,11 +28,11 @@ The script runs each ingredient line through the app's parser and catalogue, the
 The photos are in `web/public/recipe-photos/` and ship with the app, so `image_url` is a path like `/recipe-photos/spaghetti-alle-vongole.webp`. `image_source_url` keeps where each photo came from, and `photos-report.csv` has the download log.
 
 - 99 recipes have a photo. 11 have none and show the emoji: 9 sources had no photo, and 2 photo links are dead (Blanc de poulet à la basquaise, Rösti with fried eggs).
-- 72 source photos were smaller than 1200×900 and were upscaled, so some look soft.
+- 72 source photos were smaller than 1200×900 and were upscaled when downloaded (before the switch to 900×675), so some look soft.
 - A few carry the source blog's watermark (Arrosto di tacchino, Blanquette de veau légère, Frittata di zucchine, Saltimbocca).
 - The service worker doesn't precache them: each loads the first time a card shows it.
 
-To replace or add photos, run `scripts/download_images.py` (needs `pip install requests pillow`), or drop a 4:3 WebP into the folder and point `image_url` at it.
+To replace or add photos, run `scripts/download_images.py` (needs `pip install requests pillow`), or drop a 4:3 WebP into the folder and point `image_url` at it. Then run `python3 scripts/make_thumbnails.py web/public/recipe-photos` to refresh the small copies in `recipe-photos/thumb/` that the Recipes grid uses.
 
 ## Known limits
 

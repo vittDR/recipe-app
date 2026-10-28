@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { Icon } from '../../components/Icon.tsx';
-import { Button, Chip, Screen, Spinner, imageStyle, recipeEmoji } from '../../components/ui.tsx';
+import { Button, Chip, RecipeThumb, Screen, Spinner } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { RECIPE_FILTERS, type RecipeFilter, matchesFilters } from '@logic/facets.ts';
 import { effortLabels, facetsOf } from '../../lib/facets.ts';
@@ -80,9 +80,7 @@ export function RecipesScreen() {
               <div className="grid">
                 {shown.map((r) => (
                   <Link key={r.id} to={`/recipes/${r.id}`} className="tile">
-                    <div className="tile__image" style={imageStyle(r.image_path)}>
-                      {!imageStyle(r.image_path) && <span aria-hidden>{recipeEmoji(r.title, r.tags)}</span>}
-                    </div>
+                    <div className="tile__image"><RecipeThumb recipe={r} /></div>
                     <div className="tile__body">
                       <span className="tile__title">{r.title}</span>
                       <span className="small muted">

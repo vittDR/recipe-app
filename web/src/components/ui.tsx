@@ -265,7 +265,23 @@ export function recipeEmoji(title: string, tags: string[] = []): string {
   return table.find(([re]) => re.test(t))?.[1] ?? '🍽️';
 }
 
-/** Absolute URLs, or photos served by the app itself ("/recipe-photos/…"). */
+/** The photo's URL when it can be shown: absolute URLs, or photos served by the app itself ("/recipe-photos/…"). */
+export function photoUrl(path: string | null): string | null {
+  return path && /^(https?:\/\/|\/(?!\/))/.test(path) ? path : null;
+}
+
 export function imageStyle(path: string | null): React.CSSProperties | undefined {
-  return path && /^(https?:\/\/|\/(?!\/))/.test(path) ? { backgroundImage: `url("${path.replace(/"/g, '%22')}")` } : undefined;
+  const url = photoUrl(path);
+  return url ? { backgroundImage: `url("${url.replace(/"/g, '%22')}")` } : undefined;
+}
+
+/** The small copy of a seed photo (scripts/make_thumbnails.py); other photos as they are. */
+export function thumbUrl(path: string | null): string | null {
+  return photoUrl(path)?.replace(/^\/recipe-photos\/(?!thumb\/)/, '/recipe-photos/thumb/') ?? null;
+}
+
+/** Photo for grids and lists: a thumbnail, fetched only when scrolled near. */
+export function RecipeThumb({ recipe }: { recipe: { title: string; tags: string[]; image_path: string | null } }) {
+  const src = thumbUrl(recipe.image_path);
+  return src ? <img src={src} alt="" loading="lazy" decoding="async" /> : <span aria-hidden>{recipeEmoji(recipe.title, recipe.tags)}</span>;
 }

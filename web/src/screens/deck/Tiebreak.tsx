@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Icon } from '../../components/Icon.tsx';
-import { Button, Screen, imageStyle, recipeEmoji } from '../../components/ui.tsx';
+import { Button, RecipeThumb, Screen } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { useSession } from '../../lib/session.tsx';
 import { supabase } from '../../lib/supabase.ts';
@@ -59,8 +59,8 @@ export function TiebreakView({ data }: { data: DeckData }) {
           return (
             <div key={o.recipe_id} className="card card--flush" style={mine ? { boxShadow: 'inset 0 0 0 2px var(--c-accent), var(--shadow-card)' } : undefined}>
               <div className="row" style={{ padding: 'var(--s-3)' }}>
-                <div className="tile__image" style={{ width: 72, aspectRatio: '1', borderRadius: 'var(--r-md)', fontSize: 32, ...imageStyle(card.recipe.image_path) }}>
-                  {!imageStyle(card.recipe.image_path) && recipeEmoji(card.recipe.title, card.recipe.tags)}
+                <div className="tile__image" style={{ width: 72, aspectRatio: '1', borderRadius: 'var(--r-md)', fontSize: 32 }}>
+                  <RecipeThumb recipe={card.recipe} />
                 </div>
                 <div className="list-row__main stack" style={{ gap: 2 }}>
                   <span className="headline">{card.recipe.title}</span>
