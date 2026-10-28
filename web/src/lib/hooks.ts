@@ -3,6 +3,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Catalog, type CatalogEntry } from '@logic/ingredients.ts';
+import { cachedCatalogue, peekCatalogue } from './cache.ts';
 import { supabase } from './supabase.ts';
 
 /** Today's date (YYYY-MM-DD) in the household's time zone. */
@@ -26,15 +27,17 @@ interface Loaded<T> {
 
 /**
  * Runs `fetcher` now and whenever one of `tables` changes for this filter.
- * `key` identifies the query; changing it re-subscribes.
+ * `key` identifies the query; changing it re-subscribes. `initial` can give
+ * stored data to show until the first load lands.
  */
 export function useLive<T>(
   key: string | null,
   fetcher: () => Promise<T>,
   tables: { table: string; filter?: string }[] = [],
+  initial?: () => T | null,
 ): Loaded<T> {
-  const [data, setData] = useState<T | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<T | null>(() => initial?.() ?? null);
+  const [loading, setLoading] = useState(data === null);
   const [error, setError] = useState<string | null>(null);
   const fetcherRef = useRef(fetcher);
   fetcherRef.current = fetcher;
@@ -53,7 +56,7 @@ export function useLive<T>(
   const tablesKey = JSON.stringify(tables);
   useEffect(() => {
     if (!key) return;
-    setLoading(true);
+    if (!initial) setLoading(true);
     void reload();
     if (tables.length === 0) return;
     let channel = supabase.channel(`live:${key}:${Math.random().toString(36).slice(2)}`);
@@ -77,22 +80,33 @@ export function useLive<T>(
 }
 
 let catalogPromise: Promise<Catalog> | null = null;
+let storedCatalog: Catalog | null = null;
 
-/** The ingredient catalogue, loaded once per session. */
+/** The ingredient catalogue: kept on the phone, downloaded again only when it changed. */
 export function loadCatalog(): Promise<Catalog> {
-  catalogPromise ??= (async () => {
-    const { data, error } = await supabase.from('ingredient_catalog').select('*');
-    if (error) {
-      catalogPromise = null;
-      throw new Error(error.message);
-    }
-    return new Catalog((data ?? []) as CatalogEntry[]);
-  })();
+  catalogPromise ??= cachedCatalogue<CatalogEntry[]>(
+    'ingredients',
+    async () => {
+      const { data, error } = await supabase.from('ingredient_catalog').select('*');
+      if (error) throw new Error(error.message);
+      return (data ?? []) as CatalogEntry[];
+    },
+    (fresh) => { catalogPromise = Promise.resolve((storedCatalog = new Catalog(fresh))); },
+  ).then((entries) => (storedCatalog = new Catalog(entries))).catch((e) => {
+    catalogPromise = null;
+    throw e;
+  });
   return catalogPromise;
 }
 
 export function useCatalog(): Catalog | null {
-  const [catalog, setCatalog] = useState<Catalog | null>(null);
+  const [catalog, setCatalog] = useState<Catalog | null>(() => {
+    if (!storedCatalog) {
+      const entries = peekCatalogue<CatalogEntry[]>('ingredients');
+      if (entries) storedCatalog = new Catalog(entries);
+    }
+    return storedCatalog;
+  });
   useEffect(() => {
     void loadCatalog().then(setCatalog).catch(() => undefined);
   }, []);

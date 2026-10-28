@@ -505,6 +505,7 @@ each time a deck is dealt.
 ### Security, live updates, storage and scheduled jobs
 
 - **Row-level security** is on for every table (`…_rls.sql`). The rule of thumb: household data is readable by its members, personal data only by its owner, the catalogue and seed library by everyone signed in, and server tables by nobody but the functions.
+- **On the phone**, the app keeps a copy of the shared catalogues (`ingredient_catalog` and shared `products`) and of the household's grocery setup (own items, stores, aisle order, frequents) in local storage. Each launch it asks `catalog_version()` for a fingerprint of the shared catalogues and downloads one again only when it changed, e.g. after a `seed.sql` run. The household's copy is shown while the live one loads and is cleared on sign-out.
 - **Realtime** is enabled for `grocery_items`, `household_products`, `household_stores`, `decks`, `deck_members`, `tiebreak_picks` and `meals`, so both phones update live.
 - **Storage**: a private `recipe-images` bucket, with files under `<household_id>/…` readable only by that household.
 - **pg_cron jobs**: `dineamite-prompts` (every 5 minutes, queues the evening prompt and reminder), `dineamite-push-dispatch` (every minute, only does anything when `push_outbox` has unsent rows), `dineamite-purge-invites` (nightly).

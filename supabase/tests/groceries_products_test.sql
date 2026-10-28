@@ -129,3 +129,12 @@ select pg_temp.check((select product_id = :'framboises'::uuid from recipe_ingred
 -- Leave the database as the other suites expect it.
 delete from households where id in (:'hid', :'eve_hid');
 delete from auth.users where id in ('00000000-0000-0000-0000-00000000000d', '00000000-0000-0000-0000-00000000000e');
+
+-- Phones re-download a shared catalogue only when its fingerprint changes.
+select catalog_version() as v1 \gset
+select pg_temp.check((select catalog_version() = :'v1'::jsonb), 'catalogue version is stable');
+update products set aliases = aliases || '{test}' where name_fr = 'Framboises' and household_id is null;
+select pg_temp.check((select (catalog_version() ->> 'products') <> (:'v1'::jsonb ->> 'products')
+                      and (catalog_version() ->> 'ingredients') = (:'v1'::jsonb ->> 'ingredients')),
+                     'changing a shared product changes only the products version');
+update products set aliases = array_remove(aliases, 'test') where name_fr = 'Framboises' and household_id is null;
