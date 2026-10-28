@@ -295,3 +295,25 @@ update public.ingredient_catalog set exotic = (name in (
   'kaffir lime leaves', 'kimchi', 'korean rice cakes', 'mirin', 'msg', 'nasi goreng paste', 'perilla leaves',
   'rice syrup', 'rice wine', 'sichuan pepper', 'ssamjang', 'tamarind paste'
 ));
+
+-- ---------------------------------------------------------------------------
+-- Grocery products: one per catalogue ingredient (French name first). The
+-- everyday items that aren't recipe ingredients are in the grocery_products
+-- migration. Safe to re-run.
+-- ---------------------------------------------------------------------------
+
+select public.sync_products_from_catalog();
+
+-- Shopping-list words for catalogue products.
+update public.products p
+set aliases = (select array_agg(distinct a order by a) from unnest(p.aliases || v.extra) a)
+from (values
+  ('crème fraîche', '{crème,crème liquide}'::text[]),
+  ('chicken stock', '{fond de volaille,fond de veau}'),
+  ('salmon fillet', '{saumon frais}'),
+  ('bread', '{baguette,pain frais}'),
+  ('tuna', '{thon en boîte}'),
+  ('frozen peas', '{petits pois}'),
+  ('lettuce', '{laitue,salade verte}')
+) as v(ingredient, extra)
+where p.ingredient = v.ingredient;

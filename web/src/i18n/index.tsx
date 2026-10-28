@@ -41,7 +41,8 @@ export function detectLocale(): Locale {
   } catch {
     // storage unavailable
   }
-  return navigator.language?.toLowerCase().startsWith('fr') ? 'fr' : 'en';
+  // French first: English only for people who chose it.
+  return 'fr';
 }
 
 interface I18n {

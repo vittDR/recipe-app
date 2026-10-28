@@ -135,10 +135,13 @@ export interface Swipe {
 export interface GroceryRow {
   id: string;
   household_id: string;
+  product_id: string | null;
+  /** Snapshot of the product's French name; display goes through the product. */
   name: string;
   quantity: number | null;
   unit: string | null;
   aisle: Aisle;
+  store_id: string | null;
   recipe_id: string | null;
   added_by: string | null;
   checked_by: string | null;
@@ -146,6 +149,12 @@ export interface GroceryRow {
   cleared_at: string | null;
   sort_key: number;
   created_at: string;
+}
+
+export interface Store {
+  id: string;
+  name: string;
+  position: number;
 }
 
 export interface Meal {

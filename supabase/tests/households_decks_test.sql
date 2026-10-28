@@ -77,8 +77,8 @@ select pg_temp.check((select store_name = 'Carrefour' and owner_id = '00000000-0
 -- Grocery merge (as A).
 select pg_temp.act_as('00000000-0000-0000-0000-00000000000a');
 select add_grocery_items('[{"name":"Spinach","quantity":100,"unit":"g"},{"name":"spinach","quantity":50,"unit":"g"},{"name":"eggs","quantity":6}]');
-select pg_temp.check((select quantity = 150 and aisle = 'produce' from grocery_items where name = 'spinach'),
-                     'same name and unit merge, aisle from catalogue');
+select pg_temp.check((select quantity = 150 and aisle = 'produce' from grocery_items where name = 'épinards'),
+                     'same product and unit merge, French name and aisle from the catalogue');
 select pg_temp.check((select count(*) = 2 from grocery_items), 'two distinct items');
 
 -- Portions: A eats 1.5 servings, B the default 1; the pot is both plates.

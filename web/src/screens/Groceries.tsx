@@ -1,28 +1,29 @@
 import { useState } from 'react';
-import { groupGroceries, type GroupMode } from '@logic/groceries.ts';
+import { groupGroceries, storeKey, type GroupMode } from '@logic/groceries.ts';
 import { parseIngredientLine } from '@logic/ingredients.ts';
+import { productName, sectionOf, type Product } from '@logic/products.ts';
 import { formatQuantity } from '../components/AddToListSheet.tsx';
+import { FrequentSheet, ItemSheet, useSectionTitle } from '../components/GrocerySheets.tsx';
 import { Icon } from '../components/Icon.tsx';
 import { Avatar, Button, Checkbox, Screen, Segmented, Spinner } from '../components/ui.tsx';
 import { useI18n } from '../i18n/index.tsx';
-import { useCatalog, useLive } from '../lib/hooks.ts';
+import { useLive } from '../lib/hooks.ts';
+import { useGroceryCatalog } from '../lib/products.ts';
 import { useSession } from '../lib/session.tsx';
 import { must, supabase } from '../lib/supabase.ts';
-import type { Aisle, GroceryRow } from '../lib/types.ts';
+import type { GroceryRow } from '../lib/types.ts';
 
 const MODE_KEY = 'dineamite.groceryMode';
 const SHOPPING_WINDOW_MS = 10 * 60_000;
 
 interface ListData {
   items: GroceryRow[];
-  aisleOrder: Aisle[];
   recipes: Map<string, string>;
 }
 
 export function GroceriesScreen() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const { userId, household, partners, memberName, memberColor } = useSession();
-  const catalog = useCatalog();
   const [mode, setModeState] = useState<GroupMode>(() => {
     try {
       return (localStorage.getItem(MODE_KEY) as GroupMode) || 'aisle';
@@ -31,6 +32,8 @@ export function GroceriesScreen() {
     }
   });
   const [draft, setDraft] = useState('');
+  const [frequentOpen, setFrequentOpen] = useState(false);
+  const [openItem, setOpenItem] = useState<GroceryRow | null>(null);
 
   const setMode = (m: GroupMode) => {
     setModeState(m);
@@ -42,33 +45,33 @@ export function GroceriesScreen() {
   };
 
   const hid = household!.id;
+  const { data: catalog, reload: reloadCatalog } = useGroceryCatalog(hid);
+  const sectionTitleOf = useSectionTitle(catalog);
   const { data, loading, reload } = useLive<ListData>(
     `groceries:${hid}`,
     async () => {
-      const [items, order] = await Promise.all([
-        supabase.from('grocery_items').select('*').eq('household_id', hid).is('cleared_at', null),
-        supabase.from('household_aisle_order').select('aisle, position').eq('household_id', hid).order('position'),
-      ]);
-      const rows = must(items) as GroceryRow[];
+      const rows = must(await supabase.from('grocery_items').select('*').eq('household_id', hid).is('cleared_at', null)) as GroceryRow[];
       const recipeIds = [...new Set(rows.map((r) => r.recipe_id).filter(Boolean))] as string[];
       const recipes = recipeIds.length
         ? (must(await supabase.from('recipes').select('id, title').in('id', recipeIds)) as { id: string; title: string }[])
         : [];
-      return {
-        items: rows,
-        aisleOrder: (must(order) as { aisle: Aisle }[]).map((o) => o.aisle),
-        recipes: new Map(recipes.map((r) => [r.id, r.title])),
-      };
+      return { items: rows, recipes: new Map(recipes.map((r) => [r.id, r.title])) };
     },
     [{ table: 'grocery_items', filter: `household_id=eq.${hid}` }],
   );
 
   const [optimistic, setOptimistic] = useState<Map<string, boolean>>(new Map());
-  const items = (data?.items ?? []).map((i) =>
-    optimistic.has(i.id)
+  const displayName = (i: GroceryRow) => {
+    const p = i.product_id ? catalog?.index.get(i.product_id) : undefined;
+    return p ? productName(p, locale) : productName({ name_fr: i.name, name_en: null });
+  };
+  const items = (data?.items ?? []).map((i) => ({
+    ...(optimistic.has(i.id)
       ? { ...i, checked_at: optimistic.get(i.id) ? i.checked_at ?? new Date().toISOString() : null, checked_by: optimistic.get(i.id) ? i.checked_by ?? userId : null }
-      : i,
-  );
+      : i),
+    name: displayName(i),
+  }));
+  const onList = new Set(items.filter((i) => !i.checked_at && i.product_id).map((i) => i.product_id!));
 
   const toggle = async (item: GroceryRow, checked: boolean) => {
     setOptimistic((m) => new Map(m).set(item.id, checked));
@@ -85,15 +88,25 @@ export function GroceriesScreen() {
     });
   };
 
-  const add = async () => {
-    const parsed = parseIngredientLine(draft);
-    if (!parsed.name) return;
-    const entry = catalog?.find(parsed.name);
+  // What's typed, split into amount and name, and the products it could be.
+  const parsed = parseIngredientLine(draft);
+  const exact = parsed.name ? catalog?.index.find(parsed.name) : undefined;
+  const suggestions = parsed.name && catalog
+    ? catalog.index.search(parsed.name, 5, (p) => catalog.prefs.get(p.id)?.add_count ?? 0)
+    : [];
+
+  const addProduct = async (product: Product | null, text = parsed) => {
+    const amount = { quantity: text.quantity, unit: text.unit === 'piece' ? null : text.unit };
     setDraft('');
     await supabase.rpc('add_grocery_items', {
-      p_items: [{ name: entry?.name ?? parsed.name, quantity: parsed.quantity, unit: parsed.unit === 'piece' ? null : parsed.unit, aisle: entry?.default_aisle }],
+      p_items: [product ? { product_id: product.id, ...amount } : { name: text.name, ...amount }],
     });
-    await reload();
+    await Promise.all([reload(), product ? null : reloadCatalog()]);
+  };
+
+  const submit = () => {
+    if (!parsed.name) return;
+    void addProduct(exact ?? null);
   };
 
   const clearChecked = async () => {
@@ -101,15 +114,20 @@ export function GroceriesScreen() {
     await reload();
   };
 
-  const sections = groupGroceries(items, mode, data?.aisleOrder.length ? data.aisleOrder : undefined);
+  const sections = groupGroceries(items, mode, catalog?.sectionOrder.length ? catalog.sectionOrder : undefined);
   const anyChecked = items.some((i) => i.checked_at);
   const shopper = partners.find((p) =>
     items.some((i) => i.checked_by === p.user_id && i.checked_at && Date.now() - Date.parse(i.checked_at) < SHOPPING_WINDOW_MS));
 
   const sectionTitle = (key: string) =>
-    mode === 'aisle' ? t(`groceries.aisles.${key as Aisle}`)
+    mode === 'aisle' ? sectionTitleOf(key)
       : mode === 'recipe' ? (key ? data?.recipes.get(key) ?? '' : t('groceries.noRecipe'))
         : key;
+
+  const suggestionMeta = (p: Product) => {
+    const s = sectionOf(p, catalog?.prefs.get(p.id));
+    return sectionTitleOf(s.store_id ? storeKey(s.store_id) : s.aisle);
+  };
 
   return (
     <Screen>
@@ -126,13 +144,45 @@ export function GroceriesScreen() {
         </p>
       )}
 
-      <form className="row" style={{ marginBottom: 'var(--s-4)' }} onSubmit={(e) => { e.preventDefault(); void add(); }}>
+      <form className="row" onSubmit={(e) => { e.preventDefault(); submit(); }}>
         <input className="input" value={draft} placeholder={t('groceries.addPlaceholder')} aria-label={t('groceries.add')}
-          onChange={(e) => setDraft(e.target.value)} enterKeyHint="done" />
-        <button type="submit" className="icon-btn icon-btn--filled" aria-label={t('groceries.add')} disabled={!draft.trim()}>
+          onChange={(e) => setDraft(e.target.value)} enterKeyHint="done" autoComplete="off" />
+        <button type="submit" className="icon-btn icon-btn--filled" aria-label={t('groceries.add')} disabled={!parsed.name}>
           <Icon name="plus" />
         </button>
       </form>
+
+      {parsed.name && (
+        <div className="list" role="listbox" aria-label={t('groceries.suggestions')} style={{ marginTop: 'var(--s-2)' }}>
+          {suggestions.map((p) => (
+            <button key={p.id} type="button" role="option" aria-selected={p.id === exact?.id} className="list-row"
+              onClick={() => void addProduct(p)}>
+              <span className="list-row__main">
+                <span className="list-row__title">{productName(p, locale)}</span>
+                <span className="list-row__meta">
+                  {suggestionMeta(p)}{onList.has(p.id) ? ` · ${t('groceries.onList')}` : ''}
+                </span>
+              </span>
+              <Icon name="plus" size={20} />
+            </button>
+          ))}
+          {!exact && (
+            <button type="button" role="option" aria-selected={false} className="list-row" onClick={() => void addProduct(null)}>
+              <span className="list-row__main">
+                <span className="list-row__title">{t('groceries.create', { name: parsed.name })}</span>
+                <span className="list-row__meta">{t('groceries.newItem')}</span>
+              </span>
+              <Icon name="plus" size={20} />
+            </button>
+          )}
+        </div>
+      )}
+
+      <div className="row" style={{ margin: 'var(--s-4) 0' }}>
+        <Button small variant="secondary" onClick={() => setFrequentOpen(true)}>
+          <Icon name="star" size={18} /> {t('groceries.frequent')}
+        </Button>
+      </div>
 
       <Segmented<GroupMode> label={t('groceries.by')} value={mode} onChange={setMode} options={[
         { value: 'aisle', label: t('groceries.aisle') },
@@ -152,12 +202,13 @@ export function GroceriesScreen() {
                 <div key={item.id} className={`list-row${checked ? ' list-row--checked' : ''}`}>
                   <Checkbox checked={checked} label={item.name} color={checked ? memberColor(item.checked_by) : undefined}
                     onChange={(v) => void toggle(item, v)} />
-                  <div className="list-row__main">
-                    <div className="list-row__title">{item.name}</div>
+                  <button type="button" className="list-row__main list-row__tap"
+                    onClick={() => setOpenItem(data?.items.find((i) => i.id === item.id) ?? null)}>
+                    <span className="list-row__title">{item.name}</span>
                     {checked && item.checked_by && item.checked_by !== userId && (
-                      <div className="list-row__meta">{t('groceries.checkedBy', { name: memberName(item.checked_by) })}</div>
+                      <span className="list-row__meta">{t('groceries.checkedBy', { name: memberName(item.checked_by) })}</span>
                     )}
-                  </div>
+                  </button>
                   <span className="muted small">{formatQuantity(item.quantity, item.unit)}</span>
                 </div>
               );
@@ -165,6 +216,11 @@ export function GroceriesScreen() {
           </div>
         </section>
       ))}
+
+      <FrequentSheet open={frequentOpen} onClose={() => setFrequentOpen(false)} catalog={catalog} onList={onList}
+        onAdd={(p) => addProduct(p, { name: '', quantity: null, unit: null, raw_text: '' })} />
+      <ItemSheet item={openItem} catalog={catalog} onClose={() => setOpenItem(null)}
+        onChanged={() => void Promise.all([reload(), reloadCatalog()])} />
     </Screen>
   );
 }

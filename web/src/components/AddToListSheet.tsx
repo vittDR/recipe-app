@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { proposeListItems, scaleQuantity, type ListProposal } from '@logic/groceries.ts';
+import { productName } from '@logic/products.ts';
 import { useI18n } from '../i18n/index.tsx';
+import { useCatalog } from '../lib/hooks.ts';
 import { useSession } from '../lib/session.tsx';
 import { must, supabase } from '../lib/supabase.ts';
 import type { GroceryRow, Recipe, RecipeIngredient } from '../lib/types.ts';
@@ -13,13 +15,14 @@ export async function loadProposals(
 ): Promise<ListProposal<RecipeIngredient>[]> {
   const since = new Date(Date.now() - 14 * 86_400_000).toISOString();
   const [items, staples] = await Promise.all([
-    supabase.from('grocery_items').select('*').eq('household_id', householdId)
+    supabase.from('grocery_items').select('*, product:products(ingredient)').eq('household_id', householdId)
       .or(`cleared_at.is.null,checked_at.gte.${since}`),
     supabase.from('household_staples').select('name').eq('household_id', householdId),
   ]);
   return proposeListItems(
     ingredients,
-    must(items) as GroceryRow[],
+    (must(items) as (GroceryRow & { product: { ingredient: string | null } | null })[])
+      .map(({ product, ...i }) => ({ ...i, ingredient: product?.ingredient ?? null })),
     (must(staples) as { name: string }[]).map((s) => s.name),
   );
 }
@@ -43,7 +46,8 @@ export function AddToListSheet({
   ingredients: RecipeIngredient[];
   potServings?: number | null;
 }) {
-  const { t, tn } = useI18n();
+  const { t, tn, locale } = useI18n();
+  const catalog = useCatalog();
   const { household } = useSession();
   const [proposals, setProposals] = useState<ListProposal<RecipeIngredient>[] | null>(null);
   const [selected, setSelected] = useState<Set<string>>(new Set());
@@ -80,6 +84,12 @@ export function AddToListSheet({
     onClose();
   };
 
+  // French first: the catalogue's name in the shopping language.
+  const nameOf = (i: RecipeIngredient) => {
+    const e = catalog?.find(i.name);
+    return e?.name === i.name ? productName({ name_fr: e.name_fr ?? e.name, name_en: e.name }, locale) : i.name;
+  };
+
   const row = (p: ListProposal<RecipeIngredient>) => {
     const why = p.why === 'staple' ? t('addToList.staple')
       : p.why === 'bought_recently' ? t('addToList.boughtRecently')
@@ -87,14 +97,14 @@ export function AddToListSheet({
     const checked = selected.has(p.ingredient.id);
     return (
       <div key={p.ingredient.id} className="list-row">
-        <Checkbox checked={checked} label={p.ingredient.name} onChange={(v) => {
+        <Checkbox checked={checked} label={nameOf(p.ingredient)} onChange={(v) => {
           const next = new Set(selected);
           if (v) next.add(p.ingredient.id);
           else next.delete(p.ingredient.id);
           setSelected(next);
         }} />
         <div className="list-row__main">
-          <div className="list-row__title">{p.ingredient.name}</div>
+          <div className="list-row__title">{nameOf(p.ingredient)}</div>
           {why && <div className="list-row__meta">{why}</div>}
         </div>
         <span className="muted small">{formatQuantity(scaled(p.ingredient), p.ingredient.unit)}</span>
