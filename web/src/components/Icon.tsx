@@ -1,7 +1,7 @@
-// Stroke icons drawn on a 24px grid. Decorative unless given a label.
+// Stroke icons drawn on a 24px grid, plus a few filled ones on their own grid.
+// Decorative unless given a label.
 
 const PATHS = {
-  flame: 'M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .3 1.6 1 2.6 2 3 0-3-.5-5.5.5-8z',
   book: 'M5 4h10a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3V4zM5 17a3 3 0 0 1 3-3h10',
   cart: 'M3 4h2l2.4 11h10.2L20 8H6.2M9 20h.01M17 20h.01',
   people: 'M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M16 4.5a3.5 3.5 0 0 1 0 6.8M21 20c0-2.6-1.7-4.9-4-5.7',
@@ -35,9 +35,23 @@ const PATHS = {
   pot: 'M4 10h16v6a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-6zM2 10h20M9 6c0-1 1-1 1-2M14 6c0-1 1-1 1-2',
 } as const;
 
-export type IconName = keyof typeof PATHS;
+// Filled artwork (the app's bowl): its own viewBox, no stroke.
+const FILLED = {
+  bowl: { viewBox: '0 0 256 256', d: 'M81.77,55c5.35-6.66,6.67-11.16,6.12-13.14-.42-1.49-2.41-2.26-2.43-2.26A8,8,0,0,1,88,24a8.11,8.11,0,0,1,2.38.36c1,.31,9.91,3.33,12.79,12.76,2.46,8.07-.55,17.45-8.94,27.89-5.35,6.66-6.67,11.16-6.12,13.14.42,1.49,2.37,2.24,2.39,2.25A8,8,0,0,1,88,96a8.11,8.11,0,0,1-2.38-.36c-1-.31-9.91-3.33-12.79-12.76C70.37,74.81,73.38,65.43,81.77,55Zm31.06,27.89c2.88,9.43,11.79,12.45,12.79,12.76A8.11,8.11,0,0,0,128,96a8,8,0,0,0,2.5-15.6s-2-.76-2.39-2.25c-.55-2,.77-6.48,6.12-13.14,8.39-10.44,11.4-19.82,8.94-27.89-2.88-9.43-11.78-12.45-12.79-12.76A8.11,8.11,0,0,0,128,24a8,8,0,0,0-2.54,15.59s2,.77,2.43,2.26c.55,2-.77,6.48-6.12,13.14C113.38,65.43,110.37,74.81,112.83,82.88Zm40,0c2.88,9.43,11.79,12.45,12.79,12.76A8.11,8.11,0,0,0,168,96a8,8,0,0,0,2.5-15.6s-2-.76-2.39-2.25c-.55-2,.77-6.48,6.12-13.14,8.39-10.44,11.4-19.82,8.94-27.89-2.88-9.43-11.78-12.45-12.79-12.76A8.11,8.11,0,0,0,168,24a8,8,0,0,0-2.54,15.59s2,.77,2.43,2.26c.55,2-.77,6.48-6.12,13.14C153.38,65.43,150.37,74.81,152.83,82.88ZM224,112H32a8,8,0,0,0-8,8,104.35,104.35,0,0,0,56,92.28V216a16,16,0,0,0,16,16h64a16,16,0,0,0,16-16v-3.72A104.35,104.35,0,0,0,232,120,8,8,0,0,0,224,112Z' },
+} as const;
+
+export type IconName = keyof typeof PATHS | keyof typeof FILLED;
 
 export function Icon({ name, size = 22, label, strokeWidth = 2 }: { name: IconName; size?: number; label?: string; strokeWidth?: number }) {
+  if (name in FILLED) {
+    const f = FILLED[name as keyof typeof FILLED];
+    return (
+      <svg width={size} height={size} viewBox={f.viewBox} fill="currentColor"
+        role={label ? 'img' : undefined} aria-label={label} aria-hidden={label ? undefined : true}>
+        <path d={f.d} />
+      </svg>
+    );
+  }
   return (
     <svg
       width={size}
@@ -52,7 +66,7 @@ export function Icon({ name, size = 22, label, strokeWidth = 2 }: { name: IconNa
       aria-label={label}
       aria-hidden={label ? undefined : true}
     >
-      <path d={PATHS[name]} />
+      <path d={PATHS[name as keyof typeof PATHS]} />
     </svg>
   );
 }

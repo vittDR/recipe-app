@@ -22,7 +22,7 @@ const variants = [
 const browser = await chromium.launch();
 const page = await browser.newPage();
 for (const v of variants) {
-  const inner = v.maskable ? svg.replace('rx="112"', 'rx="0"').replace('<path', '<path transform="translate(51 51) scale(0.8)"') : svg;
+  const inner = v.maskable ? svg.replace('rx="112"', 'rx="0"').replace('<g ', '<g transform="translate(51.2 51.2) scale(0.8)"><g ').replace('</g>', '</g></g>') : svg;
   await page.setViewportSize({ width: v.size, height: v.size });
   await page.setContent(`<html><body style="margin:0;background:transparent">${inner.replace('<svg', `<svg width="${v.size}" height="${v.size}"`)}</body></html>`);
   await page.screenshot({ path: pub(v.file), omitBackground: !v.maskable });
