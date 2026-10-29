@@ -14,6 +14,7 @@ import {
   Catalog, estimateMacros, parseIngredientLine, type CatalogEntry, type NormalisedIngredient,
 } from '../_shared/logic/ingredients.ts';
 import { productKey } from '../_shared/logic/products.ts';
+import { TagCatalog, type TagEntry } from '../_shared/logic/tags.ts';
 
 const FETCH_TIMEOUT_MS = 10_000;
 const MAX_HTML_BYTES = 3_000_000;
@@ -102,6 +103,22 @@ async function createItem(caller: Caller, name: string): Promise<string | null> 
   return (own ?? []).find((p) => productKey(p.name_fr) === productKey(name))?.id ?? null;
 }
 
+/** The recipe's tags as catalogue names; words the catalogue doesn't know become
+ *  the household's own tags, labelled in the language they were written in. */
+async function saveTags(caller: Caller, raw: string[], language: string): Promise<string[]> {
+  const { data } = await caller.db.from('tag_catalog').select('*'); // shared + the household's own (RLS)
+  const { tags, unknown } = new TagCatalog((data ?? []) as TagEntry[]).normalise(raw);
+  if (unknown.length) {
+    const label = (n: string) => n.charAt(0).toUpperCase() + n.slice(1);
+    await caller.db.from('tag_catalog').upsert(unknown.map((name) => ({
+      household_id: caller.householdId, name,
+      name_en: language === 'en' ? label(name) : null,
+      name_fr: language === 'fr' ? label(name) : null,
+    })), { onConflict: 'household_id,name', ignoreDuplicates: true });
+  }
+  return tags;
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
   const caller = await requireMember(req);
@@ -170,6 +187,8 @@ Deno.serve(async (req) => {
       ingredients.push({ ...norm, guessed: !!i.guessed, optional: !!i.optional, original_text: i.original_text?.trim() || null, product_id: productId });
     }
     const macros = estimateMacros(ingredients, servings);
+    const language = r.language === 'fr' || r.language === 'it' ? r.language : 'en';
+    const tags = await saveTags(caller, (r.tags ?? []).map(String), language);
     const minutes = (v: number | null | undefined) => (typeof v === 'number' && v >= 0 ? Math.round(v) : null);
     const prepMin = minutes(r.prep_min);
     const cookMin = minutes(r.cook_min);
@@ -186,11 +205,11 @@ Deno.serve(async (req) => {
       prep_min: prepMin,
       cook_min: cookMin,
       steps: (r.steps ?? []).map((s) => String(s).trim()).filter(Boolean),
-      tags: (r.tags ?? []).map((t) => String(t).toLowerCase().trim()).filter(Boolean).slice(0, 12),
+      tags,
       kcal_per_serving: macros.kcalPerServing,
       protein_g_per_serving: macros.proteinGPerServing,
       macros_estimated: macros.estimated,
-      language: r.language === 'fr' || r.language === 'it' ? r.language : 'en',
+      language,
       source_name: r.source_name?.trim() || null,
       original_servings: r.original_servings && r.original_servings > 0 ? r.original_servings : null,
       cuisine: r.cuisine?.toLowerCase().trim() || null,

@@ -6,7 +6,9 @@ import { useI18n } from '../../i18n/index.tsx';
 import { recipeTitle } from '../../lib/recipeText.ts';
 import { useSession } from '../../lib/session.tsx';
 import { supabase } from '../../lib/supabase.ts';
+import { useTags } from '../../lib/tags.ts';
 import type { DeckCard, Verdict } from '../../lib/types.ts';
+import type { TagCatalog } from '@logic/tags.ts';
 import type { DeckData } from './data.ts';
 
 const SWIPE_X = 100;
@@ -22,7 +24,9 @@ function timeoutSignal(ms: number): AbortSignal {
   return ctrl.signal;
 }
 
-function CardFace({ card, data, drag }: { card: DeckCard; data: DeckData; drag?: { dx: number; dy: number } }) {
+function CardFace({ card, data, tags, drag }: {
+  card: DeckCard; data: DeckData; tags: TagCatalog | null; drag?: { dx: number; dy: number };
+}) {
   const { t, tn, locale } = useI18n();
   const { userId } = useSession();
   const r = card.recipe;
@@ -47,7 +51,7 @@ function CardFace({ card, data, drag }: { card: DeckCard; data: DeckData; drag?:
           {shared && card.fits_all && <Tag tone="success">{t('swipe.fitsBoth')}</Tag>}
           {!(shared && card.fits_all) && fitsMe && <Tag tone="success">{t('swipe.fitsYou')}</Tag>}
           {fitsMe === false && <Tag>{t('swipe.notFit')}</Tag>}
-          {r.tags.slice(0, 2).map((tag) => <Tag key={tag}>{tag}</Tag>)}
+          {r.tags.slice(0, 2).map((tag) => <Tag key={tag}>{tags?.label(tag, locale) ?? tag}</Tag>)}
         </div>
         {plate?.kcal != null && (
           <div className="macros">
@@ -69,7 +73,8 @@ function CardFace({ card, data, drag }: { card: DeckCard; data: DeckData; drag?:
 
 export function SwipeView({ data, onDone }: { data: DeckData; onDone: () => Promise<void> }) {
   const { t } = useI18n();
-  const { userId } = useSession();
+  const { userId, household } = useSession();
+  const { tags } = useTags(household!.id);
   const navigate = useNavigate();
   const [swiped, setSwiped] = useState<Set<string>>(() => new Set(data.mySwipes.map((s) => s.recipe_id)));
   const [drag, setDrag] = useState<{ dx: number; dy: number } | null>(null);
@@ -187,7 +192,7 @@ export function SwipeView({ data, onDone }: { data: DeckData; onDone: () => Prom
               onPointerCancel={isTop ? () => { start.current = null; setDrag(null); } : undefined}
               onDoubleClick={isTop ? () => navigate(`/recipes/${card.recipe_id}`) : undefined}
             >
-              <CardFace card={card} data={data} drag={isTop ? drag ?? undefined : undefined} />
+              <CardFace card={card} data={data} tags={tags} drag={isTop ? drag ?? undefined : undefined} />
             </article>
           );
         })}

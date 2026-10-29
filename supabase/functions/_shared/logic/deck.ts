@@ -63,11 +63,12 @@ export interface DeckCard {
   reason: string | null;
 }
 
+// Tag names from the tag catalogue (logic/tags.ts), which maps other words onto them.
 export const MOOD_TAGS: Record<Exclude<Mood, 'any'>, string[]> = {
-  comfort: ['comfort', 'curry', 'stew', 'pasta', 'soup', 'réconfortant'],
-  light: ['light', 'salad', 'bowl', 'fish', 'léger', 'salade'],
-  quick: ['quick', 'rapide', '15 min', '20 min'],
-  fancy: ['fancy', 'date night', 'special', 'festif'],
+  comfort: ['comfort', 'curry', 'stew', 'soup'],
+  light: ['light', 'salad', 'bowl'],
+  quick: ['quick'],
+  fancy: ['fancy'],
 };
 
 function matchesTerm(recipe: CandidateRecipe, term: string): boolean {
@@ -109,6 +110,9 @@ function moodScore(recipe: CandidateRecipe, mood: Mood | undefined): number {
   if (!mood || mood === 'any') return 0;
   if (mood === 'quick' && recipe.totalMin && recipe.totalMin <= 25) return 1;
   if (mood === 'fancy' && recipe.totalMin && recipe.totalMin >= 45) return 0.5;
+  // Ingredients aren't tags: fish and pasta come from the ingredient list.
+  if (mood === 'light' && recipe.dietClass === 'fish') return 1;
+  if (mood === 'comfort' && recipe.ingredientNames.includes('pasta')) return 1;
   const tags = recipe.tags.map((t) => t.toLowerCase());
   return MOOD_TAGS[mood].some((t) => tags.includes(t)) ? 1 : 0;
 }

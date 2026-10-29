@@ -3,12 +3,14 @@ import { useNavigate, useSearchParams } from 'react-router';
 import { DIFFICULTIES, SPECIAL_EQUIPMENT, type Difficulty } from '@logic/facets.ts';
 import { draftFromLine, IngredientEditor, type DraftIngredient } from '../../components/IngredientEditor.tsx';
 import { StepEditor } from '../../components/StepEditor.tsx';
+import { TagEditor } from '../../components/Tags.tsx';
 import { Button, Chip, Field, Screen, Segmented, Spinner, toast } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { useCatalog } from '../../lib/hooks.ts';
 import { useGroceryCatalog } from '../../lib/products.ts';
 import { useSession } from '../../lib/session.tsx';
 import { callFunction } from '../../lib/supabase.ts';
+import { useTags } from '../../lib/tags.ts';
 
 interface Draft {
   title: string;
@@ -20,7 +22,10 @@ interface Draft {
   /** Lines read from the page, matched once the catalogue has loaded. */
   pendingLines: string[] | null;
   steps: string[];
-  tags: string;
+  /** Tag names; new words become the household's own tags on save. */
+  tags: string[];
+  /** Tags read from the page, matched once the tag catalogue has loaded. */
+  pendingTags: string[] | null;
   source_url: string | null;
   source_type: 'web' | 'instagram' | 'typed';
   image_url: string | null;
@@ -33,7 +38,7 @@ interface Draft {
 }
 
 const EMPTY: Draft = {
-  title: '', servings: '2', minutes: '', prep: '', cook: '', ingredients: [], pendingLines: null, steps: [], tags: '',
+  title: '', servings: '2', minutes: '', prep: '', cook: '', ingredients: [], pendingLines: null, steps: [], tags: [], pendingTags: null,
   source_url: null, source_type: 'typed', image_url: null, language: null,
   difficulty: null, pots: 0, oven: false, special: [],
 };
@@ -60,6 +65,7 @@ export function ImportScreen() {
   const { household } = useSession();
   const { data: catalog } = useGroceryCatalog(household!.id);
   const ingredientCatalog = useCatalog();
+  const { tags: tagCatalog, reload: reloadTags } = useTags(household!.id);
   const [params] = useSearchParams();
   const [mode, setMode] = useState<'link' | 'type'>('link');
   const [url, setUrl] = useState(params.get('url') ?? params.get('text') ?? '');
@@ -82,7 +88,7 @@ export function ImportScreen() {
         cook: recipe.cookMin ? String(recipe.cookMin) : '',
         pendingLines: recipe.ingredients,
         steps: recipe.steps,
-        tags: recipe.tags.join(', '),
+        pendingTags: recipe.tags,
         source_url: recipe.source_url,
         source_type: recipe.source_type,
         image_url: recipe.imageUrl,
@@ -109,6 +115,12 @@ export function ImportScreen() {
     setDraft({ ...draft, pendingLines: null, ingredients: lines.map((l) => draftFromLine(l, catalog, ingredientCatalog)) });
   }, [draft, catalog, ingredientCatalog]);
 
+  // Page tags in any language land on catalogue tags; ingredients and filler words go.
+  useEffect(() => {
+    if (!draft?.pendingTags || !tagCatalog) return;
+    setDraft({ ...draft, pendingTags: null, tags: tagCatalog.normalise(draft.pendingTags).tags });
+  }, [draft, tagCatalog]);
+
   const save = async () => {
     if (!draft) return;
     setBusy(true);
@@ -127,7 +139,7 @@ export function ImportScreen() {
           prep_min: minutes(draft.prep),
           cook_min: minutes(draft.cook),
           steps: draft.steps.map((s) => s.trim()).filter(Boolean),
-          tags: draft.tags.split(',').map((x) => x.trim()).filter(Boolean),
+          tags: draft.tags,
           language: draft.language ?? locale,
           difficulty: draft.difficulty,
           equipment: draft.pots || draft.oven || draft.special.length
@@ -139,6 +151,7 @@ export function ImportScreen() {
           })),
         },
       });
+      void reloadTags();
       toast(res.unknown_ingredients.length
         ? t('import.unknown', { items: res.unknown_ingredients.slice(0, 3).join(', ') })
         : t('import.saved'));
@@ -209,9 +222,12 @@ export function ImportScreen() {
               <span className="field__label">{t('import.stepsField')}</span>
               <StepEditor steps={form.steps} onChange={(steps) => update({ steps })} />
             </div>
-            <Field label={t('import.tagsField')}>
-              <input className="input" value={form.tags} onChange={set('tags')} />
-            </Field>
+            <div className="field">
+              <span className="field__label">{t('import.tagsField')}</span>
+              {form.pendingTags ? <Spinner /> : (
+                <TagEditor value={form.tags} tags={tagCatalog} onChange={(tags) => update({ tags })} />
+              )}
+            </div>
             <div className="field">
               <span className="field__label">{t('import.difficultyField')}</span>
               <Segmented label={t('import.difficultyField')} value={form.difficulty ?? ''} onChange={(v) => update({ difficulty: v as Difficulty })}

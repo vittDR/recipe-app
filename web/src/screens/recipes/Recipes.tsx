@@ -9,6 +9,7 @@ import { effortLabels, facetsOf } from '../../lib/facets.ts';
 import { useCatalog, useLive } from '../../lib/hooks.ts';
 import { useSession } from '../../lib/session.tsx';
 import { must, supabase } from '../../lib/supabase.ts';
+import { useTags } from '../../lib/tags.ts';
 import { RECIPE_COLLECTIONS, type Recipe, type RecipeCollection } from '../../lib/types.ts';
 
 type Filter = 'all' | RecipeCollection;
@@ -20,6 +21,7 @@ export function RecipesScreen() {
   const i18n = useI18n();
   const { t, tn } = i18n;
   const { household } = useSession();
+  const { tags } = useTags(household!.id);
   const navigate = useNavigate();
   const [query, setQuery] = useState('');
   const [filter, setFilter] = useState<Filter>('all');
@@ -31,16 +33,20 @@ export function RecipesScreen() {
   [{ table: 'recipes', filter: `household_id=eq.${household!.id}` }]);
 
   const shown = useMemo(() => {
-    // Every word must match the title, a tag or an ingredient: "quick chicken" works.
+    // Every word must match the title, a tag or an ingredient, in either language: "quick chicken" and "poulet rapide" work.
     const words = normalise(query).split(/\s+/).filter(Boolean);
     if (!catalog) return [];
     return (data ?? []).filter((r) => {
       if (filter !== 'all' && r.collection !== filter) return false;
       if (facets.size && !matchesFilters(facetsOf(r, r.recipe_ingredients.map((i) => i.name), catalog), facets)) return false;
-      const hay = normalise([...allTitles(r), ...r.tags, ...r.recipe_ingredients.map((i) => i.name)].join(' '));
+      const hay = normalise([
+        ...allTitles(r),
+        ...r.tags.flatMap((tag) => [tag, tags?.label(tag, 'en') ?? '', tags?.label(tag, 'fr') ?? '']),
+        ...r.recipe_ingredients.flatMap((i) => [i.name, catalog.find(i.name)?.name_fr ?? '']),
+      ].join(' '));
       return words.every((w) => hay.includes(w));
     });
-  }, [data, query, filter, facets, catalog]);
+  }, [data, query, filter, facets, catalog, tags]);
 
   const toggle = (f: RecipeFilter) => setFacets((cur) => {
     const next = new Set(cur);

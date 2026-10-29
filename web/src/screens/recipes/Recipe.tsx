@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router';
 import type { ListProposal } from '@logic/groceries.ts';
 import { AddToListSheet, formatQuantity, loadProposals } from '../../components/AddToListSheet.tsx';
 import { Icon } from '../../components/Icon.tsx';
+import { RecipeTags } from '../../components/Tags.tsx';
 import { Button, Screen, Spinner, Tag, imageStyle, recipeEmoji } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { recipeTitle, recipeSteps } from '../../lib/recipeText.ts';
@@ -12,6 +13,7 @@ import { useCatalog } from '../../lib/hooks.ts';
 import { INGREDIENT_SELECT, ingredientName } from '../../lib/products.ts';
 import { useSession } from '../../lib/session.tsx';
 import { must, supabase } from '../../lib/supabase.ts';
+import { useTags } from '../../lib/tags.ts';
 import type { Recipe, RecipeIngredient } from '../../lib/types.ts';
 
 interface Portion {
@@ -27,6 +29,7 @@ export function RecipeScreen() {
   const { t, tn, locale } = i18n;
   const catalog = useCatalog();
   const { household } = useSession();
+  const { tags, reload: reloadTags } = useTags(household!.id);
   const navigate = useNavigate();
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [ingredients, setIngredients] = useState<RecipeIngredient[]>([]);
@@ -79,7 +82,7 @@ export function RecipeScreen() {
         {recipe.cook_min != null && <Tag>{recipe.cook_min ? t('recipe.cook', { n: recipe.cook_min }) : t('recipe.noCook')}</Tag>}
         <Tag>{tn('recipe.servings', recipe.servings)}</Tag>
         {recipe.difficulty && <Tag tone={recipe.difficulty === 'hard' ? 'warning' : undefined}>{t(`recipe.${recipe.difficulty}`)}</Tag>}
-        {recipe.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+        <RecipeTags names={recipe.tags} tags={tags} householdId={household!.id} onTranslated={() => void reloadTags()} />
         {(recipe.collection === 'original' || recipe.collection === 'web') && <Tag>{t(`collection.${recipe.collection}One`)}</Tag>}
       </div>
 
