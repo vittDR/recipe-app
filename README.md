@@ -71,6 +71,8 @@ CI (`.github/workflows/ci.yml`) runs the logic tests, the SQL tests, checks that
 
 To query or patch the live database, `scripts/supabase-sql.sh "select 1"` (or `< file.sql`) runs SQL through the Supabase management API on the project named in `web/.env`. It needs `SUPABASE_ACCESS_TOKEN` (a personal access token) and `jq`.
 
+> **Warning:** `.claude/settings.json` pre-approves `scripts/supabase-sql.sh` for Claude Code, so by default Claude can run any SQL against the live Supabase database (reads, writes, schema changes, deletes) without asking first, whenever `SUPABASE_ACCESS_TOKEN` is set in its environment. Remove those `permissions.allow` entries if you want a prompt before each call, and don't give Claude a token for a project you aren't willing to let it change.
+
 - Seed library: edit `supabase/seed/recipes.json` (format in [docs/recipe-template.md](docs/recipe-template.md), collection rules in [docs/recipe-collection-guidelines.md](docs/recipe-collection-guidelines.md)), then run `npm run test:sql` and `node scripts/build-seed-library.ts` to regenerate `seed_library.sql`. The script uses the app's own parser and fails on any line that doesn't match the catalogue.
 - Strings: add to `web/src/i18n/en.ts`, then `fr.ts`; TypeScript flags a missing translation.
 - Theme: edit `design/tokens.json`, then run `npm run theme` in `web/`. Never hand-edit `tokens.css`.
