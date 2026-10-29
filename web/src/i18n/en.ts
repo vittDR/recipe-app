@@ -462,6 +462,16 @@ export const en = {
     notificationsUnsupported: 'Add DINEAMITE to your Home Screen to get notifications.',
     notificationsDenied: 'Notifications are blocked in your settings.',
   },
+  profile: {
+    title: 'Profile settings',
+    appearance: 'Appearance',
+    appearanceHint: 'Saved on this device.',
+    themes: {
+      system: 'Automatic',
+      light: 'Light',
+      dark: 'Dark',
+    },
+  },
   notifications: {
     title: 'Notifications',
     allow: 'Allow notifications',
