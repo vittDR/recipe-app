@@ -75,7 +75,7 @@ export interface Recipe {
   difficulty: Difficulty | null;
   /** Null when unknown. */
   equipment: Equipment | null;
-  /** Written by an AI rather than taken from a source. */
+  /** Written by an AI rather than taken from a source. For review only, not shown. */
   ai_generated_recipe: boolean;
   created_at: string;
 }

@@ -44,6 +44,12 @@ select pg_temp.check(not exists (select 1 from recipes where household_id is nul
                      'placeholder starter recipes are gone');
 select pg_temp.check((select count(*) = 110 from lib), 'library recipes are kept');
 
+-- Seed recipes and lines have the fixed ids from recipes.json.
+select pg_temp.check((select id = 'd8e4ac12-403d-4d06-97cf-022682d08894' from recipes
+                      where household_id is null and title = 'Arrosto di tacchino alle erbe'), 'seed recipes have their fixed id');
+select pg_temp.check((select i.id = 'b6b4b263-9d00-433a-a43b-af72a2b7bd33' from recipe_ingredients i join recipes r on r.id = i.recipe_id
+                      where r.title = 'Arrosto di tacchino alle erbe' and i.position = 0), 'seed lines have their fixed id');
+
 -- Loading it again adds nothing.
 \i seed_library.sql
 select pg_temp.check((select count(*) = 110 from lib), 're-running seed_library.sql adds no duplicates');

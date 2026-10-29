@@ -11,6 +11,7 @@ The catalogue is a JSON list of these objects. Copy this one and replace the val
 ```json
 [
   {
+    "id": "5b0f9c1e-7d2a-4c8e-9f3b-2a6d8e1c4b70",
     "title": "Chicken thigh red curry",
     "language": "en",
     "servings": 2,
@@ -27,7 +28,7 @@ The catalogue is a JSON list of these objects. Copy this one and replace the val
     "difficulty": "easy",
     "equipment": { "pots": 2, "oven": false, "special": [] },
     "ingredients": [
-      { "text": "350 g chicken thigh, diced", "original_text": "700 g chicken thigh, diced" },
+      { "id": "0c3e7a52-1b9d-4f60-8e2a-7d4b9c1f6e38", "text": "350 g chicken thigh, diced", "original_text": "700 g chicken thigh, diced" },
       { "text": "2 tbsp red curry paste", "original_text": "4 tbsp red curry paste" },
       { "text": "400 ml coconut milk", "original_text": "800 ml coconut milk" },
       { "text": "1 bell pepper, sliced", "original_text": "2 bell pepper, sliced" },
@@ -57,6 +58,7 @@ Each field is one of three kinds:
 
 | Field | Kind | Required | Format / rules | What it's used for |
 | --- | --- | --- | --- | --- |
+| `id` | You | **yes** for seed recipes | A new lowercase uuid (`python3 -c "import uuid; print(uuid.uuid4())"`). Never change or reuse it. Every ingredient line has one too. | The recipe's id in every database, so decks, swipes, meals and copies keep pointing at it whatever else changes. |
 | `title` | You | **yes** | Text, up to 200 characters. Keep it short enough for a card, e.g. "Chicken thigh red curry". | Cards, list, search, placeholder emoji |
 | `language` | You | yes | `"en"`, `"fr"` or `"it"`. Title, ingredient lines and steps are written in this language. | Display. Ingredient names are matched in all three languages either way. |
 | `servings` | You | **yes** | Number > 0 (defaults to 2 if left out). It's the number of servings the `text` quantities make. Seed recipes are scaled to 2. | Divides total macros into per-serving values. A wrong number gives wrong portions. |
@@ -73,7 +75,7 @@ Each field is one of three kinds:
 | `image_source_url` | You | optional | URL the photo was originally taken from. Stays the same after you re-host the image under `image_url`. | Photo credit, re-downloading |
 | `source_name` | You | recommended with `source_url` | Display name of the website, e.g. `GialloZafferano`, `Marmiton`, `RecipeTin Eats`. | "From GialloZafferano" credit line |
 | `source_url` | You | **yes** for seed recipes, except AI-generated ones | URL of the original recipe | Credit/link-out. It must be unique within a household (duplicates are rejected). The seed library also uses it to recognise a recipe it has already loaded. |
-| `ai_generated_recipe` | You | optional | `true` when the recipe was written by an AI rather than taken from a source. Such seed recipes have no `source_url`, `original_servings` or `original_text`; the seed library recognises them by `language` and `title`, so changing either adds a new recipe. | "AI recipe" tag on the recipe page; lets these recipes be reviewed and checked separately |
+| `ai_generated_recipe` | You | optional | `true` when the recipe was written by an AI rather than taken from a source. Such seed recipes have no `source_url`, `original_servings` or `original_text`. | Not shown in the app. Lets these recipes be reviewed and checked separately. |
 | `cuisine` | You | optional | One lowercase English word or phrase: `italian`, `french`, `thai`, `mexican`… The same word is also put in `tags`. | Cuisine filter or grouping, without parsing tags |
 | `source_type` | You | optional | `seed` for the catalogue. Otherwise `web`, `instagram`, `photo`, `typed` or `ai`. | Provenance |
 | `kcal_per_serving` | Computed | — | — | Worked out from ingredients, never copied from the source site |
@@ -110,6 +112,7 @@ Each ingredient can carry two lines in this format:
 
 | Key | Required | What it holds |
 | --- | --- | --- |
+| `id` | **yes** for seed recipes | A new lowercase uuid per line, never changed or reused. The example shows it on the first line only. |
 | `text` | **yes** | Quantities for `servings`. This is what the server parses and computes from. |
 | `original_text` | optional | The same line with the source's quantities, for `original_servings`. Same name and format, so the server can parse it too. It's kept for reference and isn't used for macros. |
 | `guessed` | optional | See below |

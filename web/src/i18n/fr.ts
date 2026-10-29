@@ -218,7 +218,6 @@ export const fr: Dictionary = {
     cook: 'Cuisson {n} min',
     noCook: 'Sans cuisson',
     optional: 'Facultatif',
-    aiGenerated: 'Recette IA',
     yourMacros: 'Votre assiette',
     estimated: 'Macros estimées',
     guessed: 'Quantité devinée, à vérifier',

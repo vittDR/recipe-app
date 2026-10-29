@@ -80,7 +80,6 @@ export function RecipeScreen() {
         {recipe.difficulty && <Tag tone={recipe.difficulty === 'hard' ? 'warning' : undefined}>{t(`recipe.${recipe.difficulty}`)}</Tag>}
         {recipe.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
         {!recipe.household_id && <Tag>{t('recipe.seed')}</Tag>}
-        {recipe.ai_generated_recipe && <Tag>{t('recipe.aiGenerated')}</Tag>}
       </div>
 
       <div className="card stack">
