@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router';
 import { Icon } from '../../components/Icon.tsx';
 import { Button, Chip, RecipeThumb, Screen, Spinner } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
+import { recipeTitle, allTitles } from '../../lib/recipeText.ts';
 import { RECIPE_FILTERS, type RecipeFilter, matchesFilters } from '@logic/facets.ts';
 import { effortLabels, facetsOf } from '../../lib/facets.ts';
 import { useCatalog, useLive } from '../../lib/hooks.ts';
@@ -36,7 +37,7 @@ export function RecipesScreen() {
     return (data ?? []).filter((r) => {
       if (filter !== 'all' && r.collection !== filter) return false;
       if (facets.size && !matchesFilters(facetsOf(r, r.recipe_ingredients.map((i) => i.name), catalog), facets)) return false;
-      const hay = normalise([r.title, ...r.tags, ...r.recipe_ingredients.map((i) => i.name)].join(' '));
+      const hay = normalise([...allTitles(r), ...r.tags, ...r.recipe_ingredients.map((i) => i.name)].join(' '));
       return words.every((w) => hay.includes(w));
     });
   }, [data, query, filter, facets, catalog]);
@@ -79,7 +80,7 @@ export function RecipesScreen() {
                   <Link key={r.id} to={`/recipes/${r.id}`} className="tile">
                     <div className="tile__image"><RecipeThumb recipe={r} /></div>
                     <div className="tile__body">
-                      <span className="tile__title">{r.title}</span>
+                      <span className="tile__title">{recipeTitle(r, i18n.locale)}</span>
                       <span className="small muted">
                         {[r.total_min && `${r.total_min} min`, r.kcal_per_serving && `${Math.round(r.kcal_per_serving)} kcal`,
                           r.difficulty && t(`recipe.${r.difficulty}`)].filter(Boolean).join(' · ')}

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import { Icon } from '../../components/Icon.tsx';
 import { Tag, imageStyle, photoUrl, recipeEmoji } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
+import { recipeTitle } from '../../lib/recipeText.ts';
 import { useSession } from '../../lib/session.tsx';
 import { supabase } from '../../lib/supabase.ts';
 import type { DeckCard, Verdict } from '../../lib/types.ts';
@@ -22,7 +23,7 @@ function timeoutSignal(ms: number): AbortSignal {
 }
 
 function CardFace({ card, data, drag }: { card: DeckCard; data: DeckData; drag?: { dx: number; dy: number } }) {
-  const { t, tn } = useI18n();
+  const { t, tn, locale } = useI18n();
   const { userId } = useSession();
   const r = card.recipe;
   const plate = data.portions.get(card.recipe_id);
@@ -40,7 +41,7 @@ function CardFace({ card, data, drag }: { card: DeckCard; data: DeckData; drag?:
         {!imageStyle(r.image_path) && <span aria-hidden>{recipeEmoji(r.title, r.tags)}</span>}
       </div>
       <div className="recipe-card__body">
-        <h2 className="title2">{r.title}</h2>
+        <h2 className="title2">{recipeTitle(r, locale)}</h2>
         <div className="row row--wrap">
           {r.total_min && <Tag><Icon name="clock" size={14} /> {t('swipe.minutes', { n: r.total_min })}</Tag>}
           {shared && card.fits_all && <Tag tone="success">{t('swipe.fitsBoth')}</Tag>}

@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router';
 import { Icon } from '../../components/Icon.tsx';
 import { Avatar, Button, Screen } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
+import { recipeTitle } from '../../lib/recipeText.ts';
 import { useSession } from '../../lib/session.tsx';
 import { supabase } from '../../lib/supabase.ts';
 import type { DeckData } from './data.ts';
 
 export function WaitingView({ data }: { data: DeckData }) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const { userId, memberName, memberColor } = useSession();
   const navigate = useNavigate();
   const [nudged, setNudged] = useState(false);
@@ -56,7 +57,7 @@ export function WaitingView({ data }: { data: DeckData }) {
               return (
                 <button key={s.recipe_id} type="button" className="list-row" onClick={() => navigate(`/recipes/${s.recipe_id}`)}>
                   <Icon name={s.verdict === 'must' ? 'star' : 'heart'} size={18} />
-                  <span className="list-row__main list-row__title">{card?.recipe.title}</span>
+                  <span className="list-row__main list-row__title">{card && recipeTitle(card.recipe, locale)}</span>
                   <span className="chevron"><Icon name="chevron" size={18} /></span>
                 </button>
               );

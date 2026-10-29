@@ -62,6 +62,10 @@ export interface Recipe {
   title: string;
   source_type: 'web' | 'instagram' | 'photo' | 'typed' | 'ai' | 'seed';
   collection: RecipeCollection;
+  /** Language the title and steps are written in. */
+  language: string;
+  /** Title and steps in the other languages (seed recipes); use recipeTitle()/recipeSteps(). */
+  translations: Partial<Record<string, { title: string; steps: string[] }>>;
   source_url: string | null;
   source_name: string | null;
   image_path: string | null;

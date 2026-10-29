@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { DIFFICULTIES, SPECIAL_EQUIPMENT, type Difficulty } from '@logic/facets.ts';
 import { draftFromLine, IngredientEditor, type DraftIngredient } from '../../components/IngredientEditor.tsx';
+import { StepEditor } from '../../components/StepEditor.tsx';
 import { Button, Chip, Field, Screen, Segmented, Spinner, toast } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { useCatalog } from '../../lib/hooks.ts';
@@ -18,7 +19,7 @@ interface Draft {
   ingredients: DraftIngredient[];
   /** Lines read from the page, matched once the catalogue has loaded. */
   pendingLines: string[] | null;
-  steps: string;
+  steps: string[];
   tags: string;
   source_url: string | null;
   source_type: 'web' | 'instagram' | 'typed';
@@ -32,7 +33,7 @@ interface Draft {
 }
 
 const EMPTY: Draft = {
-  title: '', servings: '2', minutes: '', prep: '', cook: '', ingredients: [], pendingLines: null, steps: '', tags: '',
+  title: '', servings: '2', minutes: '', prep: '', cook: '', ingredients: [], pendingLines: null, steps: [], tags: '',
   source_url: null, source_type: 'typed', image_url: null, language: null,
   difficulty: null, pots: 0, oven: false, special: [],
 };
@@ -80,7 +81,7 @@ export function ImportScreen() {
         prep: recipe.prepMin ? String(recipe.prepMin) : '',
         cook: recipe.cookMin ? String(recipe.cookMin) : '',
         pendingLines: recipe.ingredients,
-        steps: recipe.steps.join('\n'),
+        steps: recipe.steps,
         tags: recipe.tags.join(', '),
         source_url: recipe.source_url,
         source_type: recipe.source_type,
@@ -113,7 +114,6 @@ export function ImportScreen() {
     setBusy(true);
     setNotice(null);
     const minutes = (s: string) => (s.trim() && Number(s) >= 0 ? Math.round(Number(s)) : null);
-    const lines = (s: string) => s.split('\n').map((l) => l.trim()).filter(Boolean);
     try {
       const res = await callFunction<{ recipe_id: string; unknown_ingredients: string[] }>('import-recipe', {
         action: 'save',
@@ -126,7 +126,7 @@ export function ImportScreen() {
           total_min: minutes(draft.minutes),
           prep_min: minutes(draft.prep),
           cook_min: minutes(draft.cook),
-          steps: lines(draft.steps),
+          steps: draft.steps.map((s) => s.trim()).filter(Boolean),
           tags: draft.tags.split(',').map((x) => x.trim()).filter(Boolean),
           language: draft.language ?? locale,
           difficulty: draft.difficulty,
@@ -205,9 +205,10 @@ export function ImportScreen() {
                 <IngredientEditor items={form.ingredients} catalog={catalog} onChange={(ingredients) => update({ ingredients })} />
               )}
             </div>
-            <Field label={t('import.stepsField')}>
-              <textarea className="input" value={form.steps} onChange={set('steps')} />
-            </Field>
+            <div className="field">
+              <span className="field__label">{t('import.stepsField')}</span>
+              <StepEditor steps={form.steps} onChange={(steps) => update({ steps })} />
+            </div>
             <Field label={t('import.tagsField')}>
               <input className="input" value={form.tags} onChange={set('tags')} />
             </Field>

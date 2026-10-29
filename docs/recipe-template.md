@@ -43,7 +43,27 @@ The catalogue is a JSON list of these objects. Copy this one and replace the val
       "Add the chicken, then the coconut milk; simmer 15 min.",
       "Add the pepper and spinach and cook 3 min more.",
       "Serve with rice and lime wedges."
-    ]
+    ],
+    "translations": {
+      "fr": {
+        "title": "Curry rouge de cuisses de poulet",
+        "steps": [
+          "Faire revenir la pâte de curry dans un peu d'huile 1 min.",
+          "Ajouter le poulet, puis le lait de coco ; laisser mijoter 15 min.",
+          "Ajouter le poivron et les épinards et cuire encore 3 min.",
+          "Servir avec du riz et des quartiers de citron vert."
+        ]
+      },
+      "it": {
+        "title": "Curry rosso di cosce di pollo",
+        "steps": [
+          "Soffriggere la pasta di curry in un filo d'olio per 1 min.",
+          "Aggiungere il pollo, poi il latte di cocco; cuocere a fuoco lento 15 min.",
+          "Aggiungere il peperone e gli spinaci e cuocere ancora 3 min.",
+          "Servire con riso e spicchi di lime."
+        ]
+      }
+    }
   }
 ]
 ```
@@ -67,6 +87,7 @@ Each field is one of three kinds:
 | `cook_min` | You | **yes** for seed recipes | Whole minutes on the hob, in the oven or on the grill. `0` for no-cook dishes. | Recipe detail ("Cooking 25 min", or "No cooking") |
 | `total_min` | You | only with waiting time | Whole minutes start to plate. **Leave it out** and it's `prep_min + cook_min`. Write it only when the recipe also waits: marinating, soaking, rising, resting. It must then be more than prep + cook. | "Quick" mood (≤ 25 min), "fancy" mood (≥ 45 min), and the max-minutes filter. A recipe with no times at all never passes a time filter's boost. |
 | `ingredients` | You | **yes**, at least 1 | List of `{ "text": "...", "guessed": false }`. See below. | Everything computed below |
+| `translations` | You | **yes** for seed recipes | `{ "<lang>": { "title": "…", "steps": ["…"] } }` for each of `en`, `fr`, `it` except the recipe's own `language`. Same number of steps, in the same order, with the same quantities, times and temperatures. French and Italian steps use the infinitive ("Faire revenir…", "Rosolare…"), English the imperative. | The title and steps in the reader's language, everywhere in the app. Ingredient names are translated by the catalogue. |
 | `steps` | You | yes | List of strings, one action per step, in order | Cooking mode, one step per screen |
 | `tags` | You | recommended | Up to 12, lowercase. See the tag list below. | Mood matching, "never"/"love" taste rules, learned patterns |
 | `difficulty` | You | **yes** for seed recipes | `"easy"`, `"medium"` or `"hard"`. Easy = basic techniques, forgiving. Medium = several components or timing to juggle (sear then braise, a sauce, marinating). Hard = delicate technique (dough, deep-frying, emulsions, many components); use it sparingly. | "Easy" filter, recipe tile and detail |
@@ -240,6 +261,7 @@ One image per recipe. The app shows the same file in three crops, each with
 - [ ] if scaled: every ingredient has an `original_text` with the source's quantities
 - [ ] any missing catalogue ingredient added, with its `diet_class`
 - [ ] steps in order, one action each
+- [ ] title and steps translated into the other two of en, fr, it, step for step
 - [ ] garnishes and toppings the dish works without marked `optional`
 - [ ] AI-written: `ai_generated_recipe: true`, no `source_url`
 - [ ] difficulty and equipment (pots, oven, special only if uncommon)

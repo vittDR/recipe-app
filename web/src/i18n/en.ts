@@ -247,6 +247,14 @@ export const en = {
     originalOne: '{app} original',
     webOne: 'From the web',
   },
+  steps: {
+    step: 'Step {n}',
+    add: 'Add a step',
+    addPlaceholder: 'Step {n}',
+    up: 'Move up',
+    down: 'Move down',
+    remove: 'Remove step',
+  },
   recipes: {
     title: 'Recipes',
     search: 'Search recipes, ingredients, tags',
@@ -304,7 +312,7 @@ export const en = {
     prep: 'Prep (min)',
     cook: 'Cooking (min)',
     ingredientsField: 'Ingredients',
-    stepsField: 'Steps, one per line',
+    stepsField: 'Steps',
     tagsField: 'Tags, separated by commas',
     difficultyField: 'Difficulty',
     potsField: 'Pots and pans',

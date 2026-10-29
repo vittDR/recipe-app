@@ -5,6 +5,7 @@ import { AddToListSheet, formatQuantity, loadProposals } from '../../components/
 import { Icon } from '../../components/Icon.tsx';
 import { Button, Screen, Spinner, Tag, imageStyle, recipeEmoji } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
+import { recipeTitle, recipeSteps } from '../../lib/recipeText.ts';
 import { MANY_POTS } from '@logic/facets.ts';
 import { equipmentLabels, exoticIngredients } from '../../lib/facets.ts';
 import { useCatalog } from '../../lib/hooks.ts';
@@ -71,7 +72,7 @@ export function RecipeScreen() {
           <Icon name="back" />
         </button>
       </div>
-      <h1 className="screen__title" style={{ marginTop: 0 }}>{recipe.title}</h1>
+      <h1 className="screen__title" style={{ marginTop: 0 }}>{recipeTitle(recipe, i18n.locale)}</h1>
       <div className="row row--wrap" style={{ marginBottom: 'var(--s-4)' }}>
         {recipe.total_min && <Tag><Icon name="clock" size={14} /> {recipe.total_min} min</Tag>}
         {recipe.prep_min != null && <Tag>{t('recipe.prep', { n: recipe.prep_min })}</Tag>}
@@ -135,11 +136,11 @@ export function RecipeScreen() {
         })}
       </div>
 
-      {recipe.steps.length > 0 && (
+      {recipeSteps(recipe, i18n.locale).length > 0 && (
         <>
           <h2 className="section-label">{t('recipe.steps')}</h2>
           <ol className="card stack" style={{ paddingLeft: 'var(--s-8)', margin: 0 }}>
-            {recipe.steps.map((s, i) => <li key={i}>{s}</li>)}
+            {recipeSteps(recipe, i18n.locale).map((s, i) => <li key={i}>{s}</li>)}
           </ol>
         </>
       )}

@@ -245,6 +245,14 @@ export const fr: Dictionary = {
     originalOne: 'Recette {app}',
     webOne: 'Trouvée sur le web',
   },
+  steps: {
+    step: 'Étape {n}',
+    add: 'Ajouter une étape',
+    addPlaceholder: 'Étape {n}',
+    up: 'Monter',
+    down: 'Descendre',
+    remove: 'Supprimer l’étape',
+  },
   recipes: {
     title: 'Recettes',
     search: 'Chercher une recette, un ingrédient, un tag',
@@ -302,7 +310,7 @@ export const fr: Dictionary = {
     prep: 'Préparation (min)',
     cook: 'Cuisson (min)',
     ingredientsField: 'Ingrédients',
-    stepsField: 'Étapes, une par ligne',
+    stepsField: 'Étapes',
     tagsField: 'Tags, séparés par des virgules',
     difficultyField: 'Difficulté',
     potsField: 'Casseroles et poêles',

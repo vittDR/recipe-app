@@ -41,7 +41,11 @@ interface SeedRecipe {
   equipment: Equipment;
   ingredients: SeedIngredient[];
   steps: string[];
+  /** Title and steps in each of the other two languages, step for step. */
+  translations: Partial<Record<'en' | 'fr' | 'it', { title: string; steps: string[] }>>;
 }
+
+const LANGUAGES = ['en', 'fr', 'it'] as const;
 
 const root = new URL('..', import.meta.url).pathname;
 const checkOnly = process.argv.includes('--check');
@@ -88,6 +92,7 @@ const adoptLines: string[] = [];
 const summary: string[] = [];
 const facets: string[] = [];
 const times: string[] = [];
+const translationRows: string[] = [];
 const names: string[] = [];
 const macroRows: string[] = [];
 
@@ -106,6 +111,17 @@ for (const r of recipes) {
   if (r.tags.some((t) => t !== t.toLowerCase().trim())) errors.push(`${where} tags must be lowercase`);
   if (r.cuisine && !r.tags.includes(r.cuisine)) warnings.push(`${where} cuisine "${r.cuisine}" missing from tags`);
   if (!r.steps.length) errors.push(`${where} no steps`);
+  for (const lang of LANGUAGES) {
+    const tr = r.translations?.[lang];
+    if (lang === r.language) {
+      if (tr) errors.push(`${where} translation into its own language (${lang})`);
+    } else if (!tr?.title?.trim()) errors.push(`${where} no ${lang} title`);
+    else if (tr.steps?.length !== r.steps.length || tr.steps.some((x) => !x?.trim())) {
+      errors.push(`${where} ${lang} has ${tr.steps?.length ?? 0} steps, not ${r.steps.length}`);
+    }
+  }
+  const translations = Object.fromEntries(LANGUAGES.filter((l) => l !== r.language && r.translations?.[l])
+    .map((l) => [l, { title: r.translations[l]!.title.trim(), steps: r.translations[l]!.steps.map((x) => x.trim()) }]));
   if (!DIFFICULTIES.includes(r.difficulty)) errors.push(`${where} difficulty ${r.difficulty}`);
   const equipment = normaliseEquipment(r.equipment);
   if (JSON.stringify(equipment) !== JSON.stringify(r.equipment)) {
@@ -158,11 +174,12 @@ for (const r of recipes) {
   inserts.push('', `-- ${r.title.replace(/\n/g, ' ')}`, 'with r as (',
     '  insert into public.recipes (id, household_id, title, source_type, source_url, source_name, image_path, image_source_url,',
     '    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,',
-    '    macros_estimated, language, difficulty, equipment, ai_generated_recipe)',
+    '    macros_estimated, language, difficulty, equipment, ai_generated_recipe, translations)',
     `  select ${lit(r.id)}::uuid, null, ${lit(r.title.trim().slice(0, 200))}, 'seed', ${lit(r.source_url)}, ${lit(r.source_name)}, ${lit(r.image_url)}, ${lit(r.image_source_url ?? r.image_url)},`,
     `    ${r.servings}, ${lit(r.original_servings)}, ${lit(totalMin)}, ${lit(r.prep_min)}, ${lit(r.cook_min)}, ${lit(JSON.stringify(r.steps))}::jsonb,`,
     `    array[${r.tags.map(lit).join(', ')}]::text[], ${lit(r.cuisine)}, ${lit(macros.kcalPerServing)}, ${lit(macros.proteinGPerServing)},`,
-    `    ${lit(macros.estimated)}, ${lit(r.language)}, ${lit(r.difficulty)}, ${lit(JSON.stringify(equipment))}::jsonb, ${lit(!!r.ai_generated_recipe)}`,
+    `    ${lit(macros.estimated)}, ${lit(r.language)}, ${lit(r.difficulty)}, ${lit(JSON.stringify(equipment))}::jsonb, ${lit(!!r.ai_generated_recipe)},`,
+    `    ${lit(JSON.stringify(translations))}::jsonb`,
     `  where not exists (select 1 from public.recipes x where x.id = ${lit(r.id)})`,
     '  returning id',
     ')',
@@ -172,6 +189,7 @@ for (const r of recipes) {
     ingredients.map((i) => `  (${lit(i.id)}::uuid, ${i.position}, ${lit(i.name)}, ${lit(i.quantity)}::real, ${lit(i.unit)}, ${lit(i.aisle)}::public.aisle, ${lit(i.is_staple)}, ${lit(i.guessed)}, ${lit(i.raw_text)}, ${lit(i.original_text)}, ${lit(i.optional)})`).join(',\n'),
     ') as v(id, position, name, quantity, unit, aisle, is_staple, guessed, raw_text, original_text, optional);');
   // Recipes loaded before difficulty and equipment existed, and households' copies of them, get them now.
+  translationRows.push(`  (${lit(r.id)}::uuid, ${lit(JSON.stringify(translations))}::jsonb)`);
   times.push(`  (${lit(r.id)}::uuid, ${lit(totalMin)}, ${lit(r.prep_min)}, ${lit(r.cook_min)})`);
   facets.push(`  (${lit(r.id)}::uuid, ${lit(r.difficulty)}, ${lit(JSON.stringify(equipment))}::jsonb)`);
   for (const i of ingredients) {
@@ -213,6 +231,12 @@ out.push('', '-- Optional lines for seed recipes (and copies).',
   'update public.recipe_ingredients i set optional = v.optional',
   'from (values', names.join(',\n'), ') as v(id, recipe_id, position, name, aisle, is_staple, optional)',
   `where ${lineOrCopy} and i.optional is distinct from v.optional;`);
+// Copies a household edited keep their own text: only untouched ones (same title) follow.
+out.push('', '-- Translations for seed recipes and copies of them.',
+  'update public.recipes x set translations = v.translations',
+  'from (values', translationRows.join(',\n'), ') as v(id, translations)',
+  'where (x.id = v.id or (x.copied_from = v.id and x.title = (select s.title from public.recipes s where s.id = v.id)))',
+  '  and x.translations is distinct from v.translations;');
 out.push('', '-- Their macros follow the catalogue too.',
   'update public.recipes x set kcal_per_serving = v.kcal, protein_g_per_serving = v.protein, macros_estimated = v.estimated',
   'from (values', macroRows.join(',\n'), ') as v(id, kcal, protein, estimated)',
