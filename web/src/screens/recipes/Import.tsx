@@ -13,6 +13,8 @@ interface Draft {
   title: string;
   servings: string;
   minutes: string;
+  prep: string;
+  cook: string;
   ingredients: DraftIngredient[];
   /** Lines read from the page, matched once the catalogue has loaded. */
   pendingLines: string[] | null;
@@ -30,7 +32,7 @@ interface Draft {
 }
 
 const EMPTY: Draft = {
-  title: '', servings: '2', minutes: '', ingredients: [], pendingLines: null, steps: '', tags: '',
+  title: '', servings: '2', minutes: '', prep: '', cook: '', ingredients: [], pendingLines: null, steps: '', tags: '',
   source_url: null, source_type: 'typed', image_url: null, language: null,
   difficulty: null, pots: 0, oven: false, special: [],
 };
@@ -41,6 +43,8 @@ interface Preview {
   steps: string[];
   servings: number | null;
   totalMin: number | null;
+  prepMin: number | null;
+  cookMin: number | null;
   imageUrl: string | null;
   tags: string[];
   language: string | null;
@@ -73,6 +77,8 @@ export function ImportScreen() {
         title: recipe.title,
         servings: String(recipe.servings ?? 2),
         minutes: recipe.totalMin ? String(recipe.totalMin) : '',
+        prep: recipe.prepMin ? String(recipe.prepMin) : '',
+        cook: recipe.cookMin ? String(recipe.cookMin) : '',
         pendingLines: recipe.ingredients,
         steps: recipe.steps.join('\n'),
         tags: recipe.tags.join(', '),
@@ -106,6 +112,7 @@ export function ImportScreen() {
     if (!draft) return;
     setBusy(true);
     setNotice(null);
+    const minutes = (s: string) => (s.trim() && Number(s) >= 0 ? Math.round(Number(s)) : null);
     const lines = (s: string) => s.split('\n').map((l) => l.trim()).filter(Boolean);
     try {
       const res = await callFunction<{ recipe_id: string; unknown_ingredients: string[] }>('import-recipe', {
@@ -116,7 +123,9 @@ export function ImportScreen() {
           source_url: draft.source_url,
           image_url: draft.image_url,
           servings: Number(draft.servings) || 2,
-          total_min: Number(draft.minutes) || null,
+          total_min: minutes(draft.minutes),
+          prep_min: minutes(draft.prep),
+          cook_min: minutes(draft.cook),
           steps: lines(draft.steps),
           tags: draft.tags.split(',').map((x) => x.trim()).filter(Boolean),
           language: draft.language ?? locale,
@@ -177,8 +186,17 @@ export function ImportScreen() {
               <Field label={t('import.servings')}>
                 <input className="input" inputMode="numeric" value={form.servings} onChange={set('servings')} />
               </Field>
+            </div>
+            <div className="row">
+              <Field label={t('import.prep')}>
+                <input className="input" inputMode="numeric" value={form.prep} onChange={set('prep')} />
+              </Field>
+              <Field label={t('import.cook')}>
+                <input className="input" inputMode="numeric" value={form.cook} onChange={set('cook')} />
+              </Field>
               <Field label={t('import.minutes')}>
-                <input className="input" inputMode="numeric" value={form.minutes} onChange={set('minutes')} />
+                <input className="input" inputMode="numeric" value={form.minutes} onChange={set('minutes')}
+                  placeholder={form.prep || form.cook ? String((Number(form.prep) || 0) + (Number(form.cook) || 0)) : ''} />
               </Field>
             </div>
             <div className="field">

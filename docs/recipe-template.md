@@ -15,7 +15,8 @@ The catalogue is a JSON list of these objects. Copy this one and replace the val
     "language": "en",
     "servings": 2,
     "original_servings": 4,
-    "total_min": 35,
+    "prep_min": 10,
+    "cook_min": 25,
     "source_type": "seed",
     "source_name": "RecipeTin Eats",
     "source_url": "https://www.example.com/chicken-thigh-red-curry/",
@@ -59,7 +60,9 @@ Each field is one of three kinds:
 | `language` | You | yes | `"en"`, `"fr"` or `"it"`. Title, ingredient lines and steps are written in this language. | Display. Ingredient names are matched in all three languages either way. |
 | `servings` | You | **yes** | Number > 0 (defaults to 2 if left out). It's the number of servings the `text` quantities make. Seed recipes are scaled to 2. | Divides total macros into per-serving values. A wrong number gives wrong portions. |
 | `original_servings` | You | optional | Number > 0. The yield the source recipe was written for (lower bound of a range). | Shows the original yield and lets the app rescale from the source values. Must match the quantities in each ingredient's `original_text`. |
-| `total_min` | You | strongly recommended | Whole minutes, start to plate, including oven time | "Quick" mood (≤ 25 min), "fancy" mood (≥ 45 min), and the max-minutes filter. A recipe without it never passes a time filter's boost. |
+| `prep_min` | You | **yes** for seed recipes | Whole minutes of hands-on preparation: chopping, mixing, shaping, assembling. Not marinating or resting. | Recipe detail ("Prep 10 min") |
+| `cook_min` | You | **yes** for seed recipes | Whole minutes on the hob, in the oven or on the grill. `0` for no-cook dishes. | Recipe detail ("Cooking 25 min", or "No cooking") |
+| `total_min` | You | only with waiting time | Whole minutes start to plate. **Leave it out** and it's `prep_min + cook_min`. Write it only when the recipe also waits: marinating, soaking, rising, resting. It must then be more than prep + cook. | "Quick" mood (≤ 25 min), "fancy" mood (≥ 45 min), and the max-minutes filter. A recipe with no times at all never passes a time filter's boost. |
 | `ingredients` | You | **yes**, at least 1 | List of `{ "text": "...", "guessed": false }`. See below. | Everything computed below |
 | `steps` | You | yes | List of strings, one action per step, in order | Cooking mode, one step per screen |
 | `tags` | You | recommended | Up to 12, lowercase. See the tag list below. | Mood matching, "never"/"love" taste rules, learned patterns |
@@ -175,7 +178,7 @@ looks for them exactly:
 | --- | --- |
 | comfort | `comfort`, `curry`, `stew`, `pasta`, `soup` |
 | light | `light`, `salad`, `bowl`, `fish` |
-| quick | `quick` (or just set `total_min` ≤ 25) |
+| quick | `quick` (or just a total time ≤ 25 min) |
 | fancy | `fancy`, `date night`, `special` |
 
 Add cuisine (`asian`, `mexican`, `mediterranean`…), main protein (`chicken`,
@@ -223,7 +226,7 @@ One image per recipe. The app shows the same file in three crops, each with
 
 ## Checklist per recipe
 
-- [ ] title, language, servings, total_min
+- [ ] title, language, servings, prep_min, cook_min (total_min only if there's marinating, rising or resting)
 - [ ] source_name and source_url; original_servings if you scaled the recipe
 - [ ] every ingredient has an amount (staples can skip it) and a catalogue name in the recipe's language
 - [ ] if scaled: every ingredient has an `original_text` with the source's quantities

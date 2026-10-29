@@ -74,6 +74,8 @@ export function RecipeScreen() {
       <h1 className="screen__title" style={{ marginTop: 0 }}>{recipe.title}</h1>
       <div className="row row--wrap" style={{ marginBottom: 'var(--s-4)' }}>
         {recipe.total_min && <Tag><Icon name="clock" size={14} /> {recipe.total_min} min</Tag>}
+        {recipe.prep_min != null && <Tag>{t('recipe.prep', { n: recipe.prep_min })}</Tag>}
+        {recipe.cook_min != null && <Tag>{recipe.cook_min ? t('recipe.cook', { n: recipe.cook_min }) : t('recipe.noCook')}</Tag>}
         <Tag>{tn('recipe.servings', recipe.servings)}</Tag>
         {recipe.difficulty && <Tag tone={recipe.difficulty === 'hard' ? 'warning' : undefined}>{t(`recipe.${recipe.difficulty}`)}</Tag>}
         {recipe.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}

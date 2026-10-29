@@ -25,7 +25,12 @@ interface SaveBody {
   source_url?: string | null;
   image_url?: string | null;
   servings?: number | null;
+  /** Start to plate, including marinating and resting. Defaults to prep + cook. */
   total_min?: number | null;
+  /** Hands-on preparation. */
+  prep_min?: number | null;
+  /** On the hob, in the oven or on the grill; 0 for no-cook dishes. */
+  cook_min?: number | null;
   steps?: string[];
   tags?: string[];
   language?: string | null;
@@ -160,6 +165,10 @@ Deno.serve(async (req) => {
       ingredients.push({ ...norm, guessed: !!i.guessed, original_text: i.original_text?.trim() || null, product_id: productId });
     }
     const macros = estimateMacros(ingredients, servings);
+    const minutes = (v: number | null | undefined) => (typeof v === 'number' && v >= 0 ? Math.round(v) : null);
+    const prepMin = minutes(r.prep_min);
+    const cookMin = minutes(r.cook_min);
+    const totalMin = minutes(r.total_min) || (prepMin ?? 0) + (cookMin ?? 0) || null;
 
     const { data: saved, error } = await caller.db.from('recipes').insert({
       household_id: caller.householdId,
@@ -168,7 +177,9 @@ Deno.serve(async (req) => {
       source_url: r.source_url ?? null,
       image_path: r.image_url ?? null,
       servings,
-      total_min: r.total_min && r.total_min > 0 ? Math.round(r.total_min) : null,
+      total_min: totalMin,
+      prep_min: prepMin,
+      cook_min: cookMin,
       steps: (r.steps ?? []).map((s) => String(s).trim()).filter(Boolean),
       tags: (r.tags ?? []).map((t) => String(t).toLowerCase().trim()).filter(Boolean).slice(0, 12),
       kcal_per_serving: macros.kcalPerServing,

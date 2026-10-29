@@ -72,11 +72,17 @@ select pg_temp.check((select r.difficulty = s.difficulty and r.equipment = s.equ
                       from recipes r join recipes s on s.id = r.copied_from where r.id = :'cp'),
                      'copy keeps difficulty and equipment');
 select pg_temp.check((select equipment is not null from library_recipes where id = :'cp'), 'library view has the new columns');
+select pg_temp.check((select r.prep_min = s.prep_min and r.cook_min = s.cook_min and r.total_min = s.total_min and r.prep_min is not null
+                      from recipes r join recipes s on s.id = r.copied_from where r.id = :'cp'),
+                     'copy keeps prep, cook and total time');
+select pg_temp.check((select cook_min is not null from library_recipes where id = :'cp'), 'library view has prep and cook time');
 reset role;
 
 -- Seed recipes (and copies) loaded before these fields existed are filled in by re-running seed_library.sql.
-update recipes set difficulty = null, equipment = null where id = :'cp' or id = :'src';
+update recipes set difficulty = null, equipment = null, prep_min = null, cook_min = null where id = :'cp' or id = :'src';
 \i seed_library.sql
+select pg_temp.check((select count(*) = 2 from recipes where (id = :'cp' or id = :'src') and prep_min is not null and cook_min is not null),
+                     're-running seed_library.sql fills prep and cook time');
 select pg_temp.check((select count(*) = 2 from recipes where (id = :'cp' or id = :'src') and difficulty is not null
                       and equipment is not null), 're-running seed_library.sql fills difficulty and equipment');
 

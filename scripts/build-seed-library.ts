@@ -22,7 +22,10 @@ interface SeedRecipe {
   language: 'en' | 'fr' | 'it';
   servings: number;
   original_servings?: number;
+  /** Start to plate. Only when there's waiting time too (marinating, rising, resting); otherwise prep + cook. */
   total_min?: number;
+  prep_min: number;
+  cook_min: number;
   source_type?: string;
   source_name?: string;
   source_url?: string;
@@ -64,6 +67,7 @@ const out: string[] = [
 ];
 const summary: string[] = [];
 const facets: string[] = [];
+const times: string[] = [];
 const names: string[] = [];
 const macroRows: string[] = [];
 
@@ -91,6 +95,14 @@ for (const r of recipes) {
     // Photos the app serves itself live in web/public.
     if (!existsSync(`${root}web/public${r.image_url}`)) errors.push(`${where} photo ${r.image_url} not found in web/public`);
   } else if (r.image_url && !r.image_url.startsWith('https://')) errors.push(`${where} image_url must be https:// or /recipe-photos/…`);
+  for (const k of ['prep_min', 'cook_min'] as const) {
+    if (!Number.isInteger(r[k]) || r[k] < 0) errors.push(`${where} ${k} must be a whole number of minutes`);
+  }
+  const totalMin = r.total_min ?? r.prep_min + r.cook_min;
+  if (r.total_min !== undefined && r.total_min <= r.prep_min + r.cook_min) {
+    errors.push(`${where} total_min ${r.total_min} isn't more than prep + cook: leave it out`);
+  }
+  if (!(totalMin > 0)) errors.push(`${where} no time`);
   const ratio = r.original_servings ? r.servings / r.original_servings : 1;
 
   const ingredients = r.ingredients.map((i, position) => {
@@ -119,10 +131,10 @@ for (const r of recipes) {
 
   out.push('', `-- ${r.title.replace(/\n/g, ' ')}`, 'with r as (',
     '  insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,',
-    '    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,',
+    '    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,',
     '    macros_estimated, language, difficulty, equipment)',
     `  select null, ${lit(r.title.trim().slice(0, 200))}, 'seed', ${lit(r.source_url)}, ${lit(r.source_name)}, ${lit(r.image_url)}, ${lit(r.image_source_url ?? r.image_url)},`,
-    `    ${r.servings}, ${lit(r.original_servings)}, ${lit(r.total_min ? Math.round(r.total_min) : null)}, ${lit(JSON.stringify(r.steps))}::jsonb,`,
+    `    ${r.servings}, ${lit(r.original_servings)}, ${lit(totalMin)}, ${lit(r.prep_min)}, ${lit(r.cook_min)}, ${lit(JSON.stringify(r.steps))}::jsonb,`,
     `    array[${r.tags.map(lit).join(', ')}]::text[], ${lit(r.cuisine)}, ${lit(macros.kcalPerServing)}, ${lit(macros.proteinGPerServing)},`,
     `    ${lit(macros.estimated)}, ${lit(r.language)}, ${lit(r.difficulty)}, ${lit(JSON.stringify(equipment))}::jsonb`,
     `  where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = ${lit(r.source_url)})`,
@@ -133,6 +145,7 @@ for (const r of recipes) {
     ingredients.map((i) => `  (${i.position}, ${lit(i.name)}, ${lit(i.quantity)}::real, ${lit(i.unit)}, ${lit(i.aisle)}::public.aisle, ${lit(i.is_staple)}, ${lit(i.guessed)}, ${lit(i.raw_text)}, ${lit(i.original_text)})`).join(',\n'),
     ') as v(position, name, quantity, unit, aisle, is_staple, guessed, raw_text, original_text);');
   // Recipes loaded before difficulty and equipment existed, and households' copies of them, get them now.
+  times.push(`  (${lit(r.source_url)}, ${lit(totalMin)}, ${lit(r.prep_min)}, ${lit(r.cook_min)})`);
   facets.push(`  (${lit(r.source_url)}, ${lit(r.difficulty)}, ${lit(JSON.stringify(equipment))}::jsonb)`);
   for (const i of ingredients) {
     names.push(`  (${lit(r.source_url)}, ${i.position}, ${lit(i.name)}, ${lit(i.aisle)}::public.aisle, ${lit(i.is_staple)})`);
@@ -144,6 +157,11 @@ out.push('', '-- Difficulty and equipment for seed recipes (and copies) loaded b
   'from public.recipes s, (values', facets.join(',\n'), ') as v(source_url, difficulty, equipment)',
   'where s.household_id is null and s.source_url = v.source_url',
   "  and (x.id = s.id or x.copied_from = s.id) and x.difficulty is null and x.equipment is null;");
+out.push('', '-- Prep, cook and total time for seed recipes (and copies) loaded before prep and cook existed.',
+  'update public.recipes x set total_min = v.total_min, prep_min = v.prep_min, cook_min = v.cook_min',
+  'from public.recipes s, (values', times.join(',\n'), ') as v(source_url, total_min, prep_min, cook_min)',
+  'where s.household_id is null and s.source_url = v.source_url',
+  '  and (x.id = s.id or x.copied_from = s.id) and x.prep_min is null and x.cook_min is null;');
 // When the catalogue gets finer (vegetable stock split from chicken stock),
 // recipes already loaded follow: renamed lines find their product again.
 out.push('', '-- Ingredient names for seed recipes (and copies) loaded before the catalogue last changed.',

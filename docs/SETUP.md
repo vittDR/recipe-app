@@ -443,7 +443,7 @@ Only the person themselves can read or write these rows.
 | Table | What it holds |
 | --- | --- |
 | `ingredient_catalog` | Canonical ingredients. `name` (lowercase English, primary key), `name_fr`, `name_it`, `aliases[]`, `default_aisle`, `is_staple`, `kcal_100g`, `protein_100g`, `grams_per_unit`, `diet_class` (`veg`/`fish`/`meat`), `exotic`. Readable by every signed-in user. |
-| `recipes` | `household_id` (**null = seed library**, shared by everyone), `copied_from`, `title`, `source_type`, `source_url`, `source_name`, `image_path`, `image_source_url`, `servings`, `original_servings`, `total_min`, `steps` (JSON array of strings), `tags[]`, `cuisine`, `language` (`en`/`fr`/`it`), `kcal_per_serving`, `protein_g_per_serving`, `macros_estimated`, `difficulty` (`easy`/`medium`/`hard`), `equipment` (JSON, e.g. `{"pots":2,"oven":true,"special":["blender"]}`). `source_url` is unique per household. |
+| `recipes` | `household_id` (**null = seed library**, shared by everyone), `copied_from`, `title`, `source_type`, `source_url`, `source_name`, `image_path`, `image_source_url`, `servings`, `original_servings`, `total_min` (start to plate, waiting included), `prep_min`, `cook_min`, `steps` (JSON array of strings), `tags[]`, `cuisine`, `language` (`en`/`fr`/`it`), `kcal_per_serving`, `protein_g_per_serving`, `macros_estimated`, `difficulty` (`easy`/`medium`/`hard`), `equipment` (JSON, e.g. `{"pots":2,"oven":true,"special":["blender"]}`). `source_url` is unique per household. |
 | `recipe_ingredients` | One row per line: `position`, `name` (the catalogue name when matched), `product_id`, `quantity`, `unit`, `aisle`, `is_staple`, `guessed`, `raw_text` (the line as written), `original_text` (the source's unscaled line). A trigger sets `product_id` on save: the catalogue ingredient's product, else a product whose name or alias matches (the household's own first), else a new household item. Seed recipes only use shared products. |
 | `library_recipes` (view) | What a household sees on the Recipes tab: its own recipes plus the seed library, minus seed recipes it has already copied. |
 
@@ -545,7 +545,8 @@ generated from it.
      "title": "Chicken coconut rice bowl",
      "language": "en",
      "servings": 2,
-     "total_min": 35,
+     "prep_min": 10,
+     "cook_min": 25,
      "source_type": "seed",
      "source_name": "My kitchen",
      "source_url": "https://example.com/chicken-coconut-rice-bowl",
@@ -604,10 +605,10 @@ normally work out:
 -- (select id, name from public.households;)
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name,
-    image_path, servings, total_min, steps, tags, cuisine, language,
+    image_path, servings, total_min, prep_min, cook_min, steps, tags, cuisine, language,
     kcal_per_serving, protein_g_per_serving, macros_estimated, difficulty, equipment)
   values (null, 'Chicken coconut rice bowl', 'seed', 'https://example.com/chicken-coconut-rice-bowl', 'My kitchen',
-    null, 2, 35,
+    null, 2, 35, 10, 25,
     '["Cook the rice.", "Brown the chicken in a little oil, 5 min.", "Add the coconut milk and simmer 15 min, then stir in the spinach.", "Serve over the rice with lime wedges."]'::jsonb,
     array['chicken', 'bowl', 'asian', 'thai'], 'thai', 'en',
     994, 43, true, 'easy', '{"pots": 2, "oven": false, "special": []}'::jsonb)

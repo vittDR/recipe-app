@@ -5,10 +5,10 @@ begin;
 -- Arrosto di tacchino alle erbe
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Arrosto di tacchino alle erbe', 'seed', 'https://blog.giallozafferano.it/ricettechepassione/arrosto-di-tacchino/', 'GialloZafferano', '/recipe-photos/arrosto-di-tacchino-alle-erbe.webp', 'https://blog.giallozafferano.it/ricettechepassione/wp-content/uploads/2018/04/arrosto-di-tacchino-perfettoo-oo.jpg',
-    2, 4, 140, '["Legare il petto di tacchino con lo spago da cucina.","Massaggiarlo con rosmarino, salvia, origano, curry, sale e pepe.","Scaldare l''olio in un tegame con carota, cipolla, sedano e aglio a pezzi grossi e rosolare la carne su tutti i lati.","Sfumare con il vino bianco.","Cuocere coperto a fuoco basso per circa 45 minuti, oppure in forno a 180 °C coperto con alluminio per circa un''ora.","Lasciar riposare la carne prima di tagliarla a fette.","Frullare le verdure di cottura con un po'' di fondo, scaldare la salsa e servirla con l''arrosto."]'::jsonb,
+    2, 4, 140, 15, 110, '["Legare il petto di tacchino con lo spago da cucina.","Massaggiarlo con rosmarino, salvia, origano, curry, sale e pepe.","Scaldare l''olio in un tegame con carota, cipolla, sedano e aglio a pezzi grossi e rosolare la carne su tutti i lati.","Sfumare con il vino bianco.","Cuocere coperto a fuoco basso per circa 45 minuti, oppure in forno a 180 °C coperto con alluminio per circa un''ora.","Lasciar riposare la carne prima di tagliarla a fette.","Frullare le verdure di cottura con un po'' di fondo, scaldare la salsa e servirla con l''arrosto."]'::jsonb,
     array['italian', 'mediterranean', 'turkey', 'oven', 'comfort', 'high protein']::text[], 'italian', 359, 48.5,
     true, 'it', 'medium', '{"pots":1,"oven":false,"special":["blender"]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://blog.giallozafferano.it/ricettechepassione/arrosto-di-tacchino/')
@@ -34,10 +34,10 @@ select r.id, v.* from r, (values
 -- Coniglio alla ligure con olive taggiasche
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Coniglio alla ligure con olive taggiasche', 'seed', 'https://www.dissapore.com/ricette/coniglio-alla-ligure-la-ricetta-originale-con-olive-taggiasche/', 'Dissapore', '/recipe-photos/coniglio-alla-ligure-con-olive-taggiasche.webp', 'https://images.dissapore.com/wp-content/uploads/2023/02/coniglio-alla-ligure-ricetta.jpg?width=1280&height=720&quality=75',
-    2, 4, 95, '["Tagliare il coniglio a pezzi, eliminare grasso, fegato e reni, sciacquarlo e asciugarlo.","Tritare finemente la cipolla e tritare l''aglio senza anima insieme agli aghi di rosmarino.","Scaldare l''olio con il trito e il coniglio e rosolare la carne su tutti i lati a fuoco basso senza bruciare il soffritto.","Sfumare con il vino rosso alzando la fiamma finché l''alcol è evaporato.","Aggiungere alloro, timo, olive e un mestolo di brodo caldo, coprire e cuocere piano, unendo altro brodo solo se serve.","Dopo circa un''ora, quando la carne si stacca dall''osso, scoprire e far restringere il sugo in eccesso."]'::jsonb,
+    2, 4, 110, 20, 90, '["Tagliare il coniglio a pezzi, eliminare grasso, fegato e reni, sciacquarlo e asciugarlo.","Tritare finemente la cipolla e tritare l''aglio senza anima insieme agli aghi di rosmarino.","Scaldare l''olio con il trito e il coniglio e rosolare la carne su tutti i lati a fuoco basso senza bruciare il soffritto.","Sfumare con il vino rosso alzando la fiamma finché l''alcol è evaporato.","Aggiungere alloro, timo, olive e un mestolo di brodo caldo, coprire e cuocere piano, unendo altro brodo solo se serve.","Dopo circa un''ora, quando la carne si stacca dall''osso, scoprire e far restringere il sugo in eccesso."]'::jsonb,
     array['italian', 'mediterranean', 'stew', 'comfort', 'high protein']::text[], 'italian', 757, 77.1,
     true, 'it', 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.dissapore.com/ricette/coniglio-alla-ligure-la-ricetta-originale-con-olive-taggiasche/')
@@ -61,10 +61,10 @@ select r.id, v.* from r, (values
 -- Cozze alla tarantina
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Cozze alla tarantina', 'seed', 'https://www.dissapore.com/ricette/cozze-alla-tarantina-al-sugo', 'Dissapore', '/recipe-photos/cozze-alla-tarantina.webp', 'https://images.dissapore.com/wp-content/uploads/2023/03/cozze-alla-tarantina-ricetta.jpg?width=1280&height=720&quality=75',
-    2, 4, 100, '["Tieni le cozze in acqua salata per almeno un''ora, poi strofina i gusci ed elimina il bisso.","In una padella rosola uno spicchio d''aglio schiacciato in metà dell''olio, senza farlo scurire.","Aggiungi le cozze e un rametto di prezzemolo, sfuma con il vino e copri finché si aprono.","Filtra il liquido di cottura con un colino fine e tieni da parte le cozze.","In una padella pulita scalda l''olio rimasto con l''aglio a fettine e il peperoncino spezzettato.","Unisci i pelati schiacciandoli con una forchetta, aggiungi il liquido delle cozze e fai restringere a fuoco basso per circa 10 minuti.","Rimetti le cozze nel sugo con il prezzemolo tritato, lascia insaporire qualche minuto e servi con pane abbrustolito."]'::jsonb,
+    2, 4, 100, 15, 25, '["Tieni le cozze in acqua salata per almeno un''ora, poi strofina i gusci ed elimina il bisso.","In una padella rosola uno spicchio d''aglio schiacciato in metà dell''olio, senza farlo scurire.","Aggiungi le cozze e un rametto di prezzemolo, sfuma con il vino e copri finché si aprono.","Filtra il liquido di cottura con un colino fine e tieni da parte le cozze.","In una padella pulita scalda l''olio rimasto con l''aglio a fettine e il peperoncino spezzettato.","Unisci i pelati schiacciandoli con una forchetta, aggiungi il liquido delle cozze e fai restringere a fuoco basso per circa 10 minuti.","Rimetti le cozze nel sugo con il prezzemolo tritato, lascia insaporire qualche minuto e servi con pane abbrustolito."]'::jsonb,
     array['italian', 'mediterranean', 'seafood', 'stew', 'comfort', 'fish']::text[], 'italian', 459, 13.4,
     true, 'it', 'medium', '{"pots":2,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.dissapore.com/ricette/cozze-alla-tarantina-al-sugo')
@@ -85,10 +85,10 @@ select r.id, v.* from r, (values
 -- Frittata di zucchine e ricotta al forno
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Frittata di zucchine e ricotta al forno', 'seed', 'https://blog.giallozafferano.it/cottoinunclick/ricetta-frittata-zucchine-e-ricotta-al-forno/', 'GialloZafferano', '/recipe-photos/frittata-di-zucchine-e-ricotta-al-forno.webp', 'https://blog.giallozafferano.it/cottoinunclick/wp-content/uploads/2025/05/phonto-frittata-zucchine-e-ricotta-al-forno.jpg',
-    2, 4, 45, '["Preriscalda il forno a 180 °C statico.","Lava e asciuga le zucchine, spuntale e tagliale a rondelle sottili.","Sbatti le uova in una ciotola, incorpora ricotta e parmigiano, regola di sale e pepe e unisci le zucchine.","Fodera una piccola tortiera con carta forno (leggermente unta o inumidita), versa il composto e livellalo.","Cuoci 30 minuti in modalità statica, poi altri 5 minuti ventilato finché la superficie è dorata.","Sforna, taglia a fette e servi tiepida o fredda."]'::jsonb,
+    2, 4, 45, 15, 30, '["Preriscalda il forno a 180 °C statico.","Lava e asciuga le zucchine, spuntale e tagliale a rondelle sottili.","Sbatti le uova in una ciotola, incorpora ricotta e parmigiano, regola di sale e pepe e unisci le zucchine.","Fodera una piccola tortiera con carta forno (leggermente unta o inumidita), versa il composto e livellalo.","Cuoci 30 minuti in modalità statica, poi altri 5 minuti ventilato finché la superficie è dorata.","Sforna, taglia a fette e servi tiepida o fredda."]'::jsonb,
     array['italian', 'eggs', 'oven', 'light', 'vegetarian']::text[], 'italian', 208, 17.1,
     false, 'it', 'easy', '{"pots":1,"oven":true,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://blog.giallozafferano.it/cottoinunclick/ricetta-frittata-zucchine-e-ricotta-al-forno/')
@@ -107,10 +107,10 @@ select r.id, v.* from r, (values
 -- Insalata di farro con tonno e ceci
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Insalata di farro con tonno e ceci', 'seed', 'https://blog.giallozafferano.it/studentiaifornelli/insalata-di-farro-tonno-e-ceci/', 'GialloZafferano', '/recipe-photos/insalata-di-farro-con-tonno-e-ceci.webp', 'https://blog.giallozafferano.it/studentiaifornelli/wp-content/uploads/2020/08/ANT-FB-insalata-di-farro-tonno-e-ceci-ricetta-scaled.jpg',
-    2, 2, 30, '["Lessa il farro in abbondante acqua salata secondo i tempi della confezione, scolalo e lascialo raffreddare.","Scola e sciacqua i ceci; sgocciola bene il tonno.","Unisci al farro i ceci e il tonno sbriciolato, condisci con olio e un pizzico di sale e mescola.","Taglia in quattro i pomodorini, lava e asciuga la rucola.","Aggiungi pomodorini e rucola al farro, mescola, regola il condimento e servi subito o tieni in frigo fino al momento."]'::jsonb,
+    2, 2, 30, 10, 20, '["Lessa il farro in abbondante acqua salata secondo i tempi della confezione, scolalo e lascialo raffreddare.","Scola e sciacqua i ceci; sgocciola bene il tonno.","Unisci al farro i ceci e il tonno sbriciolato, condisci con olio e un pizzico di sale e mescola.","Taglia in quattro i pomodorini, lava e asciuga la rucola.","Aggiungi pomodorini e rucola al farro, mescola, regola il condimento e servi subito o tieni in frigo fino al momento."]'::jsonb,
     array['italian', 'mediterranean', 'tuna', 'salad', 'light', 'fish']::text[], 'italian', 531, 31.5,
     true, 'it', 'easy', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://blog.giallozafferano.it/studentiaifornelli/insalata-di-farro-tonno-e-ceci/')
@@ -130,10 +130,10 @@ select r.id, v.* from r, (values
 -- Involtini di pollo al forno
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Involtini di pollo al forno', 'seed', 'https://www.dissapore.com/ricette/involtini-di-pollo-al-forno/', 'Dissapore', '/recipe-photos/involtini-di-pollo-al-forno.webp', 'https://images.dissapore.com/wp-content/uploads/2022/04/shutterstock_1930525085.jpg?width=1280&height=720&quality=50',
-    2, 4, 35, '["Stendere le fette di pollo su un tagliere.","Coprire ciascuna con una fettina di fontina e una di prosciutto cotto.","Arrotolarle strette su se stesse.","Sbattere leggermente l''uovo con sale e pepe e passarvi gli involtini.","Rotolarli nel pangrattato e sistemarli su carta forno in una teglia, con un filo d''olio.","Cuocere in forno a 180 °C per 25 minuti."]'::jsonb,
+    2, 4, 35, 10, 20, '["Stendere le fette di pollo su un tagliere.","Coprire ciascuna con una fettina di fontina e una di prosciutto cotto.","Arrotolarle strette su se stesse.","Sbattere leggermente l''uovo con sale e pepe e passarvi gli involtini.","Rotolarli nel pangrattato e sistemarli su carta forno in una teglia, con un filo d''olio.","Cuocere in forno a 180 °C per 25 minuti."]'::jsonb,
     array['italian', 'chicken', 'oven', 'comfort', 'high protein']::text[], 'italian', 484, 51.5,
     true, 'it', 'medium', '{"pots":1,"oven":true,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.dissapore.com/ricette/involtini-di-pollo-al-forno/')
@@ -155,10 +155,10 @@ select r.id, v.* from r, (values
 -- Medaglioni di filetto di maiale ai funghi
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Medaglioni di filetto di maiale ai funghi', 'seed', 'https://www.dissapore.com/ricette/medaglioni-di-filetto-di-maiale/', 'Dissapore', '/recipe-photos/medaglioni-di-filetto-di-maiale-ai-funghi.webp', 'https://images.dissapore.com/wp-content/uploads/2024/01/Medaglioni-di-filetto-di-maiale-ricetta.jpg?width=1280&height=720&quality=75',
-    2, 4, 30, '["Rifilare il filetto da grasso e pellicine, tagliarlo a medaglioni spessi almeno 3 cm e tamponarli con carta da cucina.","Sciogliere il burro chiarificato con la salvia in una padella antiaderente e scottare i medaglioni a fuoco alto circa 2 minuti per lato, salando e pepando leggermente.","Sfumare con il vino bianco e far evaporare l''alcol, poi tenere da parte la carne al caldo.","Nella stessa padella cuocere i funghi affettati sottili con la panna, a fuoco basso e coperto.","Regolare di sale, addensare la salsa con l''amido di mais, rimettere i medaglioni a scaldare e servire."]'::jsonb,
+    2, 4, 30, 5, 10, '["Rifilare il filetto da grasso e pellicine, tagliarlo a medaglioni spessi almeno 3 cm e tamponarli con carta da cucina.","Sciogliere il burro chiarificato con la salvia in una padella antiaderente e scottare i medaglioni a fuoco alto circa 2 minuti per lato, salando e pepando leggermente.","Sfumare con il vino bianco e far evaporare l''alcol, poi tenere da parte la carne al caldo.","Nella stessa padella cuocere i funghi affettati sottili con la panna, a fuoco basso e coperto.","Regolare di sale, addensare la salsa con l''amido di mais, rimettere i medaglioni a scaldare e servire."]'::jsonb,
     array['italian', 'pork', 'fancy', 'comfort', 'high protein']::text[], 'italian', 450, 44,
     true, 'it', 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.dissapore.com/ricette/medaglioni-di-filetto-di-maiale/')
@@ -180,10 +180,10 @@ select r.id, v.* from r, (values
 -- Merluzzo alla livornese
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Merluzzo alla livornese', 'seed', 'https://www.dissapore.com/ricette/merluzzo-alla-livornese/', 'Dissapore', '/recipe-photos/merluzzo-alla-livornese.webp', 'https://images.dissapore.com/wp-content/uploads/2022/05/shutterstock_620172806.jpg?width=1280&height=720&quality=75',
-    2, 4, 25, '["Sbuccia l''aglio ed elimina l''anima interna.","Fai dorare l''aglio nell''olio senza bruciarlo, poi toglilo dalla padella.","Adagia i filetti di merluzzo e rosolali circa 5 minuti per lato.","Bagna con il vino bianco e lascia evaporare a fiamma alta.","Aggiungi la passata, i capperi sciacquati e le olive, e cuoci finché il sugo si restringe.","Poco prima di spegnere unisci il prezzemolo tritato fine e una macinata di pepe."]'::jsonb,
+    2, 4, 25, 5, 15, '["Sbuccia l''aglio ed elimina l''anima interna.","Fai dorare l''aglio nell''olio senza bruciarlo, poi toglilo dalla padella.","Adagia i filetti di merluzzo e rosolali circa 5 minuti per lato.","Bagna con il vino bianco e lascia evaporare a fiamma alta.","Aggiungi la passata, i capperi sciacquati e le olive, e cuoci finché il sugo si restringe.","Poco prima di spegnere unisci il prezzemolo tritato fine e una macinata di pepe."]'::jsonb,
     array['italian', 'mediterranean', 'cod', 'stew', 'light', 'quick', 'fish', 'high protein']::text[], 'italian', 350, 36.9,
     true, 'it', 'easy', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.dissapore.com/ricette/merluzzo-alla-livornese/')
@@ -205,10 +205,10 @@ select r.id, v.* from r, (values
 -- Orata al cartoccio
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Orata al cartoccio', 'seed', 'https://www.dissapore.com/ricette/orata-al-cartoccio/', 'Dissapore', '/recipe-photos/orata-al-cartoccio.webp', 'https://images.dissapore.com/wp-content/uploads/2021/12/shutterstock_226434073.jpg?width=1280&height=720&quality=75',
-    2, 4, 55, '["Preriscalda il forno a 180 °C.","Pulisci l''orata incidendo la pancia, eviscerala, squamala raschiando contro il verso delle squame, poi lavala e asciugala.","Affetta l''aglio, la cipolla, le carote e il limone.","Farcisci la pancia del pesce con alloro, aglio, rosmarino, timo e un pizzico di sale.","Adagia l''orata su un foglio di alluminio con carote, cipolla e limone, condisci con olio, sale e pepe e chiudi bene il cartoccio.","Cuoci in forno per circa 40 minuti.","Apri il cartoccio, elimina erbe e verdure aromatiche e servi con un filo d''olio crudo."]'::jsonb,
+    2, 4, 55, 15, 40, '["Preriscalda il forno a 180 °C.","Pulisci l''orata incidendo la pancia, eviscerala, squamala raschiando contro il verso delle squame, poi lavala e asciugala.","Affetta l''aglio, la cipolla, le carote e il limone.","Farcisci la pancia del pesce con alloro, aglio, rosmarino, timo e un pizzico di sale.","Adagia l''orata su un foglio di alluminio con carote, cipolla e limone, condisci con olio, sale e pepe e chiudi bene il cartoccio.","Cuoci in forno per circa 40 minuti.","Apri il cartoccio, elimina erbe e verdure aromatiche e servi con un filo d''olio crudo."]'::jsonb,
     array['italian', 'mediterranean', 'fish', 'oven', 'light', 'high protein']::text[], 'italian', 321, 45.4,
     true, 'it', 'medium', '{"pots":1,"oven":true,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.dissapore.com/ricette/orata-al-cartoccio/')
@@ -232,10 +232,10 @@ select r.id, v.* from r, (values
 -- Pasta e lenticchie
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Pasta e lenticchie', 'seed', 'https://blog.giallozafferano.it/allacciateilgrembiule/pasta-e-lenticchie/', 'GialloZafferano', '/recipe-photos/pasta-e-lenticchie.webp', 'https://blog.giallozafferano.it/allacciateilgrembiule/wp-content/uploads/2017/10/PASTA-E-LENTICCHIEFB.jpg',
-    2, 4, 65, '["Se usi lenticchie secche, mettile in ammollo circa 2 ore (accorcia la cottura); se in scatola, sciacquale e basta.","Trita finemente sedano, carota e cipolla.","Scalda l''olio in una pentola e fai soffriggere le verdure con rosmarino e aglio per qualche minuto.","Aggiungi la pancetta e le lenticchie, copri con il brodo caldo e cuoci a fuoco basso: circa 25 minuti se ammollate, 50 se secche non ammollate.","Quando le lenticchie sono tenere, unisci la pasta con altro brodo quanto basta a coprirla e cuoci circa 10 minuti mescolando.","Regola di sale e pepe e servi caldo con un filo d''olio a crudo."]'::jsonb,
+    2, 4, 65, 20, 45, '["Se usi lenticchie secche, mettile in ammollo circa 2 ore (accorcia la cottura); se in scatola, sciacquale e basta.","Trita finemente sedano, carota e cipolla.","Scalda l''olio in una pentola e fai soffriggere le verdure con rosmarino e aglio per qualche minuto.","Aggiungi la pancetta e le lenticchie, copri con il brodo caldo e cuoci a fuoco basso: circa 25 minuti se ammollate, 50 se secche non ammollate.","Quando le lenticchie sono tenere, unisci la pasta con altro brodo quanto basta a coprirla e cuoci circa 10 minuti mescolando.","Regola di sale e pepe e servi caldo con un filo d''olio a crudo."]'::jsonb,
     array['italian', 'mediterranean', 'lentils', 'pasta', 'soup', 'comfort', 'one-pot']::text[], 'italian', 663, 26,
     true, 'it', 'easy', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://blog.giallozafferano.it/allacciateilgrembiule/pasta-e-lenticchie/')
@@ -260,10 +260,10 @@ select r.id, v.* from r, (values
 -- Pasta tonno e ceci cremosa
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Pasta tonno e ceci cremosa', 'seed', 'https://blog.giallozafferano.it/adryincucina/pasta-tonno-e-ceci/', 'GialloZafferano', '/recipe-photos/pasta-tonno-e-ceci-cremosa.webp', 'https://blog.giallozafferano.it/adryincucina/wp-content/uploads/2019/05/pasta-tonno-e-ceci.jpg',
-    2, 4, 20, '["Metti a bollire l''acqua salata per la pasta.","In una padella scalda l''olio del tonno insieme all''olio extravergine.","Trita finemente la cipolla e falla appassire nell''olio a fuoco medio.","Unisci i ceci scolati e il tonno sbriciolato; per una salsa più cremosa frulla metà dei ceci con un po'' di acqua.","Cuoci la pasta al dente e scolala tenendo da parte un mestolo di acqua di cottura.","Versa la pasta in padella, aggiungi l''acqua di cottura e manteca qualche istante.","Servi con erba cipollina tritata."]'::jsonb,
+    2, 4, 20, 5, 15, '["Metti a bollire l''acqua salata per la pasta.","In una padella scalda l''olio del tonno insieme all''olio extravergine.","Trita finemente la cipolla e falla appassire nell''olio a fuoco medio.","Unisci i ceci scolati e il tonno sbriciolato; per una salsa più cremosa frulla metà dei ceci con un po'' di acqua.","Cuoci la pasta al dente e scolala tenendo da parte un mestolo di acqua di cottura.","Versa la pasta in padella, aggiungi l''acqua di cottura e manteca qualche istante.","Servi con erba cipollina tritata."]'::jsonb,
     array['italian', 'mediterranean', 'tuna', 'pasta', 'quick', 'comfort', 'fish']::text[], 'italian', 499, 27,
     true, 'it', 'easy', '{"pots":2,"oven":false,"special":["blender"]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://blog.giallozafferano.it/adryincucina/pasta-tonno-e-ceci/')
@@ -283,10 +283,10 @@ select r.id, v.* from r, (values
 -- Pesce spada alla siciliana
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Pesce spada alla siciliana', 'seed', 'https://blog.giallozafferano.it/chezbibia/ricetta-pesce-spada-alla-siciliana/', 'GialloZafferano', '/recipe-photos/pesce-spada-alla-siciliana.webp', 'https://blog.giallozafferano.it/chezbibia/wp-content/uploads/2024/08/pesce-spada-alla-siciliana.jpg',
-    2, 4, 30, '["Lava e taglia a metà i pomodorini; sbuccia l''aglio e trita il peperoncino se lo usi.","In una padella larga scalda un filo d''olio con aglio, peperoncino, capperi e olive per un paio di minuti.","Unisci i pomodorini con origano, basilico e un pizzico di sale; copri e cuoci 10 minuti.","Adagia le fette di pesce spada sul fondo in un solo strato, copri e cuoci altri 10 minuti.","Scopri, gira il pesce e lascia andare 5 minuti perché il sugo si restringa un po''; servi subito."]'::jsonb,
+    2, 4, 30, 5, 25, '["Lava e taglia a metà i pomodorini; sbuccia l''aglio e trita il peperoncino se lo usi.","In una padella larga scalda un filo d''olio con aglio, peperoncino, capperi e olive per un paio di minuti.","Unisci i pomodorini con origano, basilico e un pizzico di sale; copri e cuoci 10 minuti.","Adagia le fette di pesce spada sul fondo in un solo strato, copri e cuoci altri 10 minuti.","Scopri, gira il pesce e lascia andare 5 minuti perché il sugo si restringa un po''; servi subito."]'::jsonb,
     array['italian', 'mediterranean', 'fish', 'light', 'high protein']::text[], 'italian', 351, 36.3,
     true, 'it', 'easy', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://blog.giallozafferano.it/chezbibia/ricetta-pesce-spada-alla-siciliana/')
@@ -309,10 +309,10 @@ select r.id, v.* from r, (values
 -- Petto di pollo alla cacciatora
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Petto di pollo alla cacciatora', 'seed', 'https://www.dissapore.com/ricette/petto-di-pollo-alla-cacciatora/', 'Dissapore', '/recipe-photos/petto-di-pollo-alla-cacciatora.webp', 'https://images.dissapore.com/wp-content/uploads/2022/09/petto-di-pollo-alla-cacciatora.jpg?width=1280&height=720&quality=75',
-    2, 4, 40, '["Pulire i funghi e tagliarli a pezzi.","Tagliare il petto di pollo a bocconi piuttosto grandi.","Sbucciare l''aglio togliendo l''anima e affettare lo scalogno.","Scaldare l''olio con aglio e funghi a fuoco basso per circa 10 minuti.","Aggiungere scalogno e pollo, sfumare con il vino e rosolare finché la carne è colorita in modo uniforme.","Unire i pelati schiacciati e le olive, salare e pepare.","Cuocere dolcemente per circa 10 minuti e servire con basilico fresco."]'::jsonb,
+    2, 4, 45, 15, 30, '["Pulire i funghi e tagliarli a pezzi.","Tagliare il petto di pollo a bocconi piuttosto grandi.","Sbucciare l''aglio togliendo l''anima e affettare lo scalogno.","Scaldare l''olio con aglio e funghi a fuoco basso per circa 10 minuti.","Aggiungere scalogno e pollo, sfumare con il vino e rosolare finché la carne è colorita in modo uniforme.","Unire i pelati schiacciati e le olive, salare e pepare.","Cuocere dolcemente per circa 10 minuti e servire con basilico fresco."]'::jsonb,
     array['italian', 'mediterranean', 'chicken', 'stew', 'comfort', 'high protein']::text[], 'italian', 456, 36,
     true, 'it', 'easy', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.dissapore.com/ricette/petto-di-pollo-alla-cacciatora/')
@@ -336,10 +336,10 @@ select r.id, v.* from r, (values
 -- Petto di pollo alla pizzaiola light
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Petto di pollo alla pizzaiola light', 'seed', 'https://blog.giallozafferano.it/lacucinasottosopra/petto-di-pollo-alla-pizzaiola-light/', 'GialloZafferano', '/recipe-photos/petto-di-pollo-alla-pizzaiola-light.webp', 'https://blog.giallozafferano.it/lacucinasottosopra/wp-content/uploads/2018/09/IMG_5671jpg.jpg',
-    2, 2, 30, '["In una padella larga cuocere la polpa di pomodoro con l''aglio schiacciato, sale, pepe e origano a fuoco basso per 10-15 minuti.","Regolare di sale, allungare con mezzo bicchiere d''acqua e cuocere ancora un paio di minuti.","Adagiare le fettine di pollo nel sugo, coprirle di salsa e spolverare con altro origano.","Cuocere a fuoco medio con il coperchio socchiuso per circa 10 minuti, girando la carne a metà cottura.","A fuoco spento aggiungere, se si vuole, un filo d''olio a crudo e servire con il sugo."]'::jsonb,
+    2, 2, 30, 10, 20, '["In una padella larga cuocere la polpa di pomodoro con l''aglio schiacciato, sale, pepe e origano a fuoco basso per 10-15 minuti.","Regolare di sale, allungare con mezzo bicchiere d''acqua e cuocere ancora un paio di minuti.","Adagiare le fettine di pollo nel sugo, coprirle di salsa e spolverare con altro origano.","Cuocere a fuoco medio con il coperchio socchiuso per circa 10 minuti, girando la carne a metà cottura.","A fuoco spento aggiungere, se si vuole, un filo d''olio a crudo e servire con il sugo."]'::jsonb,
     array['italian', 'mediterranean', 'chicken', 'one-pot', 'light', 'high protein']::text[], 'italian', 335, 48.6,
     false, 'it', 'easy', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://blog.giallozafferano.it/lacucinasottosopra/petto-di-pollo-alla-pizzaiola-light/')
@@ -360,10 +360,10 @@ select r.id, v.* from r, (values
 -- Polpo in umido con patate
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Polpo in umido con patate', 'seed', 'https://blog.giallozafferano.it/cucinoperpassione/ricetta-polpo-in-umido-con-patate/', 'GialloZafferano', '/recipe-photos/polpo-in-umido-con-patate.webp', 'https://blog.giallozafferano.it/cucinoperpassione/wp-content/uploads/2026/09/Polpo-in-umido-con-patate.jpg',
-    2, 4, 70, '["Pulisci il polpo togliendo occhi, becco e interiora, sciacqualo bene e taglialo a pezzetti.","Affetta sottilmente la cipolla e mettila in una pentola con olio, passata, aglio e il polpo; sala, pepa e mescola.","Copri e cuoci a fuoco basso per 40 minuti senza aggiungere acqua: il polpo cuoce nel suo liquido.","Sbuccia le patate, tagliale a pezzi regolari, sciacquale e uniscile alla pentola.","Prosegui la cottura coperto per altri 20 minuti (fino a 30 in più se il polpo è grande), finché una forchetta lo infilza senza resistenza.","Regola di sale e pepe, completa con prezzemolo fresco e un pizzico di peperoncino e servi caldo con il sugo."]'::jsonb,
+    2, 4, 70, 10, 60, '["Pulisci il polpo togliendo occhi, becco e interiora, sciacqualo bene e taglialo a pezzetti.","Affetta sottilmente la cipolla e mettila in una pentola con olio, passata, aglio e il polpo; sala, pepa e mescola.","Copri e cuoci a fuoco basso per 40 minuti senza aggiungere acqua: il polpo cuoce nel suo liquido.","Sbuccia le patate, tagliale a pezzi regolari, sciacquale e uniscile alla pentola.","Prosegui la cottura coperto per altri 20 minuti (fino a 30 in più se il polpo è grande), finché una forchetta lo infilza senza resistenza.","Regola di sale e pepe, completa con prezzemolo fresco e un pizzico di peperoncino e servi caldo con il sugo."]'::jsonb,
     array['italian', 'mediterranean', 'seafood', 'stew', 'comfort', 'one-pot', 'fish', 'high protein']::text[], 'italian', 516, 42.7,
     true, 'it', 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://blog.giallozafferano.it/cucinoperpassione/ricetta-polpo-in-umido-con-patate/')
@@ -386,10 +386,10 @@ select r.id, v.* from r, (values
 -- Risotto ai gamberi e arancia
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Risotto ai gamberi e arancia', 'seed', 'https://www.ricettedalmondo.it/risotto-ai-gamberi.html', 'Ricette dal Mondo', '/recipe-photos/risotto-ai-gamberi-e-arancia.webp', 'https://www.ricettedalmondo.it/images/foto-ricette/r/30332-risotto-ai-gamberi.jpg',
-    2, 4, 30, '["Sguscia i gamberi eliminando testa e carapace.","Rosolali in padella con l''olio e l''aglio finché cambiano colore, poi tienili da parte.","In una casseruola fai appassire lo scalogno tritato nel burro, aggiungi il riso e tostalo 2-3 minuti.","Sfuma con il vino bianco e lascia evaporare.","Porta a cottura aggiungendo il brodo bollente un mestolo alla volta, mescolando spesso (circa 16-18 minuti).","Pochi minuti prima della fine unisci i gamberi e la scorza d''arancia; regola di sale.","Spegni, manteca con il burro freddo, lascia riposare un paio di minuti e servi."]'::jsonb,
+    2, 4, 30, 10, 20, '["Sguscia i gamberi eliminando testa e carapace.","Rosolali in padella con l''olio e l''aglio finché cambiano colore, poi tienili da parte.","In una casseruola fai appassire lo scalogno tritato nel burro, aggiungi il riso e tostalo 2-3 minuti.","Sfuma con il vino bianco e lascia evaporare.","Porta a cottura aggiungendo il brodo bollente un mestolo alla volta, mescolando spesso (circa 16-18 minuti).","Pochi minuti prima della fine unisci i gamberi e la scorza d''arancia; regola di sale.","Spegni, manteca con il burro freddo, lascia riposare un paio di minuti e servi."]'::jsonb,
     array['italian', 'prawns', 'risotto', 'fancy', 'comfort', 'fish', 'high protein']::text[], 'italian', 670, 37.7,
     true, 'it', 'medium', '{"pots":3,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.ricettedalmondo.it/risotto-ai-gamberi.html')
@@ -413,10 +413,10 @@ select r.id, v.* from r, (values
 -- Salmone in crosta di pistacchi e mandorle
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Salmone in crosta di pistacchi e mandorle', 'seed', 'https://www.dissapore.com/ricette/ricetta-salmone-in-crosta-di-pistacchi-e-mandorle/', 'Dissapore', '/recipe-photos/salmone-in-crosta-di-pistacchi-e-mandorle.webp', 'https://images.dissapore.com/wp-content/uploads/2020/10/salmone-in-crosta-di-pistacchi-e-mandorle.jpg?width=1280&height=720&quality=50',
-    2, 2, 25, '["Preriscalda il forno a 200 °C.","Trita pistacchi e mandorle e mescolali con pangrattato, un pizzico di sale e l''olio fino a ottenere un composto compatto.","Ungi leggermente una pirofila e sistema i tranci di salmone.","Distribuisci la crosta sulla superficie dei tranci premendo bene.","Cuoci in forno per circa 15 minuti, finché la crosta è dorata, e servi."]'::jsonb,
+    2, 2, 25, 10, 15, '["Preriscalda il forno a 200 °C.","Trita pistacchi e mandorle e mescolali con pangrattato, un pizzico di sale e l''olio fino a ottenere un composto compatto.","Ungi leggermente una pirofila e sistema i tranci di salmone.","Distribuisci la crosta sulla superficie dei tranci premendo bene.","Cuoci in forno per circa 15 minuti, finché la crosta è dorata, e servi."]'::jsonb,
     array['italian', 'salmon', 'oven', 'quick', 'fancy', 'fish', 'high protein']::text[], 'italian', 572, 36.1,
     false, 'it', 'easy', '{"pots":1,"oven":true,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.dissapore.com/ricette/ricetta-salmone-in-crosta-di-pistacchi-e-mandorle/')
@@ -435,10 +435,10 @@ select r.id, v.* from r, (values
 -- Saltimbocca alla romana
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Saltimbocca alla romana', 'seed', 'https://blog.giallozafferano.it/valeriaciccotti/saltimbocca-alla-romana/', 'GialloZafferano', '/recipe-photos/saltimbocca-alla-romana.webp', 'https://blog.giallozafferano.it/valeriaciccotti/wp-content/uploads/2022/02/SALTIMBOCCA-ALLA-ROMANA.jpg',
-    2, 4, 20, '["Togliere grasso e nervetti dalle fettine di vitello e salarle appena, il prosciutto è già sapido.","Passare le fettine nella farina in modo uniforme.","Appoggiare su ognuna una fetta di prosciutto e una foglia di salvia, fermando con uno stuzzicadenti.","Sciogliere il burro in padella e dorare le fettine.","Bagnare con il vino bianco e lasciarlo evaporare del tutto.","Coprire e proseguire la cottura per circa 2 minuti, poi servire subito ben caldi."]'::jsonb,
+    2, 4, 20, 10, 10, '["Togliere grasso e nervetti dalle fettine di vitello e salarle appena, il prosciutto è già sapido.","Passare le fettine nella farina in modo uniforme.","Appoggiare su ognuna una fetta di prosciutto e una foglia di salvia, fermando con uno stuzzicadenti.","Sciogliere il burro in padella e dorare le fettine.","Bagnare con il vino bianco e lasciarlo evaporare del tutto.","Coprire e proseguire la cottura per circa 2 minuti, poi servire subito ben caldi."]'::jsonb,
     array['italian', 'mediterranean', 'veal', 'quick', 'fancy']::text[], 'italian', 310, 25.2,
     false, 'it', 'easy', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://blog.giallozafferano.it/valeriaciccotti/saltimbocca-alla-romana/')
@@ -458,10 +458,10 @@ select r.id, v.* from r, (values
 -- Scaloppine di pollo al limone
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Scaloppine di pollo al limone', 'seed', 'https://blog.giallozafferano.it/ilcaldosaporedelsud/scaloppine-di-pollo-al-limone-facili-e-veloci/', 'GialloZafferano', '/recipe-photos/scaloppine-di-pollo-al-limone.webp', 'https://blog.giallozafferano.it/ilcaldosaporedelsud/wp-content/uploads/2019/05/IMG_7363-scaled-e1647363898939.jpg',
-    2, 2, 20, '["Infarinare le fettine di pollo su entrambi i lati, scuotendo l''eccesso.","Scaldare un filo d''olio con il pizzico d''aglio in una padella antiaderente.","Rosolare le scaloppine da entrambi i lati finché sono dorate, poi salarle.","Versare il succo di limone e un bicchiere d''acqua e lasciare restringere finché si forma una salsina cremosa.","Incorporare il miele per smorzare l''acidità e girare di nuovo le fettine nel fondo.","Completare con scorza di limone grattugiata e pepe macinato, far riposare un attimo e servire con prezzemolo e il sughetto."]'::jsonb,
+    2, 2, 20, 3, 15, '["Infarinare le fettine di pollo su entrambi i lati, scuotendo l''eccesso.","Scaldare un filo d''olio con il pizzico d''aglio in una padella antiaderente.","Rosolare le scaloppine da entrambi i lati finché sono dorate, poi salarle.","Versare il succo di limone e un bicchiere d''acqua e lasciare restringere finché si forma una salsina cremosa.","Incorporare il miele per smorzare l''acidità e girare di nuovo le fettine nel fondo.","Completare con scorza di limone grattugiata e pepe macinato, far riposare un attimo e servire con prezzemolo e il sughetto."]'::jsonb,
     array['italian', 'mediterranean', 'chicken', 'quick', 'light', 'high protein']::text[], 'italian', 433, 57.8,
     true, 'it', 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://blog.giallozafferano.it/ilcaldosaporedelsud/scaloppine-di-pollo-al-limone-facili-e-veloci/')
@@ -484,10 +484,10 @@ select r.id, v.* from r, (values
 -- Sovracoscia di tacchino al limone in padella
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Sovracoscia di tacchino al limone in padella', 'seed', 'https://blog.giallozafferano.it/ilcaldosaporedelsud/sovracoscia-di-tacchino-in-padella/', 'GialloZafferano', '/recipe-photos/sovracoscia-di-tacchino-al-limone-in-padella.webp', 'https://blog.giallozafferano.it/ilcaldosaporedelsud/wp-content/uploads/2025/03/IMG_0822.jpg',
-    2, 4, 75, '["Eliminare eventuali penne residue e, se si vuole, disossare la sovracoscia con un coltello.","Scaldare l''olio in padella e adagiare la carne con fette e succo di limone, sale, pepe, rosmarino e alloro.","Rosolare a fiamma vivace finché è dorata, poi girarla e dorare l''altro lato.","Sfumare con il vino bianco e far evaporare l''alcol.","Coprire, abbassare al minimo e cuocere circa un''ora, senza aggiungere acqua.","Alzare la fiamma per ridurre i liquidi e caramellare la carne nel suo fondo, girandola.","Lasciar riposare coperto 5-10 minuti prima di servire."]'::jsonb,
+    2, 4, 75, 5, 60, '["Eliminare eventuali penne residue e, se si vuole, disossare la sovracoscia con un coltello.","Scaldare l''olio in padella e adagiare la carne con fette e succo di limone, sale, pepe, rosmarino e alloro.","Rosolare a fiamma vivace finché è dorata, poi girarla e dorare l''altro lato.","Sfumare con il vino bianco e far evaporare l''alcol.","Coprire, abbassare al minimo e cuocere circa un''ora, senza aggiungere acqua.","Alzare la fiamma per ridurre i liquidi e caramellare la carne nel suo fondo, girandola.","Lasciar riposare coperto 5-10 minuti prima di servire."]'::jsonb,
     array['italian', 'mediterranean', 'turkey', 'one-pot', 'comfort', 'high protein']::text[], 'italian', 390, 44.2,
     false, 'it', 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://blog.giallozafferano.it/ilcaldosaporedelsud/sovracoscia-di-tacchino-in-padella/')
@@ -508,10 +508,10 @@ select r.id, v.* from r, (values
 -- Spaghetti alle vongole
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Spaghetti alle vongole', 'seed', 'https://www.dissapore.com/ricette/spaghetti-alle-vongole', 'Dissapore', '/recipe-photos/spaghetti-alle-vongole.webp', 'https://images.dissapore.com/wp-content/uploads/2024/02/spaghetti-alle-vongole-ricetta.jpg?width=1280&height=720&quality=50',
-    2, 4, 140, '["Metti le vongole a bagno in acqua fredda con il sale grosso per circa 2 ore, così rilasciano la sabbia.","In una padella ampia scalda l''olio con lo spicchio d''aglio e i gambi di prezzemolo per circa 1 minuto.","Aggiungi le vongole scolate, copri e cuoci a fuoco vivace finché non si aprono tutte.","Filtra e conserva il liquido di cottura, sguscia circa due terzi delle vongole ed elimina aglio e gambi.","Lessa gli spaghetti in acqua salata e scolali 5 minuti prima del tempo indicato, tenendo da parte un po'' di acqua di cottura.","Rimetti gli spaghetti in padella con le vongole, il loro liquido filtrato e un po'' di acqua di cottura; salta finché il fondo diventa denso e cremoso.","Completa con prezzemolo tritato fine e una macinata di pepe, poi servi subito."]'::jsonb,
+    2, 4, 140, 5, 15, '["Metti le vongole a bagno in acqua fredda con il sale grosso per circa 2 ore, così rilasciano la sabbia.","In una padella ampia scalda l''olio con lo spicchio d''aglio e i gambi di prezzemolo per circa 1 minuto.","Aggiungi le vongole scolate, copri e cuoci a fuoco vivace finché non si aprono tutte.","Filtra e conserva il liquido di cottura, sguscia circa due terzi delle vongole ed elimina aglio e gambi.","Lessa gli spaghetti in acqua salata e scolali 5 minuti prima del tempo indicato, tenendo da parte un po'' di acqua di cottura.","Rimetti gli spaghetti in padella con le vongole, il loro liquido filtrato e un po'' di acqua di cottura; salta finché il fondo diventa denso e cremoso.","Completa con prezzemolo tritato fine e una macinata di pepe, poi servi subito."]'::jsonb,
     array['italian', 'mediterranean', 'seafood', 'pasta', 'fancy', 'make ahead', 'fish']::text[], 'italian', 561, 23.2,
     true, 'it', 'medium', '{"pots":2,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.dissapore.com/ricette/spaghetti-alle-vongole')
@@ -532,10 +532,10 @@ select r.id, v.* from r, (values
 -- Spezzatino di vitello con patate
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Spezzatino di vitello con patate', 'seed', 'https://www.dissapore.com/ricette/spezzatino-di-vitello-con-patate/', 'Dissapore', '/recipe-photos/spezzatino-di-vitello-con-patate.webp', 'https://images.dissapore.com/wp-content/uploads/2021/11/spezzatino-di-vitello-con-patate-ricetta-1.jpg?width=1280&height=720&quality=50',
-    2, 5, 125, '["Pelare carota e cipolla, pulire il sedano e tagliare tutto a pezzi grossolani.","Scaldare l''olio e far appassire le verdure con le erbe aromatiche a fiamma bassa per 20-25 minuti, senza acqua.","Tagliare il vitello a cubi di 3-5 cm, eliminando grasso e cartilagini.","Unire la carne al soffritto e mescolare finché cambia colore su tutti i lati.","Sfumare con il vino rosso a fiamma alta finché evapora del tutto.","Versare il brodo caldo e cuocere a fiamma bassissima per circa un''ora, coprendo se il liquido cala troppo.","Pelare le patate, tagliarle a pezzi di almeno 4 cm e aggiungerle allo spezzatino.","Cuocere ancora circa 20 minuti, finché le patate sono tenere e il sugo è denso."]'::jsonb,
+    2, 5, 125, 15, 80, '["Pelare carota e cipolla, pulire il sedano e tagliare tutto a pezzi grossolani.","Scaldare l''olio e far appassire le verdure con le erbe aromatiche a fiamma bassa per 20-25 minuti, senza acqua.","Tagliare il vitello a cubi di 3-5 cm, eliminando grasso e cartilagini.","Unire la carne al soffritto e mescolare finché cambia colore su tutti i lati.","Sfumare con il vino rosso a fiamma alta finché evapora del tutto.","Versare il brodo caldo e cuocere a fiamma bassissima per circa un''ora, coprendo se il liquido cala troppo.","Pelare le patate, tagliarle a pezzi di almeno 4 cm e aggiungerle allo spezzatino.","Cuocere ancora circa 20 minuti, finché le patate sono tenere e il sugo è denso."]'::jsonb,
     array['italian', 'mediterranean', 'veal', 'stew', 'comfort', 'high protein']::text[], 'italian', 624, 48.3,
     true, 'it', 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.dissapore.com/ricette/spezzatino-di-vitello-con-patate/')
@@ -562,10 +562,10 @@ select r.id, v.* from r, (values
 -- Straccetti di manzo con rucola e pomodorini
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Straccetti di manzo con rucola e pomodorini', 'seed', 'https://blog.giallozafferano.it/renatabriano/ricetta-straccetti-di-manzo-con-rucola-pomodorini-e-aceto-balsamico/', 'GialloZafferano', '/recipe-photos/straccetti-di-manzo-con-rucola-e-pomodorini.webp', 'https://blog.giallozafferano.it/renatabriano/wp-content/uploads/2022/08/straccetti-di-manzo-rucola-scaled.jpg',
-    2, 4, 20, '["Lavare e asciugare la rucola; lavare i pomodorini e tagliarli a metà.","Battere le fettine di manzo per assottigliarle, ridurle a strisce e passarle velocemente nella farina setacciata.","Scaldare l''olio con l''aglio in una padella antiaderente e far dorare gli straccetti a fuoco vivo per 2-3 minuti.","Salare e pepare, unire i pomodorini e saltare per circa un minuto.","Aggiungere metà della rucola, mescolare ancora un minuto e spegnere.","Impiattare su un letto di rucola e pomodorini crudi, adagiare la carne sopra e finire con un filo d''olio e aceto balsamico."]'::jsonb,
+    2, 4, 20, 10, 7, '["Lavare e asciugare la rucola; lavare i pomodorini e tagliarli a metà.","Battere le fettine di manzo per assottigliarle, ridurle a strisce e passarle velocemente nella farina setacciata.","Scaldare l''olio con l''aglio in una padella antiaderente e far dorare gli straccetti a fuoco vivo per 2-3 minuti.","Salare e pepare, unire i pomodorini e saltare per circa un minuto.","Aggiungere metà della rucola, mescolare ancora un minuto e spegnere.","Impiattare su un letto di rucola e pomodorini crudi, adagiare la carne sopra e finire con un filo d''olio e aceto balsamico."]'::jsonb,
     array['italian', 'mediterranean', 'beef', 'stir-fry', 'light', 'quick']::text[], 'italian', 396, 33.8,
     true, 'it', 'easy', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://blog.giallozafferano.it/renatabriano/ricetta-straccetti-di-manzo-con-rucola-pomodorini-e-aceto-balsamico/')
@@ -587,10 +587,10 @@ select r.id, v.* from r, (values
 -- Straccetti di manzo con verdure
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Straccetti di manzo con verdure', 'seed', 'https://blog.giallozafferano.it/pelledipollo/ricetta-straccetti-di-manzo-con-verdure/', 'GialloZafferano', '/recipe-photos/straccetti-di-manzo-con-verdure.webp', 'https://blog.giallozafferano.it/pelledipollo/wp-content/uploads/2026/04/stracc_manzo_verdure1.jpg',
-    2, 2, 40, '["Tagliare la carne a striscioline e marinarla circa 15 minuti con salsa di soia, un filo d''olio, zenzero, aglio schiacciato e amido di mais.","Ridurre carota e zucchine a bastoncini e il cipollotto a rondelle.","Saltare le verdure in padella con poco olio e un pizzico di sale a fuoco vivace per pochi minuti, lasciandole croccanti.","In un''altra padella con un filo d''olio rosolare gli straccetti per un paio di minuti, mescolando sempre.","Riunire carne e verdure, aggiungere i semi di sesamo e saltare a fuoco alto per 1-2 minuti; servire subito."]'::jsonb,
+    2, 2, 40, 15, 15, '["Tagliare la carne a striscioline e marinarla circa 15 minuti con salsa di soia, un filo d''olio, zenzero, aglio schiacciato e amido di mais.","Ridurre carota e zucchine a bastoncini e il cipollotto a rondelle.","Saltare le verdure in padella con poco olio e un pizzico di sale a fuoco vivace per pochi minuti, lasciandole croccanti.","In un''altra padella con un filo d''olio rosolare gli straccetti per un paio di minuti, mescolando sempre.","Riunire carne e verdure, aggiungere i semi di sesamo e saltare a fuoco alto per 1-2 minuti; servire subito."]'::jsonb,
     array['chinese', 'asian', 'beef', 'stir-fry', 'light']::text[], 'chinese', 388, 32.4,
     true, 'it', 'medium', '{"pots":2,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://blog.giallozafferano.it/pelledipollo/ricetta-straccetti-di-manzo-con-verdure/')
@@ -614,10 +614,10 @@ select r.id, v.* from r, (values
 -- Tagliata di manzo con rucola e parmigiano
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Tagliata di manzo con rucola e parmigiano', 'seed', 'https://www.dissapore.com/ricette/tagliata-di-manzo/', 'Dissapore', '/recipe-photos/tagliata-di-manzo-con-rucola-e-parmigiano.webp', 'https://images.dissapore.com/wp-content/uploads/2022/10/tagliata-di-manzo.jpg?width=1280&height=720&quality=50',
-    2, 4, 75, '["Tirare fuori la carne dal frigo un''ora prima per portarla a temperatura ambiente.","Scaldare bene la griglia e cospargerla di sale grosso.","Cuocere il controfiletto 3 minuti per lato.","Lasciarlo riposare un minuto su un tagliere, poi affettarlo a circa mezzo centimetro e pepare.","Lavare e asciugare la rucola, togliendo i gambi lunghi.","Disporre rucola e fette di carne nel piatto, completare con scaglie di parmigiano e un filo d''olio."]'::jsonb,
+    2, 4, 75, 10, 10, '["Tirare fuori la carne dal frigo un''ora prima per portarla a temperatura ambiente.","Scaldare bene la griglia e cospargerla di sale grosso.","Cuocere il controfiletto 3 minuti per lato.","Lasciarlo riposare un minuto su un tagliere, poi affettarlo a circa mezzo centimetro e pepare.","Lavare e asciugare la rucola, togliendo i gambi lunghi.","Disporre rucola e fette di carne nel piatto, completare con scaglie di parmigiano e un filo d''olio."]'::jsonb,
     array['italian', 'mediterranean', 'beef', 'grill', 'light', 'fancy', 'high protein']::text[], 'italian', 512, 47.4,
     false, 'it', 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.dissapore.com/ricette/tagliata-di-manzo/')
@@ -636,10 +636,10 @@ select r.id, v.* from r, (values
 -- Blanc de poulet à la basquaise
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Blanc de poulet à la basquaise', 'seed', 'https://www.evous.fr/recettes-de-cuisine/Recettes-Plat/Recette-Blanc-de-poulet-a-la,1116941/', 'Evous', null, 'https://www.evous.fr/IMG/jpg/poulet_basquaise-675ed.jpg',
-    2, 4, 45, '["Ouvrir chaque blanc de poulet en deux dans l''épaisseur pour obtenir de fines escalopes.","Émincer l''oignon et l''ail, épépiner le poivron et le tailler en fines lanières.","Monder la tomate 30 s dans l''eau bouillante, la peler et la concasser ; couper le jambon en lanières.","Saisir oignon, ail et poivron dans l''huile à feu vif environ 8 min, puis les réserver.","Dans la même poêle, dorer les escalopes quelques minutes de chaque côté.","Remettre les légumes, ajouter jambon, tomate et piment d''Espelette, saler, poivrer et mélanger délicatement.","Verser le vin blanc et le faire réduire à gros bouillons 3 min.","Baisser le feu et laisser mijoter environ 15 min en remuant souvent."]'::jsonb,
+    2, 4, 45, 15, 30, '["Ouvrir chaque blanc de poulet en deux dans l''épaisseur pour obtenir de fines escalopes.","Émincer l''oignon et l''ail, épépiner le poivron et le tailler en fines lanières.","Monder la tomate 30 s dans l''eau bouillante, la peler et la concasser ; couper le jambon en lanières.","Saisir oignon, ail et poivron dans l''huile à feu vif environ 8 min, puis les réserver.","Dans la même poêle, dorer les escalopes quelques minutes de chaque côté.","Remettre les légumes, ajouter jambon, tomate et piment d''Espelette, saler, poivrer et mélanger délicatement.","Verser le vin blanc et le faire réduire à gros bouillons 3 min.","Baisser le feu et laisser mijoter environ 15 min en remuant souvent."]'::jsonb,
     array['french', 'chicken', 'stew', 'light', 'high protein']::text[], 'french', 413, 37.6,
     false, 'fr', 'medium', '{"pots":2,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.evous.fr/recettes-de-cuisine/Recettes-Plat/Recette-Blanc-de-poulet-a-la,1116941/')
@@ -663,10 +663,10 @@ select r.id, v.* from r, (values
 -- Blanquette de veau légère
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Blanquette de veau légère', 'seed', 'https://www.750g.com/blanquette-de-veau-version-light-r32377.htm', '750g', '/recipe-photos/blanquette-de-veau-legere.webp', 'https://static.750g.com/images/1200-630/6efbcb2a37e754e7afaddb1888ac0799/blanquette-de-veau-version-light.png',
-    2, 2, 55, '["Porter une cocotte d''eau à ébullition ; pendant ce temps, éplucher et émincer oignon, échalote et carottes.","Plonger la viande et les légumes dans l''eau bouillante avec le thym, saler, poivrer, couvrir et cuire 30 min.","Égoutter le tout, le remettre dans la cocotte avec les champignons égouttés et faire revenir brièvement.","Incorporer la crème et le jus de citron en mélangeant bien jusqu''à ce que la sauce nappe.","Servir aussitôt, par exemple avec des haricots verts."]'::jsonb,
+    2, 2, 55, 15, 40, '["Porter une cocotte d''eau à ébullition ; pendant ce temps, éplucher et émincer oignon, échalote et carottes.","Plonger la viande et les légumes dans l''eau bouillante avec le thym, saler, poivrer, couvrir et cuire 30 min.","Égoutter le tout, le remettre dans la cocotte avec les champignons égouttés et faire revenir brièvement.","Incorporer la crème et le jus de citron en mélangeant bien jusqu''à ce que la sauce nappe.","Servir aussitôt, par exemple avec des haricots verts."]'::jsonb,
     array['french', 'veal', 'stew', 'light', 'comfort', 'high protein']::text[], 'french', 448, 55.8,
     true, 'fr', 'easy', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.750g.com/blanquette-de-veau-version-light-r32377.htm')
@@ -689,10 +689,10 @@ select r.id, v.* from r, (values
 -- Blanquette de veau one pot
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Blanquette de veau one pot', 'seed', 'https://www.croq-kilos.com/actus/recette-de-one-pot-blanquette', 'Croq''Kilos', '/recipe-photos/blanquette-de-veau-one-pot.webp', 'https://www.croq-kilos.com/sites/default/files/styles/1920px/public/2026-01/40698-one-pot-facon-blanquettejpg.jpg',
-    2, 4, 110, '["Couper le veau en gros morceaux, les carottes en rondelles, les champignons en quartiers ; hacher oignon et ail, et éplucher puis couper la pomme de terre en dés.","Dans une grande cocotte, saisir rapidement le veau dans l''huile sans trop le colorer.","Ajouter oignon et ail, saupoudrer de farine et remuer 1 min.","Ajouter carottes, champignons, pomme de terre, thym et laurier, verser le bouillon chaud, saler légèrement, poivrer et mélanger.","Couvrir et cuire à feu doux 1 h 15 à 1 h 30 en remuant de temps en temps, jusqu''à ce que la viande soit fondante.","Hors du feu, fouetter la crème avec le jaune d''œuf et le jus de citron, puis l''incorporer doucement sans refaire bouillir.","Parsemer de persil et servir."]'::jsonb,
+    2, 4, 110, 20, 90, '["Couper le veau en gros morceaux, les carottes en rondelles, les champignons en quartiers ; hacher oignon et ail, et éplucher puis couper la pomme de terre en dés.","Dans une grande cocotte, saisir rapidement le veau dans l''huile sans trop le colorer.","Ajouter oignon et ail, saupoudrer de farine et remuer 1 min.","Ajouter carottes, champignons, pomme de terre, thym et laurier, verser le bouillon chaud, saler légèrement, poivrer et mélanger.","Couvrir et cuire à feu doux 1 h 15 à 1 h 30 en remuant de temps en temps, jusqu''à ce que la viande soit fondante.","Hors du feu, fouetter la crème avec le jaune d''œuf et le jus de citron, puis l''incorporer doucement sans refaire bouillir.","Parsemer de persil et servir."]'::jsonb,
     array['french', 'veal', 'one-pot', 'stew', 'comfort', 'high protein']::text[], 'french', 637, 51.7,
     true, 'fr', 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.croq-kilos.com/actus/recette-de-one-pot-blanquette')
@@ -722,10 +722,10 @@ select r.id, v.* from r, (values
 -- Brandade de morue légère
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Brandade de morue légère', 'seed', 'https://www.croq-kilos.com/actus/recette-de-brandade-de-morue-leger', 'Croq''Kilos', '/recipe-photos/brandade-de-morue-legere.webp', 'https://www.croq-kilos.com/sites/default/files/styles/1920px/public/2025-03/23708-2937-comment-faire-une-brandade-de-morue-legere.jpg',
-    2, 4, 1485, '["La veille, rincer la morue et la laisser dessaler 24 h au réfrigérateur dans de l''eau froide, en renouvelant l''eau 3 à 4 fois.","Éplucher et couper les pommes de terre, puis les cuire à l''eau bouillante jusqu''à ce qu''elles soient tendres.","Mettre la morue et l''ail écrasé dans de l''eau froide et pocher 8 à 10 minutes à petits frémissements, sans bouillir.","Égoutter la morue, ôter peau et arêtes, puis l''effilocher finement.","Écraser les pommes de terre en ajoutant le lait tiède petit à petit, puis incorporer le yaourt ou le skyr.","Mélanger la morue à la purée en versant l''huile d''olive en filet, puis poivrer et ajouter un peu de muscade.","Réchauffer à feu doux ou 10 minutes au four à 180 °C, puis servir parsemé de persil."]'::jsonb,
+    2, 4, 1485, 20, 40, '["La veille, rincer la morue et la laisser dessaler 24 h au réfrigérateur dans de l''eau froide, en renouvelant l''eau 3 à 4 fois.","Éplucher et couper les pommes de terre, puis les cuire à l''eau bouillante jusqu''à ce qu''elles soient tendres.","Mettre la morue et l''ail écrasé dans de l''eau froide et pocher 8 à 10 minutes à petits frémissements, sans bouillir.","Égoutter la morue, ôter peau et arêtes, puis l''effilocher finement.","Écraser les pommes de terre en ajoutant le lait tiède petit à petit, puis incorporer le yaourt ou le skyr.","Mélanger la morue à la purée en versant l''huile d''olive en filet, puis poivrer et ajouter un peu de muscade.","Réchauffer à feu doux ou 10 minutes au four à 180 °C, puis servir parsemé de persil."]'::jsonb,
     array['french', 'fish', 'oven', 'comfort', 'make ahead', 'high protein']::text[], 'french', 364, 39.8,
     true, 'fr', 'medium', '{"pots":2,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.croq-kilos.com/actus/recette-de-brandade-de-morue-leger')
@@ -747,10 +747,10 @@ select r.id, v.* from r, (values
 -- Bœuf bourguignon
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Bœuf bourguignon', 'seed', 'https://www.demotivateur.fr/food/recette/boeuf-bourguignon-traditionnel-2988', 'Demotivateur Food', '/recipe-photos/boeuf-bourguignon.webp', 'https://www.demotivateur.fr/images/cover_recette/1759238345-boeuf_bourguignon_familial.jpg',
-    2, 6, 200, '["Facultatif : la veille, faire mariner les cubes de bœuf au frais dans le vin avec un peu de carotte, l''ail écrasé et le bouquet garni.","Égoutter la viande en gardant le liquide, l''éponger, saler, poivrer et la fariner légèrement.","Saisir le bœuf par petites quantités à feu vif dans l''huile chaude d''une cocotte, puis réserver.","Dans la cocotte, faire revenir les lardons puis la carotte en rondelles 5 min.","Remettre la viande, saupoudrer du reste de farine, ajouter le concentré de tomate, puis le vin (ou la marinade filtrée), le bouillon et le bouquet garni ; porter à ébullition.","Couvrir et enfourner à 150 °C pendant 2 h 30 à 3 h, en remuant de temps en temps.","Environ 45 min avant la fin, poêler les champignons au beurre ; dans une autre poêle, glacer les oignons grelots avec un peu de beurre, de sucre et d''eau.","Ajouter champignons et oignons dans la cocotte pour les 30 dernières minutes et rectifier l''assaisonnement.","Retirer le bouquet garni, parsemer de persil et servir bien chaud."]'::jsonb,
+    2, 6, 200, 20, 180, '["Facultatif : la veille, faire mariner les cubes de bœuf au frais dans le vin avec un peu de carotte, l''ail écrasé et le bouquet garni.","Égoutter la viande en gardant le liquide, l''éponger, saler, poivrer et la fariner légèrement.","Saisir le bœuf par petites quantités à feu vif dans l''huile chaude d''une cocotte, puis réserver.","Dans la cocotte, faire revenir les lardons puis la carotte en rondelles 5 min.","Remettre la viande, saupoudrer du reste de farine, ajouter le concentré de tomate, puis le vin (ou la marinade filtrée), le bouillon et le bouquet garni ; porter à ébullition.","Couvrir et enfourner à 150 °C pendant 2 h 30 à 3 h, en remuant de temps en temps.","Environ 45 min avant la fin, poêler les champignons au beurre ; dans une autre poêle, glacer les oignons grelots avec un peu de beurre, de sucre et d''eau.","Ajouter champignons et oignons dans la cocotte pour les 30 dernières minutes et rectifier l''assaisonnement.","Retirer le bouquet garni, parsemer de persil et servir bien chaud."]'::jsonb,
     array['french', 'beef', 'stew', 'comfort', 'make ahead', 'high protein']::text[], 'french', 775, 46.3,
     true, 'fr', 'medium', '{"pots":3,"oven":true,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.demotivateur.fr/food/recette/boeuf-bourguignon-traditionnel-2988')
@@ -780,10 +780,10 @@ select r.id, v.* from r, (values
 -- Cabillaud épicé au four et ses légumes
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Cabillaud épicé au four et ses légumes', 'seed', 'https://www.demotivateur.fr/food/cabillaud-epice-au-four-43138', 'Demotivateur Food', '/recipe-photos/cabillaud-epice-au-four-et-ses-legumes.webp', 'https://www.demotivateur.fr/images-buzz/cover/181198235267d06a38b7603_cabillaud-epices-au-four.jpg',
-    2, 6, 55, '["Préchauffer le four à 200 °C.","Couper pommes de terre et courgettes en rondelles, l''oignon en dés et le poivron en lanières.","Mélanger ces légumes avec les tomates cerises, l''huile d''olive, le jus de citron, les gousses d''ail pelées et un peu de sel.","Étaler le tout dans un grand plat et rôtir 25 minutes.","Pendant ce temps, mélanger l''huile, le jus de citron, le paprika, le curcuma et le piment d''Espelette, puis en badigeonner les morceaux de cabillaud.","Poser le poisson sur les légumes et prolonger la cuisson de 15 minutes.","Servir parsemé de persil haché, avec des quartiers de citron."]'::jsonb,
+    2, 6, 55, 15, 40, '["Préchauffer le four à 200 °C.","Couper pommes de terre et courgettes en rondelles, l''oignon en dés et le poivron en lanières.","Mélanger ces légumes avec les tomates cerises, l''huile d''olive, le jus de citron, les gousses d''ail pelées et un peu de sel.","Étaler le tout dans un grand plat et rôtir 25 minutes.","Pendant ce temps, mélanger l''huile, le jus de citron, le paprika, le curcuma et le piment d''Espelette, puis en badigeonner les morceaux de cabillaud.","Poser le poisson sur les légumes et prolonger la cuisson de 15 minutes.","Servir parsemé de persil haché, avec des quartiers de citron."]'::jsonb,
     array['french', 'cod', 'traybake', 'oven', 'fish']::text[], 'french', 448, 29.2,
     true, 'fr', 'easy', '{"pots":1,"oven":true,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.demotivateur.fr/food/cabillaud-epice-au-four-43138')
@@ -812,10 +812,10 @@ select r.id, v.* from r, (values
 -- Dos de cabillaud à la basquaise
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Dos de cabillaud à la basquaise', 'seed', 'https://www.weightwatchers.com/fr/recette/dos-de-cabillaud-a-la-basquaise/5625ac93b7878c0b34e6abdf', 'WW', '/recipe-photos/dos-de-cabillaud-a-la-basquaise.webp', 'https://v.cdn.ww.com/media/system/wine/57f2fa60dce32ff313afe3be/9dbfa72d-7d8b-447f-9afe-61d84ce8da59/srhiwo05o7yvqnwkidit.jpg?fit=crop&height=800&width=800&enable=upscale&quality=80',
-    2, 4, 35, '["Préchauffer le four à 210 °C. Plonger les tomates 30 secondes dans l''eau bouillante pour les peler facilement.","Épépiner les tomates et les couper en dés ; couper le poivron en cubes, émincer l''oignon et hacher l''ail.","Mettre les légumes dans une sauteuse avec un petit verre d''eau, le piment et le bouquet garni, couvrir et laisser compoter à feu doux.","Saler, poivrer, puis retirer le piment et le bouquet garni.","Cuire le riz environ 20 minutes à l''eau bouillante salée, l''égoutter et le garder au chaud.","Étaler la compotée de légumes dans un plat à gratin, poser les morceaux de cabillaud dessus, saler, poivrer et enfourner 10 minutes.","Servir le poisson et sa basquaise avec le riz."]'::jsonb,
+    2, 4, 35, 15, 20, '["Préchauffer le four à 210 °C. Plonger les tomates 30 secondes dans l''eau bouillante pour les peler facilement.","Épépiner les tomates et les couper en dés ; couper le poivron en cubes, émincer l''oignon et hacher l''ail.","Mettre les légumes dans une sauteuse avec un petit verre d''eau, le piment et le bouquet garni, couvrir et laisser compoter à feu doux.","Saler, poivrer, puis retirer le piment et le bouquet garni.","Cuire le riz environ 20 minutes à l''eau bouillante salée, l''égoutter et le garder au chaud.","Étaler la compotée de légumes dans un plat à gratin, poser les morceaux de cabillaud dessus, saler, poivrer et enfourner 10 minutes.","Servir le poisson et sa basquaise avec le riz."]'::jsonb,
     array['french', 'cod', 'oven', 'rice', 'light', 'fish']::text[], 'french', 260, 26,
     false, 'fr', 'medium', '{"pots":3,"oven":true,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.weightwatchers.com/fr/recette/dos-de-cabillaud-a-la-basquaise/5625ac93b7878c0b34e6abdf')
@@ -838,10 +838,10 @@ select r.id, v.* from r, (values
 -- Filet mignon de porc à la moutarde
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Filet mignon de porc à la moutarde', 'seed', 'https://www.750g.com/filet-mignon-de-porc-a-la-moutarde-r74670.htm', '750g', '/recipe-photos/filet-mignon-de-porc-a-la-moutarde.webp', 'https://static.750g.com/images/1200-630/1891f1b9d47a53796fe6d9de441cc8b6/filet-mignon-de-porc-a-la-moutarde-r74670.png',
-    2, 4, 40, '["Émincer finement l''oignon.","Chauffer beurre et huile dans une sauteuse et saisir le filet mignon sur toutes ses faces.","Faire fondre l''oignon 5 min dans la matière grasse, déglacer au vin blanc et remettre la viande.","Couvrir et cuire 20 min à feu moyen, puis réserver la viande sur une assiette.","Verser la crème dans la sauteuse en raclant les sucs, saler, poivrer et délayer les deux moutardes.","Couper le filet en tranches épaisses, les remettre dans la sauce, napper et laisser mijoter doucement 10 min."]'::jsonb,
+    2, 4, 40, 5, 35, '["Émincer finement l''oignon.","Chauffer beurre et huile dans une sauteuse et saisir le filet mignon sur toutes ses faces.","Faire fondre l''oignon 5 min dans la matière grasse, déglacer au vin blanc et remettre la viande.","Couvrir et cuire 20 min à feu moyen, puis réserver la viande sur une assiette.","Verser la crème dans la sauteuse en raclant les sucs, saler, poivrer et délayer les deux moutardes.","Couper le filet en tranches épaisses, les remettre dans la sauce, napper et laisser mijoter doucement 10 min."]'::jsonb,
     array['french', 'pork', 'comfort']::text[], 'french', 418, 28.6,
     false, 'fr', 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.750g.com/filet-mignon-de-porc-a-la-moutarde-r74670.htm')
@@ -864,10 +864,10 @@ select r.id, v.* from r, (values
 -- Filet mignon moutarde, pommes de terre et brocoli
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Filet mignon moutarde, pommes de terre et brocoli', 'seed', 'https://jow.com/fr/recipes/filet-mignon-a-la-moutarde-pommes-de-terre-et-brocoli-8v4x3uwufp5c03fx11wy/print', 'Jow', '/recipe-photos/filet-mignon-moutarde-pommes-de-terre-et-brocoli.webp', 'https://static.jow.fr/550x550/patterns/kale-04-202309.png_merge_recipes/Y3e0SkaQQVJSww.png.jpg',
-    2, 1, 80, '["Fouetter moutarde, sirop d''érable, sauce soja et un peu d''huile, enrober le filet mignon et le laisser mariner au frais au moins 30 min.","Préchauffer le four à 190 °C et trancher finement les pommes de terre.","Étaler les pommes de terre dans un plat, assaisonner de sel, poivre, thym et huile, puis enfourner 15 min.","Détailler le brocoli en fleurettes.","Ajouter le filet et le brocoli à côté des pommes de terre, assaisonner et rôtir 25 à 30 min, jusqu''à 63 °C à cœur.","Laisser reposer la viande quelques minutes, la trancher et servir avec les légumes."]'::jsonb,
+    2, 1, 80, 10, 40, '["Fouetter moutarde, sirop d''érable, sauce soja et un peu d''huile, enrober le filet mignon et le laisser mariner au frais au moins 30 min.","Préchauffer le four à 190 °C et trancher finement les pommes de terre.","Étaler les pommes de terre dans un plat, assaisonner de sel, poivre, thym et huile, puis enfourner 15 min.","Détailler le brocoli en fleurettes.","Ajouter le filet et le brocoli à côté des pommes de terre, assaisonner et rôtir 25 à 30 min, jusqu''à 63 °C à cœur.","Laisser reposer la viande quelques minutes, la trancher et servir avec les légumes."]'::jsonb,
     array['french', 'pork', 'traybake', 'oven', 'light', 'high protein']::text[], 'french', 640, 54.3,
     true, 'fr', 'medium', '{"pots":1,"oven":true,"special":["thermometer"]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://jow.com/fr/recipes/filet-mignon-a-la-moutarde-pommes-de-terre-et-brocoli-8v4x3uwufp5c03fx11wy/print')
@@ -890,10 +890,10 @@ select r.id, v.* from r, (values
 -- Moules marinières
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Moules marinières', 'seed', 'https://www.750g.com/la-meilleure-facon-de-faire-des-moules-marinieres-r207667.htm', '750g', '/recipe-photos/moules-marinieres.webp', 'https://static.750g.com/images/1200-630/51b65ce9ef864989f3d27004babc49c2/w6a9050.jpg',
-    2, 4, 20, '["Rincer soigneusement les moules et jeter celles qui sont cassées ou qui restent ouvertes quand on les tapote.","Couper le céleri en petits dés, hacher les échalotes et le persil.","Faire fondre le beurre dans une cocotte et y faire suer doucement échalotes et céleri, sans coloration.","Ajouter les moules, le vin blanc, une bonne dose de poivre, le bouquet garni et le persil.","Couvrir et cuire à feu vif 3 à 4 minutes en mélangeant à mi-cuisson, jusqu''à ce que toutes les moules soient ouvertes.","Remuer une dernière fois pour enrober les moules de jus, retirer le bouquet garni et servir aussitôt."]'::jsonb,
+    2, 4, 20, 10, 10, '["Rincer soigneusement les moules et jeter celles qui sont cassées ou qui restent ouvertes quand on les tapote.","Couper le céleri en petits dés, hacher les échalotes et le persil.","Faire fondre le beurre dans une cocotte et y faire suer doucement échalotes et céleri, sans coloration.","Ajouter les moules, le vin blanc, une bonne dose de poivre, le bouquet garni et le persil.","Couvrir et cuire à feu vif 3 à 4 minutes en mélangeant à mi-cuisson, jusqu''à ce que toutes les moules soient ouvertes.","Remuer une dernière fois pour enrober les moules de jus, retirer le bouquet garni et servir aussitôt."]'::jsonb,
     array['french', 'seafood', 'one-pot', 'quick', 'light', 'fish']::text[], 'french', 281, 22.6,
     true, 'fr', 'easy', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.750g.com/la-meilleure-facon-de-faire-des-moules-marinieres-r207667.htm')
@@ -914,10 +914,10 @@ select r.id, v.* from r, (values
 -- Navarin d'agneau léger
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Navarin d''agneau léger', 'seed', 'https://www.croq-kilos.com/actus/recette-du-navarin-d-agneau-leger', 'Croq''Kilos', '/recipe-photos/navarin-d-agneau-leger.webp', 'https://www.croq-kilos.com/sites/default/files/styles/1920px/public/2025-03/23468-1633-recette-du-navarin-dagneau-leger.jpg',
-    2, 4, 95, '["Éplucher et couper carotte, navet et pommes de terre ; émincer poireau et oignon, concasser la tomate et équeuter les haricots. Dégraisser l''agneau.","Saisir l''agneau 5 à 7 min dans l''huile chaude, puis le réserver.","Faire suer l''oignon et l''ail dans la cocotte et, si souhaité, les saupoudrer de farine.","Remettre l''agneau, ajouter bouillon, tomate, carotte, navet, poireau et bouquet garni ; couvrir et laisser frémir 45 min.","Ajouter pommes de terre et haricots verts et cuire encore 15 à 20 min jusqu''à ce qu''ils soient tendres.","Rectifier l''assaisonnement, retirer le bouquet garni et servir en assiettes creuses parsemées de persil."]'::jsonb,
+    2, 4, 95, 20, 75, '["Éplucher et couper carotte, navet et pommes de terre ; émincer poireau et oignon, concasser la tomate et équeuter les haricots. Dégraisser l''agneau.","Saisir l''agneau 5 à 7 min dans l''huile chaude, puis le réserver.","Faire suer l''oignon et l''ail dans la cocotte et, si souhaité, les saupoudrer de farine.","Remettre l''agneau, ajouter bouillon, tomate, carotte, navet, poireau et bouquet garni ; couvrir et laisser frémir 45 min.","Ajouter pommes de terre et haricots verts et cuire encore 15 à 20 min jusqu''à ce qu''ils soient tendres.","Rectifier l''assaisonnement, retirer le bouquet garni et servir en assiettes creuses parsemées de persil."]'::jsonb,
     array['french', 'lamb', 'stew', 'light', 'one-pot']::text[], 'french', 535, 33,
     true, 'fr', 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.croq-kilos.com/actus/recette-du-navarin-d-agneau-leger')
@@ -946,10 +946,10 @@ select r.id, v.* from r, (values
 -- Navarin d'agneau printanier
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Navarin d''agneau printanier', 'seed', 'https://www.750g.com/navarin-printanier-r204373.htm', '750g', '/recipe-photos/navarin-d-agneau-printanier.webp', 'https://static.750g.com/images/1200-630/9c7fb919b249237bd4324f165cb64768/navarin.jpg',
-    2, 4, 90, '["Saler et poivrer l''agneau, puis le saisir à feu vif dans l''huile chaude en cocotte, environ 3 min par face.","Ajouter carotte, navet et oignon coupés et les faire revenir 5 min à feu moyen.","Verser le vin, porter à ébullition et laisser réduire d''un tiers.","Ajouter ail, laurier, clous de girofle et thym, couvrir de bouillon, assaisonner et laisser frémir 30 min.","Ajouter les pommes de terre, le céleri et la tomate en morceaux ainsi que les petits pois.","Couvrir et poursuivre la cuisson à petit feu 20 à 30 min, jusqu''à ce que les pommes de terre soient tendres.","Parsemer de persil ciselé et servir."]'::jsonb,
+    2, 4, 90, 20, 70, '["Saler et poivrer l''agneau, puis le saisir à feu vif dans l''huile chaude en cocotte, environ 3 min par face.","Ajouter carotte, navet et oignon coupés et les faire revenir 5 min à feu moyen.","Verser le vin, porter à ébullition et laisser réduire d''un tiers.","Ajouter ail, laurier, clous de girofle et thym, couvrir de bouillon, assaisonner et laisser frémir 30 min.","Ajouter les pommes de terre, le céleri et la tomate en morceaux ainsi que les petits pois.","Couvrir et poursuivre la cuisson à petit feu 20 à 30 min, jusqu''à ce que les pommes de terre soient tendres.","Parsemer de persil ciselé et servir."]'::jsonb,
     array['french', 'lamb', 'stew', 'one-pot', 'comfort', 'high protein']::text[], 'french', 889, 52.9,
     true, 'fr', 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.750g.com/navarin-printanier-r204373.htm')
@@ -980,10 +980,10 @@ select r.id, v.* from r, (values
 -- Papillote de cabillaud au fromage et aux poivrons
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Papillote de cabillaud au fromage et aux poivrons', 'seed', 'https://www.quiveutdufromage.com/r-papillote-de-cabillaud-au-fromage-et-aux-poivrons', 'Qui veut du fromage', '/recipe-photos/papillote-de-cabillaud-au-fromage-et-aux-poivrons.webp', 'https://www.quiveutdufromage.com/api/dam/schema-image/fix635d9eidk98dkmqgfthhiidnzepkdhxmzjze.webp',
-    2, 5, 35, '["Préchauffer le four à 180 °C (th. 6).","Laver, épépiner et peler les poivrons, puis les tailler en fines lanières.","Ciseler finement l''estragon et couper le fromage en tranches de 3 mm.","Faire fondre les lanières de poivron dans une poêle chaude avec un peu d''huile d''olive, ajouter l''estragon en fin de cuisson, assaisonner et réserver.","Retirer la peau du cabillaud et couvrir chaque filet de tranches de fromage.","Sur des feuilles de papier cuisson, disposer les poivrons puis un filet de poisson, arroser d''un filet d''huile, assaisonner et fermer hermétiquement les papillotes.","Cuire 10 minutes au four, puis servir les papillotes ouvertes à table."]'::jsonb,
+    2, 5, 35, 20, 10, '["Préchauffer le four à 180 °C (th. 6).","Laver, épépiner et peler les poivrons, puis les tailler en fines lanières.","Ciseler finement l''estragon et couper le fromage en tranches de 3 mm.","Faire fondre les lanières de poivron dans une poêle chaude avec un peu d''huile d''olive, ajouter l''estragon en fin de cuisson, assaisonner et réserver.","Retirer la peau du cabillaud et couvrir chaque filet de tranches de fromage.","Sur des feuilles de papier cuisson, disposer les poivrons puis un filet de poisson, arroser d''un filet d''huile, assaisonner et fermer hermétiquement les papillotes.","Cuire 10 minutes au four, puis servir les papillotes ouvertes à table."]'::jsonb,
     array['french', 'cod', 'oven', 'light', 'fish']::text[], 'french', 229, 32.1,
     true, 'fr', 'easy', '{"pots":2,"oven":true,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.quiveutdufromage.com/r-papillote-de-cabillaud-au-fromage-et-aux-poivrons')
@@ -1003,10 +1003,10 @@ select r.id, v.* from r, (values
 -- Papillote de cabillaud au gingembre et citron vert
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Papillote de cabillaud au gingembre et citron vert', 'seed', 'https://www.weightwatchers.com/be/fr/recipe/papillote-cabillaud-au-gingembre-citron-vert/5d67b72532f27600dc549bec', 'WW', '/recipe-photos/papillote-de-cabillaud-au-gingembre-et-citron-vert.webp', 'https://v.cdn.ww.com/media/system/wine/5d67b71bb602ed002b6210f9/6a82d9ce-876f-4f9b-ae06-3aa8c51eaaf2/ukzjopwzxn39llpabaao.jpg?fit=crop&height=800&width=800&enable=upscale&quality=80',
-    2, 4, 117, '["Préparer la marinade : mélanger l''ail haché, le zeste et le jus du citron vert, le gingembre râpé, le miel, l''huile d''olive et la sauce soja.","Enrober les pavés de cabillaud de marinade, couvrir et réserver 1 heure au réfrigérateur.","Préchauffer le four à 210 °C. Tailler les carottes en bâtonnets et émincer la courgette et les mange-tout.","Précuire les carottes 10 minutes à l''eau bouillante, puis les mange-tout et la courgette 2 minutes ; égoutter.","Répartir les légumes sur de grandes feuilles de papier cuisson, poser le cabillaud dessus, arroser du reste de marinade et parsemer de coriandre ciselée.","Fermer les papillotes et cuire 20 minutes au four."]'::jsonb,
+    2, 4, 117, 25, 32, '["Préparer la marinade : mélanger l''ail haché, le zeste et le jus du citron vert, le gingembre râpé, le miel, l''huile d''olive et la sauce soja.","Enrober les pavés de cabillaud de marinade, couvrir et réserver 1 heure au réfrigérateur.","Préchauffer le four à 210 °C. Tailler les carottes en bâtonnets et émincer la courgette et les mange-tout.","Précuire les carottes 10 minutes à l''eau bouillante, puis les mange-tout et la courgette 2 minutes ; égoutter.","Répartir les légumes sur de grandes feuilles de papier cuisson, poser le cabillaud dessus, arroser du reste de marinade et parsemer de coriandre ciselée.","Fermer les papillotes et cuire 20 minutes au four."]'::jsonb,
     array['french', 'cod', 'oven', 'light', 'make ahead', 'fish']::text[], 'french', 295, 30.6,
     true, 'fr', 'medium', '{"pots":2,"oven":true,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.weightwatchers.com/be/fr/recipe/papillote-cabillaud-au-gingembre-citron-vert/5d67b72532f27600dc549bec')
@@ -1030,10 +1030,10 @@ select r.id, v.* from r, (values
 -- Pavés de saumon sur lit de lentilles
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Pavés de saumon sur lit de lentilles', 'seed', 'https://www.ricardocuisine.com/recettes/551-paves-de-saumon-sur-lit-de-lentilles', 'Ricardo', '/recipe-photos/paves-de-saumon-sur-lit-de-lentilles.webp', 'https://images.ricardocuisine.com/services/recipes/551.jpg',
-    2, 4, 45, '["Piquer l''oignon avec les clous de girofle, puis le mettre dans une casserole d''eau avec les lentilles, le laurier, 1 c. à soupe d''huile, du sel et du poivre.","Laisser frémir environ 25 minutes jusqu''à ce que les lentilles soient tendres, puis égoutter et retirer l''oignon et le laurier.","Dans une poêle, faire suer les échalotes dans le reste de l''huile.","Verser le vin blanc, ajouter le zeste de citron et laisser réduire de moitié.","Ajouter les lentilles, réchauffer 2 minutes, incorporer le basilic, rectifier l''assaisonnement et garder au chaud.","Allumer le gril du four. Déposer le saumon dans un plat, le badigeonner de miel et le parsemer de chapelure.","Passer sous le gril, sur la grille du haut, 5 à 7 minutes selon l''épaisseur.","Découper le saumon en pavés et les servir sur les lentilles."]'::jsonb,
+    2, 4, 45, 15, 30, '["Piquer l''oignon avec les clous de girofle, puis le mettre dans une casserole d''eau avec les lentilles, le laurier, 1 c. à soupe d''huile, du sel et du poivre.","Laisser frémir environ 25 minutes jusqu''à ce que les lentilles soient tendres, puis égoutter et retirer l''oignon et le laurier.","Dans une poêle, faire suer les échalotes dans le reste de l''huile.","Verser le vin blanc, ajouter le zeste de citron et laisser réduire de moitié.","Ajouter les lentilles, réchauffer 2 minutes, incorporer le basilic, rectifier l''assaisonnement et garder au chaud.","Allumer le gril du four. Déposer le saumon dans un plat, le badigeonner de miel et le parsemer de chapelure.","Passer sous le gril, sur la grille du haut, 5 à 7 minutes selon l''épaisseur.","Découper le saumon en pavés et les servir sur les lentilles."]'::jsonb,
     array['french', 'salmon', 'oven', 'comfort', 'fish', 'high protein']::text[], 'french', 1012, 67.9,
     false, 'fr', 'medium', '{"pots":3,"oven":true,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.ricardocuisine.com/recettes/551-paves-de-saumon-sur-lit-de-lentilles')
@@ -1060,10 +1060,10 @@ select r.id, v.* from r, (values
 -- Petit salé aux lentilles
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Petit salé aux lentilles', 'seed', 'https://www.demotivateur.fr/food/petit-sale-aux-lentilles-38097', 'Demotivateur Food', '/recipe-photos/petit-sale-aux-lentilles.webp', 'https://www.demotivateur.fr/images-buzz/cover/34189379565d5d97f27cb6_petit-sale-lentilles.jpg',
-    2, 4, 75, '["Rincer les lentilles à l''eau froide et les égoutter.","Dans une cocotte, faire revenir l''oignon en dés dans l''huile d''olive.","Ajouter les carottes en dés et l''ail, puis les lentilles, et remuer environ 1 minute.","Déposer le petit salé et la saucisse, verser le bouillon, puis ajouter le laurier, le thym et du poivre.","Couvrir et laisser mijoter 45 minutes à 1 heure, jusqu''à ce que les lentilles soient fondantes et la viande cuite ; ajouter un peu d''eau chaude si nécessaire.","Retirer le laurier et le thym, trancher la saucisse et parsemer de persil.","Servir bien chaud avec la moutarde à l''ancienne."]'::jsonb,
+    2, 4, 75, 15, 60, '["Rincer les lentilles à l''eau froide et les égoutter.","Dans une cocotte, faire revenir l''oignon en dés dans l''huile d''olive.","Ajouter les carottes en dés et l''ail, puis les lentilles, et remuer environ 1 minute.","Déposer le petit salé et la saucisse, verser le bouillon, puis ajouter le laurier, le thym et du poivre.","Couvrir et laisser mijoter 45 minutes à 1 heure, jusqu''à ce que les lentilles soient fondantes et la viande cuite ; ajouter un peu d''eau chaude si nécessaire.","Retirer le laurier et le thym, trancher la saucisse et parsemer de persil.","Servir bien chaud avec la moutarde à l''ancienne."]'::jsonb,
     array['french', 'pork', 'stew', 'one-pot', 'comfort', 'high protein']::text[], 'french', 730, 42.4,
     true, 'fr', 'easy', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.demotivateur.fr/food/petit-sale-aux-lentilles-38097')
@@ -1089,10 +1089,10 @@ select r.id, v.* from r, (values
 -- Poulet au vin blanc et à l'estragon, carottes
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Poulet au vin blanc et à l''estragon, carottes', 'seed', 'https://www.weightwatchers.com/ch/fr/recette/poulet-sauce-au-vin-et-lestragon/659fabb3ce8846a01bc40d10', 'WW', '/recipe-photos/poulet-au-vin-blanc-et-a-l-estragon-carottes.webp', 'https://v.cdn.ww.com/media/system/wine/659fabab75cab8006305628f/60271476-5e04-4358-b839-0668f944e2c1/mlfnxi62hm0o3jeceqg9.jpg?fit=crop&height=800&width=800&enable=upscale&quality=80',
-    2, 4, 70, '["Préchauffer le four à 190 °C (170 °C chaleur tournante).","Disposer les blancs de poulet dans un plat à gratin et les saler.","Faire dorer les échalotes émincées dans l''huile, puis les répartir sur le poulet.","Mélanger la majeure partie du bouillon avec le vin et le fromage frais, ajouter l''estragon haché et poivrer.","Verser sur le poulet, couvrir et enfourner 30 à 35 min jusqu''à cuisson complète.","Pendant ce temps, faire revenir les carottes dans le beurre fondu, mouiller avec le reste du bouillon et cuire environ 15 min.","Ajouter le persil aux carottes, assaisonner et servir avec le poulet, décoré d''estragon."]'::jsonb,
+    2, 4, 70, 15, 55, '["Préchauffer le four à 190 °C (170 °C chaleur tournante).","Disposer les blancs de poulet dans un plat à gratin et les saler.","Faire dorer les échalotes émincées dans l''huile, puis les répartir sur le poulet.","Mélanger la majeure partie du bouillon avec le vin et le fromage frais, ajouter l''estragon haché et poivrer.","Verser sur le poulet, couvrir et enfourner 30 à 35 min jusqu''à cuisson complète.","Pendant ce temps, faire revenir les carottes dans le beurre fondu, mouiller avec le reste du bouillon et cuire environ 15 min.","Ajouter le persil aux carottes, assaisonner et servir avec le poulet, décoré d''estragon."]'::jsonb,
     array['french', 'chicken', 'oven', 'light', 'high protein']::text[], 'french', 445, 40.9,
     true, 'fr', 'easy', '{"pots":2,"oven":true,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.weightwatchers.com/ch/fr/recette/poulet-sauce-au-vin-et-lestragon/659fabb3ce8846a01bc40d10')
@@ -1117,10 +1117,10 @@ select r.id, v.* from r, (values
 -- Poulet basquaise
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Poulet basquaise', 'seed', 'https://chefsimon.com/gourmets/chef-simon/recettes/poulet-basquaise--17', 'Chef Simon', '/recipe-photos/poulet-basquaise.webp', 'https://res.cloudinary.com/hv9ssmzrz/image/fetch/c_fill,f_auto,h_675,q_auto:eco,w_1200/https://s3-eu-west-1.amazonaws.com/images-ca-1-0-1-eu/recipe_photos/original/826/poulet-basquaise-3000x2000.jpg',
-    2, 6, 75, '["Découper le poulet en morceaux en séparant haut et bas de cuisse sans casser les os.","Émincer les oignons, tailler les poivrons en lanières, peler et concasser les tomates.","Faire dorer les morceaux de poulet côté peau d''abord dans un peu d''huile, en les retournant délicatement, puis les réserver.","Dans la graisse de cuisson, faire suer oignons, ail et poivrons avec le thym et le laurier, sans coloration.","Ajouter les tomates et laisser compoter ; quand les légumes rendent leur jus, incorporer les olives.","Poser le poulet sur les légumes, saler, poivrer, couvrir et cuire à feu très doux environ 45 min en vérifiant la cuisson.","Réduire la sauce si elle est trop liquide (ou détendre avec un peu de bouillon si elle est trop sèche), puis servir."]'::jsonb,
+    2, 6, 75, 30, 45, '["Découper le poulet en morceaux en séparant haut et bas de cuisse sans casser les os.","Émincer les oignons, tailler les poivrons en lanières, peler et concasser les tomates.","Faire dorer les morceaux de poulet côté peau d''abord dans un peu d''huile, en les retournant délicatement, puis les réserver.","Dans la graisse de cuisson, faire suer oignons, ail et poivrons avec le thym et le laurier, sans coloration.","Ajouter les tomates et laisser compoter ; quand les légumes rendent leur jus, incorporer les olives.","Poser le poulet sur les légumes, saler, poivrer, couvrir et cuire à feu très doux environ 45 min en vérifiant la cuisson.","Réduire la sauce si elle est trop liquide (ou détendre avec un peu de bouillon si elle est trop sèche), puis servir."]'::jsonb,
     array['french', 'chicken', 'stew', 'comfort', 'high protein']::text[], 'french', 581, 48.1,
     true, 'fr', 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://chefsimon.com/gourmets/chef-simon/recettes/poulet-basquaise--17')
@@ -1144,10 +1144,10 @@ select r.id, v.* from r, (values
 -- Poulet mijoté aux olives
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Poulet mijoté aux olives', 'seed', 'https://www.demotivateur.fr/food/recette/poulet-mijote-aux-olives-1947', 'Demotivateur Food', '/recipe-photos/poulet-mijote-aux-olives.webp', 'https://www.demotivateur.fr/images/cover_recette/1689240958-poulet_mijote_olives.jpg',
-    2, 6, 60, '["Saler et poivrer les morceaux de poulet, puis les dorer environ 10 min dans une cocotte avec un filet d''huile d''olive.","Retirer le poulet et faire fondre l''oignon et l''ail émincés dans la cocotte.","Remettre le poulet, mouiller avec le vin blanc et un petit verre d''eau, puis ajouter les olives égouttées.","Assaisonner avec les herbes de Provence, sel et poivre, couvrir et laisser mijoter 40 min à feu doux.","Goûter, rectifier l''assaisonnement, prolonger de quelques minutes si besoin et servir."]'::jsonb,
+    2, 6, 60, 10, 50, '["Saler et poivrer les morceaux de poulet, puis les dorer environ 10 min dans une cocotte avec un filet d''huile d''olive.","Retirer le poulet et faire fondre l''oignon et l''ail émincés dans la cocotte.","Remettre le poulet, mouiller avec le vin blanc et un petit verre d''eau, puis ajouter les olives égouttées.","Assaisonner avec les herbes de Provence, sel et poivre, couvrir et laisser mijoter 40 min à feu doux.","Goûter, rectifier l''assaisonnement, prolonger de quelques minutes si besoin et servir."]'::jsonb,
     array['french', 'chicken', 'stew', 'one-pot', 'comfort', 'high protein']::text[], 'french', 628, 54.8,
     true, 'fr', 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.demotivateur.fr/food/recette/poulet-mijote-aux-olives-1947')
@@ -1170,10 +1170,10 @@ select r.id, v.* from r, (values
 -- Poulet à l'estragon
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Poulet à l''estragon', 'seed', 'https://ileauxepices.com/blog/2014/09/25/recette-poulet-a-lestragon/wpid5861/', 'Île aux épices', '/recipe-photos/poulet-a-l-estragon.webp', 'https://ileauxepices.com/blog/wp-content/uploads/2014/09/poulet-à-lestragon.jpg',
-    2, 4, 40, '["Hacher finement l''ail et les échalotes et couper chaque cuisse en deux.","Chauffer l''huile dans une sauteuse, y faire fondre le beurre et dorer le poulet à feu moyen sur toutes les faces.","Ajouter ail, échalotes et estragon, puis déglacer avec le vin blanc.","Saler, poivrer, couvrir et laisser mijoter environ 20 min en remuant de temps en temps.","Retirer le poulet, incorporer la crème à la sauce et chauffer doucement jusqu''aux premiers frémissements.","Remettre le poulet dans la sauce à l''estragon et servir."]'::jsonb,
+    2, 4, 40, 10, 30, '["Hacher finement l''ail et les échalotes et couper chaque cuisse en deux.","Chauffer l''huile dans une sauteuse, y faire fondre le beurre et dorer le poulet à feu moyen sur toutes les faces.","Ajouter ail, échalotes et estragon, puis déglacer avec le vin blanc.","Saler, poivrer, couvrir et laisser mijoter environ 20 min en remuant de temps en temps.","Retirer le poulet, incorporer la crème à la sauce et chauffer doucement jusqu''aux premiers frémissements.","Remettre le poulet dans la sauce à l''estragon et servir."]'::jsonb,
     array['french', 'chicken', 'stew', 'comfort']::text[], 'french', 540, 24.3,
     false, 'fr', 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://ileauxepices.com/blog/2014/09/25/recette-poulet-a-lestragon/wpid5861/')
@@ -1196,10 +1196,10 @@ select r.id, v.* from r, (values
 -- Rôti de porc au lait et à la moutarde
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Rôti de porc au lait et à la moutarde', 'seed', 'https://www.demotivateur.fr/food/recette/roti-de-porc-a-la-moutarde-1256', 'Demotivateur Food', '/recipe-photos/roti-de-porc-au-lait-et-a-la-moutarde.webp', 'https://www.demotivateur.fr/images/cover_recette/1641317473-roti_porc_lait_moutarde.jpg',
-    2, 6, 115, '["Préchauffer le four à 150 °C.","Peler et dégermer l''ail, puis le mettre dans une casserole avec le lait, le laurier, la moutarde et le bouillon ; saler, poivrer et mélanger.","Porter à ébullition puis laisser frémir très doucement environ 15 min.","Saisir le rôti à feu vif sur toutes ses faces dans l''huile, dans une cocotte allant au four, puis jeter la graisse.","Verser le lait infusé sur la viande, couvrir et enfourner 1 h 30.","Trancher le rôti et le servir nappé de sauce."]'::jsonb,
+    2, 6, 115, 10, 105, '["Préchauffer le four à 150 °C.","Peler et dégermer l''ail, puis le mettre dans une casserole avec le lait, le laurier, la moutarde et le bouillon ; saler, poivrer et mélanger.","Porter à ébullition puis laisser frémir très doucement environ 15 min.","Saisir le rôti à feu vif sur toutes ses faces dans l''huile, dans une cocotte allant au four, puis jeter la graisse.","Verser le lait infusé sur la viande, couvrir et enfourner 1 h 30.","Trancher le rôti et le servir nappé de sauce."]'::jsonb,
     array['french', 'pork', 'oven', 'comfort', 'high protein']::text[], 'french', 418, 48.5,
     true, 'fr', 'medium', '{"pots":2,"oven":true,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.demotivateur.fr/food/recette/roti-de-porc-a-la-moutarde-1256')
@@ -1221,10 +1221,10 @@ select r.id, v.* from r, (values
 -- Saumon rôti aux lentilles vertes
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Saumon rôti aux lentilles vertes', 'seed', 'https://lacuisinedejulie.fr/recette/saumon-roti-aux-lentilles-vertes/', 'La Cuisine de Julie', '/recipe-photos/saumon-roti-aux-lentilles-vertes.webp', 'https://lacuisinedejulie.fr/wp-content/uploads/2022/10/Saumon-roti-aux-lentilles-vertes.jpg',
-    2, 4, 60, '["Éplucher les carottes et les couper en dés ; peler l''ail et l''oignon, puis piquer l''oignon du clou de girofle.","Ficeler les herbes du bouquet garni.","Mettre les lentilles rincées dans une casserole d''eau froide avec les carottes, l''oignon, l''ail, le morceau de lard et le bouquet garni.","Porter à ébullition puis laisser frémir 30 minutes à demi-couvert, en salant à mi-cuisson.","Environ 10 minutes avant la fin, passer les pavés de saumon sous le gril du four, côté peau vers la chaleur.","Égoutter les lentilles en retirant l''oignon et le bouquet garni ; couper le lard en dés et le faire dorer dans la moitié de l''huile.","Ajouter les lentilles au lard, mélanger et garder au chaud.","Retirer la peau du saumon, saler, poivrer, arroser du reste d''huile et servir sur les lentilles."]'::jsonb,
+    2, 4, 60, 15, 45, '["Éplucher les carottes et les couper en dés ; peler l''ail et l''oignon, puis piquer l''oignon du clou de girofle.","Ficeler les herbes du bouquet garni.","Mettre les lentilles rincées dans une casserole d''eau froide avec les carottes, l''oignon, l''ail, le morceau de lard et le bouquet garni.","Porter à ébullition puis laisser frémir 30 minutes à demi-couvert, en salant à mi-cuisson.","Environ 10 minutes avant la fin, passer les pavés de saumon sous le gril du four, côté peau vers la chaleur.","Égoutter les lentilles en retirant l''oignon et le bouquet garni ; couper le lard en dés et le faire dorer dans la moitié de l''huile.","Ajouter les lentilles au lard, mélanger et garder au chaud.","Retirer la peau du saumon, saler, poivrer, arroser du reste d''huile et servir sur les lentilles."]'::jsonb,
     array['french', 'salmon', 'stew', 'comfort', 'high protein']::text[], 'french', 935, 58.2,
     false, 'fr', 'medium', '{"pots":3,"oven":true,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://lacuisinedejulie.fr/recette/saumon-roti-aux-lentilles-vertes/')
@@ -1248,10 +1248,10 @@ select r.id, v.* from r, (values
 -- Saumon à l'oseille des frères Troisgros
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Saumon à l''oseille des frères Troisgros', 'seed', 'https://www.gillespudlowski.com/257271/recettes/recette-de-confinement-le-saumon-a-loseille-des-freres-troisgros', 'Gilles Pudlowski', '/recipe-photos/saumon-a-l-oseille-des-freres-troisgros.webp', 'https://www.gillespudlowski.com/wp-content/uploads/2020/04/saumon-a-loseille-1.jpg',
-    2, 4, 35, '["Ôter les arêtes du saumon à la pince, puis le détailler en fines escalopes d''environ 140 g.","Aplatir légèrement les escalopes entre deux feuilles de papier cuisson huilées pour obtenir une épaisseur régulière.","Effeuiller l''oseille en retirant les tiges et les nervures, la rincer et déchirer les grandes feuilles.","Dans une sauteuse, réunir l''échalote finement hachée, le fumet, le vin et le vermouth, puis réduire jusqu''à obtenir un liquide sirupeux.","Ajouter la crème et laisser frémir jusqu''à ce que la sauce nappe légèrement.","Plonger l''oseille 10 secondes en remuant la sauteuse sans fouetter, puis assaisonner de quelques gouttes de citron et de sel.","Saisir les escalopes salées dans une poêle antiadhésive très chaude, environ 10 secondes par face, en les laissant à peine cuites.","Napper des assiettes chaudes de sauce, poser le saumon dessus et servir immédiatement."]'::jsonb,
+    2, 4, 35, 20, 15, '["Ôter les arêtes du saumon à la pince, puis le détailler en fines escalopes d''environ 140 g.","Aplatir légèrement les escalopes entre deux feuilles de papier cuisson huilées pour obtenir une épaisseur régulière.","Effeuiller l''oseille en retirant les tiges et les nervures, la rincer et déchirer les grandes feuilles.","Dans une sauteuse, réunir l''échalote finement hachée, le fumet, le vin et le vermouth, puis réduire jusqu''à obtenir un liquide sirupeux.","Ajouter la crème et laisser frémir jusqu''à ce que la sauce nappe légèrement.","Plonger l''oseille 10 secondes en remuant la sauteuse sans fouetter, puis assaisonner de quelques gouttes de citron et de sel.","Saisir les escalopes salées dans une poêle antiadhésive très chaude, environ 10 secondes par face, en les laissant à peine cuites.","Napper des assiettes chaudes de sauce, poser le saumon dessus et servir immédiatement."]'::jsonb,
     array['french', 'salmon', 'fancy', 'fish', 'high protein']::text[], 'french', 813, 49.7,
     false, 'fr', 'hard', '{"pots":2,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.gillespudlowski.com/257271/recettes/recette-de-confinement-le-saumon-a-loseille-des-freres-troisgros')
@@ -1274,10 +1274,10 @@ select r.id, v.* from r, (values
 -- Turbot sauce vierge
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Turbot sauce vierge', 'seed', 'https://www.noovomoi.ca/cuisiner/recettes/recette.turbot-sauce-vierge.1.1423555.html', 'Noovo Moi', '/recipe-photos/turbot-sauce-vierge.webp', 'https://www.noovomoi.ca/resizer/v2/QLP6DNZDNS7CBGY25ZADPA7FCY.jpg?smart=true&auth=efb274cad985b370ed3e8f21089e9d8632fa71a131069e1f05f3912ec1c478e6&width=1200&height=630',
-    2, 4, 25, '["Préchauffer le four à 175 °C (350 °F).","Saler et poivrer le poisson et le déposer dans un plat ou sur une plaque couverte de papier cuisson.","Enfourner 10 à 15 minutes selon l''épaisseur des filets.","Pendant ce temps, mélanger les dés de tomate, l''huile d''olive, les câpres, le vinaigre et les herbes, puis saler et poivrer ; ajouter un peu de sucre si les tomates manquent de goût.","Sortir le poisson et le servir aussitôt nappé de sauce vierge, avec du riz ou une purée et un légume."]'::jsonb,
+    2, 4, 25, 10, 15, '["Préchauffer le four à 175 °C (350 °F).","Saler et poivrer le poisson et le déposer dans un plat ou sur une plaque couverte de papier cuisson.","Enfourner 10 à 15 minutes selon l''épaisseur des filets.","Pendant ce temps, mélanger les dés de tomate, l''huile d''olive, les câpres, le vinaigre et les herbes, puis saler et poivrer ; ajouter un peu de sucre si les tomates manquent de goût.","Sortir le poisson et le servir aussitôt nappé de sauce vierge, avec du riz ou une purée et un légume."]'::jsonb,
     array['french', 'fish', 'oven', 'quick', 'light']::text[], 'french', 280, 28,
     true, 'fr', 'easy', '{"pots":1,"oven":true,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.noovomoi.ca/cuisiner/recettes/recette.turbot-sauce-vierge.1.1423555.html')
@@ -1299,10 +1299,10 @@ select r.id, v.* from r, (values
 -- Œufs pochés, épinards et lentilles
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Œufs pochés, épinards et lentilles', 'seed', 'https://www.ricardocuisine.com/recettes/8946-oeufs-poches-epinards-et-lentilles', 'Ricardo', '/recipe-photos/oeufs-poches-epinards-et-lentilles.webp', 'https://images.ricardocuisine.com/services/recipes/8946.jpg',
-    2, 4, 30, '["Dans une grande poêle, faire revenir l''oignon, l''ail et le gingembre dans l''huile environ 3 minutes.","Ajouter le garam masala et le curcuma et remuer 30 secondes.","Ajouter la tomate râpée, les lentilles et la moitié des épinards, couvrir et cuire environ 5 minutes jusqu''à ce que les épinards tombent.","Retirer le couvercle, ajouter le reste des épinards, les laisser tomber puis saler et poivrer.","Former des creux dans la préparation et y casser les œufs.","Couvrir et laisser mijoter 5 à 6 minutes, jusqu''à ce que les blancs soient pris.","Parsemer de feta, ajouter un trait de sriracha et servir."]'::jsonb,
+    2, 4, 30, 15, 15, '["Dans une grande poêle, faire revenir l''oignon, l''ail et le gingembre dans l''huile environ 3 minutes.","Ajouter le garam masala et le curcuma et remuer 30 secondes.","Ajouter la tomate râpée, les lentilles et la moitié des épinards, couvrir et cuire environ 5 minutes jusqu''à ce que les épinards tombent.","Retirer le couvercle, ajouter le reste des épinards, les laisser tomber puis saler et poivrer.","Former des creux dans la préparation et y casser les œufs.","Couvrir et laisser mijoter 5 à 6 minutes, jusqu''à ce que les blancs soient pris.","Parsemer de feta, ajouter un trait de sriracha et servir."]'::jsonb,
     array['french', 'eggs', 'one-pot', 'vegetarian', 'light']::text[], 'french', 308, 17.2,
     true, 'fr', 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.ricardocuisine.com/recettes/8946-oeufs-poches-epinards-et-lentilles')
@@ -1329,10 +1329,10 @@ select r.id, v.* from r, (values
 -- Beef bulgogi rice bowls
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Beef bulgogi rice bowls', 'seed', 'https://thewoksoflife.com/bulgogi-bowls', 'The Woks of Life', '/recipe-photos/beef-bulgogi-rice-bowls.webp', 'https://thewoksoflife.com/wp-content/uploads/2015/12/bulgogi-10.jpg',
-    2, 6, 105, '["Slice the beef very thinly and put it in a bowl.","Blitz the pear, onion, marinade garlic, ginger, soy sauce, brown sugar, pepper and sesame oil to a smooth purée.","Pour the purée over the beef, add half the spring onion and the carrot, mix and refrigerate at least 1 hour (overnight is best).","Cook the rice.","Heat a cast-iron pan over high heat and sear the beef in batches with a little oil, 1–2 minutes until caramelised, turning once; scrape the pan clean between batches.","Fill bowls with rice and top with the beef, kimchi, sliced raw garlic, shishito and remaining spring onion.","Finish with sesame seeds and serve with ssamjang on the side."]'::jsonb,
+    2, 6, 105, 90, 15, '["Slice the beef very thinly and put it in a bowl.","Blitz the pear, onion, marinade garlic, ginger, soy sauce, brown sugar, pepper and sesame oil to a smooth purée.","Pour the purée over the beef, add half the spring onion and the carrot, mix and refrigerate at least 1 hour (overnight is best).","Cook the rice.","Heat a cast-iron pan over high heat and sear the beef in batches with a little oil, 1–2 minutes until caramelised, turning once; scrape the pan clean between batches.","Fill bowls with rice and top with the beef, kimchi, sliced raw garlic, shishito and remaining spring onion.","Finish with sesame seeds and serve with ssamjang on the side."]'::jsonb,
     array['korean', 'asian', 'beef', 'rice', 'bowl', 'make ahead']::text[], 'korean', 605, 30.1,
     true, 'en', 'medium', '{"pots":2,"oven":false,"special":["blender"]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://thewoksoflife.com/bulgogi-bowls')
@@ -1363,10 +1363,10 @@ select r.id, v.* from r, (values
 -- Beef rendang
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Beef rendang', 'seed', 'https://recipetineats.com/beef-rendang', 'RecipeTin Eats', '/recipe-photos/beef-rendang.webp', 'https://www.recipetineats.com/tachyon/2014/11/Beef-Rendang-13.jpg',
-    2, 6, 200, '["Blitz the chilies, onion, garlic, sliced lemongrass, galangal, ginger and paste oil in a food processor until very fine.","Heat the browning oil in a heavy pot over high heat and sear the beef in batches; set aside.","Lower the heat to medium-low and fry the spice paste for 2–3 minutes until it darkens.","Return the beef with all the remaining curry ingredients, bring to a simmer and turn down to a very gentle bubble.","Cover and cook for 1 hour 15 minutes, then check the beef.","Uncover, raise the heat to medium and cook for 30–40 minutes, stirring often, until the oil separates and the sauce reduces to a dark paste clinging to the beef (add a splash of water and keep going if the meat isn''t tender yet).","Serve with steamed rice."]'::jsonb,
+    2, 6, 200, 20, 180, '["Blitz the chilies, onion, garlic, sliced lemongrass, galangal, ginger and paste oil in a food processor until very fine.","Heat the browning oil in a heavy pot over high heat and sear the beef in batches; set aside.","Lower the heat to medium-low and fry the spice paste for 2–3 minutes until it darkens.","Return the beef with all the remaining curry ingredients, bring to a simmer and turn down to a very gentle bubble.","Cover and cook for 1 hour 15 minutes, then check the beef.","Uncover, raise the heat to medium and cook for 30–40 minutes, stirring often, until the oil separates and the sauce reduces to a dark paste clinging to the beef (add a splash of water and keep going if the meat isn''t tender yet).","Serve with steamed rice."]'::jsonb,
     array['asian', 'indonesian', 'beef', 'curry', 'rice', 'comfort', 'fancy', 'high protein']::text[], 'indonesian', 860, 40.5,
     true, 'en', 'medium', '{"pots":2,"oven":false,"special":["food processor"]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://recipetineats.com/beef-rendang')
@@ -1400,10 +1400,10 @@ select r.id, v.* from r, (values
 -- Bibimbap with Korean beef
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Bibimbap with Korean beef', 'seed', 'https://www.recipetineats.com/wprm_print/37012', 'RecipeTin Eats', '/recipe-photos/bibimbap-with-korean-beef.webp', 'https://www.recipetineats.com/tachyon/2019/05/Bibimbap_3.jpg',
-    2, 4, 70, '["Stir the gochujang, mirin, rice vinegar, soy sauce, sugar, grated garlic and sesame oil together until the sugar dissolves.","Mix the grated apple, garlic, ginger, soy sauce, honey and sesame oil, add the beef and marinate 30 minutes (or up to overnight).","Soak the dried shiitake in boiling water for 30 minutes, then squeeze dry and slice; cook the rice.","Sauté the shiitake, carrot, zucchini and spinach one after another in a little oil, seasoning each lightly with salt, garlic, soy and sugar.","Blanch the bean sprouts, drain and cool, then dress with sesame oil, a little garlic and the fish sauce.","Drain the beef and sear it in a very hot pan with a little oil for 3–4 minutes; keep warm.","Fry the eggs to your liking.","Fill bowls with warm rice, arrange the vegetables and beef on top, add the egg, sprinkle with sesame seeds and a drizzle of sesame oil, and serve with the sauce to mix in."]'::jsonb,
+    2, 4, 70, 25, 25, '["Stir the gochujang, mirin, rice vinegar, soy sauce, sugar, grated garlic and sesame oil together until the sugar dissolves.","Mix the grated apple, garlic, ginger, soy sauce, honey and sesame oil, add the beef and marinate 30 minutes (or up to overnight).","Soak the dried shiitake in boiling water for 30 minutes, then squeeze dry and slice; cook the rice.","Sauté the shiitake, carrot, zucchini and spinach one after another in a little oil, seasoning each lightly with salt, garlic, soy and sugar.","Blanch the bean sprouts, drain and cool, then dress with sesame oil, a little garlic and the fish sauce.","Drain the beef and sear it in a very hot pan with a little oil for 3–4 minutes; keep warm.","Fry the eggs to your liking.","Fill bowls with warm rice, arrange the vegetables and beef on top, add the egg, sprinkle with sesame seeds and a drizzle of sesame oil, and serve with the sauce to mix in."]'::jsonb,
     array['korean', 'asian', 'beef', 'rice', 'bowl', 'eggs']::text[], 'korean', 756, 32.8,
     true, 'en', 'hard', '{"pots":3,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.recipetineats.com/wprm_print/37012')
@@ -1445,10 +1445,10 @@ select r.id, v.* from r, (values
 -- Cantonese steamed fish with ginger and scallion
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Cantonese steamed fish with ginger and scallion', 'seed', 'https://thewoksoflife.com/cantonese-steamed-fish/', 'The Woks of Life', '/recipe-photos/cantonese-steamed-fish-with-ginger-and-scallion.webp', 'https://thewoksoflife.com/wp-content/uploads/2020/12/cantonese-steamed-fish-17.jpg',
-    2, 2, 20, '["Julienne the spring onions and ginger and roughly chop the coriander; keep about a third aside for topping.","Stir the soy sauce, salt and sugar into 2 tbsp hot water until dissolved.","Bring 2–5 cm of water to a boil in a steamer setup (a wok with a rack and lid works).","Put the rinsed fillet on a heatproof plate, set it in the steamer, cover and steam over medium heat 7–10 minutes (4–5 for thin fillets), until a knife slides easily through the thickest part.","Pour off the liquid on the plate and scatter the reserved aromatics over the fish.","Heat the oil in a small pan, fry the remaining ginger about 1 minute, add the white spring onion for 30 seconds, then the green parts and coriander.","Add the soy mixture, let it bubble about 30 seconds until the greens just wilt, then pour it over the fish and serve with steamed rice."]'::jsonb,
+    2, 2, 20, 5, 15, '["Julienne the spring onions and ginger and roughly chop the coriander; keep about a third aside for topping.","Stir the soy sauce, salt and sugar into 2 tbsp hot water until dissolved.","Bring 2–5 cm of water to a boil in a steamer setup (a wok with a rack and lid works).","Put the rinsed fillet on a heatproof plate, set it in the steamer, cover and steam over medium heat 7–10 minutes (4–5 for thin fillets), until a knife slides easily through the thickest part.","Pour off the liquid on the plate and scatter the reserved aromatics over the fish.","Heat the oil in a small pan, fry the remaining ginger about 1 minute, add the white spring onion for 30 seconds, then the green parts and coriander.","Add the soy mixture, let it bubble about 30 seconds until the greens just wilt, then pour it over the fish and serve with steamed rice."]'::jsonb,
     array['chinese', 'asian', 'fish', 'light', 'quick']::text[], 'chinese', 273, 27.1,
     false, 'en', 'easy', '{"pots":2,"oven":false,"special":["steamer"]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://thewoksoflife.com/cantonese-steamed-fish/')
@@ -1469,10 +1469,10 @@ select r.id, v.* from r, (values
 -- Chicken larb in lettuce cups
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Chicken larb in lettuce cups', 'seed', 'https://thewoksoflife.com/chicken-larb/', 'The Woks of Life', '/recipe-photos/chicken-larb-in-lettuce-cups.webp', 'https://thewoksoflife.com/wp-content/uploads/2019/08/chicken-larb-13.jpg',
-    2, 4, 30, '["Toast the raw rice in a dry wok over low heat for about 10 minutes until golden and fragrant, then grind it to a coarse powder.","Heat the oil in the wok over high heat and fry half the shallots until crisp; lift them out and keep the oil in the wok.","Get the wok smoking hot again, add the minced chicken and stir-fry until browned and slightly crispy.","Season with the sugar, fish sauce and lime juice.","Stir in the toasted rice powder, chili, the remaining raw shallots, spring onion, coriander and mint and toss for about a minute.","Taste and balance with salt, chili, fish sauce or lime as needed.","Spoon into lettuce leaves and scatter the crispy shallots on top."]'::jsonb,
+    2, 4, 30, 15, 15, '["Toast the raw rice in a dry wok over low heat for about 10 minutes until golden and fragrant, then grind it to a coarse powder.","Heat the oil in the wok over high heat and fry half the shallots until crisp; lift them out and keep the oil in the wok.","Get the wok smoking hot again, add the minced chicken and stir-fry until browned and slightly crispy.","Season with the sugar, fish sauce and lime juice.","Stir in the toasted rice powder, chili, the remaining raw shallots, spring onion, coriander and mint and toss for about a minute.","Taste and balance with salt, chili, fish sauce or lime as needed.","Spoon into lettuce leaves and scatter the crispy shallots on top."]'::jsonb,
     array['asian', 'thai', 'chicken', 'salad', 'light', 'high protein']::text[], 'thai', 330, 35.2,
     true, 'en', 'medium', '{"pots":1,"oven":false,"special":["mortar and pestle"]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://thewoksoflife.com/chicken-larb/')
@@ -1498,10 +1498,10 @@ select r.id, v.* from r, (values
 -- Chinese beef and broccoli
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Chinese beef and broccoli', 'seed', 'https://www.recipetineats.com/chinese-beef-and-broccoli/', 'RecipeTin Eats', '/recipe-photos/chinese-beef-and-broccoli.webp', 'https://www.recipetineats.com/tachyon/2015/03/Chinese-Beef-and-Broccoli_3.jpg',
-    2, 3, 20, '["Stir the cornstarch into a little water until smooth, then mix in the sugar, both soy sauces, rice wine, five-spice, sesame oil and pepper.","Slice the beef thinly and toss it with about 1.5 tbsp of the sauce.","Heat the oil in a skillet or wok over high heat, spread the beef out and let it brown undisturbed for about 1 minute.","Toss the beef, add the garlic and ginger and stir-fry until the meat is no longer pink.","Pour in the rest of the sauce plus about 170 ml water and stir quickly.","Once bubbling, add the cooked broccoli, coat it in the sauce and simmer about 1 minute until glossy and thick.","Take off the heat and serve over rice, scattered with sesame seeds."]'::jsonb,
+    2, 3, 20, 10, 10, '["Stir the cornstarch into a little water until smooth, then mix in the sugar, both soy sauces, rice wine, five-spice, sesame oil and pepper.","Slice the beef thinly and toss it with about 1.5 tbsp of the sauce.","Heat the oil in a skillet or wok over high heat, spread the beef out and let it brown undisturbed for about 1 minute.","Toss the beef, add the garlic and ginger and stir-fry until the meat is no longer pink.","Pour in the rest of the sauce plus about 170 ml water and stir quickly.","Once bubbling, add the cooked broccoli, coat it in the sauce and simmer about 1 minute until glossy and thick.","Take off the heat and serve over rice, scattered with sesame seeds."]'::jsonb,
     array['chinese', 'asian', 'beef', 'stir-fry', 'quick']::text[], 'chinese', 425, 30.6,
     true, 'en', 'easy', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.recipetineats.com/chinese-beef-and-broccoli/')
@@ -1528,10 +1528,10 @@ select r.id, v.* from r, (values
 -- Chinese cashew chicken
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Chinese cashew chicken', 'seed', 'https://www.recipetineats.com/chinese-cashew-chicken/comment-page-24/', 'RecipeTin Eats', '/recipe-photos/chinese-cashew-chicken.webp', 'https://www.recipetineats.com/tachyon/2015/10/Cashew-Chicken_6.jpg',
-    2, 4, 21, '["Whisk the cornstarch into the soy sauce until smooth, then add the rice wine, oyster sauce, sesame oil and white pepper.","Toss the chicken with about 1 tbsp of the sauce and leave at least 10 minutes.","Heat the oil in a wok over high heat and stir-fry the garlic and onion for about 1 minute.","Add the chicken and cook about 2 minutes, then add the bell pepper for another minute.","Pour in the remaining sauce with about 3 tbsp water and stir about 1 minute until it simmers and thickens.","Toss in the cashews, take off the heat and serve right away with rice."]'::jsonb,
+    2, 4, 21, 15, 6, '["Whisk the cornstarch into the soy sauce until smooth, then add the rice wine, oyster sauce, sesame oil and white pepper.","Toss the chicken with about 1 tbsp of the sauce and leave at least 10 minutes.","Heat the oil in a wok over high heat and stir-fry the garlic and onion for about 1 minute.","Add the chicken and cook about 2 minutes, then add the bell pepper for another minute.","Pour in the remaining sauce with about 3 tbsp water and stir about 1 minute until it simmers and thickens.","Toss in the cashews, take off the heat and serve right away with rice."]'::jsonb,
     array['chinese', 'asian', 'chicken', 'stir-fry', 'quick']::text[], 'chinese', 508, 28.9,
     true, 'en', 'easy', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.recipetineats.com/chinese-cashew-chicken/comment-page-24/')
@@ -1556,10 +1556,10 @@ select r.id, v.* from r, (values
 -- Crispy scallion ginger salmon
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Crispy scallion ginger salmon', 'seed', 'https://thewoksoflife.com/scallion-ginger-salmon/', 'The Woks of Life', '/recipe-photos/crispy-scallion-ginger-salmon.webp', 'https://thewoksoflife.com/wp-content/uploads/2017/03/scallion-ginger-salmon-7.jpg',
-    2, 4, 25, '["Heat a frying pan over medium-high heat with half the oil and lay the salmon in skin-side down.","Leave it alone to sear, 4–7 minutes per side depending on thickness, until no raw centre remains; lift it out.","Mix the soy sauce, sugar, sesame oil and salt with about 60 ml water.","Add the remaining oil to the same pan and fry the ginger until crisp, then add the spring onion until wilted.","Pour in the soy mixture, bring to a boil and switch off the heat.","Serve the salmon on rice, spooning the ginger-scallion sauce over it and scattering coriander on top."]'::jsonb,
+    2, 4, 25, 10, 15, '["Heat a frying pan over medium-high heat with half the oil and lay the salmon in skin-side down.","Leave it alone to sear, 4–7 minutes per side depending on thickness, until no raw centre remains; lift it out.","Mix the soy sauce, sugar, sesame oil and salt with about 60 ml water.","Add the remaining oil to the same pan and fry the ginger until crisp, then add the spring onion until wilted.","Pour in the soy mixture, bring to a boil and switch off the heat.","Serve the salmon on rice, spooning the ginger-scallion sauce over it and scattering coriander on top."]'::jsonb,
     array['chinese', 'asian', 'salmon', 'quick', 'light', 'fish']::text[], 'chinese', 396, 23.9,
     true, 'en', 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://thewoksoflife.com/scallion-ginger-salmon/')
@@ -1581,10 +1581,10 @@ select r.id, v.* from r, (values
 -- Cá kho (Vietnamese caramelised braised mackerel)
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Cá kho (Vietnamese caramelised braised mackerel)', 'seed', 'https://delightfulplate.com/?p=84242', 'Delightful Plate', '/recipe-photos/ca-kho-vietnamese-caramelised-braised-mackerel.webp', 'https://delightfulplate.com/wp-content/uploads/2024/11/Ca-Kho-Recipe-Traditional-Vietnamese-Caramelized-Fish.jpg',
-    2, 4, 135, '["Cut the mackerel into thick steaks of about 4 cm, discarding the heads; rub with salt, rinse and pat dry.","Melt the sugar with a splash of water in a small pan and let it bubble, then lower the heat and cook until it turns a dark caramel colour.","Take the caramel off the heat and carefully stir in about 140 ml water to make a dark amber braising liquid.","Line a heavy pot with galangal, shallot and most of the tomato, lay the fish on top in one layer and scatter over the rest of the aromatics, tomato and chili.","Add the fish sauce, soy sauce, caramel liquid and black pepper; top up with a little water so the fish is just covered.","Bring to a boil, add the lime juice, then cover and simmer gently for about 1½ hours, basting the fish from time to time (add hot water if it dries out).","Uncover, taste, and keep braising with the lid ajar until only a thin layer of glossy sauce coats the bottom of the pot.","Serve with steamed rice."]'::jsonb,
+    2, 4, 135, 15, 120, '["Cut the mackerel into thick steaks of about 4 cm, discarding the heads; rub with salt, rinse and pat dry.","Melt the sugar with a splash of water in a small pan and let it bubble, then lower the heat and cook until it turns a dark caramel colour.","Take the caramel off the heat and carefully stir in about 140 ml water to make a dark amber braising liquid.","Line a heavy pot with galangal, shallot and most of the tomato, lay the fish on top in one layer and scatter over the rest of the aromatics, tomato and chili.","Add the fish sauce, soy sauce, caramel liquid and black pepper; top up with a little water so the fish is just covered.","Bring to a boil, add the lime juice, then cover and simmer gently for about 1½ hours, basting the fish from time to time (add hot water if it dries out).","Uncover, taste, and keep braising with the lid ajar until only a thin layer of glossy sauce coats the bottom of the pot.","Serve with steamed rice."]'::jsonb,
     array['asian', 'vietnamese', 'fish', 'stew', 'rice', 'comfort', 'high protein']::text[], 'vietnamese', 855, 54,
     true, 'en', 'medium', '{"pots":2,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://delightfulplate.com/?p=84242')
@@ -1609,10 +1609,10 @@ select r.id, v.* from r, (values
 -- Dak galbi (spicy chicken stir-fry)
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Dak galbi (spicy chicken stir-fry)', 'seed', 'https://mykoreankitchen.com/dak-galbi/', 'My Korean Kitchen', null, null,
-    2, 3, 55, '["If the rice cakes are pre-packaged, separate them and soak in warm water for 10 minutes.","Stir together the gochujang, rice wine, gochugaru, soy sauce, sugar, garlic, ginger, curry powder, grated onion and a little pepper.","Coat the chicken in the marinade and leave at least 30 minutes (up to overnight for more flavour).","Heat the oil in a large skillet over medium-high heat and spread out the sweet potato, carrot, cabbage, perilla and rice cakes, with the chicken on top.","Cook 3–4 minutes, then lower to medium/medium-low and keep cooking 10–15 minutes, stirring often, until the chicken and sweet potato are cooked through (a lid speeds it up).","Serve hot with rice."]'::jsonb,
+    2, 3, 55, 10, 15, '["If the rice cakes are pre-packaged, separate them and soak in warm water for 10 minutes.","Stir together the gochujang, rice wine, gochugaru, soy sauce, sugar, garlic, ginger, curry powder, grated onion and a little pepper.","Coat the chicken in the marinade and leave at least 30 minutes (up to overnight for more flavour).","Heat the oil in a large skillet over medium-high heat and spread out the sweet potato, carrot, cabbage, perilla and rice cakes, with the chicken on top.","Cook 3–4 minutes, then lower to medium/medium-low and keep cooking 10–15 minutes, stirring often, until the chicken and sweet potato are cooked through (a lid speeds it up).","Serve hot with rice."]'::jsonb,
     array['korean', 'asian', 'chicken', 'stir-fry', 'comfort', 'high protein']::text[], 'korean', 709, 37.5,
     false, 'en', 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://mykoreankitchen.com/dak-galbi/')
@@ -1642,10 +1642,10 @@ select r.id, v.* from r, (values
 -- Filipino chicken adobo
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Filipino chicken adobo', 'seed', 'https://panlasangpinoy.com/filipino-chicken-adobo-recipe', 'Panlasang Pinoy', '/recipe-photos/filipino-chicken-adobo.webp', 'https://panlasangpinoy.com/wp-content/uploads/2026/05/Chicken-Adobo-in-a-Bowl.jpg',
-    2, 4, 120, '["Crush the garlic in a mortar, then combine with the chicken and soy sauce and marinate for at least 1 hour.","Lift the chicken out, keeping the marinade and garlic separately.","Heat most of the oil in a pot and sear the chicken for about 2 minutes per side; set aside.","Add the rest of the oil and the marinated garlic and fry until it just starts to colour.","Return the chicken with the leftover marinade, peppercorns, bay leaves and about 180 ml water; bring to a boil, cover and simmer for about 30 minutes until tender.","Pour in the vinegar and let it boil for 1 minute without stirring, then stir and simmer uncovered for 15 minutes to reduce.","Season with sugar and salt and serve hot with rice."]'::jsonb,
+    2, 4, 120, 10, 50, '["Crush the garlic in a mortar, then combine with the chicken and soy sauce and marinate for at least 1 hour.","Lift the chicken out, keeping the marinade and garlic separately.","Heat most of the oil in a pot and sear the chicken for about 2 minutes per side; set aside.","Add the rest of the oil and the marinated garlic and fry until it just starts to colour.","Return the chicken with the leftover marinade, peppercorns, bay leaves and about 180 ml water; bring to a boil, cover and simmer for about 30 minutes until tender.","Pour in the vinegar and let it boil for 1 minute without stirring, then stir and simmer uncovered for 15 minutes to reduce.","Season with sugar and salt and serve hot with rice."]'::jsonb,
     array['asian', 'filipino', 'chicken', 'stew', 'rice', 'comfort', 'high protein']::text[], 'filipino', 839, 47.9,
     true, 'en', 'medium', '{"pots":2,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://panlasangpinoy.com/filipino-chicken-adobo-recipe')
@@ -1668,10 +1668,10 @@ select r.id, v.* from r, (values
 -- Goan-style fish curry
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Goan-style fish curry', 'seed', 'https://realfood.tesco.com/recipes/goan-style-fish-curry.html', 'Tesco Real Food', null, null,
-    2, 4, 35, '["Blend most of the coriander with the ginger, chili, garlic, chopped spring onion, half the lemon juice, the paste curry powder, a pinch of salt and half the coconut milk until smooth.","Cook the paste in a deep pan for a few minutes until fragrant, then add the remaining coconut milk and simmer until slightly thickened.","Rinse the rice and simmer it, covered, in water until tender and the liquid is absorbed; keep covered.","Cut the fish into strips and toss in the flour seasoned with salt and the remaining curry powder.","Shallow-fry the fish in the oil until golden and just cooked through.","Check the sauce seasoning, add the lemon juice to taste, slip in the fish to warm through and serve with the rice, shredded spring onion and remaining coriander."]'::jsonb,
+    2, 4, 35, 10, 25, '["Blend most of the coriander with the ginger, chili, garlic, chopped spring onion, half the lemon juice, the paste curry powder, a pinch of salt and half the coconut milk until smooth.","Cook the paste in a deep pan for a few minutes until fragrant, then add the remaining coconut milk and simmer until slightly thickened.","Rinse the rice and simmer it, covered, in water until tender and the liquid is absorbed; keep covered.","Cut the fish into strips and toss in the flour seasoned with salt and the remaining curry powder.","Shallow-fry the fish in the oil until golden and just cooked through.","Check the sauce seasoning, add the lemon juice to taste, slip in the fish to warm through and serve with the rice, shredded spring onion and remaining coriander."]'::jsonb,
     array['asian', 'indian', 'fish', 'curry', 'rice']::text[], 'indian', 633, 32,
     false, 'en', 'medium', '{"pots":3,"oven":false,"special":["blender"]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://realfood.tesco.com/recipes/goan-style-fish-curry.html')
@@ -1698,10 +1698,10 @@ select r.id, v.* from r, (values
 -- Gyudon (beef and onion rice bowl)
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Gyudon (beef and onion rice bowl)', 'seed', 'https://thewoksoflife.com/gyudon-recipe-beef-rice/', 'The Woks of Life', '/recipe-photos/gyudon-beef-and-onion-rice-bowl.webp', 'https://thewoksoflife.com/wp-content/uploads/2023/07/gyudon-7.jpg',
-    2, 4, 40, '["Cook the rice.","Heat half the oil in a pan over medium-high heat and cook the onions about 10 minutes, stirring often, until soft.","Add the beef and sugar and stir until the beef is lightly browned.","Pour in the mirin, soy sauce and dashi and simmer 10–15 minutes until reduced to a thin sauce; taste and adjust.","Meanwhile fry the eggs sunny-side up in another pan with the remaining oil, keeping the yolks runny.","Spoon rice into bowls, pile on the beef and onions with some sauce, top each with an egg and finish with spring onion and sesame seeds."]'::jsonb,
+    2, 4, 40, 10, 30, '["Cook the rice.","Heat half the oil in a pan over medium-high heat and cook the onions about 10 minutes, stirring often, until soft.","Add the beef and sugar and stir until the beef is lightly browned.","Pour in the mirin, soy sauce and dashi and simmer 10–15 minutes until reduced to a thin sauce; taste and adjust.","Meanwhile fry the eggs sunny-side up in another pan with the remaining oil, keeping the yolks runny.","Spoon rice into bowls, pile on the beef and onions with some sauce, top each with an egg and finish with spring onion and sesame seeds."]'::jsonb,
     array['japanese', 'asian', 'beef', 'rice', 'bowl', 'comfort', 'high protein']::text[], 'japanese', 703, 38.1,
     true, 'en', 'medium', '{"pots":3,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://thewoksoflife.com/gyudon-recipe-beef-rice/')
@@ -1725,10 +1725,10 @@ select r.id, v.* from r, (values
 -- Gà nướng sả (Vietnamese lemongrass grilled chicken)
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Gà nướng sả (Vietnamese lemongrass grilled chicken)', 'seed', 'https://www.vietnamesefoodrecipes.com/vietnamese-grilled-chicken-with-lemongrass-ga-nuong-sa/', 'Vietnamese Food Recipes', '/recipe-photos/ga-nuong-sa-vietnamese-lemongrass-grilled-chicken.webp', 'https://www.vietnamesefoodrecipes.com/wp-content/uploads/2025/06/IMG_1293.jpg',
-    2, 4, 240, '["Whisk all the marinade ingredients together in a bowl.","Coat the chicken well and refrigerate for at least 3 hours, ideally overnight.","Heat the grill (or a grill pan) to about 200°C.","Grill the chicken, turning now and then, until charred on both sides and 74°C in the thickest part.","Rest for 5 minutes, then slice.","Serve hot with rice or rice vermicelli."]'::jsonb,
+    2, 4, 240, 195, 45, '["Whisk all the marinade ingredients together in a bowl.","Coat the chicken well and refrigerate for at least 3 hours, ideally overnight.","Heat the grill (or a grill pan) to about 200°C.","Grill the chicken, turning now and then, until charred on both sides and 74°C in the thickest part.","Rest for 5 minutes, then slice.","Serve hot with rice or rice vermicelli."]'::jsonb,
     array['asian', 'vietnamese', 'chicken', 'grill', 'rice', 'make ahead', 'high protein']::text[], 'vietnamese', 630, 57.5,
     true, 'en', 'medium', '{"pots":1,"oven":false,"special":["thermometer","barbecue"]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.vietnamesefoodrecipes.com/vietnamese-grilled-chicken-with-lemongrass-ga-nuong-sa/')
@@ -1754,10 +1754,10 @@ select r.id, v.* from r, (values
 -- Healthy chicken tikka masala with spinach
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Healthy chicken tikka masala with spinach', 'seed', 'https://bbcgoodfoodme.com/recipes/healthy-tikka-masala', 'BBC Good Food', '/recipe-photos/healthy-chicken-tikka-masala-with-spinach.webp', 'https://www.bbcgoodfoodme.com/assets/legacy/recipe/recipe-image/2019/10/healthy-tikka-masala.jpg',
-    2, 4, 65, '["Blend the onion, garlic and ginger into a smooth paste.","Fry the paste in half the oil over medium heat for about 15 minutes until golden and sweet; scrape it out and wipe the pan.","Brown the chicken in the rest of the oil, then stir in the tikka spice and cayenne.","Add back the onion paste with the tomatoes and about 200 ml water and simmer uncovered for 15 minutes.","Stir in the ground almonds and spinach and cook 10 minutes more.","Season, take off the heat, stir through the yogurt and coriander and serve with brown basmati rice."]'::jsonb,
+    2, 4, 65, 15, 45, '["Blend the onion, garlic and ginger into a smooth paste.","Fry the paste in half the oil over medium heat for about 15 minutes until golden and sweet; scrape it out and wipe the pan.","Brown the chicken in the rest of the oil, then stir in the tikka spice and cayenne.","Add back the onion paste with the tomatoes and about 200 ml water and simmer uncovered for 15 minutes.","Stir in the ground almonds and spinach and cook 10 minutes more.","Season, take off the heat, stir through the yogurt and coriander and serve with brown basmati rice."]'::jsonb,
     array['asian', 'indian', 'chicken', 'curry', 'rice', 'light', 'high protein']::text[], 'indian', 689, 47.4,
     true, 'en', 'medium', '{"pots":2,"oven":false,"special":["blender"]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://bbcgoodfoodme.com/recipes/healthy-tikka-masala')
@@ -1784,10 +1784,10 @@ select r.id, v.* from r, (values
 -- Kung pao chicken
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Kung pao chicken', 'seed', 'https://www.thewoksoflife.com/kung-pao-chicken/', 'The Woks of Life', '/recipe-photos/kung-pao-chicken.webp', 'https://thewoksoflife.com/wp-content/uploads/2019/05/kung-pao-chicken-14.jpg',
-    2, 4, 40, '["Toast the peanuts in the small amount of oil over medium heat, stirring nonstop for about 3 minutes; take off the heat, keep stirring a minute more, then let them cool and crisp up.","Toss the chicken cubes with the marinade oil, cornstarch, rice wine, salt and white pepper and leave for 20 minutes.","Combine both soy sauces, the vinegar, sugar, cornstarch and about 1.5 tbsp water in a small bowl.","Get a wok very hot, add two-thirds of the frying oil and sear the chicken until browned and just cooked; lift it out.","Turn the heat down, add the rest of the oil and fry the garlic, ginger, chilies, Sichuan pepper and spring onion until aromatic.","Put the chicken back, turn the heat to high and stir-fry for 1 minute.","Re-stir the sauce, pour it in and toss for about 1 minute until it thickens and coats the chicken.","Fold in the peanuts and serve straight away with rice."]'::jsonb,
+    2, 4, 40, 30, 10, '["Toast the peanuts in the small amount of oil over medium heat, stirring nonstop for about 3 minutes; take off the heat, keep stirring a minute more, then let them cool and crisp up.","Toss the chicken cubes with the marinade oil, cornstarch, rice wine, salt and white pepper and leave for 20 minutes.","Combine both soy sauces, the vinegar, sugar, cornstarch and about 1.5 tbsp water in a small bowl.","Get a wok very hot, add two-thirds of the frying oil and sear the chicken until browned and just cooked; lift it out.","Turn the heat down, add the rest of the oil and fry the garlic, ginger, chilies, Sichuan pepper and spring onion until aromatic.","Put the chicken back, turn the heat to high and stir-fry for 1 minute.","Re-stir the sauce, pour it in and toss for about 1 minute until it thickens and coats the chicken.","Fold in the peanuts and serve straight away with rice."]'::jsonb,
     array['chinese', 'asian', 'chicken', 'stir-fry']::text[], 'chinese', 462, 29.4,
     true, 'en', 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.thewoksoflife.com/kung-pao-chicken/')
@@ -1819,10 +1819,10 @@ select r.id, v.* from r, (values
 -- Malaysian nasi goreng with chicken, prawns and egg
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Malaysian nasi goreng with chicken, prawns and egg', 'seed', 'https://ayam.com/recipes/malaysian-nasi-goreng', 'Ayam', '/recipe-photos/malaysian-nasi-goreng-with-chicken-prawns-and-egg.webp', 'https://ayam.com/images/Ayam-Recipe-2019/main-pix/malaysian-nasi-goreng.jpg',
-    2, 4, 30, '["Stir-fry the nasi goreng paste with the chicken and onion over medium heat for about 6 minutes.","Add the prawns and green beans and cook 5 minutes more.","Tip in the cooked rice and toss until every grain is coated and piping hot.","Divide between two bowls.","Fry the eggs and set one on each bowl; serve with lettuce, cucumber and tomato on the side."]'::jsonb,
+    2, 4, 30, 10, 20, '["Stir-fry the nasi goreng paste with the chicken and onion over medium heat for about 6 minutes.","Add the prawns and green beans and cook 5 minutes more.","Tip in the cooked rice and toss until every grain is coated and piping hot.","Divide between two bowls.","Fry the eggs and set one on each bowl; serve with lettuce, cucumber and tomato on the side."]'::jsonb,
     array['asian', 'malaysian', 'chicken', 'prawns', 'rice', 'stir-fry', 'high protein']::text[], 'malaysian', 521, 45.1,
     true, 'en', 'easy', '{"pots":2,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://ayam.com/recipes/malaysian-nasi-goreng')
@@ -1845,10 +1845,10 @@ select r.id, v.* from r, (values
 -- Miso salmon with rice and greens
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Miso salmon with rice and greens', 'seed', 'https://www.olivemagazine.com/recipes/healthy/miso-salmon/', 'Olive Magazine', '/recipe-photos/miso-salmon-with-rice-and-greens.webp', 'https://images.immediate.co.uk/production/volatile/sites/2/2020/08/OLI-0920-Healthy-MisoSalmon_05631_preview-ca3e82c.jpg?crop=2px%2C746px%2C1195px%2C514px&resize=1199%2C628',
-    2, 2, 35, '["Boil the rice in salted water until tender, then drain.","Whisk the miso, rice vinegar, ginger and garlic with 100 ml water.","Season the salmon and pan-fry it skin-side down until crisp, then turn it over.","Pour the miso sauce into the pan and slide it under a hot grill until the sauce bubbles and reduces.","Meanwhile boil the bok choy, sugar snaps and baby corn briefly until just tender, then drain.","Plate the rice and greens, set the salmon on top, spoon over the sauce and finish with spring onion."]'::jsonb,
+    2, 2, 35, 10, 25, '["Boil the rice in salted water until tender, then drain.","Whisk the miso, rice vinegar, ginger and garlic with 100 ml water.","Season the salmon and pan-fry it skin-side down until crisp, then turn it over.","Pour the miso sauce into the pan and slide it under a hot grill until the sauce bubbles and reduces.","Meanwhile boil the bok choy, sugar snaps and baby corn briefly until just tender, then drain.","Plate the rice and greens, set the salmon on top, spoon over the sauce and finish with spring onion."]'::jsonb,
     array['japanese', 'asian', 'salmon', 'rice', 'light', 'fish', 'high protein']::text[], 'japanese', 547, 35.4,
     true, 'en', 'medium', '{"pots":3,"oven":true,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.olivemagazine.com/recipes/healthy/miso-salmon/')
@@ -1872,10 +1872,10 @@ select r.id, v.* from r, (values
 -- Oven tandoori chicken
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Oven tandoori chicken', 'seed', 'https://www.indianhealthyrecipes.com/tandoori-chicken/', 'Swasthi''s Recipes', '/recipe-photos/oven-tandoori-chicken.webp', 'https://www.indianhealthyrecipes.com/wp-content/uploads/2025/09/tandoori-chicken-recipe-new.jpg',
-    2, 4, 415, '["Mix the yogurt, ginger-garlic paste, ground spices, salt, fenugreek leaves, oil and lemon juice; taste and adjust salt and heat.","Cut 2–3 deep slits into each piece of chicken, coat thoroughly in the marinade and refrigerate for 6 hours or overnight.","Take the chicken out of the fridge 20 minutes before cooking and heat the oven to 240°C.","Stir together the chili powder and oil for the chili oil.","Set an oiled rack over a foil-lined tray, space the chicken out on it and roast for 15 minutes; baste with leftover marinade or chili oil.","Turn the pieces and roast another 12–15 minutes, then brush with chili oil.","Move to the top shelf under the grill for 3–4 minutes until lightly charred; the thickest part should reach 75°C.","Garnish with coriander and serve with onion, cucumber and lemon wedges."]'::jsonb,
+    2, 4, 415, 15, 40, '["Mix the yogurt, ginger-garlic paste, ground spices, salt, fenugreek leaves, oil and lemon juice; taste and adjust salt and heat.","Cut 2–3 deep slits into each piece of chicken, coat thoroughly in the marinade and refrigerate for 6 hours or overnight.","Take the chicken out of the fridge 20 minutes before cooking and heat the oven to 240°C.","Stir together the chili powder and oil for the chili oil.","Set an oiled rack over a foil-lined tray, space the chicken out on it and roast for 15 minutes; baste with leftover marinade or chili oil.","Turn the pieces and roast another 12–15 minutes, then brush with chili oil.","Move to the top shelf under the grill for 3–4 minutes until lightly charred; the thickest part should reach 75°C.","Garnish with coriander and serve with onion, cucumber and lemon wedges."]'::jsonb,
     array['asian', 'indian', 'chicken', 'oven', 'grill', 'make ahead', 'high protein']::text[], 'indian', 493, 37.9,
     true, 'en', 'medium', '{"pots":1,"oven":true,"special":["thermometer"]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.indianhealthyrecipes.com/tandoori-chicken/')
@@ -1904,10 +1904,10 @@ select r.id, v.* from r, (values
 -- Oyakodon (chicken and egg rice bowl)
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Oyakodon (chicken and egg rice bowl)', 'seed', 'https://www.justonecookbook.com/recipes/oyakodon/', 'Just One Cookbook', null, null,
-    2, 2, 25, '["Cook the rice.","Slice the chicken on the diagonal into roughly 2.5 cm pieces.","Bring the mirin and sake to a boil in a large frying pan over medium-high heat, then add the dashi, soy sauce and sugar and return to a boil.","Spread the onion over the pan in one layer, lay the chicken on top, cover and bring back to a boil.","Skim off any foam and fat, then simmer over medium heat about 10 minutes until the chicken is cooked.","Drizzle the beaten eggs slowly over everything, cover and cook just until the egg is softly set, shaking the pan now and then.","Scatter over the spring onion, then slide the chicken, egg and some sauce onto bowls of rice."]'::jsonb,
+    2, 2, 25, 15, 10, '["Cook the rice.","Slice the chicken on the diagonal into roughly 2.5 cm pieces.","Bring the mirin and sake to a boil in a large frying pan over medium-high heat, then add the dashi, soy sauce and sugar and return to a boil.","Spread the onion over the pan in one layer, lay the chicken on top, cover and bring back to a boil.","Skim off any foam and fat, then simmer over medium heat about 10 minutes until the chicken is cooked.","Drizzle the beaten eggs slowly over everything, cover and cook just until the egg is softly set, shaking the pan now and then.","Scatter over the spring onion, then slide the chicken, egg and some sauce onto bowls of rice."]'::jsonb,
     array['japanese', 'asian', 'chicken', 'rice', 'bowl', 'comfort', 'quick', 'high protein']::text[], 'japanese', 750, 38.1,
     true, 'en', 'easy', '{"pots":2,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.justonecookbook.com/recipes/oyakodon/')
@@ -1930,10 +1930,10 @@ select r.id, v.* from r, (values
 -- Pad krapow gai (Thai basil chicken with fried egg)
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Pad krapow gai (Thai basil chicken with fried egg)', 'seed', 'https://eatingthaifood.com/thai-basil-chicken-recipe', 'Eating Thai Food', '/recipe-photos/pad-krapow-gai-thai-basil-chicken-with-fried-egg.webp', 'https://www.eatingthaifood.com/wp-content/uploads/2014/01/thai-chicken-basil-recipe.jpg',
-    2, 1, 20, '["Fry the eggs in a wok in the frying oil, basting the tops with hot oil instead of flipping, until the edges are crisp; drain and keep aside.","Cut the chicken into bite-sized pieces; roughly pound the garlic and chilies in a mortar (or mince them) and pick the basil leaves.","Heat the wok over high heat with the stir-fry oil and toss the garlic and chili for about 20 seconds until fragrant, without letting them burn.","Add the chicken and stir-fry until almost cooked through, adding a tiny splash of water if the pan gets dry.","Season with oyster sauce, light and dark soy sauce and sugar, and keep tossing for about 30 seconds.","Throw in the holy basil, fold it through and take the wok off the heat as soon as it wilts.","Serve over steamed jasmine rice with the fried egg on top."]'::jsonb,
+    2, 1, 20, 10, 10, '["Fry the eggs in a wok in the frying oil, basting the tops with hot oil instead of flipping, until the edges are crisp; drain and keep aside.","Cut the chicken into bite-sized pieces; roughly pound the garlic and chilies in a mortar (or mince them) and pick the basil leaves.","Heat the wok over high heat with the stir-fry oil and toss the garlic and chili for about 20 seconds until fragrant, without letting them burn.","Add the chicken and stir-fry until almost cooked through, adding a tiny splash of water if the pan gets dry.","Season with oyster sauce, light and dark soy sauce and sugar, and keep tossing for about 30 seconds.","Throw in the holy basil, fold it through and take the wok off the heat as soon as it wilts.","Serve over steamed jasmine rice with the fried egg on top."]'::jsonb,
     array['asian', 'thai', 'chicken', 'stir-fry', 'rice', 'quick', 'high protein']::text[], 'thai', 1055, 60.2,
     true, 'en', 'easy', '{"pots":2,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://eatingthaifood.com/thai-basil-chicken-recipe')
@@ -1958,10 +1958,10 @@ select r.id, v.* from r, (values
 -- Satay chicken drumsticks with peanut sauce
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Satay chicken drumsticks with peanut sauce', 'seed', 'https://www.recipetineats.com/satay-chicken-legs-with-peanut-sauce/', 'RecipeTin Eats', '/recipe-photos/satay-chicken-drumsticks-with-peanut-sauce.webp', 'https://www.recipetineats.com/tachyon/2026/08/Satay-chicken-legs-with-peanut-sauce-v2-3.jpg',
-    2, 4, 235, '["Cut three shallow slashes (about 5 mm deep) into the meaty side of each drumstick.","Stir together the marinade ingredients, coat the drumsticks and work the mixture into the cuts; marinate 3 hours or overnight in the fridge (optional but best).","Heat the oven to 200°C (180°C fan) and set a rack over a foil-lined tray.","Lay the drumsticks on the rack and dab any remaining marinade on top.","Bake for 35 minutes, then switch to the grill on high for 3–5 minutes to char the skin.","Meanwhile whisk all the sauce ingredients in a small pan and simmer on medium-low for about 5 minutes, stirring, until it is pourable but coats a spoon; keep warm.","Serve the drumsticks with jasmine rice and the peanut sauce for dipping."]'::jsonb,
+    2, 4, 235, 10, 45, '["Cut three shallow slashes (about 5 mm deep) into the meaty side of each drumstick.","Stir together the marinade ingredients, coat the drumsticks and work the mixture into the cuts; marinate 3 hours or overnight in the fridge (optional but best).","Heat the oven to 200°C (180°C fan) and set a rack over a foil-lined tray.","Lay the drumsticks on the rack and dab any remaining marinade on top.","Bake for 35 minutes, then switch to the grill on high for 3–5 minutes to char the skin.","Meanwhile whisk all the sauce ingredients in a small pan and simmer on medium-low for about 5 minutes, stirring, until it is pourable but coats a spoon; keep warm.","Serve the drumsticks with jasmine rice and the peanut sauce for dipping."]'::jsonb,
     array['asian', 'thai', 'chicken', 'oven', 'rice', 'make ahead', 'high protein']::text[], 'thai', 1249, 80.5,
     true, 'en', 'medium', '{"pots":3,"oven":true,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.recipetineats.com/satay-chicken-legs-with-peanut-sauce/')
@@ -1990,10 +1990,10 @@ select r.id, v.* from r, (values
 -- Taiwanese three cup chicken
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Taiwanese three cup chicken', 'seed', 'https://www.recipetineats.com/taiwanese-three-cup-chicken/', 'RecipeTin Eats', '/recipe-photos/taiwanese-three-cup-chicken.webp', 'https://www.recipetineats.com/tachyon/2026/07/Taiwanese-Three-Cup-Chicken-9a.jpg',
-    2, 4, 20, '["Mix the light and dark soy, sugar and rice wine in a small bowl.","Warm the oil in a non-stick pan over medium-low and sizzle the ginger and chili for about 30 seconds.","Turn the heat to high, add the chicken and cook until the outside turns white though still raw inside; add the garlic and stir 30 seconds.","Pour in the sauce, bring to a bubble, then lower to medium/medium-high for a steady simmer.","Simmer about 5 minutes, stirring, until the chicken is coloured and the sauce has reduced to a thin syrup (add a splash of water if it reduces too fast).","Stir in the sesame oil and basil until the leaves wilt, then serve on rice with all the pan syrup."]'::jsonb,
+    2, 4, 20, 8, 10, '["Mix the light and dark soy, sugar and rice wine in a small bowl.","Warm the oil in a non-stick pan over medium-low and sizzle the ginger and chili for about 30 seconds.","Turn the heat to high, add the chicken and cook until the outside turns white though still raw inside; add the garlic and stir 30 seconds.","Pour in the sauce, bring to a bubble, then lower to medium/medium-high for a steady simmer.","Simmer about 5 minutes, stirring, until the chicken is coloured and the sauce has reduced to a thin syrup (add a splash of water if it reduces too fast).","Stir in the sesame oil and basil until the leaves wilt, then serve on rice with all the pan syrup."]'::jsonb,
     array['taiwanese', 'asian', 'chicken', 'stir-fry', 'quick']::text[], 'taiwanese', 448, 28.8,
     true, 'en', 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.recipetineats.com/taiwanese-three-cup-chicken/')
@@ -2017,10 +2017,10 @@ select r.id, v.* from r, (values
 -- Teriyaki chicken with rice
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Teriyaki chicken with rice', 'seed', 'https://www.bbcgoodfoodme.com/recipes/teriyaki-chicken/', 'BBC Good Food', '/recipe-photos/teriyaki-chicken-with-rice.webp', 'https://images.immediate.co.uk/production/volatile/sites/30/2023/08/TERIYAKICHICKEN-f626817.jpg',
-    2, 4, 40, '["Heat the oven to 220°C (200°C fan). Whisk the soy sauce, sugar, vinegar, half the oil, garlic and ginger together.","Toss the chicken with half of this sauce in a baking dish and roast 20–25 minutes until cooked through and sticky.","Meanwhile cook the rice as the packet directs.","Soften the onion in the remaining oil over medium heat for 5–8 minutes until lightly golden; set aside.","Stir the cornstarch into the rest of the sauce and bubble it in the pan until thick, then return the onion and add the roasted chicken.","Serve on the rice with any juices from the baking dish and the spring onion on top."]'::jsonb,
+    2, 4, 40, 10, 30, '["Heat the oven to 220°C (200°C fan). Whisk the soy sauce, sugar, vinegar, half the oil, garlic and ginger together.","Toss the chicken with half of this sauce in a baking dish and roast 20–25 minutes until cooked through and sticky.","Meanwhile cook the rice as the packet directs.","Soften the onion in the remaining oil over medium heat for 5–8 minutes until lightly golden; set aside.","Stir the cornstarch into the rest of the sauce and bubble it in the pan until thick, then return the onion and add the roasted chicken.","Serve on the rice with any juices from the baking dish and the spring onion on top."]'::jsonb,
     array['japanese', 'asian', 'chicken', 'rice', 'oven']::text[], 'japanese', 491, 26.6,
     false, 'en', 'medium', '{"pots":3,"oven":true,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.bbcgoodfoodme.com/recipes/teriyaki-chicken/')
@@ -2044,10 +2044,10 @@ select r.id, v.* from r, (values
 -- Thai green curry with chicken
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Thai green curry with chicken', 'seed', 'https://www.recipetineats.com/thai-green-curry/', 'RecipeTin Eats', '/recipe-photos/thai-green-curry-with-chicken.webp', 'https://www.recipetineats.com/tachyon/2019/02/Thai-Green-Curry_5.jpg',
-    2, 4, 35, '["Heat the oil in a heavy pan over medium-high heat.","Fry the green curry paste with the garlic, ginger and lemongrass for 2–3 minutes until most of the moisture has cooked off (keep your face away from the fumes).","Pour in the stock and coconut milk and stir until the paste dissolves.","Season with the fish sauce and sugar, add the lime leaves and bring to a simmer.","Add the chicken, turn the heat down to a gentle bubble and cook for 7 minutes.","Add the eggplant and simmer about 5 minutes until soft; taste and adjust salt and sweetness.","Add the snow peas for 2 minutes, then stir in the basil and lime juice and take off the heat straight away.","Serve over jasmine rice."]'::jsonb,
+    2, 4, 35, 15, 20, '["Heat the oil in a heavy pan over medium-high heat.","Fry the green curry paste with the garlic, ginger and lemongrass for 2–3 minutes until most of the moisture has cooked off (keep your face away from the fumes).","Pour in the stock and coconut milk and stir until the paste dissolves.","Season with the fish sauce and sugar, add the lime leaves and bring to a simmer.","Add the chicken, turn the heat down to a gentle bubble and cook for 7 minutes.","Add the eggplant and simmer about 5 minutes until soft; taste and adjust salt and sweetness.","Add the snow peas for 2 minutes, then stir in the basil and lime juice and take off the heat straight away.","Serve over jasmine rice."]'::jsonb,
     array['asian', 'thai', 'chicken', 'curry', 'rice', 'comfort']::text[], 'thai', 787, 27.4,
     true, 'en', 'easy', '{"pots":2,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.recipetineats.com/thai-green-curry/')
@@ -2076,10 +2076,10 @@ select r.id, v.* from r, (values
 -- Brazilian fish stew (moqueca)
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Brazilian fish stew (moqueca)', 'seed', 'https://www.feastingathome.com/brazilian-fish-stew-aka-moqueca', 'Feasting at Home', null, null,
-    2, 4, 35, '["Pat the fish dry, cut into large chunks and rub with salt, lime zest and lime juice; set aside.","In a wide pan, sauté the onion in the oil with a pinch of salt until soft.","Add carrot, red pepper, garlic and jalapeño and cook a few minutes more.","Stir in the tomato paste, paprika, cumin and stock, bring to a simmer, add the tomatoes, cover and cook until the carrots are tender.","Pour in the coconut milk and adjust the salt.","Tuck the fish into the sauce and simmer gently, spooning broth over, until just cooked (thick pieces can finish in a 175°C oven).","Add a squeeze of lime, scatter with herbs and serve over rice."]'::jsonb,
+    2, 4, 35, 10, 25, '["Pat the fish dry, cut into large chunks and rub with salt, lime zest and lime juice; set aside.","In a wide pan, sauté the onion in the oil with a pinch of salt until soft.","Add carrot, red pepper, garlic and jalapeño and cook a few minutes more.","Stir in the tomato paste, paprika, cumin and stock, bring to a simmer, add the tomatoes, cover and cook until the carrots are tender.","Pour in the coconut milk and adjust the salt.","Tuck the fish into the sauce and simmer gently, spooning broth over, until just cooked (thick pieces can finish in a 175°C oven).","Add a squeeze of lime, scatter with herbs and serve over rice."]'::jsonb,
     array['brazilian', 'cod', 'stew', 'comfort', 'fish', 'high protein']::text[], 'brazilian', 768, 42.7,
     true, 'en', 'medium', '{"pots":2,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.feastingathome.com/brazilian-fish-stew-aka-moqueca')
@@ -2110,10 +2110,10 @@ select r.id, v.* from r, (values
 -- Cajun salmon and sweet potato chowder
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Cajun salmon and sweet potato chowder', 'seed', 'https://www.weightwatchers.com/us/recipe/cajun-salmon-sweet-potato-chowder/56d82afd0ac646df0ee3e08f', 'WW', null, null,
-    2, 4, 35, '["Heat the oil in a saucepan over medium-high heat, add the carrot, onion and celery, cover and cook about 5 minutes until softened.","Add the bell pepper and Cajun seasoning and cook 2 minutes more.","Add the sweet potato, stock and about 120 ml water, bring to a boil, then cover and simmer about 10 minutes until the potato is tender.","Add the salmon and corn and simmer about 3 minutes until the fish is just opaque in the centre.","Turn the heat to low, stir in the half-and-half, basil and salt and warm through for 1 minute.","Take off the heat, stir in the lemon juice and serve."]'::jsonb,
+    2, 4, 35, 15, 20, '["Heat the oil in a saucepan over medium-high heat, add the carrot, onion and celery, cover and cook about 5 minutes until softened.","Add the bell pepper and Cajun seasoning and cook 2 minutes more.","Add the sweet potato, stock and about 120 ml water, bring to a boil, then cover and simmer about 10 minutes until the potato is tender.","Add the salmon and corn and simmer about 3 minutes until the fish is just opaque in the centre.","Turn the heat to low, stir in the half-and-half, basil and salt and warm through for 1 minute.","Take off the heat, stir in the lemon juice and serve."]'::jsonb,
     array['american', 'salmon', 'soup', 'light', 'fish']::text[], 'american', 433, 29.8,
     true, 'en', 'easy', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.weightwatchers.com/us/recipe/cajun-salmon-sweet-potato-chowder/56d82afd0ac646df0ee3e08f')
@@ -2140,10 +2140,10 @@ select r.id, v.* from r, (values
 -- Cajun salmon with sweet potato wedges
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Cajun salmon with sweet potato wedges', 'seed', 'https://www.olivemagazine.com/recipes/fish-and-seafood/cajun-salmon-with-rosemary-sweet-potato-wedges/', 'Olive Magazine', '/recipe-photos/cajun-salmon-with-sweet-potato-wedges.webp', 'https://images.immediate.co.uk/production/volatile/sites/2/2018/08/Cajun-salmon-f26325e.jpg?resize=1200%2C630',
-    2, 2, 40, '["Heat the oven to 200C (180C fan).","Toss the wedges on a non-stick tray with half the oil, the rosemary and some salt and roast 25-30 minutes until crisp outside and soft inside.","Rub the salmon with a little oil and coat it in the Cajun seasoning.","For the last 10 minutes of the wedges, roast the salmon on a small tray alongside.","Dress the rocket with the remaining oil and the vinegar and serve with the salmon and wedges."]'::jsonb,
+    2, 2, 40, 10, 30, '["Heat the oven to 200C (180C fan).","Toss the wedges on a non-stick tray with half the oil, the rosemary and some salt and roast 25-30 minutes until crisp outside and soft inside.","Rub the salmon with a little oil and coat it in the Cajun seasoning.","For the last 10 minutes of the wedges, roast the salmon on a small tray alongside.","Dress the rocket with the remaining oil and the vinegar and serve with the salmon and wedges."]'::jsonb,
     array['american', 'salmon', 'oven', 'fish']::text[], 'american', 742, 30.5,
     false, 'en', 'easy', '{"pots":2,"oven":true,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.olivemagazine.com/recipes/fish-and-seafood/cajun-salmon-with-rosemary-sweet-potato-wedges/')
@@ -2164,10 +2164,10 @@ select r.id, v.* from r, (values
 -- Carne asada bowls with chipotle crema
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Carne asada bowls with chipotle crema', 'seed', 'https://whitneybond.com/carne-asada-bowl/', 'Whitney Bond', '/recipe-photos/carne-asada-bowls-with-chipotle-crema.webp', 'https://whitneybond.com/wp-content/uploads/2021/03/Carne-Asada-Bowl-8.jpg',
-    2, 4, 70, '["Combine oil, soy sauce, lime juice, cumin, chipotle powder, coriander and garlic in a zip bag.","Add the steak and marinate in the fridge at least 30 minutes (up to 8 hours).","Heat a grill to high, take the steak out of the marinade, salt both sides and grill about 5 minutes per side.","Rest the steak loosely covered for 5-10 minutes, then slice across the grain and dice.","Toss the cooked rice with coriander and lime juice.","Blend the crema, chipotle, garlic, lime and salt until smooth.","Fill bowls with rice, steak, pico de gallo, avocado, jalapeño, radish and cheese, then drizzle with the chipotle crema."]'::jsonb,
+    2, 4, 70, 30, 10, '["Combine oil, soy sauce, lime juice, cumin, chipotle powder, coriander and garlic in a zip bag.","Add the steak and marinate in the fridge at least 30 minutes (up to 8 hours).","Heat a grill to high, take the steak out of the marinade, salt both sides and grill about 5 minutes per side.","Rest the steak loosely covered for 5-10 minutes, then slice across the grain and dice.","Toss the cooked rice with coriander and lime juice.","Blend the crema, chipotle, garlic, lime and salt until smooth.","Fill bowls with rice, steak, pico de gallo, avocado, jalapeño, radish and cheese, then drizzle with the chipotle crema."]'::jsonb,
     array['mexican', 'beef', 'bowl', 'grill', 'rice', 'high protein']::text[], 'mexican', 1061, 59.9,
     true, 'en', 'medium', '{"pots":0,"oven":false,"special":["blender","barbecue"]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://whitneybond.com/carne-asada-bowl/')
@@ -2203,10 +2203,10 @@ select r.id, v.* from r, (values
 -- Chicken and sweet potato traybake
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Chicken and sweet potato traybake', 'seed', 'https://www.tesco.com/recipes/en-GB/recipe/chicken-and-sweet-potato-traybake', 'Tesco Real Food', '/recipe-photos/chicken-and-sweet-potato-traybake.webp', 'https://digitalcontent.api.tesco.com/v2/media/realfood/19e08c95-7d83-465b-be81-3cd80666291e/RFO+1400x919+ChickenTrayBake.jpeg',
-    2, 4, 60, '["Heat the oven to 200C (180C fan).","Toss the sweet potato, onion and garlic with the thyme, rosemary, most of the oil and some seasoning, and roast 15 minutes.","Stir, nestle in the chicken, drizzle with the rest of the oil, add the lemon juice and smoked paprika and roast 15 minutes more.","Add the broccoli and most of the stock and roast a final 15-20 minutes, topping up with stock if the tray dries, until the chicken is cooked through.","Squeeze the soft garlic out of its skins over the tray and serve with lemon wedges."]'::jsonb,
+    2, 4, 60, 15, 45, '["Heat the oven to 200C (180C fan).","Toss the sweet potato, onion and garlic with the thyme, rosemary, most of the oil and some seasoning, and roast 15 minutes.","Stir, nestle in the chicken, drizzle with the rest of the oil, add the lemon juice and smoked paprika and roast 15 minutes more.","Add the broccoli and most of the stock and roast a final 15-20 minutes, topping up with stock if the tray dries, until the chicken is cooked through.","Squeeze the soft garlic out of its skins over the tray and serve with lemon wedges."]'::jsonb,
     array['british', 'chicken', 'traybake', 'light', 'high protein']::text[], 'british', 592, 39.6,
     false, 'en', 'easy', '{"pots":1,"oven":true,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.tesco.com/recipes/en-GB/recipe/chicken-and-sweet-potato-traybake')
@@ -2232,10 +2232,10 @@ select r.id, v.* from r, (values
 -- Chicken souvlaki with tzatziki
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Chicken souvlaki with tzatziki', 'seed', 'https://www.sbs.com.au/food/recipe/chicken-souvlaki/j847ixvsa', 'SBS Food', '/recipe-photos/chicken-souvlaki-with-tzatziki.webp', 'https://assets.sbs.com.au/dims4/default/da1f801/2147483647/strip/true/crop/3000x1688+0+225/resize/1280x720!/quality/90/?url=https%3A%2F%2Fsbs-au-brightspot.s3.ap-southeast-2.amazonaws.com%2Fdrupal%2Ffood%2Fpublic%2Fowk_3076_chicken_souvlaki_and_tzatziki_horizontal_2.jpg',
-    2, 4, 200, '["Whisk the oil, lemon juice, garlic, oregano, salt and pepper into a marinade.","Coat the chicken cubes in it and leave in the fridge for 3-4 hours.","Soak wooden skewers in water, then thread on the chicken and brush with the leftover marinade.","Grill for 10-15 minutes, turning now and then, until cooked through.","Warm the pitas on the grill.","Serve the skewers on the pitas with tomato slices and tzatziki."]'::jsonb,
+    2, 4, 200, 5, 15, '["Whisk the oil, lemon juice, garlic, oregano, salt and pepper into a marinade.","Coat the chicken cubes in it and leave in the fridge for 3-4 hours.","Soak wooden skewers in water, then thread on the chicken and brush with the leftover marinade.","Grill for 10-15 minutes, turning now and then, until cooked through.","Warm the pitas on the grill.","Serve the skewers on the pitas with tomato slices and tzatziki."]'::jsonb,
     array['greek', 'mediterranean', 'chicken', 'grill', 'wrap', 'make ahead', 'high protein']::text[], 'greek', 488, 47.4,
     true, 'en', 'medium', '{"pots":0,"oven":false,"special":["barbecue"]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.sbs.com.au/food/recipe/chicken-souvlaki/j847ixvsa')
@@ -2258,10 +2258,10 @@ select r.id, v.* from r, (values
 -- Chicken tinga
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Chicken tinga', 'seed', 'https://www.mexicoinmykitchen.com/chicken-tinga-recipe/', 'Mexico in My Kitchen', '/recipe-photos/chicken-tinga.webp', 'https://www.mexicoinmykitchen.com/wp-content/uploads/2020/12/Chicken-Tinga-recipe-3-ing.jpg',
-    2, 6, 30, '["Heat the oil over medium heat and fry the sliced onion about 3 minutes.","Add the garlic and cook 2 more minutes until fragrant.","Stir in the tomatoes and parsley, reduce the heat and cook 6-7 minutes until the tomatoes break down (add a splash of water if dry).","Add the shredded chicken and chopped chipotle and simmer about 8 minutes so the flavours meld.","Season with salt and pepper, garnish with parsley and serve with rice and salad or on tostadas."]'::jsonb,
+    2, 6, 30, 10, 20, '["Heat the oil over medium heat and fry the sliced onion about 3 minutes.","Add the garlic and cook 2 more minutes until fragrant.","Stir in the tomatoes and parsley, reduce the heat and cook 6-7 minutes until the tomatoes break down (add a splash of water if dry).","Add the shredded chicken and chopped chipotle and simmer about 8 minutes so the flavours meld.","Season with salt and pepper, garnish with parsley and serve with rice and salad or on tostadas."]'::jsonb,
     array['mexican', 'chicken', 'stew', 'light']::text[], 'mexican', 155, 17.3,
     true, 'en', 'easy', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.mexicoinmykitchen.com/chicken-tinga-recipe/')
@@ -2283,10 +2283,10 @@ select r.id, v.* from r, (values
 -- Doro wat
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Doro wat', 'seed', 'https://eggs.ca/recipes/doro-wat/', 'Eggs.ca', '/recipe-photos/doro-wat.webp', 'https://eggs.ca/wp-content/uploads/2024/06/EFC-doro-wat-hero-1280x720-1.jpg',
-    2, 4, 155, '["Rub the chicken with lemon juice, rinse well, season with salt and leave 30 minutes.","Cook the onions in a dry saucepan over medium-low heat, stirring now and then, for at least an hour until deeply caramelised.","Add the oil and keep cooking the onions 15-20 minutes until they turn darker.","Stir in the berbere, garlic, ginger, cardamom and ghee.","Add the chicken, cover and cook 10 minutes, then add about 250 ml water, cover again and cook 30 minutes more.","Meanwhile boil the eggs about 10 minutes, chill in iced water, peel and cut into pieces.","Add the eggs to the stew, season with mekelesha and salt, and serve with rice or injera."]'::jsonb,
+    2, 4, 155, 35, 120, '["Rub the chicken with lemon juice, rinse well, season with salt and leave 30 minutes.","Cook the onions in a dry saucepan over medium-low heat, stirring now and then, for at least an hour until deeply caramelised.","Add the oil and keep cooking the onions 15-20 minutes until they turn darker.","Stir in the berbere, garlic, ginger, cardamom and ghee.","Add the chicken, cover and cook 10 minutes, then add about 250 ml water, cover again and cook 30 minutes more.","Meanwhile boil the eggs about 10 minutes, chill in iced water, peel and cut into pieces.","Add the eggs to the stew, season with mekelesha and salt, and serve with rice or injera."]'::jsonb,
     array['ethiopian', 'african', 'chicken', 'stew', 'comfort', 'curry', 'high protein']::text[], 'ethiopian', 1255, 63.1,
     true, 'en', 'medium', '{"pots":3,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://eggs.ca/recipes/doro-wat/')
@@ -2313,10 +2313,10 @@ select r.id, v.* from r, (values
 -- Greek baked fish (psari plaki)
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Greek baked fish (psari plaki)', 'seed', 'https://www.themediterraneandish.com/baked-greek-fish-psari-plaki', 'The Mediterranean Dish', null, null,
-    2, 6, 40, '["Heat the oven to 200°C (400°F) with a rack in the middle.","In an oven-safe pan, cook the onion in the olive oil with a pinch of salt until soft and lightly golden.","Stir in the garlic, then the tomatoes, oregano and pepper; crush the tomatoes, bring to a boil and simmer 10-15 minutes.","Dry the fish and season both sides with salt, oregano, paprika and cumin; squeeze half the lemon over it.","Settle the fish into the sauce and spoon some sauce on top.","Bake 15-25 minutes until the fish is opaque and flakes easily; check so it doesn''t overcook.","Scatter with parsley and serve with the remaining lemon in wedges, plus bread or rice."]'::jsonb,
+    2, 6, 40, 10, 30, '["Heat the oven to 200°C (400°F) with a rack in the middle.","In an oven-safe pan, cook the onion in the olive oil with a pinch of salt until soft and lightly golden.","Stir in the garlic, then the tomatoes, oregano and pepper; crush the tomatoes, bring to a boil and simmer 10-15 minutes.","Dry the fish and season both sides with salt, oregano, paprika and cumin; squeeze half the lemon over it.","Settle the fish into the sauce and spoon some sauce on top.","Bake 15-25 minutes until the fish is opaque and flakes easily; check so it doesn''t overcook.","Scatter with parsley and serve with the remaining lemon in wedges, plus bread or rice."]'::jsonb,
     array['greek', 'mediterranean', 'cod', 'oven', 'light', 'fish']::text[], 'greek', 241, 30.7,
     true, 'en', 'easy', '{"pots":1,"oven":true,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.themediterraneandish.com/baked-greek-fish-psari-plaki')
@@ -2342,10 +2342,10 @@ select r.id, v.* from r, (values
 -- Harissa roast salmon with herby grains
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Harissa roast salmon with herby grains', 'seed', 'https://olivemagazine.com/recipes/fish-and-seafood/harissa-roast-salmon-with-warm-herby-grains-and-yogurt-dressing', 'Olive Magazine', '/recipe-photos/harissa-roast-salmon-with-herby-grains.webp', 'https://images.immediate.co.uk/production/volatile/sites/2/2024/10/HarissaRoastedSalmonGrainSalad004preview-9e2cc18.jpg?resize=1200%2C630',
-    2, 2, 35, '["Simmer the grains in salted water for 20-25 minutes until just tender.","Heat the oven to 180°C (160°C fan); mix harissa, oil, honey and the juice of half the lemon.","Toss the salmon and tomatoes in the harissa mix in a baking dish and roast 15 minutes.","In a large bowl combine the spring onions, most of the herbs, the rest of the lemon juice and a little oil.","Drop the peas into the grains for the last minute, then drain thoroughly.","Stir the leftover herbs into the yogurt with salt and a splash of water to loosen.","Toss the grains and peas with the spring onion mix, plate, top with salmon and tomatoes and add the yogurt dressing."]'::jsonb,
+    2, 2, 35, 10, 20, '["Simmer the grains in salted water for 20-25 minutes until just tender.","Heat the oven to 180°C (160°C fan); mix harissa, oil, honey and the juice of half the lemon.","Toss the salmon and tomatoes in the harissa mix in a baking dish and roast 15 minutes.","In a large bowl combine the spring onions, most of the herbs, the rest of the lemon juice and a little oil.","Drop the peas into the grains for the last minute, then drain thoroughly.","Stir the leftover herbs into the yogurt with salt and a splash of water to loosen.","Toss the grains and peas with the spring onion mix, plate, top with salmon and tomatoes and add the yogurt dressing."]'::jsonb,
     array['north african', 'mediterranean', 'salmon', 'oven', 'bowl', 'light', 'fish', 'high protein']::text[], 'north african', 647, 39.4,
     true, 'en', 'medium', '{"pots":2,"oven":true,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://olivemagazine.com/recipes/fish-and-seafood/harissa-roast-salmon-with-warm-herby-grains-and-yogurt-dressing')
@@ -2371,10 +2371,10 @@ select r.id, v.* from r, (values
 -- Healthy cottage pie
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Healthy cottage pie', 'seed', 'https://www.supergoldenbakes.com/wprm_print/healthy-cottage-pie', 'Supergolden Bakes', '/recipe-photos/healthy-cottage-pie.webp', 'https://www.supergoldenbakes.com/wordpress/wp-content/uploads/2019/09/Slimming_World_Cottage_pie-1-3.jpg',
-    2, 6, 90, '["Spray a casserole with oil and soften the onion over medium heat.","Add the garlic, carrot, celery, salt, herbs, sugar and bay leaf and cook about 8 minutes.","Add the mince, breaking it up, and cook until well browned.","Stir in the tomato paste, then the balsamic, soy and Worcestershire sauce.","Add the squash and stock, partly cover and simmer 30 minutes; thicken with the cornstarch slaked in a little cold water and remove the bay leaf.","Meanwhile boil the potatoes in salted water about 15 minutes until tender, drain (keeping a splash of the water) and mash with the yogurt or fromage frais.","Heat the oven to 220C, spread the filling in a baking dish, cover with the mash and rough up the top with a fork.","Sprinkle with parmesan and bake 30-35 minutes until golden; rest 10 minutes before serving with green veg."]'::jsonb,
+    2, 6, 90, 15, 65, '["Spray a casserole with oil and soften the onion over medium heat.","Add the garlic, carrot, celery, salt, herbs, sugar and bay leaf and cook about 8 minutes.","Add the mince, breaking it up, and cook until well browned.","Stir in the tomato paste, then the balsamic, soy and Worcestershire sauce.","Add the squash and stock, partly cover and simmer 30 minutes; thicken with the cornstarch slaked in a little cold water and remove the bay leaf.","Meanwhile boil the potatoes in salted water about 15 minutes until tender, drain (keeping a splash of the water) and mash with the yogurt or fromage frais.","Heat the oven to 220C, spread the filling in a baking dish, cover with the mash and rough up the top with a fork.","Sprinkle with parmesan and bake 30-35 minutes until golden; rest 10 minutes before serving with green veg."]'::jsonb,
     array['british', 'beef', 'oven', 'comfort']::text[], 'british', 481, 33.5,
     true, 'en', 'medium', '{"pots":3,"oven":true,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.supergoldenbakes.com/wprm_print/healthy-cottage-pie')
@@ -2409,10 +2409,10 @@ select r.id, v.* from r, (values
 -- Healthy turkey chili
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Healthy turkey chili', 'seed', 'https://ambitiouskitchen.com/seriously-the-best-healthy-turkey-chili', 'Ambitious Kitchen', '/recipe-photos/healthy-turkey-chili.webp', 'https://www.ambitiouskitchen.com/wp-content/uploads/2015/11/The-Best-Turkey-Chili-3long.jpg',
-    2, 6, 55, '["Heat the oil in a large pot over medium-high heat and cook the onion, garlic and pepper for 5-7 minutes, stirring often.","Add the turkey and break it up with a spoon until it is no longer pink.","Stir in the chili powder, cumin, oregano, cayenne and salt and toast for about 20 seconds.","Add the tomatoes, stock, kidney beans and corn and bring to a boil.","Lower the heat and simmer 30-45 minutes until thick, then adjust the seasoning.","Serve topped with a little cheese, avocado or coriander if you like."]'::jsonb,
+    2, 6, 55, 10, 45, '["Heat the oil in a large pot over medium-high heat and cook the onion, garlic and pepper for 5-7 minutes, stirring often.","Add the turkey and break it up with a spoon until it is no longer pink.","Stir in the chili powder, cumin, oregano, cayenne and salt and toast for about 20 seconds.","Add the tomatoes, stock, kidney beans and corn and bring to a boil.","Lower the heat and simmer 30-45 minutes until thick, then adjust the seasoning.","Serve topped with a little cheese, avocado or coriander if you like."]'::jsonb,
     array['american', 'turkey', 'stew', 'one-pot', 'comfort', 'high protein']::text[], 'american', 444, 32.8,
     false, 'en', 'easy', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://ambitiouskitchen.com/seriously-the-best-healthy-turkey-chili')
@@ -2439,10 +2439,10 @@ select r.id, v.* from r, (values
 -- Irish lamb stew
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Irish lamb stew', 'seed', 'https://irishcentral.com/culture/food-drink/healthy-lamb-stew-recipe', 'IrishCentral', '/recipe-photos/irish-lamb-stew.webp', 'https://www.irishcentral.com/uploads/article/11423/resized_irish_stew___getty.jpg?t=1768384752',
-    2, 6, 210, '["Toss the lamb with half the garlic, the rosemary and the white wine and leave to marinate for 1 hour; drain and discard the liquid.","Heat the oil in a heavy pot and brown the lamb on all sides in small batches; set aside.","Soften the onion in the same pot for about 4 minutes, then add the remaining garlic for 1 minute.","Return the lamb with the chili flakes, roasted peppers, tomato, bay leaf and red wine; bring to a boil and simmer 15 minutes.","Pour in the stock and cook gently on low for 1.5-2 hours until the lamb is very tender.","Season with salt and pepper and serve with rice or crusty bread."]'::jsonb,
+    2, 6, 210, 15, 135, '["Toss the lamb with half the garlic, the rosemary and the white wine and leave to marinate for 1 hour; drain and discard the liquid.","Heat the oil in a heavy pot and brown the lamb on all sides in small batches; set aside.","Soften the onion in the same pot for about 4 minutes, then add the remaining garlic for 1 minute.","Return the lamb with the chili flakes, roasted peppers, tomato, bay leaf and red wine; bring to a boil and simmer 15 minutes.","Pour in the stock and cook gently on low for 1.5-2 hours until the lamb is very tender.","Season with salt and pepper and serve with rice or crusty bread."]'::jsonb,
     array['irish', 'lamb', 'stew', 'comfort', 'make ahead', 'high protein']::text[], 'irish', 986, 49.1,
     true, 'en', 'medium', '{"pots":2,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://irishcentral.com/culture/food-drink/healthy-lamb-stew-recipe')
@@ -2470,10 +2470,10 @@ select r.id, v.* from r, (values
 -- Jerk chicken curry with beans
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Jerk chicken curry with beans', 'seed', 'https://www.bbcgoodfoodme.com/recipes/jerk-chicken-curry-with-beans', 'BBC Good Food', '/recipe-photos/jerk-chicken-curry-with-beans.webp', 'https://www.bbcgoodfoodme.com/assets/legacy/recipe_images/recipe-image-legacy-id--19058_11.jpg',
-    2, 4, 45, '["Rub the drumsticks with a little of the jerk seasoning plus salt and pepper.","Brown them in half the oil, then lift out onto a plate.","Add the rest of the oil and soften the onion and coriander stalks for about 5 minutes, stirring in the remaining jerk seasoning for the last minute.","Put the chicken back, add the tomatoes, bring to a simmer, cover and cook 20 minutes; start the rice meanwhile.","Uncover, add the beans and simmer 10 minutes more until the chicken is cooked through.","Scatter with coriander leaves and serve with the rice."]'::jsonb,
+    2, 4, 45, 5, 40, '["Rub the drumsticks with a little of the jerk seasoning plus salt and pepper.","Brown them in half the oil, then lift out onto a plate.","Add the rest of the oil and soften the onion and coriander stalks for about 5 minutes, stirring in the remaining jerk seasoning for the last minute.","Put the chicken back, add the tomatoes, bring to a simmer, cover and cook 20 minutes; start the rice meanwhile.","Uncover, add the beans and simmer 10 minutes more until the chicken is cooked through.","Scatter with coriander leaves and serve with the rice."]'::jsonb,
     array['caribbean', 'chicken', 'curry', 'rice', 'comfort', 'high protein']::text[], 'caribbean', 902, 56.4,
     true, 'en', 'medium', '{"pots":2,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.bbcgoodfoodme.com/recipes/jerk-chicken-curry-with-beans')
@@ -2496,10 +2496,10 @@ select r.id, v.* from r, (values
 -- Jerk chicken with sweet potato fries
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Jerk chicken with sweet potato fries', 'seed', 'https://www.abelandcole.co.uk/box-recipes/jerked-chicken-with-sweet-potato-fries-tomato-salad', 'Abel & Cole', '/recipe-photos/jerk-chicken-with-sweet-potato-fries.webp', 'https://www.abelandcole.co.uk/media/3676_18875_z.jpg',
-    2, 2, 55, '["Heat the oven to 200C (180C fan) and line two baking trays.","Cut the sweet potatoes into finger-thick chips, toss with most of the oil and a pinch of salt and spread on one tray.","Rub the jerk seasoning into the chicken and lay it on the second tray.","Roast 20 minutes with the chicken on the top shelf and the chips below, then swap the trays and roast 15-20 minutes more until the chips are tender and charred and the chicken is cooked.","Meanwhile mix the tomatoes, onion and chilli with the lime zest, half the lime juice, a drizzle of oil and a pinch of salt.","Serve the chicken and chips with the tomato salad, lamb''s lettuce and the rest of the lime in wedges."]'::jsonb,
+    2, 2, 55, 15, 40, '["Heat the oven to 200C (180C fan) and line two baking trays.","Cut the sweet potatoes into finger-thick chips, toss with most of the oil and a pinch of salt and spread on one tray.","Rub the jerk seasoning into the chicken and lay it on the second tray.","Roast 20 minutes with the chicken on the top shelf and the chips below, then swap the trays and roast 15-20 minutes more until the chips are tender and charred and the chicken is cooked.","Meanwhile mix the tomatoes, onion and chilli with the lime zest, half the lime juice, a drizzle of oil and a pinch of salt.","Serve the chicken and chips with the tomato salad, lamb''s lettuce and the rest of the lime in wedges."]'::jsonb,
     array['caribbean', 'chicken', 'oven', 'light', 'high protein']::text[], 'caribbean', 513, 35.1,
     true, 'en', 'easy', '{"pots":2,"oven":true,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.abelandcole.co.uk/box-recipes/jerked-chicken-with-sweet-potato-fries-tomato-salad')
@@ -2522,10 +2522,10 @@ select r.id, v.* from r, (values
 -- Lamb kofta with herby yogurt
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Lamb kofta with herby yogurt', 'seed', 'https://hampshirefare.co.uk/recipes/lamb-kofta-with-herby-yogurt-and-flatbreads/', 'Hampshire Fare', '/recipe-photos/lamb-kofta-with-herby-yogurt.webp', 'https://hampshirefare.co.uk/wp-content/uploads/2025/07/Koftas-recipe-hampshire-fare.png',
-    2, 4, 35, '["Combine the lamb with the garlic, grated onion, spices, herbs, salt and pepper.","Split into 4 portions, press each around a skewer into a long kofta and chill 10-15 minutes if time allows.","Stir the yogurt with the garlic, lemon juice, herbs and seasoning; keep cold.","Heat a grill or barbecue to medium-high and brush the koftas with oil.","Grill 12-15 minutes, turning often, until browned and cooked through (70°C inside).","Serve with warm flatbreads, the yogurt sauce, lettuce, cucumber and red onion."]'::jsonb,
+    2, 4, 35, 10, 15, '["Combine the lamb with the garlic, grated onion, spices, herbs, salt and pepper.","Split into 4 portions, press each around a skewer into a long kofta and chill 10-15 minutes if time allows.","Stir the yogurt with the garlic, lemon juice, herbs and seasoning; keep cold.","Heat a grill or barbecue to medium-high and brush the koftas with oil.","Grill 12-15 minutes, turning often, until browned and cooked through (70°C inside).","Serve with warm flatbreads, the yogurt sauce, lettuce, cucumber and red onion."]'::jsonb,
     array['middle eastern', 'mediterranean', 'lamb', 'grill', 'wrap']::text[], 'middle eastern', 488, 32.7,
     true, 'en', 'easy', '{"pots":0,"oven":false,"special":["barbecue"]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://hampshirefare.co.uk/recipes/lamb-kofta-with-herby-yogurt-and-flatbreads/')
@@ -2559,10 +2559,10 @@ select r.id, v.* from r, (values
 -- Lebanese chicken shawarma wraps
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Lebanese chicken shawarma wraps', 'seed', 'https://www.munatycooking.com/chicken-shawarma/', 'Munaty Cooking', '/recipe-photos/lebanese-chicken-shawarma-wraps.webp', 'https://www.munatycooking.com/wp-content/uploads/2023/12/chicken-shawarma-image-1-2023.jpg',
-    2, 4, 210, '["Mix the garlic, lemon juice, yogurt, salt, spices and olive oil into a marinade.","Coat the chicken in it and refrigerate 3 hours or overnight (at least 1 hour if pressed).","Heat the frying oil in a wide pan until very hot.","Cook the chicken in a single uncrowded layer, about 2 minutes per side for thin breast slices, until browned and cooked through.","Cut the cooked chicken into strips.","Spread toum down the centre of each pita, add the chicken, pickles and fries if using.","Roll up tightly and halve to serve."]'::jsonb,
+    2, 4, 210, 10, 20, '["Mix the garlic, lemon juice, yogurt, salt, spices and olive oil into a marinade.","Coat the chicken in it and refrigerate 3 hours or overnight (at least 1 hour if pressed).","Heat the frying oil in a wide pan until very hot.","Cook the chicken in a single uncrowded layer, about 2 minutes per side for thin breast slices, until browned and cooked through.","Cut the cooked chicken into strips.","Spread toum down the centre of each pita, add the chicken, pickles and fries if using.","Roll up tightly and halve to serve."]'::jsonb,
     array['lebanese', 'mediterranean', 'chicken', 'wrap', 'make ahead']::text[], 'lebanese', 572, 34.1,
     true, 'en', 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.munatycooking.com/chicken-shawarma/')
@@ -2591,10 +2591,10 @@ select r.id, v.* from r, (values
 -- Lighter Swedish meatballs
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Lighter Swedish meatballs', 'seed', 'https://www.skinnytaste.com/swedish-meatballs/', 'Skinnytaste', '/recipe-photos/lighter-swedish-meatballs.webp', 'https://www.skinnytaste.com/wp-content/uploads/2011/05/Swedish-Meatballs-5.jpg',
-    2, 4, 40, '["Soften the onion and garlic in the oil, add the celery and parsley for a couple of minutes, then let the mix cool.","Combine the turkey, beef, egg, cooled vegetables, breadcrumbs, salt, pepper and allspice; shape into 8 meatballs.","Bring the broth to a boil in a skillet, lower to a simmer and add the meatballs.","Cover and poach about 20 minutes until cooked through, then lift the meatballs out.","Strain the broth and blend it with the cream cheese until smooth.","Return the sauce and meatballs to the skillet and simmer a few minutes until the sauce thickens slightly; garnish with parsley."]'::jsonb,
+    2, 4, 40, 10, 30, '["Soften the onion and garlic in the oil, add the celery and parsley for a couple of minutes, then let the mix cool.","Combine the turkey, beef, egg, cooled vegetables, breadcrumbs, salt, pepper and allspice; shape into 8 meatballs.","Bring the broth to a boil in a skillet, lower to a simmer and add the meatballs.","Cover and poach about 20 minutes until cooked through, then lift the meatballs out.","Strain the broth and blend it with the cream cheese until smooth.","Return the sauce and meatballs to the skillet and simmer a few minutes until the sauce thickens slightly; garnish with parsley."]'::jsonb,
     array['swedish', 'turkey', 'one-pot', 'comfort', 'high protein']::text[], 'swedish', 421, 34.2,
     false, 'en', 'medium', '{"pots":1,"oven":false,"special":["blender"]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.skinnytaste.com/swedish-meatballs/')
@@ -2621,10 +2621,10 @@ select r.id, v.* from r, (values
 -- Lighter chicken paprikash
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Lighter chicken paprikash', 'seed', 'https://reciperunner.com/easy-smokey-chicken-paprikash/', 'Recipe Runner', '/recipe-photos/lighter-chicken-paprikash.webp', 'https://reciperunner.com/wp-content/uploads/2018/02/Easy-Smokey-Chicken-Paprikash-Photo.jpg',
-    2, 4, 25, '["Put a pan of salted water on to boil and cook the egg noodles while you make the sauce.","Heat the oil in a large skillet over medium-high heat and cook the chicken until no longer pink; lift it out.","Soften the onion in the same pan, then add the garlic for about a minute.","Return the chicken with both paprikas, the stock, tomatoes, salt and pepper; bring to a boil and cook about 2 minutes until a little thicker.","Take the pan off the heat and stir in the yogurt (off the heat so it doesn''t split); adjust the seasoning.","Spoon over the noodles and finish with parsley."]'::jsonb,
+    2, 4, 25, 10, 15, '["Put a pan of salted water on to boil and cook the egg noodles while you make the sauce.","Heat the oil in a large skillet over medium-high heat and cook the chicken until no longer pink; lift it out.","Soften the onion in the same pan, then add the garlic for about a minute.","Return the chicken with both paprikas, the stock, tomatoes, salt and pepper; bring to a boil and cook about 2 minutes until a little thicker.","Take the pan off the heat and stir in the yogurt (off the heat so it doesn''t split); adjust the seasoning.","Spoon over the noodles and finish with parsley."]'::jsonb,
     array['hungarian', 'chicken', 'stew', 'noodles', 'quick', 'comfort', 'high protein']::text[], 'hungarian', 589, 43.3,
     true, 'en', 'easy', '{"pots":2,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://reciperunner.com/easy-smokey-chicken-paprikash/')
@@ -2650,10 +2650,10 @@ select r.id, v.* from r, (values
 -- Moroccan chicken tagine with olives and lemon
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Moroccan chicken tagine with olives and lemon', 'seed', 'https://www.americastestkitchen.com/recipes/5189-moroccan-chicken-tagine-with-olives-and-lemon-djej-emshmel', 'America''s Test Kitchen', '/recipe-photos/moroccan-chicken-tagine-with-olives-and-lemon.webp', 'https://res.cloudinary.com/hksqkdlah/image/upload/c_fill,dpr_2.0,f_auto,fl_lossy.progressive.strip_profile,g_faces:auto,q_auto:low/8112_sfs-chicken-tangine-with-olives-and-lemon-article',
-    2, 4, 90, '["Mix most of the garlic with all the ground spices; finely chop one zest strip and mix it with the remaining garlic.","Pat the chicken dry, season, and brown it well in hot oil in a heavy pot, in batches; set aside.","Pour off most of the fat, then soften the onion with the remaining zest strips.","Stir in the spice paste for about 30 seconds, then add carrots, stock and honey, scraping the pot.","Return the chicken and juices, cover and simmer gently until tender, about 1 hour for thighs (add breast pieces only for the last 20 minutes).","Lift out the chicken and keep warm; skim the sauce, add the olives and simmer until slightly thickened and the carrots are soft.","Put the chicken back, stir in the garlic-zest mix, coriander and lemon juice, adjust seasoning and serve."]'::jsonb,
+    2, 4, 90, 15, 75, '["Mix most of the garlic with all the ground spices; finely chop one zest strip and mix it with the remaining garlic.","Pat the chicken dry, season, and brown it well in hot oil in a heavy pot, in batches; set aside.","Pour off most of the fat, then soften the onion with the remaining zest strips.","Stir in the spice paste for about 30 seconds, then add carrots, stock and honey, scraping the pot.","Return the chicken and juices, cover and simmer gently until tender, about 1 hour for thighs (add breast pieces only for the last 20 minutes).","Lift out the chicken and keep warm; skim the sauce, add the olives and simmer until slightly thickened and the carrots are soft.","Put the chicken back, stir in the garlic-zest mix, coriander and lemon juice, adjust seasoning and serve."]'::jsonb,
     array['moroccan', 'north african', 'chicken', 'stew', 'one-pot', 'comfort', 'high protein']::text[], 'moroccan', 992, 84.6,
     true, 'en', 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.americastestkitchen.com/recipes/5189-moroccan-chicken-tagine-with-olives-and-lemon-djej-emshmel')
@@ -2685,10 +2685,10 @@ select r.id, v.* from r, (values
 -- Peruvian roast chicken with green sauce
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Peruvian roast chicken with green sauce', 'seed', 'https://onceuponachef.com/recipes/peruvian-style-roast-chicken-with-green-sauce.html/comment-page-4', 'Once Upon a Chef', '/recipe-photos/peruvian-roast-chicken-with-green-sauce.webp', 'https://www.onceuponachef.com/images/2013/01/peruvian-chicken-3-1200x873.jpg',
-    2, 4, 480, '["Blitz the marinade ingredients (oil, lime juice, garlic, salt, spices, oregano, sugar) until smooth.","Dry the chicken, loosen the skin over breast and legs, push most of the marinade underneath and rub the rest outside.","Refrigerate at least 6 hours or overnight.","Heat the oven to 220°C (425°F) with a rack low-middle; set the chicken on an oiled rack over a foil-lined pan and tie the legs.","Roast 20 minutes until golden, then lower to 190°C (375°F) and roast until the juices run clear (about 70 minutes for a 1.8 kg bird, less for a smaller one); tent with foil if browning too fast.","Blend jalapeños, coriander, garlic, mayonnaise, sour cream, lime juice, salt and pepper, then stream in the oil with the motor running; chill to thicken.","Rest the chicken under foil about 20 minutes, carve and serve with the green sauce."]'::jsonb,
+    2, 4, 480, 20, 90, '["Blitz the marinade ingredients (oil, lime juice, garlic, salt, spices, oregano, sugar) until smooth.","Dry the chicken, loosen the skin over breast and legs, push most of the marinade underneath and rub the rest outside.","Refrigerate at least 6 hours or overnight.","Heat the oven to 220°C (425°F) with a rack low-middle; set the chicken on an oiled rack over a foil-lined pan and tie the legs.","Roast 20 minutes until golden, then lower to 190°C (375°F) and roast until the juices run clear (about 70 minutes for a 1.8 kg bird, less for a smaller one); tent with foil if browning too fast.","Blend jalapeños, coriander, garlic, mayonnaise, sour cream, lime juice, salt and pepper, then stream in the oil with the motor running; chill to thicken.","Rest the chicken under foil about 20 minutes, carve and serve with the green sauce."]'::jsonb,
     array['peruvian', 'chicken', 'oven', 'comfort', 'make ahead', 'high protein']::text[], 'peruvian', 1269, 83.8,
     true, 'en', 'medium', '{"pots":1,"oven":true,"special":["blender"]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://onceuponachef.com/recipes/peruvian-style-roast-chicken-with-green-sauce.html/comment-page-4')
@@ -2720,10 +2720,10 @@ select r.id, v.* from r, (values
 -- Seared harissa salmon with cauliflower and chickpeas
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Seared harissa salmon with cauliflower and chickpeas', 'seed', 'https://www.americastestkitchen.com/recipes/16707-one-pan-seared-salmon-with-cauliflower-chickpeas-and-harissa', 'America''s Test Kitchen', '/recipe-photos/seared-harissa-salmon-with-cauliflower-and-chickpeas.webp', 'https://res.cloudinary.com/hksqkdlah/image/upload/c_fill,dpr_2.0,f_auto,fl_lossy.progressive.strip_profile,g_faces:auto,q_auto:low/SFS_One-Pan-Seared-Salmon-with-Cauliflower-Chickpeas-and-Harissa_617_nsowls',
-    2, 4, 60, '["Stir the harissa and honey together; set aside.","In a large bowl toss the chickpeas with part of the oil, the lemon juice and the shallot.","Cook the cauliflower with most of the ground coriander, half the salt and more oil in a covered nonstick skillet until starting to soften, then uncover and cook until spotty brown.","Add the cauliflower to the chickpeas with the olives, coriander and mint; keep warm and wipe out the pan.","Season the salmon with the rest of the coriander and salt and sear it, skinned side up, in the remaining oil until deeply browned.","Flip and cook until the centre reaches about 50°C (125°F) for medium-rare.","Off the heat brush the fillets with the harissa-honey, re-toss the vegetables, season and serve together."]'::jsonb,
+    2, 4, 60, 15, 35, '["Stir the harissa and honey together; set aside.","In a large bowl toss the chickpeas with part of the oil, the lemon juice and the shallot.","Cook the cauliflower with most of the ground coriander, half the salt and more oil in a covered nonstick skillet until starting to soften, then uncover and cook until spotty brown.","Add the cauliflower to the chickpeas with the olives, coriander and mint; keep warm and wipe out the pan.","Season the salmon with the rest of the coriander and salt and sear it, skinned side up, in the remaining oil until deeply browned.","Flip and cook until the centre reaches about 50°C (125°F) for medium-rare.","Off the heat brush the fillets with the harissa-honey, re-toss the vegetables, season and serve together."]'::jsonb,
     array['north african', 'mediterranean', 'salmon', 'one-pot', 'fancy', 'fish', 'high protein']::text[], 'north african', 821, 43.6,
     true, 'en', 'medium', '{"pots":1,"oven":false,"special":["thermometer"]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.americastestkitchen.com/recipes/16707-one-pan-seared-salmon-with-cauliflower-chickpeas-and-harissa')
@@ -2750,10 +2750,10 @@ select r.id, v.* from r, (values
 -- Sherry-braised chicken with chorizo and chickpeas
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Sherry-braised chicken with chorizo and chickpeas', 'seed', 'https://sainsburysmagazine.co.uk/recipes/mains/sherry-braised-chicken-with-chorizo-and-chickpeas', 'Sainsbury''s Magazine', '/recipe-photos/sherry-braised-chicken-with-chorizo-and-chickpeas.webp', 'https://www.sainsburysmagazine.co.uk/media/14642/download/Sherry-chicken.jpg?v=1',
-    2, 4, 45, '["Trim any fat off the chicken thighs and cut each into 2-3 pieces.","Season the chicken and brown it on both sides in half the oil over high heat; lift it out.","Deglaze the hot pan with the sherry, scraping up the browned bits, and pour it into a jug.","Lower the heat a little, add the rest of the oil with the chorizo, onion and garlic, and cook until the onion turns translucent.","Return the sherry and chicken with the stock, chickpeas, peppers and seasoning; bring to a simmer.","Cover and cook gently about 15 minutes until the chicken is cooked through.","Finish with chopped parsley."]'::jsonb,
+    2, 4, 45, 25, 20, '["Trim any fat off the chicken thighs and cut each into 2-3 pieces.","Season the chicken and brown it on both sides in half the oil over high heat; lift it out.","Deglaze the hot pan with the sherry, scraping up the browned bits, and pour it into a jug.","Lower the heat a little, add the rest of the oil with the chorizo, onion and garlic, and cook until the onion turns translucent.","Return the sherry and chicken with the stock, chickpeas, peppers and seasoning; bring to a simmer.","Cover and cook gently about 15 minutes until the chicken is cooked through.","Finish with chopped parsley."]'::jsonb,
     array['spanish', 'mediterranean', 'chicken', 'stew', 'one-pot', 'comfort', 'high protein']::text[], 'spanish', 626, 40.1,
     false, 'en', 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://sainsburysmagazine.co.uk/recipes/mains/sherry-braised-chicken-with-chorizo-and-chickpeas')
@@ -2778,10 +2778,10 @@ select r.id, v.* from r, (values
 -- West African chicken peanut stew
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'West African chicken peanut stew', 'seed', 'https://www.tesco.com/recipes/en-GB/recipe/west-african-style-chicken-peanut-stew', 'Tesco Real Food', '/recipe-photos/west-african-chicken-peanut-stew.webp', 'https://digitalcontent.api.tesco.com/v2/media/realfood/c41639d6-6ddb-4ff3-8f09-952f5151e6b7/RFO+1400x919+ChickenPeanutStew.jpeg',
-    2, 4, 55, '["Soften the onion in half the oil for about 5 minutes, then add the sweet potato and pepper and cook 10 minutes more; set aside.","Whisk the peanut butter into the hot stock until smooth.","Cook the rice according to the packet.","Heat the remaining oil and fry the chicken with the garlic, ginger, ground coriander, cumin and chilli for about 5 minutes until golden.","Return the vegetables, pour in the peanut stock and simmer about 20 minutes until thick and the chicken is cooked through.","Serve over rice, scattered with coriander leaves and chopped peanuts."]'::jsonb,
+    2, 4, 55, 15, 40, '["Soften the onion in half the oil for about 5 minutes, then add the sweet potato and pepper and cook 10 minutes more; set aside.","Whisk the peanut butter into the hot stock until smooth.","Cook the rice according to the packet.","Heat the remaining oil and fry the chicken with the garlic, ginger, ground coriander, cumin and chilli for about 5 minutes until golden.","Return the vegetables, pour in the peanut stock and simmer about 20 minutes until thick and the chicken is cooked through.","Serve over rice, scattered with coriander leaves and chopped peanuts."]'::jsonb,
     array['african', 'chicken', 'stew', 'rice', 'comfort', 'high protein']::text[], 'african', 913, 44,
     true, 'en', 'medium', '{"pots":2,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.tesco.com/recipes/en-GB/recipe/west-african-style-chicken-peanut-stew')
@@ -2809,10 +2809,10 @@ select r.id, v.* from r, (values
 -- Çılbır (Turkish eggs in garlic yogurt)
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Çılbır (Turkish eggs in garlic yogurt)', 'seed', 'https://olivemagazine.com/recipes/vegetarian/cilbir-turkish-style-poached-eggs-in-garlicky-yogurt', 'Olive Magazine', '/recipe-photos/cilbir-turkish-eggs-in-garlic-yogurt.webp', 'https://images.immediate.co.uk/production/volatile/sites/2/2024/03/turkish-poached-eggs-f93f073.gif?resize=1200%2C630',
-    2, 2, 20, '["Let the yogurt come to room temperature (take it out about 30 minutes ahead).","Crush the garlic with a pinch of salt into a paste, stir it through the yogurt and spread it over two plates.","Bring a small pan of salted water with the vinegar to the boil.","Swirl the water, slip in one egg and poach 2-3 minutes until the white sets but the yolk stays runny; repeat with the second.","Meanwhile warm the olive oil over low-medium heat, add the pul biber, let it infuse about 30 seconds and take off the heat.","Drain the eggs on kitchen paper, set them on the yogurt, spoon over the chilli oil, salt and scatter with herbs.","Serve straight away with bread."]'::jsonb,
+    2, 2, 20, 10, 5, '["Let the yogurt come to room temperature (take it out about 30 minutes ahead).","Crush the garlic with a pinch of salt into a paste, stir it through the yogurt and spread it over two plates.","Bring a small pan of salted water with the vinegar to the boil.","Swirl the water, slip in one egg and poach 2-3 minutes until the white sets but the yolk stays runny; repeat with the second.","Meanwhile warm the olive oil over low-medium heat, add the pul biber, let it infuse about 30 seconds and take off the heat.","Drain the eggs on kitchen paper, set them on the yogurt, spoon over the chilli oil, salt and scatter with herbs.","Serve straight away with bread."]'::jsonb,
     array['turkish', 'mediterranean', 'eggs', 'quick', 'vegetarian', 'light']::text[], 'turkish', 508, 28.5,
     true, 'en', 'medium', '{"pots":2,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://olivemagazine.com/recipes/vegetarian/cilbir-turkish-style-poached-eggs-in-garlicky-yogurt')
@@ -2834,10 +2834,10 @@ select r.id, v.* from r, (values
 -- Adjaruli Khachapuri
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Adjaruli Khachapuri', 'seed', 'https://www.saveur.com/adjaruli-khachapuri-georgian-cheese-bread-recipe', 'Saveur', '/recipe-photos/adjaruli-khachapuri.webp', 'https://www.saveur.com/uploads/2017/03/mTG_khachapuri-adjaruli_2000x1500_02.webp?auto=webp',
-    2, 4, 135, '["Put a pizza stone in the middle of the oven and heat to 260°C (500°F); oil a large bowl.","Mix yeast, sugar, oil, about 80 ml lukewarm water, flour and salt with a dough hook: 2-3 minutes on low, then 3-4 minutes on medium-low, until smooth and slightly wet.","Place in the oiled bowl, cover and leave somewhere warm 50-60 minutes until nearly doubled.","Mix the mozzarella and feta; crack the egg into a small cup, keeping the yolk whole.","Shape the dough into a ball, cover loosely and rest 15 minutes.","On floured baking paper, roll to a 25 cm round about 3 mm thick, spread with half the cheese leaving a small border, roll two opposite sides inward and pinch and twist the ends into a boat; fill the centre with the remaining cheese.","Leave uncovered 15 minutes to puff slightly, brush the edges with oil and slide onto the hot stone.","Bake 14-16 minutes until lightly golden and melted, pour the egg into the centre and bake 3-4 minutes more until the white just sets.","Dot with butter and serve hot, stirring egg and butter into the cheese at the table."]'::jsonb,
+    2, 4, 135, 25, 20, '["Put a pizza stone in the middle of the oven and heat to 260°C (500°F); oil a large bowl.","Mix yeast, sugar, oil, about 80 ml lukewarm water, flour and salt with a dough hook: 2-3 minutes on low, then 3-4 minutes on medium-low, until smooth and slightly wet.","Place in the oiled bowl, cover and leave somewhere warm 50-60 minutes until nearly doubled.","Mix the mozzarella and feta; crack the egg into a small cup, keeping the yolk whole.","Shape the dough into a ball, cover loosely and rest 15 minutes.","On floured baking paper, roll to a 25 cm round about 3 mm thick, spread with half the cheese leaving a small border, roll two opposite sides inward and pinch and twist the ends into a boat; fill the centre with the remaining cheese.","Leave uncovered 15 minutes to puff slightly, brush the edges with oil and slide onto the hot stone.","Bake 14-16 minutes until lightly golden and melted, pour the egg into the centre and bake 3-4 minutes more until the white just sets.","Dot with butter and serve hot, stirring egg and butter into the cheese at the table."]'::jsonb,
     array['georgian', 'eggs', 'oven', 'vegetarian', 'comfort', 'treat']::text[], 'georgian', 676, 40.1,
     true, 'en', 'hard', '{"pots":1,"oven":true,"special":["stand mixer","rolling pin"]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.saveur.com/adjaruli-khachapuri-georgian-cheese-bread-recipe')
@@ -2859,10 +2859,10 @@ select r.id, v.* from r, (values
 -- Canadian Poutine
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Canadian Poutine', 'seed', 'https://anaffairfromtheheart.com/wprm_print/canadian-poutine-recipe', 'An Affair from the Heart', '/recipe-photos/canadian-poutine.webp', 'https://anaffairfromtheheart.com/wp-content/uploads/2022/04/Canadian-Poutine-MAIN.jpg',
-    2, 4, 10, '["Prepare the gravy according to the packet instructions and keep it hot over low heat.","Deep-fry the fries in oil at 350°F (175°C) until golden and crisp.","Drain the fries on a tray lined with paper towels.","Pile the fries onto plates, scatter the cheese curds on top and ladle over the hot gravy.","Eat straight away while the curds are just starting to melt."]'::jsonb,
+    2, 4, 10, 2, 8, '["Prepare the gravy according to the packet instructions and keep it hot over low heat.","Deep-fry the fries in oil at 350°F (175°C) until golden and crisp.","Drain the fries on a tray lined with paper towels.","Pile the fries onto plates, scatter the cheese curds on top and ladle over the hot gravy.","Eat straight away while the curds are just starting to melt."]'::jsonb,
     array['canadian', 'comfort', 'quick', 'treat']::text[], 'canadian', 400, 12.9,
     true, 'en', 'hard', '{"pots":2,"oven":false,"special":["thermometer"]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://anaffairfromtheheart.com/wprm_print/canadian-poutine-recipe')
@@ -2879,10 +2879,10 @@ select r.id, v.* from r, (values
 -- Croque-monsieur maison
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Croque-monsieur maison', 'seed', 'https://www.demotivateur.fr/food/recette/croque-monsieur-maison-2990', 'Demotivateur Food', '/recipe-photos/croque-monsieur-maison.webp', 'https://www.demotivateur.fr/images/cover_recette/1759999281-croque_monsieur_maison.jpg',
-    2, 4, 25, '["Fondre le beurre dans une casserole, ajouter la farine, puis verser le lait petit à petit en fouettant pour obtenir une béchamel lisse.","Laisser épaissir, assaisonner de sel, poivre et muscade, puis retirer du feu.","Faire fondre la moitié de l''emmental dans la béchamel chaude.","Beurrer une face de chaque tranche de pain ; sur la face non beurrée de la moitié des tranches, étaler un peu de béchamel, poser le jambon et un peu de fromage, puis refermer.","Dorer les sandwichs à la poêle 3 à 4 min de chaque côté.","Les poser sur une plaque recouverte de papier cuisson, napper du reste de béchamel et parsemer du fromage restant.","Passer sous le gril environ 5 min jusqu''à ce que le dessus soit gratiné, et servir aussitôt avec une salade."]'::jsonb,
+    2, 4, 25, 10, 15, '["Fondre le beurre dans une casserole, ajouter la farine, puis verser le lait petit à petit en fouettant pour obtenir une béchamel lisse.","Laisser épaissir, assaisonner de sel, poivre et muscade, puis retirer du feu.","Faire fondre la moitié de l''emmental dans la béchamel chaude.","Beurrer une face de chaque tranche de pain ; sur la face non beurrée de la moitié des tranches, étaler un peu de béchamel, poser le jambon et un peu de fromage, puis refermer.","Dorer les sandwichs à la poêle 3 à 4 min de chaque côté.","Les poser sur une plaque recouverte de papier cuisson, napper du reste de béchamel et parsemer du fromage restant.","Passer sous le gril environ 5 min jusqu''à ce que le dessus soit gratiné, et servir aussitôt avec une salade."]'::jsonb,
     array['french', 'pork', 'grill', 'comfort', 'quick', 'treat']::text[], 'french', 568, 35.6,
     true, 'fr', 'medium', '{"pots":3,"oven":true,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.demotivateur.fr/food/recette/croque-monsieur-maison-2990')
@@ -2904,10 +2904,10 @@ select r.id, v.* from r, (values
 -- Fish and Chips
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Fish and Chips', 'seed', 'https://www.deliciousmagazine.co.uk/?p=791', 'delicious. magazine', null, null,
-    2, 2, 40, '["Preheat the oven to 220°C (200°C fan). Cut the potatoes, skin on, into chunky chips.","Parboil the chips for 2-3 minutes, drain well and let them steam dry.","Toss them with the vegetable oil in a roasting tin and roast 25-30 minutes, turning once, until golden.","About 15 minutes before the chips are ready, heat the olive oil in a large heavy frying pan and dust the cod with flour.","Fry the cod skin-side down for 4-5 minutes, turn and cook 5-6 minutes more until just flaking (finish very thick pieces in the oven for 5 minutes); move to warm plates.","In the same pan, sizzle the gherkins and capers for 1 minute, add the lemon juice and bubble 30 seconds on high, then take off the heat and stir in the herbs.","Top each fillet with a spoon of mayonnaise and the caper mixture, and serve with the chips."]'::jsonb,
+    2, 2, 40, 10, 30, '["Preheat the oven to 220°C (200°C fan). Cut the potatoes, skin on, into chunky chips.","Parboil the chips for 2-3 minutes, drain well and let them steam dry.","Toss them with the vegetable oil in a roasting tin and roast 25-30 minutes, turning once, until golden.","About 15 minutes before the chips are ready, heat the olive oil in a large heavy frying pan and dust the cod with flour.","Fry the cod skin-side down for 4-5 minutes, turn and cook 5-6 minutes more until just flaking (finish very thick pieces in the oven for 5 minutes); move to warm plates.","In the same pan, sizzle the gherkins and capers for 1 minute, add the lemon juice and bubble 30 seconds on high, then take off the heat and stir in the herbs.","Top each fillet with a spoon of mayonnaise and the caper mixture, and serve with the chips."]'::jsonb,
     array['british', 'cod', 'oven', 'comfort', 'treat', 'fish']::text[], 'british', 758, 48.4,
     true, 'en', 'medium', '{"pots":3,"oven":true,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.deliciousmagazine.co.uk/?p=791')
@@ -2931,10 +2931,10 @@ select r.id, v.* from r, (values
 -- Korean Fried Chicken (Yangnyeom-tongdak)
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Korean Fried Chicken (Yangnyeom-tongdak)', 'seed', 'https://www.maangchi.com/?p=11562', 'Maangchi', null, null,
-    2, 3, 60, '["Heat about 5 cm of oil in a heavy pot over medium-high heat for 10-12 minutes until it reaches 165-175°C; a test piece of chicken should bubble immediately.","In a large bowl, mix the wings by hand with salt, pepper, starch, flour, baking soda and eggs until evenly coated.","Add the chicken to the oil piece by piece (in batches if needed) and fry about 12 minutes, turning, until golden and crunchy.","Lift the wings onto a wire strainer set over a bowl to drain.","For the sauce, heat the oil in a large skillet, fry the garlic about 30 seconds until lightly golden, stir in ketchup, rice syrup, gochujang and vinegar, then simmer on low until bubbling and take off the heat.","Let the frying oil come back to temperature (about 2 minutes) and fry the wings a second time for about 12 minutes until extra crunchy.","Bring the sauce back to a bubble over medium-high heat, add the hot wings and toss until glossy.","Sprinkle with sesame seeds and serve, ideally with pickled radish."]'::jsonb,
+    2, 3, 60, 15, 40, '["Heat about 5 cm of oil in a heavy pot over medium-high heat for 10-12 minutes until it reaches 165-175°C; a test piece of chicken should bubble immediately.","In a large bowl, mix the wings by hand with salt, pepper, starch, flour, baking soda and eggs until evenly coated.","Add the chicken to the oil piece by piece (in batches if needed) and fry about 12 minutes, turning, until golden and crunchy.","Lift the wings onto a wire strainer set over a bowl to drain.","For the sauce, heat the oil in a large skillet, fry the garlic about 30 seconds until lightly golden, stir in ketchup, rice syrup, gochujang and vinegar, then simmer on low until bubbling and take off the heat.","Let the frying oil come back to temperature (about 2 minutes) and fry the wings a second time for about 12 minutes until extra crunchy.","Bring the sauce back to a bubble over medium-high heat, add the hot wings and toss until glossy.","Sprinkle with sesame seeds and serve, ideally with pickled radish."]'::jsonb,
     array['korean', 'asian', 'chicken', 'comfort', 'fancy', 'treat']::text[], 'korean', 974, 63.1,
     true, 'en', 'hard', '{"pots":2,"oven":false,"special":["thermometer"]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.maangchi.com/?p=11562')
@@ -2962,10 +2962,10 @@ select r.id, v.* from r, (values
 -- Lasagne verdi alla bolognese
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Lasagne verdi alla bolognese', 'seed', 'https://www.scattidigusto.it/2021/02/11/lasagne-alla-bolognese-ricetta-originale-con-ragu-cremoso-e-sfoglia-verde/', 'Scatti di Gusto', '/recipe-photos/lasagne-verdi-alla-bolognese.webp', 'https://www.scattidigusto.it/wp-content/uploads/2021/02/lasagne-verdi-con-ragu-alla-bolognese.jpg',
-    2, 8, 180, '["Scaldare olio e burro in una casseruola e rosolare il macinato a fiamma bassa per circa 10 minuti.","Alzare il fuoco, bagnare con il vino bianco e lasciarlo evaporare del tutto.","Unire i pelati passati e il basilico, poi cuocere circa 1 ora e mezza con il coperchio appoggiato.","Intanto cuocere gli spinaci in pentola coperta per 5 minuti senza condimento, scolarli, farli raffreddare e strizzarli bene in un canovaccio.","Frullare gli spinaci, aggiungere le due farine, l''uovo, il tuorlo e un pizzico di sale e impastare; avvolgere nella pellicola e far riposare 30 minuti.","Per la besciamella sciogliere il burro, tostare la farina fino a un roux dorato, poi versare il latte caldo in più riprese mescolando; salare e profumare con la noce moscata.","Stendere la pasta sottilissima (circa mezzo millimetro) e tagliarla a rettangoli.","Sbollentare le sfoglie 30 secondi in acqua salata con un filo d''olio, raffreddarle in acqua fredda e asciugarle su un canovaccio.","In una teglia imburrata alternare sfoglia, besciamella, ragù e parmigiano per 5 strati, chiudendo con besciamella e parmigiano.","Cuocere in forno già caldo a 170 °C per 40 minuti."]'::jsonb,
+    2, 8, 180, 30, 150, '["Scaldare olio e burro in una casseruola e rosolare il macinato a fiamma bassa per circa 10 minuti.","Alzare il fuoco, bagnare con il vino bianco e lasciarlo evaporare del tutto.","Unire i pelati passati e il basilico, poi cuocere circa 1 ora e mezza con il coperchio appoggiato.","Intanto cuocere gli spinaci in pentola coperta per 5 minuti senza condimento, scolarli, farli raffreddare e strizzarli bene in un canovaccio.","Frullare gli spinaci, aggiungere le due farine, l''uovo, il tuorlo e un pizzico di sale e impastare; avvolgere nella pellicola e far riposare 30 minuti.","Per la besciamella sciogliere il burro, tostare la farina fino a un roux dorato, poi versare il latte caldo in più riprese mescolando; salare e profumare con la noce moscata.","Stendere la pasta sottilissima (circa mezzo millimetro) e tagliarla a rettangoli.","Sbollentare le sfoglie 30 secondi in acqua salata con un filo d''olio, raffreddarle in acqua fredda e asciugarle su un canovaccio.","In una teglia imburrata alternare sfoglia, besciamella, ragù e parmigiano per 5 strati, chiudendo con besciamella e parmigiano.","Cuocere in forno già caldo a 170 °C per 40 minuti."]'::jsonb,
     array['italian', 'mediterranean', 'veal', 'pasta', 'oven', 'comfort', 'treat']::text[], 'italian', 978, 42.6,
     true, 'it', 'hard', '{"pots":4,"oven":true,"special":["blender","rolling pin"]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.scattidigusto.it/2021/02/11/lasagne-alla-bolognese-ricetta-originale-con-ragu-cremoso-e-sfoglia-verde/')
@@ -2995,10 +2995,10 @@ select r.id, v.* from r, (values
 -- Parmigiana di melanzane in padella
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Parmigiana di melanzane in padella', 'seed', 'https://www.dissapore.com/ricette/parmigiana-di-melanzane-in-padella-ricetta/', 'Dissapore', '/recipe-photos/parmigiana-di-melanzane-in-padella.webp', 'https://images.dissapore.com/wp-content/uploads/2019/03/Parmigiana-di-melanzane-in-padella-pane.jpg?width=1280&height=720&quality=75',
-    2, 4, 105, '["Lavare le melanzane, eliminare il picciolo e tagliarle a fette.","Disporle in uno scolapasta, cospargerle di sale e lasciarle spurgare per circa 1 ora.","Nel frattempo scaldare un cucchiaio d''olio con la passata e un po'' d''acqua, salare e cuocere a fuoco basso 10 minuti; aggiungere il basilico e spegnere.","Sciacquare le melanzane e strizzarle delicatamente.","Grigliarle poche alla volta su una piastra antiaderente appena unta finché sono morbide e segnate.","In una padella antiaderente da 24 cm alternare strati di melanzane, sugo, parmigiano e mozzarella fino a esaurire gli ingredienti.","Coprire e cuocere a fuoco medio-basso per 20-25 minuti finché la mozzarella è fusa."]'::jsonb,
+    2, 4, 105, 10, 35, '["Lavare le melanzane, eliminare il picciolo e tagliarle a fette.","Disporle in uno scolapasta, cospargerle di sale e lasciarle spurgare per circa 1 ora.","Nel frattempo scaldare un cucchiaio d''olio con la passata e un po'' d''acqua, salare e cuocere a fuoco basso 10 minuti; aggiungere il basilico e spegnere.","Sciacquare le melanzane e strizzarle delicatamente.","Grigliarle poche alla volta su una piastra antiaderente appena unta finché sono morbide e segnate.","In una padella antiaderente da 24 cm alternare strati di melanzane, sugo, parmigiano e mozzarella fino a esaurire gli ingredienti.","Coprire e cuocere a fuoco medio-basso per 20-25 minuti finché la mozzarella è fusa."]'::jsonb,
     array['italian', 'mediterranean', 'vegetarian', 'one-pot', 'comfort', 'treat']::text[], 'italian', 294, 24.4,
     true, 'it', 'medium', '{"pots":3,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.dissapore.com/ricette/parmigiana-di-melanzane-in-padella-ricetta/')
@@ -3018,10 +3018,10 @@ select r.id, v.* from r, (values
 -- Prawn Okonomiyaki
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Prawn Okonomiyaki', 'seed', 'https://www.waitrose.com/content/waitrose/en/home/recipes/recipe_directory/o/okonomiyaki.html', 'Waitrose', null, null,
-    2, 2, 30, '["Whisk together ketchup, Worcestershire sauce, oyster sauce and sugar to make the okonomiyaki sauce.","Combine flour, baking powder and salt in a large bowl, beat in the stock and eggs, then fold in the cabbage and most of the spring onions.","Heat half the oil in a nonstick pan with a lid over medium heat and spoon in half the batter as a thick round about 15 cm wide; don''t press it down.","Push half the prawns into the top, cover and cook 3-5 minutes until set and golden underneath.","Flip, cover again and cook another 3-5 minutes until golden and cooked through; give each side an extra minute if needed.","Slide onto a plate, drizzle with mayonnaise and sauce, scatter with spring onions and serve with pickled ginger.","Repeat with the remaining oil, batter and prawns for the second pancake."]'::jsonb,
+    2, 2, 30, 10, 20, '["Whisk together ketchup, Worcestershire sauce, oyster sauce and sugar to make the okonomiyaki sauce.","Combine flour, baking powder and salt in a large bowl, beat in the stock and eggs, then fold in the cabbage and most of the spring onions.","Heat half the oil in a nonstick pan with a lid over medium heat and spoon in half the batter as a thick round about 15 cm wide; don''t press it down.","Push half the prawns into the top, cover and cook 3-5 minutes until set and golden underneath.","Flip, cover again and cook another 3-5 minutes until golden and cooked through; give each side an extra minute if needed.","Slide onto a plate, drizzle with mayonnaise and sauce, scatter with spring onions and serve with pickled ginger.","Repeat with the remaining oil, batter and prawns for the second pancake."]'::jsonb,
     array['japanese', 'asian', 'prawns', 'comfort', 'treat', 'fish']::text[], 'japanese', 743, 28.2,
     true, 'en', 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.waitrose.com/content/waitrose/en/home/recipes/recipe_directory/o/okonomiyaki.html')
@@ -3049,10 +3049,10 @@ select r.id, v.* from r, (values
 -- Rösti with Fried Eggs
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Rösti with Fried Eggs', 'seed', 'https://git.pikami.org/random-mirrors/based.cooking/src/branch/master/content/roesti.md', 'Based Cooking', null, 'https://git.pikami.org/random-mirrors/based.cooking/media/branch/master/pix/roesti.webp',
-    2, 4, 40, '["Coarsely grate the potatoes, either raw or cooked and cooled.","Finely dice half the onion and mix it into the potatoes, seasoning if you like.","Melt butter in a large pan over high heat, add the potato mixture and stir a few minutes until warmed through.","Turn the heat to medium-high and press the mixture into a flat round cake about 1-1.5 cm thick.","Slip a little extra butter around the edge and cook 5-10 minutes until a crust forms underneath.","Meanwhile, dice the remaining onion and the carrot and steam them with the peas (or spinach) in a little water under a lid.","Flip the rösti onto a plate, slide it back into the pan and cook on medium-low until crisp on the second side.","Remove the rösti, fry the eggs in the same pan and serve them on top with the vegetables alongside."]'::jsonb,
+    2, 4, 40, 15, 25, '["Coarsely grate the potatoes, either raw or cooked and cooled.","Finely dice half the onion and mix it into the potatoes, seasoning if you like.","Melt butter in a large pan over high heat, add the potato mixture and stir a few minutes until warmed through.","Turn the heat to medium-high and press the mixture into a flat round cake about 1-1.5 cm thick.","Slip a little extra butter around the edge and cook 5-10 minutes until a crust forms underneath.","Meanwhile, dice the remaining onion and the carrot and steam them with the peas (or spinach) in a little water under a lid.","Flip the rösti onto a plate, slide it back into the pan and cook on medium-low until crisp on the second side.","Remove the rösti, fry the eggs in the same pan and serve them on top with the vegetables alongside."]'::jsonb,
     array['swiss', 'eggs', 'vegetarian', 'comfort', 'treat']::text[], 'swiss', 450, 18.9,
     true, 'en', 'medium', '{"pots":2,"oven":false,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://git.pikami.org/random-mirrors/based.cooking/src/branch/master/content/roesti.md')
@@ -3071,10 +3071,10 @@ select r.id, v.* from r, (values
 -- Tartiflette traditionnelle
 with r as (
   insert into public.recipes (household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
+    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
     macros_estimated, language, difficulty, equipment)
   select null, 'Tartiflette traditionnelle', 'seed', 'https://www.demotivateur.fr/food/recette/tartiflette-traditionnelle-2597', 'Demotivateur Food', '/recipe-photos/tartiflette-traditionnelle.webp', 'https://www.demotivateur.fr/images/cover_recette/1734022037-tartiflette_traditionnelle.jpg',
-    2, 6, 60, '["Faire revenir l''oignon émincé et l''ail haché dans un filet d''huile jusqu''à ce qu''ils deviennent translucides, puis réserver.","Dorer les lardons dans la même poêle, remettre oignon et ail, puis déglacer au vin blanc.","Laisser le vin s''évaporer complètement, verser dans un bol et incorporer la crème, le sel, le poivre et la muscade.","Mettre les pommes de terre épluchées dans l''eau froide salée et les cuire environ 15 min : elles doivent rester un peu fermes.","Couper les pommes de terre en fines rondelles.","Frotter un plat à gratin beurré avec de l''ail, puis alterner couches de pommes de terre et de mélange aux lardons.","Gratter la croûte du reblochon, le couper en morceaux et le poser croûte vers le haut sur le dessus.","Enfourner à 180 °C pour 30 à 35 min, jusqu''à ce que le fromage soit fondu et doré, et servir bien chaud."]'::jsonb,
+    2, 6, 60, 10, 50, '["Faire revenir l''oignon émincé et l''ail haché dans un filet d''huile jusqu''à ce qu''ils deviennent translucides, puis réserver.","Dorer les lardons dans la même poêle, remettre oignon et ail, puis déglacer au vin blanc.","Laisser le vin s''évaporer complètement, verser dans un bol et incorporer la crème, le sel, le poivre et la muscade.","Mettre les pommes de terre épluchées dans l''eau froide salée et les cuire environ 15 min : elles doivent rester un peu fermes.","Couper les pommes de terre en fines rondelles.","Frotter un plat à gratin beurré avec de l''ail, puis alterner couches de pommes de terre et de mélange aux lardons.","Gratter la croûte du reblochon, le couper en morceaux et le poser croûte vers le haut sur le dessus.","Enfourner à 180 °C pour 30 à 35 min, jusqu''à ce que le fromage soit fondu et doré, et servir bien chaud."]'::jsonb,
     array['french', 'pork', 'oven', 'comfort', 'treat']::text[], 'french', 772, 27.6,
     true, 'fr', 'medium', '{"pots":3,"oven":true,"special":[]}'::jsonb
   where not exists (select 1 from public.recipes x where x.household_id is null and x.source_url = 'https://www.demotivateur.fr/food/recette/tartiflette-traditionnelle-2597')
@@ -3212,6 +3212,123 @@ from public.recipes s, (values
 ) as v(source_url, difficulty, equipment)
 where s.household_id is null and s.source_url = v.source_url
   and (x.id = s.id or x.copied_from = s.id) and x.difficulty is null and x.equipment is null;
+
+-- Prep, cook and total time for seed recipes (and copies) loaded before prep and cook existed.
+update public.recipes x set total_min = v.total_min, prep_min = v.prep_min, cook_min = v.cook_min
+from public.recipes s, (values
+  ('https://blog.giallozafferano.it/ricettechepassione/arrosto-di-tacchino/', 140, 15, 110),
+  ('https://www.dissapore.com/ricette/coniglio-alla-ligure-la-ricetta-originale-con-olive-taggiasche/', 110, 20, 90),
+  ('https://www.dissapore.com/ricette/cozze-alla-tarantina-al-sugo', 100, 15, 25),
+  ('https://blog.giallozafferano.it/cottoinunclick/ricetta-frittata-zucchine-e-ricotta-al-forno/', 45, 15, 30),
+  ('https://blog.giallozafferano.it/studentiaifornelli/insalata-di-farro-tonno-e-ceci/', 30, 10, 20),
+  ('https://www.dissapore.com/ricette/involtini-di-pollo-al-forno/', 35, 10, 20),
+  ('https://www.dissapore.com/ricette/medaglioni-di-filetto-di-maiale/', 30, 5, 10),
+  ('https://www.dissapore.com/ricette/merluzzo-alla-livornese/', 25, 5, 15),
+  ('https://www.dissapore.com/ricette/orata-al-cartoccio/', 55, 15, 40),
+  ('https://blog.giallozafferano.it/allacciateilgrembiule/pasta-e-lenticchie/', 65, 20, 45),
+  ('https://blog.giallozafferano.it/adryincucina/pasta-tonno-e-ceci/', 20, 5, 15),
+  ('https://blog.giallozafferano.it/chezbibia/ricetta-pesce-spada-alla-siciliana/', 30, 5, 25),
+  ('https://www.dissapore.com/ricette/petto-di-pollo-alla-cacciatora/', 45, 15, 30),
+  ('https://blog.giallozafferano.it/lacucinasottosopra/petto-di-pollo-alla-pizzaiola-light/', 30, 10, 20),
+  ('https://blog.giallozafferano.it/cucinoperpassione/ricetta-polpo-in-umido-con-patate/', 70, 10, 60),
+  ('https://www.ricettedalmondo.it/risotto-ai-gamberi.html', 30, 10, 20),
+  ('https://www.dissapore.com/ricette/ricetta-salmone-in-crosta-di-pistacchi-e-mandorle/', 25, 10, 15),
+  ('https://blog.giallozafferano.it/valeriaciccotti/saltimbocca-alla-romana/', 20, 10, 10),
+  ('https://blog.giallozafferano.it/ilcaldosaporedelsud/scaloppine-di-pollo-al-limone-facili-e-veloci/', 20, 3, 15),
+  ('https://blog.giallozafferano.it/ilcaldosaporedelsud/sovracoscia-di-tacchino-in-padella/', 75, 5, 60),
+  ('https://www.dissapore.com/ricette/spaghetti-alle-vongole', 140, 5, 15),
+  ('https://www.dissapore.com/ricette/spezzatino-di-vitello-con-patate/', 125, 15, 80),
+  ('https://blog.giallozafferano.it/renatabriano/ricetta-straccetti-di-manzo-con-rucola-pomodorini-e-aceto-balsamico/', 20, 10, 7),
+  ('https://blog.giallozafferano.it/pelledipollo/ricetta-straccetti-di-manzo-con-verdure/', 40, 15, 15),
+  ('https://www.dissapore.com/ricette/tagliata-di-manzo/', 75, 10, 10),
+  ('https://www.evous.fr/recettes-de-cuisine/Recettes-Plat/Recette-Blanc-de-poulet-a-la,1116941/', 45, 15, 30),
+  ('https://www.750g.com/blanquette-de-veau-version-light-r32377.htm', 55, 15, 40),
+  ('https://www.croq-kilos.com/actus/recette-de-one-pot-blanquette', 110, 20, 90),
+  ('https://www.croq-kilos.com/actus/recette-de-brandade-de-morue-leger', 1485, 20, 40),
+  ('https://www.demotivateur.fr/food/recette/boeuf-bourguignon-traditionnel-2988', 200, 20, 180),
+  ('https://www.demotivateur.fr/food/cabillaud-epice-au-four-43138', 55, 15, 40),
+  ('https://www.weightwatchers.com/fr/recette/dos-de-cabillaud-a-la-basquaise/5625ac93b7878c0b34e6abdf', 35, 15, 20),
+  ('https://www.750g.com/filet-mignon-de-porc-a-la-moutarde-r74670.htm', 40, 5, 35),
+  ('https://jow.com/fr/recipes/filet-mignon-a-la-moutarde-pommes-de-terre-et-brocoli-8v4x3uwufp5c03fx11wy/print', 80, 10, 40),
+  ('https://www.750g.com/la-meilleure-facon-de-faire-des-moules-marinieres-r207667.htm', 20, 10, 10),
+  ('https://www.croq-kilos.com/actus/recette-du-navarin-d-agneau-leger', 95, 20, 75),
+  ('https://www.750g.com/navarin-printanier-r204373.htm', 90, 20, 70),
+  ('https://www.quiveutdufromage.com/r-papillote-de-cabillaud-au-fromage-et-aux-poivrons', 35, 20, 10),
+  ('https://www.weightwatchers.com/be/fr/recipe/papillote-cabillaud-au-gingembre-citron-vert/5d67b72532f27600dc549bec', 117, 25, 32),
+  ('https://www.ricardocuisine.com/recettes/551-paves-de-saumon-sur-lit-de-lentilles', 45, 15, 30),
+  ('https://www.demotivateur.fr/food/petit-sale-aux-lentilles-38097', 75, 15, 60),
+  ('https://www.weightwatchers.com/ch/fr/recette/poulet-sauce-au-vin-et-lestragon/659fabb3ce8846a01bc40d10', 70, 15, 55),
+  ('https://chefsimon.com/gourmets/chef-simon/recettes/poulet-basquaise--17', 75, 30, 45),
+  ('https://www.demotivateur.fr/food/recette/poulet-mijote-aux-olives-1947', 60, 10, 50),
+  ('https://ileauxepices.com/blog/2014/09/25/recette-poulet-a-lestragon/wpid5861/', 40, 10, 30),
+  ('https://www.demotivateur.fr/food/recette/roti-de-porc-a-la-moutarde-1256', 115, 10, 105),
+  ('https://lacuisinedejulie.fr/recette/saumon-roti-aux-lentilles-vertes/', 60, 15, 45),
+  ('https://www.gillespudlowski.com/257271/recettes/recette-de-confinement-le-saumon-a-loseille-des-freres-troisgros', 35, 20, 15),
+  ('https://www.noovomoi.ca/cuisiner/recettes/recette.turbot-sauce-vierge.1.1423555.html', 25, 10, 15),
+  ('https://www.ricardocuisine.com/recettes/8946-oeufs-poches-epinards-et-lentilles', 30, 15, 15),
+  ('https://thewoksoflife.com/bulgogi-bowls', 105, 90, 15),
+  ('https://recipetineats.com/beef-rendang', 200, 20, 180),
+  ('https://www.recipetineats.com/wprm_print/37012', 70, 25, 25),
+  ('https://thewoksoflife.com/cantonese-steamed-fish/', 20, 5, 15),
+  ('https://thewoksoflife.com/chicken-larb/', 30, 15, 15),
+  ('https://www.recipetineats.com/chinese-beef-and-broccoli/', 20, 10, 10),
+  ('https://www.recipetineats.com/chinese-cashew-chicken/comment-page-24/', 21, 15, 6),
+  ('https://thewoksoflife.com/scallion-ginger-salmon/', 25, 10, 15),
+  ('https://delightfulplate.com/?p=84242', 135, 15, 120),
+  ('https://mykoreankitchen.com/dak-galbi/', 55, 10, 15),
+  ('https://panlasangpinoy.com/filipino-chicken-adobo-recipe', 120, 10, 50),
+  ('https://realfood.tesco.com/recipes/goan-style-fish-curry.html', 35, 10, 25),
+  ('https://thewoksoflife.com/gyudon-recipe-beef-rice/', 40, 10, 30),
+  ('https://www.vietnamesefoodrecipes.com/vietnamese-grilled-chicken-with-lemongrass-ga-nuong-sa/', 240, 195, 45),
+  ('https://bbcgoodfoodme.com/recipes/healthy-tikka-masala', 65, 15, 45),
+  ('https://www.thewoksoflife.com/kung-pao-chicken/', 40, 30, 10),
+  ('https://ayam.com/recipes/malaysian-nasi-goreng', 30, 10, 20),
+  ('https://www.olivemagazine.com/recipes/healthy/miso-salmon/', 35, 10, 25),
+  ('https://www.indianhealthyrecipes.com/tandoori-chicken/', 415, 15, 40),
+  ('https://www.justonecookbook.com/recipes/oyakodon/', 25, 15, 10),
+  ('https://eatingthaifood.com/thai-basil-chicken-recipe', 20, 10, 10),
+  ('https://www.recipetineats.com/satay-chicken-legs-with-peanut-sauce/', 235, 10, 45),
+  ('https://www.recipetineats.com/taiwanese-three-cup-chicken/', 20, 8, 10),
+  ('https://www.bbcgoodfoodme.com/recipes/teriyaki-chicken/', 40, 10, 30),
+  ('https://www.recipetineats.com/thai-green-curry/', 35, 15, 20),
+  ('https://www.feastingathome.com/brazilian-fish-stew-aka-moqueca', 35, 10, 25),
+  ('https://www.weightwatchers.com/us/recipe/cajun-salmon-sweet-potato-chowder/56d82afd0ac646df0ee3e08f', 35, 15, 20),
+  ('https://www.olivemagazine.com/recipes/fish-and-seafood/cajun-salmon-with-rosemary-sweet-potato-wedges/', 40, 10, 30),
+  ('https://whitneybond.com/carne-asada-bowl/', 70, 30, 10),
+  ('https://www.tesco.com/recipes/en-GB/recipe/chicken-and-sweet-potato-traybake', 60, 15, 45),
+  ('https://www.sbs.com.au/food/recipe/chicken-souvlaki/j847ixvsa', 200, 5, 15),
+  ('https://www.mexicoinmykitchen.com/chicken-tinga-recipe/', 30, 10, 20),
+  ('https://eggs.ca/recipes/doro-wat/', 155, 35, 120),
+  ('https://www.themediterraneandish.com/baked-greek-fish-psari-plaki', 40, 10, 30),
+  ('https://olivemagazine.com/recipes/fish-and-seafood/harissa-roast-salmon-with-warm-herby-grains-and-yogurt-dressing', 35, 10, 20),
+  ('https://www.supergoldenbakes.com/wprm_print/healthy-cottage-pie', 90, 15, 65),
+  ('https://ambitiouskitchen.com/seriously-the-best-healthy-turkey-chili', 55, 10, 45),
+  ('https://irishcentral.com/culture/food-drink/healthy-lamb-stew-recipe', 210, 15, 135),
+  ('https://www.bbcgoodfoodme.com/recipes/jerk-chicken-curry-with-beans', 45, 5, 40),
+  ('https://www.abelandcole.co.uk/box-recipes/jerked-chicken-with-sweet-potato-fries-tomato-salad', 55, 15, 40),
+  ('https://hampshirefare.co.uk/recipes/lamb-kofta-with-herby-yogurt-and-flatbreads/', 35, 10, 15),
+  ('https://www.munatycooking.com/chicken-shawarma/', 210, 10, 20),
+  ('https://www.skinnytaste.com/swedish-meatballs/', 40, 10, 30),
+  ('https://reciperunner.com/easy-smokey-chicken-paprikash/', 25, 10, 15),
+  ('https://www.americastestkitchen.com/recipes/5189-moroccan-chicken-tagine-with-olives-and-lemon-djej-emshmel', 90, 15, 75),
+  ('https://onceuponachef.com/recipes/peruvian-style-roast-chicken-with-green-sauce.html/comment-page-4', 480, 20, 90),
+  ('https://www.americastestkitchen.com/recipes/16707-one-pan-seared-salmon-with-cauliflower-chickpeas-and-harissa', 60, 15, 35),
+  ('https://sainsburysmagazine.co.uk/recipes/mains/sherry-braised-chicken-with-chorizo-and-chickpeas', 45, 25, 20),
+  ('https://www.tesco.com/recipes/en-GB/recipe/west-african-style-chicken-peanut-stew', 55, 15, 40),
+  ('https://olivemagazine.com/recipes/vegetarian/cilbir-turkish-style-poached-eggs-in-garlicky-yogurt', 20, 10, 5),
+  ('https://www.saveur.com/adjaruli-khachapuri-georgian-cheese-bread-recipe', 135, 25, 20),
+  ('https://anaffairfromtheheart.com/wprm_print/canadian-poutine-recipe', 10, 2, 8),
+  ('https://www.demotivateur.fr/food/recette/croque-monsieur-maison-2990', 25, 10, 15),
+  ('https://www.deliciousmagazine.co.uk/?p=791', 40, 10, 30),
+  ('https://www.maangchi.com/?p=11562', 60, 15, 40),
+  ('https://www.scattidigusto.it/2021/02/11/lasagne-alla-bolognese-ricetta-originale-con-ragu-cremoso-e-sfoglia-verde/', 180, 30, 150),
+  ('https://www.dissapore.com/ricette/parmigiana-di-melanzane-in-padella-ricetta/', 105, 10, 35),
+  ('https://www.waitrose.com/content/waitrose/en/home/recipes/recipe_directory/o/okonomiyaki.html', 30, 10, 20),
+  ('https://git.pikami.org/random-mirrors/based.cooking/src/branch/master/content/roesti.md', 40, 15, 25),
+  ('https://www.demotivateur.fr/food/recette/tartiflette-traditionnelle-2597', 60, 10, 50)
+) as v(source_url, total_min, prep_min, cook_min)
+where s.household_id is null and s.source_url = v.source_url
+  and (x.id = s.id or x.copied_from = s.id) and x.prep_min is null and x.cook_min is null;
 
 -- Ingredient names for seed recipes (and copies) loaded before the catalogue last changed.
 update public.recipe_ingredients i set name = v.name, aisle = v.aisle, is_staple = v.is_staple

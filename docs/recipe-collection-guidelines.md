@@ -41,7 +41,8 @@ Write ONE file (path of your choice):
   "language": "it",
   "servings": 2,
   "original_servings": 4,
-  "total_min": 40,
+  "prep_min": 15,
+  "cook_min": 30,
   "source_type": "seed",
   "source_name": "Dissapore",
   "source_url": "https://www.dissapore.com/ricette/petto-di-pollo-alla-cacciatora/",
@@ -68,14 +69,15 @@ Field rules:
 - `title`: short card title in the recipe's language (the dish name; may tidy the source title).
 - `language`: `it` for Italian sites, `fr` for French sites, `en` for English sites. Write title, ingredient lines and steps in that language.
 - `servings`: always 2. `original_servings`: the source's number (if the source gives a range like 4-6, use the lower bound).
-- `total_min`: whole minutes start to plate incl. oven/marinating-free time (if a long marinade is needed, include it and add tag "make ahead"). If the page lacks a time, estimate from the steps.
+- `prep_min`: whole minutes of hands-on preparation (chopping, mixing, shaping). `cook_min`: whole minutes on the hob, in the oven or on the grill; `0` for no-cook dishes. Take them from the page's prep and cooking times; if the page lacks them, estimate from the steps.
+- `total_min`: leave it out unless the recipe also waits (marinating, soaking, rising, resting). Then give whole minutes start to plate, waiting included, and add tag "make ahead" for long waits. Without it the total is prep + cook.
 - `source_name`: the site's display name (GialloZafferano, Marmiton, 750g, RecipeTin Eats, ...). `source_url`: the fetched URL.
 - `cuisine`: one lowercase word/phrase (italian, french, chinese, japanese, korean, thai, vietnamese, indian, indonesian, mexican, greek, spanish, lebanese, moroccan, american, ...).
 - `tags`: 3–8, lowercase **English** always, consistent vocabulary:
   - cuisine tag (same as `cuisine`; for any Asian cuisine ALSO add `asian`; for Italian/Greek/Spanish/Lebanese etc. you may add `mediterranean`)
   - main protein: one of `chicken beef pork lamb turkey veal duck fish salmon tuna cod prawns seafood eggs tofu tempeh lentils chickpeas beans`
   - format: `pasta rice noodles traybake stew soup curry salad bowl stir-fry grill oven one-pot wrap burger risotto`
-  - mood words exactly as defined: `comfort` `light` `quick` (only if total_min <= 25) `fancy` (special / date-night dishes) ; `vegetarian` when there is no meat/fish.
+  - mood words exactly as defined: `comfort` `light` `quick` (only if the total time is <= 25 min) `fancy` (special / date-night dishes) ; `vegetarian` when there is no meat/fish.
 - `difficulty` and `equipment`: see [recipe-template.md](recipe-template.md#equipment). Keep equipment coarse: count pots/pans/dishes, say whether the oven is on, and list only uncommon equipment under `special`.
 - `steps`: rewrite in YOUR OWN WORDS (never copy the site's sentences), in the recipe language, one action per step, in order, keeping concrete temps/times/doneness cues. Typically 4–10 steps. Steps refer to 2 servings implicitly (don't mention quantities that only apply to the original yield).
 - `image_url`: exact source main photo URL or null.

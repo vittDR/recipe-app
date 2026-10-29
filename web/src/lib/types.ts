@@ -61,7 +61,12 @@ export interface Recipe {
   source_name: string | null;
   image_path: string | null;
   servings: number;
+  /** Start to plate, including marinating and resting. */
   total_min: number | null;
+  /** Hands-on preparation. */
+  prep_min: number | null;
+  /** On the hob, in the oven or on the grill; 0 for no-cook dishes. */
+  cook_min: number | null;
   steps: string[];
   tags: string[];
   kcal_per_serving: number | null;
