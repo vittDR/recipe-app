@@ -15,6 +15,7 @@ import {
   Catalog, estimateMacros, gramsOf, parseIngredientLine, type CatalogEntry,
 } from '../supabase/functions/_shared/logic/ingredients.ts';
 import { DIFFICULTIES, SPECIAL_EQUIPMENT, normaliseEquipment, type Difficulty, type Equipment } from '../supabase/functions/_shared/logic/facets.ts';
+import { MAX_TAGS, TagCatalog, type TagEntry } from '../supabase/functions/_shared/logic/tags.ts';
 
 interface SeedIngredient { text: string; original_text?: string; guessed?: boolean }
 interface SeedRecipe {
@@ -44,6 +45,8 @@ const entries = JSON.parse(execFileSync('psql', ['-At', '-d', db, '-c',
   'select coalesce(json_agg(c), \'[]\') from public.ingredient_catalog c'], { encoding: 'utf8' })) as CatalogEntry[];
 if (entries.length === 0) throw new Error(`no catalogue in database ${db}: run npm run test:sql first`);
 const catalog = new Catalog(entries);
+const tagCatalog = new TagCatalog(JSON.parse(execFileSync('psql', ['-At', '-d', db, '-c',
+  'select coalesce(json_agg(t), \'[]\') from public.tag_catalog t where t.household_id is null'], { encoding: 'utf8' })) as TagEntry[]);
 const recipes = JSON.parse(readFileSync(`${root}supabase/seed/recipes.json`, 'utf8')) as SeedRecipe[];
 
 const errors: string[] = [];
@@ -74,8 +77,14 @@ for (const r of recipes) {
   if (!r.source_url) errors.push(`${where} no source_url`);
   else if (seenUrls.has(r.source_url)) errors.push(`${where} duplicate source_url`);
   else seenUrls.add(r.source_url);
-  if (r.tags.length > 12) errors.push(`${where} ${r.tags.length} tags (max 12)`);
-  if (r.tags.some((t) => t !== t.toLowerCase().trim())) errors.push(`${where} tags must be lowercase`);
+  if (r.tags.length > MAX_TAGS) errors.push(`${where} ${r.tags.length} tags (max ${MAX_TAGS})`);
+  for (const tag of r.tags) {
+    // Seed tags are catalogue names; ingredients are in the ingredient list, not tags.
+    const entry = tagCatalog.find(tag);
+    if (entry?.name !== tag || entry.kind !== 'tag') {
+      errors.push(`${where} tag "${tag}" ${entry?.kind === 'tag' ? `should be "${entry.name}"` : entry ? `is ${entry.kind === 'ingredient' ? 'an ingredient' : 'noise'}` : 'is not in tag_catalog'}`);
+    }
+  }
   if (r.cuisine && !r.tags.includes(r.cuisine)) warnings.push(`${where} cuisine "${r.cuisine}" missing from tags`);
   if (!r.steps.length) errors.push(`${where} no steps`);
   if (!DIFFICULTIES.includes(r.difficulty)) errors.push(`${where} difficulty ${r.difficulty}`);

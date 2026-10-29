@@ -444,6 +444,7 @@ Only the person themselves can read or write these rows.
 | --- | --- |
 | `ingredient_catalog` | Canonical ingredients. `name` (lowercase English, primary key), `name_fr`, `name_it`, `aliases[]`, `default_aisle`, `is_staple`, `kcal_100g`, `protein_100g`, `grams_per_unit`, `diet_class` (`veg`/`fish`/`meat`), `exotic`. Readable by every signed-in user. |
 | `recipes` | `household_id` (**null = seed library**, shared by everyone), `copied_from`, `title`, `source_type`, `source_url`, `source_name`, `image_path`, `image_source_url`, `servings`, `original_servings`, `total_min`, `steps` (JSON array of strings), `tags[]`, `cuisine`, `language` (`en`/`fr`/`it`), `kcal_per_serving`, `protein_g_per_serving`, `macros_estimated`, `difficulty` (`easy`/`medium`/`hard`), `equipment` (JSON, e.g. `{"pots":2,"oven":true,"special":["blender"]}`). `source_url` is unique per household. |
+| `tag_catalog` | Recipe tags. `name` (what `recipes.tags` stores: lowercase English for shared tags), `household_id` (null = shared, else a household's own tag), `kind` (`tag`, or `ingredient`/`noise` for words imports drop), `name_en`, `name_fr`, `aliases[]` (any language). `find_tag(household, text)` resolves words to a row. |
 | `recipe_ingredients` | One row per line: `position`, `name` (the catalogue name when matched), `product_id`, `quantity`, `unit`, `aisle`, `is_staple`, `guessed`, `raw_text` (the line as written), `original_text` (the source's unscaled line). A trigger sets `product_id` on save: the catalogue ingredient's product, else a product whose name or alias matches (the household's own first), else a new household item. Seed recipes only use shared products. |
 | `library_recipes` (view) | What a household sees on the Recipes tab: its own recipes plus the seed library, minus seed recipes it has already copied. |
 
@@ -551,7 +552,7 @@ generated from it.
      "source_url": "https://example.com/chicken-coconut-rice-bowl",
      "image_url": "/recipe-photos/chicken-coconut-rice-bowl.webp",
      "cuisine": "thai",
-     "tags": ["chicken", "bowl", "asian", "thai"],
+     "tags": ["bowl", "asian", "thai"],
      "difficulty": "easy",
      "equipment": { "pots": 2, "oven": false, "special": [] },
      "ingredients": [

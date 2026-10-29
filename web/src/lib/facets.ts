@@ -35,14 +35,6 @@ export function equipmentLabels(eq: Equipment | null, { t, tn }: ReturnType<type
   ];
 }
 
-/** A recipe tag in the current language. Tags are stored lowercase in English;
- *  ones we have no translation for (imported recipes) are shown as written. */
-export function tagLabel(tag: string, { t }: Pick<ReturnType<typeof useI18n>, 't'>): string {
-  const key = `tags.${tag}` as MessageKey;
-  const label = t(key);
-  return label === key ? tag : label;
-}
-
 /** Only the tedious bits, for recipe tiles. */
 export function effortLabels(eq: Equipment | null, i18n: ReturnType<typeof useI18n>): string[] {
   return equipmentLabels(eq, i18n).filter((e) => e.tedious).map((e) => e.label);

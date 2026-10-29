@@ -9,6 +9,7 @@ import { useGroceryCatalog } from '../lib/products.ts';
 import { pushState, type PushState } from '../lib/push.ts';
 import { useSession } from '../lib/session.tsx';
 import { supabase } from '../lib/supabase.ts';
+import { useTags } from '../lib/tags.ts';
 import type { LearnedPattern, TasteRule } from '../lib/types.ts';
 
 interface SwipeRow {
@@ -27,6 +28,7 @@ export function UsScreen() {
   const [suggestions, setSuggestions] = useState<PatternSuggestion[]>([]);
   const [push, setPush] = useState<PushState>('unsupported');
   const { data: catalog } = useGroceryCatalog(household!.id);
+  const { tags } = useTags(household!.id);
   const load = async () => {
     const [r, swipes, existing] = await Promise.all([
       supabase.from('taste_rules').select('*').eq('user_id', userId!),
@@ -66,10 +68,15 @@ export function UsScreen() {
     await load();
   };
 
-  // Rules on catalogue items show the item's name in the app's language.
+  // Tags, ingredients and rules on catalogue items read in the app's language.
+  const labelOf = (value: string) => {
+    if (tags?.find(value)?.name === value) return tags.label(value, locale);
+    const p = catalog?.index.ofIngredient(value);
+    return p ? productName(p, locale) : value;
+  };
   const nameOf = (r: TasteRule) => {
     const p = r.product_id ? catalog?.index.get(r.product_id) : undefined;
-    return p ? productName(p, locale) : r.value;
+    return p ? productName(p, locale) : labelOf(r.value);
   };
   // A rule on an item already covers the pattern on its ingredient.
   const ruledIngredients = new Set(rules.map((r) => (r.product_id ? catalog?.index.get(r.product_id)?.ingredient : null)));
@@ -100,7 +107,7 @@ export function UsScreen() {
         <div className="stack">
           {shown.map((s) => (
             <div key={`${s.pattern.kind}:${s.pattern.value}`} className="card stack">
-              <span>{t(s.pattern.kind === 'avoid' ? 'us.patternAvoid' : 'us.patternPrefer', { value: s.pattern.value, n: s.evidence, total: s.window })}</span>
+              <span>{t(s.pattern.kind === 'avoid' ? 'us.patternAvoid' : 'us.patternPrefer', { value: labelOf(s.pattern.value), n: s.evidence, total: s.window })}</span>
               <div className="row row--wrap">
                 {s.pattern.kind === 'avoid' ? (
                   <>

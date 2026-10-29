@@ -47,7 +47,7 @@ Write ONE file (path of your choice):
   "source_url": "https://www.dissapore.com/ricette/petto-di-pollo-alla-cacciatora/",
   "image_url": "https://images.dissapore.com/.../petto-di-pollo-alla-cacciatora.jpg?width=1280&height=720&quality=75",
   "cuisine": "italian",
-  "tags": ["chicken", "italian", "stew", "comfort"],
+  "tags": ["italian", "stew", "comfort"],
   "difficulty": "easy",
   "equipment": { "pots": 1, "oven": false, "special": [] },
   "ingredients": [
@@ -71,10 +71,10 @@ Field rules:
 - `total_min`: whole minutes start to plate incl. oven/marinating-free time (if a long marinade is needed, include it and add tag "make ahead"). If the page lacks a time, estimate from the steps.
 - `source_name`: the site's display name (GialloZafferano, Marmiton, 750g, RecipeTin Eats, ...). `source_url`: the fetched URL.
 - `cuisine`: one lowercase word/phrase (italian, french, chinese, japanese, korean, thai, vietnamese, indian, indonesian, mexican, greek, spanish, lebanese, moroccan, american, ...).
-- `tags`: 3–8, lowercase **English** always, consistent vocabulary:
+- `tags`: 3–8 tag names from `public.tag_catalog` (lowercase **English** always; the build script rejects anything else):
   - cuisine tag (same as `cuisine`; for any Asian cuisine ALSO add `asian`; for Italian/Greek/Spanish/Lebanese etc. you may add `mediterranean`)
-  - main protein: one of `chicken beef pork lamb turkey veal duck fish salmon tuna cod prawns seafood eggs tofu tempeh lentils chickpeas beans`
-  - format: `pasta rice noodles traybake stew soup curry salad bowl stir-fry grill oven one-pot wrap burger risotto`
+  - no ingredient tags (`chicken`, `salmon`, `rice`, `pasta`…): the ingredient list already says it
+  - format: `traybake stew soup curry salad bowl stir-fry grill oven one-pot wrap burger pizza gratin tart risotto`
   - mood words exactly as defined: `comfort` `light` `quick` (only if total_min <= 25) `fancy` (special / date-night dishes) ; `vegetarian` when there is no meat/fish.
 - `difficulty` and `equipment`: see [recipe-template.md](recipe-template.md#equipment). Keep equipment coarse: count pots/pans/dishes, say whether the oven is on, and list only uncommon equipment under `special`.
 - `steps`: rewrite in YOUR OWN WORDS (never copy the site's sentences), in the recipe language, one action per step, in order, keeping concrete temps/times/doneness cues. Typically 4–10 steps. Steps refer to 2 servings implicitly (don't mention quantities that only apply to the original yield).

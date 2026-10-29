@@ -4,10 +4,11 @@ import { Icon } from '../../components/Icon.tsx';
 import { Button, Chip, RecipeThumb, Screen, Spinner } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { RECIPE_FILTERS, type RecipeFilter, matchesFilters } from '@logic/facets.ts';
-import { effortLabels, facetsOf, tagLabel } from '../../lib/facets.ts';
+import { effortLabels, facetsOf } from '../../lib/facets.ts';
 import { useCatalog, useLive } from '../../lib/hooks.ts';
 import { useSession } from '../../lib/session.tsx';
 import { must, supabase } from '../../lib/supabase.ts';
+import { useTags } from '../../lib/tags.ts';
 import type { Recipe } from '../../lib/types.ts';
 
 type Filter = 'all' | 'mine' | 'library' | 'web' | 'typed';
@@ -19,6 +20,7 @@ export function RecipesScreen() {
   const i18n = useI18n();
   const { t, tn } = i18n;
   const { household } = useSession();
+  const { tags } = useTags(household!.id);
   const navigate = useNavigate();
   const [query, setQuery] = useState('');
   const [filter, setFilter] = useState<Filter>('all');
@@ -30,7 +32,7 @@ export function RecipesScreen() {
   [{ table: 'recipes', filter: `household_id=eq.${household!.id}` }]);
 
   const shown = useMemo(() => {
-    // Every word must match the title, a tag or an ingredient: "quick chicken" works.
+    // Every word must match the title, a tag or an ingredient, in either language: "quick chicken" and "poulet rapide" work.
     const words = normalise(query).split(/\s+/).filter(Boolean);
     if (!catalog) return [];
     return (data ?? []).filter((r) => {
@@ -39,10 +41,14 @@ export function RecipesScreen() {
       if (filter === 'web' && !['web', 'instagram'].includes(r.source_type)) return false;
       if (filter === 'typed' && r.source_type !== 'typed') return false;
       if (facets.size && !matchesFilters(facetsOf(r, r.recipe_ingredients.map((i) => i.name), catalog), facets)) return false;
-      const hay = normalise([r.title, ...r.tags, ...r.tags.map((tag) => tagLabel(tag, i18n)), ...r.recipe_ingredients.map((i) => i.name)].join(' '));
+      const hay = normalise([
+        r.title,
+        ...r.tags.flatMap((tag) => [tag, tags?.label(tag, 'en') ?? '', tags?.label(tag, 'fr') ?? '']),
+        ...r.recipe_ingredients.flatMap((i) => [i.name, catalog.find(i.name)?.name_fr ?? '']),
+      ].join(' '));
       return words.every((w) => hay.includes(w));
     });
-  }, [data, query, filter, facets, catalog, i18n]);
+  }, [data, query, filter, facets, catalog, tags]);
 
   const toggle = (f: RecipeFilter) => setFacets((cur) => {
     const next = new Set(cur);

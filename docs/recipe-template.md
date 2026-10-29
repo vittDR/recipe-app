@@ -22,7 +22,7 @@ The catalogue is a JSON list of these objects. Copy this one and replace the val
     "image_url": "https://example.com/images/chicken-thigh-red-curry.webp",
     "image_source_url": "https://www.example.com/wp-content/uploads/red-curry.jpg",
     "cuisine": "thai",
-    "tags": ["chicken", "curry", "comfort", "asian", "thai"],
+    "tags": ["curry", "comfort", "asian", "thai"],
     "difficulty": "easy",
     "equipment": { "pots": 2, "oven": false, "special": [] },
     "ingredients": [
@@ -167,28 +167,37 @@ against `name`, `name_fr`, `name_it` and `aliases`.
 
 ## Tags
 
-Lowercase, up to 12. Tags don't decide the diet (the ingredients do), but they do
-drive moods and taste rules. Use these words where they apply, because the deck
-looks for them exactly:
+Up to 12, each one a tag **name** from `public.tag_catalog` (migration
+`20261105000001_tag_catalog.sql`): lowercase English, e.g. `stew`, `one-pot`,
+`make ahead`. The catalogue gives every tag its English and French label (the app
+shows tags in the reader's language) and the aliases recipe sites use
+(`plat mijoté` → `stew`), which is how imports land on the same tags.
+`node scripts/build-seed-library.ts` rejects a tag that isn't a catalogue name.
+To add a tag, add a row to the catalogue in a new migration.
+
+**Ingredients are not tags.** `chicken`, `salmon`, `rice`, `pasta`… are already in
+the ingredient list, which search, taste rules and learning read, so the catalogue
+marks them `ingredient` and they are dropped (as are filler words like `dinner`,
+kind `noise`). Diet comes from the ingredients too.
+
+Tags drive moods. Use these where they apply, because the deck looks for them:
 
 | Mood | Tags that trigger it |
 | --- | --- |
-| comfort | `comfort`, `curry`, `stew`, `pasta`, `soup` |
-| light | `light`, `salad`, `bowl`, `fish` |
+| comfort | `comfort`, `curry`, `stew`, `soup` (or pasta in the ingredients) |
+| light | `light`, `salad`, `bowl` (or a fish recipe) |
 | quick | `quick` (or just set `total_min` ≤ 25) |
-| fancy | `fancy`, `date night`, `special` |
+| fancy | `fancy` |
 
-Add cuisine (`asian`, `mexican`, `mediterranean`…), main protein (`chicken`,
-`beef`, `tofu`…) and format (`traybake`, `noodles`, `eggs`…). People can mark
-any tag as "never" or "love", so use the same word every time (`chicken`, not
-`poulet` in one recipe and `chicken` in another). **Tags are always in English,
-whatever the recipe's `language`.**
+Add cuisine (`asian`, `mexican`, `mediterranean`…) and format (`traybake`,
+`stir-fry`, `gratin`…), plus course, diet, season or occasion where it helps
+(`starter`, `vegan`, `summer`, `batch cooking`…). **Tag names are always in
+English, whatever the recipe's `language`.**
 
 The seed library also uses these tags:
 
 | Tag | Meaning |
 | --- | --- |
-| `fish` | Main protein is fish or seafood. Added alongside `salmon`, `cod`, `prawns`… so the "light" mood picks it up. |
 | `asian` | Added alongside every Asian cuisine tag (`chinese`, `thai`, `indian`…) |
 | `vegetarian` | No meat or fish |
 | `high protein` | 35 g protein or more per serving (estimated) |

@@ -14,7 +14,6 @@
     "tags": [
       "italian",
       "mediterranean",
-      "turkey",
       "oven",
       "comfort",
       "high protein"
@@ -193,10 +192,8 @@
     "tags": [
       "italian",
       "mediterranean",
-      "seafood",
       "stew",
-      "comfort",
-      "fish"
+      "comfort"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -264,7 +261,6 @@
     "cuisine": "italian",
     "tags": [
       "italian",
-      "eggs",
       "oven",
       "light",
       "vegetarian"
@@ -325,10 +321,8 @@
     "tags": [
       "italian",
       "mediterranean",
-      "tuna",
       "salad",
-      "light",
-      "fish"
+      "light"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -391,7 +385,6 @@
     "cuisine": "italian",
     "tags": [
       "italian",
-      "chicken",
       "oven",
       "comfort",
       "high protein"
@@ -465,7 +458,6 @@
     "cuisine": "italian",
     "tags": [
       "italian",
-      "pork",
       "fancy",
       "comfort",
       "high protein"
@@ -538,11 +530,9 @@
     "tags": [
       "italian",
       "mediterranean",
-      "cod",
       "stew",
       "light",
       "quick",
-      "fish",
       "high protein"
     ],
     "difficulty": "easy",
@@ -614,7 +604,6 @@
     "tags": [
       "italian",
       "mediterranean",
-      "fish",
       "oven",
       "light",
       "high protein"
@@ -698,8 +687,6 @@
     "tags": [
       "italian",
       "mediterranean",
-      "lentils",
-      "pasta",
       "soup",
       "comfort",
       "one-pot"
@@ -785,11 +772,8 @@
     "tags": [
       "italian",
       "mediterranean",
-      "tuna",
-      "pasta",
       "quick",
-      "comfort",
-      "fish"
+      "comfort"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -855,7 +839,6 @@
     "tags": [
       "italian",
       "mediterranean",
-      "fish",
       "light",
       "high protein"
     ],
@@ -932,7 +915,6 @@
     "tags": [
       "italian",
       "mediterranean",
-      "chicken",
       "stew",
       "comfort",
       "high protein"
@@ -1015,7 +997,6 @@
     "tags": [
       "italian",
       "mediterranean",
-      "chicken",
       "one-pot",
       "light",
       "high protein"
@@ -1083,11 +1064,9 @@
     "tags": [
       "italian",
       "mediterranean",
-      "seafood",
       "stew",
       "comfort",
       "one-pot",
-      "fish",
       "high protein"
     ],
     "difficulty": "medium",
@@ -1163,11 +1142,9 @@
     "cuisine": "italian",
     "tags": [
       "italian",
-      "prawns",
       "risotto",
       "fancy",
       "comfort",
-      "fish",
       "high protein"
     ],
     "difficulty": "medium",
@@ -1248,11 +1225,9 @@
     "cuisine": "italian",
     "tags": [
       "italian",
-      "salmon",
       "oven",
       "quick",
       "fancy",
-      "fish",
       "high protein"
     ],
     "difficulty": "easy",
@@ -1310,7 +1285,6 @@
     "tags": [
       "italian",
       "mediterranean",
-      "veal",
       "quick",
       "fancy"
     ],
@@ -1374,7 +1348,6 @@
     "tags": [
       "italian",
       "mediterranean",
-      "chicken",
       "quick",
       "light",
       "high protein"
@@ -1455,7 +1428,6 @@
     "tags": [
       "italian",
       "mediterranean",
-      "turkey",
       "one-pot",
       "comfort",
       "high protein"
@@ -1525,11 +1497,8 @@
     "tags": [
       "italian",
       "mediterranean",
-      "seafood",
-      "pasta",
       "fancy",
-      "make ahead",
-      "fish"
+      "make ahead"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -1597,7 +1566,6 @@
     "tags": [
       "italian",
       "mediterranean",
-      "veal",
       "stew",
       "comfort",
       "high protein"
@@ -1693,7 +1661,6 @@
     "tags": [
       "italian",
       "mediterranean",
-      "beef",
       "stir-fry",
       "light",
       "quick"
@@ -1770,7 +1737,6 @@
     "tags": [
       "chinese",
       "asian",
-      "beef",
       "stir-fry",
       "light"
     ],
@@ -1851,7 +1817,6 @@
     "tags": [
       "italian",
       "mediterranean",
-      "beef",
       "grill",
       "light",
       "fancy",
@@ -1912,7 +1877,6 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "chicken",
       "stew",
       "light",
       "high protein"
@@ -1994,7 +1958,6 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "veal",
       "stew",
       "light",
       "comfort",
@@ -2071,7 +2034,6 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "veal",
       "one-pot",
       "stew",
       "comfort",
@@ -2180,7 +2142,6 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "fish",
       "oven",
       "comfort",
       "make ahead",
@@ -2256,7 +2217,6 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "beef",
       "stew",
       "comfort",
       "make ahead",
@@ -2368,10 +2328,8 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "cod",
       "traybake",
-      "oven",
-      "fish"
+      "oven"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -2470,11 +2428,8 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "cod",
       "oven",
-      "rice",
-      "light",
-      "fish"
+      "light"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -2548,7 +2503,6 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "pork",
       "comfort"
     ],
     "difficulty": "medium",
@@ -2622,7 +2576,6 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "pork",
       "traybake",
       "oven",
       "light",
@@ -2702,11 +2655,9 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "seafood",
       "one-pot",
       "quick",
-      "light",
-      "fish"
+      "light"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -2772,7 +2723,6 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "lamb",
       "stew",
       "light",
       "one-pot"
@@ -2874,7 +2824,6 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "lamb",
       "stew",
       "one-pot",
       "comfort",
@@ -2986,10 +2935,8 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "cod",
       "oven",
-      "light",
-      "fish"
+      "light"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -3053,11 +3000,9 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "cod",
       "oven",
       "light",
-      "make ahead",
-      "fish"
+      "make ahead"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -3137,10 +3082,8 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "salmon",
       "oven",
       "comfort",
-      "fish",
       "high protein"
     ],
     "difficulty": "medium",
@@ -3232,7 +3175,6 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "pork",
       "stew",
       "one-pot",
       "comfort",
@@ -3326,7 +3268,6 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "chicken",
       "oven",
       "light",
       "high protein"
@@ -3413,7 +3354,6 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "chicken",
       "stew",
       "comfort",
       "high protein"
@@ -3497,7 +3437,6 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "chicken",
       "stew",
       "one-pot",
       "comfort",
@@ -3575,7 +3514,6 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "chicken",
       "stew",
       "comfort"
     ],
@@ -3650,7 +3588,6 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "pork",
       "oven",
       "comfort",
       "high protein"
@@ -3723,7 +3660,6 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "salmon",
       "stew",
       "comfort",
       "high protein"
@@ -3805,9 +3741,7 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "salmon",
       "fancy",
-      "fish",
       "high protein"
     ],
     "difficulty": "hard",
@@ -3883,7 +3817,6 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "fish",
       "oven",
       "quick",
       "light"
@@ -3955,7 +3888,6 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "eggs",
       "one-pot",
       "vegetarian",
       "light"
@@ -4050,8 +3982,6 @@
     "tags": [
       "korean",
       "asian",
-      "beef",
-      "rice",
       "bowl",
       "make ahead"
     ],
@@ -4169,9 +4099,7 @@
     "tags": [
       "asian",
       "indonesian",
-      "beef",
       "curry",
-      "rice",
       "comfort",
       "fancy",
       "high protein"
@@ -4297,10 +4225,7 @@
     "tags": [
       "korean",
       "asian",
-      "beef",
-      "rice",
-      "bowl",
-      "eggs"
+      "bowl"
     ],
     "difficulty": "hard",
     "equipment": {
@@ -4456,7 +4381,6 @@
     "tags": [
       "chinese",
       "asian",
-      "fish",
       "light",
       "quick"
     ],
@@ -4527,7 +4451,6 @@
     "tags": [
       "asian",
       "thai",
-      "chicken",
       "salad",
       "light",
       "high protein"
@@ -4623,7 +4546,6 @@
     "tags": [
       "chinese",
       "asian",
-      "beef",
       "stir-fry",
       "quick"
     ],
@@ -4718,7 +4640,6 @@
     "tags": [
       "chinese",
       "asian",
-      "chicken",
       "stir-fry",
       "quick"
     ],
@@ -4804,10 +4725,8 @@
     "tags": [
       "chinese",
       "asian",
-      "salmon",
       "quick",
-      "light",
-      "fish"
+      "light"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -4878,9 +4797,7 @@
     "tags": [
       "asian",
       "vietnamese",
-      "fish",
       "stew",
-      "rice",
       "comfort",
       "high protein"
     ],
@@ -4967,7 +4884,6 @@
     "tags": [
       "korean",
       "asian",
-      "chicken",
       "stir-fry",
       "comfort",
       "high protein"
@@ -5072,9 +4988,7 @@
     "tags": [
       "asian",
       "filipino",
-      "chicken",
       "stew",
-      "rice",
       "comfort",
       "high protein"
     ],
@@ -5152,9 +5066,7 @@
     "tags": [
       "asian",
       "indian",
-      "fish",
-      "curry",
-      "rice"
+      "curry"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -5246,8 +5158,6 @@
     "tags": [
       "japanese",
       "asian",
-      "beef",
-      "rice",
       "bowl",
       "comfort",
       "high protein"
@@ -5330,9 +5240,7 @@
     "tags": [
       "asian",
       "vietnamese",
-      "chicken",
       "grill",
-      "rice",
       "make ahead",
       "high protein"
     ],
@@ -5424,9 +5332,7 @@
     "tags": [
       "asian",
       "indian",
-      "chicken",
       "curry",
-      "rice",
       "light",
       "high protein"
     ],
@@ -5523,7 +5429,6 @@
     "tags": [
       "chinese",
       "asian",
-      "chicken",
       "stir-fry"
     ],
     "difficulty": "medium",
@@ -5637,9 +5542,6 @@
     "tags": [
       "asian",
       "malaysian",
-      "chicken",
-      "prawns",
-      "rice",
       "stir-fry",
       "high protein"
     ],
@@ -5718,10 +5620,7 @@
     "tags": [
       "japanese",
       "asian",
-      "salmon",
-      "rice",
       "light",
-      "fish",
       "high protein"
     ],
     "difficulty": "medium",
@@ -5803,7 +5702,6 @@
     "tags": [
       "asian",
       "indian",
-      "chicken",
       "oven",
       "grill",
       "make ahead",
@@ -5910,8 +5808,6 @@
     "tags": [
       "japanese",
       "asian",
-      "chicken",
-      "rice",
       "bowl",
       "comfort",
       "quick",
@@ -5991,9 +5887,7 @@
     "tags": [
       "asian",
       "thai",
-      "chicken",
       "stir-fry",
-      "rice",
       "quick",
       "high protein"
     ],
@@ -6081,9 +5975,7 @@
     "tags": [
       "asian",
       "thai",
-      "chicken",
       "oven",
-      "rice",
       "make ahead",
       "high protein"
     ],
@@ -6185,7 +6077,6 @@
     "tags": [
       "taiwanese",
       "asian",
-      "chicken",
       "stir-fry",
       "quick"
     ],
@@ -6266,8 +6157,6 @@
     "tags": [
       "japanese",
       "asian",
-      "chicken",
-      "rice",
       "oven"
     ],
     "difficulty": "medium",
@@ -6346,9 +6235,7 @@
     "tags": [
       "asian",
       "thai",
-      "chicken",
       "curry",
-      "rice",
       "comfort"
     ],
     "difficulty": "easy",
@@ -6451,10 +6338,8 @@
     "cuisine": "brazilian",
     "tags": [
       "brazilian",
-      "cod",
       "stew",
       "comfort",
-      "fish",
       "high protein"
     ],
     "difficulty": "medium",
@@ -6565,10 +6450,8 @@
     "cuisine": "american",
     "tags": [
       "american",
-      "salmon",
       "soup",
-      "light",
-      "fish"
+      "light"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -6658,9 +6541,7 @@
     "cuisine": "american",
     "tags": [
       "american",
-      "salmon",
-      "oven",
-      "fish"
+      "oven"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -6724,10 +6605,8 @@
     "cuisine": "mexican",
     "tags": [
       "mexican",
-      "beef",
       "bowl",
       "grill",
-      "rice",
       "high protein"
     ],
     "difficulty": "medium",
@@ -6861,7 +6740,6 @@
     "cuisine": "british",
     "tags": [
       "british",
-      "chicken",
       "traybake",
       "light",
       "high protein"
@@ -6949,7 +6827,6 @@
     "tags": [
       "greek",
       "mediterranean",
-      "chicken",
       "grill",
       "wrap",
       "make ahead",
@@ -7029,7 +6906,6 @@
     "cuisine": "mexican",
     "tags": [
       "mexican",
-      "chicken",
       "stew",
       "light"
     ],
@@ -7102,7 +6978,6 @@
     "tags": [
       "ethiopian",
       "african",
-      "chicken",
       "stew",
       "comfort",
       "curry",
@@ -7198,10 +7073,8 @@
     "tags": [
       "greek",
       "mediterranean",
-      "cod",
       "oven",
-      "light",
-      "fish"
+      "light"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -7289,11 +7162,9 @@
     "tags": [
       "north african",
       "mediterranean",
-      "salmon",
       "oven",
       "bowl",
       "light",
-      "fish",
       "high protein"
     ],
     "difficulty": "medium",
@@ -7384,7 +7255,6 @@
     "cuisine": "british",
     "tags": [
       "british",
-      "beef",
       "oven",
       "comfort"
     ],
@@ -7511,7 +7381,6 @@
     "cuisine": "american",
     "tags": [
       "american",
-      "turkey",
       "stew",
       "one-pot",
       "comfort",
@@ -7604,7 +7473,6 @@
     "cuisine": "irish",
     "tags": [
       "irish",
-      "lamb",
       "stew",
       "comfort",
       "make ahead",
@@ -7704,9 +7572,7 @@
     "cuisine": "caribbean",
     "tags": [
       "caribbean",
-      "chicken",
       "curry",
-      "rice",
       "comfort",
       "high protein"
     ],
@@ -7782,7 +7648,6 @@
     "cuisine": "caribbean",
     "tags": [
       "caribbean",
-      "chicken",
       "oven",
       "light",
       "high protein"
@@ -7860,7 +7725,6 @@
     "tags": [
       "middle eastern",
       "mediterranean",
-      "lamb",
       "grill",
       "wrap"
     ],
@@ -7987,7 +7851,6 @@
     "tags": [
       "lebanese",
       "mediterranean",
-      "chicken",
       "wrap",
       "make ahead"
     ],
@@ -8090,7 +7953,6 @@
     "cuisine": "swedish",
     "tags": [
       "swedish",
-      "turkey",
       "one-pot",
       "comfort",
       "high protein"
@@ -8184,9 +8046,7 @@
     "cuisine": "hungarian",
     "tags": [
       "hungarian",
-      "chicken",
       "stew",
-      "noodles",
       "quick",
       "comfort",
       "high protein"
@@ -8278,7 +8138,6 @@
     "tags": [
       "moroccan",
       "north african",
-      "chicken",
       "stew",
       "one-pot",
       "comfort",
@@ -8393,7 +8252,6 @@
     "cuisine": "peruvian",
     "tags": [
       "peruvian",
-      "chicken",
       "oven",
       "comfort",
       "make ahead",
@@ -8511,10 +8369,8 @@
     "tags": [
       "north african",
       "mediterranean",
-      "salmon",
       "one-pot",
       "fancy",
-      "fish",
       "high protein"
     ],
     "difficulty": "medium",
@@ -8609,7 +8465,6 @@
     "tags": [
       "spanish",
       "mediterranean",
-      "chicken",
       "stew",
       "one-pot",
       "comfort",
@@ -8695,9 +8550,7 @@
     "cuisine": "african",
     "tags": [
       "african",
-      "chicken",
       "stew",
-      "rice",
       "comfort",
       "high protein"
     ],
@@ -8795,7 +8648,6 @@
     "tags": [
       "turkish",
       "mediterranean",
-      "eggs",
       "quick",
       "vegetarian",
       "light"
@@ -8869,7 +8721,6 @@
     "cuisine": "georgian",
     "tags": [
       "georgian",
-      "eggs",
       "oven",
       "vegetarian",
       "comfort",
@@ -9003,7 +8854,6 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "pork",
       "grill",
       "comfort",
       "quick",
@@ -9078,11 +8928,9 @@
     "cuisine": "british",
     "tags": [
       "british",
-      "cod",
       "oven",
       "comfort",
-      "treat",
-      "fish"
+      "treat"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -9169,7 +9017,6 @@
     "tags": [
       "korean",
       "asian",
-      "chicken",
       "comfort",
       "fancy",
       "treat"
@@ -9272,8 +9119,6 @@
     "tags": [
       "italian",
       "mediterranean",
-      "veal",
-      "pasta",
       "oven",
       "comfort",
       "treat"
@@ -9456,10 +9301,8 @@
     "tags": [
       "japanese",
       "asian",
-      "prawns",
       "comfort",
-      "treat",
-      "fish"
+      "treat"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -9554,7 +9397,6 @@
     "cuisine": "swiss",
     "tags": [
       "swiss",
-      "eggs",
       "vegetarian",
       "comfort",
       "treat"
@@ -9617,7 +9459,6 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "pork",
       "oven",
       "comfort",
       "treat"
