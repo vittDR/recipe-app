@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { detectPatterns, recipeFeatures, type PatternSuggestion } from '@logic/preferences.ts';
+import { productName } from '@logic/products.ts';
 import { Icon } from '../components/Icon.tsx';
 import { Avatar, Button, Screen, Segmented } from '../components/ui.tsx';
 import { LOCALES, useI18n, type Locale } from '../i18n/index.tsx';
+import { useGroceryCatalog } from '../lib/products.ts';
 import { pushState, type PushState } from '../lib/push.ts';
 import { useSession } from '../lib/session.tsx';
 import { supabase } from '../lib/supabase.ts';
@@ -24,6 +26,7 @@ export function UsScreen() {
   const [rules, setRules] = useState<TasteRule[]>([]);
   const [suggestions, setSuggestions] = useState<PatternSuggestion[]>([]);
   const [push, setPush] = useState<PushState>('unsupported');
+  const { data: catalog } = useGroceryCatalog(household!.id);
   const load = async () => {
     const [r, swipes, existing] = await Promise.all([
       supabase.from('taste_rules').select('*').eq('user_id', userId!),
@@ -50,7 +53,8 @@ export function UsScreen() {
   const decide = async (s: PatternSuggestion, action: 'never' | 'less' | 'more' | 'ignore') => {
     if (action === 'never') {
       await supabase.from('taste_rules').upsert(
-        { user_id: userId, kind: 'never', value: s.pattern.value, source: 'learned' }, { onConflict: 'user_id,kind,value' });
+        { user_id: userId, kind: 'never', value: s.pattern.value, product_id: catalog?.index.ofIngredient(s.pattern.value)?.id ?? null, source: 'learned' },
+        { onConflict: 'user_id,kind,value' });
     }
     await supabase.from('learned_patterns').insert({
       user_id: userId,
@@ -62,8 +66,16 @@ export function UsScreen() {
     await load();
   };
 
-  const never = rules.filter((r) => r.kind === 'never').map((r) => r.value);
-  const love = rules.filter((r) => r.kind === 'love').map((r) => r.value);
+  // Rules on catalogue items show the item's name in the app's language.
+  const nameOf = (r: TasteRule) => {
+    const p = r.product_id ? catalog?.index.get(r.product_id) : undefined;
+    return p ? productName(p, locale) : r.value;
+  };
+  // A rule on an item already covers the pattern on its ingredient.
+  const ruledIngredients = new Set(rules.map((r) => (r.product_id ? catalog?.index.get(r.product_id)?.ingredient : null)));
+  const shown = suggestions.filter((s) => !ruledIngredients.has(s.pattern.value));
+  const never = rules.filter((r) => r.kind === 'never').map(nameOf);
+  const love = rules.filter((r) => r.kind === 'love').map(nameOf);
   const diet = rules.find((r) => r.kind === 'diet')?.value;
 
   return (
@@ -84,9 +96,9 @@ export function UsScreen() {
       </div>
 
       <h2 className="section-label">{t('us.patterns')}</h2>
-      {suggestions.length === 0 ? <p className="muted small">{t('us.noPatterns')}</p> : (
+      {shown.length === 0 ? <p className="muted small">{t('us.noPatterns')}</p> : (
         <div className="stack">
-          {suggestions.map((s) => (
+          {shown.map((s) => (
             <div key={`${s.pattern.kind}:${s.pattern.value}`} className="card stack">
               <span>{t(s.pattern.kind === 'avoid' ? 'us.patternAvoid' : 'us.patternPrefer', { value: s.pattern.value, n: s.evidence, total: s.window })}</span>
               <div className="row row--wrap">

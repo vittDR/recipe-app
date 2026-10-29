@@ -40,7 +40,7 @@ Deno.serve(async (req) => {
   const since = (days: number) => new Date(Date.now() - days * 86_400_000).toISOString();
   const [goals, rules, patterns, swipes, recipes, meals, pantry, catalog] = await Promise.all([
     admin.from('member_goals').select('*').in('user_id', eaters),
-    admin.from('taste_rules').select('user_id, kind, value').in('user_id', eaters),
+    admin.from('taste_rules').select('user_id, kind, value, product_id').in('user_id', eaters),
     admin.from('learned_patterns').select('user_id, pattern, weight').in('user_id', eaters).eq('status', 'accepted'),
     admin.from('swipes').select('user_id, recipe_id, verdict, created_at, decks!inner(household_id)')
       .eq('decks.household_id', householdId).order('created_at', { ascending: false }).limit(1000),
@@ -63,7 +63,7 @@ Deno.serve(async (req) => {
 
   const featuresById = new Map<string, string[]>();
   const candidates: CandidateRecipe[] = library.map((r) => {
-    const ings = (r.recipe_ingredients ?? []) as { name: string; is_staple: boolean }[];
+    const ings = (r.recipe_ingredients ?? []) as { name: string; is_staple: boolean; product_id: string | null }[];
     const names = ings.filter((i) => !i.is_staple).map((i) => i.name.toLowerCase());
     featuresById.set(r.id, recipeFeatures(r.tags ?? [], ings));
     const classes = ings.map((i) => dietOf.get(i.name));
@@ -72,6 +72,7 @@ Deno.serve(async (req) => {
       title: r.title,
       tags: r.tags ?? [],
       ingredientNames: names,
+      productIds: ings.flatMap((i) => (i.product_id ? [i.product_id] : [])),
       dietClass: classes.includes('meat') ? 'meat' : classes.includes('fish') ? 'fish' : 'veg',
       totalMin: r.total_min,
       kcalPerServing: r.kcal_per_serving,
@@ -96,8 +97,10 @@ Deno.serve(async (req) => {
       dinnerKcal: g?.dinner_kcal ?? null,
       dinnerProteinG: g?.dinner_protein_g ?? null,
       servings: g?.servings ?? null,
-      never: mine.filter((x) => x.kind === 'never').map((x) => x.value),
-      loves: mine.filter((x) => x.kind === 'love').map((x) => x.value),
+      never: mine.filter((x) => x.kind === 'never' && !x.product_id).map((x) => x.value),
+      loves: mine.filter((x) => x.kind === 'love' && !x.product_id).map((x) => x.value),
+      neverProducts: mine.filter((x) => x.kind === 'never' && x.product_id).map((x) => x.product_id as string),
+      loveProducts: mine.filter((x) => x.kind === 'love' && x.product_id).map((x) => x.product_id as string),
       diet: (mine.find((x) => x.kind === 'diet')?.value ?? 'everything') as Diet,
       weights,
     };

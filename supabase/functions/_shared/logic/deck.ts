@@ -12,6 +12,7 @@ export interface CandidateRecipe {
   title: string;
   tags: string[];
   ingredientNames: string[]; // non-staple ingredient names, lowercase
+  productIds?: string[]; // the catalogue items its ingredients are, staples included
   dietClass: 'veg' | 'fish' | 'meat';
   totalMin: number | null;
   kcalPerServing: number | null;
@@ -19,8 +20,12 @@ export interface CandidateRecipe {
 }
 
 export interface DeckMember extends EaterTargets {
+  /** Free-text rules (older ones, or tags): matched on tags, ingredient names and title. */
   never: string[];
   loves: string[];
+  /** Rules on catalogue items: matched on the recipe's ingredient products. */
+  neverProducts?: string[];
+  loveProducts?: string[];
   diet: Diet;
   /** Soft weights per feature (tags/ingredients), [-1, 1], incl. accepted patterns. */
   weights: Map<string, number>;
@@ -72,13 +77,16 @@ function matchesTerm(recipe: CandidateRecipe, term: string): boolean {
   );
 }
 
+const usesProduct = (recipe: CandidateRecipe, ids: string[] | undefined) =>
+  !!ids?.length && !!recipe.productIds?.some((id) => ids.includes(id));
+
 export function passesHardFilters(recipe: CandidateRecipe, members: DeckMember[], opts: DeckOptions): boolean {
   if (opts.recentlyCooked?.has(recipe.id)) return false;
   if (opts.maxMinutes && recipe.totalMin && recipe.totalMin > opts.maxMinutes) return false;
   for (const m of members) {
     if (m.diet === 'vegetarian' && recipe.dietClass !== 'veg') return false;
     if (m.diet === 'pescatarian' && recipe.dietClass === 'meat') return false;
-    if (m.never.some((n) => matchesTerm(recipe, n))) return false;
+    if (m.never.some((n) => matchesTerm(recipe, n)) || usesProduct(recipe, m.neverProducts)) return false;
   }
   return true;
 }
@@ -107,7 +115,7 @@ export function scoreRecipe(
     let w = 0;
     for (const f of features) w += m.weights.get(f) ?? 0;
     pref += Math.max(-1, Math.min(1, w / 3));
-    if (m.loves.some((l) => matchesTerm(recipe, l))) love += 1;
+    if (m.loves.some((l) => matchesTerm(recipe, l)) || usesProduct(recipe, m.loveProducts)) love += 1;
   }
   pref /= members.length || 1;
   love /= members.length || 1;

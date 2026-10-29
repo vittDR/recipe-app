@@ -92,6 +92,30 @@ export function TonightScreen() {
       </div>
       <h1 className="screen__title">{t('tonight.title')}</h1>
 
+      <Link to="/plan" className="card stack tonight-week" aria-label={t('us.weeklyPlan')}>
+        <span className="row row--between">
+          <h2 className="headline">{t('tonight.week')}</h2>
+          <span className="chevron"><Icon name="chevron" size={18} /></span>
+        </span>
+        <div className="week">
+          {days.map((label, i) => {
+            const date = todayIn(tz, i + 1 - isoWeekday(today));
+            const meal = data?.meals.find((m) => m.for_date === date && m.status !== 'skipped');
+            const cook = data?.plan.find((p) => p.weekday === i + 1)?.cook_at_home ?? true;
+            // Green once a dish is picked for the day; faded accent for a cook-at-home day still open.
+            const dot = meal ? 'week__dot--done' : cook ? 'week__dot--cook' : '';
+            return (
+              <div key={label} className={`week__day${date === today ? ' week__day--today' : ''}`}
+                title={meal?.recipe?.title ?? (cook ? '' : t('tonight.off'))}>
+                <span>{label}</span>
+                <span className="headline">{Number(date.slice(8))}</span>
+                <span className={`week__dot ${dot}`} style={meal || !cook ? undefined : { opacity: 0.35 }} />
+              </div>
+            );
+          })}
+        </div>
+      </Link>
+
       {tonightMeal && deck?.status !== 'open' && deck?.status !== 'tiebreak' ? (
         <div className="card stack">
           <span className="title3">{t('tonight.decided', { title: tonightMeal.recipe?.title ?? '' })}</span>
@@ -115,61 +139,47 @@ export function TonightScreen() {
         </div>
       ) : (
         <div className="stack stack--lg">
-          {partners.length > 0 ? (
-            <section className="stack">
-              <h2 className="section-label" style={{ margin: 0 }}>{t('tonight.whoEating')}</h2>
-              <Segmented label={t('tonight.whoEating')} value={who} onChange={setWho} options={[
-                { value: 'both', label: t('tonight.both') },
-                { value: 'me', label: t('tonight.justMe') },
-              ]} />
-            </section>
-          ) : (
+          {partners.length === 0 && (
             <Link to="/invite" className="notice notice--info row" style={{ textDecoration: 'none' }}>
               <Icon name="people" /> <span className="spacer">{t('tonight.noPartner')}</span> <Icon name="chevron" />
             </Link>
           )}
-          <section className="stack">
-            <h2 className="section-label" style={{ margin: 0 }}>{t('tonight.time')}</h2>
-            <div className="chips chips--scroll">
-              {TIMES.map((m) => (
-                <Chip key={m ?? 'any'} pressed={maxMinutes === m} onClick={() => setMaxMinutes(m)}>
-                  {m ? t('tonight.minutes', { n: m }) : t('tonight.anyTime')}
-                </Chip>
-              ))}
+          <section className="card stack">
+            <h2 className="title3">{t('tonight.newDeck')}</h2>
+            {partners.length > 0 && (
+              <div className="stack stack--sm">
+                <h3 className="section-label" style={{ margin: 0 }}>{t('tonight.whoEating')}</h3>
+                <Segmented label={t('tonight.whoEating')} value={who} onChange={setWho} options={[
+                  { value: 'both', label: t('tonight.both') },
+                  { value: 'me', label: t('tonight.justMe') },
+                ]} />
+              </div>
+            )}
+            <div className="stack stack--sm">
+              <h3 className="section-label" style={{ margin: 0 }}>{t('tonight.time')}</h3>
+              <div className="chips chips--scroll">
+                {TIMES.map((m) => (
+                  <Chip key={m ?? 'any'} pressed={maxMinutes === m} onClick={() => setMaxMinutes(m)}>
+                    {m ? t('tonight.minutes', { n: m }) : t('tonight.anyTime')}
+                  </Chip>
+                ))}
+              </div>
             </div>
-          </section>
-          <section className="stack">
-            <h2 className="section-label" style={{ margin: 0 }}>{t('tonight.mood')}</h2>
-            <div className="chips chips--scroll">
-              {MOODS.map((m) => (
-                <Chip key={m} pressed={mood === m} onClick={() => setMood(m)}>{t(`tonight.moods.${m}`)}</Chip>
-              ))}
+            <div className="stack stack--sm">
+              <h3 className="section-label" style={{ margin: 0 }}>{t('tonight.mood')}</h3>
+              <div className="chips chips--scroll">
+                {MOODS.map((m) => (
+                  <Chip key={m} pressed={mood === m} onClick={() => setMood(m)}>{t(`tonight.moods.${m}`)}</Chip>
+                ))}
+              </div>
             </div>
           </section>
           {error && <p className="notice">{error}</p>}
           <Button block onClick={() => void deal()} disabled={dealing}>
-            <Icon name="flame" /> {dealing ? t('tonight.dealing') : t('tonight.deal')}
+            <Icon name="bowl" /> {dealing ? t('tonight.dealing') : t('tonight.deal')}
           </Button>
         </div>
       )}
-
-      <h2 className="section-label">{t('tonight.week')}</h2>
-      <Link to="/plan" className="week" style={{ textDecoration: 'none' }} aria-label={t('us.weeklyPlan')}>
-        {days.map((label, i) => {
-          const date = todayIn(tz, i + 1 - isoWeekday(today));
-          const meal = data?.meals.find((m) => m.for_date === date);
-          const cook = data?.plan.find((p) => p.weekday === i + 1)?.cook_at_home ?? true;
-          const dot = meal?.status === 'cooked' ? 'week__dot--done' : meal || cook ? 'week__dot--cook' : '';
-          return (
-            <div key={label} className={`week__day${date === today ? ' week__day--today' : ''}`}
-              title={meal?.recipe?.title ?? (cook ? '' : t('tonight.off'))}>
-              <span>{label}</span>
-              <span className="headline">{Number(date.slice(8))}</span>
-              <span className={`week__dot ${dot}`} style={meal ? undefined : { opacity: cook ? 0.35 : 1 }} />
-            </div>
-          );
-        })}
-      </Link>
     </Screen>
   );
 }

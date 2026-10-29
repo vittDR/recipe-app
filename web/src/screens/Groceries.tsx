@@ -3,7 +3,7 @@ import { groupGroceries, splitCart, type GroupMode } from '@logic/groceries.ts';
 import { parseIngredientLine } from '@logic/ingredients.ts';
 import { applyQueue, type ListOp } from '@logic/listsync.ts';
 import { defaultAmount, ProductIndex, productName, sectionOf, unitsFor, type Product } from '@logic/products.ts';
-import { AmountControl, Highlight, SwipeRow, SyncIcon, type Amount } from '../components/GroceryControls.tsx';
+import { AmountControl, AmountSheet, Highlight, SwipeRow, SyncIcon, type Amount } from '../components/GroceryControls.tsx';
 import { CreateItemSheet, ItemSheet, sectionKeyOf, UsualsSheet, useSectionTitle, type ListItem } from '../components/GrocerySheets.tsx';
 import { Icon } from '../components/Icon.tsx';
 import { Avatar, Button, Checkbox, dismissToast, Screen, Segmented, Spinner, toast } from '../components/ui.tsx';
@@ -103,6 +103,7 @@ export function GroceriesScreen() {
   const [usualsOpen, setUsualsOpen] = useState(false);
   const [creating, setCreating] = useState<string | null>(null);
   const [openId, setOpenId] = useState<string | null>(null);
+  const [amountId, setAmountId] = useState<string | null>(null);
   const searchRef = useRef<HTMLInputElement>(null);
 
   const { data: catalog, reload: reloadCatalog } = useGroceryCatalog(hid);
@@ -263,13 +264,18 @@ export function GroceriesScreen() {
   };
 
   const openItem = items.find((i) => i.id === openId) ?? null;
+  const amountItem = items.find((i) => i.id === amountId) ?? null;
+  const amountProduct = productOf(amountItem?.product_id ?? null);
   const notSaved = (id: string) => status === 'error' && pending.has(id);
   const isNew = (i: GroceryRow) => !!i.added_by && i.added_by !== userId && Date.parse(i.created_at) > seenBefore;
   const showList = !(searching && parsed.name);
 
   return (
     <Screen>
-      <h1 className="screen__title">{t('groceries.title')}</h1>
+      <div className="row row--between">
+        <h1 className="screen__title">{t('groceries.title')}</h1>
+        <SyncIcon status={status} onRetry={() => queue.retry()} />
+      </div>
 
       <div className="row grocery-search">
         <input ref={searchRef} className="input" type="search" value={query} placeholder={t('groceries.addPlaceholder')}
@@ -283,7 +289,6 @@ export function GroceriesScreen() {
             <Icon name="history" />
           </button>
         )}
-        <SyncIcon status={status} onRetry={() => queue.retry()} />
       </div>
 
       {searching && !parsed.name && <p className="muted small">{t('groceries.searchHint')}</p>}
@@ -325,10 +330,14 @@ export function GroceriesScreen() {
 
       {showList && (
         <>
-          {cart.length > 0 && (
+          {total > 0 && (
             <div className="grocery-progress">
-              <span className="small muted">{t('groceries.progress', { n: cart.length, total })}</span>
-              <div className="progress" role="progressbar" aria-valuemin={0} aria-valuemax={total} aria-valuenow={cart.length}>
+              <span className="small muted">
+                {cart.length > 0 ? t('groceries.progress', { n: cart.length, total }) : tn('groceries.onList', total)}
+              </span>
+              {/* Takes its place before the first tick, so nothing moves when it appears. */}
+              <div className="progress" role="progressbar" aria-valuemin={0} aria-valuemax={total} aria-valuenow={cart.length}
+                style={cart.length ? undefined : { visibility: 'hidden' }}>
                 <div style={{ width: `${(cart.length / total) * 100}%` }} />
               </div>
             </div>
@@ -370,7 +379,12 @@ export function GroceriesScreen() {
                           </span>
                           {notSaved(item.id) && <span className="list-row__meta not-saved">{t('groceries.notSaved')}</span>}
                         </button>
-                        <span className="grocery-row__amount">{amount(item.quantity, item.unit)}</span>
+                        {item.quantity !== null && (
+                          <button type="button" className="grocery-row__amount" aria-label={t('groceries.amountOf', { name: item.display })}
+                            onClick={() => setAmountId(item.id)}>
+                            {amount(item.quantity, item.unit)}
+                          </button>
+                        )}
                       </SwipeRow>
                     ))}
                   </div>
@@ -416,6 +430,10 @@ export function GroceriesScreen() {
         onUseExisting={(p) => { setCreating(null); setQuery(productName(p, locale)); if (!onListByProduct.has(p.id)) add(p, typedFor(p)); }} />
       <ItemSheet item={openItem} catalog={catalog} onClose={() => setOpenId(null)} onChange={change} onRemove={remove}
         onMoved={() => void Promise.all([reload(), reloadCatalog()])} />
+      <AmountSheet open={!!amountItem} title={t('groceries.amountOf', { name: amountItem?.display ?? '' })}
+        value={{ quantity: amountItem?.quantity ?? null, unit: amountItem?.unit ?? null }}
+        units={amountProduct ? unitsFor(amountProduct) : unitsFor({ default_aisle: amountItem?.aisle ?? 'other' })}
+        onClose={() => setAmountId(null)} onDone={(a) => { if (amountItem) change(amountItem, a); setAmountId(null); }} />
     </Screen>
   );
 }

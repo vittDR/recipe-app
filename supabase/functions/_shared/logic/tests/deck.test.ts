@@ -53,3 +53,15 @@ test('preferences, loves, mood and pantry lift a card', () => {
   const scores = Object.fromEntries(deck.map((c) => [c.recipeId, c.score]));
   assert.ok(scores.bowl > scores.plain);
 });
+
+test('rules on catalogue items match the recipe’s ingredient products', () => {
+  const recipes = [
+    recipe('champignons', { productIds: ['p-mushroom', 'p-rice'] }),
+    recipe('saumon', { productIds: ['p-salmon'] }),
+    recipe('plain', { productIds: ['p-rice'] }),
+  ];
+  const deck = buildDeck(recipes, [member({ neverProducts: ['p-mushroom'], loveProducts: ['p-salmon'] })], new Map(), { random: fixed });
+  assert.ok(!deck.some((c) => c.recipeId === 'champignons'));
+  const scores = Object.fromEntries(deck.map((c) => [c.recipeId, c.score]));
+  assert.ok(scores.saumon > scores.plain);
+});

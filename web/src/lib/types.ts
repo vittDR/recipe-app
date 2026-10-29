@@ -47,6 +47,8 @@ export interface TasteRule {
   user_id: string;
   kind: 'never' | 'love' | 'diet';
   value: string;
+  /** The catalogue item a never / love rule is about; null for older free-text rules. */
+  product_id: string | null;
   source: 'manual' | 'learned';
 }
 

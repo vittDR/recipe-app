@@ -48,31 +48,32 @@ export function ItemSheet({
   const { t } = useI18n();
   const title = useSectionTitle(catalog);
   const product = item?.product_id ? catalog?.index.get(item.product_id) : undefined;
-  const current = item?.store_id ? storeKey(item.store_id) : item?.aisle;
+  // The section just picked shows at once, until the item reloads in its new place.
+  const saved = item?.store_id ? storeKey(item.store_id) : item?.aisle;
+  const [picked, setPicked] = useState<{ from: string; key: string } | null>(null);
+  const at = `${item?.id}:${saved}`;
+  const current = picked?.from === at ? picked.key : saved;
   const sections = catalog?.sectionOrder ?? [];
 
   const move = async (key: string) => {
     if (!item || key === current) return;
+    setPicked({ from: at, key });
     const store = key.startsWith('store:') ? key.slice('store:'.length) : null;
     const aisle = store ? null : (key as Aisle);
-    if (product) {
-      await supabase.rpc('set_product_section', { p_product: product.id, p_aisle: aisle, p_store: store });
-    } else {
-      await supabase.from('grocery_items').update({ store_id: store, ...(aisle ? { aisle } : {}) }).eq('id', item.id);
-    }
+    const { error } = product
+      ? await supabase.rpc('set_product_section', { p_product: product.id, p_aisle: aisle, p_store: store })
+      : await supabase.from('grocery_items').update({ store_id: store, ...(aisle ? { aisle } : {}) }).eq('id', item.id);
+    if (error) setPicked(null);
     onMoved();
-    onClose();
   };
 
   return (
     <Sheet open={!!item} onClose={onClose} label={item?.display ?? ''}>
       {item && (
         <>
-          <div className="row row--between" style={{ alignItems: 'flex-start' }}>
-            <div style={{ minWidth: 0 }}>
-              <h2 className="title2" style={{ marginBottom: 'var(--s-1)' }}>{item.display}</h2>
-              {product?.household_id && <p className="muted small" style={{ marginTop: 0 }}>{t('groceries.yourItem')}</p>}
-            </div>
+          <h2 className="title2" style={{ marginBottom: 'var(--s-1)' }}>{item.display}</h2>
+          {product?.household_id && <p className="muted small" style={{ marginTop: 0 }}>{t('groceries.yourItem')}</p>}
+          <div className="row" style={{ marginTop: 'var(--s-3)' }}>
             <AmountControl name={item.display} amount={{ quantity: item.quantity, unit: item.unit }}
               units={product ? unitsFor(product) : unitsFor({ default_aisle: item.aisle })}
               onAdd={() => undefined} onChange={(a) => onChange(item, a)}

@@ -1,4 +1,4 @@
-// Small pieces of the Groceries tab: the + / [quantity] [unit ▾] [trash]
+// Small pieces of the Groceries tab: the + / [quantity unit ▾] [trash]
 // module, the amount sheet (unit pills over a keypad), swipe to remove, the sync
 // icon and the bold match in search results.
 
@@ -50,13 +50,10 @@ export function AmountControl({
   }
   return (
     <div className="amount" role="group" aria-label={name}>
-      <button type="button" className="amount__field amount__qty" aria-label={t('groceries.setQuantity', { name })}
+      <button type="button" className="amount__field amount__value" aria-label={t('groceries.amountOf', { name })}
         onClick={() => setEditing(true)}>
-        {amount.quantity === null ? '–' : number(amount.quantity)}
-      </button>
-      <button type="button" className="amount__field amount__unit" aria-label={t('groceries.setUnit', { name })}
-        onClick={() => setEditing(true)}>
-        <span>{amount.unit ? unitLabel(amount.unit, amount.quantity) : '–'}</span>
+        <span className="amount__qty">{amount.quantity === null ? '–' : number(amount.quantity)}</span>
+        <span className="amount__unit">{amount.unit ? unitLabel(amount.unit, amount.quantity) : '–'}</span>
         <Icon name="caret" size={14} />
       </button>
       <button type="button" className="amount__trash" aria-label={t('groceries.removeItem')} onClick={onRemove}>

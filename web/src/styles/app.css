@@ -105,6 +105,10 @@ a {
   gap: var(--s-6);
 }
 
+.stack--sm {
+  gap: var(--s-2);
+}
+
 .row {
   display: flex;
   align-items: center;
@@ -971,6 +975,22 @@ textarea.input {
   gap: var(--s-3);
 }
 
+/* Tonight: the week strip in its own card, at the top. */
+.tonight-week {
+  color: inherit;
+  text-decoration: none;
+  margin-bottom: var(--s-4);
+}
+
+.tonight-week h2 {
+  margin: 0;
+}
+
+.tonight-week .week__day--today {
+  background: var(--c-paper);
+  box-shadow: none;
+}
+
 .week {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -1108,6 +1128,15 @@ textarea.input {
   white-space: nowrap;
 }
 
+/* Tapping the amount opens its sheet: a bigger target than the text. */
+button.grocery-row__amount {
+  min-height: var(--touch);
+  padding: 0 var(--s-2);
+  margin-right: calc(-1 * var(--s-2));
+  border: 0;
+  background: none;
+}
+
 /* The + / module: fixed size, never shrinks. */
 .amount-add {
   flex: none;
@@ -1133,22 +1162,30 @@ textarea.input {
   font-weight: 600;
 }
 
-.amount__qty {
-  width: 48px;
-}
-
-.amount__unit {
-  width: 84px;
+/* Quantity and unit in one field: one tap edits both. */
+.amount__value {
+  width: 136px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 2px;
+  gap: var(--s-1);
+  padding: 0 var(--s-2);
 }
 
-.amount__unit span {
+.amount__qty {
+  flex: none;
+}
+
+.amount__unit {
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.amount__value svg {
+  flex: none;
+  color: var(--c-muted);
 }
 
 .amount__trash {
