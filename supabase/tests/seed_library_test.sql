@@ -9,9 +9,9 @@ end $$;
 
 create temp view lib as select * from recipes where household_id is null and source_url is not null;
 
-select pg_temp.check((select count(*) = 110 from lib), '110 seed recipes loaded');
-select pg_temp.check((select count(*) filter (where language = 'it') = 27 and count(*) filter (where language = 'fr') = 27
-                             and count(*) filter (where language = 'en') = 56 from lib), 'languages: 27 it, 27 fr, 56 en');
+select pg_temp.check((select count(*) = 109 from lib), '109 sourced seed recipes loaded');
+select pg_temp.check((select count(*) filter (where language = 'it') = 27 and count(*) filter (where language = 'fr') = 26
+                             and count(*) filter (where language = 'en') = 56 from lib), 'languages: 27 it, 26 fr, 56 en');
 select pg_temp.check(not exists (
   select 1 from recipe_ingredients i join lib r on r.id = i.recipe_id
   where not exists (select 1 from ingredient_catalog c where c.name = i.name)), 'every ingredient is in the catalogue');
@@ -23,12 +23,12 @@ select pg_temp.check(not exists (select 1 from lib where kcal_per_serving is nul
                      'every recipe has estimated macros');
 select pg_temp.check(not exists (select 1 from lib where source_name is null or cuisine is null or original_servings is null),
                      'source name, cuisine and original yield are set');
-select pg_temp.check((select count(*) = 99 from lib where image_path like '/recipe-photos/%.webp'), '99 recipes have a photo served by the app');
+select pg_temp.check((select count(*) = 98 from lib where image_path like '/recipe-photos/%.webp'), '98 recipes have a photo served by the app');
 select pg_temp.check(not exists (select 1 from lib where difficulty is null or equipment is null),
                      'every recipe has a difficulty and equipment');
 select pg_temp.check((select count(*) > 0 from ingredient_catalog where exotic)
                      and not (select exotic from ingredient_catalog where name = 'soy sauce'), 'exotic ingredients are flagged');
-select pg_temp.check((select count(*) = 1334 from recipe_ingredients i join lib r on r.id = i.recipe_id
+select pg_temp.check((select count(*) = 1323 from recipe_ingredients i join lib r on r.id = i.recipe_id
                       where i.original_text is not null), 'every line keeps the source''s original text');
 
 -- Diet class is worked out from the ingredients: vegetarian-tagged recipes have no meat or fish.
@@ -42,7 +42,7 @@ insert into recipes (title, source_type) values ('Placeholder starter', 'seed');
 \i migrations/20261028000002_remove_starter_recipes.sql
 select pg_temp.check(not exists (select 1 from recipes where household_id is null and source_url is null),
                      'placeholder starter recipes are gone');
-select pg_temp.check((select count(*) = 110 from lib), 'library recipes are kept');
+select pg_temp.check((select count(*) = 109 from lib), 'library recipes are kept');
 
 -- Seed recipes and lines have the fixed ids from recipes.json.
 select pg_temp.check((select id = 'd8e4ac12-403d-4d06-97cf-022682d08894' from recipes
@@ -52,7 +52,7 @@ select pg_temp.check((select i.id = 'b6b4b263-9d00-433a-a43b-af72a2b7bd33' from 
 
 -- Loading it again adds nothing.
 \i seed_library.sql
-select pg_temp.check((select count(*) = 110 from lib), 're-running seed_library.sql adds no duplicates');
+select pg_temp.check((select count(*) = 109 from lib), 're-running seed_library.sql adds no duplicates');
 
 -- AI-generated seed recipes have no source link: they're known by language and title.
 create temp view ai as select * from recipes where household_id is null and ai_generated_recipe;
@@ -128,3 +128,10 @@ select pg_temp.check(not exists (select 1 from products where household_id is nu
                                  and name_fr in ('Lentilles', 'Butternut', 'Yaourts nature')),
                      'new catalogue ingredients take over shared products with their name');
 select pg_temp.check((select diet_class = 'meat' from ingredient_catalog where name = 'chicken stock'), 'chicken stock is not vegetarian');
+
+-- The catalogue has fixed ids (seed.sql): an ingredient's product has the ingredient's id.
+select pg_temp.check((select id = '31ea62a7-f216-40b6-a6d8-ea8fc749b1a7' from ingredient_catalog where name = 'olive oil'), 'catalogue ingredients have their fixed id');
+select pg_temp.check(not exists (select 1 from products p join ingredient_catalog c on c.name = p.ingredient where p.id <> c.id),
+                     'a catalogue ingredient''s product has the ingredient''s id');
+select pg_temp.check((select id = '426208bd-c1e2-4974-938d-b5a64a13df1a' from products where household_id is null and search_key = 'ampoules'),
+                     'shared everyday products have their fixed id');

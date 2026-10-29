@@ -3962,103 +3962,6 @@
     ]
   },
   {
-    "id": "48651102-70f8-4f82-95eb-9bdbd2694b3b",
-    "title": "Poulet basquaise",
-    "language": "fr",
-    "servings": 2,
-    "original_servings": 6,
-    "prep_min": 30,
-    "cook_min": 45,
-    "source_type": "seed",
-    "source_name": "Chef Simon",
-    "source_url": "https://chefsimon.com/gourmets/chef-simon/recettes/poulet-basquaise--17",
-    "image_url": "/recipe-photos/poulet-basquaise.webp",
-    "image_source_url": "https://res.cloudinary.com/hv9ssmzrz/image/fetch/c_fill,f_auto,h_675,q_auto:eco,w_1200/https://s3-eu-west-1.amazonaws.com/images-ca-1-0-1-eu/recipe_photos/original/826/poulet-basquaise-3000x2000.jpg",
-    "cuisine": "french",
-    "tags": [
-      "french",
-      "chicken",
-      "stew",
-      "comfort",
-      "high protein"
-    ],
-    "difficulty": "medium",
-    "equipment": {
-      "pots": 1,
-      "oven": false,
-      "special": []
-    },
-    "ingredients": [
-      {
-        "id": "f9fecbe0-4475-40ba-b890-61e913e3b774",
-        "text": "500 g cuisse de poulet, poulet fermier découpé en morceaux",
-        "original_text": "1500 g cuisse de poulet, 1 beau poulet fermier découpé en 8 morceaux",
-        "guessed": true
-      },
-      {
-        "id": "dab69c4e-6a42-4e4d-8256-6fb931396728",
-        "text": "1.5 oignon, émincé",
-        "original_text": "4 oignon, émincés"
-      },
-      {
-        "id": "5c4a46cd-3ada-4f9b-ae48-9b6857ee6cf4",
-        "text": "1 poivron, en lanières",
-        "original_text": "3 poivron, en lanières"
-      },
-      {
-        "id": "6e92b9b4-0068-4728-b98d-07703d1d4917",
-        "text": "1.5 gousse ail",
-        "original_text": "4 gousses ail"
-      },
-      {
-        "id": "6feda0cc-0541-4c51-ba79-ded0705b4756",
-        "text": "165 g tomate, Roma pelées et concassées",
-        "original_text": "500 g tomate, Roma pelées et concassées"
-      },
-      {
-        "id": "24162b75-f9d9-4849-80f7-1b0653f63102",
-        "text": "20 g olives, vertes et noires",
-        "original_text": "60 g olives, vertes et noires",
-        "guessed": true
-      },
-      {
-        "id": "e5274e1c-c6c0-4747-8928-bca2c3b846de",
-        "text": "0.5 c. à soupe huile d'olive",
-        "original_text": "2 c. à soupe huile d'olive"
-      },
-      {
-        "id": "dc320656-1481-432b-b005-306fda937090",
-        "text": "thym, frais en bouquet",
-        "original_text": "thym, 1 bouquet frais ficelé"
-      },
-      {
-        "id": "6bfb2617-01a3-49c9-afc6-715d565e4095",
-        "text": "1 laurier",
-        "original_text": "1 laurier",
-        "guessed": true
-      },
-      {
-        "id": "a4c690f1-b2ca-41d8-8d36-3b455d56f156",
-        "text": "sel",
-        "original_text": "sel"
-      },
-      {
-        "id": "280ef0cb-79b1-4c32-abed-979b7a81515c",
-        "text": "poivre noir",
-        "original_text": "poivre noir"
-      }
-    ],
-    "steps": [
-      "Découper le poulet en morceaux en séparant haut et bas de cuisse sans casser les os.",
-      "Émincer les oignons, tailler les poivrons en lanières, peler et concasser les tomates.",
-      "Faire dorer les morceaux de poulet côté peau d'abord dans un peu d'huile, en les retournant délicatement, puis les réserver.",
-      "Dans la graisse de cuisson, faire suer oignons, ail et poivrons avec le thym et le laurier, sans coloration.",
-      "Ajouter les tomates et laisser compoter ; quand les légumes rendent leur jus, incorporer les olives.",
-      "Poser le poulet sur les légumes, saler, poivrer, couvrir et cuire à feu très doux environ 45 min en vérifiant la cuisson.",
-      "Réduire la sauce si elle est trop liquide (ou détendre avec un peu de bouillon si elle est trop sèche), puis servir."
-    ]
-  },
-  {
     "id": "c342d26f-6184-4e3a-898e-bf58347b4ac2",
     "title": "Poulet mijoté aux olives",
     "language": "fr",
@@ -11662,7 +11565,7 @@
     "ingredients": [
       {
         "id": "e1bf29a5-f478-4399-bd49-3e19e391f2ec",
-        "text": "4 chicken thigh, bone-in, skin on"
+        "text": "3 chicken thigh, bone-in, skin on"
       },
       {
         "id": "bbcd68b0-e729-409c-8555-7752f4eb43ad",
@@ -11707,7 +11610,7 @@
       },
       {
         "id": "cd4c03b2-79cb-4a53-9d6a-1b121613501f",
-        "text": "150 g long-grain rice"
+        "text": "120 g long-grain rice"
       },
       {
         "id": "54f4fb17-3917-496f-88b7-82dd30682ad6",

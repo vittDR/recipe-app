@@ -48,7 +48,6 @@ from (values
   ('7e1759e4-48d3-4b1a-9b65-d3c31e93172d'::uuid, 'https://www.ricardocuisine.com/recettes/551-paves-de-saumon-sur-lit-de-lentilles'),
   ('0987bb18-6284-465e-9872-55a3a4917212'::uuid, 'https://www.demotivateur.fr/food/petit-sale-aux-lentilles-38097'),
   ('e28bf347-b869-4708-97e6-b7edec18d66e'::uuid, 'https://www.weightwatchers.com/ch/fr/recette/poulet-sauce-au-vin-et-lestragon/659fabb3ce8846a01bc40d10'),
-  ('48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 'https://chefsimon.com/gourmets/chef-simon/recettes/poulet-basquaise--17'),
   ('c342d26f-6184-4e3a-898e-bf58347b4ac2'::uuid, 'https://www.demotivateur.fr/food/recette/poulet-mijote-aux-olives-1947'),
   ('a317f775-694d-4e3d-80c1-cdd2f0e6368a'::uuid, 'https://ileauxepices.com/blog/2014/09/25/recette-poulet-a-lestragon/wpid5861/'),
   ('c0a07491-dc99-4dc0-8895-b6358173175c'::uuid, 'https://www.demotivateur.fr/food/recette/roti-de-porc-a-la-moutarde-1256'),
@@ -571,17 +570,6 @@ from (values
   ('06cdc8fe-1d42-48e1-a371-a45c9126356d'::uuid, 'e28bf347-b869-4708-97e6-b7edec18d66e'::uuid, 9),
   ('a9232e3b-84ea-486d-b7f2-23b3e35a04b1'::uuid, 'e28bf347-b869-4708-97e6-b7edec18d66e'::uuid, 10),
   ('b8728acf-0f5a-4ad9-9bd0-0c511057bedf'::uuid, 'e28bf347-b869-4708-97e6-b7edec18d66e'::uuid, 11),
-  ('f9fecbe0-4475-40ba-b890-61e913e3b774'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 0),
-  ('dab69c4e-6a42-4e4d-8256-6fb931396728'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 1),
-  ('5c4a46cd-3ada-4f9b-ae48-9b6857ee6cf4'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 2),
-  ('6e92b9b4-0068-4728-b98d-07703d1d4917'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 3),
-  ('6feda0cc-0541-4c51-ba79-ded0705b4756'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 4),
-  ('24162b75-f9d9-4849-80f7-1b0653f63102'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 5),
-  ('e5274e1c-c6c0-4747-8928-bca2c3b846de'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 6),
-  ('dc320656-1481-432b-b005-306fda937090'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 7),
-  ('6bfb2617-01a3-49c9-afc6-715d565e4095'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 8),
-  ('a4c690f1-b2ca-41d8-8d36-3b455d56f156'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 9),
-  ('280ef0cb-79b1-4c32-abed-979b7a81515c'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 10),
   ('a1e5a975-66ee-4dfa-b968-351ab30c169c'::uuid, 'c342d26f-6184-4e3a-898e-bf58347b4ac2'::uuid, 0),
   ('f03734a7-a8f0-4b01-aa98-6f427493de67'::uuid, 'c342d26f-6184-4e3a-898e-bf58347b4ac2'::uuid, 1),
   ('d9efd5b6-4819-4228-a425-9b0ef1f2a901'::uuid, 'c342d26f-6184-4e3a-898e-bf58347b4ac2'::uuid, 2),
@@ -2765,34 +2753,6 @@ from r, (values
   ('b8728acf-0f5a-4ad9-9bd0-0c511057bedf'::uuid, 11, 'black pepper', null::real, null, 'spices'::public.aisle, true, false, 'poivre noir', 'poivre noir', false)
 ) as v(id, position, name, quantity, unit, aisle, is_staple, guessed, raw_text, original_text, optional);
 
--- Poulet basquaise
-with r as (
-  insert into public.recipes (id, household_id, title, source_type, source_url, source_name, image_path, image_source_url,
-    servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, kcal_per_serving, protein_g_per_serving,
-    macros_estimated, language, difficulty, equipment, ai_generated_recipe)
-  select '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, null, 'Poulet basquaise', 'seed', 'https://chefsimon.com/gourmets/chef-simon/recettes/poulet-basquaise--17', 'Chef Simon', '/recipe-photos/poulet-basquaise.webp', 'https://res.cloudinary.com/hv9ssmzrz/image/fetch/c_fill,f_auto,h_675,q_auto:eco,w_1200/https://s3-eu-west-1.amazonaws.com/images-ca-1-0-1-eu/recipe_photos/original/826/poulet-basquaise-3000x2000.jpg',
-    2, 6, 75, 30, 45, '["Découper le poulet en morceaux en séparant haut et bas de cuisse sans casser les os.","Émincer les oignons, tailler les poivrons en lanières, peler et concasser les tomates.","Faire dorer les morceaux de poulet côté peau d''abord dans un peu d''huile, en les retournant délicatement, puis les réserver.","Dans la graisse de cuisson, faire suer oignons, ail et poivrons avec le thym et le laurier, sans coloration.","Ajouter les tomates et laisser compoter ; quand les légumes rendent leur jus, incorporer les olives.","Poser le poulet sur les légumes, saler, poivrer, couvrir et cuire à feu très doux environ 45 min en vérifiant la cuisson.","Réduire la sauce si elle est trop liquide (ou détendre avec un peu de bouillon si elle est trop sèche), puis servir."]'::jsonb,
-    array['french', 'chicken', 'stew', 'comfort', 'high protein']::text[], 'french', 581, 48.1,
-    true, 'fr', 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb, false
-  where not exists (select 1 from public.recipes x where x.id = '48651102-70f8-4f82-95eb-9bdbd2694b3b')
-  returning id
-)
-insert into public.recipe_ingredients (id, recipe_id, position, name, quantity, unit, aisle, is_staple, guessed, raw_text, original_text, optional)
-select v.id, r.id, v.position, v.name, v.quantity, v.unit, v.aisle, v.is_staple, v.guessed, v.raw_text, v.original_text, v.optional
-from r, (values
-  ('f9fecbe0-4475-40ba-b890-61e913e3b774'::uuid, 0, 'chicken thigh', 500::real, 'g', 'meat_fish'::public.aisle, false, true, '500 g cuisse de poulet, poulet fermier découpé en morceaux', '1500 g cuisse de poulet, 1 beau poulet fermier découpé en 8 morceaux', false),
-  ('dab69c4e-6a42-4e4d-8256-6fb931396728'::uuid, 1, 'onion', 1.5::real, 'piece', 'produce'::public.aisle, false, false, '1.5 oignon, émincé', '4 oignon, émincés', false),
-  ('5c4a46cd-3ada-4f9b-ae48-9b6857ee6cf4'::uuid, 2, 'bell pepper', 1::real, 'piece', 'produce'::public.aisle, false, false, '1 poivron, en lanières', '3 poivron, en lanières', false),
-  ('6e92b9b4-0068-4728-b98d-07703d1d4917'::uuid, 3, 'garlic', 1.5::real, 'clove', 'produce'::public.aisle, true, false, '1.5 gousse ail', '4 gousses ail', false),
-  ('6feda0cc-0541-4c51-ba79-ded0705b4756'::uuid, 4, 'tomato', 165::real, 'g', 'produce'::public.aisle, false, false, '165 g tomate, Roma pelées et concassées', '500 g tomate, Roma pelées et concassées', false),
-  ('24162b75-f9d9-4849-80f7-1b0653f63102'::uuid, 5, 'olives', 20::real, 'g', 'pantry'::public.aisle, false, true, '20 g olives, vertes et noires', '60 g olives, vertes et noires', false),
-  ('e5274e1c-c6c0-4747-8928-bca2c3b846de'::uuid, 6, 'olive oil', 0.5::real, 'tbsp', 'pantry'::public.aisle, true, false, '0.5 c. à soupe huile d''olive', '2 c. à soupe huile d''olive', false),
-  ('dc320656-1481-432b-b005-306fda937090'::uuid, 7, 'thyme', null::real, null, 'produce'::public.aisle, true, false, 'thym, frais en bouquet', 'thym, 1 bouquet frais ficelé', false),
-  ('6bfb2617-01a3-49c9-afc6-715d565e4095'::uuid, 8, 'bay leaf', 1::real, 'piece', 'spices'::public.aisle, true, true, '1 laurier', '1 laurier', false),
-  ('a4c690f1-b2ca-41d8-8d36-3b455d56f156'::uuid, 9, 'salt', null::real, null, 'spices'::public.aisle, true, false, 'sel', 'sel', false),
-  ('280ef0cb-79b1-4c32-abed-979b7a81515c'::uuid, 10, 'black pepper', null::real, null, 'spices'::public.aisle, true, false, 'poivre noir', 'poivre noir', false)
-) as v(id, position, name, quantity, unit, aisle, is_staple, guessed, raw_text, original_text, optional);
-
 -- Poulet mijoté aux olives
 with r as (
   insert into public.recipes (id, household_id, title, source_type, source_url, source_name, image_path, image_source_url,
@@ -4918,7 +4878,7 @@ with r as (
     macros_estimated, language, difficulty, equipment, ai_generated_recipe)
   select '921fc083-e3e0-43a0-a015-814ba0a3fa48'::uuid, null, 'Poulet basquaise', 'seed', null, 'Claude', null, null,
     2, null, 55, 15, 40, '["Season the chicken and brown it skin-side down in a little oil in a casserole, 6-7 min, then turn for 2 min. Set aside.","In the same pot, cook the onion, peppers and ham for 8 min until soft. Add the garlic and Espelette for 1 min.","Deglaze with the wine, then add the tomatoes, bay and thyme. Return the chicken, skin up.","Cover and simmer gently 25 min, then uncover for the last 5 min to thicken the sauce.","Meanwhile, cook the rice. Serve the chicken and peppers over rice."]'::jsonb,
-    array['chicken', 'peppers', 'one-pot', 'braise', 'french']::text[], 'french', 969, 62.6,
+    array['chicken', 'peppers', 'one-pot', 'braise', 'french']::text[], 'french', 809, 50.8,
     true, 'en', 'medium', '{"pots":2,"oven":false,"special":[]}'::jsonb, true
   where not exists (select 1 from public.recipes x where x.id = '921fc083-e3e0-43a0-a015-814ba0a3fa48')
   returning id
@@ -4926,7 +4886,7 @@ with r as (
 insert into public.recipe_ingredients (id, recipe_id, position, name, quantity, unit, aisle, is_staple, guessed, raw_text, original_text, optional)
 select v.id, r.id, v.position, v.name, v.quantity, v.unit, v.aisle, v.is_staple, v.guessed, v.raw_text, v.original_text, v.optional
 from r, (values
-  ('e1bf29a5-f478-4399-bd49-3e19e391f2ec'::uuid, 0, 'chicken thigh', 4::real, 'piece', 'meat_fish'::public.aisle, false, false, '4 chicken thigh, bone-in, skin on', null, false),
+  ('e1bf29a5-f478-4399-bd49-3e19e391f2ec'::uuid, 0, 'chicken thigh', 3::real, 'piece', 'meat_fish'::public.aisle, false, false, '3 chicken thigh, bone-in, skin on', null, false),
   ('bbcd68b0-e729-409c-8555-7752f4eb43ad'::uuid, 1, 'bell pepper', 1::real, 'piece', 'produce'::public.aisle, false, false, '1 red bell pepper, sliced', null, false),
   ('bfc9b3bb-342c-4661-b387-e175fb7f7e48'::uuid, 2, 'bell pepper', 1::real, 'piece', 'produce'::public.aisle, false, false, '1 green bell pepper, sliced', null, false),
   ('abe28a9a-ec42-4ef7-b5ba-f72f73d1cb8b'::uuid, 3, 'onion', 1::real, 'piece', 'produce'::public.aisle, false, false, '1 onion, sliced', null, false),
@@ -4937,7 +4897,7 @@ from r, (values
   ('97e7d772-2930-46cb-a38d-65f5213a534e'::uuid, 8, 'paprika', 1::real, 'tsp', 'spices'::public.aisle, true, false, '1 tsp piment d''Espelette or sweet paprika', null, false),
   ('0b4944a1-6088-4967-b996-0553de319898'::uuid, 9, 'bay leaf', 1::real, 'piece', 'spices'::public.aisle, true, false, '1 bay leaf', null, false),
   ('29d67d2b-434f-4fa8-9b7b-1b8687e051b6'::uuid, 10, 'thyme', null::real, null, 'produce'::public.aisle, true, false, 'thyme, a few sprigs', null, false),
-  ('cd4c03b2-79cb-4a53-9d6a-1b121613501f'::uuid, 11, 'rice', 150::real, 'g', 'pantry'::public.aisle, false, false, '150 g long-grain rice', null, false),
+  ('cd4c03b2-79cb-4a53-9d6a-1b121613501f'::uuid, 11, 'rice', 120::real, 'g', 'pantry'::public.aisle, false, false, '120 g long-grain rice', null, false),
   ('54f4fb17-3917-496f-88b7-82dd30682ad6'::uuid, 12, 'olive oil', null::real, null, 'pantry'::public.aisle, true, false, 'olive oil', null, false),
   ('f117b0ea-3cb4-4e15-b4b6-9b4147832d75'::uuid, 13, 'salt', null::real, null, 'spices'::public.aisle, true, false, 'salt', null, false),
   ('c559730b-e091-4914-97e2-07eb26927621'::uuid, 14, 'black pepper', null::real, null, 'spices'::public.aisle, true, false, 'black pepper', null, false)
@@ -5172,7 +5132,6 @@ from (values
   ('7e1759e4-48d3-4b1a-9b65-d3c31e93172d'::uuid, 'medium', '{"pots":3,"oven":true,"special":[]}'::jsonb),
   ('0987bb18-6284-465e-9872-55a3a4917212'::uuid, 'easy', '{"pots":1,"oven":false,"special":[]}'::jsonb),
   ('e28bf347-b869-4708-97e6-b7edec18d66e'::uuid, 'easy', '{"pots":2,"oven":true,"special":[]}'::jsonb),
-  ('48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb),
   ('c342d26f-6184-4e3a-898e-bf58347b4ac2'::uuid, 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb),
   ('a317f775-694d-4e3d-80c1-cdd2f0e6368a'::uuid, 'medium', '{"pots":1,"oven":false,"special":[]}'::jsonb),
   ('c0a07491-dc99-4dc0-8895-b6358173175c'::uuid, 'medium', '{"pots":2,"oven":true,"special":[]}'::jsonb),
@@ -5298,7 +5257,6 @@ from (values
   ('7e1759e4-48d3-4b1a-9b65-d3c31e93172d'::uuid, 45, 15, 30),
   ('0987bb18-6284-465e-9872-55a3a4917212'::uuid, 75, 15, 60),
   ('e28bf347-b869-4708-97e6-b7edec18d66e'::uuid, 70, 15, 55),
-  ('48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 75, 30, 45),
   ('c342d26f-6184-4e3a-898e-bf58347b4ac2'::uuid, 60, 10, 50),
   ('a317f775-694d-4e3d-80c1-cdd2f0e6368a'::uuid, 40, 10, 30),
   ('c0a07491-dc99-4dc0-8895-b6358173175c'::uuid, 115, 10, 105),
@@ -5822,17 +5780,6 @@ from (values
   ('06cdc8fe-1d42-48e1-a371-a45c9126356d'::uuid, 'e28bf347-b869-4708-97e6-b7edec18d66e'::uuid, 9, 'parsley', 'produce'::public.aisle, false, true),
   ('a9232e3b-84ea-486d-b7f2-23b3e35a04b1'::uuid, 'e28bf347-b869-4708-97e6-b7edec18d66e'::uuid, 10, 'salt', 'spices'::public.aisle, true, false),
   ('b8728acf-0f5a-4ad9-9bd0-0c511057bedf'::uuid, 'e28bf347-b869-4708-97e6-b7edec18d66e'::uuid, 11, 'black pepper', 'spices'::public.aisle, true, false),
-  ('f9fecbe0-4475-40ba-b890-61e913e3b774'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 0, 'chicken thigh', 'meat_fish'::public.aisle, false, false),
-  ('dab69c4e-6a42-4e4d-8256-6fb931396728'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 1, 'onion', 'produce'::public.aisle, false, false),
-  ('5c4a46cd-3ada-4f9b-ae48-9b6857ee6cf4'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 2, 'bell pepper', 'produce'::public.aisle, false, false),
-  ('6e92b9b4-0068-4728-b98d-07703d1d4917'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 3, 'garlic', 'produce'::public.aisle, true, false),
-  ('6feda0cc-0541-4c51-ba79-ded0705b4756'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 4, 'tomato', 'produce'::public.aisle, false, false),
-  ('24162b75-f9d9-4849-80f7-1b0653f63102'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 5, 'olives', 'pantry'::public.aisle, false, false),
-  ('e5274e1c-c6c0-4747-8928-bca2c3b846de'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 6, 'olive oil', 'pantry'::public.aisle, true, false),
-  ('dc320656-1481-432b-b005-306fda937090'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 7, 'thyme', 'produce'::public.aisle, true, false),
-  ('6bfb2617-01a3-49c9-afc6-715d565e4095'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 8, 'bay leaf', 'spices'::public.aisle, true, false),
-  ('a4c690f1-b2ca-41d8-8d36-3b455d56f156'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 9, 'salt', 'spices'::public.aisle, true, false),
-  ('280ef0cb-79b1-4c32-abed-979b7a81515c'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 10, 'black pepper', 'spices'::public.aisle, true, false),
   ('a1e5a975-66ee-4dfa-b968-351ab30c169c'::uuid, 'c342d26f-6184-4e3a-898e-bf58347b4ac2'::uuid, 0, 'chicken thigh', 'meat_fish'::public.aisle, false, false),
   ('f03734a7-a8f0-4b01-aa98-6f427493de67'::uuid, 'c342d26f-6184-4e3a-898e-bf58347b4ac2'::uuid, 1, 'olive oil', 'pantry'::public.aisle, true, false),
   ('d9efd5b6-4819-4228-a425-9b0ef1f2a901'::uuid, 'c342d26f-6184-4e3a-898e-bf58347b4ac2'::uuid, 2, 'onion', 'produce'::public.aisle, false, false),
@@ -7304,17 +7251,6 @@ from (values
   ('06cdc8fe-1d42-48e1-a371-a45c9126356d'::uuid, 'e28bf347-b869-4708-97e6-b7edec18d66e'::uuid, 9, 'parsley', 'produce'::public.aisle, false, true),
   ('a9232e3b-84ea-486d-b7f2-23b3e35a04b1'::uuid, 'e28bf347-b869-4708-97e6-b7edec18d66e'::uuid, 10, 'salt', 'spices'::public.aisle, true, false),
   ('b8728acf-0f5a-4ad9-9bd0-0c511057bedf'::uuid, 'e28bf347-b869-4708-97e6-b7edec18d66e'::uuid, 11, 'black pepper', 'spices'::public.aisle, true, false),
-  ('f9fecbe0-4475-40ba-b890-61e913e3b774'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 0, 'chicken thigh', 'meat_fish'::public.aisle, false, false),
-  ('dab69c4e-6a42-4e4d-8256-6fb931396728'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 1, 'onion', 'produce'::public.aisle, false, false),
-  ('5c4a46cd-3ada-4f9b-ae48-9b6857ee6cf4'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 2, 'bell pepper', 'produce'::public.aisle, false, false),
-  ('6e92b9b4-0068-4728-b98d-07703d1d4917'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 3, 'garlic', 'produce'::public.aisle, true, false),
-  ('6feda0cc-0541-4c51-ba79-ded0705b4756'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 4, 'tomato', 'produce'::public.aisle, false, false),
-  ('24162b75-f9d9-4849-80f7-1b0653f63102'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 5, 'olives', 'pantry'::public.aisle, false, false),
-  ('e5274e1c-c6c0-4747-8928-bca2c3b846de'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 6, 'olive oil', 'pantry'::public.aisle, true, false),
-  ('dc320656-1481-432b-b005-306fda937090'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 7, 'thyme', 'produce'::public.aisle, true, false),
-  ('6bfb2617-01a3-49c9-afc6-715d565e4095'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 8, 'bay leaf', 'spices'::public.aisle, true, false),
-  ('a4c690f1-b2ca-41d8-8d36-3b455d56f156'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 9, 'salt', 'spices'::public.aisle, true, false),
-  ('280ef0cb-79b1-4c32-abed-979b7a81515c'::uuid, '48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 10, 'black pepper', 'spices'::public.aisle, true, false),
   ('a1e5a975-66ee-4dfa-b968-351ab30c169c'::uuid, 'c342d26f-6184-4e3a-898e-bf58347b4ac2'::uuid, 0, 'chicken thigh', 'meat_fish'::public.aisle, false, false),
   ('f03734a7-a8f0-4b01-aa98-6f427493de67'::uuid, 'c342d26f-6184-4e3a-898e-bf58347b4ac2'::uuid, 1, 'olive oil', 'pantry'::public.aisle, true, false),
   ('d9efd5b6-4819-4228-a425-9b0ef1f2a901'::uuid, 'c342d26f-6184-4e3a-898e-bf58347b4ac2'::uuid, 2, 'onion', 'produce'::public.aisle, false, false),
@@ -8388,7 +8324,6 @@ from (values
   ('7e1759e4-48d3-4b1a-9b65-d3c31e93172d'::uuid, 1012::real, 67.9::real, false),
   ('0987bb18-6284-465e-9872-55a3a4917212'::uuid, 730::real, 42.4::real, true),
   ('e28bf347-b869-4708-97e6-b7edec18d66e'::uuid, 445::real, 40.9::real, true),
-  ('48651102-70f8-4f82-95eb-9bdbd2694b3b'::uuid, 581::real, 48.1::real, true),
   ('c342d26f-6184-4e3a-898e-bf58347b4ac2'::uuid, 628::real, 54.8::real, true),
   ('a317f775-694d-4e3d-80c1-cdd2f0e6368a'::uuid, 540::real, 24.3::real, false),
   ('c0a07491-dc99-4dc0-8895-b6358173175c'::uuid, 418::real, 48.5::real, true),
@@ -8459,7 +8394,7 @@ from (values
   ('44f8d889-4d68-471f-a12e-050437c6f2d4'::uuid, 833::real, 51.8::real, false),
   ('83f42f74-df4c-4c45-be95-fa38674d1b1c'::uuid, 682::real, 39.5::real, false),
   ('6f72d2b5-6a40-4b91-bf03-6c6a3cb4b4fb'::uuid, 556::real, 26.6::real, false),
-  ('921fc083-e3e0-43a0-a015-814ba0a3fa48'::uuid, 969::real, 62.6::real, true),
+  ('921fc083-e3e0-43a0-a015-814ba0a3fa48'::uuid, 809::real, 50.8::real, true),
   ('7375c699-23ee-487c-9121-73adc3d46728'::uuid, 840::real, 63.4::real, false),
   ('7ccb7672-07ff-4746-b7b9-165af1682c26'::uuid, 568::real, 53.9::real, false),
   ('d31d3553-44c2-493a-ae47-a5ef771dfc03'::uuid, 592::real, 20.1::real, false),

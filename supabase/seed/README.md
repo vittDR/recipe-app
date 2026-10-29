@@ -1,6 +1,6 @@
 # Seed recipe library
 
-120 recipes: 25 Italian, 25 French, 25 Asian, 25 from other cuisines and 10 "treat" dishes taken from recipe sites, plus 10 AI-generated recipes.
+119 recipes: 25 Italian, 24 French, 25 Asian, 25 from other cuisines and 10 "treat" dishes taken from recipe sites, plus 10 AI-generated recipes (whose Poulet basquaise replaced the Chef Simon one).
 
 | File | What it is |
 | --- | --- |

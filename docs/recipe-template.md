@@ -172,6 +172,7 @@ against `name`, `name_fr`, `name_it` and `aliases`.
 | `kcal_100g` | yes | `455` | Raw weight, per 100 g |
 | `protein_100g` | yes | `24` | Raw weight, per 100 g |
 | `grams_per_unit` | yes if counted in pieces/cloves/cans | `60` | Grams in one `piece` (or clove, can…) |
+| id | yes | a new uuid | Fixed id, the same in every environment; the ingredient's grocery product gets it too. Add the name and a new uuid to the "Fixed ids for catalogue ingredients" list in `seed.sql`. Never change or reuse one. |
 | `exotic` | optional | `false` | `true` when most French supermarkets don't sell it (needs an Asian or specialty shop). Set in the `update … set exotic` list at the end of `seed.sql`. |
 | `diet_class` | **yes** | `meat` | `veg`, `fish` or `meat`. This drives the diet filters. |
 
