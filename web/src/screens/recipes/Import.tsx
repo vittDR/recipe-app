@@ -191,7 +191,7 @@ export function ImportScreen() {
 
         {form && (
           <form className="stack" onSubmit={(e) => { e.preventDefault(); void save(); }}>
-            {draft?.source_url && <p className="headline" style={{ margin: 0 }}>{t('import.review')}</p>}
+            {draft?.source_url && <p className="headline m-0">{t('import.review')}</p>}
             <Field label={t('import.titleField')}>
               <input className="input" required value={form.title} onChange={set('title')} />
             </Field>

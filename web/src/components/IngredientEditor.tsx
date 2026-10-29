@@ -5,7 +5,7 @@ import { useI18n } from '../i18n/index.tsx';
 import type { GroceryCatalog } from '../lib/products.ts';
 import { formatQuantity } from './AddToListSheet.tsx';
 import { ProductPicker } from './ProductPicker.tsx';
-import { Button, Chip, Field, Sheet } from './ui.tsx';
+import { Button, Chip, Field, ListRow, Section, Sheet, SheetHeader } from './ui.tsx';
 
 /** A recipe line being reviewed or typed, with the item it is. */
 export interface DraftIngredient {
@@ -92,20 +92,18 @@ export function IngredientEditor({
       {items.length > 0 ? (
         <div className="list">
           {items.map((i) => (
-            <button key={i.key} type="button" className="list-row" onClick={() => setOpenKey(i.key)}>
-              <span className="list-row__main">
-                <span className="list-row__title">{titleOf(i)}</span>
-                {metaOf(i) && (
-                  <span className="list-row__meta" style={flagged(i) ? { color: 'var(--c-warning)' } : undefined}>{metaOf(i)}</span>
-                )}
-                {i.match !== 'chosen' && <span className="list-row__meta">{i.text}</span>}
-              </span>
-              <span className="muted small">{amountOf(i)}</span>
-            </button>
+            <ListRow key={i.key} onClick={() => setOpenKey(i.key)} title={titleOf(i)}
+              meta={(metaOf(i) || i.match !== 'chosen') && (
+                <span className="stack-lines">
+                  {metaOf(i) && <span className={flagged(i) ? 'text-warning' : undefined}>{metaOf(i)}</span>}
+                  {i.match !== 'chosen' && <span>{i.text}</span>}
+                </span>
+              )}
+              trailing={<span className="muted small">{amountOf(i)}</span>} />
           ))}
         </div>
       ) : (
-        <p className="muted small" style={{ margin: 0 }}>{t('ingredients.empty')}</p>
+        <p className="muted small m-0">{t('ingredients.empty')}</p>
       )}
 
       <ProductPicker catalog={catalog} value={draft} onChange={setDraft}
@@ -148,11 +146,12 @@ function IngredientSheet({
 
   return (
     <>
-      <h2 className="title2" style={{ marginBottom: 'var(--s-1)' }}>{title}</h2>
-      <p className="muted small" style={{ marginTop: 0 }}>
-        {item.match === 'new' ? t('ingredients.newItem') : item.match === 'close' ? t('ingredients.check') : ''}
-        {item.match === 'new' && suggestion ? ` · ${t('ingredients.maybe', { name: suggestion })}` : ''}
-      </p>
+      <SheetHeader title={title} subtitle={(
+        <>
+          {item.match === 'new' ? t('ingredients.newItem') : item.match === 'close' ? t('ingredients.check') : ''}
+          {item.match === 'new' && suggestion ? ` · ${t('ingredients.maybe', { name: suggestion })}` : ''}
+        </>
+      )} />
 
       {item.match === 'close' && (
         <Button block variant="secondary" onClick={() => { onUpdate({ match: 'chosen' }); onClose(); }}>
@@ -167,31 +166,33 @@ function IngredientSheet({
         </Button>
       )}
 
-      <h3 className="section-label">{t('ingredients.item')}</h3>
-      {changing ? (
-        <ProductPicker catalog={catalog} value={search} onChange={setSearch} autoFocus
-          placeholder={t('ingredients.searchItem')} label={t('ingredients.searchItem')}
-          onPick={(p) => { onUpdate({ product_id: p?.id ?? null, match: p ? 'chosen' : 'new', suggestion_id: null }); onClose(); }} />
-      ) : (
-        <div className="chips">
-          <Chip onClick={() => { setSearch(parseIngredientLine(item.text).name); setChanging(true); }}>{t('ingredients.change')}</Chip>
-          {item.match !== 'new' && (
-            <Chip onClick={() => { onUpdate({ product_id: null, match: 'new', suggestion_id: null }); onClose(); }}>{t('ingredients.makeNew')}</Chip>
-          )}
-        </div>
-      )}
+      <Section label={t('ingredients.item')}>
+        {changing ? (
+          <ProductPicker catalog={catalog} value={search} onChange={setSearch} autoFocus
+            placeholder={t('ingredients.searchItem')} label={t('ingredients.searchItem')}
+            onPick={(p) => { onUpdate({ product_id: p?.id ?? null, match: p ? 'chosen' : 'new', suggestion_id: null }); onClose(); }} />
+        ) : (
+          <div className="chips">
+            <Chip onClick={() => { setSearch(parseIngredientLine(item.text).name); setChanging(true); }}>{t('ingredients.change')}</Chip>
+            {item.match !== 'new' && (
+              <Chip onClick={() => { onUpdate({ product_id: null, match: 'new', suggestion_id: null }); onClose(); }}>{t('ingredients.makeNew')}</Chip>
+            )}
+          </div>
+        )}
+      </Section>
 
-      <div style={{ height: 'var(--s-4)' }} />
-      <Field label={t('ingredients.line')}>
-        <input className="input" defaultValue={item.text} enterKeyHint="done"
-          onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); e.currentTarget.blur(); } }}
-          onBlur={(e) => e.target.value.trim() && onUpdate({ text: e.target.value.trim() })} />
-      </Field>
-      <div className="chips" style={{ marginTop: 'var(--s-3)' }}>
+      <div className="mt-4">
+        <Field label={t('ingredients.line')}>
+          <input className="input" defaultValue={item.text} enterKeyHint="done"
+            onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); e.currentTarget.blur(); } }}
+            onBlur={(e) => e.target.value.trim() && onUpdate({ text: e.target.value.trim() })} />
+        </Field>
+      </div>
+      <div className="chips mt-3">
         <Chip pressed={item.guessed} onClick={() => onUpdate({ guessed: !item.guessed })}>{t('ingredients.guessed')}</Chip>
       </div>
 
-      <Button block variant="text" style={{ color: 'var(--c-danger)', marginTop: 'var(--s-6)' }} onClick={onRemove}>
+      <Button block variant="danger" className="mt-6" onClick={onRemove}>
         {t('ingredients.remove')}
       </Button>
     </>

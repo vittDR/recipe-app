@@ -85,6 +85,20 @@ class ListQueue {
     return true;
   }
 
+  /** Resolves once everything waiting is saved, or after `timeout` ms (offline, failing). */
+  settled(timeout: number): Promise<void> {
+    return new Promise((resolve) => {
+      if (this.queue.length === 0) return resolve();
+      const timer = window.setTimeout(done, timeout);
+      const off = this.subscribe(() => this.queue.length === 0 && done());
+      function done() {
+        window.clearTimeout(timer);
+        off();
+        resolve();
+      }
+    });
+  }
+
   /** "Try again": a fresh round of retries, now. */
   retry() {
     this.failures = 0;

@@ -23,14 +23,13 @@ export function StepEditor({ steps, onChange }: { steps: string[]; onChange: (st
   return (
     <div className="stack">
       {steps.length > 0 && (
-        <ol className="list" style={{ margin: 0, padding: 0, listStyle: 'none' }}>
+        <ol className="list step-list">
           {steps.map((s, i) => (
-            <li key={i} className="list-row" style={{ alignItems: 'flex-start' }}>
-              <span className="headline muted" style={{ minWidth: '1.5em', paddingTop: 'var(--s-2)' }}>{i + 1}</span>
-              <textarea className="input" rows={2} value={s} aria-label={t('steps.step', { n: i + 1 })}
-                onChange={(e) => edit(i, e.target.value)} onBlur={() => !s.trim() && onChange(steps.filter((_, j) => j !== i))}
-                style={{ flex: 1, minWidth: 0, minHeight: 0 }} />
-              <div className="stack" style={{ gap: 0 }}>
+            <li key={i} className="list-row step-list__row">
+              <span className="headline muted step-list__n">{i + 1}</span>
+              <textarea className="input step-input" rows={2} value={s} aria-label={t('steps.step', { n: i + 1 })}
+                onChange={(e) => edit(i, e.target.value)} onBlur={() => !s.trim() && onChange(steps.filter((_, j) => j !== i))} />
+              <div className="step-list__tools">
                 <button type="button" className="icon-btn" aria-label={t('steps.up')} disabled={i === 0} onClick={() => move(i, -1)}><Icon name="up" size={18} /></button>
                 <button type="button" className="icon-btn" aria-label={t('steps.down')} disabled={i === steps.length - 1} onClick={() => move(i, 1)}><Icon name="down" size={18} /></button>
                 <button type="button" className="icon-btn" aria-label={t('steps.remove')} onClick={() => onChange(steps.filter((_, j) => j !== i))}><Icon name="trash" size={18} /></button>
@@ -40,8 +39,8 @@ export function StepEditor({ steps, onChange }: { steps: string[]; onChange: (st
         </ol>
       )}
       <div className="row">
-        <textarea className="input" rows={2} value={draft} placeholder={t('steps.addPlaceholder', { n: steps.length + 1 })}
-          aria-label={t('steps.add')} onChange={(e) => setDraft(e.target.value)} style={{ flex: 1, minWidth: 0, minHeight: 0 }}
+        <textarea className="input step-input" rows={2} value={draft} placeholder={t('steps.addPlaceholder', { n: steps.length + 1 })}
+          aria-label={t('steps.add')} onChange={(e) => setDraft(e.target.value)}
           // Enter adds the step; Shift+Enter starts a new line in it.
           onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); add(); } }} />
         <button type="button" className="icon-btn icon-btn--filled" aria-label={t('steps.add')} disabled={!draft.trim()} onClick={add}>

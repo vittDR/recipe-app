@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { Icon } from '../components/Icon.tsx';
-import { Avatar, Button, Chip, Screen, Segmented, Spinner } from '../components/ui.tsx';
+import { Avatar, Button, Chip, Screen, Section, Segmented, Spinner } from '../components/ui.tsx';
 import { useI18n } from '../i18n/index.tsx';
 import { recipeTitle } from '../lib/recipeText.ts';
 import { isoWeekday, todayIn, useLive } from '../lib/hooks.ts';
@@ -110,7 +110,7 @@ export function TonightScreen() {
                 title={(meal?.recipe ? recipeTitle(meal.recipe, locale) : null) ?? (cook ? '' : t('tonight.off'))}>
                 <span>{label}</span>
                 <span className="headline">{Number(date.slice(8))}</span>
-                <span className={`week__dot ${dot}`} style={meal || !cook ? undefined : { opacity: 0.35 }} />
+                <span className={`week__dot ${dot}`} />
               </div>
             );
           })}
@@ -141,23 +141,21 @@ export function TonightScreen() {
       ) : (
         <div className="stack stack--lg">
           {partners.length === 0 && (
-            <Link to="/us/invite" className="notice notice--info row" style={{ textDecoration: 'none' }}>
+            <Link to="/us/invite" className="notice notice--info row">
               <Icon name="people" /> <span className="spacer">{t('tonight.noPartner')}</span> <Icon name="chevron" />
             </Link>
           )}
           <section className="card stack">
             <h2 className="title3">{t('tonight.newDeck')}</h2>
             {partners.length > 0 && (
-              <div className="stack stack--sm">
-                <h3 className="section-label" style={{ margin: 0 }}>{t('tonight.whoEating')}</h3>
+              <Section label={t('tonight.whoEating')} flush>
                 <Segmented label={t('tonight.whoEating')} value={who} onChange={setWho} options={[
                   { value: 'both', label: t('tonight.both') },
                   { value: 'me', label: t('tonight.justMe') },
                 ]} />
-              </div>
+              </Section>
             )}
-            <div className="stack stack--sm">
-              <h3 className="section-label" style={{ margin: 0 }}>{t('tonight.time')}</h3>
+            <Section label={t('tonight.time')} flush>
               <div className="chips chips--scroll">
                 {TIMES.map((m) => (
                   <Chip key={m ?? 'any'} pressed={maxMinutes === m} onClick={() => setMaxMinutes(m)}>
@@ -165,15 +163,14 @@ export function TonightScreen() {
                   </Chip>
                 ))}
               </div>
-            </div>
-            <div className="stack stack--sm">
-              <h3 className="section-label" style={{ margin: 0 }}>{t('tonight.mood')}</h3>
+            </Section>
+            <Section label={t('tonight.mood')} flush>
               <div className="chips chips--scroll">
                 {MOODS.map((m) => (
                   <Chip key={m} pressed={mood === m} onClick={() => setMood(m)}>{t(`tonight.moods.${m}`)}</Chip>
                 ))}
               </div>
-            </div>
+            </Section>
           </section>
           {error && <p className="notice">{error}</p>}
           <Button block onClick={() => void deal()} disabled={dealing}>

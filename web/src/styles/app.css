@@ -80,6 +80,10 @@ a {
   gap: var(--s-2);
 }
 
+.screen__bar-end {
+  width: var(--touch);
+}
+
 .screen__title {
   font: var(--t-large-title);
   letter-spacing: var(--t-large-title-tracking);
@@ -124,6 +128,10 @@ a {
   flex-wrap: wrap;
 }
 
+.row--center {
+  justify-content: center;
+}
+
 .row--end {
   align-items: flex-end;
 }
@@ -141,7 +149,22 @@ a {
   margin: var(--s-6) var(--s-1) var(--s-2);
 }
 
-.section--flush > .section-label {
+.section__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+  margin: var(--s-5) 0 var(--s-1);
+}
+
+/* The label's own margins move to the line it shares with the action. */
+.section__head .section-label {
+  flex: 1;
+  margin: 0 var(--s-1);
+}
+
+.section--flush > .section-label,
+.section--flush > .section__head {
   margin-top: 0;
 }
 
@@ -698,6 +721,33 @@ textarea.input {
   color: var(--c-ink);
 }
 
+/* Recipe steps: number, text, then move / remove. */
+.step-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step-list__row {
+  align-items: flex-start;
+}
+
+.step-list__n {
+  min-width: 1.5em;
+  padding-top: var(--s-2);
+}
+
+.step-list__tools {
+  display: flex;
+  flex-direction: column;
+}
+
+textarea.step-input {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
 .stepper {
   display: flex;
   align-items: center;
@@ -721,6 +771,10 @@ textarea.input {
   background: var(--c-warning-soft);
   color: var(--c-warning);
   font: var(--t-subhead);
+}
+
+a.notice {
+  text-decoration: none;
 }
 
 .notice--info {
@@ -1043,6 +1097,22 @@ textarea.input {
   overflow: hidden;
 }
 
+.option-row {
+  padding: var(--s-3);
+}
+
+.option-row__image {
+  width: 72px;
+  aspect-ratio: 1;
+  border-radius: var(--r-md);
+  font-size: 32px;
+  flex: none;
+}
+
+.card--picked {
+  box-shadow: inset 0 0 0 2px var(--c-accent), var(--shadow-card);
+}
+
 .tile__image img {
   position: absolute;
   inset: 0;
@@ -1080,6 +1150,48 @@ textarea.input {
   justify-content: center;
   font-size: 96px;
   position: relative;
+}
+
+.match__title {
+  margin-top: var(--s-1);
+}
+
+.recipe__title {
+  margin-top: 0;
+}
+
+.recipe__tags {
+  margin-bottom: var(--s-4);
+}
+
+.recipe__steps {
+  margin: 0;
+  padding-left: var(--s-8);
+}
+
+/* Lines of detail under a list row's title, one under the other. */
+.stack-lines {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Cooking mode: the ingredients or one step, large, centred in the screen. */
+.cooking__body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.cooking__ingredients {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+  font: var(--t-title3);
+}
+
+.cooking__step {
+  font: var(--t-title1);
+  line-height: 1.35;
 }
 
 .hero__back {
@@ -1142,10 +1254,20 @@ textarea.input {
 
 .week__dot--cook {
   background: var(--c-accent);
+  opacity: 0.35;
 }
 
 .week__dot--done {
   background: var(--c-success);
+}
+
+.welcome__tagline {
+  max-width: 300px;
+}
+
+.invite__code {
+  font-size: 40px;
+  padding: var(--s-4) 0;
 }
 
 .welcome {
@@ -1200,6 +1322,10 @@ textarea.input {
 
 .grocery-search {
   margin-bottom: var(--s-2);
+}
+
+.usuals-filters {
+  margin: var(--s-3) 0;
 }
 
 .catalog-search {
@@ -1351,10 +1477,6 @@ button.grocery-row__amount {
   display: grid;
   gap: var(--s-1);
   margin-top: var(--s-2);
-}
-
-.cart-head {
-  align-items: baseline;
 }
 
 .new-dot {

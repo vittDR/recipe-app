@@ -129,7 +129,8 @@ export function SettingsScreen() {
           <div className="list">
             {sections.map((s, i) => (
               <ListRow key={sectionKey(s)}
-                icon={s.kind === 'store' ? <Icon name="cart" size={18} /> : undefined}
+                // Aisles keep the icon column empty, so their names line up with the stores'.
+                icon={s.kind === 'store' ? <Icon name="cart" size={18} /> : <span aria-hidden />}
                 title={sectionName(s)}
                 trailing={(
                   <>

@@ -107,6 +107,8 @@ export function AddToListSheet({
       queue.push(op);
       rows.push({ ...op, household_id: hid, checked_at: null, checked_by: null, cleared_at: null, sort_key: 0, created_at: at });
     }
+    // Usually a moment, so what the recipe still needs is right when the sheet closes.
+    await queue.settled(3000);
     setBusy(false);
     toast(t('addToList.added'));
     onClose();

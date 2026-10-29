@@ -8,7 +8,7 @@ import { useI18n } from '../i18n/index.tsx';
 import type { SyncStatus } from '../lib/listQueue.ts';
 import { useAmount } from '../lib/units.ts';
 import { Icon } from './Icon.tsx';
-import { Button, Chip, Sheet } from './ui.tsx';
+import { Button, Chip, Sheet, SheetHeader } from './ui.tsx';
 
 /** The amount of an item on the list, edited in place. */
 export interface Amount {
@@ -155,7 +155,7 @@ export function AmountSheet({ open, title, value, units, onClose, onDone }: {
 
   return (
     <Sheet open={open} onClose={onClose} label={title}>
-      <h2 className="title3" style={{ marginBottom: 'var(--s-3)' }}>{title}</h2>
+      <SheetHeader title={title} />
       <output className="keypad__value" aria-live="polite">
         {text || '–'}{unit && <span className="keypad__unit"> {unitLabel(unit, quantity)}</span>}
       </output>
@@ -183,9 +183,9 @@ export function AmountSheet({ open, title, value, units, onClose, onDone }: {
           </button>
         ))}
       </div>
-      <div className="row" style={{ marginTop: 'var(--s-4)' }}>
-        <Button variant="secondary" style={{ flex: 1 }} onClick={() => onDone({ quantity: null, unit })}>{t('groceries.noQuantity')}</Button>
-        <Button style={{ flex: 1 }} onClick={done}>{t('app.done')}</Button>
+      <div className="row mt-4">
+        <Button variant="secondary" className="grow" onClick={() => onDone({ quantity: null, unit })}>{t('groceries.noQuantity')}</Button>
+        <Button className="grow" onClick={done}>{t('app.done')}</Button>
       </div>
     </Sheet>
   );

@@ -126,16 +126,23 @@ export function CreateRow({ title, meta, onClick, chevron }: { title: string; me
 }
 
 /** A labelled part of a screen: the small uppercase label, an optional hint, then its content. */
-export function Section({ label, hint, children, flush }: {
+export function Section({ label, hint, action, children, flush }: {
   label: string;
   hint?: string;
+  /** A small button on the label's line, e.g. "Add to list". */
+  action?: ReactNode;
   children: ReactNode;
   /** No space above the label, e.g. the first section in a card or sheet. */
   flush?: boolean;
 }) {
   return (
     <section className={`section${flush ? ' section--flush' : ''}`}>
-      <h2 className="section-label">{label}</h2>
+      {action ? (
+        <div className="section__head">
+          <h2 className="section-label">{label}</h2>
+          {action}
+        </div>
+      ) : <h2 className="section-label">{label}</h2>}
       {hint && <p className="section-hint">{hint}</p>}
       {children}
     </section>
@@ -253,6 +260,18 @@ export function Screen({
       {subtitle && <p className="screen__subtitle">{subtitle}</p>}
       {children}
     </main>
+  );
+}
+
+/** The bar of a full-screen mode (cooking, swiping): close on the left, what's on screen in the middle. */
+export function ModeBar({ title, onClose }: { title: ReactNode; onClose: () => void }) {
+  const { t } = useI18n();
+  return (
+    <div className="screen__bar">
+      <button type="button" className="icon-btn" aria-label={t('app.close')} onClick={onClose}><Icon name="x" /></button>
+      <span className="headline">{title}</span>
+      <span className="screen__bar-end" />
+    </div>
   );
 }
 

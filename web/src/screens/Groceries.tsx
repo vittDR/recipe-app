@@ -6,7 +6,7 @@ import { defaultAmount, ProductIndex, productName, sectionOf, unitsFor, type Pro
 import { AmountControl, AmountSheet, Highlight, SwipeRow, SyncIcon, type Amount } from '../components/GroceryControls.tsx';
 import { CreateItemSheet, ItemSheet, sectionKeyOf, UsualsSheet, useSectionTitle, type ListItem } from '../components/GrocerySheets.tsx';
 import { Icon } from '../components/Icon.tsx';
-import { Avatar, Button, Checkbox, CreateRow, dismissToast, ListRow, ProgressBar, Screen, SearchField, Segmented, Spinner, toast } from '../components/ui.tsx';
+import { Avatar, Button, Checkbox, CreateRow, dismissToast, ListRow, ProgressBar, Screen, SearchField, Section, Segmented, Spinner, toast } from '../components/ui.tsx';
 import { useI18n } from '../i18n/index.tsx';
 import { recipeTitle } from '../lib/recipeText.ts';
 import { useLive } from '../lib/hooks.ts';
@@ -327,12 +327,10 @@ export function GroceriesScreen() {
           ) : (
             <>
               {sections.map((section) => (
-                <section key={section.key || 'none'}>
-                  <h2 className="section-label">
-                    {mode === 'aisle' ? sectionTitleOf(section.key)
-                      : mode === 'recipe' ? (section.key ? data?.recipes.get(section.key) ?? '' : t('groceries.noRecipe'))
-                        : section.key}
-                  </h2>
+                <Section key={section.key || 'none'}
+                  label={mode === 'aisle' ? sectionTitleOf(section.key)
+                    : mode === 'recipe' ? (section.key ? data?.recipes.get(section.key) ?? '' : t('groceries.noRecipe'))
+                      : section.key}>
                   <div className="list">
                     {section.items.map((item) => (
                       <SwipeRow key={item.id} label={item.display} onRemove={() => remove(item)}>
@@ -356,15 +354,12 @@ export function GroceriesScreen() {
                       </SwipeRow>
                     ))}
                   </div>
-                </section>
+                </Section>
               ))}
 
               {cart.length > 0 && (
-                <section>
-                  <div className="row row--between cart-head">
-                    <h2 className="section-label">{t('groceries.inCart')}</h2>
-                    <Button small variant="text" onClick={clearCart}>{t('groceries.clear')}</Button>
-                  </div>
+                <Section label={t('groceries.inCart')}
+                  action={<Button small variant="text" onClick={clearCart}>{t('groceries.clear')}</Button>}>
                   <div className="list">
                     {cart.map((item) => {
                       const by = members.find((m) => m.user_id === item.checked_by);
@@ -385,7 +380,7 @@ export function GroceriesScreen() {
                       );
                     })}
                   </div>
-                </section>
+                </Section>
               )}
             </>
           )}

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { useNavigate } from 'react-router';
 import { Icon } from '../../components/Icon.tsx';
-import { Tag, imageStyle, photoUrl, recipeEmoji } from '../../components/ui.tsx';
+import { ModeBar, ProgressBar, Tag, imageStyle, photoUrl, recipeEmoji } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { recipeTitle } from '../../lib/recipeText.ts';
 import { useSession } from '../../lib/session.tsx';
@@ -61,8 +61,8 @@ function CardFace({ card, data, tags, drag }: {
             {r.macros_estimated && <span className="muted small">({t('swipe.estimated')})</span>}
           </div>
         )}
-        {pantryItem && <span className="small" style={{ color: 'var(--c-success)' }}>{t('swipe.pantry', { item: pantryItem })}</span>}
-        {card.reason === 'love' && <span className="small" style={{ color: 'var(--c-accent)' }}>{t('swipe.loved')}</span>}
+        {pantryItem && <span className="small text-success">{t('swipe.pantry', { item: pantryItem })}</span>}
+        {card.reason === 'love' && <span className="small text-accent">{t('swipe.loved')}</span>}
       </div>
       <span className="recipe-card__stamp recipe-card__stamp--yes" style={{ opacity: yes }}>{t('swipe.yes')}</span>
       <span className="recipe-card__stamp recipe-card__stamp--pass" style={{ opacity: pass }}>{t('swipe.pass')}</span>
@@ -164,14 +164,8 @@ export function SwipeView({ data, onDone }: { data: DeckData; onDone: () => Prom
 
   return (
     <main className="screen">
-      <div className="screen__bar">
-        <button type="button" className="icon-btn" aria-label={t('app.close')} onClick={() => navigate('/')}>
-          <Icon name="x" />
-        </button>
-        <span className="headline">{t('swipe.progress', { n: Math.min(done + 1, total), total })}</span>
-        <span style={{ width: 44 }} />
-      </div>
-      <div className="progress" aria-hidden><div style={{ width: `${(done / total) * 100}%` }} /></div>
+      <ModeBar title={t('swipe.progress', { n: Math.min(done + 1, total), total })} onClose={() => navigate('/')} />
+      <ProgressBar value={done} max={total} />
 
       <div className="deck">
         {remaining.slice(0, 3).reverse().map((card, i, arr) => {
