@@ -48,6 +48,22 @@ select pg_temp.check((select count(*) = 110 from lib), 'library recipes are kept
 \i seed_library.sql
 select pg_temp.check((select count(*) = 110 from lib), 're-running seed_library.sql adds no duplicates');
 
+-- AI-generated seed recipes have no source link: they're known by language and title.
+create temp view ai as select * from recipes where household_id is null and ai_generated_recipe;
+select pg_temp.check((select count(*) = 10 and count(source_url) = 0 from ai), '10 AI-generated seed recipes, without a source link');
+select pg_temp.check(not exists (select 1 from lib where ai_generated_recipe), 'sourced recipes are not marked AI-generated');
+\i seed_library.sql
+select pg_temp.check((select count(*) = 10 from ai), 're-running seed_library.sql adds no duplicate AI recipes');
+select pg_temp.check(not exists (
+  select 1 from recipe_ingredients i join ai r on r.id = i.recipe_id
+  where not exists (select 1 from ingredient_catalog c where c.name = i.name)), 'AI recipe ingredients are in the catalogue');
+select pg_temp.check((select bool_and(i.optional) and count(*) = 2 from recipe_ingredients i join ai r on r.id = i.recipe_id
+                      where r.title = 'Chana masala' and i.name in ('fresh coriander', 'chili flakes')),
+                     'optional lines are loaded');
+select pg_temp.check((select count(*) = 0 from recipe_ingredients i join ai r on r.id = i.recipe_id
+                      where r.title = 'Shakshuka with feta' and i.name = 'feta' and i.optional),
+                     'lines are required unless marked optional');
+
 -- Italian names are matched; the language check rejects anything else.
 select pg_temp.check((select name from ingredient_catalog where name_it = 'vino bianco') = 'white wine', 'Italian catalogue names');
 do $$ begin
@@ -76,6 +92,11 @@ select pg_temp.check((select r.prep_min = s.prep_min and r.cook_min = s.cook_min
                       from recipes r join recipes s on s.id = r.copied_from where r.id = :'cp'),
                      'copy keeps prep, cook and total time');
 select pg_temp.check((select cook_min is not null from library_recipes where id = :'cp'), 'library view has prep and cook time');
+select id as aisrc from library_recipes where title = 'Pasta e ceci' and ai_generated_recipe \gset
+select copy_recipe(:'aisrc') as aicp \gset
+select pg_temp.check((select ai_generated_recipe from library_recipes where id = :'aicp'), 'copy keeps the AI-generated flag');
+select pg_temp.check((select count(*) filter (where optional) = 2 from recipe_ingredients where recipe_id = :'aicp'),
+                     'copy keeps optional lines');
 reset role;
 
 -- Seed recipes (and copies) loaded before these fields existed are filled in by re-running seed_library.sql.

@@ -307,6 +307,15 @@ values
   ('pecorino', 'pecorino', 'pecorino romano', '{"pecorino sardo"}', 'dairy_eggs', false, 387, 32, 5, 'veg')
 on conflict (name) do nothing;
 
+-- For the AI-generated seed batch.
+insert into public.ingredient_catalog
+  (name, name_fr, name_it, aliases, default_aisle, is_staple, kcal_100g, protein_100g, grams_per_unit, diet_class)
+values
+  ('edamame', 'edamame', 'edamame', '{"shelled edamame","soy beans","fèves de soja"}', 'frozen', false, 121, 11.9, null, 'veg'),
+  ('pita', 'pain pita', 'pane pita', '{"pitta","pita bread","pitas","flatbread","flatbreads","pains pita"}', 'bakery', false, 275, 9.1, 60, 'veg'),
+  ('hot sauce', 'sauce piquante', 'salsa piccante', '{"chilli sauce","chili sauce","tabasco"}', 'pantry', true, 12, 0.5, null, 'veg')
+on conflict (name) do nothing;
+
 -- Chicken stock is made from chicken (databases seeded before this said veg).
 update public.ingredient_catalog set diet_class = 'meat' where name = 'chicken stock';
 

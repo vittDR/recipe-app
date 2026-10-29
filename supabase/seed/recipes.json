@@ -233,7 +233,8 @@
       },
       {
         "text": "0.5 mazzetto prezzemolo",
-        "original_text": "1 mazzetto prezzemolo"
+        "original_text": "1 mazzetto prezzemolo",
+        "optional": true
       },
       {
         "text": "1 peperoncino, fresco o secco",
@@ -587,7 +588,8 @@
       },
       {
         "text": "0.5 mazzetto prezzemolo",
-        "original_text": "1 mazzetto prezzemolo"
+        "original_text": "1 mazzetto prezzemolo",
+        "optional": true
       },
       {
         "text": "30 ml vino bianco, secco",
@@ -839,7 +841,8 @@
       {
         "text": "3 g erba cipollina, tritata",
         "original_text": "5 g erba cipollina, tritata",
-        "guessed": true
+        "guessed": true,
+        "optional": true
       },
       {
         "text": "sale",
@@ -905,7 +908,8 @@
       },
       {
         "text": "0.5 peperoncino, facoltativo",
-        "original_text": "1 peperoncino, facoltativo"
+        "original_text": "1 peperoncino, facoltativo",
+        "optional": true
       },
       {
         "text": "origano",
@@ -997,7 +1001,8 @@
       },
       {
         "text": "0.5 mazzetto basilico",
-        "original_text": "1 mazzetto basilico"
+        "original_text": "1 mazzetto basilico",
+        "optional": true
       },
       {
         "text": "sale",
@@ -1068,7 +1073,8 @@
       },
       {
         "text": "1 cucchiaino olio d'oliva, a crudo (facoltativo)",
-        "original_text": "1 cucchiaino olio d'oliva, a crudo (facoltativo)"
+        "original_text": "1 cucchiaino olio d'oliva, a crudo (facoltativo)",
+        "optional": true
       },
       {
         "text": "sale",
@@ -1145,11 +1151,13 @@
       {
         "text": "5 g prezzemolo, tritato",
         "original_text": "10 g prezzemolo, tritato",
-        "guessed": true
+        "guessed": true,
+        "optional": true
       },
       {
         "text": "peperoncino",
-        "original_text": "peperoncino"
+        "original_text": "peperoncino",
+        "optional": true
       },
       {
         "text": "sale",
@@ -1445,7 +1453,8 @@
       {
         "text": "1 cucchiaio prezzemolo, tritato",
         "original_text": "1 cucchiaio prezzemolo, tritato",
-        "guessed": true
+        "guessed": true,
+        "optional": true
       },
       {
         "text": "sale",
@@ -1586,7 +1595,8 @@
       {
         "text": "5 g prezzemolo, gambi e foglie",
         "original_text": "10 g prezzemolo, 1 ciuffo",
-        "guessed": true
+        "guessed": true,
+        "optional": true
       },
       {
         "text": "0.5 cucchiaio sale, grosso (per lo spurgo)",
@@ -1851,7 +1861,8 @@
       {
         "text": "1 cucchiaio semi di sesamo",
         "original_text": "1 cucchiaio semi di sesamo",
-        "guessed": true
+        "guessed": true,
+        "optional": true
       },
       {
         "text": "1 cucchiaio olio di semi",
@@ -2138,7 +2149,8 @@
       },
       {
         "text": "1 pomme de terre, facultatif",
-        "original_text": "2 pomme de terre, facultatif"
+        "original_text": "2 pomme de terre, facultatif",
+        "optional": true
       },
       {
         "text": "0.5 oignon, gros",
@@ -2185,7 +2197,8 @@
       {
         "text": "1 c. à soupe persil, ciselé",
         "original_text": "2 c. à soupe persil, ciselé",
-        "guessed": true
+        "guessed": true,
+        "optional": true
       },
       {
         "text": "sel",
@@ -2262,12 +2275,14 @@
       {
         "text": "1 pincée muscade, facultatif",
         "original_text": "1 pincée muscade, facultatif",
-        "guessed": true
+        "guessed": true,
+        "optional": true
       },
       {
         "text": "5 g persil, frais (facultatif)",
         "original_text": "10 g persil, frais (facultatif)",
-        "guessed": true
+        "guessed": true,
+        "optional": true
       },
       {
         "text": "poivre noir",
@@ -2374,7 +2389,8 @@
       {
         "text": "1 c. à soupe persil, frais haché",
         "original_text": "3 c. à soupe persil, frais haché",
-        "guessed": true
+        "guessed": true,
+        "optional": true
       },
       {
         "text": "sel",
@@ -2483,7 +2499,8 @@
       {
         "text": "5 g persil, haché",
         "original_text": "15 g persil, haché",
-        "guessed": true
+        "guessed": true,
+        "optional": true
       },
       {
         "text": "sel",
@@ -2885,12 +2902,14 @@
       },
       {
         "text": "0.5 c. à soupe farine, facultatif",
-        "original_text": "1 c. à soupe farine, facultatif"
+        "original_text": "1 c. à soupe farine, facultatif",
+        "optional": true
       },
       {
         "text": "1 c. à soupe persil, frais",
         "original_text": "2 c. à soupe persil, frais",
-        "guessed": true
+        "guessed": true,
+        "optional": true
       },
       {
         "text": "sel",
@@ -2994,7 +3013,8 @@
       },
       {
         "text": "1 c. à soupe persil, plat ciselé",
-        "original_text": "2 c. à soupe persil, plat ciselé"
+        "original_text": "2 c. à soupe persil, plat ciselé",
+        "optional": true
       },
       {
         "text": "thym",
@@ -3347,7 +3367,8 @@
       {
         "text": "5 g persil, haché",
         "original_text": "10 g persil, haché",
-        "guessed": true
+        "guessed": true,
+        "optional": true
       },
       {
         "text": "1 c. à soupe moutarde, à l'ancienne",
@@ -3436,7 +3457,8 @@
       {
         "text": "1 g persil, haché",
         "original_text": "2 g persil, 1 tige hachée",
-        "guessed": true
+        "guessed": true,
+        "optional": true
       },
       {
         "text": "sel",
@@ -3987,7 +4009,8 @@
       },
       {
         "text": "0.5 c. à café sucre, facultatif",
-        "original_text": "1 c. à café sucre, facultatif"
+        "original_text": "1 c. à café sucre, facultatif",
+        "optional": true
       },
       {
         "text": "sel",
@@ -4075,12 +4098,14 @@
       },
       {
         "text": "30 g feta, émiettée",
-        "original_text": "60 g feta, émiettée"
+        "original_text": "60 g feta, émiettée",
+        "optional": true
       },
       {
         "text": "0.5 c. à café sriracha",
         "original_text": "1 c. à café sriracha",
-        "guessed": true
+        "guessed": true,
+        "optional": true
       },
       {
         "text": "sel",
@@ -4195,7 +4220,8 @@
       },
       {
         "text": "1 clove garlic, thinly sliced, to serve",
-        "original_text": "3 clove garlic, thinly sliced, to serve"
+        "original_text": "3 clove garlic, thinly sliced, to serve",
+        "optional": true
       },
       {
         "text": "5 g bell pepper, shishito, thinly sliced",
@@ -4208,7 +4234,8 @@
       },
       {
         "text": "1 tsp sesame seeds, optional",
-        "original_text": "1 tbsp sesame seeds, optional"
+        "original_text": "1 tbsp sesame seeds, optional",
+        "optional": true
       }
     ],
     "steps": [
@@ -4550,7 +4577,8 @@
       },
       {
         "text": "1 bunch fresh coriander, small, roughly chopped",
-        "original_text": "1 bunch fresh coriander, small, roughly chopped"
+        "original_text": "1 bunch fresh coriander, small, roughly chopped",
+        "optional": true
       },
       {
         "text": "1.5 tbsp soy sauce, light or seasoned",
@@ -4653,7 +4681,8 @@
       {
         "text": "5 g fresh coriander, roughly chopped",
         "original_text": "10 g fresh coriander, roughly chopped",
-        "guessed": true
+        "guessed": true,
+        "optional": true
       },
       {
         "text": "5 g fresh mint, roughly chopped",
@@ -4733,7 +4762,8 @@
       },
       {
         "text": "0.5 tsp sesame oil, optional",
-        "original_text": "1 tsp sesame oil, optional"
+        "original_text": "1 tsp sesame oil, optional",
+        "optional": true
       },
       {
         "text": "1 pinch black pepper",
@@ -4763,7 +4793,8 @@
       {
         "text": "1 tsp sesame seeds, optional",
         "original_text": "1.5 tsp sesame seeds, optional",
-        "guessed": true
+        "guessed": true,
+        "optional": true
       }
     ],
     "steps": [
@@ -4926,7 +4957,8 @@
       {
         "text": "5 g fresh coriander, chopped",
         "original_text": "8 g fresh coriander, chopped (1/2 cup)",
-        "guessed": true
+        "guessed": true,
+        "optional": true
       }
     ],
     "steps": [
@@ -5005,7 +5037,8 @@
       },
       {
         "text": "0.5 chili flakes, fresh bird's-eye chili, optional",
-        "original_text": "1 chili flakes, fresh bird's-eye chili, optional"
+        "original_text": "1 chili flakes, fresh bird's-eye chili, optional",
+        "optional": true
       },
       {
         "text": "0.5 tbsp lime, juice",
@@ -5381,11 +5414,13 @@
       },
       {
         "text": "0.5 spring onion, chopped",
-        "original_text": "1 spring onion, chopped"
+        "original_text": "1 spring onion, chopped",
+        "optional": true
       },
       {
         "text": "1 tsp sesame seeds, optional",
-        "original_text": "2 tsp sesame seeds, optional"
+        "original_text": "2 tsp sesame seeds, optional",
+        "optional": true
       }
     ],
     "steps": [
@@ -5572,7 +5607,8 @@
       {
         "text": "10 g fresh coriander, chopped",
         "original_text": "20 g fresh coriander, chopped",
-        "guessed": true
+        "guessed": true,
+        "optional": true
       },
       {
         "text": "salt",
@@ -5769,17 +5805,20 @@
       {
         "text": "30 g lettuce, to garnish",
         "original_text": "60 g lettuce, to garnish",
-        "guessed": true
+        "guessed": true,
+        "optional": true
       },
       {
         "text": "0.5 cucumber, sliced, to garnish",
         "original_text": "1 cucumber, sliced, to garnish",
-        "guessed": true
+        "guessed": true,
+        "optional": true
       },
       {
         "text": "1 tomato, to garnish",
         "original_text": "2 tomato, to garnish",
-        "guessed": true
+        "guessed": true,
+        "optional": true
       }
     ],
     "steps": [
@@ -5843,7 +5882,8 @@
       },
       {
         "text": "2 spring onion, thinly sliced",
-        "original_text": "2 spring onion, thinly sliced"
+        "original_text": "2 spring onion, thinly sliced",
+        "optional": true
       },
       {
         "text": "1 tbsp miso paste, white",
@@ -5947,7 +5987,8 @@
       },
       {
         "text": "1 pinch turmeric, optional",
-        "original_text": "0.25 tsp turmeric, optional"
+        "original_text": "0.25 tsp turmeric, optional",
+        "optional": true
       },
       {
         "text": "0.5 tsp dried fenugreek leaves, kasuri methi",
@@ -5963,7 +6004,8 @@
       },
       {
         "text": "0.5 tbsp fresh coriander, chopped, to garnish",
-        "original_text": "1 tbsp fresh coriander, chopped, to garnish"
+        "original_text": "1 tbsp fresh coriander, chopped, to garnish",
+        "optional": true
       },
       {
         "text": "0.5 tsp chili flakes, Kashmiri chili powder, for the chili oil",
@@ -6049,7 +6091,8 @@
       },
       {
         "text": "1 spring onion, finely sliced (or mitsuba)",
-        "original_text": "1 spring onion, finely sliced (or mitsuba)"
+        "original_text": "1 spring onion, finely sliced (or mitsuba)",
+        "optional": true
       },
       {
         "text": "185 g rice, Japanese short-grain, raw weight",
@@ -6416,7 +6459,8 @@
       },
       {
         "text": "1 spring onion, sliced",
-        "original_text": "2 spring onion, sliced"
+        "original_text": "2 spring onion, sliced",
+        "optional": true
       }
     ],
     "steps": [
@@ -6632,7 +6676,8 @@
       },
       {
         "text": "4 tbsp parsley, or coriander or spring onion, chopped",
-        "original_text": "8 tbsp parsley, or coriander or spring onion, chopped"
+        "original_text": "8 tbsp parsley, or coriander or spring onion, chopped",
+        "optional": true
       },
       {
         "text": "150 g rice, to serve",
@@ -6923,7 +6968,8 @@
       },
       {
         "text": "0.5 chili flakes, fresh jalapeño, sliced",
-        "original_text": "1 chili flakes, fresh jalapeño, sliced"
+        "original_text": "1 chili flakes, fresh jalapeño, sliced",
+        "optional": true
       },
       {
         "text": "30 g radish, sliced",
@@ -6933,11 +6979,13 @@
       {
         "text": "15 g feta, or cotija, crumbled",
         "original_text": "30 g feta, or cotija, crumbled (1/4 cup)",
-        "guessed": true
+        "guessed": true,
+        "optional": true
       },
       {
         "text": "2 tbsp fresh coriander, to garnish",
-        "original_text": "4 tbsp fresh coriander, to garnish"
+        "original_text": "4 tbsp fresh coriander, to garnish",
+        "optional": true
       }
     ],
     "steps": [
@@ -7166,7 +7214,8 @@
       },
       {
         "text": "0.5 tbsp parsley, chopped, plus extra",
-        "original_text": "2 tbsp parsley, chopped, plus extra"
+        "original_text": "2 tbsp parsley, chopped, plus extra",
+        "optional": true
       },
       {
         "text": "1 chili flakes, chipotle pepper in adobo, chopped",
@@ -7370,7 +7419,8 @@
       {
         "text": "5 g parsley, chopped",
         "original_text": "15 g parsley, chopped (1/4 cup)",
-        "guessed": true
+        "guessed": true,
+        "optional": true
       }
     ],
     "steps": [
@@ -7587,12 +7637,14 @@
       },
       {
         "text": "1 tbsp parmesan, grated (optional)",
-        "original_text": "3 tbsp parmesan, grated (optional)"
+        "original_text": "3 tbsp parmesan, grated (optional)",
+        "optional": true
       },
       {
         "text": "5 g parsley, chopped (optional)",
         "original_text": "10 g parsley, chopped (optional)",
-        "guessed": true
+        "guessed": true,
+        "optional": true
       },
       {
         "text": "black pepper",
@@ -8181,7 +8233,8 @@
       {
         "text": "100 g potato, as fries (optional)",
         "original_text": "200 g potato, as fries (optional)",
-        "guessed": true
+        "guessed": true,
+        "optional": true
       },
       {
         "text": "2 bread, Arabic pita, medium",
@@ -8370,7 +8423,8 @@
       {
         "text": "5 g parsley, flat-leaf, to garnish",
         "original_text": "10 g parsley, flat-leaf, to garnish",
-        "guessed": true
+        "guessed": true,
+        "optional": true
       },
       {
         "text": "150 g noodles, egg noodles, to serve",
@@ -8487,7 +8541,8 @@
       },
       {
         "text": "1 tbsp fresh coriander, chopped",
-        "original_text": "2 tbsp fresh coriander, chopped"
+        "original_text": "2 tbsp fresh coriander, chopped",
+        "optional": true
       },
       {
         "text": "1.5 tbsp lemon, juice",
@@ -8790,7 +8845,8 @@
       },
       {
         "text": "1 tbsp parsley, chopped",
-        "original_text": "2 tbsp parsley, chopped"
+        "original_text": "2 tbsp parsley, chopped",
+        "optional": true
       },
       {
         "text": "salt",
@@ -8890,11 +8946,13 @@
       },
       {
         "text": "15 g fresh coriander, leaves",
-        "original_text": "30 g fresh coriander, leaves"
+        "original_text": "30 g fresh coriander, leaves",
+        "optional": true
       },
       {
         "text": "15 g peanuts, roughly chopped (optional)",
-        "original_text": "30 g peanuts, roughly chopped (optional)"
+        "original_text": "30 g peanuts, roughly chopped (optional)",
+        "optional": true
       },
       {
         "text": "150 g rice, basmati, to serve",
@@ -8966,7 +9024,8 @@
       },
       {
         "text": "1 tsp parsley, or dill, finely chopped",
-        "original_text": "1 tsp parsley, or dill, finely chopped"
+        "original_text": "1 tsp parsley, or dill, finely chopped",
+        "optional": true
       },
       {
         "text": "2 slice bread, flatbread or crusty bread",
@@ -9355,7 +9414,8 @@
       },
       {
         "text": "0.5 tbsp sesame seeds, toasted",
-        "original_text": "1 tbsp sesame seeds, toasted"
+        "original_text": "1 tbsp sesame seeds, toasted",
+        "optional": true
       },
       {
         "text": "1.5 tsp vegetable oil, for the sauce",
@@ -9671,7 +9731,8 @@
       },
       {
         "text": "1 tbsp pickled ginger, sushi ginger",
-        "original_text": "1 tbsp pickled ginger, sushi ginger"
+        "original_text": "1 tbsp pickled ginger, sushi ginger",
+        "optional": true
       }
     ],
     "steps": [
@@ -9835,6 +9896,789 @@
       "Frotter un plat à gratin beurré avec de l'ail, puis alterner couches de pommes de terre et de mélange aux lardons.",
       "Gratter la croûte du reblochon, le couper en morceaux et le poser croûte vers le haut sur le dessus.",
       "Enfourner à 180 °C pour 30 à 35 min, jusqu'à ce que le fromage soit fondu et doré, et servir bien chaud."
+    ]
+  },
+  {
+    "title": "Halal-cart chicken over rice",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 15,
+    "cook_min": 25,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "american",
+    "tags": [
+      "chicken",
+      "rice",
+      "street food",
+      "high protein",
+      "generous",
+      "american"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "text": "400 g chicken thigh, boneless"
+      },
+      {
+        "text": "1 tsp ground cumin"
+      },
+      {
+        "text": "1 tsp ground coriander"
+      },
+      {
+        "text": "1 tsp dried oregano"
+      },
+      {
+        "text": "1 tsp turmeric (divided)"
+      },
+      {
+        "text": "1 lemon"
+      },
+      {
+        "text": "2 cloves garlic, grated"
+      },
+      {
+        "text": "160 g basmati rice"
+      },
+      {
+        "text": "320 ml chicken stock"
+      },
+      {
+        "text": "120 g Greek yogurt"
+      },
+      {
+        "text": "1 tbsp mayonnaise"
+      },
+      {
+        "text": "1 tsp white vinegar"
+      },
+      {
+        "text": "1/4 iceberg lettuce, shredded"
+      },
+      {
+        "text": "1 tomato, diced"
+      },
+      {
+        "text": "hot sauce, to serve",
+        "optional": true
+      },
+      {
+        "text": "olive oil"
+      },
+      {
+        "text": "salt"
+      },
+      {
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Toss the chicken with cumin, ground coriander, oregano, half the turmeric, 1 garlic clove, the juice of half the lemon, 1 tbsp oil, salt and pepper. Leave 10 min.",
+      "Rinse the rice. Fry it 1 min in a little oil with the rest of the turmeric, add the stock, cover and simmer 12 min; rest 5 min off the heat.",
+      "Meanwhile, cook the chicken in a hot pan with a little oil, 5-6 min per side until charred and cooked through. Rest, then chop into bite-size pieces.",
+      "Mix the yogurt, mayonnaise, vinegar, the remaining garlic, a squeeze of lemon, salt and pepper to make the white sauce.",
+      "Serve the rice topped with chicken, lettuce and tomato, drizzled with white sauce and hot sauce."
+    ]
+  },
+  {
+    "title": "Gochujang salmon rice bowl",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 15,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "korean",
+    "tags": [
+      "salmon",
+      "fish",
+      "rice",
+      "bowl",
+      "healthy",
+      "quick",
+      "asian",
+      "korean"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "text": "250 g salmon fillet (2 fillets), skin off, cubed"
+      },
+      {
+        "text": "1 tbsp gochujang"
+      },
+      {
+        "text": "1 tbsp soy sauce"
+      },
+      {
+        "text": "1 tsp honey"
+      },
+      {
+        "text": "1 tsp sesame oil"
+      },
+      {
+        "text": "140 g sushi or jasmine rice"
+      },
+      {
+        "text": "1/2 cucumber, thinly sliced"
+      },
+      {
+        "text": "2 tbsp rice vinegar"
+      },
+      {
+        "text": "120 g edamame, frozen, shelled"
+      },
+      {
+        "text": "1 small carrot, julienned"
+      },
+      {
+        "text": "2 spring onions, sliced",
+        "optional": true
+      },
+      {
+        "text": "1 tsp sesame seeds",
+        "optional": true
+      },
+      {
+        "text": "vegetable oil"
+      },
+      {
+        "text": "salt"
+      },
+      {
+        "text": "sugar"
+      }
+    ],
+    "steps": [
+      "Cook the rice according to the packet.",
+      "Toss the cucumber with the rice vinegar, a pinch of salt and a pinch of sugar; set aside to quick-pickle.",
+      "Mix gochujang, soy sauce, honey and sesame oil. Toss the salmon in half of it.",
+      "Cook the edamame in boiling water for 3 min, then drain.",
+      "Sear the salmon in a hot pan with a little oil for 3-4 min, turning, then add the remaining glaze and toss 30 s until sticky.",
+      "Fill bowls with rice, salmon, cucumber, edamame and carrot. Top with spring onion and sesame seeds."
+    ]
+  },
+  {
+    "title": "Pasta e ceci",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 25,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "italian",
+    "tags": [
+      "pasta",
+      "chickpeas",
+      "soup",
+      "vegetarian",
+      "budget",
+      "comfort",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 1,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "text": "1 can (400 g) chickpeas, drained"
+      },
+      {
+        "text": "140 g ditalini or small pasta"
+      },
+      {
+        "text": "1 small onion, finely chopped"
+      },
+      {
+        "text": "2 cloves garlic, sliced"
+      },
+      {
+        "text": "1 sprig rosemary"
+      },
+      {
+        "text": "1 tbsp tomato paste"
+      },
+      {
+        "text": "1 pinch chili flakes",
+        "optional": true
+      },
+      {
+        "text": "750 ml vegetable stock"
+      },
+      {
+        "text": "30 g Parmesan, grated",
+        "optional": true
+      },
+      {
+        "text": "olive oil"
+      },
+      {
+        "text": "salt"
+      },
+      {
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Gently fry the onion in 2 tbsp olive oil for 5 min. Add garlic, rosemary and chilli for 1 min, then stir in the tomato paste.",
+      "Add the chickpeas and stock and simmer 10 min. Remove the rosemary and mash or blend about a third of the chickpeas to thicken.",
+      "Add the pasta and cook in the soup, stirring often, until al dente (add a splash of water if it gets too thick).",
+      "Season, then serve with Parmesan, black pepper and a drizzle of olive oil."
+    ]
+  },
+  {
+    "title": "Poulet basquaise",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 15,
+    "cook_min": 40,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "french",
+    "tags": [
+      "chicken",
+      "peppers",
+      "one-pot",
+      "braise",
+      "french"
+    ],
+    "difficulty": "medium",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "text": "4 chicken thigh, bone-in, skin on"
+      },
+      {
+        "text": "1 red bell pepper, sliced"
+      },
+      {
+        "text": "1 green bell pepper, sliced"
+      },
+      {
+        "text": "1 onion, sliced"
+      },
+      {
+        "text": "2 cloves garlic, sliced"
+      },
+      {
+        "text": "400 g canned tomatoes, chopped"
+      },
+      {
+        "text": "60 g Bayonne ham or prosciutto, chopped",
+        "guessed": true
+      },
+      {
+        "text": "100 ml dry white wine"
+      },
+      {
+        "text": "1 tsp piment d'Espelette or sweet paprika"
+      },
+      {
+        "text": "1 bay leaf"
+      },
+      {
+        "text": "thyme, a few sprigs"
+      },
+      {
+        "text": "150 g long-grain rice"
+      },
+      {
+        "text": "olive oil"
+      },
+      {
+        "text": "salt"
+      },
+      {
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Season the chicken and brown it skin-side down in a little oil in a casserole, 6-7 min, then turn for 2 min. Set aside.",
+      "In the same pot, cook the onion, peppers and ham for 8 min until soft. Add the garlic and Espelette for 1 min.",
+      "Deglaze with the wine, then add the tomatoes, bay and thyme. Return the chicken, skin up.",
+      "Cover and simmer gently 25 min, then uncover for the last 5 min to thicken the sauce.",
+      "Meanwhile, cook the rice. Serve the chicken and peppers over rice."
+    ]
+  },
+  {
+    "title": "Chicken shawarma traybake",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 15,
+    "cook_min": 30,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "middle eastern",
+    "tags": [
+      "chicken",
+      "traybake",
+      "high protein",
+      "generous",
+      "middle eastern",
+      "levantine"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 1,
+      "oven": true,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "text": "500 g chicken thigh, boneless"
+      },
+      {
+        "text": "2 red onion, cut into wedges"
+      },
+      {
+        "text": "2 tsp ground cumin"
+      },
+      {
+        "text": "2 tsp smoked paprika"
+      },
+      {
+        "text": "1/2 tsp ground cinnamon"
+      },
+      {
+        "text": "1/2 tsp turmeric"
+      },
+      {
+        "text": "1 lemon"
+      },
+      {
+        "text": "3 cloves garlic, grated"
+      },
+      {
+        "text": "150 g Greek yogurt"
+      },
+      {
+        "text": "2 pita (or flatbreads)"
+      },
+      {
+        "text": "2 tomato, chopped"
+      },
+      {
+        "text": "0.5 cucumber, chopped"
+      },
+      {
+        "text": "10 g parsley, chopped",
+        "optional": true
+      },
+      {
+        "text": "olive oil"
+      },
+      {
+        "text": "salt"
+      },
+      {
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Heat the oven to 220 °C. Mix the spices, 2 garlic cloves, the juice of half the lemon, 2 tbsp oil and salt.",
+      "Toss the chicken and onion wedges in the marinade and spread on a tray in one layer.",
+      "Roast 25-30 min until the chicken is charred at the edges. Rest 5 min, then slice.",
+      "Mix the yogurt with the remaining garlic, a squeeze of lemon and salt.",
+      "Toss tomato, cucumber and parsley with lemon juice and oil. Serve the chicken and onions with flatbreads, garlic yogurt and salad."
+    ]
+  },
+  {
+    "title": "Turkey taco lettuce wraps",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 12,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "mexican",
+    "tags": [
+      "turkey",
+      "low carb",
+      "high protein",
+      "diet",
+      "quick",
+      "mexican"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 1,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "text": "400 g lean ground turkey"
+      },
+      {
+        "text": "1/2 onion, finely chopped"
+      },
+      {
+        "text": "1 clove garlic, grated"
+      },
+      {
+        "text": "1 tsp chili powder, chipotle (or 1 chipotle in adobo, chopped)"
+      },
+      {
+        "text": "1 tsp ground cumin"
+      },
+      {
+        "text": "1 tsp smoked paprika"
+      },
+      {
+        "text": "1 tbsp tomato paste"
+      },
+      {
+        "text": "1/2 can (120 g drained) black beans"
+      },
+      {
+        "text": "1 lime"
+      },
+      {
+        "text": "1 little gem or romaine lettuce, leaves separated"
+      },
+      {
+        "text": "1 tomato, diced"
+      },
+      {
+        "text": "1/2 avocado, diced",
+        "optional": true
+      },
+      {
+        "text": "4 tbsp light Greek yogurt"
+      },
+      {
+        "text": "10 g fresh coriander, chopped",
+        "optional": true
+      },
+      {
+        "text": "olive oil"
+      },
+      {
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "Cook the onion in 1 tsp oil for 3 min. Add the turkey and brown, breaking it up, 5-6 min.",
+      "Stir in garlic, chipotle, cumin, paprika and tomato paste for 1 min, then add the beans and a splash of water. Simmer 2 min until saucy.",
+      "Season with salt and the juice of half the lime.",
+      "Spoon the filling into lettuce cups and top with tomato, avocado, yogurt, coriander and lime wedges."
+    ]
+  },
+  {
+    "title": "Chana masala",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 25,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "indian",
+    "tags": [
+      "chickpeas",
+      "curry",
+      "vegetarian",
+      "vegan",
+      "meal prep",
+      "indian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "text": "1 can (400 g) chickpeas, drained"
+      },
+      {
+        "text": "1 onion, finely chopped"
+      },
+      {
+        "text": "2 cloves garlic, grated"
+      },
+      {
+        "text": "10 g ginger (2 cm), grated"
+      },
+      {
+        "text": "1 chili flakes, fresh green chilli, chopped",
+        "optional": true
+      },
+      {
+        "text": "1 tsp cumin seeds"
+      },
+      {
+        "text": "2 tsp garam masala"
+      },
+      {
+        "text": "1/2 tsp turmeric"
+      },
+      {
+        "text": "1 tsp ground coriander"
+      },
+      {
+        "text": "400 g canned tomatoes, chopped"
+      },
+      {
+        "text": "1/2 lemon"
+      },
+      {
+        "text": "10 g fresh coriander, chopped",
+        "optional": true
+      },
+      {
+        "text": "150 g basmati rice"
+      },
+      {
+        "text": "vegetable oil"
+      },
+      {
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "Start the rice according to the packet.",
+      "Heat 2 tbsp oil and sizzle the cumin seeds for 30 s. Add the onion and cook 8 min until golden.",
+      "Add garlic, ginger and chilli for 1 min, then the ground spices for 30 s.",
+      "Add the tomatoes and cook 5 min until thick, then the chickpeas and 150 ml water. Simmer 10 min, lightly crushing some chickpeas.",
+      "Season with salt and lemon juice, scatter with coriander and serve with the rice."
+    ]
+  },
+  {
+    "title": "Chicken teriyaki donburi",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 15,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "japanese",
+    "tags": [
+      "chicken",
+      "rice",
+      "bowl",
+      "quick",
+      "weeknight",
+      "asian",
+      "japanese"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "text": "400 g chicken thigh, boneless, skin on"
+      },
+      {
+        "text": "3 tbsp soy sauce"
+      },
+      {
+        "text": "2 tbsp mirin"
+      },
+      {
+        "text": "1 tbsp sake (or extra mirin)"
+      },
+      {
+        "text": "1 tbsp sugar"
+      },
+      {
+        "text": "160 g short-grain rice"
+      },
+      {
+        "text": "200 g broccoli, in florets"
+      },
+      {
+        "text": "2 spring onions, sliced",
+        "optional": true
+      },
+      {
+        "text": "1 tsp sesame seeds",
+        "optional": true
+      },
+      {
+        "text": "vegetable oil"
+      }
+    ],
+    "steps": [
+      "Cook the rice. Mix soy sauce, mirin, sake and sugar.",
+      "Steam or boil the broccoli for 3-4 min.",
+      "Cook the chicken skin-side down in a little oil over medium heat for 7 min until crisp, then turn and cook 4 min more.",
+      "Wipe out excess fat, pour in the sauce and simmer 1-2 min, turning the chicken until glossy.",
+      "Slice the chicken and serve over rice with broccoli, extra sauce, spring onion and sesame."
+    ]
+  },
+  {
+    "title": "Shakshuka with feta",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 20,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "middle eastern",
+    "tags": [
+      "eggs",
+      "vegetarian",
+      "one-pot",
+      "brunch",
+      "quick",
+      "north african",
+      "middle eastern"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 1,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "text": "5 eggs"
+      },
+      {
+        "text": "1 onion, sliced"
+      },
+      {
+        "text": "1 red bell pepper, sliced"
+      },
+      {
+        "text": "2 cloves garlic, sliced"
+      },
+      {
+        "text": "1 tsp ground cumin"
+      },
+      {
+        "text": "1 tsp sweet paprika"
+      },
+      {
+        "text": "1/2 tsp chilli flakes or harissa"
+      },
+      {
+        "text": "400 g canned tomatoes, chopped"
+      },
+      {
+        "text": "60 g feta, crumbled"
+      },
+      {
+        "text": "10 g parsley, chopped",
+        "optional": true
+      },
+      {
+        "text": "4 slices bread, crusty, to serve"
+      },
+      {
+        "text": "olive oil"
+      },
+      {
+        "text": "salt"
+      },
+      {
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Cook the onion and pepper in 2 tbsp olive oil for 8 min until soft.",
+      "Add garlic and spices for 1 min, then the tomatoes. Simmer 6-8 min until thick; season.",
+      "Make 5 wells in the sauce and crack in the eggs. Cover and cook on low for 5-7 min until the whites are set and yolks still runny.",
+      "Scatter with feta and parsley and serve straight from the pan with bread."
+    ]
+  },
+  {
+    "title": "Beef & broccoli stir-fry",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 15,
+    "cook_min": 10,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "chinese",
+    "tags": [
+      "beef",
+      "stir-fry",
+      "high protein",
+      "fakeaway",
+      "quick",
+      "asian",
+      "chinese"
+    ],
+    "difficulty": "medium",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "text": "350 g flank or rump steak, thinly sliced against the grain"
+      },
+      {
+        "text": "2 tsp cornflour (divided)"
+      },
+      {
+        "text": "3 tbsp soy sauce (divided)"
+      },
+      {
+        "text": "2 tbsp oyster sauce"
+      },
+      {
+        "text": "1 tsp brown sugar"
+      },
+      {
+        "text": "1 tsp sesame oil"
+      },
+      {
+        "text": "300 g broccoli, in small florets"
+      },
+      {
+        "text": "2 cloves garlic, minced"
+      },
+      {
+        "text": "10 g ginger (2 cm), minced"
+      },
+      {
+        "text": "150 g jasmine rice"
+      },
+      {
+        "text": "vegetable oil"
+      }
+    ],
+    "steps": [
+      "Cook the rice. Toss the beef with 1 tsp cornflour and 1 tbsp soy sauce.",
+      "Mix the sauce: 2 tbsp soy, oyster sauce, sugar, sesame oil, 1 tsp cornflour and 80 ml water.",
+      "Heat a wok until smoking, add 1 tbsp oil and sear the beef in one layer, 1-2 min, without overcooking. Remove.",
+      "Add a little oil, the broccoli and 2 tbsp water; stir-fry 3 min until bright and just tender. Add garlic and ginger for 30 s.",
+      "Return the beef, pour in the sauce and toss 1 min until glossy. Serve over rice."
     ]
   }
 ]

@@ -13,6 +13,9 @@ export interface CandidateRecipe {
   tags: string[];
   ingredientNames: string[]; // non-staple ingredient names, lowercase
   productIds?: string[]; // the catalogue items its ingredients are, staples included
+  /** Names and items found only on optional lines: a "never" rule doesn't rule the recipe out for them. */
+  optionalNames?: string[];
+  optionalProductIds?: string[];
   dietClass: 'veg' | 'fish' | 'meat';
   totalMin: number | null;
   kcalPerServing: number | null;
@@ -80,13 +83,24 @@ function matchesTerm(recipe: CandidateRecipe, term: string): boolean {
 const usesProduct = (recipe: CandidateRecipe, ids: string[] | undefined) =>
   !!ids?.length && !!recipe.productIds?.some((id) => ids.includes(id));
 
+/** The recipe as it's still made when every optional line is left out. */
+function withoutOptional(recipe: CandidateRecipe): CandidateRecipe {
+  if (!recipe.optionalNames?.length && !recipe.optionalProductIds?.length) return recipe;
+  return {
+    ...recipe,
+    ingredientNames: recipe.ingredientNames.filter((n) => !recipe.optionalNames?.includes(n)),
+    productIds: recipe.productIds?.filter((id) => !recipe.optionalProductIds?.includes(id)),
+  };
+}
+
 export function passesHardFilters(recipe: CandidateRecipe, members: DeckMember[], opts: DeckOptions): boolean {
   if (opts.recentlyCooked?.has(recipe.id)) return false;
   if (opts.maxMinutes && recipe.totalMin && recipe.totalMin > opts.maxMinutes) return false;
+  const essential = withoutOptional(recipe);
   for (const m of members) {
     if (m.diet === 'vegetarian' && recipe.dietClass !== 'veg') return false;
     if (m.diet === 'pescatarian' && recipe.dietClass === 'meat') return false;
-    if (m.never.some((n) => matchesTerm(recipe, n)) || usesProduct(recipe, m.neverProducts)) return false;
+    if (m.never.some((n) => matchesTerm(essential, n)) || usesProduct(essential, m.neverProducts)) return false;
   }
   return true;
 }

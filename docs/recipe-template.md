@@ -34,6 +34,7 @@ The catalogue is a JSON list of these objects. Copy this one and replace the val
       { "text": "100 g spinach", "original_text": "200 g spinach" },
       { "text": "150 g rice", "original_text": "300 g rice" },
       { "text": "1 lime", "original_text": "2 lime", "guessed": false },
+      { "text": "10 g fresh coriander, chopped", "original_text": "20 g fresh coriander, chopped", "optional": true },
       { "text": "olive oil", "original_text": "olive oil" }
     ],
     "steps": [
@@ -71,7 +72,8 @@ Each field is one of three kinds:
 | `image_url` | You | recommended | Absolute `https://` URL. See image specs. | Swipe card, recipe tile, detail hero |
 | `image_source_url` | You | optional | URL the photo was originally taken from. Stays the same after you re-host the image under `image_url`. | Photo credit, re-downloading |
 | `source_name` | You | recommended with `source_url` | Display name of the website, e.g. `GialloZafferano`, `Marmiton`, `RecipeTin Eats`. | "From GialloZafferano" credit line |
-| `source_url` | You | optional | URL of the original recipe | Credit/link-out. It must be unique within a household (duplicates are rejected). |
+| `source_url` | You | **yes** for seed recipes, except AI-generated ones | URL of the original recipe | Credit/link-out. It must be unique within a household (duplicates are rejected). The seed library also uses it to recognise a recipe it has already loaded. |
+| `ai_generated_recipe` | You | optional | `true` when the recipe was written by an AI rather than taken from a source. Such seed recipes have no `source_url`, `original_servings` or `original_text`; the seed library recognises them by `language` and `title`, so changing either adds a new recipe. | "AI recipe" tag on the recipe page; lets these recipes be reviewed and checked separately |
 | `cuisine` | You | optional | One lowercase English word or phrase: `italian`, `french`, `thai`, `mexican`… The same word is also put in `tags`. | Cuisine filter or grouping, without parsing tags |
 | `source_type` | You | optional | `seed` for the catalogue. Otherwise `web`, `instagram`, `photo`, `typed` or `ai`. | Provenance |
 | `kcal_per_serving` | Computed | — | — | Worked out from ingredients, never copied from the source site |
@@ -111,6 +113,7 @@ Each ingredient can carry two lines in this format:
 | `text` | **yes** | Quantities for `servings`. This is what the server parses and computes from. |
 | `original_text` | optional | The same line with the source's quantities, for `original_servings`. Same name and format, so the server can parse it too. It's kept for reference and isn't used for macros. |
 | `guessed` | optional | See below |
+| `optional` | optional | `true` when the dish works without the line. See below. |
 
 | Part | Kind | Rules |
 | --- | --- | --- |
@@ -118,6 +121,7 @@ Each ingredient can carry two lines in this format:
 | unit | You | `g kg ml cl l tbsp tsp cup oz lb clove pinch can bunch slice piece`, or their EN/FR/IT spellings (table below). No unit means `piece`. |
 | name | You | Use the ingredient catalogue's name in the recipe's language (`name`, `name_fr`, `name_it`) or one of its aliases (see `supabase/seed.sql`), e.g. `chicken thigh`, not "boneless skinless thighs from the butcher". Don't put connectors in front of the name: write `2 spicchi aglio`, not `2 spicchi d'aglio`. |
 | `guessed` | You | `true` if you aren't sure of the amount. The macros are then marked as estimated. |
+| `optional` | You | `true` for a line the dish works without: herbs scattered on top, sesame seeds, a spring-onion garnish, a finishing chilli, cheese grated over at the table, a side the source calls optional. Decide it per recipe, not per ingredient: coriander on a curry is optional, coriander in a green chutney isn't; Parmesan on pasta e ceci is optional, Parmesan in a parmigiana isn't. A person's "never" rule doesn't take a recipe out of the deck for an optional line, and the page shows it as optional. It still counts in the macros. |
 | preparation note | You (optional) | Anything after a comma or in brackets is ignored by the parser and kept only in `raw_text`. |
 | canonical name, aisle, staple flag, `raw_text`, `position` | Computed | From the catalogue match and the line order |
 
@@ -232,6 +236,8 @@ One image per recipe. The app shows the same file in three crops, each with
 - [ ] if scaled: every ingredient has an `original_text` with the source's quantities
 - [ ] any missing catalogue ingredient added, with its `diet_class`
 - [ ] steps in order, one action each
+- [ ] garnishes and toppings the dish works without marked `optional`
+- [ ] AI-written: `ai_generated_recipe: true`, no `source_url`
 - [ ] difficulty and equipment (pots, oven, special only if uncommon)
 - [ ] 3–8 tags, using the mood words where they apply
 - [ ] 4:3 image, 900 × 675, dish centred, under 200 KB

@@ -45,7 +45,7 @@ Deno.serve(async (req) => {
     admin.from('swipes').select('user_id, recipe_id, verdict, created_at, decks!inner(household_id)')
       .eq('decks.household_id', householdId).order('created_at', { ascending: false }).limit(1000),
     admin.from('recipes')
-      .select('id, title, tags, total_min, kcal_per_serving, protein_g_per_serving, household_id, copied_from, recipe_ingredients(name, is_staple)')
+      .select('id, title, tags, total_min, kcal_per_serving, protein_g_per_serving, household_id, copied_from, recipe_ingredients(name, is_staple, product_id, optional)')
       .or(`household_id.is.null,household_id.eq.${householdId}`),
     admin.from('meals').select('recipe_id, for_date, status').eq('household_id', householdId),
     admin.from('grocery_items').select('name').eq('household_id', householdId).gte('checked_at', since(PANTRY_DAYS)),
@@ -63,8 +63,10 @@ Deno.serve(async (req) => {
 
   const featuresById = new Map<string, string[]>();
   const candidates: CandidateRecipe[] = library.map((r) => {
-    const ings = (r.recipe_ingredients ?? []) as { name: string; is_staple: boolean; product_id: string | null }[];
+    const ings = (r.recipe_ingredients ?? []) as { name: string; is_staple: boolean; product_id: string | null; optional: boolean }[];
     const names = ings.filter((i) => !i.is_staple).map((i) => i.name.toLowerCase());
+    const required = ings.filter((i) => !i.optional);
+    const optional = ings.filter((i) => i.optional);
     featuresById.set(r.id, recipeFeatures(r.tags ?? [], ings));
     const classes = ings.map((i) => dietOf.get(i.name));
     return {
@@ -73,6 +75,8 @@ Deno.serve(async (req) => {
       tags: r.tags ?? [],
       ingredientNames: names,
       productIds: ings.flatMap((i) => (i.product_id ? [i.product_id] : [])),
+      optionalNames: optional.map((i) => i.name.toLowerCase()).filter((n) => !required.some((i) => i.name.toLowerCase() === n)),
+      optionalProductIds: optional.flatMap((i) => (i.product_id && !required.some((x) => x.product_id === i.product_id) ? [i.product_id] : [])),
       dietClass: classes.includes('meat') ? 'meat' : classes.includes('fish') ? 'fish' : 'veg',
       totalMin: r.total_min,
       kcalPerServing: r.kcal_per_serving,

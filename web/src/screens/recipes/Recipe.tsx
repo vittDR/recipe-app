@@ -80,6 +80,7 @@ export function RecipeScreen() {
         {recipe.difficulty && <Tag tone={recipe.difficulty === 'hard' ? 'warning' : undefined}>{t(`recipe.${recipe.difficulty}`)}</Tag>}
         {recipe.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
         {!recipe.household_id && <Tag>{t('recipe.seed')}</Tag>}
+        {recipe.ai_generated_recipe && <Tag>{t('recipe.aiGenerated')}</Tag>}
       </div>
 
       <div className="card stack">
@@ -122,6 +123,7 @@ export function RecipeScreen() {
             <div key={i.id} className="list-row">
               <div className="list-row__main">
                 <div className="list-row__title">{ingredientName(i, locale)}</div>
+                {i.optional && <div className="list-row__meta">{t('recipe.optional')}</div>}
                 {i.guessed && <div className="list-row__meta" style={{ color: 'var(--c-warning)' }}>{t('recipe.guessed')}</div>}
                 {exotic.has(i.name) && <div className="list-row__meta">{t('recipe.exoticHint')}</div>}
               </div>

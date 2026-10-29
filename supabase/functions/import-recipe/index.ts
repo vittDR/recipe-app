@@ -42,12 +42,15 @@ interface SaveBody {
   difficulty?: Difficulty | null;
   /** { pots, oven, special }: see logic/facets.ts. */
   equipment?: Equipment | null;
+  /** Written by an AI rather than taken from a source. */
+  ai_generated_recipe?: boolean;
   /** Lines as typed or reviewed; `guessed` marks amounts the person was unsure about.
    *  `original_text` is the source's unscaled line, kept for reference only.
+   *  `optional` marks a line the dish works without (a garnish, cheese on top).
    *  `product_id` is the item the person picked or accepted; `new_item` asks for a
    *  new household item even if a name matches. Neither: matched on save. */
   ingredients: {
-    text: string; original_text?: string | null; guessed?: boolean;
+    text: string; original_text?: string | null; guessed?: boolean; optional?: boolean;
     product_id?: string | null; new_item?: boolean;
   }[];
 }
@@ -145,7 +148,9 @@ Deno.serve(async (req) => {
       : { data: [] };
     const products = new Map((picked ?? []).map((p) => [p.id as string, p]));
 
-    const ingredients: (NormalisedIngredient & { guessed: boolean; original_text: string | null; product_id: string | null })[] = [];
+    const ingredients: (NormalisedIngredient & {
+      guessed: boolean; optional: boolean; original_text: string | null; product_id: string | null;
+    })[] = [];
     for (const i of lines) {
       const parsed = parseIngredientLine(i.text);
       const product = i.product_id ? products.get(i.product_id) : undefined;
@@ -162,7 +167,7 @@ Deno.serve(async (req) => {
       } else {
         norm = catalog.normalise(parsed); // the database links it to an item on insert
       }
-      ingredients.push({ ...norm, guessed: !!i.guessed, original_text: i.original_text?.trim() || null, product_id: productId });
+      ingredients.push({ ...norm, guessed: !!i.guessed, optional: !!i.optional, original_text: i.original_text?.trim() || null, product_id: productId });
     }
     const macros = estimateMacros(ingredients, servings);
     const minutes = (v: number | null | undefined) => (typeof v === 'number' && v >= 0 ? Math.round(v) : null);
@@ -192,6 +197,7 @@ Deno.serve(async (req) => {
       image_source_url: r.image_source_url ?? null,
       difficulty: r.difficulty && DIFFICULTIES.includes(r.difficulty) ? r.difficulty : null,
       equipment: r.equipment ? normaliseEquipment(r.equipment) : null,
+      ai_generated_recipe: !!r.ai_generated_recipe,
       created_by: caller.userId,
     }).select('id').single();
     if (error) {
@@ -201,7 +207,7 @@ Deno.serve(async (req) => {
 
     const { error: ingErr } = await caller.db.from('recipe_ingredients').insert(ingredients.map((i, position) => ({
       recipe_id: saved.id, position, name: i.name, quantity: i.quantity, unit: i.unit,
-      aisle: i.aisle, is_staple: i.is_staple, guessed: i.guessed, raw_text: i.raw_text, original_text: i.original_text,
+      aisle: i.aisle, is_staple: i.is_staple, guessed: i.guessed, optional: i.optional, raw_text: i.raw_text, original_text: i.original_text,
       product_id: i.product_id,
     })));
     if (ingErr) {

@@ -75,6 +75,8 @@ export interface Recipe {
   difficulty: Difficulty | null;
   /** Null when unknown. */
   equipment: Equipment | null;
+  /** Written by an AI rather than taken from a source. */
+  ai_generated_recipe: boolean;
   created_at: string;
 }
 
@@ -88,6 +90,8 @@ export interface RecipeIngredient {
   aisle: Aisle;
   is_staple: boolean;
   guessed: boolean;
+  /** The dish works without it (a garnish, cheese on top). */
+  optional: boolean;
   raw_text: string | null;
   product_id: string | null;
   /** Embedded with `select('*, product:products(name_fr, name_en)')`. */

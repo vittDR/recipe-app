@@ -218,6 +218,8 @@ export const en = {
     prep: 'Prep {n} min',
     cook: 'Cooking {n} min',
     noCook: 'No cooking',
+    optional: 'Optional',
+    aiGenerated: 'AI recipe',
     yourMacros: 'Your plate',
     estimated: 'Macros estimated',
     guessed: 'Amount guessed, check it',

@@ -93,6 +93,7 @@ Format exactly: `<quantity> <unit> <name>[, note]` — or `<name>` alone for sta
 - Convert vague units (glass/bicchiere/verre, handful/manciata, "q.b.") to g or ml and set `guessed: true`. Every non-staple ingredient needs an amount; if the source gives none, estimate and set `guessed: true`.
 - Prefer g/ml for meat, fish, grains, pasta, vegetables when the source gives them.
 - Helper fields (machine-checked, keep them accurate): `_catalog` = the EN catalogue name the line maps to; `_qty` = scaled numeric quantity (number, null if none); `_unit` = one of `g kg ml l tbsp tsp clove pinch can bunch slice piece` (English normalized) or null.
+- `optional: true` on a line the dish works without (herbs scattered on top, sesame seeds, spring-onion garnish, finishing chilli, cheese grated over at the table, anything the source calls optional). Judge it for this dish: herbs blended into a sauce or that make the dish (Thai basil chicken, green chutney) stay required.
 - Skip pure garnish water ("acqua", "water") lines entirely. Keep salt/pepper/oil lines.
 - Sub-recipes (e.g. a sauce): flatten into the one list.
 
