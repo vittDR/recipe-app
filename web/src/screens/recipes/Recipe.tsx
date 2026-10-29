@@ -79,7 +79,7 @@ export function RecipeScreen() {
         <Tag>{tn('recipe.servings', recipe.servings)}</Tag>
         {recipe.difficulty && <Tag tone={recipe.difficulty === 'hard' ? 'warning' : undefined}>{t(`recipe.${recipe.difficulty}`)}</Tag>}
         {recipe.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
-        {!recipe.household_id && <Tag>{t('recipe.seed')}</Tag>}
+        {(recipe.collection === 'original' || recipe.collection === 'web_import') && <Tag>{t(`collection.${recipe.collection}One`)}</Tag>}
       </div>
 
       <div className="card stack">

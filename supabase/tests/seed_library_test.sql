@@ -54,6 +54,10 @@ select pg_temp.check((select i.id = 'b6b4b263-9d00-433a-a43b-af72a2b7bd33' from 
 \i seed_library.sql
 select pg_temp.check((select count(*) = 109 from lib), 're-running seed_library.sql adds no duplicates');
 
+select pg_temp.check((select count(*) filter (where collection = 'original') = 10
+                             and count(*) filter (where collection = 'web_import') = 109
+                      from recipes where household_id is null), 'seed collections: 10 originals, 109 web imports');
+
 -- AI-generated seed recipes have no source link: they're known by language and title.
 create temp view ai as select * from recipes where household_id is null and ai_generated_recipe;
 select pg_temp.check((select count(*) = 10 and count(source_url) = 0 from ai), '10 AI-generated seed recipes, without a source link');
@@ -101,6 +105,14 @@ select pg_temp.check((select cook_min is not null from library_recipes where id 
 select id as aisrc from library_recipes where title = 'Pasta e ceci' and ai_generated_recipe \gset
 select copy_recipe(:'aisrc') as aicp \gset
 select pg_temp.check((select ai_generated_recipe from library_recipes where id = :'aicp'), 'copy keeps the AI-generated flag');
+select pg_temp.check((select collection = 'original' from library_recipes where id = :'aicp')
+                     and (select collection = 'web_import' from library_recipes where id = :'cp'),
+                     'a copy stays in its seed recipe''s collection');
+insert into recipes (household_id, title, source_type) values (my_household_id(), 'Typed one', 'typed'),
+  (my_household_id(), 'From a link', 'web'), (my_household_id(), 'From a photo', 'photo');
+select pg_temp.check((select array_agg(collection order by title) = '{our_import,our_import,our_recipe}'
+                      from library_recipes where title in ('Typed one', 'From a link', 'From a photo')),
+                     'household recipes: typed ones are ours, the rest are imports');
 select pg_temp.check((select count(*) filter (where optional) = 2 from recipe_ingredients where recipe_id = :'aicp'),
                      'copy keeps optional lines');
 reset role;

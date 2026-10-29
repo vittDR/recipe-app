@@ -52,11 +52,16 @@ export interface TasteRule {
   source: 'manual' | 'learned';
 }
 
+/** Part of the library, from where the recipe came from (a generated column). */
+export type RecipeCollection = 'original' | 'web_import' | 'our_import' | 'our_recipe';
+export const RECIPE_COLLECTIONS: RecipeCollection[] = ['original', 'web_import', 'our_import', 'our_recipe'];
+
 export interface Recipe {
   id: string;
   household_id: string | null;
   title: string;
   source_type: 'web' | 'instagram' | 'photo' | 'typed' | 'ai' | 'seed';
+  collection: RecipeCollection;
   source_url: string | null;
   source_name: string | null;
   image_path: string | null;
