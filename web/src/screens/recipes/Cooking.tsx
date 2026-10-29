@@ -4,6 +4,7 @@ import { formatQuantity } from '../../components/AddToListSheet.tsx';
 import { Icon } from '../../components/Icon.tsx';
 import { Button, Spinner } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
+import { recipeTitle, recipeSteps } from '../../lib/recipeText.ts';
 import { useWakeLock } from '../../lib/hooks.ts';
 import { INGREDIENT_SELECT, ingredientName } from '../../lib/products.ts';
 import { must, supabase } from '../../lib/supabase.ts';
@@ -30,7 +31,8 @@ export function CookingScreen() {
   }, [id]);
 
   if (!recipe) return <Spinner />;
-  const total = recipe.steps.length;
+  const steps = recipeSteps(recipe, locale);
+  const total = steps.length;
 
   return (
     <main className="screen screen--plain">
@@ -40,7 +42,7 @@ export function CookingScreen() {
         <span style={{ width: 44 }} />
       </div>
       <div className="progress" aria-hidden><div style={{ width: `${(step / Math.max(total, 1)) * 100}%` }} /></div>
-      <h1 className="title3 muted" style={{ marginTop: 'var(--s-4)' }}>{recipe.title}</h1>
+      <h1 className="title3 muted" style={{ marginTop: 'var(--s-4)' }}>{recipeTitle(recipe, locale)}</h1>
       <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
         {step === 0 ? (
           <ul className="stack" style={{ listStyle: 'none', padding: 0, width: '100%', font: 'var(--t-title3)' }}>
@@ -49,7 +51,7 @@ export function CookingScreen() {
             ))}
           </ul>
         ) : (
-          <p style={{ font: 'var(--t-title1)', lineHeight: 1.35 }} aria-live="polite">{recipe.steps[step - 1]}</p>
+          <p style={{ font: 'var(--t-title1)', lineHeight: 1.35 }} aria-live="polite">{steps[step - 1]}</p>
         )}
       </div>
       <div className="row">

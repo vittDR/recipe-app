@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { proposeListItems, scaleQuantity, type ListProposal } from '@logic/groceries.ts';
 import { useI18n } from '../i18n/index.tsx';
+import { recipeTitle } from '../lib/recipeText.ts';
 import { ingredientName } from '../lib/products.ts';
 import { useSession } from '../lib/session.tsx';
 import { must, supabase } from '../lib/supabase.ts';
@@ -110,7 +111,7 @@ export function AddToListSheet({
   return (
     <Sheet open={open} onClose={onClose} label={t('addToList.title')}>
       <h2 className="title2" style={{ marginBottom: 'var(--s-2)' }}>{t('addToList.title')}</h2>
-      <p className="muted small" style={{ marginTop: 0 }}>{recipe.title}</p>
+      <p className="muted small" style={{ marginTop: 0 }}>{recipeTitle(recipe, locale)}</p>
       {toBuy.length > 0 && (
         <>
           <h3 className="section-label">{t('addToList.toBuy')}</h3>

@@ -25,6 +25,17 @@ test('hard filters: never list, diet, time, recently cooked', () => {
   assert.deepEqual(deck.map((c) => c.recipeId).sort(), ['dal', 'salmon']);
 });
 
+test('a never rule on an optional line keeps the recipe', () => {
+  const recipes = [
+    recipe('chana masala', { ingredientNames: ['chickpeas', 'fresh coriander'], productIds: ['p-chickpeas', 'p-coriander'],
+      optionalNames: ['fresh coriander'], optionalProductIds: ['p-coriander'] }),
+    recipe('green chutney', { ingredientNames: ['fresh coriander'], productIds: ['p-coriander'] }),
+  ];
+  for (const m of [member({ never: ['coriander'] }), member({ neverProducts: ['p-coriander'] })]) {
+    assert.deepEqual(buildDeck(recipes, [m], new Map(), { random: fixed }).map((c) => c.recipeId), ['chana masala']);
+  }
+});
+
 test('mixes known and new, spreads new cards, ranks by score', () => {
   const recipes = Array.from({ length: 30 }, (_, i) => recipe(`r${i}`, { proteinGPerServing: 40 - i }));
   const history = new Map<string, RecipeHistory>();

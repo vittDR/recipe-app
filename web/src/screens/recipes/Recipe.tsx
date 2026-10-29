@@ -6,6 +6,7 @@ import { Icon } from '../../components/Icon.tsx';
 import { RecipeTags } from '../../components/Tags.tsx';
 import { Button, Screen, Spinner, Tag, imageStyle, recipeEmoji } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
+import { recipeTitle, recipeSteps } from '../../lib/recipeText.ts';
 import { MANY_POTS } from '@logic/facets.ts';
 import { equipmentLabels, exoticIngredients } from '../../lib/facets.ts';
 import { useCatalog } from '../../lib/hooks.ts';
@@ -74,13 +75,15 @@ export function RecipeScreen() {
           <Icon name="back" />
         </button>
       </div>
-      <h1 className="screen__title" style={{ marginTop: 0 }}>{recipe.title}</h1>
+      <h1 className="screen__title" style={{ marginTop: 0 }}>{recipeTitle(recipe, i18n.locale)}</h1>
       <div className="row row--wrap" style={{ marginBottom: 'var(--s-4)' }}>
         {recipe.total_min && <Tag><Icon name="clock" size={14} /> {recipe.total_min} min</Tag>}
+        {recipe.prep_min != null && <Tag>{t('recipe.prep', { n: recipe.prep_min })}</Tag>}
+        {recipe.cook_min != null && <Tag>{recipe.cook_min ? t('recipe.cook', { n: recipe.cook_min }) : t('recipe.noCook')}</Tag>}
         <Tag>{tn('recipe.servings', recipe.servings)}</Tag>
         {recipe.difficulty && <Tag tone={recipe.difficulty === 'hard' ? 'warning' : undefined}>{t(`recipe.${recipe.difficulty}`)}</Tag>}
         <RecipeTags names={recipe.tags} tags={tags} householdId={household!.id} onTranslated={() => void reloadTags()} />
-        {!recipe.household_id && <Tag>{t('recipe.seed')}</Tag>}
+        {(recipe.collection === 'original' || recipe.collection === 'web') && <Tag>{t(`collection.${recipe.collection}One`)}</Tag>}
       </div>
 
       <div className="card stack">
@@ -123,6 +126,7 @@ export function RecipeScreen() {
             <div key={i.id} className="list-row">
               <div className="list-row__main">
                 <div className="list-row__title">{ingredientName(i, locale)}</div>
+                {i.optional && <div className="list-row__meta">{t('recipe.optional')}</div>}
                 {i.guessed && <div className="list-row__meta" style={{ color: 'var(--c-warning)' }}>{t('recipe.guessed')}</div>}
                 {exotic.has(i.name) && <div className="list-row__meta">{t('recipe.exoticHint')}</div>}
               </div>
@@ -135,11 +139,11 @@ export function RecipeScreen() {
         })}
       </div>
 
-      {recipe.steps.length > 0 && (
+      {recipeSteps(recipe, i18n.locale).length > 0 && (
         <>
           <h2 className="section-label">{t('recipe.steps')}</h2>
           <ol className="card stack" style={{ paddingLeft: 'var(--s-8)', margin: 0 }}>
-            {recipe.steps.map((s, i) => <li key={i}>{s}</li>)}
+            {recipeSteps(recipe, i18n.locale).map((s, i) => <li key={i}>{s}</li>)}
           </ol>
         </>
       )}

@@ -33,7 +33,7 @@ create policy tag_catalog_delete on public.tag_catalog for delete to authenticat
   using (public.is_member(household_id));
 
 insert into public.tag_catalog (name, kind, name_en, name_fr, aliases) values
-  ('comfort', 'tag', 'Comfort', 'Réconfortant', array['réconfortant', 'réconfortante', 'comfort food', 'cocooning', 'plat réconfortant', 'hearty', 'copieux']::text[]),
+  ('comfort', 'tag', 'Comfort', 'Réconfortant', array['réconfortant', 'réconfortante', 'comfort food', 'cocooning', 'plat réconfortant']::text[]),
   ('light', 'tag', 'Light', 'Léger', array['léger', 'légère', 'legers', 'light meal', 'plat léger', 'recette légère', 'low calorie', 'low-calorie', 'peu calorique']::text[]),
   ('quick', 'tag', 'Quick', 'Rapide', array['rapide', 'express', '15 min', '20 min', '30 min', 'quick and easy', 'facile et rapide', 'rapide et facile', 'recette rapide', '30 minute meals', 'under 30 minutes']::text[]),
   ('fancy', 'tag', 'Fancy', 'Chic', array['date night', 'special', 'special occasion', 'festif', 'festive', 'chic', 'recevoir', 'dîner entre amis', 'fête', 'entertaining']::text[]),
@@ -128,7 +128,7 @@ insert into public.tag_catalog (name, kind, name_en, name_fr, aliases) values
   ('moroccan', 'tag', 'Moroccan', 'Marocain', array['marocain', 'marocaine', 'maroc', 'morocco', 'tajine', 'tagine']::text[]),
   ('african', 'tag', 'African', 'Africain', array['africain', 'africaine', 'afrique', 'africa', 'senegalese', 'sénégalais', 'west african']::text[]),
   ('ethiopian', 'tag', 'Ethiopian', 'Éthiopien', array['éthiopien', 'éthiopienne', 'éthiopie']::text[]),
-  ('middle eastern', 'tag', 'Middle Eastern', 'Moyen-oriental', array['moyen-orient', 'moyen orient', 'moyen-oriental', 'middle east', 'israeli', 'israélien', 'persian', 'persan', 'iranien']::text[]),
+  ('middle eastern', 'tag', 'Middle Eastern', 'Moyen-oriental', array['moyen-orient', 'moyen orient', 'moyen-oriental', 'middle east', 'levantine', 'levantin', 'levantine cuisine', 'israeli', 'israélien', 'persian', 'persan', 'iranien']::text[]),
   ('lebanese', 'tag', 'Lebanese', 'Libanais', array['libanais', 'libanaise', 'liban', 'mezze']::text[]),
   ('indian', 'tag', 'Indian', 'Indien', array['indien', 'indienne', 'inde', 'india']::text[]),
   ('asian', 'tag', 'Asian', 'Asiatique', array['asiatique', 'asie', 'asia']::text[]),
@@ -141,6 +141,11 @@ insert into public.tag_catalog (name, kind, name_en, name_fr, aliases) values
   ('malaysian', 'tag', 'Malaysian', 'Malaisien', array['malaisien', 'malaisienne', 'malaisie', 'malaysia']::text[]),
   ('filipino', 'tag', 'Filipino', 'Philippin', array['philippin', 'philippine', 'philippines']::text[]),
   ('taiwanese', 'tag', 'Taiwanese', 'Taïwanais', array['taïwanais', 'taïwanaise', 'taïwan', 'taiwan']::text[]),
+  ('generous', 'tag', 'Generous', 'Copieux', array['copieux', 'copieuse', 'hearty', 'big portions', 'plat copieux']::text[]),
+  ('street food', 'tag', 'Street food', 'Street food', array['street-food', 'cuisine de rue']::text[]),
+  ('fakeaway', 'tag', 'Fakeaway', 'Comme au take-away', array['fake away', 'fake-away', 'takeaway at home', 'takeaway style', 'comme au resto', 'comme au take-away']::text[]),
+  ('diet', 'tag', 'Diet', 'Minceur', array['minceur', 'régime', 'slimming', 'weight loss', 'low fat', 'allégé']::text[]),
+  ('peppers', 'ingredient', 'Peppers', 'Poivrons', array['poivrons', 'poivron', 'bell peppers', 'bell pepper', 'pepper']::text[]),
   ('dinner', 'noise', null, null, array['lunch', 'supper', 'main', 'mains', 'main course', 'main courses', 'main dish', 'main dishes', 'recipe', 'recipes', 'easy', 'easy recipe', 'easy recipes', 'homemade', 'family', 'weeknight', 'weeknight dinner', 'dîner', 'déjeuner', 'plat', 'plats', 'plat principal', 'plats principaux', 'recette', 'recettes', 'facile', 'recette facile', 'fait maison', 'cuisine', 'cuisine du monde', 'world cuisine']::text[])
 on conflict (name) where household_id is null do update
   set kind = excluded.kind, name_en = excluded.name_en, name_fr = excluded.name_fr, aliases = excluded.aliases;

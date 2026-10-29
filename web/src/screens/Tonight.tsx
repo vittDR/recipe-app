@@ -3,10 +3,11 @@ import { Link, useNavigate } from 'react-router';
 import { Icon } from '../components/Icon.tsx';
 import { Avatar, Button, Chip, Screen, Segmented, Spinner } from '../components/ui.tsx';
 import { useI18n } from '../i18n/index.tsx';
+import { recipeTitle } from '../lib/recipeText.ts';
 import { isoWeekday, todayIn, useLive } from '../lib/hooks.ts';
 import { useSession } from '../lib/session.tsx';
 import { callFunction, must, supabase } from '../lib/supabase.ts';
-import type { Deck, DeckMemberProgress, Meal, Mood, PlanDay } from '../lib/types.ts';
+import type { Deck, DeckMemberProgress, Meal, Mood, PlanDay, Recipe } from '../lib/types.ts';
 
 const TIMES = [null, 20, 30, 45, 60] as const;
 const MOODS: Mood[] = ['any', 'comfort', 'light', 'quick', 'fancy'];
@@ -14,12 +15,12 @@ const MOODS: Mood[] = ['any', 'comfort', 'light', 'quick', 'fancy'];
 interface TonightData {
   deck: Deck | null;
   progress: DeckMemberProgress[];
-  meals: (Meal & { recipe: { title: string } | null })[];
+  meals: (Meal & { recipe: Pick<Recipe, 'title' | 'language' | 'translations'> | null })[];
   plan: PlanDay[];
 }
 
 export function TonightScreen() {
-  const { t, list } = useI18n();
+  const { t, list, locale } = useI18n();
   const { userId, profile, household, partners, memberName, memberColor } = useSession();
   const navigate = useNavigate();
   const tz = household!.timezone;
@@ -41,7 +42,7 @@ export function TonightScreen() {
       const [decks, meals, plan] = await Promise.all([
         supabase.from('decks').select('*').eq('household_id', household!.id).eq('for_date', today)
           .neq('status', 'closed').order('created_at', { ascending: false }).limit(1),
-        supabase.from('meals').select('id, for_date, recipe_id, status, deck_id, recipe:recipes(title)')
+        supabase.from('meals').select('id, for_date, recipe_id, status, deck_id, recipe:recipes(title, language, translations)')
           .eq('household_id', household!.id).gte('for_date', weekStart).lte('for_date', weekEnd),
         supabase.from('plan_days').select('*').eq('household_id', household!.id),
       ]);
@@ -106,7 +107,7 @@ export function TonightScreen() {
             const dot = meal ? 'week__dot--done' : cook ? 'week__dot--cook' : '';
             return (
               <div key={label} className={`week__day${date === today ? ' week__day--today' : ''}`}
-                title={meal?.recipe?.title ?? (cook ? '' : t('tonight.off'))}>
+                title={(meal?.recipe ? recipeTitle(meal.recipe, locale) : null) ?? (cook ? '' : t('tonight.off'))}>
                 <span>{label}</span>
                 <span className="headline">{Number(date.slice(8))}</span>
                 <span className={`week__dot ${dot}`} style={meal || !cook ? undefined : { opacity: 0.35 }} />
@@ -118,7 +119,7 @@ export function TonightScreen() {
 
       {tonightMeal && deck?.status !== 'open' && deck?.status !== 'tiebreak' ? (
         <div className="card stack">
-          <span className="title3">{t('tonight.decided', { title: tonightMeal.recipe?.title ?? '' })}</span>
+          <span className="title3">{t('tonight.decided', { title: tonightMeal.recipe ? recipeTitle(tonightMeal.recipe, locale) : '' })}</span>
           <Button block onClick={() => navigate(tonightMeal.deck_id ? `/deck/${tonightMeal.deck_id}` : `/recipes/${tonightMeal.recipe_id}`)}>
             {t('tonight.seeMatch')}
           </Button>

@@ -1,6 +1,6 @@
 # Seed recipe library
 
-110 recipes: 25 Italian, 25 French, 25 Asian, 25 from other cuisines and 10 "treat" dishes.
+119 recipes: 25 Italian, 24 French, 25 Asian, 25 from other cuisines and 10 "treat" dishes taken from recipe sites, plus 10 AI-generated recipes (whose Poulet basquaise replaced the Chef Simon one).
 
 | File | What it is |
 | --- | --- |
@@ -38,5 +38,8 @@ To replace or add photos, run `scripts/download_images.py` (needs `pip install r
 
 - **Low protein:** eight of the healthy recipes estimate under 25 g per serving: Cozze alla tarantina, Frittata di zucchine e ricotta, Œufs pochés épinards et lentilles, Chicken tinga, Moules marinières, Spaghetti alle vongole, Poulet à l'estragon, Crispy scallion ginger salmon.
 - **Bone-in and in-shell weights overcount** protein and kcal, because the catalogue is per edible weight (satay drumsticks, Peruvian chicken, Moroccan tagine, mussels, clams).
-- **Long `total_min`** for marinated or soaked dishes (tandoori chicken 415 min, brandade 1,485 min), so the time filter treats them as slow. They're tagged `make ahead`.
+- **Long `total_min`** for marinated or soaked dishes (tandoori chicken 415 min, brandade 1,485 min), so the time filter treats them as slow. They're tagged `make ahead`. Their `prep_min` and `cook_min` stay short.
+- **AI-generated recipes:** 10 recipes (`ai_generated_recipe: true`) were written by Claude rather than taken from a site. They have no source link or photo, and their amounts and times haven't been tested in a kitchen.
+- **Optional lines** (garnishes, toppings) are judged per recipe; 74 lines in 54 recipes are marked so far.
+- **Estimated prep and cook times:** 42 source pages give no prep/cook split, so those times were estimated from the steps.
 - **Herb bunches** count as 1 g (`grams_per_unit = 1`), and `1 mazzetto rucola` is left out of the macros (arugula has no weight per bunch). Both are negligible.

@@ -52,16 +52,30 @@ export interface TasteRule {
   source: 'manual' | 'learned';
 }
 
+/** Part of the library, from where the recipe came from (a generated column). */
+export type RecipeCollection = 'original' | 'web' | 'our_import' | 'our_recipe';
+export const RECIPE_COLLECTIONS: RecipeCollection[] = ['original', 'web', 'our_import', 'our_recipe'];
+
 export interface Recipe {
   id: string;
   household_id: string | null;
   title: string;
   source_type: 'web' | 'instagram' | 'photo' | 'typed' | 'ai' | 'seed';
+  collection: RecipeCollection;
+  /** Language the title and steps are written in. */
+  language: string;
+  /** Title and steps in the other languages (seed recipes); use recipeTitle()/recipeSteps(). */
+  translations: Partial<Record<string, { title: string; steps: string[] }>>;
   source_url: string | null;
   source_name: string | null;
   image_path: string | null;
   servings: number;
+  /** Start to plate, including marinating and resting. */
   total_min: number | null;
+  /** Hands-on preparation. */
+  prep_min: number | null;
+  /** On the hob, in the oven or on the grill; 0 for no-cook dishes. */
+  cook_min: number | null;
   steps: string[];
   tags: string[];
   kcal_per_serving: number | null;
@@ -70,6 +84,8 @@ export interface Recipe {
   difficulty: Difficulty | null;
   /** Null when unknown. */
   equipment: Equipment | null;
+  /** Written by an AI rather than taken from a source. For review only, not shown. */
+  ai_generated_recipe: boolean;
   created_at: string;
 }
 
@@ -83,6 +99,8 @@ export interface RecipeIngredient {
   aisle: Aisle;
   is_staple: boolean;
   guessed: boolean;
+  /** The dish works without it (a garnish, cheese on top). */
+  optional: boolean;
   raw_text: string | null;
   product_id: string | null;
   /** Embedded with `select('*, product:products(name_fr, name_en)')`. */

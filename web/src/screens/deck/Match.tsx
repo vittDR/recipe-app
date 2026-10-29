@@ -4,6 +4,7 @@ import { AddToListSheet, loadProposals } from '../../components/AddToListSheet.t
 import { Icon } from '../../components/Icon.tsx';
 import { Avatar, Button, imageStyle, recipeEmoji } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
+import { recipeTitle } from '../../lib/recipeText.ts';
 import { useSession } from '../../lib/session.tsx';
 import { INGREDIENT_SELECT } from '../../lib/products.ts';
 import { must, supabase } from '../../lib/supabase.ts';
@@ -19,7 +20,7 @@ interface Portion {
 }
 
 export function MatchView({ data }: { data: DeckData }) {
-  const { t, tn } = useI18n();
+  const { t, tn, locale } = useI18n();
   const { userId, household, memberName, memberColor } = useSession();
   const navigate = useNavigate();
   const recipeId = data.deck.matched_recipe_id!;
@@ -69,7 +70,7 @@ export function MatchView({ data }: { data: DeckData }) {
         </button>
       </div>
       <p className="headline" style={{ color: 'var(--c-accent)', margin: 0 }}>🎉 {t('match.title')}</p>
-      <h1 className="screen__title" style={{ marginTop: 'var(--s-1)' }}>{recipe.title}</h1>
+      <h1 className="screen__title" style={{ marginTop: 'var(--s-1)' }}>{recipeTitle(recipe, locale)}</h1>
 
       <div className="plates">
         <div className="card stack">

@@ -6,6 +6,7 @@ import { NavigationRoute, registerRoute } from 'workbox-routing';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { CacheFirst } from 'workbox-strategies';
+import { APP_NAME } from './brand';
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -37,7 +38,7 @@ interface PushPayload {
 }
 
 self.addEventListener('push', (event) => {
-  let data: PushPayload = { title: 'DINEAMITE', body: '' };
+  let data: PushPayload = { title: APP_NAME, body: '' };
   try {
     data = { ...data, ...(event.data?.json() as PushPayload) };
   } catch {
