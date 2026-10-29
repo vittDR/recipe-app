@@ -6,7 +6,7 @@ import { Icon } from '../../components/Icon.tsx';
 import { Button, Screen, Spinner, Tag, imageStyle, recipeEmoji } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { MANY_POTS } from '@logic/facets.ts';
-import { equipmentLabels, exoticIngredients } from '../../lib/facets.ts';
+import { equipmentLabels, exoticIngredients, tagLabel } from '../../lib/facets.ts';
 import { useCatalog } from '../../lib/hooks.ts';
 import { INGREDIENT_SELECT, ingredientName } from '../../lib/products.ts';
 import { useSession } from '../../lib/session.tsx';
@@ -76,7 +76,7 @@ export function RecipeScreen() {
         {recipe.total_min && <Tag><Icon name="clock" size={14} /> {recipe.total_min} min</Tag>}
         <Tag>{tn('recipe.servings', recipe.servings)}</Tag>
         {recipe.difficulty && <Tag tone={recipe.difficulty === 'hard' ? 'warning' : undefined}>{t(`recipe.${recipe.difficulty}`)}</Tag>}
-        {recipe.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+        {recipe.tags.map((tag) => <Tag key={tag}>{tagLabel(tag, i18n)}</Tag>)}
         {!recipe.household_id && <Tag>{t('recipe.seed')}</Tag>}
       </div>
 

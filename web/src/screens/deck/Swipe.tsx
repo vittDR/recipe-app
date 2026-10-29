@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import { Icon } from '../../components/Icon.tsx';
 import { Tag, imageStyle, photoUrl, recipeEmoji } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
+import { tagLabel } from '../../lib/facets.ts';
 import { useSession } from '../../lib/session.tsx';
 import { supabase } from '../../lib/supabase.ts';
 import type { DeckCard, Verdict } from '../../lib/types.ts';
@@ -46,7 +47,7 @@ function CardFace({ card, data, drag }: { card: DeckCard; data: DeckData; drag?:
           {shared && card.fits_all && <Tag tone="success">{t('swipe.fitsBoth')}</Tag>}
           {!(shared && card.fits_all) && fitsMe && <Tag tone="success">{t('swipe.fitsYou')}</Tag>}
           {fitsMe === false && <Tag>{t('swipe.notFit')}</Tag>}
-          {r.tags.slice(0, 2).map((tag) => <Tag key={tag}>{tag}</Tag>)}
+          {r.tags.slice(0, 2).map((tag) => <Tag key={tag}>{tagLabel(tag, { t })}</Tag>)}
         </div>
         {plate?.kcal != null && (
           <div className="macros">

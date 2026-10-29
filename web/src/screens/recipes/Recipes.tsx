@@ -4,7 +4,7 @@ import { Icon } from '../../components/Icon.tsx';
 import { Button, Chip, RecipeThumb, Screen, Spinner } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { RECIPE_FILTERS, type RecipeFilter, matchesFilters } from '@logic/facets.ts';
-import { effortLabels, facetsOf } from '../../lib/facets.ts';
+import { effortLabels, facetsOf, tagLabel } from '../../lib/facets.ts';
 import { useCatalog, useLive } from '../../lib/hooks.ts';
 import { useSession } from '../../lib/session.tsx';
 import { must, supabase } from '../../lib/supabase.ts';
@@ -39,10 +39,10 @@ export function RecipesScreen() {
       if (filter === 'web' && !['web', 'instagram'].includes(r.source_type)) return false;
       if (filter === 'typed' && r.source_type !== 'typed') return false;
       if (facets.size && !matchesFilters(facetsOf(r, r.recipe_ingredients.map((i) => i.name), catalog), facets)) return false;
-      const hay = normalise([r.title, ...r.tags, ...r.recipe_ingredients.map((i) => i.name)].join(' '));
+      const hay = normalise([r.title, ...r.tags, ...r.tags.map((tag) => tagLabel(tag, i18n)), ...r.recipe_ingredients.map((i) => i.name)].join(' '));
       return words.every((w) => hay.includes(w));
     });
-  }, [data, query, filter, facets, catalog]);
+  }, [data, query, filter, facets, catalog, i18n]);
 
   const toggle = (f: RecipeFilter) => setFacets((cur) => {
     const next = new Set(cur);
