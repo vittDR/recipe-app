@@ -7,6 +7,10 @@ export interface ExtractedRecipe {
   steps: string[];
   servings: number | null;
   totalMin: number | null;
+  /** Hands-on preparation (schema.org prepTime). */
+  prepMin: number | null;
+  /** On the heat or in the oven (schema.org cookTime). */
+  cookMin: number | null;
   imageUrl: string | null;
   tags: string[];
   language: string | null;
@@ -139,14 +143,17 @@ export function extractJsonLdRecipe(html: string): ExtractedRecipe | null {
       .map(clean)
       .filter(Boolean);
     if (ingredients.length === 0) continue;
+    const prepMin = durationToMinutes(r.prepTime);
+    const cookMin = durationToMinutes(r.cookTime);
     const lang = html.match(/<html[^>]*\blang=["']([a-z]{2})/i)?.[1]?.toLowerCase() ?? null;
     return {
       title: clean(String(r.name ?? r.headline ?? '')),
       ingredients,
       steps: parseSteps(r.recipeInstructions),
       servings: parseServings(r.recipeYield),
-      totalMin: durationToMinutes(r.totalTime) ??
-        ((durationToMinutes(r.prepTime) ?? 0) + (durationToMinutes(r.cookTime) ?? 0) || null),
+      totalMin: durationToMinutes(r.totalTime) ?? ((prepMin ?? 0) + (cookMin ?? 0) || null),
+      prepMin,
+      cookMin,
       imageUrl: parseImage(r.image),
       tags: parseTags(r),
       language: (typeof r.inLanguage === 'string' ? r.inLanguage.slice(0, 2).toLowerCase() : null) ?? lang,

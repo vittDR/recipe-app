@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import { Icon } from '../../components/Icon.tsx';
 import { Button, RecipeThumb, Screen } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
+import { recipeTitle } from '../../lib/recipeText.ts';
 import { useSession } from '../../lib/session.tsx';
 import { supabase } from '../../lib/supabase.ts';
 import type { DeckData } from './data.ts';
@@ -15,7 +16,7 @@ interface Option {
 }
 
 export function TiebreakView({ data }: { data: DeckData }) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const { userId, memberName } = useSession();
   const navigate = useNavigate();
   const [options, setOptions] = useState<Option[]>([]);
@@ -63,7 +64,7 @@ export function TiebreakView({ data }: { data: DeckData }) {
                   <RecipeThumb recipe={card.recipe} />
                 </div>
                 <div className="list-row__main stack" style={{ gap: 2 }}>
-                  <span className="headline">{card.recipe.title}</span>
+                  <span className="headline">{recipeTitle(card.recipe, locale)}</span>
                   <span className="small muted">
                     {t('tiebreak.liked', { names: (o.liked_by ?? []).map((u) => (u === userId ? t('app.you') : memberName(u))).join(', ') })}
                   </span>

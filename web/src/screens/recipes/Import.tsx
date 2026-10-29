@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { DIFFICULTIES, SPECIAL_EQUIPMENT, type Difficulty } from '@logic/facets.ts';
 import { draftFromLine, IngredientEditor, type DraftIngredient } from '../../components/IngredientEditor.tsx';
+import { StepEditor } from '../../components/StepEditor.tsx';
 import { Button, Chip, Field, Screen, Segmented, Spinner, toast } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { useCatalog } from '../../lib/hooks.ts';
@@ -13,10 +14,12 @@ interface Draft {
   title: string;
   servings: string;
   minutes: string;
+  prep: string;
+  cook: string;
   ingredients: DraftIngredient[];
   /** Lines read from the page, matched once the catalogue has loaded. */
   pendingLines: string[] | null;
-  steps: string;
+  steps: string[];
   tags: string;
   source_url: string | null;
   source_type: 'web' | 'instagram' | 'typed';
@@ -30,7 +33,7 @@ interface Draft {
 }
 
 const EMPTY: Draft = {
-  title: '', servings: '2', minutes: '', ingredients: [], pendingLines: null, steps: '', tags: '',
+  title: '', servings: '2', minutes: '', prep: '', cook: '', ingredients: [], pendingLines: null, steps: [], tags: '',
   source_url: null, source_type: 'typed', image_url: null, language: null,
   difficulty: null, pots: 0, oven: false, special: [],
 };
@@ -41,6 +44,8 @@ interface Preview {
   steps: string[];
   servings: number | null;
   totalMin: number | null;
+  prepMin: number | null;
+  cookMin: number | null;
   imageUrl: string | null;
   tags: string[];
   language: string | null;
@@ -73,8 +78,10 @@ export function ImportScreen() {
         title: recipe.title,
         servings: String(recipe.servings ?? 2),
         minutes: recipe.totalMin ? String(recipe.totalMin) : '',
+        prep: recipe.prepMin ? String(recipe.prepMin) : '',
+        cook: recipe.cookMin ? String(recipe.cookMin) : '',
         pendingLines: recipe.ingredients,
-        steps: recipe.steps.join('\n'),
+        steps: recipe.steps,
         tags: recipe.tags.join(', '),
         source_url: recipe.source_url,
         source_type: recipe.source_type,
@@ -106,7 +113,7 @@ export function ImportScreen() {
     if (!draft) return;
     setBusy(true);
     setNotice(null);
-    const lines = (s: string) => s.split('\n').map((l) => l.trim()).filter(Boolean);
+    const minutes = (s: string) => (s.trim() && Number(s) >= 0 ? Math.round(Number(s)) : null);
     try {
       const res = await callFunction<{ recipe_id: string; unknown_ingredients: string[] }>('import-recipe', {
         action: 'save',
@@ -116,8 +123,10 @@ export function ImportScreen() {
           source_url: draft.source_url,
           image_url: draft.image_url,
           servings: Number(draft.servings) || 2,
-          total_min: Number(draft.minutes) || null,
-          steps: lines(draft.steps),
+          total_min: minutes(draft.minutes),
+          prep_min: minutes(draft.prep),
+          cook_min: minutes(draft.cook),
+          steps: draft.steps.map((s) => s.trim()).filter(Boolean),
           tags: draft.tags.split(',').map((x) => x.trim()).filter(Boolean),
           language: draft.language ?? locale,
           difficulty: draft.difficulty,
@@ -177,8 +186,17 @@ export function ImportScreen() {
               <Field label={t('import.servings')}>
                 <input className="input" inputMode="numeric" value={form.servings} onChange={set('servings')} />
               </Field>
+            </div>
+            <div className="row">
+              <Field label={t('import.prep')}>
+                <input className="input" inputMode="numeric" value={form.prep} onChange={set('prep')} />
+              </Field>
+              <Field label={t('import.cook')}>
+                <input className="input" inputMode="numeric" value={form.cook} onChange={set('cook')} />
+              </Field>
               <Field label={t('import.minutes')}>
-                <input className="input" inputMode="numeric" value={form.minutes} onChange={set('minutes')} />
+                <input className="input" inputMode="numeric" value={form.minutes} onChange={set('minutes')}
+                  placeholder={form.prep || form.cook ? String((Number(form.prep) || 0) + (Number(form.cook) || 0)) : ''} />
               </Field>
             </div>
             <div className="field">
@@ -187,9 +205,10 @@ export function ImportScreen() {
                 <IngredientEditor items={form.ingredients} catalog={catalog} onChange={(ingredients) => update({ ingredients })} />
               )}
             </div>
-            <Field label={t('import.stepsField')}>
-              <textarea className="input" value={form.steps} onChange={set('steps')} />
-            </Field>
+            <div className="field">
+              <span className="field__label">{t('import.stepsField')}</span>
+              <StepEditor steps={form.steps} onChange={(steps) => update({ steps })} />
+            </div>
             <Field label={t('import.tagsField')}>
               <input className="input" value={form.tags} onChange={set('tags')} />
             </Field>

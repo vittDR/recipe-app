@@ -11,11 +11,13 @@ The catalogue is a JSON list of these objects. Copy this one and replace the val
 ```json
 [
   {
+    "id": "5b0f9c1e-7d2a-4c8e-9f3b-2a6d8e1c4b70",
     "title": "Chicken thigh red curry",
     "language": "en",
     "servings": 2,
     "original_servings": 4,
-    "total_min": 35,
+    "prep_min": 10,
+    "cook_min": 25,
     "source_type": "seed",
     "source_name": "RecipeTin Eats",
     "source_url": "https://www.example.com/chicken-thigh-red-curry/",
@@ -26,13 +28,14 @@ The catalogue is a JSON list of these objects. Copy this one and replace the val
     "difficulty": "easy",
     "equipment": { "pots": 2, "oven": false, "special": [] },
     "ingredients": [
-      { "text": "350 g chicken thigh, diced", "original_text": "700 g chicken thigh, diced" },
+      { "id": "0c3e7a52-1b9d-4f60-8e2a-7d4b9c1f6e38", "text": "350 g chicken thigh, diced", "original_text": "700 g chicken thigh, diced" },
       { "text": "2 tbsp red curry paste", "original_text": "4 tbsp red curry paste" },
       { "text": "400 ml coconut milk", "original_text": "800 ml coconut milk" },
       { "text": "1 bell pepper, sliced", "original_text": "2 bell pepper, sliced" },
       { "text": "100 g spinach", "original_text": "200 g spinach" },
       { "text": "150 g rice", "original_text": "300 g rice" },
       { "text": "1 lime", "original_text": "2 lime", "guessed": false },
+      { "text": "10 g fresh coriander, chopped", "original_text": "20 g fresh coriander, chopped", "optional": true },
       { "text": "olive oil", "original_text": "olive oil" }
     ],
     "steps": [
@@ -40,7 +43,27 @@ The catalogue is a JSON list of these objects. Copy this one and replace the val
       "Add the chicken, then the coconut milk; simmer 15 min.",
       "Add the pepper and spinach and cook 3 min more.",
       "Serve with rice and lime wedges."
-    ]
+    ],
+    "translations": {
+      "fr": {
+        "title": "Curry rouge de cuisses de poulet",
+        "steps": [
+          "Faire revenir la pâte de curry dans un peu d'huile 1 min.",
+          "Ajouter le poulet, puis le lait de coco ; laisser mijoter 15 min.",
+          "Ajouter le poivron et les épinards et cuire encore 3 min.",
+          "Servir avec du riz et des quartiers de citron vert."
+        ]
+      },
+      "it": {
+        "title": "Curry rosso di cosce di pollo",
+        "steps": [
+          "Soffriggere la pasta di curry in un filo d'olio per 1 min.",
+          "Aggiungere il pollo, poi il latte di cocco; cuocere a fuoco lento 15 min.",
+          "Aggiungere il peperone e gli spinaci e cuocere ancora 3 min.",
+          "Servire con riso e spicchi di lime."
+        ]
+      }
+    }
   }
 ]
 ```
@@ -55,12 +78,16 @@ Each field is one of three kinds:
 
 | Field | Kind | Required | Format / rules | What it's used for |
 | --- | --- | --- | --- | --- |
+| `id` | You | **yes** for seed recipes | A new lowercase uuid (`python3 -c "import uuid; print(uuid.uuid4())"`). Never change or reuse it. Every ingredient line has one too. | The recipe's id in every database, so decks, swipes, meals and copies keep pointing at it whatever else changes. |
 | `title` | You | **yes** | Text, up to 200 characters. Keep it short enough for a card, e.g. "Chicken thigh red curry". | Cards, list, search, placeholder emoji |
 | `language` | You | yes | `"en"`, `"fr"` or `"it"`. Title, ingredient lines and steps are written in this language. | Display. Ingredient names are matched in all three languages either way. |
 | `servings` | You | **yes** | Number > 0 (defaults to 2 if left out). It's the number of servings the `text` quantities make. Seed recipes are scaled to 2. | Divides total macros into per-serving values. A wrong number gives wrong portions. |
 | `original_servings` | You | optional | Number > 0. The yield the source recipe was written for (lower bound of a range). | Shows the original yield and lets the app rescale from the source values. Must match the quantities in each ingredient's `original_text`. |
-| `total_min` | You | strongly recommended | Whole minutes, start to plate, including oven time | "Quick" mood (≤ 25 min), "fancy" mood (≥ 45 min), and the max-minutes filter. A recipe without it never passes a time filter's boost. |
+| `prep_min` | You | **yes** for seed recipes | Whole minutes of hands-on preparation: chopping, mixing, shaping, assembling. Not marinating or resting. | Recipe detail ("Prep 10 min") |
+| `cook_min` | You | **yes** for seed recipes | Whole minutes on the hob, in the oven or on the grill. `0` for no-cook dishes. | Recipe detail ("Cooking 25 min", or "No cooking") |
+| `total_min` | You | only with waiting time | Whole minutes start to plate. **Leave it out** and it's `prep_min + cook_min`. Write it only when the recipe also waits: marinating, soaking, rising, resting. It must then be more than prep + cook. | "Quick" mood (≤ 25 min), "fancy" mood (≥ 45 min), and the max-minutes filter. A recipe with no times at all never passes a time filter's boost. |
 | `ingredients` | You | **yes**, at least 1 | List of `{ "text": "...", "guessed": false }`. See below. | Everything computed below |
+| `translations` | You | **yes** for seed recipes | `{ "<lang>": { "title": "…", "steps": ["…"] } }` for each of `en`, `fr`, `it` except the recipe's own `language`. Same number of steps, in the same order, with the same quantities, times and temperatures. French and Italian steps use the infinitive ("Faire revenir…", "Rosolare…"), English the imperative. | The title and steps in the reader's language, everywhere in the app. Ingredient names are translated by the catalogue. |
 | `steps` | You | yes | List of strings, one action per step, in order | Cooking mode, one step per screen |
 | `tags` | You | recommended | Up to 12, lowercase. See the tag list below. | Mood matching, "never"/"love" taste rules, learned patterns |
 | `difficulty` | You | **yes** for seed recipes | `"easy"`, `"medium"` or `"hard"`. Easy = basic techniques, forgiving. Medium = several components or timing to juggle (sear then braise, a sauce, marinating). Hard = delicate technique (dough, deep-frying, emulsions, many components); use it sparingly. | "Easy" filter, recipe tile and detail |
@@ -68,7 +95,8 @@ Each field is one of three kinds:
 | `image_url` | You | recommended | Absolute `https://` URL. See image specs. | Swipe card, recipe tile, detail hero |
 | `image_source_url` | You | optional | URL the photo was originally taken from. Stays the same after you re-host the image under `image_url`. | Photo credit, re-downloading |
 | `source_name` | You | recommended with `source_url` | Display name of the website, e.g. `GialloZafferano`, `Marmiton`, `RecipeTin Eats`. | "From GialloZafferano" credit line |
-| `source_url` | You | optional | URL of the original recipe | Credit/link-out. It must be unique within a household (duplicates are rejected). |
+| `source_url` | You | **yes** for seed recipes, except AI-generated ones | URL of the original recipe | Credit/link-out. It must be unique within a household (duplicates are rejected). The seed library also uses it to recognise a recipe it has already loaded. |
+| `ai_generated_recipe` | You | optional | `true` when the recipe was written by an AI rather than taken from a source. Such seed recipes have no `source_url`, `original_servings` or `original_text`. | Not shown in the app. Lets these recipes be reviewed and checked separately. |
 | `cuisine` | You | optional | One lowercase English word or phrase: `italian`, `french`, `thai`, `mexican`… The same word is also put in `tags`. | Cuisine filter or grouping, without parsing tags |
 | `source_type` | You | optional | `seed` for the catalogue. Otherwise `web`, `instagram`, `photo`, `typed` or `ai`. | Provenance |
 | `kcal_per_serving` | Computed | — | — | Worked out from ingredients, never copied from the source site |
@@ -105,9 +133,11 @@ Each ingredient can carry two lines in this format:
 
 | Key | Required | What it holds |
 | --- | --- | --- |
+| `id` | **yes** for seed recipes | A new lowercase uuid per line, never changed or reused. The example shows it on the first line only. |
 | `text` | **yes** | Quantities for `servings`. This is what the server parses and computes from. |
 | `original_text` | optional | The same line with the source's quantities, for `original_servings`. Same name and format, so the server can parse it too. It's kept for reference and isn't used for macros. |
 | `guessed` | optional | See below |
+| `optional` | optional | `true` when the dish works without the line. See below. |
 
 | Part | Kind | Rules |
 | --- | --- | --- |
@@ -115,6 +145,7 @@ Each ingredient can carry two lines in this format:
 | unit | You | `g kg ml cl l tbsp tsp cup oz lb clove pinch can bunch slice piece`, or their EN/FR/IT spellings (table below). No unit means `piece`. |
 | name | You | Use the ingredient catalogue's name in the recipe's language (`name`, `name_fr`, `name_it`) or one of its aliases (see `supabase/seed.sql`), e.g. `chicken thigh`, not "boneless skinless thighs from the butcher". Don't put connectors in front of the name: write `2 spicchi aglio`, not `2 spicchi d'aglio`. |
 | `guessed` | You | `true` if you aren't sure of the amount. The macros are then marked as estimated. |
+| `optional` | You | `true` for a line the dish works without: herbs scattered on top, sesame seeds, a spring-onion garnish, a finishing chilli, cheese grated over at the table, a side the source calls optional. Decide it per recipe, not per ingredient: coriander on a curry is optional, coriander in a green chutney isn't; Parmesan on pasta e ceci is optional, Parmesan in a parmigiana isn't. A person's "never" rule doesn't take a recipe out of the deck for an optional line, and the page shows it as optional. It still counts in the macros. |
 | preparation note | You (optional) | Anything after a comma or in brackets is ignored by the parser and kept only in `raw_text`. |
 | canonical name, aisle, staple flag, `raw_text`, `position` | Computed | From the catalogue match and the line order |
 
@@ -162,6 +193,7 @@ against `name`, `name_fr`, `name_it` and `aliases`.
 | `kcal_100g` | yes | `455` | Raw weight, per 100 g |
 | `protein_100g` | yes | `24` | Raw weight, per 100 g |
 | `grams_per_unit` | yes if counted in pieces/cloves/cans | `60` | Grams in one `piece` (or clove, can…) |
+| id | yes | a new uuid | Fixed id, the same in every environment; the ingredient's grocery product gets it too. Add the name and a new uuid to the "Fixed ids for catalogue ingredients" list in `seed.sql`. Never change or reuse one. |
 | `exotic` | optional | `false` | `true` when most French supermarkets don't sell it (needs an Asian or specialty shop). Set in the `update … set exotic` list at the end of `seed.sql`. |
 | `diet_class` | **yes** | `meat` | `veg`, `fish` or `meat`. This drives the diet filters. |
 
@@ -175,7 +207,7 @@ looks for them exactly:
 | --- | --- |
 | comfort | `comfort`, `curry`, `stew`, `pasta`, `soup` |
 | light | `light`, `salad`, `bowl`, `fish` |
-| quick | `quick` (or just set `total_min` ≤ 25) |
+| quick | `quick` (or just a total time ≤ 25 min) |
 | fancy | `fancy`, `date night`, `special` |
 
 Add cuisine (`asian`, `mexican`, `mediterranean`…), main protein (`chicken`,
@@ -223,12 +255,15 @@ One image per recipe. The app shows the same file in three crops, each with
 
 ## Checklist per recipe
 
-- [ ] title, language, servings, total_min
+- [ ] title, language, servings, prep_min, cook_min (total_min only if there's marinating, rising or resting)
 - [ ] source_name and source_url; original_servings if you scaled the recipe
 - [ ] every ingredient has an amount (staples can skip it) and a catalogue name in the recipe's language
 - [ ] if scaled: every ingredient has an `original_text` with the source's quantities
 - [ ] any missing catalogue ingredient added, with its `diet_class`
 - [ ] steps in order, one action each
+- [ ] title and steps translated into the other two of en, fr, it, step for step
+- [ ] garnishes and toppings the dish works without marked `optional`
+- [ ] AI-written: `ai_generated_recipe: true`, no `source_url`
 - [ ] difficulty and equipment (pots, oven, special only if uncommon)
 - [ ] 3–8 tags, using the mood words where they apply
 - [ ] 4:3 image, 900 × 675, dish centred, under 200 KB

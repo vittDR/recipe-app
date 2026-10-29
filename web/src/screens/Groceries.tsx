@@ -8,12 +8,13 @@ import { CreateItemSheet, ItemSheet, sectionKeyOf, UsualsSheet, useSectionTitle,
 import { Icon } from '../components/Icon.tsx';
 import { Avatar, Button, Checkbox, dismissToast, Screen, Segmented, Spinner, toast } from '../components/ui.tsx';
 import { useI18n } from '../i18n/index.tsx';
+import { recipeTitle } from '../lib/recipeText.ts';
 import { useLive } from '../lib/hooks.ts';
 import { listQueue, useListQueue } from '../lib/listQueue.ts';
 import { useGroceryCatalog } from '../lib/products.ts';
 import { useSession } from '../lib/session.tsx';
 import { must, supabase } from '../lib/supabase.ts';
-import type { Aisle, GroceryRow } from '../lib/types.ts';
+import type { Aisle, GroceryRow, Recipe } from '../lib/types.ts';
 import { useAmount } from '../lib/units.ts';
 
 const MODE_KEY = 'dineamite.groceryMode';
@@ -115,9 +116,9 @@ export function GroceriesScreen() {
       const rows = must(await supabase.from('grocery_items').select('*').eq('household_id', hid).is('cleared_at', null)) as GroceryRow[];
       const recipeIds = [...new Set(rows.map((r) => r.recipe_id).filter(Boolean))] as string[];
       const recipes = recipeIds.length
-        ? (must(await supabase.from('recipes').select('id, title').in('id', recipeIds)) as { id: string; title: string }[])
+        ? (must(await supabase.from('recipes').select('id, title, language, translations').in('id', recipeIds)) as Pick<Recipe, 'id' | 'title' | 'language' | 'translations'>[])
         : [];
-      return { items: rows, recipes: new Map(recipes.map((r) => [r.id, r.title])), startedAt };
+      return { items: rows, recipes: new Map(recipes.map((r) => [r.id, recipeTitle(r, locale)])), startedAt };
     },
     // Deletes can't be filtered by household: any delete reloads.
     [{ table: 'grocery_items', filter: `household_id=eq.${hid}` }, { table: 'grocery_items', event: 'DELETE' }],
