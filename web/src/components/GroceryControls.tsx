@@ -1,5 +1,5 @@
 // Small pieces of the Groceries tab: the + / [quantity] [unit ▾] [trash]
-// module, the quantity keypad, the unit picker, swipe to remove, the sync
+// module, the amount sheet (unit pills over a keypad), swipe to remove, the sync
 // icon and the bold match in search results.
 
 import { useEffect, useRef, useState, type ReactNode } from 'react';
@@ -39,7 +39,7 @@ export function AmountControl({
 }) {
   const { t } = useI18n();
   const { number, unitLabel } = useAmount();
-  const [editing, setEditing] = useState<'qty' | 'unit' | null>(null);
+  const [editing, setEditing] = useState(false);
 
   if (!amount) {
     return (
@@ -51,46 +51,86 @@ export function AmountControl({
   return (
     <div className="amount" role="group" aria-label={name}>
       <button type="button" className="amount__field amount__qty" aria-label={t('groceries.setQuantity', { name })}
-        onClick={() => setEditing('qty')}>
+        onClick={() => setEditing(true)}>
         {amount.quantity === null ? '–' : number(amount.quantity)}
       </button>
       <button type="button" className="amount__field amount__unit" aria-label={t('groceries.setUnit', { name })}
-        onClick={() => setEditing('unit')}>
+        onClick={() => setEditing(true)}>
         <span>{amount.unit ? unitLabel(amount.unit, amount.quantity) : '–'}</span>
         <Icon name="caret" size={14} />
       </button>
       <button type="button" className="amount__trash" aria-label={t('groceries.removeItem')} onClick={onRemove}>
         <Icon name="trash" size={18} />
       </button>
-      <KeypadSheet open={editing === 'qty'} title={t('groceries.setQuantity', { name })} value={amount.quantity}
-        onClose={() => setEditing(null)} onDone={(quantity) => { setEditing(null); onChange({ ...amount, quantity }); }} />
-      <UnitSheet open={editing === 'unit'} title={t('groceries.setUnit', { name })} value={amount.unit} units={units}
-        onClose={() => setEditing(null)} onPick={(unit) => { setEditing(null); onChange({ ...amount, unit }); }} />
+      <AmountSheet open={editing} title={t('groceries.amountOf', { name })} value={amount} units={units}
+        onClose={() => setEditing(false)} onDone={(a) => { setEditing(false); onChange(a); }} />
     </div>
   );
 }
 
 const KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'sep', '0', 'back'] as const;
+const CUSTOM_UNITS_KEY = 'dineamite.customUnits';
 
-/** Numeric keypad: decimals allowed, empty = no quantity. */
-export function KeypadSheet({ open, title, value, onClose, onDone }: {
+const readCustomUnits = (): string[] => {
+  try {
+    const v = JSON.parse(localStorage.getItem(CUSTOM_UNITS_KEY) ?? '[]');
+    return Array.isArray(v) ? v.filter((u): u is string => typeof u === 'string') : [];
+  } catch {
+    return [];
+  }
+};
+const writeCustomUnits = (units: string[]) => {
+  try {
+    localStorage.setItem(CUSTOM_UNITS_KEY, JSON.stringify(units));
+  } catch {
+    // storage unavailable: the new unit lasts until the sheet closes
+  }
+};
+
+/**
+ * Quantity and unit in one sheet: the units as pills (the item's suggested
+ * ones first, then the rest, then "New unit"), and the keypad under them.
+ * Decimals allowed, empty = no quantity.
+ */
+export function AmountSheet({ open, title, value, units, onClose, onDone }: {
   open: boolean;
   title: string;
-  value: number | null;
+  value: Amount;
+  /** Units to suggest first. */
+  units: string[];
   onClose: () => void;
-  onDone: (v: number | null) => void;
+  onDone: (a: Amount) => void;
 }) {
   const { t, locale } = useI18n();
+  const { unitLabel } = useAmount();
   const sep = locale === 'fr' ? ',' : '.';
   const [text, setText] = useState('');
+  const [unit, setUnit] = useState<string | null>(null);
   // The current amount shows until the first key, which replaces it.
   const [fresh, setFresh] = useState(true);
+  const [custom, setCustom] = useState<string[]>([]);
+  const [naming, setNaming] = useState(false);
+  const [newUnit, setNewUnit] = useState('');
   useEffect(() => {
     if (open) {
-      setText(value === null ? '' : String(value).replace('.', sep));
+      setText(value.quantity === null ? '' : String(value.quantity).replace('.', sep));
+      setUnit(value.unit);
       setFresh(true);
+      setCustom(readCustomUnits());
+      setNaming(false);
+      setNewUnit('');
     }
   }, [open]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // The chosen unit in view, also when it's far down the row.
+  const pillsRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const row = pillsRef.current;
+    const chip = row?.querySelector<HTMLElement>('[aria-pressed="true"]');
+    if (row && chip) row.scrollLeft = chip.offsetLeft - (row.clientWidth - chip.offsetWidth) / 2;
+  }, [open, unit, naming]);
+
+  const pills = [...new Set([...units, ...GROCERY_UNITS, ...custom, ...(unit ? [unit] : [])])];
 
   const press = (k: (typeof KEYS)[number]) => {
     navigator.vibrate?.(5);
@@ -100,13 +140,44 @@ export function KeypadSheet({ open, title, value, onClose, onDone }: {
     else if (k === 'sep') setText(s.includes(sep) ? s : `${s || '0'}${sep}`);
     else setText((s === '0' ? k : `${s}${k}`).slice(0, 7));
   };
+  const addUnit = () => {
+    const u = newUnit.trim().toLowerCase();
+    if (!u) return;
+    if (!pills.includes(u)) {
+      const next = [...custom, u];
+      setCustom(next);
+      writeCustomUnits(next);
+    }
+    setUnit(u);
+    setNaming(false);
+    setNewUnit('');
+  };
   const parsed = text ? Number(text.replace(',', '.')) : null;
-  const done = () => onDone(parsed !== null && Number.isFinite(parsed) && parsed > 0 ? parsed : null);
+  const done = () => onDone({ quantity: parsed !== null && Number.isFinite(parsed) && parsed > 0 ? parsed : null, unit });
+  const quantity = parsed !== null && Number.isFinite(parsed) ? parsed : null;
 
   return (
     <Sheet open={open} onClose={onClose} label={title}>
       <h2 className="title3" style={{ marginBottom: 'var(--s-3)' }}>{title}</h2>
-      <output className="keypad__value" aria-live="polite">{text || '–'}</output>
+      <output className="keypad__value" aria-live="polite">
+        {text || '–'}{unit && <span className="keypad__unit"> {unitLabel(unit, quantity)}</span>}
+      </output>
+      {naming ? (
+        <div className="row amount-sheet__units">
+          <input className="input" value={newUnit} placeholder={t('groceries.customUnitPlaceholder')} aria-label={t('groceries.newUnit')}
+            autoFocus enterKeyHint="done" onChange={(e) => setNewUnit(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addUnit(); } }} />
+          <button type="button" className="icon-btn icon-btn--filled" aria-label={t('groceries.newUnit')}
+            disabled={!newUnit.trim()} onClick={addUnit}>
+            <Icon name="check" />
+          </button>
+        </div>
+      ) : (
+        <div ref={pillsRef} className="chips chips--scroll amount-sheet__units" role="group" aria-label={t('groceries.unit')}>
+          {pills.map((u) => <Chip key={u} pressed={u === unit} onClick={() => setUnit(u)}>{unitLabel(u)}</Chip>)}
+          <Chip onClick={() => setNaming(true)}><Icon name="plus" size={16} /> {t('groceries.newUnit')}</Chip>
+        </div>
+      )}
       <div className="keypad">
         {KEYS.map((k) => (
           <button key={k} type="button" className="keypad__key" onClick={() => press(k)}
@@ -116,55 +187,8 @@ export function KeypadSheet({ open, title, value, onClose, onDone }: {
         ))}
       </div>
       <div className="row" style={{ marginTop: 'var(--s-4)' }}>
-        <Button variant="secondary" style={{ flex: 1 }} onClick={() => onDone(null)}>{t('groceries.noQuantity')}</Button>
+        <Button variant="secondary" style={{ flex: 1 }} onClick={() => onDone({ quantity: null, unit })}>{t('groceries.noQuantity')}</Button>
         <Button style={{ flex: 1 }} onClick={done}>{t('app.done')}</Button>
-      </div>
-    </Sheet>
-  );
-}
-
-/** Suggested units for the item, then all units, then a free one. */
-export function UnitSheet({ open, title, value, units, onClose, onPick }: {
-  open: boolean;
-  title: string;
-  value: string | null;
-  units: string[];
-  onClose: () => void;
-  onPick: (unit: string | null) => void;
-}) {
-  const { t } = useI18n();
-  const { unitLabel } = useAmount();
-  const [custom, setCustom] = useState('');
-  useEffect(() => {
-    if (open) setCustom('');
-  }, [open]);
-  const others = GROCERY_UNITS.filter((u) => !units.includes(u));
-  const pickCustom = () => custom.trim() && onPick(custom.trim().toLowerCase());
-
-  return (
-    <Sheet open={open} onClose={onClose} label={title}>
-      <h2 className="title3" style={{ marginBottom: 'var(--s-1)' }}>{title}</h2>
-      <h3 className="section-label">{t('groceries.suggestedUnits')}</h3>
-      <div className="chips">
-        {units.map((u) => <Chip key={u} pressed={u === value} onClick={() => onPick(u)}>{unitLabel(u)}</Chip>)}
-      </div>
-      {others.length > 0 && (
-        <>
-          <h3 className="section-label">{t('groceries.allUnits')}</h3>
-          <div className="chips">
-            {others.map((u) => <Chip key={u} pressed={u === value} onClick={() => onPick(u)}>{unitLabel(u)}</Chip>)}
-          </div>
-        </>
-      )}
-      <h3 className="section-label">{t('groceries.customUnit')}</h3>
-      <div className="row">
-        <input className="input" value={custom} placeholder={t('groceries.customUnitPlaceholder')} aria-label={t('groceries.customUnit')}
-          onChange={(e) => setCustom(e.target.value)} enterKeyHint="done"
-          onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); pickCustom(); } }} />
-        <button type="button" className="icon-btn icon-btn--filled" aria-label={t('groceries.customUnit')}
-          disabled={!custom.trim()} onClick={pickCustom}>
-          <Icon name="check" />
-        </button>
       </div>
     </Sheet>
   );
