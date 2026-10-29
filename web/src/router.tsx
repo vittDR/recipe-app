@@ -20,6 +20,7 @@ import { RecipesScreen } from './screens/recipes/Recipes.tsx';
 import { CatalogScreen } from './screens/Catalog.tsx';
 import { NotificationsScreen } from './screens/Notifications.tsx';
 import { PlanScreen } from './screens/Plan.tsx';
+import { ProfileSettingsScreen } from './screens/ProfileSettings.tsx';
 import { SettingsScreen } from './screens/Settings.tsx';
 import { TonightScreen } from './screens/Tonight.tsx';
 import { UsScreen } from './screens/Us.tsx';
@@ -112,6 +113,7 @@ export const router = createBrowserRouter([
       { path: '/us/tastes', element: <TastesScreen editing /> },
       { path: '/us/notifications', element: <NotificationsScreen /> },
       { path: '/us/catalog', element: <CatalogScreen /> },
+      { path: '/us/profile', element: <ProfileSettingsScreen /> },
       { path: '/invite', element: <InviteScreen editing /> },
       { path: '/plan', element: <PlanScreen /> },
       { path: '/settings', element: <SettingsScreen /> },

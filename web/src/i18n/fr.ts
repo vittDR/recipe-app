@@ -461,6 +461,16 @@ export const fr: Dictionary = {
     notificationsUnsupported: 'Ajoutez DINEAMITE à l’écran d’accueil pour recevoir des notifications.',
     notificationsDenied: 'Les notifications sont bloquées dans vos réglages.',
   },
+  profile: {
+    title: 'Réglages du profil',
+    appearance: 'Apparence',
+    appearanceHint: 'Enregistré sur cet appareil.',
+    themes: {
+      system: 'Automatique',
+      light: 'Clair',
+      dark: 'Sombre',
+    },
+  },
   notifications: {
     title: 'Notifications',
     allow: 'Autoriser les notifications',

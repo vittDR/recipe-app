@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { detectPatterns, recipeFeatures, type PatternSuggestion } from '@logic/preferences.ts';
 import { Icon } from '../components/Icon.tsx';
-import { Avatar, Button, Field, Screen, Segmented, toast } from '../components/ui.tsx';
+import { Avatar, Button, Screen, Segmented } from '../components/ui.tsx';
 import { LOCALES, useI18n, type Locale } from '../i18n/index.tsx';
 import { pushState, type PushState } from '../lib/push.ts';
 import { useSession } from '../lib/session.tsx';
@@ -24,24 +24,6 @@ export function UsScreen() {
   const [rules, setRules] = useState<TasteRule[]>([]);
   const [suggestions, setSuggestions] = useState<PatternSuggestion[]>([]);
   const [push, setPush] = useState<PushState>('unsupported');
-  const [newPassword, setNewPassword] = useState('');
-  const [passwordError, setPasswordError] = useState<string | null>(null);
-
-  const changePassword = async () => {
-    setPasswordError(null);
-    if (newPassword.length < 8) {
-      setPasswordError(t('account.tooShort'));
-      return;
-    }
-    const { error } = await supabase.auth.updateUser({ password: newPassword });
-    if (error) {
-      setPasswordError(error.message);
-      return;
-    }
-    setNewPassword('');
-    toast(t('us.passwordChanged'));
-  };
-
   const load = async () => {
     const [r, swipes, existing] = await Promise.all([
       supabase.from('taste_rules').select('*').eq('user_id', userId!),
@@ -162,21 +144,13 @@ export function UsScreen() {
       <Segmented<Locale> label={t('account.language')} value={locale} onChange={setLocale}
         options={LOCALES.map((l) => ({ value: l, label: l === 'fr' ? 'Français' : 'English' }))} />
 
-      <h2 className="section-label">{t('us.changePassword')}</h2>
-      <form className="row" onSubmit={(e) => { e.preventDefault(); void changePassword(); }}>
-        <Field label={t('us.newPassword')}>
-          <input className="input" type="password" autoComplete="new-password" minLength={8} value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)} />
-        </Field>
-        <Button small variant="secondary" type="submit" disabled={!newPassword} style={{ alignSelf: 'flex-end', marginBottom: 8 }}>
-          {t('app.save')}
-        </Button>
-      </form>
-      {passwordError && <p className="error">{passwordError}</p>}
-
       <div className="list" style={{ marginTop: 'var(--s-6)' }}>
         <Link to="/plan" className="list-row">
           <Icon name="calendar" /> <span className="list-row__main">{t('us.weeklyPlan')}</span>
+          <span className="chevron"><Icon name="chevron" size={18} /></span>
+        </Link>
+        <Link to="/us/profile" className="list-row">
+          <Icon name="person" /> <span className="list-row__main">{t('profile.title')}</span>
           <span className="chevron"><Icon name="chevron" size={18} /></span>
         </Link>
         <Link to="/settings" className="list-row">
