@@ -10,7 +10,9 @@ Running costs are €0: Supabase free tier, Cloudflare Pages free tier and Web P
 web/                    Vite + React + TypeScript PWA (Cloudflare Pages)
   src/i18n/             en.ts is the source of truth; fr.ts must match its shape
   src/styles/tokens.css generated from design/tokens.json (npm run theme)
-  src/sw.ts             service worker: offline shell, push, notification taps
+  src/sw.ts             service worker: offline shell, cached photos, push, notification taps
+  src/lib/cache.ts      catalogues and grocery setup kept on the phone
+  src/lib/theme.ts      light / dark / automatic, saved per device
 supabase/
   migrations/           schema, server rules (matching, tie-break, lists), RLS, cron
   seed.sql              ingredient catalogue (EN/FR/IT) and its grocery products
@@ -23,7 +25,9 @@ supabase/
     push-dispatch/      sends queued notifications as Web Push (run by pg_cron)
     _shared/logic/      pure TypeScript shared with the web app, with tests
   tests/                runs every migration on plain Postgres and checks the rules
-scripts/                build-seed-library.ts, download_images.py, make_thumbnails.py
+scripts/                build-seed-library.ts, download_images.py, make_thumbnails.py,
+                        supabase-sql.sh (run SQL on the live project)
+.github/workflows/      ci.yml (tests, seed check, build), keep-alive.yml
 design/tokens.json      Household Warm tokens (placeholder until the real file lands)
 ```
 
@@ -46,7 +50,9 @@ Key rules from the handover, and where they live:
 | Products carry a usual amount and units; the household's creator edits the shared catalogue | `apply_product_defaults()`, `is_catalog_admin()`, Us > Edit the catalog |
 | Usuals = checked-off purchases, halving monthly; due again past the median gap | `logic/usuals.ts` |
 | "<name> added N items" pushed after 5 quiet minutes, not to people looking at the list; per-kind switches | `enqueue_grocery_pushes()`, `grocery_presence`, `profiles.push_muted` |
-| 17:30 prompt on cook days, reminder later, once per local day | `enqueue_due_prompts()` + pg_cron |
+| 17:30 prompt on cook days, reminder later, once per local day (windows that cross midnight still fire) | `enqueue_due_prompts()` + pg_cron |
+| Catalogues stay on the phone and are re-downloaded only when `catalog_version()` changes; recipe photos (900×675 WebP) are cached by the service worker | `web/src/lib/cache.ts`, `catalog_version()`, `src/sw.ts` |
+| Light / dark / automatic theme and password change live in Us > Profile settings; the theme is saved per device | `web/src/lib/theme.ts`, `screens/ProfileSettings.tsx` |
 
 ## One-time setup
 
@@ -58,7 +64,12 @@ Follow **[docs/SETUP.md](docs/SETUP.md)** step by step to run your own copy: Sup
 cd web && npm install && npm run dev   # http://localhost:5173, talks to the real project
 npm run test:logic                     # (repo root) shared logic tests
 npm run test:sql                       # (repo root) needs a local Postgres + psql
+cd web && npm run typecheck && npm run lint
 ```
+
+CI (`.github/workflows/ci.yml`) runs the logic tests, the SQL tests, checks that `seed_library.sql` matches `recipes.json`, and builds the web app on every push and pull request.
+
+To query or patch the live database, `scripts/supabase-sql.sh "select 1"` (or `< file.sql`) runs SQL through the Supabase management API on the project named in `web/.env`. It needs `SUPABASE_ACCESS_TOKEN` (a personal access token) and `jq`.
 
 - Seed library: edit `supabase/seed/recipes.json` (format in [docs/recipe-template.md](docs/recipe-template.md), collection rules in [docs/recipe-collection-guidelines.md](docs/recipe-collection-guidelines.md)), then run `npm run test:sql` and `node scripts/build-seed-library.ts` to regenerate `seed_library.sql`. The script uses the app's own parser and fails on any line that doesn't match the catalogue.
 - Strings: add to `web/src/i18n/en.ts`, then `fr.ts`; TypeScript flags a missing translation.
@@ -69,5 +80,5 @@ npm run test:sql                       # (repo root) needs a local Postgres + ps
 
 - Recipe import from Instagram captions and photos. Without AI, Instagram links fall back to typing the recipe in, with the link pre-filled.
 - An AI fallback for pages that don't publish recipe data.
-- Recipe editing, empty-state polish and screen-by-screen dark-mode design.
+- Recipe editing and empty-state polish. A dark theme can be switched on, but screens haven't had a dark-mode design pass.
 - Carrefour Drive export.
