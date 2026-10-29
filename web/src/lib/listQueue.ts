@@ -6,8 +6,9 @@
 // the foreground tries again straight away.
 
 import { useSyncExternalStore } from 'react';
-import { enqueue, retryDelay, SHOW_ERROR_AFTER, type ListOp, type QueuedOp } from '@logic/listsync.ts';
+import { applyQueue, enqueue, retryDelay, SHOW_ERROR_AFTER, type ListOp, type QueuedOp } from '@logic/listsync.ts';
 import { supabase } from './supabase.ts';
+import type { GroceryRow } from './types.ts';
 
 export type SyncStatus = 'idle' | 'syncing' | 'error';
 
@@ -31,7 +32,7 @@ async function send(op: ListOp): Promise<void> {
   } else if (op.kind === 'add') {
     ({ error } = await supabase.rpc('put_grocery_item', {
       p_id: op.id,
-      p_item: { product_id: op.product_id, name: op.name, quantity: op.quantity, unit: op.unit, aisle: op.aisle },
+      p_item: { product_id: op.product_id, name: op.name, quantity: op.quantity, unit: op.unit, aisle: op.aisle, recipe_id: op.recipe_id ?? null },
     }));
   } else if (op.kind === 'patch') {
     ({ error } = await supabase.from('grocery_items').update(op.fields).eq('id', op.id));
@@ -169,6 +170,32 @@ export function listQueue(householdId: string): ListQueue {
     queues.set(householdId, q);
   }
   return q;
+}
+
+/** A list row for an item the server doesn't have yet. */
+export function rowFromAdd(op: Extract<ListOp, { kind: 'add' }>, householdId: string): GroceryRow {
+  return {
+    id: op.id,
+    household_id: householdId,
+    product_id: op.product_id,
+    name: op.name,
+    quantity: op.quantity,
+    unit: op.unit,
+    aisle: op.aisle,
+    store_id: op.store_id,
+    recipe_id: op.recipe_id ?? null,
+    added_by: op.added_by,
+    checked_by: null,
+    checked_at: null,
+    cleared_at: null,
+    sort_key: Date.parse(op.at) / 1000,
+    created_at: op.at,
+  };
+}
+
+/** The list as this phone shows it: the server's rows with the waiting changes on top. */
+export function withQueue(rows: GroceryRow[], ops: ListOp[], householdId: string) {
+  return applyQueue(rows, ops, (op) => rowFromAdd(op, householdId));
 }
 
 export function useListQueue(householdId: string): QueueSnapshot {

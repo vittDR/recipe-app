@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { Icon } from '../../components/Icon.tsx';
-import { Button, Chip, RecipeThumb, Screen, Spinner } from '../../components/ui.tsx';
+import { Button, Chip, RecipeThumb, Screen, SearchField, Spinner } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { recipeTitle, allTitles } from '../../lib/recipeText.ts';
 import { RECIPE_FILTERS, type RecipeFilter, matchesFilters } from '@logic/facets.ts';
@@ -63,11 +63,7 @@ export function RecipesScreen() {
     }>
       <h1 className="screen__title">{t('recipes.title')}</h1>
       <div className="stack">
-        <label className="row input" style={{ minHeight: 44, padding: '0 var(--s-3)' }}>
-          <Icon name="search" size={18} />
-          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder={t('recipes.search')} type="search"
-            style={{ border: 0, outline: 0, background: 'none', flex: 1, minWidth: 0 }} />
-        </label>
+        <SearchField value={query} onChange={setQuery} placeholder={t('recipes.search')} label={t('recipes.search')} />
         <div className="chips chips--scroll">
           {filters.map((f) => <Chip key={f} pressed={filter === f} onClick={() => setFilter(f)}>{t(f === 'all' ? 'recipes.all' : `collection.${f}`)}</Chip>)}
         </div>
@@ -92,7 +88,7 @@ export function RecipesScreen() {
                           r.difficulty && t(`recipe.${r.difficulty}`)].filter(Boolean).join(' · ')}
                       </span>
                       {effortLabels(r.equipment, i18n).length > 0 && (
-                        <span className="small" style={{ color: 'var(--c-warning)' }}>{effortLabels(r.equipment, i18n).join(' · ')}</span>
+                        <span className="small text-warning">{effortLabels(r.equipment, i18n).join(' · ')}</span>
                       )}
                     </div>
                   </Link>

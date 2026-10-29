@@ -74,11 +74,12 @@ end $$;
 select pg_temp.check((select name = 'Chez nous deux' and owner_id = '00000000-0000-0000-0000-00000000000a'
                       from households), 'members edit settings, not ownership');
 
--- Grocery merge (as A).
+-- List lines by name (as A). Merging lines is the app's job (AddToListSheet).
 select pg_temp.act_as('00000000-0000-0000-0000-00000000000a');
-select add_grocery_items('[{"name":"Spinach","quantity":100,"unit":"g"},{"name":"spinach","quantity":50,"unit":"g"},{"name":"eggs","quantity":6}]');
-select pg_temp.check((select quantity = 150 and aisle = 'produce' from grocery_items where name = 'épinards'),
-                     'same product and unit merge, French name and aisle from the catalogue');
+select put_grocery_item(gen_random_uuid(), '{"name":"Spinach","quantity":100,"unit":"g"}');
+select put_grocery_item(gen_random_uuid(), '{"name":"eggs","quantity":6}');
+select pg_temp.check((select quantity = 100 and aisle = 'produce' from grocery_items where name = 'épinards'),
+                     'a name lands on its catalogue product, French name and aisle');
 select pg_temp.check((select count(*) = 2 from grocery_items), 'two distinct items');
 
 -- Portions: A eats 1.5 servings, B the default 1; the pot is both plates.

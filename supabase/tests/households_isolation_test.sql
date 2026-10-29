@@ -59,6 +59,8 @@ returning id as deck_a \gset
 insert into deck_cards (deck_id, recipe_id, position) values (:'deck_a', :'recipe_a', 1);
 insert into deck_members (deck_id, user_id) values (:'deck_a', '00000000-0000-0000-0000-0000000000e1');
 
+select set_config('my.product_a', :'product_a', false);
+
 -- Household B.
 select pg_temp.act_as('00000000-0000-0000-0000-0000000000e2');
 select create_household('Chez Boris', 'Europe/Paris') as hb \gset
@@ -124,8 +126,11 @@ select pg_temp.refused(format('select put_grocery_item(%L, %L)', '33333333-0000-
 select pg_temp.refused(format('select set_product_section(%L, null, %L)', :'product_a', null), 'B cannot file A''s item');
 select pg_temp.refused(format('select close_deck(%L)', :'deck_a'), 'B cannot close A''s deck');
 select pg_temp.refused(format('select copy_recipe(%L)', :'recipe_a'), 'B cannot copy A''s recipe');
-select add_grocery_items(format('[{"product_id":"%s"}]', :'product_a')::jsonb);
-select add_grocery_items('[{"name":"Pâte secrète d''Anna"}]');
+do $$ begin
+  perform put_grocery_item(gen_random_uuid(), jsonb_build_object('product_id', current_setting('my.product_a')));
+exception when others then null;
+end $$;
+select put_grocery_item(gen_random_uuid(), '{"name":"Pâte secrète d''Anna"}');
 select pg_temp.check(not exists (select 1 from grocery_items where product_id = :'product_a'),
                      'adding by A''s item id or name never lands on A''s item');
 select pg_temp.check((select count(*) = 1 from products where household_id = :'hb'), 'the name became B''s own item');

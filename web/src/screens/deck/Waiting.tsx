@@ -66,7 +66,7 @@ export function WaitingView({ data }: { data: DeckData }) {
         </>
       )}
 
-      <div className="spacer" style={{ minHeight: 24 }} />
+      <div className="spacer spacer--gap" />
       {waitingFor.length > 0 && (
         <Button block variant="secondary" disabled={nudged} onClick={() => void nudge()}>
           <Icon name="bell" /> {nudged ? t('waiting.nudged') : t('waiting.nudge', { name: names })}

@@ -93,6 +93,22 @@ function storedGroceryCatalog(hid: string): GroceryCatalog | null {
   return shared && rows ? buildCatalog(shared, rows) : null;
 }
 
+/**
+ * The items a typed name matches: the exact one first, then the closest
+ * names, the household's most-added first. Every item search uses this.
+ */
+export function searchProducts(
+  catalog: GroceryCatalog | null,
+  name: string,
+  { limit = 6, index = catalog?.index }: { limit?: number; /** e.g. with items not saved yet */ index?: ProductIndex | null } = {},
+): { results: Product[]; exact?: Product } {
+  if (!catalog || !index || !name.trim()) return { results: [] };
+  const exact = index.find(name);
+  const results = index.search(name, limit, (p) => catalog.prefs.get(p.id)?.add_count ?? 0);
+  if (exact && !results.some((p) => p.id === exact.id)) results.unshift(exact);
+  return { results, exact };
+}
+
 export function useGroceryCatalog(hid: string) {
   return useLive<GroceryCatalog>(`grocery-catalog:${hid}`, () => loadGroceryCatalog(hid), [
     { table: 'household_products', filter: `household_id=eq.${hid}` },

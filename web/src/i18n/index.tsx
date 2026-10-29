@@ -9,6 +9,8 @@ import { APP_NAME } from '../brand.ts';
 
 export type Locale = 'en' | 'fr';
 export const LOCALES: Locale[] = ['en', 'fr'];
+/** Each language in its own name, for the language pickers. */
+export const LOCALE_NAMES: Record<Locale, string> = { en: 'English', fr: 'Français' };
 const DICTIONARIES: Record<Locale, Dictionary> = { en, fr };
 const STORAGE_KEY = 'dineamite.locale';
 

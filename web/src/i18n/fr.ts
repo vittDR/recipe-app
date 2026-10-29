@@ -18,6 +18,7 @@ export const fr: Dictionary = {
     delete: 'Supprimer',
     close: 'Fermer',
     you: 'Vous',
+    saved: 'Enregistré',
   },
   tabs: {
     tonight: 'Ce soir',

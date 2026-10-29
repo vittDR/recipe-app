@@ -93,7 +93,7 @@ export function TonightScreen() {
       </div>
       <h1 className="screen__title">{t('tonight.title')}</h1>
 
-      <Link to="/plan" className="card stack tonight-week" aria-label={t('us.weeklyPlan')}>
+      <Link to="/us/plan" className="card stack tonight-week" aria-label={t('us.weeklyPlan')}>
         <span className="row row--between">
           <h2 className="headline">{t('tonight.week')}</h2>
           <span className="chevron"><Icon name="chevron" size={18} /></span>
@@ -141,7 +141,7 @@ export function TonightScreen() {
       ) : (
         <div className="stack stack--lg">
           {partners.length === 0 && (
-            <Link to="/invite" className="notice notice--info row" style={{ textDecoration: 'none' }}>
+            <Link to="/us/invite" className="notice notice--info row" style={{ textDecoration: 'none' }}>
               <Icon name="people" /> <span className="spacer">{t('tonight.noPartner')}</span> <Icon name="chevron" />
             </Link>
           )}

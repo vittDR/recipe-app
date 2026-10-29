@@ -95,6 +95,11 @@ a {
   flex: 1;
 }
 
+/* Keeps at least this much room above a bottom button. */
+.spacer--gap {
+  min-height: var(--s-6);
+}
+
 .stack {
   display: flex;
   flex-direction: column;
@@ -119,6 +124,10 @@ a {
   flex-wrap: wrap;
 }
 
+.row--end {
+  align-items: flex-end;
+}
+
 .row--between {
   justify-content: space-between;
 }
@@ -130,6 +139,59 @@ a {
   letter-spacing: 0.04em;
   color: var(--c-muted);
   margin: var(--s-6) var(--s-1) var(--s-2);
+}
+
+.section--flush > .section-label {
+  margin-top: 0;
+}
+
+.section-hint {
+  font: var(--t-footnote);
+  letter-spacing: var(--t-footnote-tracking);
+  color: var(--c-muted);
+  margin: 0 var(--s-1) var(--s-3);
+}
+
+/* Spacing and tone helpers, so screens never set them inline. */
+.m-0 {
+  margin: 0;
+}
+
+.mt-2 {
+  margin-top: var(--s-2);
+}
+
+.mt-3 {
+  margin-top: var(--s-3);
+}
+
+.mt-4 {
+  margin-top: var(--s-4);
+}
+
+.mt-6 {
+  margin-top: var(--s-6);
+}
+
+.mt-8 {
+  margin-top: var(--s-8);
+}
+
+.grow {
+  flex: 1;
+  min-width: 0;
+}
+
+.text-accent {
+  color: var(--c-accent);
+}
+
+.text-success {
+  color: var(--c-success);
+}
+
+.text-warning {
+  color: var(--c-warning);
 }
 
 .muted {
@@ -212,6 +274,13 @@ a {
 .btn--text {
   background: none;
   color: var(--c-accent);
+  min-height: var(--touch);
+  padding: 0 var(--s-2);
+}
+
+.btn--danger {
+  background: none;
+  color: var(--c-danger);
   min-height: var(--touch);
   padding: 0 var(--s-2);
 }
@@ -346,7 +415,7 @@ a {
 
 .segmented button[aria-pressed='true'] {
   background: var(--c-surface);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-control);
   font-weight: 600;
 }
 
@@ -387,6 +456,19 @@ a {
 
 .list-row + .list-row {
   box-shadow: inset 0 1px 0 var(--c-line);
+}
+
+.list-row--accent {
+  color: var(--c-accent);
+}
+
+/* Leading icon or avatar: a fixed column, so titles line up row to row. */
+.list-row__icon {
+  flex: none;
+  min-width: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .list-row__main {
@@ -479,8 +561,8 @@ a {
   width: 27px;
   height: 27px;
   border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  background: var(--c-on-color);
+  box-shadow: var(--shadow-knob);
   transition: transform 0.2s ease;
 }
 
@@ -503,7 +585,7 @@ a {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  color: #fff;
+  color: var(--c-on-color);
   font: var(--t-footnote);
   font-weight: 700;
   box-shadow: 0 0 0 2px var(--c-paper);
@@ -591,6 +673,31 @@ textarea.input {
   text-transform: uppercase;
 }
 
+/* The search box: an icon inside the field. */
+.search-field {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding-top: 0;
+  padding-bottom: 0;
+  color: var(--c-muted);
+}
+
+.search-field:focus-within {
+  box-shadow: inset 0 0 0 2px var(--c-accent);
+}
+
+.search-field input {
+  flex: 1;
+  min-width: 0;
+  min-height: 50px;
+  border: 0;
+  outline: 0;
+  background: none;
+  font: inherit;
+  color: var(--c-ink);
+}
+
 .stepper {
   display: flex;
   align-items: center;
@@ -668,7 +775,7 @@ textarea.input {
 .sheet-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(20, 14, 10, 0.4);
+  background: var(--c-backdrop);
   z-index: 40;
   touch-action: none;
   animation: fade-in 0.2s ease;
@@ -695,6 +802,18 @@ textarea.input {
 .sheet--fixed {
   /* Same height whatever is shown, so filtering doesn't make it jump. */
   height: 88dvh;
+}
+
+.sheet__header {
+  margin-bottom: var(--s-4);
+}
+
+.sheet__header p {
+  margin: var(--s-1) 0 0;
+}
+
+.sheet__actions {
+  margin-top: var(--s-5);
 }
 
 .sheet__grabber {
@@ -1083,6 +1202,14 @@ textarea.input {
   margin-bottom: var(--s-2);
 }
 
+.catalog-search {
+  margin: var(--s-4) 0;
+}
+
+.grocery-mode {
+  margin: var(--s-4) 0;
+}
+
 .grocery-search .input {
   flex: 1;
   min-width: 0;
@@ -1261,7 +1388,7 @@ button.grocery-row__amount {
   justify-content: flex-end;
   padding-right: var(--s-5);
   background: var(--c-danger);
-  color: #fff;
+  color: var(--c-on-color);
 }
 
 .swipe__front {

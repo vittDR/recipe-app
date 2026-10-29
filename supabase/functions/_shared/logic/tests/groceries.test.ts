@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { groupGroceries, proposeListItems, scaleQuantity, splitCart, storeKey, type GroceryItem } from '../groceries.ts';
+import { groupGroceries, mergeTarget, proposeListItems, scaleQuantity, splitCart, storeKey, type GroceryItem } from '../groceries.ts';
 
 const item = (name: string, over: Partial<GroceryItem> = {}): GroceryItem => ({
   id: name, name, quantity: null, unit: null, aisle: 'other', recipe_id: null, checked_at: null, sort_key: 0, ...over,
@@ -98,4 +98,17 @@ test('checked items go to the cart, last checked first', () => {
   ]);
   assert.deepEqual(toBuy.map((i) => i.name), ['milk']);
   assert.deepEqual(cart.map((i) => i.name), ['bread', 'eggs']);
+});
+
+test('a recipe line adds to the same item in the same unit, not to a ticked one', () => {
+  const lines = [
+    { id: 'a', product_id: 'p1', unit: 'g', checked_at: '2026-01-01T00:00:00Z' },
+    { id: 'b', product_id: 'p1', unit: 'g', checked_at: null },
+    { id: 'c', product_id: 'p1', unit: null, checked_at: null },
+    { id: 'd', product_id: null, unit: 'g', checked_at: null },
+  ];
+  assert.equal(mergeTarget(lines, 'p1', 'G ')?.id, 'b');
+  assert.equal(mergeTarget(lines, 'p1', null)?.id, 'c');
+  assert.equal(mergeTarget(lines, 'p1', 'kg'), undefined);
+  assert.equal(mergeTarget(lines, null, 'g'), undefined);
 });

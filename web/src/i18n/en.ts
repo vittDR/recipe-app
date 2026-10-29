@@ -20,6 +20,7 @@ export const en = {
     delete: 'Delete',
     close: 'Close',
     you: 'You',
+    saved: 'Saved',
   },
   tabs: {
     tonight: 'Tonight',

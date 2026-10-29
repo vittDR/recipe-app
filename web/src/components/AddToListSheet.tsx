@@ -1,12 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
-import { proposeListItems, scaleQuantity, type ListProposal } from '@logic/groceries.ts';
+import { mergeTarget, proposeListItems, scaleQuantity, type ListProposal } from '@logic/groceries.ts';
+import { sectionOf } from '@logic/products.ts';
 import { useI18n } from '../i18n/index.tsx';
+import { listQueue, withQueue } from '../lib/listQueue.ts';
 import { recipeTitle } from '../lib/recipeText.ts';
-import { ingredientName } from '../lib/products.ts';
+import { ingredientName, useGroceryCatalog } from '../lib/products.ts';
 import { useSession } from '../lib/session.tsx';
 import { must, supabase } from '../lib/supabase.ts';
 import type { GroceryRow, Recipe, RecipeIngredient } from '../lib/types.ts';
-import { Button, Checkbox, Sheet, toast } from './ui.tsx';
+import { Button, Checkbox, ListRow, Section, Sheet, SheetHeader, toast } from './ui.tsx';
 
 /** Missing ingredients for a recipe given the live list and staples. */
 export async function loadProposals(
@@ -47,7 +49,9 @@ export function AddToListSheet({
   potServings?: number | null;
 }) {
   const { t, tn, locale } = useI18n();
-  const { household } = useSession();
+  const { userId, household } = useSession();
+  const hid = household!.id;
+  const { data: catalog } = useGroceryCatalog(hid);
   const [proposals, setProposals] = useState<ListProposal<RecipeIngredient>[] | null>(null);
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [busy, setBusy] = useState(false);
@@ -65,21 +69,45 @@ export function AddToListSheet({
   const toBuy = useMemo(() => proposals?.filter((p) => p.add) ?? [], [proposals]);
   const atHome = useMemo(() => proposals?.filter((p) => !p.add) ?? [], [proposals]);
 
+  // Through the list's queue, like every other list change: shown at once,
+  // saved in the background. A line already on the list (same item and
+  // unit, not ticked) gets the amount added to it instead of a second line.
   const add = async () => {
     setBusy(true);
-    const items = (proposals ?? [])
-      .filter((p) => selected.has(p.ingredient.id))
-      .map((p) => ({
-        ...(p.ingredient.product_id ? { product_id: p.ingredient.product_id } : { name: p.ingredient.name }),
-        quantity: scaled(p.ingredient), unit: p.ingredient.unit,
-        aisle: p.ingredient.aisle, recipe_id: recipe.id,
-      }));
-    const { error } = await supabase.rpc('add_grocery_items', { p_items: items });
-    setBusy(false);
-    if (error) {
+    const queue = listQueue(hid);
+    let rows: GroceryRow[];
+    try {
+      const server = must(await supabase.from('grocery_items').select('*').eq('household_id', hid).is('cleared_at', null)) as GroceryRow[];
+      rows = withQueue(server, queue.getSnapshot().ops, hid).rows;
+    } catch {
+      setBusy(false);
       toast(t('app.error'));
       return;
     }
+    const at = new Date().toISOString();
+    for (const p of (proposals ?? []).filter((x) => selected.has(x.ingredient.id))) {
+      const i = p.ingredient;
+      const quantity = scaled(i);
+      const unit = i.unit?.trim().toLowerCase() || null;
+      const same = mergeTarget(rows, i.product_id, unit);
+      if (same) {
+        if (quantity !== null) {
+          const total = same.quantity === null ? quantity : same.quantity + quantity;
+          queue.push({ kind: 'patch', id: same.id, fields: { quantity: total, unit } });
+          same.quantity = total;
+        }
+        continue;
+      }
+      const product = i.product_id ? catalog?.index.get(i.product_id) : undefined;
+      const place = product ? sectionOf(product, catalog?.prefs.get(product.id)) : { aisle: i.aisle, store_id: null };
+      const op = {
+        kind: 'add' as const, id: crypto.randomUUID(), product_id: product?.id ?? i.product_id, name: product?.name_fr ?? i.name,
+        quantity, unit, aisle: place.aisle, store_id: place.store_id, recipe_id: recipe.id, added_by: userId!, at,
+      };
+      queue.push(op);
+      rows.push({ ...op, household_id: hid, checked_at: null, checked_by: null, cleared_at: null, sort_key: 0, created_at: at });
+    }
+    setBusy(false);
     toast(t('addToList.added'));
     onClose();
   };
@@ -92,40 +120,33 @@ export function AddToListSheet({
         : p.why === 'on_list' ? t('addToList.onList') : null;
     const checked = selected.has(p.ingredient.id);
     return (
-      <div key={p.ingredient.id} className="list-row">
-        <Checkbox checked={checked} label={nameOf(p.ingredient)} onChange={(v) => {
-          const next = new Set(selected);
-          if (v) next.add(p.ingredient.id);
-          else next.delete(p.ingredient.id);
-          setSelected(next);
-        }} />
-        <div className="list-row__main">
-          <div className="list-row__title">{nameOf(p.ingredient)}</div>
-          {why && <div className="list-row__meta">{why}</div>}
-        </div>
-        <span className="muted small">{formatQuantity(scaled(p.ingredient), p.ingredient.unit)}</span>
-      </div>
+      <ListRow key={p.ingredient.id} title={nameOf(p.ingredient)} meta={why ?? undefined}
+        icon={(
+          <Checkbox checked={checked} label={nameOf(p.ingredient)} onChange={(v) => {
+            const next = new Set(selected);
+            if (v) next.add(p.ingredient.id);
+            else next.delete(p.ingredient.id);
+            setSelected(next);
+          }} />
+        )}
+        trailing={<span className="muted small">{formatQuantity(scaled(p.ingredient), p.ingredient.unit)}</span>} />
     );
   };
 
   return (
     <Sheet open={open} onClose={onClose} label={t('addToList.title')}>
-      <h2 className="title2" style={{ marginBottom: 'var(--s-2)' }}>{t('addToList.title')}</h2>
-      <p className="muted small" style={{ marginTop: 0 }}>{recipeTitle(recipe, locale)}</p>
+      <SheetHeader title={t('addToList.title')} subtitle={recipeTitle(recipe, locale)} />
       {toBuy.length > 0 && (
-        <>
-          <h3 className="section-label">{t('addToList.toBuy')}</h3>
+        <Section label={t('addToList.toBuy')} flush>
           <div className="list">{toBuy.map(row)}</div>
-        </>
+        </Section>
       )}
       {atHome.length > 0 && (
-        <>
-          <h3 className="section-label">{t('addToList.atHome')}</h3>
+        <Section label={t('addToList.atHome')}>
           <div className="list">{atHome.map(row)}</div>
-        </>
+        </Section>
       )}
-      <div style={{ height: 'var(--s-5)' }} />
-      <Button block disabled={busy || selected.size === 0} onClick={() => void add()}>
+      <Button className="sheet__actions" block disabled={busy || selected.size === 0} onClick={() => void add()}>
         {tn('addToList.add', selected.size)}
       </Button>
     </Sheet>

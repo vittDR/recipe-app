@@ -35,19 +35,23 @@ select pg_temp.act_as('00000000-0000-0000-0000-00000000000d');
 select create_household('Chez Dee', 'Europe/Paris') as hid \gset
 select pg_temp.check((select count(*) = 1 from household_aisle_order where aisle = 'hygiene'), 'new households get the hygiene aisle');
 
--- chicken breast = Blanc de Poulet = poulet: one line.
-select add_grocery_items('[{"name":"chicken breast","quantity":2},{"name":"Blanc de Poulet","quantity":1},{"name":"poulet"}]');
-select pg_temp.check((select count(*) = 1 and min(quantity) = 3 and min(name) = 'blanc de poulet' and min(aisle::text) = 'meat_fish'
-                      from grocery_items), 'English, French and alias names merge into one product');
+-- chicken breast = Blanc de Poulet = poulet: one product.
+select put_grocery_item(gen_random_uuid(), '{"name":"chicken breast","quantity":2}');
+select put_grocery_item(gen_random_uuid(), '{"name":"Blanc de Poulet","quantity":1}');
+select put_grocery_item(gen_random_uuid(), '{"name":"poulet"}');
+select pg_temp.check((select count(distinct product_id) = 1 and min(name) = 'blanc de poulet' and min(aisle::text) = 'meat_fish'
+                      from grocery_items), 'English, French and alias names are one product');
+delete from grocery_items;
 
 -- A household's own item, private to it.
-select add_grocery_items('[{"name":"Recharges Swiffer poussière"}]');
+select put_grocery_item(gen_random_uuid(), '{"name":"Recharges Swiffer poussière"}');
 select id as swiffer from products where name_fr = 'Recharges Swiffer poussière' \gset
 select pg_temp.check((select household_id = :'hid'::uuid and default_aisle = 'other' from products where id = :'swiffer'),
                      'unknown names become household products');
 select pg_temp.check((select count(*) = 1 from grocery_items where product_id = :'swiffer'), 'and go on the list straight away');
-select add_grocery_items(format('[{"product_id":"%s"}]', :'swiffer')::jsonb);
-select pg_temp.check((select count(*) = 1 from grocery_items where product_id = :'swiffer'), 'adding by product id merges too');
+select put_grocery_item(gen_random_uuid(), '{"name":"recharges swiffer poussiere"}');
+select pg_temp.check((select count(*) = 2 from grocery_items where product_id = :'swiffer'), 'the name finds the household''s item again');
+delete from grocery_items where product_id = :'swiffer';
 
 -- Stores are sections; the choice is remembered.
 select add_store('Picard') as picard \gset
@@ -55,13 +59,13 @@ select pg_temp.check(add_store('picard') = :'picard'::uuid, 'store names are uni
 select pg_temp.check((select position > (select max(position) from household_aisle_order) from household_stores),
                      'new stores go after the aisles');
 select id as framboises from products where name_fr = 'Framboises' and household_id is null \gset
-select add_grocery_items(format('[{"product_id":"%s"}]', :'framboises')::jsonb);
+select put_grocery_item(gen_random_uuid(), format('{"product_id":"%s"}', :'framboises')::jsonb);
 select set_product_section(:'framboises', null, :'picard');
 select pg_temp.check((select store_id = :'picard'::uuid and aisle = 'produce' from grocery_items where product_id = :'framboises'),
                      'moving a product to a store moves it on the list');
 update grocery_items set checked_at = now() where product_id = :'framboises';
 update grocery_items set cleared_at = now() where checked_at is not null and cleared_at is null;
-select add_grocery_items('[{"name":"framboises"}]');
+select put_grocery_item(gen_random_uuid(), '{"name":"framboises"}');
 select pg_temp.check((select store_id = :'picard'::uuid from grocery_items
                       where product_id = :'framboises' and cleared_at is null), 'next time it goes to the store again');
 select set_product_section(:'framboises', 'frozen', null);
@@ -71,6 +75,7 @@ select pg_temp.check((select add_count = 2 from household_products where product
 
 
 -- The other household sees none of it.
+select set_config('my.swiffer', :'swiffer', false);
 select pg_temp.act_as('00000000-0000-0000-0000-00000000000e');
 select pg_temp.check((select count(*) = 0 from products where id = :'swiffer'), 'household products are private');
 select pg_temp.check((select count(*) = 0 from household_stores) and (select count(*) = 0 from household_products),
@@ -80,7 +85,10 @@ do $$ begin
                               (select id from household_stores limit 1));
 exception when others then null;
 end $$;
-select add_grocery_items(format('[{"product_id":"%s"}]', :'swiffer')::jsonb);
+do $$ begin
+  perform put_grocery_item(gen_random_uuid(), jsonb_build_object('product_id', current_setting('my.swiffer')));
+exception when others then null;
+end $$;
 select pg_temp.check((select count(*) = 0 from grocery_items), 'cannot add another household''s product');
 
 -- The imported frequently-bought list (supabase/personal/frequent_items.sql).

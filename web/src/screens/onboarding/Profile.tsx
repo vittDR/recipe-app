@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Avatar, Button, Field, Screen, Segmented } from '../../components/ui.tsx';
-import { LOCALES, useI18n, type Locale } from '../../i18n/index.tsx';
+import { LOCALE_NAMES, LOCALES, useI18n, type Locale } from '../../i18n/index.tsx';
 import { pendingInviteCode } from '../../lib/invite.ts';
 import { MEMBER_COLORS } from '../../lib/colors.ts';
 import { useSession } from '../../lib/session.tsx';
@@ -53,7 +53,7 @@ export function ProfileScreen() {
         <div className="stack">
           <span className="field__label">{t('account.language')}</span>
           <Segmented<Locale> label={t('account.language')} value={locale} onChange={setLocale}
-            options={LOCALES.map((l) => ({ value: l, label: l === 'fr' ? 'Français' : 'English' }))} />
+            options={LOCALES.map((l) => ({ value: l, label: LOCALE_NAMES[l] }))} />
         </div>
         {error && <p className="error">{error}</p>}
         <Button block type="submit" disabled={busy || !name.trim()}>{t('app.continue')}</Button>

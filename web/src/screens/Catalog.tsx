@@ -1,14 +1,15 @@
-// The catalogue admin (the household's creator): the shared base items and
-// the household's own, with their aisle and usual amount. Reached from the
-// bottom of Us and from the New catalog item sheet.
+// The catalogue admin (people in public.app_admins): the shared base items and
+// the household's own, with their aisle and usual amount. Reached from Us and
+// from the New catalog item sheet; nobody else sees it.
 
 import { useEffect, useMemo, useState } from 'react';
 import { Navigate, useSearchParams } from 'react-router';
 import { DEFAULT_AISLE_ORDER } from '@logic/groceries.ts';
-import { GROCERY_UNITS, productKey, productName, unitsFor, type Product } from '@logic/products.ts';
+import { GROCERY_UNITS, ProductIndex, productName, unitsFor, type Product } from '@logic/products.ts';
 import { Icon } from '../components/Icon.tsx';
-import { Button, Chip, Field, Screen, Segmented, Sheet, Spinner, toast } from '../components/ui.tsx';
+import { Button, Chip, Field, ListRow, Screen, SearchField, Section, Segmented, Sheet, SheetHeader, Spinner, toast } from '../components/ui.tsx';
 import { useI18n } from '../i18n/index.tsx';
+import { useLive } from '../lib/hooks.ts';
 import { forgetSharedProducts } from '../lib/products.ts';
 import { useSession } from '../lib/session.tsx';
 import { must, supabase } from '../lib/supabase.ts';
@@ -25,25 +26,17 @@ export function CatalogScreen() {
   const [params] = useSearchParams();
   const [scope, setScope] = useState<Scope>('base');
   const [query, setQuery] = useState(params.get('q') ?? '');
-  const [products, setProducts] = useState<Product[] | null>(null);
   const [editing, setEditing] = useState<Product | 'new' | null>(null);
+  const { data: products, reload } = useLive<Product[]>(isAdmin ? `catalog-admin:${household!.id}` : null, async () =>
+    must(await supabase.from('products').select('*')
+      .or(`household_id.is.null,household_id.eq.${household!.id}`)) as Product[]);
 
-  const load = async () => {
-    const rows = must(await supabase.from('products').select('*')
-      .or(`household_id.is.null,household_id.eq.${household!.id}`)) as Product[];
-    setProducts(rows);
-  };
-  useEffect(() => {
-    if (isAdmin) void load();
-  }, [isAdmin]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const list = useMemo(() => {
-    const q = productKey(query);
-    return (products ?? [])
-      .filter((p) => (scope === 'base' ? !p.household_id : !!p.household_id))
-      .filter((p) => !q || productKey(`${p.name_fr} ${p.name_en ?? ''} ${p.aliases.join(' ')}`).includes(q))
-      .sort((a, b) => productName(a, locale).localeCompare(productName(b, locale), locale));
-  }, [products, scope, query, locale]);
+  // All of them A to Z; searching ranks matches the way every item search does.
+  const scoped = useMemo(() => (products ?? [])
+    .filter((p) => (scope === 'base' ? !p.household_id : !!p.household_id))
+    .sort((a, b) => productName(a, locale).localeCompare(productName(b, locale), locale)), [products, scope, locale]);
+  const index = useMemo(() => new ProductIndex(scoped), [scoped]);
+  const list = query.trim() ? index.search(query, SHOWN) : scoped;
 
   if (!isAdmin) return <Navigate to="/us" replace />;
 
@@ -53,9 +46,8 @@ export function CatalogScreen() {
         { value: 'base', label: t('admin.base') },
         { value: 'yours', label: t('admin.yours') },
       ]} />
-      <div className="row" style={{ margin: 'var(--s-4) 0' }}>
-        <input className="input" type="search" value={query} placeholder={t('admin.search')} aria-label={t('admin.search')}
-          onChange={(e) => setQuery(e.target.value)} />
+      <div className="row catalog-search">
+        <SearchField value={query} onChange={setQuery} placeholder={t('admin.search')} label={t('admin.search')} />
         {scope === 'base' && (
           <button type="button" className="icon-btn icon-btn--filled" aria-label={t('admin.newItem')} onClick={() => setEditing('new')}>
             <Icon name="plus" />
@@ -67,16 +59,9 @@ export function CatalogScreen() {
         <>
           <div className="list">
             {list.slice(0, SHOWN).map((p) => (
-              <button key={p.id} type="button" className="list-row" onClick={() => setEditing(p)}>
-                <span className="list-row__main">
-                  <span className="list-row__title">{productName(p, locale)}</span>
-                  <span className="list-row__meta">
-                    {t(`groceries.aisles.${p.default_aisle}`)}
-                    {p.default_unit ? ` · ${amount(p.default_qty ?? null, p.default_unit) || `– ${unitLabel(p.default_unit)}`}` : ''}
-                  </span>
-                </span>
-                <span className="chevron"><Icon name="chevron" size={18} /></span>
-              </button>
+              <ListRow key={p.id} title={productName(p, locale)} chevron onClick={() => setEditing(p)}
+                meta={`${t(`groceries.aisles.${p.default_aisle}`)}${p.default_unit
+                  ? ` · ${amount(p.default_qty ?? null, p.default_unit) || `– ${unitLabel(p.default_unit)}`}` : ''}`} />
             ))}
           </div>
           {list.length > SHOWN && <p className="muted small center">{tn('admin.more', list.length - SHOWN)}</p>}
@@ -87,7 +72,7 @@ export function CatalogScreen() {
         setEditing(null);
         forgetSharedProducts();
         toast(t('admin.saved'));
-        void load();
+        void reload();
       }} />
     </Screen>
   );
@@ -170,7 +155,7 @@ function ProductEditor({ product, onClose, onSaved }: {
 
   return (
     <Sheet open={!!product} onClose={onClose} label={isNew ? t('admin.newItem') : t('admin.editItem')}>
-      <h2 className="title2" style={{ marginBottom: 'var(--s-4)' }}>{isNew ? t('admin.newItem') : t('admin.editItem')}</h2>
+      <SheetHeader title={isNew ? t('admin.newItem') : t('admin.editItem')} />
       <div className="stack">
         <Field label={t('admin.nameFr')}>
           <input className="input" value={nameFr} onChange={(e) => setNameFr(e.target.value)} />
@@ -183,33 +168,35 @@ function ProductEditor({ product, onClose, onSaved }: {
         </Field>
       </div>
 
-      <h3 className="section-label">{t('admin.aisle')}</h3>
-      <div className="chips">
-        {DEFAULT_AISLE_ORDER.map((a) => (
-          <Chip key={a} pressed={a === aisle} onClick={() => setAisle(a)}>{t(`groceries.aisles.${a}`)}</Chip>
-        ))}
-      </div>
+      <Section label={t('admin.aisle')}>
+        <div className="chips">
+          {DEFAULT_AISLE_ORDER.map((a) => (
+            <Chip key={a} pressed={a === aisle} onClick={() => setAisle(a)}>{t(`groceries.aisles.${a}`)}</Chip>
+          ))}
+        </div>
+      </Section>
 
-      <h3 className="section-label">{t('admin.defaultUnit')}</h3>
-      <div className="chips">
-        {choices.map((u) => (
-          <Chip key={u} pressed={u === unit} onClick={() => setUnit(u === unit ? null : u)}>{unitLabel(u)}</Chip>
-        ))}
-      </div>
+      <Section label={t('admin.defaultUnit')}>
+        <div className="chips">
+          {choices.map((u) => (
+            <Chip key={u} pressed={u === unit} onClick={() => setUnit(u === unit ? null : u)}>{unitLabel(u)}</Chip>
+          ))}
+        </div>
+        <div className="mt-4">
+          <Field label={t('admin.defaultQty')} hint={t('admin.defaultQtyHint')}>
+            <input className="input" inputMode="decimal" value={qty} onChange={(e) => setQty(e.target.value)} />
+          </Field>
+        </div>
+      </Section>
 
-      <div style={{ marginTop: 'var(--s-4)' }}>
-        <Field label={t('admin.defaultQty')} hint={t('admin.defaultQtyHint')}>
-          <input className="input" inputMode="decimal" value={qty} onChange={(e) => setQty(e.target.value)} />
-        </Field>
-      </div>
-
-      <h3 className="section-label">{t('admin.units')}</h3>
-      <div className="chips">
-        {choices.map((u) => (
-          <Chip key={u} pressed={units.includes(u) || u === unit} onClick={() => u !== unit && toggleUnit(u)}>{unitLabel(u)}</Chip>
-        ))}
-      </div>
-      <div className="row" style={{ marginTop: 'var(--s-3)' }}>
+      <Section label={t('admin.units')}>
+        <div className="chips">
+          {choices.map((u) => (
+            <Chip key={u} pressed={units.includes(u) || u === unit} onClick={() => u !== unit && toggleUnit(u)}>{unitLabel(u)}</Chip>
+          ))}
+        </div>
+      </Section>
+      <div className="row mt-3">
         <input className="input" value={customUnit} placeholder={t('groceries.customUnitPlaceholder')}
           aria-label={t('groceries.customUnit')} onChange={(e) => setCustomUnit(e.target.value)}
           onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addCustom(); } }} />
@@ -220,7 +207,7 @@ function ProductEditor({ product, onClose, onSaved }: {
       </div>
 
       {error && <p className="error">{error}</p>}
-      <Button block disabled={saving} style={{ marginTop: 'var(--s-6)' }} onClick={() => void save()}>{t('app.save')}</Button>
+      <Button block disabled={saving} className="mt-6" onClick={() => void save()}>{t('app.save')}</Button>
       <Button block variant="text" onClick={onClose}>{t('app.cancel')}</Button>
     </Sheet>
   );

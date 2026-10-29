@@ -18,6 +18,8 @@
   --c-warning-soft: #FBEFD9;
   --c-danger: #B3261E;
   --c-glass: rgba(255, 252, 247, 0.72);
+  --c-on-color: #FFFFFF;
+  --c-backdrop: rgba(20, 14, 10, 0.4);
   --c-member-0: #C24E33;
   --c-member-1: #3D6B8C;
   --c-member-2: #5E8A45;
@@ -62,6 +64,8 @@
   --shadow-card: 0 1px 2px rgba(74, 52, 32, 0.06), 0 8px 24px rgba(74, 52, 32, 0.08);
   --shadow-raised: 0 2px 6px rgba(74, 52, 32, 0.08), 0 18px 40px rgba(74, 52, 32, 0.14);
   --shadow-bar: 0 6px 30px rgba(74, 52, 32, 0.16);
+  --shadow-control: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-knob: 0 2px 4px rgba(0, 0, 0, 0.2);
   --touch: 44px;
 }
 
@@ -84,6 +88,8 @@
     --c-warning-soft: #3A2C14;
     --c-danger: #F2857C;
     --c-glass: rgba(36, 32, 29, 0.72);
+    --c-on-color: #FFFFFF;
+    --c-backdrop: rgba(0, 0, 0, 0.55);
     --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
     --shadow-raised: 0 2px 6px rgba(0, 0, 0, 0.3), 0 18px 40px rgba(0, 0, 0, 0.4);
     --shadow-bar: 0 6px 30px rgba(0, 0, 0, 0.45);
@@ -108,6 +114,8 @@
   --c-warning-soft: #3A2C14;
   --c-danger: #F2857C;
   --c-glass: rgba(36, 32, 29, 0.72);
+  --c-on-color: #FFFFFF;
+  --c-backdrop: rgba(0, 0, 0, 0.55);
   --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
   --shadow-raised: 0 2px 6px rgba(0, 0, 0, 0.3), 0 18px 40px rgba(0, 0, 0, 0.4);
   --shadow-bar: 0 6px 30px rgba(0, 0, 0, 0.45);

@@ -110,11 +110,11 @@ select pg_temp.check((select count(*) = 0 from grocery_add_batches), 'and the ba
 select pg_temp.act_as('00000000-0000-0000-0000-0000000000a2');
 insert into grocery_presence (user_id) values ('00000000-0000-0000-0000-0000000000a2');
 select pg_temp.act_as('00000000-0000-0000-0000-0000000000a1');
-select add_grocery_items('[{"name":"citron","quantity":2}]');
+select put_grocery_item(gen_random_uuid(), '{"name":"citron","quantity":2}');
 select pg_temp.act_as(null);
 update grocery_add_batches set last_add_at = now() - interval '6 minutes';
 select pg_temp.check(enqueue_grocery_pushes() = 0 and (select count(*) = 1 from push_outbox where kind = 'groceries_added'),
-                     'recipe adds count too, and nobody looking at the list is pushed');
+                     'every add counts, and nobody looking at the list is pushed');
 
 -- Switches.
 select pg_temp.act_as('00000000-0000-0000-0000-0000000000a2');

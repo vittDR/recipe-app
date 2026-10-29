@@ -1,6 +1,6 @@
 import { createBrowserRouter, Navigate, NavLink, Outlet, useLocation } from 'react-router';
 import { Icon } from './components/Icon.tsx';
-import { Spinner, ToastHost } from './components/ui.tsx';
+import { ConfirmHost, Spinner, ToastHost } from './components/ui.tsx';
 import { useI18n } from './i18n/index.tsx';
 import { useSession } from './lib/session.tsx';
 import { AccountScreen } from './screens/onboarding/Account.tsx';
@@ -57,6 +57,7 @@ function Gate() {
     <div className="app">
       {loading ? <Spinner /> : target && target !== pathname ? <Navigate to={target} replace /> : <Outlet />}
       <ToastHost />
+      <ConfirmHost />
     </div>
   );
 }
@@ -114,9 +115,13 @@ export const router = createBrowserRouter([
       { path: '/us/notifications', element: <NotificationsScreen /> },
       { path: '/us/catalog', element: <CatalogScreen /> },
       { path: '/us/profile', element: <ProfileSettingsScreen /> },
-      { path: '/invite', element: <InviteScreen editing /> },
-      { path: '/plan', element: <PlanScreen /> },
-      { path: '/settings', element: <SettingsScreen /> },
+      { path: '/us/invite', element: <InviteScreen editing /> },
+      { path: '/us/plan', element: <PlanScreen /> },
+      { path: '/us/household', element: <SettingsScreen /> },
+      // Older addresses, from before these moved under Us.
+      { path: '/invite', element: <Navigate to="/us/invite" replace /> },
+      { path: '/plan', element: <Navigate to="/us/plan" replace /> },
+      { path: '/settings', element: <Navigate to="/us/household" replace /> },
       { path: '*', element: <Navigate to="/" replace /> },
     ],
   },

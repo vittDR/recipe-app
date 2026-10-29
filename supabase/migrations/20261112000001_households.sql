@@ -4,7 +4,8 @@
 --    household": the shared catalogue is the same for every household.
 -- 2. A household's rows can only point at shared rows or at its own: a
 --    foreign key alone accepts another household's product, recipe or store.
--- 3. put_grocery_item no longer accepts an id another household uses.
+-- 3. put_grocery_item no longer accepts an id another household uses, and a
+--    new name now lands on the item it creates (it used to fail not_found).
 -- 4. Ownership lives in households.owner_id only (household_members.role went).
 -- 5. Household policies compare with my_household_id() once per query instead
 --    of calling is_member() on every row. One household per person stays the
@@ -12,7 +13,9 @@
 -- 6. Shared tags count in catalog_version(), like products and ingredients.
 -- 7. Cleared list lines are kept a year (usuals and "probably at home" read them).
 -- 8. Unused: meals.portion_split, households.store_name, clear_checked_items(),
---    set_frequent() and the recipe-images bucket (photos are served by the app).
+--    set_frequent(), add_grocery_items() (every list change now goes through
+--    the app's queue and put_grocery_item) and the recipe-images bucket
+--    (photos are served by the app).
 
 -- ---------------------------------------------------------------------------
 -- 1. Catalogue admins
@@ -108,6 +111,7 @@ as $$
 declare
   v_household uuid := public.my_household_id();
   v_existing uuid;
+  v_product_id uuid;
   v_product public.products;
   v_pref public.household_products;
 begin
@@ -126,8 +130,9 @@ begin
     where id = (p_item ->> 'product_id')::uuid and (household_id is null or household_id = v_household);
   end if;
   if v_product.id is null and nullif(trim(p_item ->> 'name'), '') is not null then
-    select * into v_product from public.products
-    where id = public.resolve_product(v_household, p_item ->> 'name', (p_item ->> 'aisle')::public.aisle);
+    -- Resolve first: a product it creates isn't visible to a query already running.
+    v_product_id := public.resolve_product(v_household, p_item ->> 'name', (p_item ->> 'aisle')::public.aisle);
+    select * into v_product from public.products where id = v_product_id;
   end if;
   if v_product.id is null then
     raise exception 'not_found';
@@ -455,6 +460,7 @@ alter table public.households drop column store_name;
 grant update (name, timezone, prompt_time, reminder_time) on public.households to authenticated;
 drop function public.clear_checked_items();
 drop function public.set_frequent(uuid, boolean);
+drop function public.add_grocery_items(jsonb);
 
 do $$
 begin
