@@ -248,7 +248,7 @@ export function UsualsSheet({
     .filter((x) => !q || productKey(`${x.product.name_fr} ${x.product.name_en ?? ''} ${x.product.aliases.join(' ')}`).includes(q));
 
   return (
-    <Sheet open={open} onClose={onClose} label={t('groceries.usuals')}>
+    <Sheet open={open} onClose={onClose} label={t('groceries.usuals')} className="sheet--fixed">
       <div className="row row--between" style={{ marginBottom: 'var(--s-3)' }}>
         <h2 className="title2">{t('groceries.usuals')}</h2>
         <Button small variant="text" onClick={onClose}>{t('app.done')}</Button>

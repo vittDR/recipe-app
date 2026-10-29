@@ -277,10 +277,10 @@ export function GroceriesScreen() {
           onFocus={() => setSearching(true)} onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); submit(); } }} />
         {searching ? (
-          <Button small variant="text" onClick={closeSearch}>{t('groceries.cancelSearch')}</Button>
+          <Button small variant="text" onClick={closeSearch}>{t('groceries.closeSearch')}</Button>
         ) : (
-          <button type="button" className="icon-btn" aria-label={t('groceries.usualsOpen')} onClick={() => setUsualsOpen(true)}>
-            <Icon name="clock" />
+          <button type="button" className="usuals-btn" aria-label={t('groceries.usualsOpen')} onClick={() => setUsualsOpen(true)}>
+            <Icon name="history" />
           </button>
         )}
         <SyncIcon status={status} onRetry={() => queue.retry()} />

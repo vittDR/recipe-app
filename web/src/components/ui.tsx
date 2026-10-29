@@ -244,7 +244,14 @@ function useScrollLock(active: boolean) {
 const SHEET_CLOSE_DISTANCE = 120;
 const SHEET_CLOSE_SPEED = 0.6;
 
-export function Sheet({ open, onClose, children, label }: { open: boolean; onClose: () => void; children: ReactNode; label: string }) {
+export function Sheet({ open, onClose, children, label, className = '' }: {
+  open: boolean;
+  onClose: () => void;
+  children: ReactNode;
+  label: string;
+  /** e.g. sheet--fixed: full height whatever the content. */
+  className?: string;
+}) {
   const sheetRef = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef(onClose);
@@ -321,7 +328,7 @@ export function Sheet({ open, onClose, children, label }: { open: boolean; onClo
   return createPortal(
     <>
       <div className="sheet-backdrop" ref={backdropRef} onClick={onClose} />
-      <div className="sheet" ref={sheetRef} role="dialog" aria-modal="true" aria-label={label}>
+      <div className={`sheet ${className}`} ref={sheetRef} role="dialog" aria-modal="true" aria-label={label}>
         <div className="sheet__grabber" />
         {children}
       </div>
