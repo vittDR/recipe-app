@@ -58,6 +58,16 @@ select pg_temp.check((select count(*) filter (where collection = 'original') = 1
                              and count(*) filter (where collection = 'web') = 109
                       from recipes where household_id is null), 'seed collections: 10 originals, 109 web');
 
+-- Every seed recipe is in English, French and Italian: its own language plus two translations, step for step.
+select pg_temp.check(not exists (
+  select 1 from recipes r, unnest(array['en', 'fr', 'it']) l
+  where r.household_id is null and l <> r.language
+    and (coalesce(r.translations -> l ->> 'title', '') = ''
+         or jsonb_array_length(coalesce(r.translations -> l -> 'steps', '[]')) <> jsonb_array_length(r.steps))),
+  'seed recipes are translated into the other two languages');
+select pg_temp.check(not exists (select 1 from recipes where household_id is null and translations ? language),
+                     'no translation into a recipe''s own language');
+
 -- AI-generated seed recipes have no source link: they're known by language and title.
 create temp view ai as select * from recipes where household_id is null and ai_generated_recipe;
 select pg_temp.check((select count(*) = 10 and count(source_url) = 0 from ai), '10 AI-generated seed recipes, without a source link');
@@ -105,6 +115,8 @@ select pg_temp.check((select cook_min is not null from library_recipes where id 
 select id as aisrc from library_recipes where title = 'Pasta e ceci' and ai_generated_recipe \gset
 select copy_recipe(:'aisrc') as aicp \gset
 select pg_temp.check((select ai_generated_recipe from library_recipes where id = :'aicp'), 'copy keeps the AI-generated flag');
+select pg_temp.check((select c.translations = s.translations and c.translations <> '{}'
+                      from recipes c join recipes s on s.id = c.copied_from where c.id = :'aicp'), 'copy keeps the translations');
 select pg_temp.check((select collection = 'original' from library_recipes where id = :'aicp')
                      and (select collection = 'web' from library_recipes where id = :'cp'),
                      'a copy stays in its seed recipe''s collection');
