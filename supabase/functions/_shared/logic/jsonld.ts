@@ -162,15 +162,3 @@ export function extractJsonLdRecipe(html: string): ExtractedRecipe | null {
   return null;
 }
 
-/** Visible text of a page, trimmed for the AI fallback. */
-export function pageText(html: string, maxChars = 15000): string {
-  const body = html
-    .replace(/<(script|style|noscript|svg|nav|footer|header)[\s\S]*?<\/\1>/gi, ' ')
-    .replace(/<br\s*\/?>|<\/(p|li|h\d|div)>/gi, '\n');
-  return body
-    .split('\n')
-    .map(clean)
-    .filter(Boolean)
-    .join('\n')
-    .slice(0, maxChars);
-}

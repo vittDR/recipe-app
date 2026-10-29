@@ -17,7 +17,7 @@ supabase/
   migrations/           schema, server rules (matching, tie-break, lists), RLS, cron
   seed.sql              ingredient catalogue (EN/FR/IT) and its grocery products
   personal/             one-off data for a household (a frequently-bought list, a head start for usuals)
-  seed_library.sql      110 seed recipes, generated from seed/recipes.json (don't edit)
+  seed_library.sql      119 seed recipes, generated from seed/recipes.json (don't edit)
   seed/                 the seed library source: recipes.json + review sheet
   functions/            edge functions (Deno)
     deal-deck/          scores the library and deals tonight's 12 cards
@@ -44,15 +44,17 @@ Key rules from the handover, and where they live:
 | 12 cards, ~8 known + 4 new, never/diet/time/recently-cooked filters | `logic/deck.ts` |
 | Patterns suggested at 8 of the last 10 exposures; apply only once accepted | `logic/preferences.ts`, Us tab |
 | Recipes tab filters (healthy, comfort, high protein, diet, veggie, fish, quick, one pot, easy, everyday ingredients); difficulty, coarse equipment, exotic ingredients | `logic/facets.ts`, `ingredient_catalog.exotic` |
-| List lines are real products (chicken breast = Blanc de poulet = poulet), French first; merge on product + unit; staples start unchecked | `products`, `add_grocery_items()`, `logic/products.ts`, `logic/groceries.ts` |
+| List lines are real products (chicken breast = Blanc de poulet = poulet), French first; a recipe adds to a line of the same product + unit; staples start unchecked | `products`, `put_grocery_item()`, `logic/products.ts`, `mergeTarget()` in `logic/groceries.ts` |
 | Stores (Picard…) are list sections among the aisles | `household_stores`, `household_products`, `set_product_section()` |
-| List changes show at once and save in the background (ids made on the phone, retried 1 s / 3 s / 10 s, then 10 min) | `logic/listsync.ts`, `web/src/lib/listQueue.ts`, `put_grocery_item()` |
-| Products carry a usual amount and units; the household's creator edits the shared catalogue | `apply_product_defaults()`, `is_catalog_admin()`, Us > Edit the catalog |
+| Every list change (typed, usuals, from a recipe) shows at once and saves in the background (ids made on the phone, retried 1 s / 3 s / 10 s, then 10 min) | `logic/listsync.ts`, `web/src/lib/listQueue.ts`, `put_grocery_item()` |
+| Products carry a usual amount and units; only people in `app_admins` edit the shared catalogue (nobody else sees the entry) | `apply_product_defaults()`, `app_admins`, `is_catalog_admin()`, Us > Edit the catalog |
+| Many households, one copy of the app: each sees the shared catalogue, seed library and tags plus its own rows, never another's; one household per person | RLS on `my_household_id()`, `check_household_refs()`, `tests/households_isolation_test.sql` |
 | Usuals = checked-off purchases, halving monthly; due again past the median gap | `logic/usuals.ts` |
 | "<name> added N items" pushed after 5 quiet minutes, not to people looking at the list; per-kind switches | `enqueue_grocery_pushes()`, `grocery_presence`, `profiles.push_muted` |
 | 17:30 prompt on cook days, reminder later, once per local day (windows that cross midnight still fire) | `enqueue_due_prompts()` + pg_cron |
-| Catalogues stay on the phone and are re-downloaded only when `catalog_version()` changes; recipe photos (900×675 WebP) are cached by the service worker | `web/src/lib/cache.ts`, `catalog_version()`, `src/sw.ts` |
-| Light / dark / automatic theme and password change live in Us > Profile settings; the theme is saved per device | `web/src/lib/theme.ts`, `screens/ProfileSettings.tsx` |
+| Catalogues (ingredients, products, tags) stay on the phone and are re-downloaded only when `catalog_version()` changes; recipe photos (900×675 WebP) are cached by the service worker | `web/src/lib/cache.ts`, `catalog_version()`, `src/sw.ts` |
+| Language, light / dark / automatic theme and password change live in Us > Profile settings; the theme is saved per device | `web/src/lib/theme.ts`, `screens/ProfileSettings.tsx` |
+| Screens are built from the shared components in `components/ui.tsx` (ListRow, Section, SearchField, SheetHeader, ProgressBar, confirmation sheet); spacing and colours come from tokens, never inline | `components/ui.tsx`, `styles/app.css` |
 
 ## One-time setup
 

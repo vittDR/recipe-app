@@ -5,7 +5,7 @@
 --
 -- The made-up shops are a week apart, the last one 1 to 6 days ago, top of
 -- the list most recent: they keep this order and don't all come due the same
--- day. Their check-off time is put before the 14-day "probably at home"
+-- day. Their check-off time is put before the 7-day "probably at home"
 -- window, so recipes still ask for them.
 --
 -- Run in SQL Editor after the migrations and seed.sql. Put the email of

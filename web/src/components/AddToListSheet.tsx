@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { mergeTarget, proposeListItems, scaleQuantity, type ListProposal } from '@logic/groceries.ts';
+import { AT_HOME_DAYS, mergeTarget, proposeListItems, scaleQuantity, type ListProposal } from '@logic/groceries.ts';
 import { sectionOf } from '@logic/products.ts';
 import { useI18n } from '../i18n/index.tsx';
 import { listQueue, withQueue } from '../lib/listQueue.ts';
@@ -15,7 +15,7 @@ export async function loadProposals(
   householdId: string,
   ingredients: RecipeIngredient[],
 ): Promise<ListProposal<RecipeIngredient>[]> {
-  const since = new Date(Date.now() - 14 * 86_400_000).toISOString();
+  const since = new Date(Date.now() - AT_HOME_DAYS * 86_400_000).toISOString();
   const [items, staples] = await Promise.all([
     supabase.from('grocery_items').select('*, product:products(ingredient)').eq('household_id', householdId)
       .or(`cleared_at.is.null,checked_at.gte.${since}`),

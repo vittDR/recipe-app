@@ -25,7 +25,7 @@ export function serviceClient(): SupabaseClient {
 }
 
 /** Client acting as the caller, so RLS applies. */
-export function userClient(req: Request): SupabaseClient {
+function userClient(req: Request): SupabaseClient {
   const key = Deno.env.get('PUBLISHABLE_KEY') ?? Deno.env.get('SUPABASE_ANON_KEY')!;
   return createClient(Deno.env.get('SUPABASE_URL')!, key, {
     auth: { persistSession: false },

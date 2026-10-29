@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { durationToMinutes, extractJsonLdRecipe, pageText } from '../jsonld.ts';
+import { durationToMinutes, extractJsonLdRecipe } from '../jsonld.ts';
 
 const page = `<html lang="fr"><head>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[
@@ -27,9 +27,8 @@ test('extracts a recipe from @graph JSON-LD', () => {
   assert.equal(r.language, 'fr');
 });
 
-test('no recipe -> null; page text drops chrome', () => {
+test('no recipe -> null', () => {
   assert.equal(extractJsonLdRecipe('<html><script type="application/ld+json">{"@type":"Article"}</script></html>'), null);
-  assert.equal(pageText(page.replace(/<script[\s\S]*?<\/script>/, '')), 'Hello\nWorld');
 });
 
 test('total falls back to prep + cook', () => {

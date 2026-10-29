@@ -61,7 +61,8 @@ exception when others then
   if sqlerrm <> 'invalid_invite' then raise; end if;
 end $$;
 select pg_temp.check((select count(*) = 1 from profiles), 'outsider sees only self');
-select pg_temp.check((select count(*) >= 14 from library_recipes), 'outsider sees the seed library');
+select pg_temp.check((select count(*) = (select count(*) from recipes where household_id is null) from library_recipes),
+                     'outsider sees the whole seed library');
 
 -- Members edit settings but cannot take ownership.
 select pg_temp.act_as('00000000-0000-0000-0000-00000000000b');
