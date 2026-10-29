@@ -5,6 +5,7 @@
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
 import { en, type Dictionary } from './en.ts';
 import { fr } from './fr.ts';
+import { APP_NAME } from '../brand.ts';
 
 export type Locale = 'en' | 'fr';
 export const LOCALES: Locale[] = ['en', 'fr'];
@@ -30,8 +31,8 @@ function lookup(dict: Dictionary, key: string): unknown {
 }
 
 function interpolate(s: string, vars?: Vars): string {
-  if (!vars) return s;
-  return s.replace(/\{(\w+)\}/g, (m, k) => (k in vars ? String(vars[k]) : m));
+  const all: Vars = { app: APP_NAME, ...vars };
+  return s.replace(/\{(\w+)\}/g, (m, k) => (k in all ? String(all[k]) : m));
 }
 
 export function detectLocale(): Locale {

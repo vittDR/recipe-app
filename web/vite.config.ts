@@ -2,6 +2,7 @@ import react from '@vitejs/plugin-react';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
+import { APP_NAME } from './src/brand.ts';
 
 const logic = fileURLToPath(new URL('../supabase/functions/_shared/logic', import.meta.url));
 
@@ -10,6 +11,8 @@ export default defineConfig({
   server: { fs: { allow: ['..'] } },
   plugins: [
     react(),
+    // %APP_NAME% in index.html.
+    { name: 'app-name', transformIndexHtml: (html: string) => html.replaceAll('%APP_NAME%', APP_NAME) },
     VitePWA({
       strategies: 'injectManifest',
       srcDir: 'src',
@@ -17,8 +20,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       injectRegister: false,
       manifest: {
-        name: 'DINEAMITE',
-        short_name: 'DINEAMITE',
+        name: APP_NAME,
+        short_name: APP_NAME,
         description: 'Tonight’s dinner, decided together.',
         lang: 'en',
         start_url: '/',

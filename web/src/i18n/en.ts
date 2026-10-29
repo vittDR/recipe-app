@@ -1,9 +1,10 @@
 // English strings: the source of truth for keys. fr.ts must match this shape
-// (TypeScript enforces it). Plurals use `_one` / `_other` suffixes.
+// (TypeScript enforces it). Plurals use `_one` / `_other` suffixes. {app} is
+// the app's name (src/brand.ts) in every string.
 
 export const en = {
   app: {
-    name: 'DINEAMITE',
+    name: '{app}',
     loading: 'Loading…',
     error: 'Something went wrong. Try again.',
     offline: 'You’re offline. Changes will sync when you’re back.',
@@ -31,7 +32,7 @@ export const en = {
     getStarted: 'Get started',
     haveCode: 'I have an invite code',
     signIn: 'I already have an account',
-    install: 'For notifications, add DINEAMITE to your Home Screen: tap Share, then “Add to Home Screen”.',
+    install: 'For notifications, add {app} to your Home Screen: tap Share, then “Add to Home Screen”.',
   },
   account: {
     title: 'Create your account',
@@ -71,7 +72,7 @@ export const en = {
     subtitle: 'Share this code. It works once and expires in 48 hours.',
     expires: 'Expires {time}',
     share: 'Share invite',
-    shareText: 'Join our household on DINEAMITE: {link} (code {code})',
+    shareText: 'Join our household on {app}: {link} (code {code})',
     copy: 'Copy code',
     copied: 'Copied',
     waiting: 'Waiting for your partner to join…',
@@ -239,12 +240,12 @@ export const en = {
     hard: 'Hard',
   },
   collection: {
-    original: 'DINEAMITE originals',
-    web_import: 'Web imports',
+    original: '{app} originals',
+    web: 'From the web',
     our_import: 'Our imports',
     our_recipe: 'Our recipes',
-    originalOne: 'DINEAMITE original',
-    web_importOne: 'From the web',
+    originalOne: '{app} original',
+    webOne: 'From the web',
   },
   recipes: {
     title: 'Recipes',
@@ -467,7 +468,7 @@ export const en = {
     notifications: 'Notifications',
     enableNotifications: 'Turn on notifications',
     notificationsOn: 'Notifications are on',
-    notificationsUnsupported: 'Add DINEAMITE to your Home Screen to get notifications.',
+    notificationsUnsupported: 'Add {app} to your Home Screen to get notifications.',
     notificationsDenied: 'Notifications are blocked in your settings.',
   },
   profile: {
@@ -484,7 +485,7 @@ export const en = {
     title: 'Notifications',
     allow: 'Allow notifications',
     allowHint: 'Turn off to stop every notification, on all your phones.',
-    unsupported: 'Add DINEAMITE to your Home Screen to get notifications.',
+    unsupported: 'Add {app} to your Home Screen to get notifications.',
     denied: 'Notifications are blocked in your phone’s settings.',
     kinds: 'What to be told about',
     prompt: 'Tonight’s prompt',

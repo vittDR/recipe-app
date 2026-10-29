@@ -53,8 +53,8 @@ export interface TasteRule {
 }
 
 /** Part of the library, from where the recipe came from (a generated column). */
-export type RecipeCollection = 'original' | 'web_import' | 'our_import' | 'our_recipe';
-export const RECIPE_COLLECTIONS: RecipeCollection[] = ['original', 'web_import', 'our_import', 'our_recipe'];
+export type RecipeCollection = 'original' | 'web' | 'our_import' | 'our_recipe';
+export const RECIPE_COLLECTIONS: RecipeCollection[] = ['original', 'web', 'our_import', 'our_recipe'];
 
 export interface Recipe {
   id: string;

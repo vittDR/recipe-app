@@ -2,7 +2,7 @@ import type { Dictionary } from './en.ts';
 
 export const fr: Dictionary = {
   app: {
-    name: 'DINEAMITE',
+    name: '{app}',
     loading: 'Chargement…',
     error: 'Un problème est survenu. Réessayez.',
     offline: 'Vous êtes hors ligne. Tout sera synchronisé au retour du réseau.',
@@ -30,7 +30,7 @@ export const fr: Dictionary = {
     getStarted: 'Commencer',
     haveCode: 'J’ai un code d’invitation',
     signIn: 'J’ai déjà un compte',
-    install: 'Pour les notifications, ajoutez DINEAMITE à l’écran d’accueil : Partager, puis « Sur l’écran d’accueil ».',
+    install: 'Pour les notifications, ajoutez {app} à l’écran d’accueil : Partager, puis « Sur l’écran d’accueil ».',
   },
   account: {
     title: 'Créer votre compte',
@@ -70,7 +70,7 @@ export const fr: Dictionary = {
     subtitle: 'Partagez ce code. Il ne sert qu’une fois et expire dans 48 heures.',
     expires: 'Expire {time}',
     share: 'Partager l’invitation',
-    shareText: 'Rejoins notre foyer sur DINEAMITE : {link} (code {code})',
+    shareText: 'Rejoins notre foyer sur {app} : {link} (code {code})',
     copy: 'Copier le code',
     copied: 'Copié',
     waiting: 'En attente de votre partenaire…',
@@ -238,12 +238,12 @@ export const fr: Dictionary = {
     hard: 'Difficile',
   },
   collection: {
-    original: 'Recettes DINEAMITE',
-    web_import: 'Imports web',
+    original: 'Recettes {app}',
+    web: 'Trouvées sur le web',
     our_import: 'Nos imports',
     our_recipe: 'Nos recettes',
-    originalOne: 'Recette DINEAMITE',
-    web_importOne: 'Trouvée sur le web',
+    originalOne: 'Recette {app}',
+    webOne: 'Trouvée sur le web',
   },
   recipes: {
     title: 'Recettes',
@@ -466,7 +466,7 @@ export const fr: Dictionary = {
     notifications: 'Notifications',
     enableNotifications: 'Activer les notifications',
     notificationsOn: 'Notifications activées',
-    notificationsUnsupported: 'Ajoutez DINEAMITE à l’écran d’accueil pour recevoir des notifications.',
+    notificationsUnsupported: 'Ajoutez {app} à l’écran d’accueil pour recevoir des notifications.',
     notificationsDenied: 'Les notifications sont bloquées dans vos réglages.',
   },
   profile: {
@@ -483,7 +483,7 @@ export const fr: Dictionary = {
     title: 'Notifications',
     allow: 'Autoriser les notifications',
     allowHint: 'Désactivez pour ne plus rien recevoir, sur tous vos téléphones.',
-    unsupported: 'Ajoutez DINEAMITE à l’écran d’accueil pour recevoir des notifications.',
+    unsupported: 'Ajoutez {app} à l’écran d’accueil pour recevoir des notifications.',
     denied: 'Les notifications sont bloquées dans les réglages du téléphone.',
     kinds: 'Être prévenu quand',
     prompt: 'Rappel du soir',

@@ -55,8 +55,8 @@ select pg_temp.check((select i.id = 'b6b4b263-9d00-433a-a43b-af72a2b7bd33' from 
 select pg_temp.check((select count(*) = 109 from lib), 're-running seed_library.sql adds no duplicates');
 
 select pg_temp.check((select count(*) filter (where collection = 'original') = 10
-                             and count(*) filter (where collection = 'web_import') = 109
-                      from recipes where household_id is null), 'seed collections: 10 originals, 109 web imports');
+                             and count(*) filter (where collection = 'web') = 109
+                      from recipes where household_id is null), 'seed collections: 10 originals, 109 web');
 
 -- AI-generated seed recipes have no source link: they're known by language and title.
 create temp view ai as select * from recipes where household_id is null and ai_generated_recipe;
@@ -106,7 +106,7 @@ select id as aisrc from library_recipes where title = 'Pasta e ceci' and ai_gene
 select copy_recipe(:'aisrc') as aicp \gset
 select pg_temp.check((select ai_generated_recipe from library_recipes where id = :'aicp'), 'copy keeps the AI-generated flag');
 select pg_temp.check((select collection = 'original' from library_recipes where id = :'aicp')
-                     and (select collection = 'web_import' from library_recipes where id = :'cp'),
+                     and (select collection = 'web' from library_recipes where id = :'cp'),
                      'a copy stays in its seed recipe''s collection');
 insert into recipes (household_id, title, source_type) values (my_household_id(), 'Typed one', 'typed'),
   (my_household_id(), 'From a link', 'web'), (my_household_id(), 'From a photo', 'photo');
