@@ -161,9 +161,10 @@ Deno.serve(async (req) => {
   const { data: me } = await admin.from('profiles').select('first_name').eq('id', userId).single();
   const others = eaters.filter((u) => u !== userId);
   if (others.length) {
-    await admin.from('push_outbox').insert(others.map((u) => ({
-      user_id: u, kind: 'deck_dealt', payload: { deck_id: deck.id, name: me?.first_name ?? '' },
-    })));
+    // Through enqueue_push, which skips people who turned this kind off.
+    await admin.rpc('enqueue_push', {
+      p_users: others, p_kind: 'deck_dealt', p_payload: { deck_id: deck.id, name: me?.first_name ?? '' },
+    });
   }
   return json({ deck_id: deck.id, existing: false, cards: cards.length });
 });

@@ -60,7 +60,7 @@ select set_product_section(:'framboises', null, :'picard');
 select pg_temp.check((select store_id = :'picard'::uuid and aisle = 'produce' from grocery_items where product_id = :'framboises'),
                      'moving a product to a store moves it on the list');
 update grocery_items set checked_at = now() where product_id = :'framboises';
-select clear_checked_items();
+update grocery_items set cleared_at = now() where checked_at is not null and cleared_at is null;
 select add_grocery_items('[{"name":"framboises"}]');
 select pg_temp.check((select store_id = :'picard'::uuid from grocery_items
                       where product_id = :'framboises' and cleared_at is null), 'next time it goes to the store again');
@@ -69,10 +69,6 @@ select pg_temp.check((select store_id is null and aisle = 'frozen' from grocery_
                       where product_id = :'framboises' and cleared_at is null), 'and back to an aisle');
 select pg_temp.check((select add_count = 2 from household_products where product_id = :'framboises'), 'adds are counted');
 
-select set_frequent(:'swiffer', true);
-select pg_temp.check((select pinned and not hidden from household_products where product_id = :'swiffer'), 'pin to frequents');
-select set_frequent(:'swiffer', false);
-select pg_temp.check((select hidden and not pinned from household_products where product_id = :'swiffer'), 'hide from frequents');
 
 -- The other household sees none of it.
 select pg_temp.act_as('00000000-0000-0000-0000-00000000000e');

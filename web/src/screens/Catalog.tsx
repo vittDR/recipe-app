@@ -20,14 +20,13 @@ const SHOWN = 80;
 
 export function CatalogScreen() {
   const { t, tn, locale } = useI18n();
-  const { userId, household } = useSession();
+  const { household, isCatalogAdmin: isAdmin } = useSession();
   const { amount, unitLabel } = useAmount();
   const [params] = useSearchParams();
   const [scope, setScope] = useState<Scope>('base');
   const [query, setQuery] = useState(params.get('q') ?? '');
   const [products, setProducts] = useState<Product[] | null>(null);
   const [editing, setEditing] = useState<Product | 'new' | null>(null);
-  const isAdmin = !!household && household.owner_id === userId;
 
   const load = async () => {
     const rows = must(await supabase.from('products').select('*')

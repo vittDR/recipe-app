@@ -16,6 +16,8 @@ interface SessionState {
   household: Household | null;
   members: Member[];
   goals: MemberGoals | null;
+  /** Edits the shared catalogue (public.app_admins). */
+  isCatalogAdmin: boolean;
   /** Other members of the household. */
   partners: Member[];
   refresh: () => Promise<void>;
@@ -34,6 +36,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const [household, setHousehold] = useState<Household | null>(null);
   const [members, setMembers] = useState<Member[]>([]);
   const [goals, setGoals] = useState<MemberGoals | null>(null);
+  const [isCatalogAdmin, setCatalogAdmin] = useState(false);
 
   const userId = session?.user.id ?? null;
 
@@ -43,15 +46,18 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       setHousehold(null);
       setMembers([]);
       setGoals(null);
+      setCatalogAdmin(false);
       return;
     }
-    const [p, m, g] = await Promise.all([
+    const [p, m, g, a] = await Promise.all([
       supabase.from('profiles').select('id, first_name, color, locale').eq('id', uid).maybeSingle(),
       supabase.from('household_members').select('household_id').eq('user_id', uid).maybeSingle(),
       supabase.from('member_goals').select('*').eq('user_id', uid).maybeSingle(),
+      supabase.rpc('is_catalog_admin'),
     ]);
     setProfile(p.data as Profile | null);
     setGoals(g.data as MemberGoals | null);
+    setCatalogAdmin(a.data === true);
 
     const householdId = m.data?.household_id as string | undefined;
     if (!householdId) {
@@ -60,9 +66,9 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       return;
     }
     const [h, ms] = await Promise.all([
-      supabase.from('households').select('id, name, owner_id, timezone, store_name, prompt_time, reminder_time')
+      supabase.from('households').select('id, name, owner_id, timezone, prompt_time, reminder_time')
         .eq('id', householdId).single(),
-      supabase.from('household_members').select('user_id, role, joined_at, profile:profiles(id, first_name, color, locale)')
+      supabase.from('household_members').select('user_id, joined_at, profile:profiles(id, first_name, color, locale)')
         .eq('household_id', householdId).order('joined_at'),
     ]);
     setHousehold(h.data as Household | null);
@@ -118,6 +124,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       household,
       members,
       goals,
+      isCatalogAdmin,
       partners: members.filter((m) => m.user_id !== userId),
       refresh: () => load(userId),
       signOut: async () => {
@@ -127,7 +134,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       memberName: (id) => (id ? byId.get(id)?.first_name ?? '' : ''),
       memberColor: (id) => (id ? byId.get(id)?.color ?? 'var(--c-muted)' : 'var(--c-muted)'),
     };
-  }, [loading, session, userId, profile, household, members, goals, load]);
+  }, [loading, session, userId, profile, household, members, goals, isCatalogAdmin, load]);
 
   return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;
 }

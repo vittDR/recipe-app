@@ -23,7 +23,7 @@ const samePattern = (a: { kind: string; value: string }, b: { kind: string; valu
 
 export function UsScreen() {
   const { t, tn, locale, setLocale } = useI18n();
-  const { userId, members, goals, household, signOut } = useSession();
+  const { userId, members, goals, household, signOut, isCatalogAdmin } = useSession();
   const [rules, setRules] = useState<TasteRule[]>([]);
   const [suggestions, setSuggestions] = useState<PatternSuggestion[]>([]);
   const [push, setPush] = useState<PushState>('unsupported');
@@ -176,7 +176,7 @@ export function UsScreen() {
           <Icon name="gear" /> <span className="list-row__main">{t('us.settings')}</span>
           <span className="chevron"><Icon name="chevron" size={18} /></span>
         </Link>
-        {household?.owner_id === userId && (
+        {isCatalogAdmin && (
           <Link to="/us/catalog" className="list-row">
             <Icon name="book" />
             <span className="list-row__main">

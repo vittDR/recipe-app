@@ -76,10 +76,9 @@ function usePresence(hid: string, userId: string) {
 
 export function GroceriesScreen() {
   const { t, tn, locale } = useI18n();
-  const { userId, household, memberName, memberColor, members } = useSession();
+  const { userId, household, memberName, memberColor, members, isCatalogAdmin: isAdmin } = useSession();
   const { amount } = useAmount();
   const hid = household!.id;
-  const isAdmin = household!.owner_id === userId;
   const queue = listQueue(hid);
   const sync = useListQueue(hid);
   const seenBefore = usePresence(hid, userId!);

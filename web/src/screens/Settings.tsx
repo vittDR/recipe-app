@@ -111,10 +111,6 @@ export function SettingsScreen() {
           <input className="input" defaultValue={household!.name} maxLength={60}
             onBlur={(e) => e.target.value.trim() && e.target.value !== household!.name && void update({ name: e.target.value.trim() })} />
         </Field>
-        <Field label={t('settings.store')}>
-          <input className="input" defaultValue={household!.store_name ?? ''} placeholder={t('settings.storePlaceholder')}
-            onBlur={(e) => void update({ store_name: e.target.value.trim() || null })} />
-        </Field>
         <Field label={t('settings.timezone')}>
           <select className="input" value={household!.timezone} onChange={(e) => void update({ timezone: e.target.value })}>
             {zones.map((z) => <option key={z} value={z}>{z}</option>)}
@@ -129,7 +125,7 @@ export function SettingsScreen() {
             <Avatar name={m.profile.first_name} color={m.profile.color} />
             <span className="list-row__main">
               <span className="list-row__title">{m.profile.first_name}</span>
-              {m.role === 'owner' && <span className="list-row__meta"> · {t('settings.owner')}</span>}
+              {m.user_id === household!.owner_id && <span className="list-row__meta"> · {t('settings.owner')}</span>}
             </span>
             {isOwner && m.user_id !== userId && (
               <Button small variant="text" onClick={() => void removeMember(m.user_id, m.profile.first_name)}>{t('settings.remove')}</Button>

@@ -65,13 +65,13 @@ select pg_temp.check((select count(*) >= 14 from library_recipes), 'outsider see
 
 -- Members edit settings but cannot take ownership.
 select pg_temp.act_as('00000000-0000-0000-0000-00000000000b');
-update households set store_name = 'Carrefour' where id = :'hid';
+update households set name = 'Chez nous deux' where id = :'hid';
 do $$ begin
   update households set owner_id = auth.uid();
   raise exception 'should have failed';
 exception when insufficient_privilege then null;
 end $$;
-select pg_temp.check((select store_name = 'Carrefour' and owner_id = '00000000-0000-0000-0000-00000000000a'
+select pg_temp.check((select name = 'Chez nous deux' and owner_id = '00000000-0000-0000-0000-00000000000a'
                       from households), 'members edit settings, not ownership');
 
 -- Grocery merge (as A).
