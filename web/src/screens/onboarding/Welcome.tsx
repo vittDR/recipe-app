@@ -9,7 +9,7 @@ export function WelcomeScreen() {
   return (
     <Screen plain>
       <div className="welcome">
-        <div className="big-emoji" aria-hidden>🧨</div>
+        <img className="welcome__logo" src="/favicon.svg" alt="" aria-hidden />
         <div className="logo">{t('app.name')}</div>
         <p className="title3 welcome__tagline">{t('welcome.tagline')}</p>
       </div>
