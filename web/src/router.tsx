@@ -54,10 +54,12 @@ function Gate() {
   }
 
   return (
-    <div className="app">
-      {loading ? <Spinner /> : target && target !== pathname ? <Navigate to={target} replace /> : <Outlet />}
-      <ToastHost />
-      <ConfirmHost />
+    <div className="scroller">
+      <div className="app">
+        {loading ? <Spinner /> : target && target !== pathname ? <Navigate to={target} replace /> : <Outlet />}
+        <ToastHost />
+        <ConfirmHost />
+      </div>
     </div>
   );
 }
