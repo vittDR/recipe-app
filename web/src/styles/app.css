@@ -1267,6 +1267,18 @@ a.notice {
   background: var(--c-success);
 }
 
+.list-row__icon .week__day {
+  min-width: 36px;
+  padding: 0;
+  gap: 0;
+}
+
+.list-row__icon .week__day--today {
+  background: none;
+  box-shadow: none;
+  color: var(--c-accent);
+}
+
 .welcome__logo {
   width: 88px;
   height: 88px;

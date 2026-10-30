@@ -1,3 +1,4 @@
+import { useLocation } from 'react-router';
 import { Icon } from '../components/Icon.tsx';
 import { Checkbox, ListRow, Screen } from '../components/ui.tsx';
 import { useI18n } from '../i18n/index.tsx';
@@ -15,6 +16,7 @@ interface WeekData {
 /** The next seven evenings, each switched on or off for that date only. */
 export function WeekScreen() {
   const { t, list, locale } = useI18n();
+  const location = useLocation();
   const { household } = useSession();
   const save = useSave();
   const hid = household!.id;
@@ -39,6 +41,7 @@ export function WeekScreen() {
   };
 
   const names = list('plan.daysLong');
+  const short = list('plan.days');
   const dayMonth = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', timeZone: 'UTC' });
   return (
     <Screen back="/us" title={t('week.title')} subtitle={t('week.subtitle')}>
@@ -48,14 +51,19 @@ export function WeekScreen() {
           const cook = cooksOn(date, data?.usual, data?.dates);
           const when = dayMonth.format(new Date(`${date}T12:00:00Z`));
           return (
+            // Same day tile as the week strip on Tonight: short name over the day number.
             <ListRow key={date} title={name}
-              meta={i === 0 ? `${t('week.today')} · ${when}` : i === 1 ? `${t('week.tomorrow')} · ${when}` : when}
+              icon={<span className={`week__day${i === 0 ? ' week__day--today' : ''}`} aria-hidden>
+                <span>{short[isoWeekday(date) - 1]}</span>
+                <span className="headline">{Number(date.slice(8))}</span>
+              </span>}
+              meta={i === 0 ? t('week.today') : i === 1 ? t('week.tomorrow') : undefined}
               trailing={<Checkbox checked={cook} label={`${name} ${when}`} onChange={(v) => void toggle(date, v)} color="var(--c-accent)" />} />
           );
         })}
       </div>
       <div className="list mt-6">
-        <ListRow to="/us/plan" state={{ back: '/us/week' }} icon={<Icon name="calendar" />} title={t('week.usual')} meta={t('week.usualHint')} />
+        <ListRow to="/us/plan" state={{ back: '/us/week', backState: location.state }} icon={<Icon name="calendar" />} title={t('week.usual')} meta={t('week.usualHint')} />
       </div>
     </Screen>
   );
