@@ -28,6 +28,8 @@ export type ListOp =
     unit: string | null;
     aisle: Aisle;
     store_id: string | null;
+    /** The recipe it was added for, for "by recipe" on the list. */
+    recipe_id?: string | null;
     added_by: string;
     at: string;
   }

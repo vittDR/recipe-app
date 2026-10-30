@@ -1,14 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { AddToListSheet, loadProposals } from '../../components/AddToListSheet.tsx';
 import { Icon } from '../../components/Icon.tsx';
 import { Avatar, Button, imageStyle, recipeEmoji } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
+import { useLive, useSave } from '../../lib/hooks.ts';
 import { recipeTitle } from '../../lib/recipeText.ts';
 import { useSession } from '../../lib/session.tsx';
 import { INGREDIENT_SELECT } from '../../lib/products.ts';
 import { must, supabase } from '../../lib/supabase.ts';
-import type { RecipeIngredient } from '../../lib/types.ts';
+import type { Recipe, RecipeIngredient } from '../../lib/types.ts';
 import type { DeckData } from './data.ts';
 
 interface Portion {
@@ -25,38 +26,38 @@ export function MatchView({ data }: { data: DeckData }) {
   const navigate = useNavigate();
   const recipeId = data.deck.matched_recipe_id!;
   const card = data.cards.find((c) => c.recipe_id === recipeId);
-  const [recipe, setRecipe] = useState(card?.recipe ?? null);
-  const [ingredients, setIngredients] = useState<RecipeIngredient[]>([]);
-  const [portion, setPortion] = useState<Portion | null>(null);
-  const [missing, setMissing] = useState<number | null>(null);
-  const [matches, setMatches] = useState<string[]>([]);
+  const save = useSave();
   const [sheet, setSheet] = useState(false);
-
-  useEffect(() => {
-    void (async () => {
-      const [r, ings, p, m] = await Promise.all([
-        card ? Promise.resolve({ data: card.recipe, error: null }) : supabase.from('recipes').select('*').eq('id', recipeId).single(),
-        supabase.from('recipe_ingredients').select(INGREDIENT_SELECT).eq('recipe_id', recipeId).order('position'),
-        supabase.rpc('my_portion', { p_recipe: recipeId, p_eaters: data.deck.who_eating }),
-        supabase.rpc('deck_matches', { p_deck: data.deck.id }),
-      ]);
-      setRecipe(must(r));
-      const list = must(ings) as RecipeIngredient[];
-      setIngredients(list);
-      setPortion(((p.data ?? []) as Portion[])[0] ?? null);
-      setMatches(((m.data ?? []) as { recipe_id: string }[]).map((x) => x.recipe_id));
-      const proposals = await loadProposals(household!.id, list);
-      setMissing(proposals.filter((x) => x.add).length);
-    })();
-  }, [recipeId, card, data.deck.id, data.deck.who_eating, household]);
+  const { data: match, reload } = useLive<{
+    recipe: Recipe; ingredients: RecipeIngredient[]; portion: Portion | null; matches: string[]; missing: number;
+  }>(`match:${data.deck.id}:${recipeId}`, async () => {
+    const [r, ings, p, m] = await Promise.all([
+      card ? Promise.resolve({ data: card.recipe, error: null }) : supabase.from('recipes').select('*').eq('id', recipeId).single(),
+      supabase.from('recipe_ingredients').select(INGREDIENT_SELECT).eq('recipe_id', recipeId).order('position'),
+      supabase.rpc('my_portion', { p_recipe: recipeId, p_eaters: data.deck.who_eating }),
+      supabase.rpc('deck_matches', { p_deck: data.deck.id }),
+    ]);
+    const ingredients = must(ings) as RecipeIngredient[];
+    const proposals = await loadProposals(household!.id, ingredients);
+    return {
+      recipe: must(r) as Recipe,
+      ingredients,
+      portion: ((p.data ?? []) as Portion[])[0] ?? null,
+      matches: ((m.data ?? []) as { recipe_id: string }[]).map((x) => x.recipe_id),
+      missing: proposals.filter((x) => x.add).length,
+    };
+  });
+  const recipe = match?.recipe ?? card?.recipe ?? null;
+  const portion = match?.portion ?? null;
+  const missing = match?.missing ?? null;
 
   const others = data.deck.who_eating.filter((u) => u !== userId);
   const fits = data.fits.get(recipeId);
-  const otherMatch = matches.find((id) => id !== recipeId);
+  const otherMatch = match?.matches.find((id) => id !== recipeId);
 
   const cook = async () => {
-    await supabase.from('meals').update({ status: 'cooked' })
-      .eq('household_id', household!.id).eq('for_date', data.deck.for_date);
+    await save(supabase.from('meals').update({ status: 'cooked' })
+      .eq('household_id', household!.id).eq('for_date', data.deck.for_date));
     navigate(`/recipes/${recipeId}/cook`);
   };
 
@@ -69,8 +70,8 @@ export function MatchView({ data }: { data: DeckData }) {
           <Icon name="x" />
         </button>
       </div>
-      <p className="headline" style={{ color: 'var(--c-accent)', margin: 0 }}>🎉 {t('match.title')}</p>
-      <h1 className="screen__title" style={{ marginTop: 'var(--s-1)' }}>{recipeTitle(recipe, locale)}</h1>
+      <p className="headline text-accent m-0">🎉 {t('match.title')}</p>
+      <h1 className="screen__title match__title">{recipeTitle(recipe, locale)}</h1>
 
       <div className="plates">
         <div className="card stack">
@@ -85,15 +86,15 @@ export function MatchView({ data }: { data: DeckData }) {
         {others.map((u) => (
           <div key={u} className="card stack">
             <span className="row small muted"><Avatar name={memberName(u)} color={memberColor(u)} size="sm" /> {t('match.partnerPlate', { name: memberName(u) })}</span>
-            <span className="headline" style={{ color: fits?.get(u) ? 'var(--c-success)' : 'var(--c-muted)' }}>
+            <span className={`headline ${fits?.get(u) ? 'text-success' : 'muted'}`}>
               {fits?.get(u) ? `✓ ${t('match.fits')}` : t('match.notFits')}
             </span>
           </div>
         ))}
       </div>
 
-      <div className="stack" style={{ marginTop: 'var(--s-5)' }}>
-        {portion && <p className="muted small" style={{ margin: 0 }}>{t('match.servingsPot', { n: Math.round(portion.pot_servings * 4) / 4 })}</p>}
+      <div className="stack mt-6">
+        {portion && <p className="muted small m-0">{t('match.servingsPot', { n: Math.round(portion.pot_servings * 4) / 4 })}</p>}
         <div className="notice notice--info row row--between">
           <span>{missing === null ? '…' : missing === 0 ? t('match.nothingMissing') : tn('match.missing', missing)}</span>
           {missing !== 0 && <Button small variant="secondary" onClick={() => setSheet(true)}>{t('match.addToList')}</Button>}
@@ -101,14 +102,14 @@ export function MatchView({ data }: { data: DeckData }) {
         <Button block onClick={() => void cook()}><Icon name="pot" /> {t('match.cook')}</Button>
         <Button block variant="secondary" onClick={() => navigate(`/recipes/${recipeId}`)}>{t('match.viewRecipe')}</Button>
         {otherMatch && (
-          <Button block variant="text" onClick={() => void supabase.rpc('choose_match', { p_deck: data.deck.id, p_recipe: otherMatch })}>
+          <Button block variant="text" onClick={() => void save(supabase.rpc('choose_match', { p_deck: data.deck.id, p_recipe: otherMatch }))}>
             {t('match.other')}
           </Button>
         )}
       </div>
 
-      <AddToListSheet open={sheet} onClose={() => { setSheet(false); setMissing(null); void loadProposals(household!.id, ingredients).then((p) => setMissing(p.filter((x) => x.add).length)); }}
-        recipe={recipe} ingredients={ingredients} potServings={portion?.pot_servings} />
+      <AddToListSheet open={sheet} onClose={() => { setSheet(false); void reload(); }}
+        recipe={recipe} ingredients={match?.ingredients ?? []} potServings={portion?.pot_servings} />
     </main>
   );
 }

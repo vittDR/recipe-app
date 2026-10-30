@@ -36,7 +36,7 @@ export function clearHouseholdCache(): void {
   }
 }
 
-type Catalogue = 'products' | 'ingredients';
+type Catalogue = 'products' | 'ingredients' | 'tags';
 let versions: Promise<Record<Catalogue, string>> | null = null;
 
 function serverVersions(): Promise<Record<Catalogue, string>> {

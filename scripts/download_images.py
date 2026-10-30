@@ -6,13 +6,12 @@ under 100 KB (200 KB max).
 
 Usage:
     pip install requests pillow
-    python3 download_images.py recipes.json images/
-    python3 download_images.py recipes.json images/ --base-url https://<project>.supabase.co/storage/v1/object/public/recipe-images/seed/
+    python3 download_images.py recipes.json web/public/recipe-photos/
 
-Writes images/<slug>.webp for every recipe with an image_url, and images/report.csv.
-With --base-url it also writes recipes.hosted.json next to recipes.json, where
-image_url points at your copy (base-url + file name) and image_source_url keeps
-the original. Existing files are skipped, so you can re-run it after a failure.
+Writes <out_dir>/<slug>.webp for every recipe with an image_url, and
+<out_dir>/report.csv. The app serves the photos itself (/recipe-photos/<slug>.webp);
+run make_thumbnails.py afterwards. Existing files are skipped, so you can
+re-run it after a failure.
 """
 import argparse, csv, io, json, re, sys, time, unicodedata
 from pathlib import Path
@@ -82,7 +81,6 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("recipes")
     ap.add_argument("out_dir")
-    ap.add_argument("--base-url", help="public URL prefix where you will upload the files")
     a = ap.parse_args()
 
     recipes = json.loads(Path(a.recipes).read_text(encoding="utf-8"))
@@ -110,15 +108,6 @@ def main():
     with open(out / "report.csv", "w", newline="", encoding="utf-8") as f:
         csv.writer(f).writerows([("title", "file", "status", "note"), *rows])
 
-    if a.base_url:
-        base = a.base_url if a.base_url.endswith("/") else a.base_url + "/"
-        for r in recipes:
-            f = r.pop("_file", None)
-            r["image_source_url"] = r.get("image_source_url") or r.get("image_url")
-            r["image_url"] = base + f if f else None
-        hosted = Path(a.recipes).with_name("recipes.hosted.json")
-        hosted.write_text(json.dumps(recipes, ensure_ascii=False, indent=2), encoding="utf-8")
-        print(f"wrote {hosted}")
     ok = sum(1 for x in rows if x[2].startswith(("ok", "skipped")))
     print(f"{ok}/{len(rows)} images ready in {out}  (details in report.csv)")
 

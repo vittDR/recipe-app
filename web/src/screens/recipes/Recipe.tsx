@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import type { ListProposal } from '@logic/groceries.ts';
 import { AddToListSheet, formatQuantity, loadProposals } from '../../components/AddToListSheet.tsx';
 import { Icon } from '../../components/Icon.tsx';
 import { RecipeTags } from '../../components/Tags.tsx';
-import { Button, Screen, Spinner, Tag, imageStyle, recipeEmoji } from '../../components/ui.tsx';
+import { Button, confirmSheet, ListRow, Screen, Section, Spinner, Tag, imageStyle, recipeEmoji } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { recipeTitle, recipeSteps } from '../../lib/recipeText.ts';
 import { MANY_POTS } from '@logic/facets.ts';
 import { equipmentLabels, exoticIngredients } from '../../lib/facets.ts';
-import { useCatalog } from '../../lib/hooks.ts';
+import { useCatalog, useLive, useSave } from '../../lib/hooks.ts';
 import { INGREDIENT_SELECT, ingredientName } from '../../lib/products.ts';
 import { useSession } from '../../lib/session.tsx';
 import { must, supabase } from '../../lib/supabase.ts';
@@ -23,6 +23,13 @@ interface Portion {
   fits: boolean;
 }
 
+interface RecipeData {
+  recipe: Recipe;
+  ingredients: RecipeIngredient[];
+  portion: Portion | null;
+  proposals: Map<string, ListProposal<RecipeIngredient>>;
+}
+
 export function RecipeScreen() {
   const { id } = useParams();
   const i18n = useI18n();
@@ -31,40 +38,34 @@ export function RecipeScreen() {
   const { household } = useSession();
   const { tags, reload: reloadTags } = useTags(household!.id);
   const navigate = useNavigate();
-  const [recipe, setRecipe] = useState<Recipe | null>(null);
-  const [ingredients, setIngredients] = useState<RecipeIngredient[]>([]);
-  const [portion, setPortion] = useState<Portion | null>(null);
-  const [proposals, setProposals] = useState<Map<string, ListProposal<RecipeIngredient>>>(new Map());
+  const save = useSave();
   const [sheet, setSheet] = useState(false);
-
-  const load = async () => {
+  const { data, reload } = useLive<RecipeData>(`recipe:${id}`, async () => {
     const [r, ings, p] = await Promise.all([
       supabase.from('recipes').select('*').eq('id', id!).single(),
       supabase.from('recipe_ingredients').select(INGREDIENT_SELECT).eq('recipe_id', id!).order('position'),
       supabase.rpc('my_portion', { p_recipe: id }),
     ]);
-    setRecipe(must(r) as Recipe);
-    const list = must(ings) as RecipeIngredient[];
-    setIngredients(list);
-    setPortion(((p.data ?? []) as Portion[])[0] ?? null);
-    const props = await loadProposals(household!.id, list);
-    setProposals(new Map(props.map((x) => [x.ingredient.id, x])));
-  };
+    const ingredients = must(ings) as RecipeIngredient[];
+    const proposals = await loadProposals(household!.id, ingredients);
+    return {
+      recipe: must(r) as Recipe,
+      ingredients,
+      portion: ((p.data ?? []) as Portion[])[0] ?? null,
+      proposals: new Map(proposals.map((x) => [x.ingredient.id, x])),
+    };
+  });
 
-  useEffect(() => {
-    void load();
-  }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  if (!recipe) return <Screen back><Spinner /></Screen>;
+  if (!data) return <Screen back><Spinner /></Screen>;
+  const { recipe, ingredients, portion, proposals } = data;
 
   const own = recipe.household_id === household!.id;
   const exotic = new Set(catalog ? exoticIngredients(ingredients.map((i) => i.name), catalog) : []);
   const equipment = equipmentLabels(recipe.equipment, i18n);
   const manyPots = (recipe.equipment?.pots ?? 0) >= MANY_POTS;
   const remove = async () => {
-    if (!confirm(t('recipe.removeConfirm'))) return;
-    await supabase.from('recipes').delete().eq('id', recipe.id);
-    navigate('/recipes', { replace: true });
+    if (!(await confirmSheet(t('recipe.removeConfirm'), { confirmLabel: t('app.delete') }))) return;
+    if (await save(supabase.from('recipes').delete().eq('id', recipe.id))) navigate('/recipes', { replace: true });
   };
 
   return (
@@ -75,8 +76,8 @@ export function RecipeScreen() {
           <Icon name="back" />
         </button>
       </div>
-      <h1 className="screen__title" style={{ marginTop: 0 }}>{recipeTitle(recipe, i18n.locale)}</h1>
-      <div className="row row--wrap" style={{ marginBottom: 'var(--s-4)' }}>
+      <h1 className="screen__title recipe__title">{recipeTitle(recipe, i18n.locale)}</h1>
+      <div className="row row--wrap recipe__tags">
         {recipe.total_min && <Tag><Icon name="clock" size={14} /> {recipe.total_min} min</Tag>}
         {recipe.prep_min != null && <Tag>{t('recipe.prep', { n: recipe.prep_min })}</Tag>}
         {recipe.cook_min != null && <Tag>{recipe.cook_min ? t('recipe.cook', { n: recipe.cook_min }) : t('recipe.noCook')}</Tag>}
@@ -102,64 +103,64 @@ export function RecipeScreen() {
             )}
           </>
         ) : <span className="muted">{t('recipe.noMacros')}</span>}
-        {recipe.macros_estimated && <span className="small" style={{ color: 'var(--c-warning)' }}>⚠︎ {t('recipe.estimated')}</span>}
+        {recipe.macros_estimated && <span className="small text-warning">⚠︎ {t('recipe.estimated')}</span>}
       </div>
 
       {equipment.length > 0 && (
-        <>
-          <h2 className="section-label">{t('recipe.equipment')}</h2>
+        <Section label={t('recipe.equipment')}>
           <div className="row row--wrap">
             {equipment.map((e) => <Tag key={e.label} tone={e.tedious ? 'warning' : undefined}>{e.label}</Tag>)}
           </div>
           {manyPots && <span className="small muted">{t('equipment.manyPots')}</span>}
-        </>
+        </Section>
       )}
 
-      <div className="row row--between">
-        <h2 className="section-label">{t('recipe.ingredients')}</h2>
-        <Button small variant="text" onClick={() => setSheet(true)}><Icon name="cart" size={18} /> {t('match.addToList')}</Button>
-      </div>
-      <div className="list">
-        {ingredients.map((i) => {
-          const p = proposals.get(i.id);
-          return (
-            <div key={i.id} className="list-row">
-              <div className="list-row__main">
-                <div className="list-row__title">{ingredientName(i, locale)}</div>
-                {i.optional && <div className="list-row__meta">{t('recipe.optional')}</div>}
-                {i.guessed && <div className="list-row__meta" style={{ color: 'var(--c-warning)' }}>{t('recipe.guessed')}</div>}
-                {exotic.has(i.name) && <div className="list-row__meta">{t('recipe.exoticHint')}</div>}
-              </div>
-              {exotic.has(i.name) && <Tag tone="warning">{t('recipe.exotic')}</Tag>}
-              {p?.why === 'on_list' && <Tag>{t('recipe.onList')}</Tag>}
-              {(p?.why === 'bought_recently' || p?.why === 'staple') && <Tag tone="success">{t('recipe.atHome')}</Tag>}
-              <span className="muted small">{formatQuantity(i.quantity, i.unit)}</span>
-            </div>
-          );
-        })}
-      </div>
+      <Section label={t('recipe.ingredients')}
+        action={<Button small variant="text" onClick={() => setSheet(true)}><Icon name="cart" size={18} /> {t('match.addToList')}</Button>}>
+        <div className="list">
+          {ingredients.map((i) => {
+            const p = proposals.get(i.id);
+            const notes = [
+              i.optional && <span key="o">{t('recipe.optional')}</span>,
+              i.guessed && <span key="g" className="text-warning">{t('recipe.guessed')}</span>,
+              exotic.has(i.name) && <span key="e">{t('recipe.exoticHint')}</span>,
+            ].filter(Boolean);
+            return (
+              <ListRow key={i.id} title={ingredientName(i, locale)}
+                meta={notes.length > 0 && <span className="stack-lines">{notes}</span>}
+                trailing={(
+                  <>
+                    {exotic.has(i.name) && <Tag tone="warning">{t('recipe.exotic')}</Tag>}
+                    {p?.why === 'on_list' && <Tag>{t('recipe.onList')}</Tag>}
+                    {(p?.why === 'bought_recently' || p?.why === 'staple') && <Tag tone="success">{t('recipe.atHome')}</Tag>}
+                    <span className="muted small">{formatQuantity(i.quantity, i.unit)}</span>
+                  </>
+                )} />
+            );
+          })}
+        </div>
+      </Section>
 
       {recipeSteps(recipe, i18n.locale).length > 0 && (
-        <>
-          <h2 className="section-label">{t('recipe.steps')}</h2>
-          <ol className="card stack" style={{ paddingLeft: 'var(--s-8)', margin: 0 }}>
+        <Section label={t('recipe.steps')}>
+          <ol className="card stack recipe__steps">
             {recipeSteps(recipe, i18n.locale).map((s, i) => <li key={i}>{s}</li>)}
           </ol>
-        </>
+        </Section>
       )}
 
       {recipe.source_url && (
-        <p className="small muted" style={{ marginTop: 'var(--s-4)' }}>
+        <p className="small muted mt-4">
           {t('recipe.source')}: <a href={recipe.source_url} target="_blank" rel="noreferrer">{recipe.source_name ?? new URL(recipe.source_url).hostname}</a>
         </p>
       )}
 
-      <div className="stack" style={{ marginTop: 'var(--s-5)' }}>
+      <div className="stack mt-6">
         <Button block onClick={() => navigate(`/recipes/${recipe.id}/cook`)}><Icon name="pot" /> {t('recipe.cookingMode')}</Button>
-        {own && <Button block variant="text" onClick={() => void remove()} style={{ color: 'var(--c-danger)' }}>{t('recipe.remove')}</Button>}
+        {own && <Button block variant="danger" onClick={() => void remove()}>{t('recipe.remove')}</Button>}
       </div>
 
-      <AddToListSheet open={sheet} onClose={() => { setSheet(false); void load(); }} recipe={recipe} ingredients={ingredients} />
+      <AddToListSheet open={sheet} onClose={() => { setSheet(false); void reload(); }} recipe={recipe} ingredients={ingredients} />
     </main>
   );
 }

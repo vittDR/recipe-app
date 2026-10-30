@@ -1,13 +1,15 @@
-// Household Warm components: Button, Chip, Segmented, ListRow, Checkbox,
-// Switch, Avatar, Screen, Field, Stepper, Sheet, Toast.
+// Household Warm components: Button, Chip, Segmented, ListRow, Section,
+// Checkbox, Switch, Avatar, Screen, Field, SearchField, Stepper, ProgressBar,
+// Sheet, SheetHeader, Toast and confirmation sheets.
 
-import { useEffect, useRef, useState, type ButtonHTMLAttributes, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ButtonHTMLAttributes, type ReactNode, type Ref } from 'react';
 import { createPortal } from 'react-dom';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { useI18n } from '../i18n/index.tsx';
 import { Icon } from './Icon.tsx';
 
-type ButtonVariant = 'primary' | 'dark' | 'secondary' | 'text';
+/** `danger`: a text button for destructive actions (leave, remove, delete). */
+type ButtonVariant = 'primary' | 'dark' | 'secondary' | 'text' | 'danger';
 
 export function Button({
   variant = 'primary',
@@ -52,6 +54,99 @@ export function Chip({
 
 export function Tag({ children, tone }: { children: ReactNode; tone?: 'success' | 'warning' }) {
   return <span className={`chip chip--tag${tone ? ` chip--${tone}` : ''}`}>{children}</span>;
+}
+
+/**
+ * One row of a `.list`: an optional leading icon or avatar, a title and a
+ * line of detail, then trailing controls or a chevron. A link with `to`, a
+ * button with `onClick`, otherwise a plain row (its controls are in `trailing`).
+ */
+export function ListRow({
+  icon,
+  title,
+  meta,
+  to,
+  onClick,
+  trailing,
+  chevron = !!to,
+  accent,
+  className = '',
+  role,
+  selected,
+}: {
+  icon?: ReactNode;
+  title: ReactNode;
+  meta?: ReactNode;
+  to?: string;
+  onClick?: () => void;
+  trailing?: ReactNode;
+  chevron?: boolean;
+  /** Accent-coloured, for an action row such as "Invite someone". */
+  accent?: boolean;
+  className?: string;
+  role?: 'option' | 'listitem';
+  selected?: boolean;
+}) {
+  const cls = ['list-row', accent && 'list-row--accent', className].filter(Boolean).join(' ');
+  const body = (
+    <>
+      {icon && <span className="list-row__icon">{icon}</span>}
+      <span className="list-row__main">
+        <span className="list-row__title">{title}</span>
+        {meta && <span className="list-row__meta">{meta}</span>}
+      </span>
+      {trailing}
+      {chevron && <span className="chevron"><Icon name="chevron" size={18} /></span>}
+    </>
+  );
+  if (to) return <Link to={to} className={cls}>{body}</Link>;
+  if (onClick) {
+    return (
+      <button type="button" className={cls} onClick={onClick} role={role}
+        aria-selected={role === 'option' ? (selected ?? false) : undefined}>
+        {body}
+      </button>
+    );
+  }
+  return <div className={cls} role={role}>{body}</div>;
+}
+
+/** "Create “…”": the dashed row under search results when nothing matches exactly. */
+export function CreateRow({ title, meta, onClick, chevron }: { title: string; meta?: string; onClick: () => void; chevron?: boolean }) {
+  return (
+    <button type="button" className="create-row" onClick={onClick}>
+      <Icon name="squarePlus" />
+      <span className="list-row__main">
+        <span className="list-row__title">{title}</span>
+        {meta && <span className="list-row__meta">{meta}</span>}
+      </span>
+      {chevron ? <span className="chevron"><Icon name="chevron" size={18} /></span> : <Icon name="plus" size={20} />}
+    </button>
+  );
+}
+
+/** A labelled part of a screen: the small uppercase label, an optional hint, then its content. */
+export function Section({ label, hint, action, children, flush }: {
+  label: string;
+  hint?: string;
+  /** A small button on the label's line, e.g. "Add to list". */
+  action?: ReactNode;
+  children: ReactNode;
+  /** No space above the label, e.g. the first section in a card or sheet. */
+  flush?: boolean;
+}) {
+  return (
+    <section className={`section${flush ? ' section--flush' : ''}`}>
+      {action ? (
+        <div className="section__head">
+          <h2 className="section-label">{label}</h2>
+          {action}
+        </div>
+      ) : <h2 className="section-label">{label}</h2>}
+      {hint && <p className="section-hint">{hint}</p>}
+      {children}
+    </section>
+  );
 }
 
 export function Segmented<T extends string>({
@@ -168,6 +263,18 @@ export function Screen({
   );
 }
 
+/** The bar of a full-screen mode (cooking, swiping): close on the left, what's on screen in the middle. */
+export function ModeBar({ title, onClose }: { title: ReactNode; onClose: () => void }) {
+  const { t } = useI18n();
+  return (
+    <div className="screen__bar">
+      <button type="button" className="icon-btn" aria-label={t('app.close')} onClick={onClose}><Icon name="x" /></button>
+      <span className="headline">{title}</span>
+      <span className="screen__bar-end" />
+    </div>
+  );
+}
+
 export function Field({ label, children, hint }: { label: string; children: ReactNode; hint?: string }) {
   return (
     <label className="field">
@@ -175,6 +282,49 @@ export function Field({ label, children, hint }: { label: string; children: Reac
       {children}
       {hint && <span className="small muted">{hint}</span>}
     </label>
+  );
+}
+
+/** The search box: a magnifier, the field, Enter to pick the first result. */
+export function SearchField({
+  value,
+  onChange,
+  placeholder,
+  label,
+  onEnter,
+  onFocus,
+  autoFocus,
+  inputRef,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  placeholder: string;
+  label: string;
+  onEnter?: () => void;
+  onFocus?: () => void;
+  autoFocus?: boolean;
+  inputRef?: Ref<HTMLInputElement>;
+}) {
+  return (
+    <label className="input search-field">
+      <Icon name="search" size={18} />
+      <input ref={inputRef} type="search" value={value} placeholder={placeholder} aria-label={label}
+        autoComplete="off" enterKeyHint="done" autoFocus={autoFocus} onFocus={onFocus}
+        onChange={(e) => onChange(e.target.value)}
+        onKeyDown={(e) => { if (e.key === 'Enter' && onEnter) { e.preventDefault(); onEnter(); } }} />
+    </label>
+  );
+}
+
+/** A thin bar filled to value / max. `reserve` keeps its space while it is empty. */
+export function ProgressBar({ value, max, label, reserve }: { value: number; max: number; label?: string; reserve?: boolean }) {
+  const pct = max > 0 ? Math.min(100, (value / max) * 100) : 0;
+  return (
+    <div className="progress" role={label ? 'progressbar' : undefined} aria-label={label} aria-hidden={label ? undefined : true}
+      aria-valuemin={label ? 0 : undefined} aria-valuemax={label ? max : undefined} aria-valuenow={label ? value : undefined}
+      style={reserve && value === 0 ? { visibility: 'hidden' } : undefined}>
+      <div style={{ width: `${pct}%` }} />
+    </div>
   );
 }
 
@@ -334,6 +484,61 @@ export function Sheet({ open, onClose, children, label, className = '' }: {
       </div>
     </>,
     document.body,
+  );
+}
+
+/** The title of a sheet and an optional line under it. */
+export function SheetHeader({ title, subtitle }: { title: ReactNode; subtitle?: ReactNode }) {
+  return (
+    <header className="sheet__header">
+      <h2 className="title2">{title}</h2>
+      {subtitle && <p className="muted small">{subtitle}</p>}
+    </header>
+  );
+}
+
+interface ConfirmOptions {
+  /** The button that goes ahead, e.g. "Leave". */
+  confirmLabel: string;
+  /** A line under the question. */
+  detail?: string;
+}
+
+let confirmImpl: ((question: string, opts: ConfirmOptions) => Promise<boolean>) | null = null;
+
+/**
+ * Asks before something that can't be undone (things that can be undone get
+ * an Undo toast instead). Resolves true when the person goes ahead.
+ */
+export function confirmSheet(question: string, opts: ConfirmOptions): Promise<boolean> {
+  return confirmImpl ? confirmImpl(question, opts) : Promise.resolve(false);
+}
+
+export function ConfirmHost() {
+  const { t } = useI18n();
+  const [current, setCurrent] = useState<{ question: string; opts: ConfirmOptions; resolve: (ok: boolean) => void } | null>(null);
+  useEffect(() => {
+    confirmImpl = (question, opts) => new Promise((resolve) => setCurrent({ question, opts, resolve }));
+    return () => {
+      confirmImpl = null;
+    };
+  }, []);
+  const answer = (ok: boolean) => {
+    current?.resolve(ok);
+    setCurrent(null);
+  };
+  return (
+    <Sheet open={!!current} onClose={() => answer(false)} label={current?.question ?? ''}>
+      {current && (
+        <>
+          <SheetHeader title={current.question} subtitle={current.opts.detail} />
+          <div className="stack sheet__actions">
+            <Button block variant="danger" onClick={() => answer(true)}>{current.opts.confirmLabel}</Button>
+            <Button block variant="secondary" onClick={() => answer(false)}>{t('app.cancel')}</Button>
+          </div>
+        </>
+      )}
+    </Sheet>
   );
 }
 

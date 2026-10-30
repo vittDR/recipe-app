@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Write a small copy of each recipe photo for grids and lists.
 
-The full photos (1200x900 and up, ~130 KB each) are for the swipe card and the
+The full photos (900x675, under 100 KB each) are for the swipe card and the
 recipe page; a grid of 100 of them is ~14 MB. Thumbnails are 480x360, ~20 KB.
 
 Usage:

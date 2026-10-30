@@ -1,5 +1,5 @@
-// Grocery list grouping and "what's missing for this recipe". Used by the app;
-// merging into the list itself happens in public.add_grocery_items().
+// Grocery list grouping, "what's missing for this recipe" and where a recipe
+// line lands on the list. Used by the app.
 
 import type { Aisle } from './ingredients.ts';
 
@@ -11,6 +11,20 @@ export const DEFAULT_AISLE_ORDER: Aisle[] = [
 export const storeKey = (storeId: string): string => `store:${storeId}`;
 
 export const AT_HOME_DAYS = 7;
+
+/**
+ * The line a recipe ingredient adds to instead of starting a new one: the
+ * same item in the same unit, not ticked yet. Lines without an item never merge.
+ */
+export function mergeTarget<T extends { product_id: string | null; unit: string | null; checked_at: string | null; cleared_at?: string | null }>(
+  lines: T[],
+  productId: string | null,
+  unit: string | null,
+): T | undefined {
+  if (!productId) return undefined;
+  const u = unit?.trim().toLowerCase() || null;
+  return lines.find((l) => l.product_id === productId && (l.unit?.toLowerCase() || null) === u && !l.checked_at && !l.cleared_at);
+}
 
 export interface GroceryItem {
   id: string;

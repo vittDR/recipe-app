@@ -11,7 +11,7 @@ export function WelcomeScreen() {
       <div className="welcome">
         <div className="big-emoji" aria-hidden>🧨</div>
         <div className="logo">{t('app.name')}</div>
-        <p className="title3" style={{ maxWidth: 300 }}>{t('welcome.tagline')}</p>
+        <p className="title3 welcome__tagline">{t('welcome.tagline')}</p>
       </div>
       <div className="stack">
         {isIosBrowserTab() && <p className="notice notice--info small">{t('welcome.install')}</p>}

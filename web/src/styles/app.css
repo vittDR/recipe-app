@@ -43,15 +43,6 @@ a {
   outline-offset: 2px;
 }
 
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-}
-
 /* ---------- Layout ---------- */
 
 .app {
@@ -80,6 +71,10 @@ a {
   gap: var(--s-2);
 }
 
+.screen__bar-end {
+  width: var(--touch);
+}
+
 .screen__title {
   font: var(--t-large-title);
   letter-spacing: var(--t-large-title-tracking);
@@ -93,6 +88,11 @@ a {
 
 .spacer {
   flex: 1;
+}
+
+/* Keeps at least this much room above a bottom button. */
+.spacer--gap {
+  min-height: var(--s-6);
 }
 
 .stack {
@@ -119,6 +119,14 @@ a {
   flex-wrap: wrap;
 }
 
+.row--center {
+  justify-content: center;
+}
+
+.row--end {
+  align-items: flex-end;
+}
+
 .row--between {
   justify-content: space-between;
 }
@@ -130,6 +138,74 @@ a {
   letter-spacing: 0.04em;
   color: var(--c-muted);
   margin: var(--s-6) var(--s-1) var(--s-2);
+}
+
+.section__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+  margin: var(--s-5) 0 var(--s-1);
+}
+
+/* The label's own margins move to the line it shares with the action. */
+.section__head .section-label {
+  flex: 1;
+  margin: 0 var(--s-1);
+}
+
+.section--flush > .section-label,
+.section--flush > .section__head {
+  margin-top: 0;
+}
+
+.section-hint {
+  font: var(--t-footnote);
+  letter-spacing: var(--t-footnote-tracking);
+  color: var(--c-muted);
+  margin: 0 var(--s-1) var(--s-3);
+}
+
+/* Spacing and tone helpers, so screens never set them inline. */
+.m-0 {
+  margin: 0;
+}
+
+.mt-2 {
+  margin-top: var(--s-2);
+}
+
+.mt-3 {
+  margin-top: var(--s-3);
+}
+
+.mt-4 {
+  margin-top: var(--s-4);
+}
+
+.mt-6 {
+  margin-top: var(--s-6);
+}
+
+.mt-8 {
+  margin-top: var(--s-8);
+}
+
+.grow {
+  flex: 1;
+  min-width: 0;
+}
+
+.text-accent {
+  color: var(--c-accent);
+}
+
+.text-success {
+  color: var(--c-success);
+}
+
+.text-warning {
+  color: var(--c-warning);
 }
 
 .muted {
@@ -212,6 +288,13 @@ a {
 .btn--text {
   background: none;
   color: var(--c-accent);
+  min-height: var(--touch);
+  padding: 0 var(--s-2);
+}
+
+.btn--danger {
+  background: none;
+  color: var(--c-danger);
   min-height: var(--touch);
   padding: 0 var(--s-2);
 }
@@ -346,7 +429,7 @@ a {
 
 .segmented button[aria-pressed='true'] {
   background: var(--c-surface);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-control);
   font-weight: 600;
 }
 
@@ -387,6 +470,19 @@ a {
 
 .list-row + .list-row {
   box-shadow: inset 0 1px 0 var(--c-line);
+}
+
+.list-row--accent {
+  color: var(--c-accent);
+}
+
+/* Leading icon or avatar: a fixed column, so titles line up row to row. */
+.list-row__icon {
+  flex: none;
+  min-width: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .list-row__main {
@@ -479,8 +575,8 @@ a {
   width: 27px;
   height: 27px;
   border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  background: var(--c-on-color);
+  box-shadow: var(--shadow-knob);
   transition: transform 0.2s ease;
 }
 
@@ -503,7 +599,7 @@ a {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  color: #fff;
+  color: var(--c-on-color);
   font: var(--t-footnote);
   font-weight: 700;
   box-shadow: 0 0 0 2px var(--c-paper);
@@ -591,6 +687,58 @@ textarea.input {
   text-transform: uppercase;
 }
 
+/* The search box: an icon inside the field. */
+.search-field {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding-top: 0;
+  padding-bottom: 0;
+  color: var(--c-muted);
+}
+
+.search-field:focus-within {
+  box-shadow: inset 0 0 0 2px var(--c-accent);
+}
+
+.search-field input {
+  flex: 1;
+  min-width: 0;
+  min-height: 50px;
+  border: 0;
+  outline: 0;
+  background: none;
+  font: inherit;
+  color: var(--c-ink);
+}
+
+/* Recipe steps: number, text, then move / remove. */
+.step-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step-list__row {
+  align-items: flex-start;
+}
+
+.step-list__n {
+  min-width: 1.5em;
+  padding-top: var(--s-2);
+}
+
+.step-list__tools {
+  display: flex;
+  flex-direction: column;
+}
+
+textarea.step-input {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
 .stepper {
   display: flex;
   align-items: center;
@@ -614,6 +762,10 @@ textarea.input {
   background: var(--c-warning-soft);
   color: var(--c-warning);
   font: var(--t-subhead);
+}
+
+a.notice {
+  text-decoration: none;
 }
 
 .notice--info {
@@ -668,7 +820,7 @@ textarea.input {
 .sheet-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(20, 14, 10, 0.4);
+  background: var(--c-backdrop);
   z-index: 40;
   touch-action: none;
   animation: fade-in 0.2s ease;
@@ -695,6 +847,18 @@ textarea.input {
 .sheet--fixed {
   /* Same height whatever is shown, so filtering doesn't make it jump. */
   height: 88dvh;
+}
+
+.sheet__header {
+  margin-bottom: var(--s-4);
+}
+
+.sheet__header p {
+  margin: var(--s-1) 0 0;
+}
+
+.sheet__actions {
+  margin-top: var(--s-5);
 }
 
 .sheet__grabber {
@@ -924,6 +1088,22 @@ textarea.input {
   overflow: hidden;
 }
 
+.option-row {
+  padding: var(--s-3);
+}
+
+.option-row__image {
+  width: 72px;
+  aspect-ratio: 1;
+  border-radius: var(--r-md);
+  font-size: 32px;
+  flex: none;
+}
+
+.card--picked {
+  box-shadow: inset 0 0 0 2px var(--c-accent), var(--shadow-card);
+}
+
 .tile__image img {
   position: absolute;
   inset: 0;
@@ -961,6 +1141,48 @@ textarea.input {
   justify-content: center;
   font-size: 96px;
   position: relative;
+}
+
+.match__title {
+  margin-top: var(--s-1);
+}
+
+.recipe__title {
+  margin-top: 0;
+}
+
+.recipe__tags {
+  margin-bottom: var(--s-4);
+}
+
+.recipe__steps {
+  margin: 0;
+  padding-left: var(--s-8);
+}
+
+/* Lines of detail under a list row's title, one under the other. */
+.stack-lines {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Cooking mode: the ingredients or one step, large, centred in the screen. */
+.cooking__body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.cooking__ingredients {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+  font: var(--t-title3);
+}
+
+.cooking__step {
+  font: var(--t-title1);
+  line-height: 1.35;
 }
 
 .hero__back {
@@ -1023,10 +1245,20 @@ textarea.input {
 
 .week__dot--cook {
   background: var(--c-accent);
+  opacity: 0.35;
 }
 
 .week__dot--done {
   background: var(--c-success);
+}
+
+.welcome__tagline {
+  max-width: 300px;
+}
+
+.invite__code {
+  font-size: 40px;
+  padding: var(--s-4) 0;
 }
 
 .welcome {
@@ -1081,6 +1313,18 @@ textarea.input {
 
 .grocery-search {
   margin-bottom: var(--s-2);
+}
+
+.usuals-filters {
+  margin: var(--s-3) 0;
+}
+
+.catalog-search {
+  margin: var(--s-4) 0;
+}
+
+.grocery-mode {
+  margin: var(--s-4) 0;
 }
 
 .grocery-search .input {
@@ -1226,10 +1470,6 @@ button.grocery-row__amount {
   margin-top: var(--s-2);
 }
 
-.cart-head {
-  align-items: baseline;
-}
-
 .new-dot {
   display: inline-block;
   width: 8px;
@@ -1261,7 +1501,7 @@ button.grocery-row__amount {
   justify-content: flex-end;
   padding-right: var(--s-5);
   background: var(--c-danger);
-  color: #fff;
+  color: var(--c-on-color);
 }
 
 .swipe__front {

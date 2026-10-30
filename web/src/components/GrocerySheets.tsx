@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { DEFAULT_AISLE_ORDER, storeKey } from '@logic/groceries.ts';
-import { productKey, productName, sectionOf, suggestAisle, unitsFor, type Product } from '@logic/products.ts';
+import { ProductIndex, productName, sectionOf, suggestAisle, unitsFor, type Product } from '@logic/products.ts';
 import { dueAgain, usuals, type Purchase, type Usual } from '@logic/usuals.ts';
 import { useI18n } from '../i18n/index.tsx';
 import type { GroceryCatalog } from '../lib/products.ts';
@@ -9,7 +9,7 @@ import { must, supabase } from '../lib/supabase.ts';
 import type { Aisle, GroceryRow } from '../lib/types.ts';
 import { AmountControl, type Amount } from './GroceryControls.tsx';
 import { Icon } from './Icon.tsx';
-import { Button, Chip, Field, Sheet } from './ui.tsx';
+import { Button, Chip, Field, ListRow, SearchField, Section, Sheet, SheetHeader, Tag } from './ui.tsx';
 
 /** Section title: a store's name or the translated aisle. */
 export function useSectionTitle(catalog: GroceryCatalog | null) {
@@ -71,24 +71,23 @@ export function ItemSheet({
     <Sheet open={!!item} onClose={onClose} label={item?.display ?? ''}>
       {item && (
         <>
-          <h2 className="title2" style={{ marginBottom: 'var(--s-1)' }}>{item.display}</h2>
-          {product?.household_id && <p className="muted small" style={{ marginTop: 0 }}>{t('groceries.yourItem')}</p>}
-          <div className="row" style={{ marginTop: 'var(--s-3)' }}>
+          <SheetHeader title={item.display} subtitle={product?.household_id ? t('groceries.yourItem') : undefined} />
+          <div className="row">
             <AmountControl name={item.display} amount={{ quantity: item.quantity, unit: item.unit }}
               units={product ? unitsFor(product) : unitsFor({ default_aisle: item.aisle })}
               onAdd={() => undefined} onChange={(a) => onChange(item, a)}
               onRemove={() => { onRemove(item); onClose(); }} />
           </div>
 
-          <h3 className="section-label">{t('groceries.section')}</h3>
-          <div className="chips">
-            {sections.map((key) => (
-              <Chip key={key} pressed={key === current} onClick={() => void move(key)}>{title(key)}</Chip>
-            ))}
-          </div>
+          <Section label={t('groceries.section')}>
+            <div className="chips">
+              {sections.map((key) => (
+                <Chip key={key} pressed={key === current} onClick={() => void move(key)}>{title(key)}</Chip>
+              ))}
+            </div>
+          </Section>
 
-          <Button block variant="text" style={{ color: 'var(--c-danger)', marginTop: 'var(--s-6)' }}
-            onClick={() => { onRemove(item); onClose(); }}>
+          <Button block variant="danger" className="mt-6" onClick={() => { onRemove(item); onClose(); }}>
             {t('groceries.removeItem')}
           </Button>
         </>
@@ -141,12 +140,12 @@ export function CreateItemSheet({
 
   return (
     <Sheet open={initialName !== null} onClose={onClose} label={t('groceries.newItemTitle')}>
-      <h2 className="title2" style={{ marginBottom: 'var(--s-4)' }}>{t('groceries.newItemTitle')}</h2>
+      <SheetHeader title={t('groceries.newItemTitle')} />
       <Field label={t('groceries.name')}>
         <input className="input" value={name} onChange={(e) => setName(e.target.value)} />
       </Field>
       {existing && (
-        <div className="notice notice--info stack" style={{ marginTop: 'var(--s-3)' }}>
+        <div className="notice notice--info stack mt-3">
           <span>{t('groceries.alreadyInCatalog', { name: productName(existing, locale) })}</span>
           <Button small variant="secondary" onClick={() => onUseExisting(existing)}>
             {t('groceries.useExisting', { name: productName(existing, locale) })}
@@ -154,23 +153,25 @@ export function CreateItemSheet({
         </div>
       )}
 
-      <h3 className="section-label">{t('groceries.section')}</h3>
-      <div className="chips">
-        {sections.map((key) => (
-          <Chip key={key} pressed={key === section} onClick={() => { setTouched(true); setSection(key); }}>{title(key)}</Chip>
-        ))}
-      </div>
-      {guess && section === guess && <p className="muted small">{title(guess)} · {t('groceries.suggestedAisle')}</p>}
+      <Section label={t('groceries.section')}>
+        <div className="chips">
+          {sections.map((key) => (
+            <Chip key={key} pressed={key === section} onClick={() => { setTouched(true); setSection(key); }}>{title(key)}</Chip>
+          ))}
+        </div>
+        {guess && section === guess && <p className="muted small">{title(guess)} · {t('groceries.suggestedAisle')}</p>}
+      </Section>
 
-      <h3 className="section-label">{t('groceries.usualUnit')}</h3>
-      <div className="chips">
-        {CREATE_UNITS.map((u) => (
-          <Chip key={u} pressed={u === unit} onClick={() => setUnit(u === unit ? null : u)}>{t(`groceries.units.${u as 'piece'}`)}</Chip>
-        ))}
-      </div>
+      <Section label={t('groceries.usualUnit')}>
+        <div className="chips">
+          {CREATE_UNITS.map((u) => (
+            <Chip key={u} pressed={u === unit} onClick={() => setUnit(u === unit ? null : u)}>{t(`groceries.units.${u as 'piece'}`)}</Chip>
+          ))}
+        </div>
+      </Section>
 
-      <p className="muted small" style={{ marginTop: 'var(--s-4)' }}>{t('groceries.createHelp')}</p>
-      <Button block disabled={!name.trim() || !!existing} style={{ marginTop: 'var(--s-3)' }}
+      <p className="muted small mt-4">{t('groceries.createHelp')}</p>
+      <Button block className="mt-3" disabled={!name.trim() || !!existing}
         onClick={() => onCreate({ name: name.trim(), section, unit })}>
         {t('groceries.createAndAdd')}
       </Button>
@@ -244,23 +245,24 @@ export function UsualsSheet({
   }, [all, catalog]);
 
   const current: UsualsFilter = filter ?? (due.length ? 'due' : 'all');
-  const q = productKey(query);
+  // Matched like every item search, within the usuals.
+  const index = useMemo(() => new ProductIndex(all.map((x) => x.product)), [all]);
+  const matches = query.trim() ? new Set(index.search(query, all.length).map((p) => p.id)) : null;
   const shown = (current === 'due' ? due : current === 'all' ? all : all.filter((x) => sectionKeyOf(catalog, x.product) === current))
-    .filter((x) => !q || productKey(`${x.product.name_fr} ${x.product.name_en ?? ''} ${x.product.aliases.join(' ')}`).includes(q));
+    .filter((x) => !matches || matches.has(x.product.id));
 
   return (
     <Sheet open={open} onClose={onClose} label={t('groceries.usuals')} className="sheet--fixed">
-      <div className="row row--between" style={{ marginBottom: 'var(--s-3)' }}>
+      <div className="row row--between sheet__header">
         <h2 className="title2">{t('groceries.usuals')}</h2>
         <Button small variant="text" onClick={onClose}>{t('app.done')}</Button>
       </div>
       {purchases && all.length === 0 ? (
-        <p className="muted center" style={{ margin: 'var(--s-8) 0' }}>{t('groceries.usualsEmpty')}</p>
+        <p className="muted center mt-8">{t('groceries.usualsEmpty')}</p>
       ) : (
         <>
-          <input className="input" type="search" value={query} placeholder={t('groceries.usualsSearch')}
-            aria-label={t('groceries.usualsSearch')} onChange={(e) => setQuery(e.target.value)} />
-          <div className="chips chips--scroll" style={{ margin: 'var(--s-3) 0' }}>
+          <SearchField value={query} onChange={setQuery} placeholder={t('groceries.usualsSearch')} label={t('groceries.usualsSearch')} />
+          <div className="chips chips--scroll usuals-filters">
             {due.length > 0 && (
               <Chip pressed={current === 'due'} onClick={() => setFilter('due')}>{t('groceries.dueAgain', { n: due.length })}</Chip>
             )}
@@ -273,23 +275,20 @@ export function UsualsSheet({
                 const name = productName(product, locale);
                 const row = onListByProduct.get(product.id);
                 return (
-                  <div key={product.id} className="list-row grocery-pick">
-                    <span className="list-row__main">
-                      <span className="list-row__title grocery-pick__name">{name}</span>
-                      <span className="list-row__meta">
-                        {current === 'due' ? (
-                          <>
-                            {usual.frequency && <span className="chip chip--tag">{t(`groceries.frequency.${usual.frequency}`)}</span>}{' '}
-                            {usual.days_since === 0 ? t('groceries.lastBoughtToday') : tn('groceries.lastBought', usual.days_since)}
-                          </>
-                        ) : title(sectionKeyOf(catalog, product))}
-                      </span>
-                    </span>
-                    <AmountControl name={name} amount={row ? { quantity: row.quantity, unit: row.unit } : null}
-                      units={unitsFor(product)}
-                      onAdd={() => onAdd(product, usual.quantity !== null || usual.unit ? { quantity: usual.quantity, unit: usual.unit } : null)}
-                      onChange={(a) => row && onChange(row, a)} onRemove={() => row && onRemove(row)} />
-                  </div>
+                  <ListRow key={product.id} className="grocery-pick"
+                    title={<span className="grocery-pick__name">{name}</span>}
+                    meta={current === 'due' ? (
+                      <>
+                        {usual.frequency && <Tag>{t(`groceries.frequency.${usual.frequency}`)}</Tag>}{' '}
+                        {usual.days_since === 0 ? t('groceries.lastBoughtToday') : tn('groceries.lastBought', usual.days_since)}
+                      </>
+                    ) : title(sectionKeyOf(catalog, product))}
+                    trailing={(
+                      <AmountControl name={name} amount={row ? { quantity: row.quantity, unit: row.unit } : null}
+                        units={unitsFor(product)}
+                        onAdd={() => onAdd(product, usual.quantity !== null || usual.unit ? { quantity: usual.quantity, unit: usual.unit } : null)}
+                        onChange={(a) => row && onChange(row, a)} onRemove={() => row && onRemove(row)} />
+                    )} />
                 );
               })}
             </div>

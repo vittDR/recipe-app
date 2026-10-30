@@ -200,7 +200,7 @@ against `name`, `name_fr`, `name_it` and `aliases`.
 ## Tags
 
 Up to 12, each one a tag **name** from `public.tag_catalog` (migration
-`20261105000001_tag_catalog.sql`): lowercase English, e.g. `stew`, `one-pot`,
+`20261111000001_tag_catalog.sql`): lowercase English, e.g. `stew`, `one-pot`,
 `make ahead`. The catalogue gives every tag its English and French label (the app
 shows tags in the reader's language) and the aliases recipe sites use
 (`plat mijoté` → `stew`), which is how imports land on the same tags.

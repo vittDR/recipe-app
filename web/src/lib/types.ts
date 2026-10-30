@@ -21,14 +21,12 @@ export interface Household {
   name: string;
   owner_id: string;
   timezone: string;
-  store_name: string | null;
   prompt_time: string;
   reminder_time: string;
 }
 
 export interface Member {
   user_id: string;
-  role: 'owner' | 'member';
   joined_at: string;
   profile: Profile;
 }

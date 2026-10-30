@@ -1,17 +1,17 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { groupGroceries, splitCart, type GroupMode } from '@logic/groceries.ts';
 import { parseIngredientLine } from '@logic/ingredients.ts';
-import { applyQueue, type ListOp } from '@logic/listsync.ts';
+import type { ListOp } from '@logic/listsync.ts';
 import { defaultAmount, ProductIndex, productName, sectionOf, unitsFor, type Product } from '@logic/products.ts';
 import { AmountControl, AmountSheet, Highlight, SwipeRow, SyncIcon, type Amount } from '../components/GroceryControls.tsx';
 import { CreateItemSheet, ItemSheet, sectionKeyOf, UsualsSheet, useSectionTitle, type ListItem } from '../components/GrocerySheets.tsx';
 import { Icon } from '../components/Icon.tsx';
-import { Avatar, Button, Checkbox, dismissToast, Screen, Segmented, Spinner, toast } from '../components/ui.tsx';
+import { Avatar, Button, Checkbox, CreateRow, dismissToast, ListRow, ProgressBar, Screen, SearchField, Section, Segmented, Spinner, toast } from '../components/ui.tsx';
 import { useI18n } from '../i18n/index.tsx';
 import { recipeTitle } from '../lib/recipeText.ts';
 import { useLive } from '../lib/hooks.ts';
-import { listQueue, useListQueue } from '../lib/listQueue.ts';
-import { useGroceryCatalog } from '../lib/products.ts';
+import { listQueue, useListQueue, withQueue } from '../lib/listQueue.ts';
+import { searchProducts, useGroceryCatalog } from '../lib/products.ts';
 import { useSession } from '../lib/session.tsx';
 import { must, supabase } from '../lib/supabase.ts';
 import type { Aisle, GroceryRow, Recipe } from '../lib/types.ts';
@@ -76,10 +76,9 @@ function usePresence(hid: string, userId: string) {
 
 export function GroceriesScreen() {
   const { t, tn, locale } = useI18n();
-  const { userId, household, memberName, memberColor, members } = useSession();
+  const { userId, household, memberName, memberColor, members, isCatalogAdmin: isAdmin } = useSession();
   const { amount } = useAmount();
   const hid = household!.id;
-  const isAdmin = household!.owner_id === userId;
   const queue = listQueue(hid);
   const sync = useListQueue(hid);
   const seenBefore = usePresence(hid, userId!);
@@ -156,23 +155,7 @@ export function GroceriesScreen() {
   }, [catalog, ops, hid]);
   const productOf = useCallback((id: string | null) => (id ? index?.get(id) : undefined), [index]);
 
-  const { rows, pending } = useMemo(() => applyQueue(data?.items ?? [], ops, (op) => ({
-    id: op.id,
-    household_id: hid,
-    product_id: op.product_id,
-    name: op.name,
-    quantity: op.quantity,
-    unit: op.unit,
-    aisle: op.aisle,
-    store_id: op.store_id,
-    recipe_id: null,
-    added_by: op.added_by,
-    checked_by: null,
-    checked_at: null,
-    cleared_at: null,
-    sort_key: Date.parse(op.at) / 1000,
-    created_at: op.at,
-  })), [data, ops, hid]);
+  const { rows, pending } = useMemo(() => withQueue(data?.items ?? [], ops, hid), [data, ops, hid]);
 
   const items: ListItem[] = rows.map((r) => {
     const p = productOf(r.product_id);
@@ -248,11 +231,7 @@ export function GroceriesScreen() {
   // "3 citronnelle": 3 in the item's own unit (a bare number reads as pieces).
   const typedFor = (p: Product): Amount | null => parsed.quantity === null ? null
     : { quantity: parsed.quantity, unit: parsed.unit === 'piece' ? defaultAmount(p).unit : parsed.unit };
-  const results = parsed.name && index
-    ? index.search(parsed.name, RESULTS, (p) => catalog?.prefs.get(p.id)?.add_count ?? 0)
-    : [];
-  const exact = parsed.name ? index?.find(parsed.name) : undefined;
-  if (exact && !results.some((p) => p.id === exact.id)) results.unshift(exact);
+  const { results, exact } = searchProducts(catalog, parsed.name, { limit: RESULTS, index });
   const submit = () => {
     const first = exact ?? results[0];
     if (first && !onListByProduct.has(first.id)) add(first, typedFor(first));
@@ -279,10 +258,8 @@ export function GroceriesScreen() {
       </div>
 
       <div className="row grocery-search">
-        <input ref={searchRef} className="input" type="search" value={query} placeholder={t('groceries.addPlaceholder')}
-          aria-label={t('groceries.add')} enterKeyHint="done" autoComplete="off"
-          onFocus={() => setSearching(true)} onChange={(e) => setQuery(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); submit(); } }} />
+        <SearchField inputRef={searchRef} value={query} onChange={setQuery} placeholder={t('groceries.addPlaceholder')}
+          label={t('groceries.add')} onFocus={() => setSearching(true)} onEnter={submit} />
         {searching ? (
           <Button small variant="text" onClick={closeSearch}>{t('groceries.closeSearch')}</Button>
         ) : (
@@ -304,27 +281,20 @@ export function GroceriesScreen() {
                 const name = productName(p, locale);
                 const row = onListByProduct.get(p.id);
                 return (
-                  <div key={p.id} role="listitem" className="list-row grocery-pick">
-                    <span className="list-row__main">
-                      <span className="list-row__title grocery-pick__name"><Highlight text={name} query={parsed.name} /></span>
-                      <span className="list-row__meta">{sectionTitleOf(sectionKeyOf(catalog, p))}</span>
-                    </span>
-                    <AmountControl name={name} amount={row ? { quantity: row.quantity, unit: row.unit } : null} units={unitsFor(p)}
-                      onAdd={() => add(p, typedFor(p))} onChange={(a) => row && change(row, a)} onRemove={() => row && remove(row)} />
-                  </div>
+                  <ListRow key={p.id} role="listitem" className="grocery-pick"
+                    title={<span className="grocery-pick__name"><Highlight text={name} query={parsed.name} /></span>}
+                    meta={sectionTitleOf(sectionKeyOf(catalog, p))}
+                    trailing={(
+                      <AmountControl name={name} amount={row ? { quantity: row.quantity, unit: row.unit } : null} units={unitsFor(p)}
+                        onAdd={() => add(p, typedFor(p))} onChange={(a) => row && change(row, a)} onRemove={() => row && remove(row)} />
+                    )} />
                 );
               })}
             </div>
           )}
           {!exact && (
-            <button type="button" className="create-row" onClick={() => setCreating(typedName)}>
-              <Icon name="squarePlus" />
-              <span className="list-row__main">
-                <span className="list-row__title">{t('groceries.createRow', { name: typedName })}</span>
-                <span className="list-row__meta">{t('groceries.createRowHint')}</span>
-              </span>
-              <span className="chevron"><Icon name="chevron" size={18} /></span>
-            </button>
+            <CreateRow title={t('groceries.createRow', { name: typedName })} meta={t('groceries.createRowHint')} chevron
+              onClick={() => setCreating(typedName)} />
           )}
         </div>
       )}
@@ -337,14 +307,11 @@ export function GroceriesScreen() {
                 {cart.length > 0 ? t('groceries.progress', { n: cart.length, total }) : tn('groceries.onList', total)}
               </span>
               {/* Takes its place before the first tick, so nothing moves when it appears. */}
-              <div className="progress" role="progressbar" aria-valuemin={0} aria-valuemax={total} aria-valuenow={cart.length}
-                style={cart.length ? undefined : { visibility: 'hidden' }}>
-                <div style={{ width: `${(cart.length / total) * 100}%` }} />
-              </div>
+              <ProgressBar value={cart.length} max={total} label={t('groceries.progress', { n: cart.length, total })} reserve />
             </div>
           )}
 
-          <div style={{ margin: 'var(--s-4) 0' }}>
+          <div className="grocery-mode">
             <Segmented<GroupMode> label={t('groceries.by')} value={mode} onChange={setMode} options={[
               { value: 'aisle', label: t('groceries.aisle') },
               { value: 'recipe', label: t('groceries.recipe') },
@@ -353,19 +320,17 @@ export function GroceriesScreen() {
           </div>
 
           {loading && !data ? <Spinner /> : total === 0 ? (
-            <div className="center" style={{ marginTop: 'var(--s-8)' }}>
+            <div className="center mt-8">
               <p>🧺 {t('groceries.empty')}</p>
               <p className="muted small">{t('groceries.emptyHint')}</p>
             </div>
           ) : (
             <>
               {sections.map((section) => (
-                <section key={section.key || 'none'}>
-                  <h2 className="section-label">
-                    {mode === 'aisle' ? sectionTitleOf(section.key)
-                      : mode === 'recipe' ? (section.key ? data?.recipes.get(section.key) ?? '' : t('groceries.noRecipe'))
-                        : section.key}
-                  </h2>
+                <Section key={section.key || 'none'}
+                  label={mode === 'aisle' ? sectionTitleOf(section.key)
+                    : mode === 'recipe' ? (section.key ? data?.recipes.get(section.key) ?? '' : t('groceries.noRecipe'))
+                      : section.key}>
                   <div className="list">
                     {section.items.map((item) => (
                       <SwipeRow key={item.id} label={item.display} onRemove={() => remove(item)}>
@@ -389,15 +354,12 @@ export function GroceriesScreen() {
                       </SwipeRow>
                     ))}
                   </div>
-                </section>
+                </Section>
               ))}
 
               {cart.length > 0 && (
-                <section>
-                  <div className="row row--between cart-head">
-                    <h2 className="section-label">{t('groceries.inCart')}</h2>
-                    <Button small variant="text" onClick={clearCart}>{t('groceries.clear')}</Button>
-                  </div>
+                <Section label={t('groceries.inCart')}
+                  action={<Button small variant="text" onClick={clearCart}>{t('groceries.clear')}</Button>}>
                   <div className="list">
                     {cart.map((item) => {
                       const by = members.find((m) => m.user_id === item.checked_by);
@@ -418,7 +380,7 @@ export function GroceriesScreen() {
                       );
                     })}
                   </div>
-                </section>
+                </Section>
               )}
             </>
           )}

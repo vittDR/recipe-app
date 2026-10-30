@@ -1,7 +1,7 @@
 // Grocery products: the real items behind list lines. Matching and
 // autocomplete for what people type ("2 blancs de poulet", "sopalin"), and
-// what to prefill when one is added (2 lemons, 2 l of milk). Merging recipe
-// adds happens in public.add_grocery_items().
+// what to prefill when one is added (2 lemons, 2 l of milk). Where a recipe
+// line lands on the list: mergeTarget() in groceries.ts.
 
 import type { Aisle } from './ingredients.ts';
 

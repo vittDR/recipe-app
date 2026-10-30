@@ -6,7 +6,7 @@ import { MAX_TAGS, newTagName, tagKey, type TagCatalog } from '@logic/tags.ts';
 import { useI18n } from '../i18n/index.tsx';
 import { supabase } from '../lib/supabase.ts';
 import { Icon } from './Icon.tsx';
-import { Button, Chip, Field, Sheet, Tag, toast } from './ui.tsx';
+import { Button, Chip, Field, Sheet, SheetHeader, Tag, toast } from './ui.tsx';
 
 export function RecipeTags({ names, tags, householdId, onTranslated }: {
   names: string[];
@@ -39,7 +39,7 @@ export function RecipeTags({ names, tags, householdId, onTranslated }: {
       ) : <Tag key={name}>{label(name)}</Tag>)}
       <Sheet open={!!open} onClose={() => setOpen(null)} label={open ? t('tags.translateTitle', { tag: label(open) }) : ''}>
         <form className="stack" onSubmit={(e) => { e.preventDefault(); void save(); }}>
-          <p className="headline" style={{ margin: 0 }}>{open && t('tags.translateTitle', { tag: label(open) })}</p>
+          {open && <SheetHeader title={t('tags.translateTitle', { tag: label(open) })} />}
           <Field label={t(locale === 'fr' ? 'tags.inFrench' : 'tags.inEnglish')}>
             <input className="input" autoFocus value={text} onChange={(e) => setText(e.target.value)} />
           </Field>

@@ -3,11 +3,12 @@
 // per kind. Muted kinds are stored on the profile; enqueue_push skips them.
 
 import { useEffect, useState } from 'react';
-import { Screen, Spinner, Switch } from '../components/ui.tsx';
+import { ListRow, Screen, Section, Spinner, Switch } from '../components/ui.tsx';
 import { useI18n, type MessageKey } from '../i18n/index.tsx';
+import { useLive, useSave } from '../lib/hooks.ts';
 import { enablePush, pushState, type PushState } from '../lib/push.ts';
 import { useSession } from '../lib/session.tsx';
-import { supabase } from '../lib/supabase.ts';
+import { must, supabase } from '../lib/supabase.ts';
 
 /** What people switch, and the outbox kinds each switch covers. */
 const KINDS: { key: 'prompt' | 'reminder' | 'deck' | 'waiting' | 'result' | 'joined' | 'groceries'; kinds: string[] }[] = [
@@ -28,20 +29,18 @@ interface Prefs {
 export function NotificationsScreen() {
   const { t } = useI18n();
   const { userId } = useSession();
+  const write = useSave();
   const [push, setPush] = useState<PushState | null>(null);
-  const [prefs, setPrefs] = useState<Prefs | null>(null);
+  const { data: prefs, set: setPrefs, reload } = useLive<Prefs>(`notifications:${userId}`, async () =>
+    must(await supabase.from('profiles').select('push_enabled, push_muted').eq('id', userId!).single()) as Prefs);
 
   useEffect(() => {
     void pushState().then(setPush).catch(() => setPush('unsupported'));
-    void supabase.from('profiles').select('push_enabled, push_muted').eq('id', userId!).single()
-      .then(({ data }) => setPrefs((data as Prefs | null) ?? { push_enabled: true, push_muted: [] }));
-  }, [userId]);
+  }, []);
 
   const save = async (next: Prefs) => {
-    const before = prefs;
-    setPrefs(next);
-    const { error } = await supabase.from('profiles').update(next).eq('id', userId!);
-    if (error) setPrefs(before);
+    setPrefs(() => next);
+    if (!(await write(supabase.from('profiles').update(next).eq('id', userId!)))) await reload();
   };
 
   const setAllowed = async (on: boolean) => {
@@ -72,37 +71,25 @@ export function NotificationsScreen() {
       {push === null || prefs === null ? <Spinner /> : (
         <>
           <div className="list">
-            <div className="list-row">
-              <span className="list-row__main">
-                <span className="list-row__title">{t('notifications.allow')}</span>
-                <span className="list-row__meta">
-                  {push === 'unsupported' ? t('notifications.unsupported')
-                    : push === 'denied' ? t('notifications.denied') : t('notifications.allowHint')}
-                </span>
-              </span>
-              <Switch checked={allowed} disabled={blocked} label={t('notifications.allow')} onChange={(v) => void setAllowed(v)} />
-            </div>
+            <ListRow title={t('notifications.allow')}
+              meta={push === 'unsupported' ? t('notifications.unsupported')
+                : push === 'denied' ? t('notifications.denied') : t('notifications.allowHint')}
+              trailing={<Switch checked={allowed} disabled={blocked} label={t('notifications.allow')} onChange={(v) => void setAllowed(v)} />} />
           </div>
 
           {allowed && (
-            <>
-              <h2 className="section-label">{t('notifications.kinds')}</h2>
+            <Section label={t('notifications.kinds')}>
               <div className="list">
                 {KINDS.map(({ key, kinds }) => {
                   const on = !kinds.some((k) => prefs.push_muted.includes(k));
                   const label = t(`notifications.${key}` as MessageKey);
                   return (
-                    <div key={key} className="list-row">
-                      <span className="list-row__main">
-                        <span className="list-row__title">{label}</span>
-                        <span className="list-row__meta">{t(`notifications.${key}Hint` as MessageKey)}</span>
-                      </span>
-                      <Switch checked={on} label={label} onChange={(v) => setKind(kinds, v)} />
-                    </div>
+                    <ListRow key={key} title={label} meta={t(`notifications.${key}Hint` as MessageKey)}
+                      trailing={<Switch checked={on} label={label} onChange={(v) => setKind(kinds, v)} />} />
                   );
                 })}
               </div>
-            </>
+            </Section>
           )}
         </>
       )}

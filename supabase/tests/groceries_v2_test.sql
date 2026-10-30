@@ -50,13 +50,19 @@ select code from create_invite() \gset
 select pg_temp.act_as('00000000-0000-0000-0000-0000000000a2');
 select redeem_invite(:'code');
 
--- Admin: the household's creator edits the shared catalogue, others can't.
+-- Admin: people in app_admins edit the shared catalogue; household creators don't.
 select id as lait from products where search_key = 'lait' and household_id is null \gset
+select pg_temp.act_as('00000000-0000-0000-0000-0000000000a1');
+select pg_temp.check(not is_catalog_admin(), 'creating a household does not make you a catalogue admin');
+update products set default_qty = 9 where id = :'lait';
+select pg_temp.check((select default_qty = 3 from products where id = :'lait'), 'household creators cannot edit the shared catalogue');
+select pg_temp.act_as(null);
+insert into app_admins (user_id) values ('00000000-0000-0000-0000-0000000000a1');
 select pg_temp.act_as('00000000-0000-0000-0000-0000000000a2');
 update products set default_qty = 9 where id = :'lait';
 select pg_temp.check((select default_qty = 3 from products where id = :'lait'), 'members cannot edit the shared catalogue');
 select pg_temp.act_as('00000000-0000-0000-0000-0000000000a1');
-select pg_temp.check(is_catalog_admin(), 'the household creator is the catalogue admin');
+select pg_temp.check(is_catalog_admin(), 'an app admin is the catalogue admin');
 update products set default_qty = 1, suggested_units = '{l,bottle}' where id = :'lait';
 select pg_temp.check((select default_qty = 1 from products where id = :'lait'), 'the admin can edit the shared catalogue');
 insert into products (name_fr, name_en, default_aisle, default_unit) values ('Pois cassés', 'Split peas', 'pantry', 'pack');
@@ -104,11 +110,11 @@ select pg_temp.check((select count(*) = 0 from grocery_add_batches), 'and the ba
 select pg_temp.act_as('00000000-0000-0000-0000-0000000000a2');
 insert into grocery_presence (user_id) values ('00000000-0000-0000-0000-0000000000a2');
 select pg_temp.act_as('00000000-0000-0000-0000-0000000000a1');
-select add_grocery_items('[{"name":"citron","quantity":2}]');
+select put_grocery_item(gen_random_uuid(), '{"name":"citron","quantity":2}');
 select pg_temp.act_as(null);
 update grocery_add_batches set last_add_at = now() - interval '6 minutes';
 select pg_temp.check(enqueue_grocery_pushes() = 0 and (select count(*) = 1 from push_outbox where kind = 'groceries_added'),
-                     'recipe adds count too, and nobody looking at the list is pushed');
+                     'every add counts, and nobody looking at the list is pushed');
 
 -- Switches.
 select pg_temp.act_as('00000000-0000-0000-0000-0000000000a2');

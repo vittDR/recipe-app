@@ -138,7 +138,7 @@ git push
 4. **Load the ingredient catalogue and the recipe library.** The migrations create empty tables; these two files fill them.
 
    - `supabase/seed.sql`: the ingredient catalogue (about 190 ingredients with EN/FR/IT names, aisles and nutrition).
-   - `supabase/seed_library.sql`: the 110 seed recipes. Load it **after** `seed.sql`.
+   - `supabase/seed_library.sql`: the 119 seed recipes. Load it **after** `seed.sql`.
 
    Either paste them into the dashboard:
    1. Open **SQL Editor → New query**.
@@ -157,9 +157,9 @@ git push
 
 5. **Check it worked:**
    - **Table Editor** lists `households`, `recipes`, `grocery_items` and the other tables (the full list is in the [database reference](#reference-database-structure)).
-   - `recipes` has 110 rows and `ingredient_catalog` has about 190.
+   - `recipes` has 119 rows and `ingredient_catalog` has about 190.
    - **Integrations → Cron** (or **Database → Cron Jobs**) shows three jobs: `dineamite-prompts`, `dineamite-purge-invites` and `dineamite-push-dispatch`.
-   - **Storage** shows a private bucket called `recipe-images`.
+   - **Storage** may show an empty `recipe-images` bucket left by an early migration; the app doesn't use it (photos ship with the app).
 
 ---
 
@@ -399,14 +399,25 @@ auth.users ──1:1── profiles ──1:1── member_goals            (pri
 ingredient_catalog   (shared by everyone; recipe_ingredients.name points at it by name)
 products with household_id = null   (the shared shopping catalogue; one per catalogue ingredient)
 recipes with household_id = null   (the seed library, readable by everyone)
+tag_catalog with household_id = null   (the shared tags)
+app_admins   (who edits the shared catalogue)
 push_outbox, ai_cache   (server only)
 ```
+
+**Shared and private data.** Every household sees the shared rows (the
+catalogue, the seed library, shared tags: `household_id` is null) and its own
+rows, never another household's. A household changes shared data only through
+its own layer on top: `household_products` (where an item goes, how often it's
+bought), its own items, tags and recipes, and copies of seed recipes
+(`copy_recipe`). A household's rows can only point at shared rows or at its own
+(a trigger checks list lines, meals, plan days, item history and taste rules);
+`supabase/tests/households_isolation_test.sql` checks all of it with two
+households. Each person belongs to one household.
 
 ### Enums
 
 | Type | Values |
 | --- | --- |
-| `member_role` | `owner`, `member` |
 | `goal_kind` | `lean`, `maintain`, `build` |
 | `taste_kind` | `never`, `love`, `diet` |
 | `rule_source` | `manual`, `learned` |
@@ -423,8 +434,9 @@ push_outbox, ai_cache   (server only)
 | Table | Key | What it holds |
 | --- | --- | --- |
 | `profiles` | `id` = `auth.users.id` | First name, colour, locale (`en`/`fr`). Created automatically by a trigger on sign-up. |
-| `households` | `id` | Name, owner, IANA `timezone`, `store_name`, `prompt_time` (17:30) and `reminder_time` (18:30), plus `last_prompt_on`/`last_reminder_on` so each prompt goes out once per local day. |
-| `household_members` | `(household_id, user_id)` | Who belongs where, with `role`. A unique index allows one household per user; drop `household_members_one_per_user` to allow several. |
+| `households` | `id` | Name, `owner_id` (the one place ownership is stored), IANA `timezone`, `prompt_time` (17:30) and `reminder_time` (18:30), plus `last_prompt_on`/`last_reminder_on` so each prompt goes out once per local day. |
+| `household_members` | `(household_id, user_id)` | Who belongs where. A unique index allows one household per user, and the server functions rely on it (`my_household_id()`). |
+| `app_admins` | `user_id` | Who edits the shared catalogue (Us > Edit the catalog, shown only to them). No policies: add someone in the SQL editor with `insert into public.app_admins (user_id) values ('<profile id>');`. |
 | `invites` | `code` | 6-character codes (no `I`, `O`, `0`, `1`), valid 48 hours, single use. Expired ones are purged nightly. |
 
 ### Private per-person data
@@ -474,7 +486,7 @@ each time a deck is dealt.
 | Table | What it holds |
 | --- | --- |
 | `products` | The real items behind list lines: `name_fr` (French first), `name_en`, `aliases[]` (other words and brands: *sopalin*, *pq*), `ingredient` (the catalogue ingredient it is, so recipe lines land on it), `default_aisle`. `household_id` null = the shared catalogue (catalogue ingredients plus everyday non-food items), with fixed ids from `seed.sql` so they are the same rows in every environment; otherwise an item a household created by typing it, with a random id. Shared items added later from the app also get a random id until they are written into `seed.sql`. |
-| `grocery_items` | The shared list: `product_id`, `name` (the product's French name when added), `quantity`, `unit`, `aisle`, `store_id`, `recipe_id`, who added/checked it, `sort_key`. Cleared items keep a `cleared_at` and stay for "probably at home" hints. |
+| `grocery_items` | The shared list: `product_id`, `name` (the product's French name when added), `quantity`, `unit`, `aisle`, `store_id`, `recipe_id`, who added/checked it, `sort_key`. Cleared items keep a `cleared_at` and stay a year for usuals and "probably at home" hints. |
 | `household_stores` | Stores like Picard. Each is a section of the list, ordered among the aisles (same `position` space as `household_aisle_order`). |
 | `household_products` | Per household and product: remembered `aisle` or `store_id`, `add_count`, `last_added_at`, and `pinned` / `hidden` for "Frequently bought" (shown when pinned or added at least twice, unless hidden). |
 | `household_staples` | Names the household always has at home. |
@@ -484,7 +496,7 @@ each time a deck is dealt.
 
 | Table | What it holds |
 | --- | --- |
-| `push_outbox` | Notifications waiting to be sent: `user_id`, `kind` (`prompt`, `reminder`, `deck_dealt`, `partner_finished`, `match`, `nudge`, `partner_joined`), `payload`, `sent_at`, `error`. Written by triggers and functions, sent by `push-dispatch`. |
+| `push_outbox` | Notifications waiting to be sent: `user_id`, `kind` (`prompt`, `reminder`, `deck_dealt`, `partner_finished`, `match`, `nudge`, `tiebreak`, `partner_joined`, `groceries_added`), `payload`, `sent_at`, `error`. Written by triggers and functions, sent by `push-dispatch`. |
 | `ai_cache` | Cached link imports, so the same page is never fetched twice. |
 
 ### Functions the app calls (RPC)
@@ -498,18 +510,19 @@ each time a deck is dealt.
 | `my_portion(recipe, eaters)` | The caller's plate and whether it fits their goals |
 | `member_fits(deck)` | Per card, whether each person fits, without revealing their numbers |
 | `deck_matches(deck)`, `tiebreak_options(deck)`, `choose_match(deck, recipe)`, `close_deck(deck)`, `nudge(deck)` | The Tonight flow |
-| `add_grocery_items(items)`, `clear_checked_items()` | The list. Items are `{product_id}` or `{name}` (any language or alias; unknown names become a household item). Same product + unit merge into one line. |
-| `set_product_section(product, aisle, store)`, `set_frequent(product, on)`, `add_store(name)` | Where a product goes for the household (remembered), "Frequently bought" pin/hide, a new store. |
+| `put_grocery_item(id, item)`, `create_household_product(id, name, aisle, unit, store)` | The list, with ids made on the phone so a retried save lands once. Items are `{product_id}` or `{name}` (any language or alias; unknown names become a household item). Every list change goes through the app's queue (`web/src/lib/listQueue.ts`); adding a recipe adds to a line of the same item and unit (`mergeTarget()`). |
+| `set_product_section(product, aisle, store)`, `add_store(name)` | Where a product goes for the household (remembered), a new store. |
+| `is_catalog_admin()` | Whether the caller is in `app_admins`. |
 
-`enqueue_due_prompts()` and `purge_expired_invites()` are run by `pg_cron`, not by the app.
+`enqueue_due_prompts()`, `enqueue_grocery_pushes()`, `purge_expired_invites()` and `purge_old_grocery_items()` are run by `pg_cron`, not by the app.
 
 ### Security, live updates, storage and scheduled jobs
 
-- **Row-level security** is on for every table (`…_rls.sql`). The rule of thumb: household data is readable by its members, personal data only by its owner, the catalogue and seed library by everyone signed in, and server tables by nobody but the functions.
-- **On the phone**, the app keeps a copy of the shared catalogues (`ingredient_catalog` and shared `products`) and of the household's grocery setup (own items, stores, aisle order, frequents) in local storage. Each launch it asks `catalog_version()` for a fingerprint of the shared catalogues and downloads one again only when it changed, e.g. after a `seed.sql` run. The household's copy is shown while the live one loads and is cleared on sign-out.
-- **Realtime** is enabled for `grocery_items`, `household_products`, `household_stores`, `decks`, `deck_members`, `tiebreak_picks` and `meals`, so both phones update live.
-- **Storage**: a private `recipe-images` bucket, with files under `<household_id>/…` readable only by that household.
-- **pg_cron jobs**: `dineamite-prompts` (every 5 minutes, queues the evening prompt and reminder), `dineamite-push-dispatch` (every minute, only does anything when `push_outbox` has unsent rows), `dineamite-purge-invites` (nightly).
+- **Row-level security** is on for every table. The rule of thumb: household data is readable by its members (policies compare with `my_household_id()`), personal data only by its owner, the catalogue and seed library by everyone signed in, the shared catalogue is written only by `app_admins`, and server tables by nobody but the functions.
+- **On the phone**, the app keeps a copy of the shared catalogues (`ingredient_catalog`, shared `products` and shared tags) and of the household's grocery setup (own items, stores, aisle order, frequents) in local storage. Each launch it asks `catalog_version()` for a fingerprint of the shared catalogues and downloads one again only when it changed, e.g. after a `seed.sql` run. The household's copy is shown while the live one loads and is cleared on sign-out.
+- **Realtime** is enabled for `grocery_items`, `household_products`, `household_stores`, `products`, `tag_catalog`, `decks`, `deck_members`, `tiebreak_picks` and `meals`, so both phones update live.
+- **Photos** ship with the app (`web/public/recipe-photos/`); there is no storage bucket.
+- **pg_cron jobs**: `dineamite-prompts` (every 5 minutes, queues the evening prompt and reminder), `dineamite-grocery-pushes` (every minute, "<name> added N items"), `dineamite-push-dispatch` (every minute, only does anything when `push_outbox` has unsent rows), `dineamite-purge-invites` (nightly), `dineamite-purge-list-history` (weekly).
 
 ### Changing the schema
 

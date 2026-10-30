@@ -3,6 +3,8 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Catalog, type CatalogEntry } from '@logic/ingredients.ts';
+import { toast } from '../components/ui.tsx';
+import { useI18n } from '../i18n/index.tsx';
 import { cachedCatalogue, peekCatalogue } from './cache.ts';
 import { supabase } from './supabase.ts';
 
@@ -23,6 +25,8 @@ interface Loaded<T> {
   loading: boolean;
   error: string | null;
   reload: () => Promise<void>;
+  /** Shows a change right away, before the write and the reload land. */
+  set: (update: (data: T | null) => T | null) => void;
 }
 
 /**
@@ -76,7 +80,26 @@ export function useLive<T>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key, tablesKey, reload]);
 
-  return { data, loading, error, reload };
+  return { data, loading, error, reload, set: setData };
+}
+
+type Write = PromiseLike<{ error: { message: string } | null }>;
+
+/**
+ * Runs a write (a supabase-js query or RPC) and tells the person when it
+ * failed. Resolves true when it saved; `done` is shown as a toast then.
+ */
+export function useSave(): (write: Write, done?: string) => Promise<boolean> {
+  const { t } = useI18n();
+  return useCallback(async (write: Write, done?: string) => {
+    const { error } = await write;
+    if (error) {
+      toast(t('app.error'));
+      return false;
+    }
+    if (done) toast(done);
+    return true;
+  }, [t]);
 }
 
 let catalogPromise: Promise<Catalog> | null = null;

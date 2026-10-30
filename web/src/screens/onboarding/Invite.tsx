@@ -45,11 +45,11 @@ export function InviteScreen({ editing }: { editing?: boolean }) {
     <Screen back={editing} title={t('invite.title')} subtitle={t('invite.subtitle')} plain>
       <div className="stack stack--lg">
         <div className="card center stack">
-          <div className="input--code" style={{ fontSize: 40, padding: 'var(--s-4) 0' }} aria-live="polite">
+          <div className="input--code invite__code" aria-live="polite">
             {invite?.code ?? '······'}
           </div>
           {invite && <span className="small muted">{t('invite.expires', { time: formatRelative(invite.expires_at) })}</span>}
-          <div className="row" style={{ justifyContent: 'center' }}>
+          <div className="row row--center">
             <Button small variant="secondary" disabled={!invite}
               onClick={() => invite && navigator.clipboard.writeText(invite.code).then(() => toast(t('invite.copied')))}>
               {t('invite.copy')}

@@ -5,7 +5,6 @@
 | File | What it is |
 | --- | --- |
 | `recipes.json` | The recipes, in the `import-recipe` save shape (format: [docs/recipe-template.md](../../docs/recipe-template.md)). This is the source of truth. |
-| `recipes-summary.csv` | Review sheet: group, source, time, estimated protein and kcal per serving, photo yes/no. |
 
 `../seed_library.sql` is generated from `recipes.json`. Don't edit it by hand:
 
@@ -25,9 +24,9 @@ The script runs each ingredient line through the app's parser and catalogue, the
 
 ## Photos
 
-The photos are in `web/public/recipe-photos/` and ship with the app, so `image_url` is a path like `/recipe-photos/spaghetti-alle-vongole.webp`. `image_source_url` keeps where each photo came from, and `photos-report.csv` has the download log.
+The photos are in `web/public/recipe-photos/` and ship with the app, so `image_url` is a path like `/recipe-photos/spaghetti-alle-vongole.webp`. `image_source_url` keeps where each photo came from.
 
-- 99 recipes have a photo. 11 have none and show the emoji: 9 sources had no photo, and 2 photo links are dead (Blanc de poulet à la basquaise, Rösti with fried eggs).
+- 98 recipes have a photo. 21 have none and show the emoji (the AI-generated recipes, sources without a photo, and dead photo links).
 - 72 source photos were smaller than 1200×900 and were upscaled when downloaded (before the switch to 900×675), so some look soft.
 - A few carry the source blog's watermark (Arrosto di tacchino, Blanquette de veau légère, Frittata di zucchine, Saltimbocca).
 - The service worker doesn't precache them: each loads the first time a card shows it.
