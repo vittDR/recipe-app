@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { productName, type Product } from '@logic/products.ts';
+import { CreateItemSheet } from '../../components/GrocerySheets.tsx';
 import { Icon } from '../../components/Icon.tsx';
-import { Button, Chip, ListRow, Screen, SearchField, Section, Segmented } from '../../components/ui.tsx';
+import { Button, Chip, CreateRow, ListRow, Screen, SearchField, Section, Segmented, toast } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { useLive, useSave } from '../../lib/hooks.ts';
 import { searchProducts, useGroceryCatalog, type GroceryCatalog } from '../../lib/products.ts';
@@ -33,12 +34,15 @@ function RuleList({
   rules,
   catalog,
   onAdd,
+  onCreate,
   onRemove,
 }: {
   kind: 'never' | 'love';
   rules: TasteRule[];
   catalog: GroceryCatalog | null;
   onAdd: (p: Product) => void;
+  /** Not in the catalog yet: open the New catalog item sheet with this name. */
+  onCreate: (name: string) => void;
   onRemove: (rule: TasteRule) => void;
 }) {
   const { t, locale } = useI18n();
@@ -49,10 +53,16 @@ function RuleList({
   const suggestions = catalog
     ? SUGGESTED[kind].map((n) => catalog.index.find(n)).filter((p): p is Product => !!p && !have.has(p.id))
     : [];
-  const results = searchProducts(catalog, query, { limit: RESULTS }).results.filter((p) => !have.has(p.id));
+  const typed = query.trim();
+  const { results: found, exact } = searchProducts(catalog, typed, { limit: RESULTS });
+  const results = found.filter((p) => !have.has(p.id));
   const label = t(kind === 'never' ? 'tastes.never' : 'tastes.love');
   const pick = (p: Product) => {
     onAdd(p);
+    setQuery('');
+  };
+  const create = () => {
+    onCreate(typed);
     setQuery('');
   };
   return (
@@ -67,9 +77,9 @@ function RuleList({
           ))}
         </div>
         <SearchField value={query} onChange={setQuery} placeholder={t('tastes.addPlaceholder')} label={label}
-          onEnter={() => results[0] && pick(results[0])} />
-        {query.trim() && (results.length === 0 ? (
-          <p className="muted small m-0">{t('groceries.noMatch', { query: query.trim() })}</p>
+          onEnter={() => (results[0] ? pick(results[0]) : typed && !exact && create())} />
+        {typed && (results.length === 0 ? (
+          <p className="muted small m-0">{t('groceries.noMatch', { query: typed })}</p>
         ) : (
           <div className="list" role="listbox" aria-label={label}>
             {results.map((p) => (
@@ -78,6 +88,10 @@ function RuleList({
             ))}
           </div>
         ))}
+        {typed && !exact && (
+          <CreateRow title={t('groceries.createRow', { name: typed })} meta={t('groceries.createRowHint')} chevron
+            onClick={create} />
+        )}
       </div>
     </Section>
   );
@@ -85,10 +99,11 @@ function RuleList({
 
 export function TastesScreen({ editing }: { editing?: boolean }) {
   const { t } = useI18n();
-  const { userId, household } = useSession();
+  const { userId, household, isCatalogAdmin } = useSession();
   const navigate = useNavigate();
   const save = useSave();
-  const { data: catalog } = useGroceryCatalog(household!.id);
+  const { data: catalog, reload: reloadCatalog } = useGroceryCatalog(household!.id);
+  const [creating, setCreating] = useState<{ kind: 'never' | 'love'; name: string } | null>(null);
   const { data, reload } = useLive<TasteRule[]>(`tastes:${userId}`, async () =>
     must(await supabase.from('taste_rules').select('*').eq('user_id', userId!).order('created_at')) as TasteRule[]);
   const rules = data ?? [];
@@ -99,9 +114,23 @@ export function TastesScreen({ editing }: { editing?: boolean }) {
     if (d !== 'everything') await save(supabase.from('taste_rules').insert({ user_id: userId, kind: 'diet', value: d }));
     await reload();
   };
-  const add = async (kind: 'never' | 'love', p: Product) => {
-    await save(supabase.from('taste_rules').upsert({ user_id: userId, kind, value: p.name_fr, product_id: p.id }, { onConflict: 'user_id,kind,value' }));
+  const addRule = async (kind: 'never' | 'love', value: string, productId: string) => {
+    await save(supabase.from('taste_rules').upsert({ user_id: userId, kind, value, product_id: productId }, { onConflict: 'user_id,kind,value' }));
     await reload();
+  };
+  const add = (kind: 'never' | 'love', p: Product) => addRule(kind, p.name_fr, p.id);
+  // A new household item, as from the groceries search, then the rule on it.
+  const create = async (kind: 'never' | 'love', { name, section, unit }: { name: string; section: string; unit: string | null }) => {
+    setCreating(null);
+    const store = section.startsWith('store:') ? section.slice('store:'.length) : null;
+    const { data: id, error } = await supabase.rpc('create_household_product', {
+      p_id: crypto.randomUUID(), p_name: name, p_aisle: store ? 'other' : section, p_unit: unit, p_store: store,
+    });
+    if (error || !id) {
+      toast(t('app.error'));
+      return;
+    }
+    await Promise.all([addRule(kind, name, id as string), reloadCatalog()]);
   };
   const remove = async (r: TasteRule) => {
     await save(supabase.from('taste_rules').delete().eq('id', r.id));
@@ -119,14 +148,18 @@ export function TastesScreen({ editing }: { editing?: boolean }) {
           ]} />
         </Section>
         <RuleList kind="never" rules={rules} catalog={catalog}
-          onAdd={(p) => void add('never', p)} onRemove={(r) => void remove(r)} />
+          onAdd={(p) => void add('never', p)} onCreate={(name) => setCreating({ kind: 'never', name })} onRemove={(r) => void remove(r)} />
         <RuleList kind="love" rules={rules} catalog={catalog}
-          onAdd={(p) => void add('love', p)} onRemove={(r) => void remove(r)} />
+          onAdd={(p) => void add('love', p)} onCreate={(name) => setCreating({ kind: 'love', name })} onRemove={(r) => void remove(r)} />
       </div>
       <div className="spacer spacer--gap" />
       <Button block onClick={() => (editing ? navigate(-1) : navigate('/', { replace: true }))}>
         {editing ? t('app.done') : t('app.continue')}
       </Button>
+      <CreateItemSheet name={creating?.name ?? null} catalog={catalog} isAdmin={isCatalogAdmin} onClose={() => setCreating(null)}
+        createLabel={t(creating?.kind === 'never' ? 'tastes.createAndNever' : 'tastes.createAndLove')}
+        onCreate={(item) => creating && void create(creating.kind, item)}
+        onUseExisting={(p) => { if (creating) void add(creating.kind, p); setCreating(null); }} />
     </Screen>
   );
 }

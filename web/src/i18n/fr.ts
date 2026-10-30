@@ -113,6 +113,8 @@ export const fr: Dictionary = {
     love: 'J’adore',
     addPlaceholder: 'Chercher un ingrédient',
     add: 'Ajouter',
+    createAndNever: 'Créer et ne jamais proposer',
+    createAndLove: 'Créer et ajouter à ce que j’adore',
   },
   tonight: {
     title: 'Ce soir',

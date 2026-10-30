@@ -106,6 +106,7 @@ export function CreateItemSheet({
   onClose,
   onCreate,
   onUseExisting,
+  createLabel,
 }: {
   /** Null: closed. */
   name: string | null;
@@ -114,6 +115,8 @@ export function CreateItemSheet({
   onClose: () => void;
   onCreate: (item: { name: string; section: string; unit: string | null }) => void;
   onUseExisting: (p: Product) => void;
+  /** The create button; "Create and add to list" by default. */
+  createLabel?: string;
 }) {
   const { t, locale } = useI18n();
   const navigate = useNavigate();
@@ -173,7 +176,7 @@ export function CreateItemSheet({
       <p className="muted small mt-4">{t('groceries.createHelp')}</p>
       <Button block className="mt-3" disabled={!name.trim() || !!existing}
         onClick={() => onCreate({ name: name.trim(), section, unit })}>
-        {t('groceries.createAndAdd')}
+        {createLabel ?? t('groceries.createAndAdd')}
       </Button>
       <Button block variant="text" onClick={onClose}>{t('app.cancel')}</Button>
       {isAdmin && (
