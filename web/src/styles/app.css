@@ -1267,6 +1267,11 @@ a.notice {
   background: var(--c-success);
 }
 
+.welcome__logo {
+  width: 88px;
+  height: 88px;
+}
+
 .welcome__tagline {
   max-width: 300px;
 }
