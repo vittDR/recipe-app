@@ -34,6 +34,21 @@ test('chicken breast = Chicken Breast = Blanc de Poulet = poulet', () => {
   assert.equal(index.find('swiffer'), undefined);
 });
 
+test('search forgives a typo or two when nothing matches as typed', () => {
+  const names = (q: string) => index.search(q).map((p) => p.name_fr);
+  assert.deepEqual(names('lentiles'), ['Lentilles', 'lentilles corail']);
+  assert.deepEqual(names('poulte'), ['blanc de poulet', 'Escalopes de poulet']);
+  assert.deepEqual(names('choux flaur'), ['chou-fleur']);
+  assert.deepEqual(names('caulifower'), ['chou-fleur']);
+  assert.deepEqual(names('swifer'), ['Recharges Swiffer poussière']);
+  assert.deepEqual(names('sopaln'), ['Essuie-tout']);
+  // Too short to guess, or too far off.
+  assert.deepEqual(names('oef'), []);
+  assert.deepEqual(names('banane'), []);
+  // An exact match is not a typo.
+  assert.equal(index.find('lentiles'), undefined);
+});
+
 test('a main name beats another product\'s alias', () => {
   assert.equal(index.find('lentilles')?.name_fr, 'Lentilles');
 });

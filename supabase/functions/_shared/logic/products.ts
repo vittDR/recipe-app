@@ -61,6 +61,48 @@ export function productName(p: Pick<Product, 'name_fr' | 'name_en'>, locale: str
   return n.charAt(0).toLocaleUpperCase(locale) + n.slice(1);
 }
 
+/** Typos forgiven in a query of this many characters: none under 4, then 1, then 2 from 7. */
+function typosAllowed(length: number): number {
+  return length < 4 ? 0 : length < 7 ? 1 : 2;
+}
+
+// Rows of the edit-distance table, reused: typoDistance() runs for every name on each keystroke.
+let rows = [new Int32Array(64), new Int32Array(64), new Int32Array(64)];
+
+/**
+ * Fewest typos (a letter missing, extra, wrong or two swapped) between the
+ * query and the start of the text from `from`: "tomta" is 1 from "tomate",
+ * "pome" 1 from "pomme de terre". Above `max` it gives up and returns max + 1.
+ */
+function typoDistance(query: string, text: string, from: number, max: number): number {
+  const n = query.length;
+  const m = Math.min(text.length - from, n + max);
+  if (m < n - max) return max + 1;
+  if (rows[0].length <= m) rows = rows.map(() => new Int32Array(m * 2));
+  // before: two rows up, for swaps.
+  let [before, prev, row] = rows;
+  for (let j = 0; j <= m; j++) prev[j] = j;
+  for (let i = 1; i <= n; i++) {
+    row[0] = i;
+    let rowMin = i;
+    for (let j = 1; j <= m; j++) {
+      const t = text.charCodeAt(from + j - 1);
+      let d = Math.min(prev[j] + 1, row[j - 1] + 1, prev[j - 1] + (query.charCodeAt(i - 1) === t ? 0 : 1));
+      if (i > 1 && j > 1 && query.charCodeAt(i - 1) === text.charCodeAt(from + j - 2) && query.charCodeAt(i - 2) === t) {
+        d = Math.min(d, before[j - 2] + 1);
+      }
+      row[j] = d;
+      if (d < rowMin) rowMin = d;
+    }
+    if (rowMin > max) return max + 1;
+    [before, prev, row] = [prev, row, before];
+  }
+  // Any length of the text's start: the query may stop mid-word.
+  let best = max + 1;
+  for (let j = 0; j <= m; j++) if (prev[j] < best) best = prev[j];
+  return best;
+}
+
 /** French name, English name ('' when none), then aliases: the first two are main names. */
 function namesOf(p: Product): string[] {
   return [p.name_fr, p.name_en ?? '', ...p.aliases];
@@ -116,6 +158,8 @@ export class ProductIndex {
   /**
    * Autocomplete: names that start with the query beat names with a word that
    * does, which beat names containing it. `boost` (e.g. times bought) breaks ties.
+   * When nothing contains the query, names a typo or two away from it
+   * ("tomta", "courgete"), fewest typos first.
    */
   search(query: string, limit = 6, boost: (p: Product) => number = () => 0): Product[] {
     const q = productKey(query);
@@ -131,10 +175,32 @@ export class ProductIndex {
       });
       if (best) scored.push({ product, score: best * 1000 + Math.min(boost(product), 999) });
     }
+    if (!scored.length) scored.push(...this.closeTo(q, boost));
     return scored
       .sort((a, b) => b.score - a.score || a.product.name_fr.localeCompare(b.product.name_fr, 'fr'))
       .slice(0, limit)
       .map((s) => s.product);
+  }
+
+  /** Products whose name, or a word of it, starts a typo or two away from the key. */
+  private closeTo(q: string, boost: (p: Product) => number): { product: Product; score: number }[] {
+    const max = typosAllowed(q.length);
+    if (!max) return [];
+    const scored: { product: Product; score: number }[] = [];
+    for (const { product, keys } of this.entries) {
+      let best = 0;
+      keys.forEach((k, i) => {
+        if (!k) return;
+        const main = i < 2 ? 1 : 0;
+        // The whole name, then from each word on: "ananas" finds "jus d'ananas" too.
+        for (let at = 0; at < k.length; at = k.indexOf(' ', at) + 1 || k.length) {
+          const typos = typoDistance(q, k, at, max);
+          if (typos <= max) best = Math.max(best, (max + 1 - typos) * 4 + (at === 0 ? 2 : 0) + main);
+        }
+      });
+      if (best) scored.push({ product, score: best * 1000 + Math.min(boost(product), 999) });
+    }
+    return scored;
   }
 }
 
