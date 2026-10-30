@@ -133,7 +133,8 @@ export function UsScreen() {
 
       <Section label={t('us.members')}>
         <div className="list">
-          <ListRow to="/us/plan" icon={<Icon name="calendar" />} title={t('us.weeklyPlan')} />
+          <ListRow to="/us/week" icon={<Icon name="calendar" />} title={t('us.thisWeek')} />
+          <ListRow to="/us/plan" icon={<Icon name="calendar" />} title={t('us.usualWeek')} />
           <ListRow to="/us/household" icon={<Icon name="gear" />} title={t('us.settings')} />
           {isCatalogAdmin && (
             <ListRow to="/us/catalog" icon={<Icon name="book" />} title={t('admin.entry')} meta={t('admin.entryHint')} />
