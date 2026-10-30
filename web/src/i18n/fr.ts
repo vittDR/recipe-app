@@ -538,7 +538,8 @@ export const fr: Dictionary = {
     subtitle: 'Cochez les soirs où vous cuisinez. Les jours non modifiés suivent votre semaine type.',
     today: 'Aujourd’hui',
     tomorrow: 'Demain',
-    usualHint: 'Vos jours habituels et les heures des rappels',
+    usual: 'Régler la semaine type',
+    usualHint: 'Les jours de départ de chaque semaine, et les heures des rappels',
   },
   plan: {
     title: 'Semaine type',

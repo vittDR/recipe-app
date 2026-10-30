@@ -66,6 +66,7 @@ export function ListRow({
   title,
   meta,
   to,
+  state,
   onClick,
   trailing,
   chevron = !!to,
@@ -78,6 +79,8 @@ export function ListRow({
   title: ReactNode;
   meta?: ReactNode;
   to?: string;
+  /** Router state for `to`, e.g. `{ back: '/' }` to override the next screen's back target. */
+  state?: unknown;
   onClick?: () => void;
   trailing?: ReactNode;
   chevron?: boolean;
@@ -99,7 +102,7 @@ export function ListRow({
       {chevron && <span className="chevron"><Icon name="chevron" size={18} /></span>}
     </>
   );
-  if (to) return <Link to={to} className={cls}>{body}</Link>;
+  if (to) return <Link to={to} state={state} className={cls}>{body}</Link>;
   if (onClick) {
     return (
       <button type="button" className={cls} onClick={onClick} role={role}

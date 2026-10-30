@@ -540,7 +540,8 @@ export const en = {
     subtitle: 'Tick the evenings you cook at home. Days you leave alone follow your usual week.',
     today: 'Today',
     tomorrow: 'Tomorrow',
-    usualHint: 'Your regular days and prompt times',
+    usual: 'Set up your usual week',
+    usualHint: 'The days each week starts from, and prompt times',
   },
   plan: {
     title: 'Usual week',
