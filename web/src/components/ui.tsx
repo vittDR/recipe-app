@@ -240,8 +240,10 @@ export function Screen({
 }) {
   const navigate = useNavigate();
   const { t } = useI18n();
-  // A link can override the back target via router state, e.g. `state={{ back: '/' }}`.
-  const target = (useLocation().state as { back?: string } | null)?.back ?? back;
+  // A link can override the back target via router state, e.g. `state={{ back: '/' }}`,
+  // and pass `backState` along so that screen keeps its own back target in turn.
+  const routed = useLocation().state as { back?: string; backState?: unknown } | null;
+  const target = routed?.back ?? back;
   return (
     <main className={`screen${plain ? ' screen--plain' : ''}`}>
       {(back || right) && (
@@ -251,7 +253,7 @@ export function Screen({
               type="button"
               className="icon-btn"
               aria-label={t('app.back')}
-              onClick={() => (typeof target === 'string' ? navigate(target) : navigate(-1))}
+              onClick={() => (typeof target === 'string' ? navigate(target, { state: routed?.backState }) : navigate(-1))}
             >
               <Icon name="back" />
             </button>
