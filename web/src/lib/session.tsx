@@ -28,6 +28,20 @@ interface SessionState {
 
 const SessionContext = createContext<SessionState | null>(null);
 
+/**
+ * In `npm run dev` only: signs in with the dev account from
+ * scripts/dev-account.sh (web/.env.development.local), so the app opens
+ * straight past sign-in. Signing out leaves you signed out until a reload.
+ */
+async function devSignIn(): Promise<Session | null> {
+  const email = import.meta.env.VITE_DEV_EMAIL as string | undefined;
+  const password = import.meta.env.VITE_DEV_PASSWORD as string | undefined;
+  if (!import.meta.env.DEV || !email || !password) return null;
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) console.warn(`Dev sign-in as ${email} failed: ${error.message}. Run scripts/dev-account.sh.`);
+  return data.session;
+}
+
 export function SessionProvider({ children }: { children: ReactNode }) {
   const { locale } = useI18n();
   const [session, setSession] = useState<Session | null>(null);
@@ -87,8 +101,9 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     let active = true;
     supabase.auth.getSession().then(async ({ data }) => {
       if (!active) return;
-      setSession(data.session);
-      await load(data.session?.user.id ?? null);
+      const current = data.session ?? (await devSignIn());
+      setSession(current);
+      await load(current?.user.id ?? null);
       setLoading(false);
     });
     const { data: sub } = supabase.auth.onAuthStateChange((event, s) => {

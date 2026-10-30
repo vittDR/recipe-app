@@ -70,6 +70,8 @@ npm run test:sql                       # (repo root) needs a local Postgres + ps
 cd web && npm run typecheck && npm run lint
 ```
 
+To skip signing in while developing, run `scripts/dev-account.sh` once. It creates a dev account on the project in `web/.env`, with its own household (named "Dev kitchen") and onboarding already done. It saves the account's email and password in `web/.env.development.local`, which git ignores. After that, `npm run dev` opens the app already signed in as that account. Production builds never sign in automatically.
+
 CI (`.github/workflows/ci.yml`) runs the logic tests, the SQL tests, checks that `seed_library.sql` matches `recipes.json`, and builds the web app on every push and pull request.
 
 To query or patch the live database, `scripts/supabase-sql.sh "select 1"` (or `< file.sql`) runs SQL through the Supabase management API on the project named in `web/.env`. It needs `SUPABASE_ACCESS_TOKEN` (a personal access token) and `jq`.
