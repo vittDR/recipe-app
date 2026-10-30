@@ -193,6 +193,12 @@ export interface PlanDay {
   recipe_id: string | null;
 }
 
+export interface PlanDate {
+  household_id: string;
+  for_date: string;
+  cook_at_home: boolean;
+}
+
 export interface LearnedPattern {
   id: string;
   user_id: string;

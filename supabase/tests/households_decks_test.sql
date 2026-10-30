@@ -249,3 +249,21 @@ select pg_temp.check(:n1 = 2 and (select bool_and(last_prompt_on = '2030-01-09')
 select enqueue_due_prompts('2030-01-10 01:20+01') as n1 \gset
 select enqueue_due_prompts('2030-01-10 23:31+01') as n2 \gset
 select pg_temp.check(:n1 = 0 and :n2 = 2, 'next evening fires again, closed window does not');
+
+-- This week: a date set off skips its prompts even on a usual cook day, a date
+-- set on fires on a usual day off, and other dates follow the usual week.
+-- 2030-01-14 is a Monday, 2030-01-19 a Saturday.
+update households set prompt_time = '18:00', reminder_time = '21:00',
+                      last_prompt_on = null, last_reminder_on = null;
+update plan_days set cook_at_home = (weekday <> 6);
+insert into plan_dates (household_id, for_date, cook_at_home)
+select id, date '2030-01-14', false from households union all
+select id, date '2030-01-19', true from households;
+select pg_temp.check((select bool_and(not is_cook_day(id, '2030-01-14') and is_cook_day(id, '2030-01-15')
+                                      and is_cook_day(id, '2030-01-19') and not is_cook_day(id, '2030-01-26'))
+                      from households), 'dates set this week override the usual week');
+select enqueue_due_prompts('2030-01-14 18:01+01') as n1 \gset
+select enqueue_due_prompts('2030-01-15 18:01+01') as n2 \gset
+select enqueue_due_prompts('2030-01-19 18:01+01') as n3 \gset
+select enqueue_due_prompts('2030-01-26 18:01+01') as n4 \gset
+select pg_temp.check(:n1 = 0 and :n2 = 1 and :n3 = 1 and :n4 = 0, 'prompts follow this week, then the usual week');

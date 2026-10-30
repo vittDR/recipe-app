@@ -5,9 +5,10 @@ import { Avatar, Button, Chip, Screen, Section, Segmented, Spinner } from '../co
 import { useI18n } from '../i18n/index.tsx';
 import { recipeTitle } from '../lib/recipeText.ts';
 import { isoWeekday, todayIn, useLive } from '../lib/hooks.ts';
+import { comingDays, cooksOn } from '../lib/plan.ts';
 import { useSession } from '../lib/session.tsx';
 import { callFunction, must, supabase } from '../lib/supabase.ts';
-import type { Deck, DeckMemberProgress, Meal, Mood, PlanDay, Recipe } from '../lib/types.ts';
+import type { Deck, DeckMemberProgress, Meal, Mood, PlanDate, PlanDay, Recipe } from '../lib/types.ts';
 
 const TIMES = [null, 20, 30, 45, 60] as const;
 const MOODS: Mood[] = ['any', 'comfort', 'light', 'quick', 'fancy'];
@@ -17,6 +18,7 @@ interface TonightData {
   progress: DeckMemberProgress[];
   meals: (Meal & { recipe: Pick<Recipe, 'title' | 'language' | 'translations'> | null })[];
   plan: PlanDay[];
+  dates: PlanDate[];
 }
 
 export function TonightScreen() {
@@ -32,29 +34,30 @@ export function TonightScreen() {
   const [dealing, setDealing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Monday of this week through Sunday.
-  const weekStart = todayIn(tz, 1 - isoWeekday(today));
-  const weekEnd = todayIn(tz, 7 - isoWeekday(today));
+  // Tonight and the six evenings after it.
+  const week = comingDays(tz);
 
   const { data, loading } = useLive<TonightData>(
     `tonight:${household!.id}:${today}`,
     async () => {
-      const [decks, meals, plan] = await Promise.all([
+      const [decks, meals, plan, dates] = await Promise.all([
         supabase.from('decks').select('*').eq('household_id', household!.id).eq('for_date', today)
           .neq('status', 'closed').order('created_at', { ascending: false }).limit(1),
         supabase.from('meals').select('id, for_date, recipe_id, status, deck_id, recipe:recipes(title, language, translations)')
-          .eq('household_id', household!.id).gte('for_date', weekStart).lte('for_date', weekEnd),
+          .eq('household_id', household!.id).gte('for_date', week[0]).lte('for_date', week[6]),
         supabase.from('plan_days').select('*').eq('household_id', household!.id),
+        supabase.from('plan_dates').select('*').eq('household_id', household!.id).gte('for_date', week[0]).lte('for_date', week[6]),
       ]);
       const deck = (must(decks) as Deck[])[0] ?? null;
       const progress = deck
         ? (must(await supabase.from('deck_members').select('*').eq('deck_id', deck.id)) as DeckMemberProgress[])
         : [];
-      return { deck, progress, meals: must(meals) as unknown as TonightData['meals'], plan: must(plan) as PlanDay[] };
+      return { deck, progress, meals: must(meals) as unknown as TonightData['meals'], plan: must(plan) as PlanDay[], dates: must(dates) as PlanDate[] };
     },
     [
       { table: 'decks', filter: `household_id=eq.${household!.id}` },
       { table: 'meals', filter: `household_id=eq.${household!.id}` },
+      { table: 'plan_dates', filter: `household_id=eq.${household!.id}` },
     ],
   );
 
@@ -93,20 +96,20 @@ export function TonightScreen() {
       </div>
       <h1 className="screen__title">{t('tonight.title')}</h1>
 
-      <Link to="/us/plan" state={{ back: '/' }} className="card stack tonight-week" aria-label={t('us.weeklyPlan')}>
+      <Link to="/us/week" state={{ back: '/' }} className="card stack tonight-week" aria-label={t('us.thisWeek')}>
         <span className="row row--between">
           <h2 className="headline">{t('tonight.week')}</h2>
           <span className="chevron"><Icon name="chevron" size={18} /></span>
         </span>
         <div className="week">
-          {days.map((label, i) => {
-            const date = todayIn(tz, i + 1 - isoWeekday(today));
+          {week.map((date) => {
+            const label = days[isoWeekday(date) - 1];
             const meal = data?.meals.find((m) => m.for_date === date && m.status !== 'skipped');
-            const cook = data?.plan.find((p) => p.weekday === i + 1)?.cook_at_home ?? true;
+            const cook = cooksOn(date, data?.plan, data?.dates);
             // Green once a dish is picked for the day; faded accent for a cook-at-home day still open.
             const dot = meal ? 'week__dot--done' : cook ? 'week__dot--cook' : '';
             return (
-              <div key={label} className={`week__day${date === today ? ' week__day--today' : ''}`}
+              <div key={date} className={`week__day${date === today ? ' week__day--today' : ''}`}
                 title={(meal?.recipe ? recipeTitle(meal.recipe, locale) : null) ?? (cook ? '' : t('tonight.off'))}>
                 <span>{label}</span>
                 <span className="headline">{Number(date.slice(8))}</span>

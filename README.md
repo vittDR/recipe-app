@@ -52,6 +52,7 @@ Key rules from the handover, and where they live:
 | Usuals = checked-off purchases, halving monthly; due again past the median gap | `logic/usuals.ts` |
 | "<name> added N items" pushed after 5 quiet minutes, not to people looking at the list; per-kind switches | `enqueue_grocery_pushes()`, `grocery_presence`, `profiles.push_muted` |
 | 17:30 prompt on cook days, reminder later, once per local day (windows that cross midnight still fire) | `enqueue_due_prompts()` + pg_cron |
+| Cook days: the next 7 evenings are set on This week; a date left alone follows the usual week (Us > Usual week) | `plan_dates`, `plan_days`, `is_cook_day()`, `web/src/lib/plan.ts` |
 | Catalogues (ingredients, products, tags) stay on the phone and are re-downloaded only when `catalog_version()` changes; recipe photos (900×675 WebP) are cached by the service worker | `web/src/lib/cache.ts`, `catalog_version()`, `src/sw.ts` |
 | Language, light / dark / automatic theme and password change live in Us > Profile settings; the theme is saved per device | `web/src/lib/theme.ts`, `screens/ProfileSettings.tsx` |
 | Screens are built from the shared components in `components/ui.tsx` (ListRow, Section, SearchField, SheetHeader, ProgressBar, confirmation sheet); spacing and colours come from tokens, never inline | `components/ui.tsx`, `styles/app.css` |

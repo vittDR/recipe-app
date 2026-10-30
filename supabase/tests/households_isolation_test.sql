@@ -48,6 +48,7 @@ select add_store('Marché d''Anna') as store_a \gset
 insert into tag_catalog (household_id, name, name_fr) values (:'ha', 'dimanche', 'Dimanche');
 select put_grocery_item('33333333-0000-0000-0000-0000000000a1', format('{"product_id":"%s","recipe_id":"%s"}', :'product_a', :'recipe_a')::jsonb);
 insert into meals (household_id, for_date, recipe_id) values (:'ha', current_date, :'recipe_a');
+insert into plan_dates (household_id, for_date, cook_at_home) values (:'ha', current_date, false);
 insert into taste_rules (user_id, kind, value, product_id) values (auth.uid(), 'love', 'pâte', :'product_a');
 select pg_temp.check((select count(*) = 1 from grocery_items), 'A has a list line');
 
@@ -81,6 +82,7 @@ select pg_temp.check((select count(*) = 0 from household_products), 'item histor
 select pg_temp.check((select count(*) = 0 from grocery_items), 'lists are private');
 select pg_temp.check((select count(*) = 0 from meals), 'meals are private');
 select pg_temp.check((select count(*) = 7 from plan_days), 'B sees only its own plan');
+select pg_temp.check((select count(*) = 0 from plan_dates), 'this week''s days are private');
 select pg_temp.check((select count(*) = (select count(*) from ingredient_catalog where is_staple) from household_staples),
                      'B sees only its own staples');
 select pg_temp.check((select count(*) = 0 from decks) and (select count(*) = 0 from deck_cards)
@@ -113,6 +115,8 @@ select pg_temp.refused(format('insert into meals (household_id, for_date, recipe
                        'B''s meal cannot be A''s recipe');
 select pg_temp.refused(format('update plan_days set recipe_id = %L where household_id = %L', :'recipe_a', :'hb'),
                        'B''s plan cannot pre-pick A''s recipe');
+select pg_temp.refused(format('insert into plan_dates (household_id, for_date, cook_at_home) values (%L, current_date, true)', :'ha'),
+                       'B cannot set A''s week');
 select pg_temp.refused(format('insert into household_products (household_id, product_id) values (%L, %L)', :'hb', :'product_a'),
                        'B cannot keep history for A''s item');
 select pg_temp.refused(format('insert into taste_rules (user_id, kind, value, product_id) values (auth.uid(), %L, %L, %L)', 'never', 'x', :'product_a'),

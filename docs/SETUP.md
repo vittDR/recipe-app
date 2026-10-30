@@ -389,6 +389,7 @@ auth.users ──1:1── profiles ──1:1── member_goals            (pri
                       │      │              ──1:n── tiebreak_picks
                       │      ──1:n── meals
                       │      ──1:7── plan_days
+                      │      ──1:n── plan_dates
                       │      ──1:n── grocery_items
                       │      ──1:n── household_staples
                       │      ──1:n── household_aisle_order
@@ -479,7 +480,8 @@ each time a deck is dealt.
 | `swipes` | `verdict` per person per card. Hidden from the partner until you've finished the deck too. A trigger (`on_swipe`) resolves the deck when everyone's done. |
 | `tiebreak_picks` | Each person's pick among the three tie-break options. |
 | `meals` | What's planned or cooked per day (one per household per date). |
-| `plan_days` | Per weekday (1 = Monday): `cook_at_home`, plus an optional pre-picked recipe. Drives the 17:30 prompt. |
+| `plan_days` | The usual week, per weekday (1 = Monday): `cook_at_home`, plus an optional pre-picked recipe. |
+| `plan_dates` | This week: `cook_at_home` for one date, set on the This week screen. Wins over `plan_days`; `is_cook_day()` combines the two and drives the 17:30 prompt. |
 
 ### Groceries
 
