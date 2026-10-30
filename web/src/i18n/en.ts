@@ -115,6 +115,8 @@ export const en = {
     love: 'I love',
     addPlaceholder: 'Search an ingredient',
     add: 'Add',
+    createAndNever: 'Create and never show me',
+    createAndLove: 'Create and add to what I love',
   },
   tonight: {
     title: 'Tonight',
