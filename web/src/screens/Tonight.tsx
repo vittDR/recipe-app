@@ -93,7 +93,7 @@ export function TonightScreen() {
       </div>
       <h1 className="screen__title">{t('tonight.title')}</h1>
 
-      <Link to="/us/plan" className="card stack tonight-week" aria-label={t('us.weeklyPlan')}>
+      <Link to="/us/plan" state={{ back: '/' }} className="card stack tonight-week" aria-label={t('us.weeklyPlan')}>
         <span className="row row--between">
           <h2 className="headline">{t('tonight.week')}</h2>
           <span className="chevron"><Icon name="chevron" size={18} /></span>

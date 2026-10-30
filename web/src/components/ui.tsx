@@ -4,7 +4,7 @@
 
 import { useEffect, useRef, useState, type ButtonHTMLAttributes, type ReactNode, type Ref } from 'react';
 import { createPortal } from 'react-dom';
-import { Link, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { useI18n } from '../i18n/index.tsx';
 import { Icon } from './Icon.tsx';
 
@@ -237,6 +237,8 @@ export function Screen({
 }) {
   const navigate = useNavigate();
   const { t } = useI18n();
+  // A link can override the back target via router state, e.g. `state={{ back: '/' }}`.
+  const target = (useLocation().state as { back?: string } | null)?.back ?? back;
   return (
     <main className={`screen${plain ? ' screen--plain' : ''}`}>
       {(back || right) && (
@@ -246,7 +248,7 @@ export function Screen({
               type="button"
               className="icon-btn"
               aria-label={t('app.back')}
-              onClick={() => (typeof back === 'string' ? navigate(back) : navigate(-1))}
+              onClick={() => (typeof target === 'string' ? navigate(target) : navigate(-1))}
             >
               <Icon name="back" />
             </button>
