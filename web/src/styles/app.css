@@ -11,6 +11,15 @@ html {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* The page itself never scrolls; .scroller does. When the document scrolls,
+   iOS home-screen apps let position: fixed elements (the tab bar) drift with
+   the content. */
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
   margin: 0;
   background: var(--c-paper);
@@ -44,6 +53,12 @@ a {
 }
 
 /* ---------- Layout ---------- */
+
+.scroller {
+  height: 100dvh;
+  overflow-y: auto;
+  overscroll-behavior-y: none;
+}
 
 .app {
   min-height: 100dvh;
