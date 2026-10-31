@@ -114,18 +114,23 @@ export function ListRow({
   return <div className={cls} role={role}>{body}</div>;
 }
 
-/** "Create “…”": the dashed row under search results when nothing matches exactly. */
-export function CreateRow({ title, meta, onClick, chevron }: { title: string; meta?: string; onClick: () => void; chevron?: boolean }) {
-  return (
-    <button type="button" className="create-row" onClick={onClick}>
-      <Icon name="squarePlus" />
-      <span className="list-row__main">
-        <span className="list-row__title">{title}</span>
-        {meta && <span className="list-row__meta">{meta}</span>}
-      </span>
-      {chevron ? <span className="chevron"><Icon name="chevron" size={18} /></span> : <Icon name="plus" size={20} />}
-    </button>
+/**
+ * "Create “…”": the last row of a results list, when nothing matches exactly.
+ * Tinted so it reads as an action rather than one more result. In a
+ * `role="list"` it needs `role="listitem"`, which wraps the button.
+ */
+export function CreateRow({ title, meta, onClick, chevron, role }: {
+  title: string;
+  meta?: string;
+  onClick: () => void;
+  chevron?: boolean;
+  role?: 'option' | 'listitem';
+}) {
+  const row = (
+    <ListRow className="list-row--create" role={role === 'option' ? role : undefined} icon={<Icon name="squarePlus" />}
+      title={title} meta={meta} onClick={onClick} chevron={chevron} trailing={chevron ? undefined : <Icon name="plus" size={20} />} />
   );
+  return role === 'listitem' ? <div role="listitem" className="list-item">{row}</div> : row;
 }
 
 /** A labelled part of a screen: the small uppercase label, an optional hint, then its content. */

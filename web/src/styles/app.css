@@ -1475,25 +1475,25 @@ button.grocery-row__amount {
   justify-content: center;
 }
 
-.create-row {
-  display: flex;
-  align-items: center;
-  gap: var(--s-3);
-  width: 100%;
-  min-height: 60px;
-  margin-top: var(--s-3);
-  padding: var(--s-2) var(--s-4);
-  border: 1.5px dashed var(--c-line);
-  border-radius: var(--r-lg);
-  background: none;
-  color: inherit;
-  text-align: left;
-  font: inherit;
+/* "Create “…”": the last row of a results list, tinted as an action. */
+.list-row--create {
+  background: color-mix(in srgb, var(--c-accent-soft) 55%, transparent);
+  box-shadow: inset 0 1px 0 var(--c-line);
 }
 
-.create-row > svg:first-child {
+.list > .list-row--create:first-child,
+.list > :first-child > .list-row--create {
+  box-shadow: none;
+}
+
+.list-row--create .list-row__icon,
+.list-row--create .list-row__title {
   color: var(--c-accent);
-  flex: none;
+}
+
+/* A wrapper only for its role: lays out as if absent. */
+.list-item {
+  display: contents;
 }
 
 .grocery-progress {

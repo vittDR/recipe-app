@@ -363,7 +363,6 @@ export const fr: Dictionary = {
     newItem: 'Nouvel article',
     createRow: 'Créer « {name} »',
     createRowHint: 'Nouvel article dans votre catalogue',
-    noMatch: 'Rien dans le catalogue ne correspond à « {query} »',
     yourItem: 'Votre article',
     inCart: 'Dans le caddie',
     onList_one: '{count} article sur la liste',

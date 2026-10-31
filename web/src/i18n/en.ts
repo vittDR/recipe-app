@@ -365,7 +365,6 @@ export const en = {
     newItem: 'New item',
     createRow: 'Create “{name}”',
     createRowHint: 'New item in your catalog',
-    noMatch: 'Nothing in the catalog matches “{query}”',
     yourItem: 'Your own item',
     inCart: 'In the cart',
     onList_one: '{count} item on the list',
