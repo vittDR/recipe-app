@@ -36,14 +36,14 @@ export function SettingsScreen() {
     const [aisles, stores, staples] = await Promise.all([
       supabase.from('household_aisle_order').select('aisle, position').eq('household_id', hid),
       supabase.from('household_stores').select('id, name, position').eq('household_id', hid),
-      supabase.from('household_staples').select('name').eq('household_id', hid).order('name'),
+      supabase.from('household_staples').select('product_id').eq('household_id', hid),
     ]);
     return {
       sections: [
         ...(must(aisles) as { aisle: Aisle; position: number }[]).map((x) => ({ s: { kind: 'aisle', aisle: x.aisle } as ListSection, position: x.position })),
         ...(must(stores) as Store[]).map((x) => ({ s: { kind: 'store', store: x } as ListSection, position: x.position })),
       ].sort((x, y) => x.position - y.position).map((x) => x.s),
-      staples: (must(staples) as { name: string }[]).map((x) => x.name),
+      staples: (must(staples) as { product_id: string }[]).map((x) => x.product_id),
     };
   });
   const sections = data?.sections ?? [];
@@ -84,28 +84,23 @@ export function SettingsScreen() {
 
   const sectionName = (s: ListSection) => (s.kind === 'aisle' ? t(`groceries.aisles.${s.aisle}`) : s.store.name);
 
-  // Staples are saved as catalogue ingredients (or an item's name, for items
-  // with none), which is what recipe lines are matched on.
-  const stapleKey = (p: Product) => p.ingredient ?? p.name_fr.toLowerCase();
-  const stapleProduct = (name: string) => catalog?.index.ofIngredient(name) ?? catalog?.index.find(name);
-  const stapleName = (name: string) => {
-    const p = stapleProduct(name);
-    return p ? productName(p, locale) : name;
-  };
+  // Staples are catalogue items, matched on recipe lines' items.
   const staples = (data?.staples ?? [])
-    .map((name) => ({ name, label: stapleName(name) }))
+    .map((id) => catalog?.index.get(id))
+    .filter((p): p is Product => !!p)
+    .map((p) => ({ id: p.id, label: productName(p, locale) }))
     .sort((a, b) => a.label.localeCompare(b.label, locale));
   const haveStaple = new Set(data?.staples ?? []);
-  const stapleResults = searchProducts(catalog, stapleQuery, { limit: 5 }).results.filter((p) => !haveStaple.has(stapleKey(p)));
+  const stapleResults = searchProducts(catalog, stapleQuery, { limit: 5 }).results.filter((p) => !haveStaple.has(p.id));
 
   const addStaple = async (p: Product) => {
     setStapleQuery('');
-    await save(supabase.from('household_staples').upsert({ household_id: hid, name: stapleKey(p) }));
+    await save(supabase.from('household_staples').upsert({ household_id: hid, product_id: p.id }));
     await reload();
   };
 
-  const removeStaple = async (name: string) => {
-    await save(supabase.from('household_staples').delete().eq('household_id', hid).eq('name', name));
+  const removeStaple = async (id: string) => {
+    await save(supabase.from('household_staples').delete().eq('household_id', hid).eq('product_id', id));
     await reload();
   };
 
@@ -173,7 +168,7 @@ export function SettingsScreen() {
         <div className="stack">
           <div className="chips">
             {staples.map((s) => (
-              <Chip key={s.name} onRemove={() => void removeStaple(s.name)} removeLabel={`${t('app.delete')} ${s.label}`}>{s.label}</Chip>
+              <Chip key={s.id} onRemove={() => void removeStaple(s.id)} removeLabel={`${t('app.delete')} ${s.label}`}>{s.label}</Chip>
             ))}
           </div>
           <SearchField value={stapleQuery} onChange={setStapleQuery} placeholder={t('tastes.addPlaceholder')} label={t('settings.staples')}
