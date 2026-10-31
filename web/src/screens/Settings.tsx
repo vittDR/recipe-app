@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { storeKey } from '@logic/groceries.ts';
+import { productName, type Product } from '@logic/products.ts';
 import { useNavigate } from 'react-router';
 import { Icon } from '../components/Icon.tsx';
 import { MemberList } from '../components/Members.tsx';
-import { Button, Chip, confirmSheet, Field, ListRow, Screen, Section, Spinner } from '../components/ui.tsx';
+import { Button, Chip, confirmSheet, Field, ListRow, Screen, SearchField, Section, Spinner } from '../components/ui.tsx';
 import { useI18n } from '../i18n/index.tsx';
 import { useLive, useSave } from '../lib/hooks.ts';
+import { searchProducts, useGroceryCatalog } from '../lib/products.ts';
 import { useSession } from '../lib/session.tsx';
 import { must, supabase } from '../lib/supabase.ts';
 import type { Aisle, Store } from '../lib/types.ts';
@@ -20,27 +22,28 @@ interface SettingsData {
 }
 
 export function SettingsScreen() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const { household, refresh } = useSession();
   const navigate = useNavigate();
   const save = useSave();
   const hid = household!.id;
   const [newStore, setNewStore] = useState('');
-  const [newStaple, setNewStaple] = useState('');
+  const [stapleQuery, setStapleQuery] = useState('');
+  const { data: catalog } = useGroceryCatalog(hid);
   const zones = typeof Intl.supportedValuesOf === 'function' ? Intl.supportedValuesOf('timeZone') : [household!.timezone];
 
   const { data, reload } = useLive<SettingsData>(`settings:${hid}`, async () => {
     const [aisles, stores, staples] = await Promise.all([
       supabase.from('household_aisle_order').select('aisle, position').eq('household_id', hid),
       supabase.from('household_stores').select('id, name, position').eq('household_id', hid),
-      supabase.from('household_staples').select('name').eq('household_id', hid).order('name'),
+      supabase.from('household_staples').select('product_id').eq('household_id', hid),
     ]);
     return {
       sections: [
         ...(must(aisles) as { aisle: Aisle; position: number }[]).map((x) => ({ s: { kind: 'aisle', aisle: x.aisle } as ListSection, position: x.position })),
         ...(must(stores) as Store[]).map((x) => ({ s: { kind: 'store', store: x } as ListSection, position: x.position })),
       ].sort((x, y) => x.position - y.position).map((x) => x.s),
-      staples: (must(staples) as { name: string }[]).map((x) => x.name),
+      staples: (must(staples) as { product_id: string }[]).map((x) => x.product_id),
     };
   });
   const sections = data?.sections ?? [];
@@ -81,16 +84,23 @@ export function SettingsScreen() {
 
   const sectionName = (s: ListSection) => (s.kind === 'aisle' ? t(`groceries.aisles.${s.aisle}`) : s.store.name);
 
-  const addStaple = async () => {
-    const name = newStaple.trim().toLowerCase();
-    if (!name) return;
-    setNewStaple('');
-    await save(supabase.from('household_staples').upsert({ household_id: hid, name }));
+  // Staples are catalogue items, matched on recipe lines' items.
+  const staples = (data?.staples ?? [])
+    .map((id) => catalog?.index.get(id))
+    .filter((p): p is Product => !!p)
+    .map((p) => ({ id: p.id, label: productName(p, locale) }))
+    .sort((a, b) => a.label.localeCompare(b.label, locale));
+  const haveStaple = new Set(data?.staples ?? []);
+  const stapleResults = searchProducts(catalog, stapleQuery, { limit: 5 }).results.filter((p) => !haveStaple.has(p.id));
+
+  const addStaple = async (p: Product) => {
+    setStapleQuery('');
+    await save(supabase.from('household_staples').upsert({ household_id: hid, product_id: p.id }));
     await reload();
   };
 
-  const removeStaple = async (name: string) => {
-    await save(supabase.from('household_staples').delete().eq('household_id', hid).eq('name', name));
+  const removeStaple = async (id: string) => {
+    await save(supabase.from('household_staples').delete().eq('household_id', hid).eq('product_id', id));
     await reload();
   };
 
@@ -155,13 +165,23 @@ export function SettingsScreen() {
       </Section>
 
       <Section label={t('settings.staples')} hint={t('settings.staplesHint')}>
-        <div className="chips">
-          {(data?.staples ?? []).map((s) => <Chip key={s} onRemove={() => void removeStaple(s)} removeLabel={`${t('app.delete')} ${s}`}>{s}</Chip>)}
+        <div className="stack">
+          <div className="chips">
+            {staples.map((s) => (
+              <Chip key={s.id} onRemove={() => void removeStaple(s.id)} removeLabel={`${t('app.delete')} ${s.label}`}>{s.label}</Chip>
+            ))}
+          </div>
+          <SearchField value={stapleQuery} onChange={setStapleQuery} placeholder={t('tastes.addPlaceholder')} label={t('settings.staples')}
+            onEnter={() => stapleResults[0] && void addStaple(stapleResults[0])} />
+          {stapleQuery.trim() && stapleResults.length > 0 && (
+            <div className="list" role="listbox" aria-label={t('settings.staples')}>
+              {stapleResults.map((p) => (
+                <ListRow key={p.id} role="option" title={productName(p, locale)} trailing={<Icon name="plus" size={20} />}
+                  onClick={() => void addStaple(p)} />
+              ))}
+            </div>
+          )}
         </div>
-        <form className="row mt-3" onSubmit={(e) => { e.preventDefault(); void addStaple(); }}>
-          <input className="input" value={newStaple} onChange={(e) => setNewStaple(e.target.value)} aria-label={t('settings.staples')} />
-          <Button small variant="secondary" type="submit" disabled={!newStaple.trim()}>{t('tastes.add')}</Button>
-        </form>
       </Section>
 
       <Button block variant="danger" className="mt-8" onClick={() => void leave()}>{t('settings.leave')}</Button>
