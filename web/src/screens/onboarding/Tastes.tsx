@@ -78,19 +78,17 @@ function RuleList({
         </div>
         <SearchField value={query} onChange={setQuery} placeholder={t('tastes.addPlaceholder')} label={label}
           onEnter={() => (results[0] ? pick(results[0]) : typed && !exact && create())} />
-        {typed && (results.length === 0 ? (
-          <p className="muted small m-0">{t('groceries.noMatch', { query: typed })}</p>
-        ) : (
+        {typed && (results.length > 0 || !exact) && (
           <div className="list" role="listbox" aria-label={label}>
             {results.map((p) => (
               <ListRow key={p.id} role="option" title={productName(p, locale)} trailing={<Icon name="plus" size={20} />}
                 onClick={() => pick(p)} />
             ))}
+            {!exact && (
+              <CreateRow role="option" title={t('groceries.createRow', { name: typed })} meta={t('groceries.createRowHint')} chevron
+                onClick={create} />
+            )}
           </div>
-        ))}
-        {typed && !exact && (
-          <CreateRow title={t('groceries.createRow', { name: typed })} meta={t('groceries.createRowHint')} chevron
-            onClick={create} />
         )}
       </div>
     </Section>

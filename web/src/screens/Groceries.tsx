@@ -273,29 +273,25 @@ export function GroceriesScreen() {
 
       {searching && parsed.name && (
         <div className="grocery-results">
-          {results.length === 0 ? (
-            <p className="muted">{t('groceries.noMatch', { query: typedName })}</p>
-          ) : (
-            <div className="list" role="list" aria-label={t('groceries.suggestions')}>
-              {results.map((p) => {
-                const name = productName(p, locale);
-                const row = onListByProduct.get(p.id);
-                return (
-                  <ListRow key={p.id} role="listitem" className="grocery-pick"
-                    title={<span className="grocery-pick__name"><Highlight text={name} query={parsed.name} /></span>}
-                    meta={sectionTitleOf(sectionKeyOf(catalog, p))}
-                    trailing={(
-                      <AmountControl name={name} amount={row ? { quantity: row.quantity, unit: row.unit } : null} units={unitsFor(p)}
-                        onAdd={() => add(p, typedFor(p))} onChange={(a) => row && change(row, a)} onRemove={() => row && remove(row)} />
-                    )} />
-                );
-              })}
-            </div>
-          )}
-          {!exact && (
-            <CreateRow title={t('groceries.createRow', { name: typedName })} meta={t('groceries.createRowHint')} chevron
-              onClick={() => setCreating(typedName)} />
-          )}
+          <div className="list" role="list" aria-label={t('groceries.suggestions')}>
+            {results.map((p) => {
+              const name = productName(p, locale);
+              const row = onListByProduct.get(p.id);
+              return (
+                <ListRow key={p.id} role="listitem" className="grocery-pick"
+                  title={<span className="grocery-pick__name"><Highlight text={name} query={parsed.name} /></span>}
+                  meta={sectionTitleOf(sectionKeyOf(catalog, p))}
+                  trailing={(
+                    <AmountControl name={name} amount={row ? { quantity: row.quantity, unit: row.unit } : null} units={unitsFor(p)}
+                      onAdd={() => add(p, typedFor(p))} onChange={(a) => row && change(row, a)} onRemove={() => row && remove(row)} />
+                  )} />
+              );
+            })}
+            {!exact && (
+              <CreateRow role="listitem" title={t('groceries.createRow', { name: typedName })} meta={t('groceries.createRowHint')} chevron
+                onClick={() => setCreating(typedName)} />
+            )}
+          </div>
         </div>
       )}
 

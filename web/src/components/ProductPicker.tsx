@@ -49,16 +49,16 @@ export function ProductPicker({
         </button>
       </div>
 
-      {parsed.name && results.length > 0 && (
+      {parsed.name && (results.length > 0 || !exact) && (
         <div className="list mt-2" role="listbox" aria-label={t('groceries.suggestions')}>
           {results.map((p) => (
             <ListRow key={p.id} role="option" selected={p.id === exact?.id} title={productName(p, locale)}
               meta={metaOf?.(p)} trailing={<Icon name="plus" size={20} />} onClick={() => onPick(p, parsed)} />
           ))}
+          {!exact && (
+            <CreateRow role="option" title={t('groceries.create', { name: parsed.name })} meta={t('groceries.newItem')} onClick={() => onPick(null, parsed)} />
+          )}
         </div>
-      )}
-      {parsed.name && !exact && (
-        <CreateRow title={t('groceries.create', { name: parsed.name })} meta={t('groceries.newItem')} onClick={() => onPick(null, parsed)} />
       )}
     </>
   );
