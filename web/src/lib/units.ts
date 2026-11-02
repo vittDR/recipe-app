@@ -29,5 +29,15 @@ export function useAmount() {
   /** On a recipe, whole items read as a bare count: "2", not "2 pcs". */
   const recipeAmount = (quantity: number | null, unit: string | null) =>
     amount(quantity, unit?.trim().toLowerCase() === 'piece' ? null : unit);
-  return { number, unitLabel, amount, recipeAmount };
+  /** Several lines of one item: same units added up, others joined ("2 cloves + 1 tsp"). */
+  const linesAmount = (lines: { quantity: number | null; unit: string | null }[]) => {
+    const byUnit = new Map<string, number>();
+    for (const l of lines) {
+      if (l.quantity === null) continue;
+      const u = l.unit?.trim().toLowerCase() ?? '';
+      byUnit.set(u, (byUnit.get(u) ?? 0) + l.quantity);
+    }
+    return [...byUnit].map(([u, q]) => recipeAmount(Math.round(q * 100) / 100, u || null)).join(' + ');
+  };
+  return { number, unitLabel, amount, recipeAmount, linesAmount };
 }

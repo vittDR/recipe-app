@@ -10,7 +10,7 @@ import { recipeTitle, recipeSteps } from '../../lib/recipeText.ts';
 import { MANY_POTS } from '@logic/facets.ts';
 import { equipmentLabels, exoticIngredients } from '../../lib/facets.ts';
 import { useCatalog, useLive, useSave } from '../../lib/hooks.ts';
-import { INGREDIENT_SELECT, ingredientName } from '../../lib/products.ts';
+import { groupIngredients, INGREDIENT_SELECT, ingredientName } from '../../lib/products.ts';
 import { useSession } from '../../lib/session.tsx';
 import { must, supabase } from '../../lib/supabase.ts';
 import { useTags } from '../../lib/tags.ts';
@@ -35,7 +35,7 @@ export function RecipeScreen() {
   const { id } = useParams();
   const i18n = useI18n();
   const { t, tn, locale } = i18n;
-  const { recipeAmount } = useAmount();
+  const { linesAmount } = useAmount();
   const catalog = useCatalog();
   const { household } = useSession();
   const { tags, reload: reloadTags } = useTags(household!.id);
@@ -120,11 +120,12 @@ export function RecipeScreen() {
       <Section label={t('recipe.ingredients')}
         action={<Button small variant="text" onClick={() => setSheet(true)}><Icon name="cart" size={18} /> {t('match.addToList')}</Button>}>
         <div className="list">
-          {ingredients.map((i) => {
+          {groupIngredients(ingredients).map((lines) => {
+            const i = lines[0];
             const p = proposals.get(i.id);
             const notes = [
               i.optional && <span key="o">{t('recipe.optional')}</span>,
-              i.guessed && <span key="g" className="text-warning">{t('recipe.guessed')}</span>,
+              lines.some((l) => l.guessed) && <span key="g" className="text-warning">{t('recipe.guessed')}</span>,
               exotic.has(i.name) && <span key="e">{t('recipe.exoticHint')}</span>,
             ].filter(Boolean);
             return (
@@ -135,7 +136,7 @@ export function RecipeScreen() {
                     {exotic.has(i.name) && <Tag tone="warning">{t('recipe.exotic')}</Tag>}
                     {p?.why === 'on_list' && <Tag>{t('recipe.onList')}</Tag>}
                     {(p?.why === 'bought_recently' || p?.why === 'staple') && <Tag tone="success">{t('recipe.atHome')}</Tag>}
-                    <span className="muted small">{recipeAmount(i.quantity, i.unit)}</span>
+                    <span className="muted small">{linesAmount(lines)}</span>
                   </>
                 )} />
             );
