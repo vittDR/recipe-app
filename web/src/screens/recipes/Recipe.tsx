@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import type { ListProposal } from '@logic/groceries.ts';
-import { AddToListSheet, formatQuantity, loadProposals } from '../../components/AddToListSheet.tsx';
+import { AddToListSheet, loadProposals } from '../../components/AddToListSheet.tsx';
 import { Icon } from '../../components/Icon.tsx';
 import { RecipeTags } from '../../components/Tags.tsx';
 import { Button, confirmSheet, ListRow, Screen, Section, Spinner, Tag, imageStyle, recipeEmoji } from '../../components/ui.tsx';
@@ -15,6 +15,7 @@ import { useSession } from '../../lib/session.tsx';
 import { must, supabase } from '../../lib/supabase.ts';
 import { useTags } from '../../lib/tags.ts';
 import type { Recipe, RecipeIngredient } from '../../lib/types.ts';
+import { useAmount } from '../../lib/units.ts';
 
 interface Portion {
   kcal: number;
@@ -34,6 +35,7 @@ export function RecipeScreen() {
   const { id } = useParams();
   const i18n = useI18n();
   const { t, tn, locale } = i18n;
+  const { recipeAmount } = useAmount();
   const catalog = useCatalog();
   const { household } = useSession();
   const { tags, reload: reloadTags } = useTags(household!.id);
@@ -133,7 +135,7 @@ export function RecipeScreen() {
                     {exotic.has(i.name) && <Tag tone="warning">{t('recipe.exotic')}</Tag>}
                     {p?.why === 'on_list' && <Tag>{t('recipe.onList')}</Tag>}
                     {(p?.why === 'bought_recently' || p?.why === 'staple') && <Tag tone="success">{t('recipe.atHome')}</Tag>}
-                    <span className="muted small">{formatQuantity(i.quantity, i.unit)}</span>
+                    <span className="muted small">{recipeAmount(i.quantity, i.unit)}</span>
                   </>
                 )} />
             );

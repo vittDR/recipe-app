@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { formatQuantity } from '../../components/AddToListSheet.tsx';
 import { Icon } from '../../components/Icon.tsx';
 import { Button, ModeBar, ProgressBar, Spinner } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
@@ -9,11 +8,13 @@ import { useLive, useWakeLock } from '../../lib/hooks.ts';
 import { INGREDIENT_SELECT, ingredientName } from '../../lib/products.ts';
 import { must, supabase } from '../../lib/supabase.ts';
 import type { Recipe, RecipeIngredient } from '../../lib/types.ts';
+import { useAmount } from '../../lib/units.ts';
 
 /** Step-by-step, large type, screen kept awake. Step 0 lists ingredients. */
 export function CookingScreen() {
   const { id } = useParams();
   const { t, locale } = useI18n();
+  const { recipeAmount } = useAmount();
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   useWakeLock(true);
@@ -39,7 +40,7 @@ export function CookingScreen() {
         {step === 0 ? (
           <ul className="stack cooking__ingredients">
             {ingredients.map((i) => (
-              <li key={i.id} className="row row--between"><span>{ingredientName(i, locale)}</span><span className="muted">{formatQuantity(i.quantity, i.unit)}</span></li>
+              <li key={i.id} className="row row--between"><span>{ingredientName(i, locale)}</span><span className="muted">{recipeAmount(i.quantity, i.unit)}</span></li>
             ))}
           </ul>
         ) : (

@@ -15,6 +15,14 @@ export function ingredientName(i: Pick<RecipeIngredient, 'name' | 'product'>, lo
   return i.product ? productName(i.product, locale) : i.name;
 }
 
+/**
+ * A name inside a sentence: "Vous avez refusé blanc de poulet…", not "…refusé
+ * Blanc de poulet…". Acronyms stay as they are ("MSG").
+ */
+export function inSentence(name: string, locale: string): string {
+  return /^\p{Lu}{2}/u.test(name) ? name : name.charAt(0).toLocaleLowerCase(locale) + name.slice(1);
+}
+
 export interface GroceryCatalog {
   index: ProductIndex;
   products: Product[];

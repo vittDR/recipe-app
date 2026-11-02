@@ -6,6 +6,7 @@ import { listQueue, withQueue } from '../lib/listQueue.ts';
 import { recipeTitle } from '../lib/recipeText.ts';
 import { ingredientName, useGroceryCatalog } from '../lib/products.ts';
 import { useSession } from '../lib/session.tsx';
+import { useAmount } from '../lib/units.ts';
 import { must, supabase } from '../lib/supabase.ts';
 import type { GroceryRow, Recipe, RecipeIngredient } from '../lib/types.ts';
 import { Button, Checkbox, ListRow, Section, Sheet, SheetHeader, toast } from './ui.tsx';
@@ -29,12 +30,6 @@ export async function loadProposals(
   );
 }
 
-export function formatQuantity(q: number | null, unit: string | null): string {
-  if (q === null) return '';
-  const n = Number.isInteger(q) ? String(q) : q.toFixed(2).replace(/\.?0+$/, '');
-  return unit && unit !== 'piece' ? `${n} ${unit}` : n;
-}
-
 export function AddToListSheet({
   open,
   onClose,
@@ -49,6 +44,7 @@ export function AddToListSheet({
   potServings?: number | null;
 }) {
   const { t, tn, locale } = useI18n();
+  const { recipeAmount } = useAmount();
   const { userId, household } = useSession();
   const hid = household!.id;
   const { data: catalog } = useGroceryCatalog(hid);
@@ -131,7 +127,7 @@ export function AddToListSheet({
             setSelected(next);
           }} />
         )}
-        trailing={<span className="muted small">{formatQuantity(scaled(p.ingredient), p.ingredient.unit)}</span>} />
+        trailing={<span className="muted small">{recipeAmount(scaled(p.ingredient), p.ingredient.unit)}</span>} />
     );
   };
 

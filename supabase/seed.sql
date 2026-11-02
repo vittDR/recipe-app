@@ -689,6 +689,17 @@ from (values
 ) as v(ingredient, extra)
 where p.ingredient = v.ingredient;
 
+-- English item names that the lowercase catalogue key gets wrong on screen:
+-- "chili flakes" also stands for fresh, dried and chipotle chillies (French
+-- already says just "piment"), and proper nouns and acronyms keep their capitals.
+update public.products p set name_en = v.name_en
+from (values
+  ('chili flakes', 'chili'),
+  ('msg', 'MSG'),
+  ('herbes de provence', 'herbes de Provence')
+) as v(ingredient, name_en)
+where p.household_id is null and p.ingredient = v.ingredient and p.name_en is distinct from v.name_en;
+
 -- What you usually buy of each product (2 lemons, 2 l of milk): fills
 -- products that have no default yet, never overwrites one.
 select public.apply_product_defaults();

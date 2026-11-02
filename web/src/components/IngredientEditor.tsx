@@ -3,7 +3,7 @@ import { parseIngredientLine, type Catalog } from '@logic/ingredients.ts';
 import { matchProduct, productName, type Product } from '@logic/products.ts';
 import { useI18n } from '../i18n/index.tsx';
 import type { GroceryCatalog } from '../lib/products.ts';
-import { formatQuantity } from './AddToListSheet.tsx';
+import { useAmount } from '../lib/units.ts';
 import { ProductPicker } from './ProductPicker.tsx';
 import { Button, Chip, Field, ListRow, Section, Sheet, SheetHeader } from './ui.tsx';
 
@@ -54,6 +54,7 @@ export function IngredientEditor({
   catalog: GroceryCatalog | null;
 }) {
   const { t, tn, locale } = useI18n();
+  const { recipeAmount } = useAmount();
   const [draft, setDraft] = useState('');
   const [openKey, setOpenKey] = useState<string | null>(null);
   const open = items.find((i) => i.key === openKey) ?? null;
@@ -66,7 +67,7 @@ export function IngredientEditor({
   };
   const amountOf = (i: DraftIngredient) => {
     const p = parseIngredientLine(i.text);
-    return formatQuantity(p.quantity, p.unit);
+    return recipeAmount(p.quantity, p.unit);
   };
   const suggestionName = (i: DraftIngredient) => {
     const p = i.suggestion_id ? catalog?.index.get(i.suggestion_id) : undefined;
