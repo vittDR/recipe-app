@@ -44,7 +44,7 @@ Key rules from the handover, and where they live:
 | 12 cards, ~8 known + 4 new, never/diet/time/recently-cooked filters | `logic/deck.ts` |
 | Patterns suggested at 8 of the last 10 exposures; apply only once accepted | `logic/preferences.ts`, Us tab |
 | Recipes tab filters (healthy, comfort, high protein, diet, veggie, fish, quick, one pot, easy, everyday ingredients); difficulty, coarse equipment, exotic ingredients | `logic/facets.ts`, `ingredient_catalog.exotic` |
-| List lines are real products (chicken breast = Blanc de poulet = poulet), French first; a recipe adds to a line of the same product + unit; staples start unchecked | `products`, `put_grocery_item()`, `logic/products.ts`, `mergeTarget()` in `logic/groceries.ts` |
+| List lines are real products (chicken breast = Blanc de poulet = petto di pollo; plain "poulet" is its own item), French first; a recipe adds to a line of the same product + unit; staples start unchecked | `products`, `put_grocery_item()`, `logic/products.ts`, `mergeTarget()` in `logic/groceries.ts` |
 | Stores (Picard…) are list sections among the aisles | `household_stores`, `household_products`, `set_product_section()` |
 | Every list change (typed, usuals, from a recipe) shows at once and saves in the background (ids made on the phone, retried 1 s / 3 s / 10 s, then 10 min) | `logic/listsync.ts`, `web/src/lib/listQueue.ts`, `put_grocery_item()` |
 | Products carry a usual amount and units; only people in `app_admins` edit the shared catalogue (nobody else sees the entry) | `apply_product_defaults()`, `app_admins`, `is_catalog_admin()`, Us > Edit the catalog |

@@ -286,7 +286,7 @@ export const fr: Dictionary = {
     'rice cooker': 'Cuiseur à riz',
     'slow cooker': 'Mijoteuse',
     'pressure cooker': 'Autocuiseur',
-    'air fryer': 'Friteuse sans huile',
+    'air fryer': 'Air fryer',
   },
   tags: {
     add: 'Ajouter un tag',
