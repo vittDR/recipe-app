@@ -2,6 +2,15 @@
 -- and dishes: "curry", "soup") are not rules: liking or avoiding one is a
 -- learned preference that weighs on the deck ("Show more" / "Show less").
 
+-- Offal is a catalogue item (seed.sql has the same row), so a "never abats"
+-- rule has an item to name.
+insert into public.ingredient_catalog
+  (id, name, name_fr, name_it, aliases, default_aisle, is_staple, kcal_100g, protein_100g, grams_per_unit, diet_class)
+values ('f4038739-756a-4f05-9d3f-ae7eb7991d0c', 'offal', 'abats', 'frattaglie',
+        '{abat}', 'meat_fish', false, 135, 20, 100, 'meat')
+on conflict (name) do nothing;
+select public.sync_products_from_catalog();
+
 -- Older free-text rules, sorted into the recipe tag they name (any language
 -- or alias: "soupe" is the soup tag) or else the item they name.
 create temporary table rule_targets as
