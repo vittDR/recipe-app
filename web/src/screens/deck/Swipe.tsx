@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router';
 import { Icon } from '../../components/Icon.tsx';
 import { ModeBar, ProgressBar, Tag, imageStyle, photoUrl, recipeEmoji } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
+import { productName } from '@logic/products.ts';
+import { inSentence, useGroceryCatalog } from '../../lib/products.ts';
 import { recipeTitle } from '../../lib/recipeText.ts';
 import { useSession } from '../../lib/session.tsx';
 import { supabase } from '../../lib/supabase.ts';
@@ -28,12 +30,16 @@ function CardFace({ card, data, tags, drag }: {
   card: DeckCard; data: DeckData; tags: TagCatalog | null; drag?: { dx: number; dy: number };
 }) {
   const { t, tn, locale } = useI18n();
-  const { userId } = useSession();
+  const { userId, household } = useSession();
+  const { data: catalog } = useGroceryCatalog(household!.id);
   const r = card.recipe;
   const plate = data.portions.get(card.recipe_id);
   const shared = data.deck.who_eating.length > 1;
   const fitsMe = data.fits.get(card.recipe_id)?.get(userId!) ?? plate?.fits;
-  const pantryItem = card.reason?.startsWith('pantry:') ? card.reason.slice(7) : null;
+  // The reason names a catalogue ingredient ("chicken breast"): show its item in the reader's language.
+  const pantryKey = card.reason?.startsWith('pantry:') ? card.reason.slice(7) : null;
+  const pantryProduct = pantryKey ? catalog?.index.ofIngredient(pantryKey) : undefined;
+  const pantryItem = pantryKey && inSentence(pantryProduct ? productName(pantryProduct, locale) : pantryKey, locale);
 
   const yes = drag ? Math.max(0, Math.min(1, drag.dx / SWIPE_X)) : 0;
   const pass = drag ? Math.max(0, Math.min(1, -drag.dx / SWIPE_X)) : 0;

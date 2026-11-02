@@ -46,7 +46,7 @@ values
   ('eggplant', 'aubergine', '{aubergine}', 'produce', false, 25, 1, 300, 'veg'),
   ('lettuce', 'salade', '{salad leaves,laitue}', 'produce', false, 15, 1.4, 300, 'veg'),
   -- meat & fish
-  ('chicken breast', 'blanc de poulet', '{chicken,poulet,filet de poulet}', 'meat_fish', false, 120, 22.5, 150, 'meat'),
+  ('chicken breast', 'blanc de poulet', '{filet de poulet}', 'meat_fish', false, 120, 22.5, 150, 'meat'),
   ('chicken thigh', 'cuisse de poulet', '{haut de cuisse}', 'meat_fish', false, 177, 18, 120, 'meat'),
   ('ground beef', 'bœuf haché', '{minced beef,steak haché,boeuf haché}', 'meat_fish', false, 250, 26, 100, 'meat'),
   ('pork tenderloin', 'filet mignon de porc', '{pork}', 'meat_fish', false, 143, 21, 400, 'meat'),
@@ -99,7 +99,7 @@ update public.ingredient_catalog set name_it = 'burro' where name = 'butter';
 update public.ingredient_catalog set name_it = 'pomodori pelati', aliases = (select array(select distinct unnest(aliases || '{"pelati","polpa di pomodoro"}'::text[]))) where name = 'canned tomatoes';
 update public.ingredient_catalog set name_it = 'carota', aliases = (select array(select distinct unnest(aliases || '{"carote"}'::text[]))) where name = 'carrot';
 update public.ingredient_catalog set name_it = 'pomodorini' where name = 'cherry tomatoes';
-update public.ingredient_catalog set name_it = 'petto di pollo', aliases = (select array(select distinct unnest(aliases || '{"pollo"}'::text[]))) where name = 'chicken breast';
+update public.ingredient_catalog set name_it = 'petto di pollo' where name = 'chicken breast';
 update public.ingredient_catalog set name_it = 'brodo', aliases = (select array(select distinct unnest(aliases || '{"brodo di pollo"}'::text[]))) where name = 'chicken stock';
 update public.ingredient_catalog set name_it = 'sovracosce di pollo', aliases = (select array(select distinct unnest(aliases || '{"cosce di pollo"}'::text[]))) where name = 'chicken thigh';
 update public.ingredient_catalog set name_it = 'ceci' where name = 'chickpeas';
@@ -198,7 +198,7 @@ values
   ('cinnamon', 'cannelle', 'cannella', '{"cinnamon stick","ground cinnamon"}', 'spices', true, 247, 4, 3, 'veg'),
   ('clams', 'palourdes', 'vongole', '{"vongole veraci"}', 'meat_fish', false, 22, 4, null, 'fish'),
   ('cloves', 'clou de girofle', 'chiodi di garofano', '{"clove powder","clove spice","ground cloves","whole cloves"}', 'spices', true, 274, 6, 0.1, 'veg'),
-  ('coriander seeds', 'graines de coriandre', 'semi di coriandolo', '{"coriander powder","ground coriander"}', 'spices', true, 298, 12, null, 'veg'),
+  ('coriander seeds', 'graines de coriandre', 'semi di coriandolo', '{}', 'spices', true, 298, 12, null, 'veg'),
   ('corn', 'maïs', 'mais', '{"baby corn","sweet corn","sweetcorn"}', 'pantry', false, 86, 3.3, null, 'veg'),
   ('cornstarch', 'fécule de maïs', 'amido di mais', '{"corn starch","cornflour","maizena","potato starch"}', 'pantry', true, 381, 0.3, null, 'veg'),
   ('cream cheese', 'fromage frais à tartiner', 'formaggio spalmabile', '{"light cream cheese"}', 'dairy_eggs', false, 253, 7, null, 'veg'),
@@ -222,7 +222,7 @@ values
   ('gochujang', 'gochujang', 'gochujang', '{"korean chili paste"}', 'pantry', true, 210, 4.5, null, 'veg'),
   ('gravy mix', 'préparation pour sauce brune', 'preparato per gravy', '{"brown gravy mix"}', 'pantry', false, 350, 10, null, 'meat'),
   ('green beans', 'haricots verts', 'fagiolini', '{"french beans"}', 'produce', false, 31, 1.8, null, 'veg'),
-  ('ham', 'jambon', 'prosciutto cotto', '{"cooked ham","cured ham","jambon blanc","jambon de bayonne"}', 'meat_fish', false, 145, 20, 30, 'meat'),
+  ('ham', 'jambon', 'prosciutto cotto', '{"cooked ham","jambon blanc"}', 'meat_fish', false, 145, 20, 30, 'meat'),
   ('harissa', 'harissa', 'harissa', '{"harissa paste"}', 'pantry', true, 100, 3, null, 'veg'),
   ('herbes de provence', 'herbes de Provence', 'erbe di Provenza', '{"provencal herbs"}', 'spices', true, 270, 9, null, 'veg'),
   ('jerk seasoning', 'assaisonnement jerk', 'condimento jerk', '{"jamaican jerk seasoning"}', 'spices', true, 250, 6, null, 'veg'),
@@ -252,7 +252,7 @@ values
   ('perilla leaves', 'feuilles de périlla', 'foglie di perilla', '{"kkaennip","korean perilla"}', 'produce', false, 37, 3.9, null, 'veg'),
   ('pickled ginger', 'gingembre mariné', 'zenzero marinato', '{"gari","sushi ginger"}', 'pantry', false, 20, 0.2, null, 'veg'),
   ('pistachios', 'pistaches', 'pistacchi', '{}', 'pantry', false, 562, 20, null, 'veg'),
-  ('prosciutto', 'jambon cru', 'prosciutto crudo', '{"jambon de Parme","parma ham"}', 'meat_fish', false, 250, 26, 15, 'meat'),
+  ('prosciutto', 'jambon cru', 'prosciutto crudo', '{"cured ham","jambon de Bayonne","jambon de Parme","parma ham"}', 'meat_fish', false, 250, 26, 15, 'meat'),
   ('pumpkin', 'potiron', 'zucca', '{"butternut squash","squash"}', 'produce', false, 45, 1, null, 'veg'),
   ('rabbit', 'lapin', 'coniglio', '{}', 'meat_fish', false, 136, 20.1, null, 'meat'),
   ('radish', 'radis', 'ravanello', '{"radishes"}', 'produce', false, 16, 0.7, 10, 'veg'),
@@ -306,7 +306,11 @@ values
   ('chicken drumsticks', 'pilons de poulet', 'fusi di pollo', '{"drumsticks","chicken drumstick","pilon de poulet"}', 'meat_fish', false, 172, 18, 110, 'meat'),
   ('cream', 'crème liquide', 'panna', '{"heavy cream","single cream","whipping cream","crème fleurette","panna da cucina","panna fresca"}', 'dairy_eggs', false, 292, 2.1, 15, 'veg'),
   ('plain yogurt', 'yaourt nature', 'yogurt bianco', '{"yogurt","yaourt","natural yogurt","yogurt naturale"}', 'dairy_eggs', false, 61, 3.5, 125, 'veg'),
-  ('pecorino', 'pecorino', 'pecorino romano', '{"pecorino sardo"}', 'dairy_eggs', false, 387, 32, 5, 'veg')
+  ('pecorino', 'pecorino', 'pecorino romano', '{"pecorino sardo"}', 'dairy_eggs', false, 387, 32, 5, 'veg'),
+  -- Chicken that is neither breast nor thighs: pieces, or the whole bird.
+  ('chicken', 'poulet', 'pollo', '{"chicken pieces","poulet en morceaux","pollo a pezzi"}', 'meat_fish', false, 170, 20, null, 'meat'),
+  ('whole chicken', 'poulet entier', 'pollo intero', '{"roast chicken","poulet fermier","pollo da arrosto"}', 'meat_fish', false, 215, 19, 1500, 'meat'),
+  ('ground coriander', 'coriandre en poudre', 'coriandolo in polvere', '{"coriander powder","coriandre moulue","coriandolo macinato"}', 'spices', true, 298, 12, 2, 'veg')
 on conflict (name) do nothing;
 
 -- For the AI-generated seed batch.
@@ -333,9 +337,15 @@ from (values
   ('vinegar', '{"balsamic vinegar","aceto balsamico"}'),
   ('crème fraîche', '{"cream","heavy cream","crème liquide"}'),
   ('greek yogurt', '{"yogurt","yaourt"}'),
-  ('parmesan', '{"pecorino"}')
+  ('parmesan', '{"pecorino"}'),
+  ('chicken breast', '{"chicken","poulet","pollo"}'),
+  ('coriander seeds', '{"coriander powder","ground coriander"}'),
+  ('ham', '{"cured ham","jambon de bayonne"}')
 ) as v(name, gone)
 where c.name = v.name;
+update public.ingredient_catalog
+set aliases = (select array(select distinct unnest(aliases || '{"cured ham","jambon de Bayonne"}'::text[])))
+where name = 'prosciutto';
 update public.products p
 set aliases = array(select a from unnest(p.aliases) a where a <> all (v.gone))
 from (values
@@ -347,9 +357,15 @@ from (values
   ('vinegar', '{"balsamic vinegar","aceto balsamico"}'),
   ('crème fraîche', '{"cream","heavy cream","crème liquide","panna"}'),
   ('greek yogurt', '{"yogurt","yaourt"}'),
-  ('parmesan', '{"pecorino"}')
+  ('parmesan', '{"pecorino"}'),
+  ('chicken breast', '{"chicken","poulet","pollo"}'),
+  ('coriander seeds', '{"coriander powder","ground coriander"}'),
+  ('ham', '{"cured ham","jambon de bayonne"}')
 ) as v(ingredient, gone)
 where p.ingredient = v.ingredient;
+update public.products
+set aliases = (select array(select distinct unnest(aliases || '{"cured ham","jambon de Bayonne"}'::text[])))
+where household_id is null and ingredient = 'prosciutto';
 
 -- Exotic: not sold in most French supermarkets, so it needs an Asian or
 -- specialty shop (or online). Drives the "Everyday ingredients" filter.
@@ -407,6 +423,7 @@ from (values
   ('celery', '25ef7329-cf9d-4017-8ec7-351725aa2cf1'::uuid),
   ('cheese curds', '5c7ed331-e39d-473d-9d0a-54b0d2b4fcce'::uuid),
   ('cherry tomatoes', 'd9230258-0c13-4a31-aaed-ea8718f80a35'::uuid),
+  ('chicken', '598083fc-a1d8-4efd-8216-391fc80b8177'::uuid),
   ('chicken breast', '44ac9818-4c5f-4581-bbcb-3c675d31614d'::uuid),
   ('chicken drumsticks', 'fc065363-d83d-4f96-a865-08300dae0e4b'::uuid),
   ('chicken stock', '9d3bb4cc-d9a4-4417-a653-0874485ed8cb'::uuid),
@@ -468,6 +485,7 @@ from (values
   ('green lentils', 'e2c88c03-8705-4e00-a4a2-c5f07af8f9df'::uuid),
   ('ground beef', 'f6fef71c-aeff-40fb-bdb7-3951b8ca2110'::uuid),
   ('ground turkey', '5e675a9d-3fa6-4ef2-9098-229b112e9115'::uuid),
+  ('ground coriander', '4f1e2612-de7c-435a-b10b-482d2df154d6'::uuid),
   ('ham', '86a88f39-fff2-406b-9ed0-c8dacd944a6f'::uuid),
   ('harissa', '644eaeb8-1240-4095-913f-2679eaccb446'::uuid),
   ('herbes de provence', '47b04287-dcb0-4fe4-b713-b31fdbf85034'::uuid),
@@ -577,6 +595,7 @@ from (values
   ('vegetable stock', '02d3aa03-c957-4757-b903-fb620a5d00f8'::uuid),
   ('vinegar', 'fcf65703-4c6d-4ccc-8759-4561bf388701'::uuid),
   ('white wine', '9abb08c7-0586-4201-9c33-80b09ff11ab1'::uuid),
+  ('whole chicken', 'c1f3c341-4672-481b-a913-a42cc387da03'::uuid),
   ('worcestershire sauce', '3f313e55-61b6-450f-a599-3b8c7c7d1155'::uuid),
   ('zucchini', 'ce2d8345-c2fa-4817-be49-d261c99359b8'::uuid)
 ) as v(name, id)
@@ -691,6 +710,18 @@ from (values
   ('lettuce', '{laitue,salade verte}')
 ) as v(ingredient, extra)
 where p.ingredient = v.ingredient;
+
+-- English item names that the lowercase catalogue key gets wrong on screen:
+-- "chili flakes" also stands for fresh, dried and chipotle chillies (French
+-- already says just "piment"), and proper nouns and acronyms keep their capitals.
+update public.products p set name_en = v.name_en
+from (values
+  ('chili flakes', 'chili'),
+  ('msg', 'MSG'),
+  ('herbes de provence', 'herbes de Provence'),
+  ('prosciutto', 'cured ham')
+) as v(ingredient, name_en)
+where p.household_id is null and p.ingredient = v.ingredient and p.name_en is distinct from v.name_en;
 
 -- What you usually buy of each product (2 lemons, 2 l of milk): fills
 -- products that have no default yet, never overwrites one.

@@ -35,13 +35,17 @@ select pg_temp.act_as('00000000-0000-0000-0000-00000000000d');
 select create_household('Chez Dee', 'Europe/Paris') as hid \gset
 select pg_temp.check((select count(*) = 1 from household_aisle_order where aisle = 'hygiene'), 'new households get the hygiene aisle');
 
--- chicken breast = Blanc de Poulet = poulet: one product.
+-- chicken breast = Blanc de Poulet = filet de poulet: one product.
 select put_grocery_item(gen_random_uuid(), '{"name":"chicken breast","quantity":2}');
 select put_grocery_item(gen_random_uuid(), '{"name":"Blanc de Poulet","quantity":1}');
-select put_grocery_item(gen_random_uuid(), '{"name":"poulet"}');
+select put_grocery_item(gen_random_uuid(), '{"name":"filet de poulet"}');
 select pg_temp.check((select count(distinct product_id) = 1 and min(name) = 'blanc de poulet' and min(aisle::text) = 'meat_fish'
                       from grocery_items), 'English, French and alias names are one product');
 delete from grocery_items;
+-- Plain "poulet" is chicken, a whole one is whole chicken: neither is breast.
+select pg_temp.check((select count(distinct ingredient) = 3 from products
+                      where household_id is null and search_key in ('blanc de poulet', 'poulet', 'poulet entier')),
+                     'chicken, chicken breast and whole chicken are three products');
 
 -- A household's own item, private to it.
 select put_grocery_item(gen_random_uuid(), '{"name":"Recharges Swiffer poussière"}');

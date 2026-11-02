@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { Catalog, estimateMacros, parseIngredientLine, dietClassOf } from '../ingredients.ts';
+import { Catalog, combineAmounts, estimateMacros, parseIngredientLine, dietClassOf } from '../ingredients.ts';
 
 const catalog = new Catalog([
   { name: 'spinach', name_fr: 'épinards', name_it: 'spinaci', aliases: ['baby spinach'], default_aisle: 'produce', is_staple: false, kcal_100g: 23, protein_100g: 2.9, grams_per_unit: 30, diet_class: 'veg' },
@@ -88,4 +88,19 @@ test('estimates macros from ingredients', () => {
 test('diet class of a recipe', () => {
   assert.equal(dietClassOf([catalog.find('spinach'), catalog.find('chicken')]), 'meat');
   assert.equal(dietClassOf([catalog.find('spinach')]), 'veg');
+});
+
+test('combineAmounts: one unit per item', () => {
+  const garlic = { name: 'garlic', default_aisle: 'produce', is_staple: false, grams_per_unit: 5 } as const;
+  assert.deepEqual(combineAmounts([{ quantity: 1.5, unit: 'clove' }, { quantity: 1, unit: 'tsp' }, { quantity: 0.5, unit: 'clove' }], garlic),
+    { quantity: 3, unit: 'clove' });
+  // Same unit: added up as is.
+  assert.deepEqual(combineAmounts([{ quantity: 0.33, unit: 'cup' }, { quantity: 0.5, unit: 'cup' }]), { quantity: 0.83, unit: 'cup' });
+  // Spoons convert without the catalogue, into the heaviest line's unit.
+  assert.deepEqual(combineAmounts([{ quantity: 0.5, unit: 'tbsp' }, { quantity: 1, unit: 'tsp' }]), { quantity: 0.75, unit: 'tbsp' });
+  assert.deepEqual(combineAmounts([{ quantity: 1.5, unit: 'tsp' }, { quantity: 1, unit: 'pinch' }]), { quantity: 1.5, unit: 'tsp' });
+  assert.deepEqual(combineAmounts([{ quantity: 15, unit: 'g' }, { quantity: 40, unit: 'g' }]), { quantity: 55, unit: 'g' });
+  // No quantity anywhere: no amount; lines without one don't count.
+  assert.equal(combineAmounts([{ quantity: null, unit: null }]), null);
+  assert.deepEqual(combineAmounts([{ quantity: 0.5, unit: 'tbsp' }, { quantity: null, unit: null }]), { quantity: 0.5, unit: 'tbsp' });
 });

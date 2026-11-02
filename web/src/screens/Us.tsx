@@ -6,7 +6,7 @@ import { MemberList } from '../components/Members.tsx';
 import { Button, ListRow, Screen, Section } from '../components/ui.tsx';
 import { LOCALE_NAMES, useI18n } from '../i18n/index.tsx';
 import { useLive, useSave } from '../lib/hooks.ts';
-import { useGroceryCatalog } from '../lib/products.ts';
+import { inSentence, useGroceryCatalog } from '../lib/products.ts';
 import { pushState, type PushState } from '../lib/push.ts';
 import { useSession } from '../lib/session.tsx';
 import { must, supabase } from '../lib/supabase.ts';
@@ -105,7 +105,7 @@ export function UsScreen() {
           <div className="stack">
             {shown.map((s) => (
               <div key={`${s.pattern.kind}:${s.pattern.value}`} className="card stack">
-                <span>{t(s.pattern.kind === 'avoid' ? 'us.patternAvoid' : 'us.patternPrefer', { value: labelOf(s.pattern.value), n: s.evidence, total: s.window })}</span>
+                <span>{t(s.pattern.kind === 'avoid' ? 'us.patternAvoid' : 'us.patternPrefer', { value: inSentence(labelOf(s.pattern.value), locale), n: s.evidence, total: s.window })}</span>
                 <div className="row row--wrap">
                   {s.pattern.kind === 'avoid' ? (
                     <>

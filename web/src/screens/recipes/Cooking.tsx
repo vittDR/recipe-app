@@ -1,19 +1,21 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { formatQuantity } from '../../components/AddToListSheet.tsx';
 import { Icon } from '../../components/Icon.tsx';
 import { Button, ModeBar, ProgressBar, Spinner } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { recipeTitle, recipeSteps } from '../../lib/recipeText.ts';
-import { useLive, useWakeLock } from '../../lib/hooks.ts';
-import { INGREDIENT_SELECT, ingredientName } from '../../lib/products.ts';
+import { useCatalog, useLive, useWakeLock } from '../../lib/hooks.ts';
+import { groupIngredients, INGREDIENT_SELECT, ingredientName } from '../../lib/products.ts';
 import { must, supabase } from '../../lib/supabase.ts';
 import type { Recipe, RecipeIngredient } from '../../lib/types.ts';
+import { useAmount } from '../../lib/units.ts';
 
 /** Step-by-step, large type, screen kept awake. Step 0 lists ingredients. */
 export function CookingScreen() {
   const { id } = useParams();
   const { t, locale } = useI18n();
+  const { linesAmount } = useAmount();
+  const catalog = useCatalog();
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   useWakeLock(true);
@@ -38,8 +40,8 @@ export function CookingScreen() {
       <div className="cooking__body">
         {step === 0 ? (
           <ul className="stack cooking__ingredients">
-            {ingredients.map((i) => (
-              <li key={i.id} className="row row--between"><span>{ingredientName(i, locale)}</span><span className="muted">{formatQuantity(i.quantity, i.unit)}</span></li>
+            {groupIngredients(ingredients).map((lines) => (
+              <li key={lines[0].id} className="row row--between"><span>{ingredientName(lines[0], locale)}</span><span className="muted">{linesAmount(lines, catalog?.find(lines[0].name))}</span></li>
             ))}
           </ul>
         ) : (

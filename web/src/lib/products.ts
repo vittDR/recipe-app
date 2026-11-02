@@ -15,6 +15,31 @@ export function ingredientName(i: Pick<RecipeIngredient, 'name' | 'product'>, lo
   return i.product ? productName(i.product, locale) : i.name;
 }
 
+/**
+ * A recipe's lines, one per item: sources often list an item once per use
+ * ("garlic, for the beef" / "garlic, for the sauce"; light and dark soy
+ * sauce), which on screen reads as the same name twice. Optional lines stay
+ * apart so "Optional" still means something. Keeps the recipe's order.
+ */
+export function groupIngredients<T extends Pick<RecipeIngredient, 'id' | 'name' | 'product_id' | 'optional'>>(lines: T[]): T[][] {
+  const groups = new Map<string, T[]>();
+  for (const l of lines) {
+    const key = `${l.product_id ?? l.name}|${l.optional}`;
+    const g = groups.get(key);
+    if (g) g.push(l);
+    else groups.set(key, [l]);
+  }
+  return [...groups.values()];
+}
+
+/**
+ * A name inside a sentence: "Vous avez refusé blanc de poulet…", not "…refusé
+ * Blanc de poulet…". Acronyms stay as they are ("MSG").
+ */
+export function inSentence(name: string, locale: string): string {
+  return /^\p{Lu}{2}/u.test(name) ? name : name.charAt(0).toLocaleLowerCase(locale) + name.slice(1);
+}
+
 export interface GroceryCatalog {
   index: ProductIndex;
   products: Product[];

@@ -48,7 +48,8 @@ Deno.serve(async (req) => {
       .select('id, title, tags, total_min, kcal_per_serving, protein_g_per_serving, household_id, copied_from, recipe_ingredients(name, is_staple, product_id, optional)')
       .or(`household_id.is.null,household_id.eq.${householdId}`),
     admin.from('meals').select('recipe_id, for_date, status').eq('household_id', householdId),
-    admin.from('grocery_items').select('name').eq('household_id', householdId).gte('checked_at', since(PANTRY_DAYS)),
+    admin.from('grocery_items').select('name, product:products(ingredient)').eq('household_id', householdId)
+      .gte('checked_at', since(PANTRY_DAYS)),
     admin.from('ingredient_catalog').select('name, diet_class'),
   ]);
   for (const r of [goals, rules, patterns, swipes, recipes, meals, pantry, catalog]) {
@@ -128,7 +129,12 @@ Deno.serve(async (req) => {
     mood,
     maxMinutes,
     recentlyCooked,
-    pantry: (pantry.data ?? []).map((p) => p.name),
+    // Recipe lines are named by catalogue ingredient ("chicken breast"); list
+    // lines by their French product name, so compare on the product's ingredient.
+    pantry: (pantry.data ?? []).map((p) => {
+      const product = p.product as { ingredient: string | null } | { ingredient: string | null }[] | null;
+      return (Array.isArray(product) ? product[0] : product)?.ingredient ?? p.name;
+    }),
   });
   if (cards.length === 0) return json({ error: 'no_recipes' }, 422);
 
