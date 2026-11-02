@@ -54,10 +54,14 @@ export function UsScreen() {
     void pushState().then(setPush).catch(() => setPush('unsupported'));
   }, []);
 
+  // An ingredient's catalogue item; tags (moods, dishes) have none.
+  const itemOf = (value: string) => (tags?.find(value)?.name === value ? undefined : catalog?.index.ofIngredient(value));
+
   const decide = async (s: PatternSuggestion, action: 'never' | 'less' | 'more' | 'ignore') => {
-    if (action === 'never') {
+    const item = itemOf(s.pattern.value);
+    if (action === 'never' && item) {
       await save(supabase.from('taste_rules').upsert(
-        { user_id: userId, kind: 'never', value: s.pattern.value, product_id: catalog?.index.ofIngredient(s.pattern.value)?.id ?? null, source: 'learned' },
+        { user_id: userId, kind: 'never', value: item.name_fr, product_id: item.id, source: 'learned' },
         { onConflict: 'user_id,kind,value' }));
     }
     await save(supabase.from('learned_patterns').insert({
@@ -78,7 +82,7 @@ export function UsScreen() {
   };
   const nameOf = (r: TasteRule) => {
     const p = r.product_id ? catalog?.index.get(r.product_id) : undefined;
-    return p ? productName(p, locale) : labelOf(r.value);
+    return p ? productName(p, locale) : r.value;
   };
   // A rule on an item already covers the pattern on its ingredient.
   const ruledIngredients = new Set(rules.map((r) => (r.product_id ? catalog?.index.get(r.product_id)?.ingredient : null)));
@@ -105,8 +109,10 @@ export function UsScreen() {
                 <div className="row row--wrap">
                   {s.pattern.kind === 'avoid' ? (
                     <>
-                      <Button small variant="dark" onClick={() => void decide(s, 'never')}>{t('us.neverShow')}</Button>
-                      <Button small variant="secondary" onClick={() => void decide(s, 'less')}>{t('us.showLess')}</Button>
+                      {itemOf(s.pattern.value) && (
+                        <Button small variant="dark" onClick={() => void decide(s, 'never')}>{t('us.neverShow')}</Button>
+                      )}
+                      <Button small variant={itemOf(s.pattern.value) ? 'secondary' : 'dark'} onClick={() => void decide(s, 'less')}>{t('us.showLess')}</Button>
                     </>
                   ) : (
                     <Button small variant="dark" onClick={() => void decide(s, 'more')}>{t('us.showMore')}</Button>

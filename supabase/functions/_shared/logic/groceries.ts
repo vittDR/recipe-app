@@ -127,7 +127,7 @@ export interface ListProposal<T extends RecipeIngredientLike> {
 /**
  * Splits a recipe's ingredients into "to buy" (checked) and "probably at home"
  * (unchecked): staples, things checked off in the last few days, and things
- * already on the list.
+ * already on the list. `staples` are the household's staple products (ids).
  */
 export function proposeListItems<T extends RecipeIngredientLike>(
   ingredients: T[],
@@ -137,7 +137,7 @@ export function proposeListItems<T extends RecipeIngredientLike>(
   atHomeDays: number = AT_HOME_DAYS,
 ): ListProposal<T>[] {
   const since = now.getTime() - atHomeDays * 86_400_000;
-  const stapleSet = new Set(staples.map((s) => s.toLowerCase()));
+  const stapleSet = new Set(staples);
   // Same product, or for older rows the same catalogue ingredient or name.
   const keysOf = (i: GroceryItem) => [i.product_id, (i.ingredient ?? i.name).toLowerCase()].filter(Boolean) as string[];
   const onList = new Set(list.filter((i) => !i.checked_at && !i.cleared_at).flatMap(keysOf));
@@ -147,7 +147,7 @@ export function proposeListItems<T extends RecipeIngredientLike>(
     const n = ingredient.name.toLowerCase();
     const has = (set: Set<string>) => set.has(n) || (!!ingredient.product_id && set.has(ingredient.product_id));
     if (has(onList)) return { ingredient, add: false, why: 'on_list' as const };
-    if (ingredient.is_staple || stapleSet.has(n)) return { ingredient, add: false, why: 'staple' as const };
+    if (ingredient.is_staple || (!!ingredient.product_id && stapleSet.has(ingredient.product_id))) return { ingredient, add: false, why: 'staple' as const };
     if (has(bought)) return { ingredient, add: false, why: 'bought_recently' as const };
     return { ingredient, add: true, why: 'to_buy' as const };
   });
