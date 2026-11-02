@@ -190,6 +190,47 @@ export function gramsOf(ing: { quantity: number | null; unit: string | null }, e
   return null;
 }
 
+const METRIC_UNITS = new Set(['g', 'kg', 'ml', 'cl', 'l']);
+
+/**
+ * Several lines of one item as a single amount in a single unit: "1.5 clove"
+ * + "1 tsp" + "0.5 clove" of garlic is 3 cloves. Everything is converted
+ * through grams into the unit of the heaviest line. Lines without a quantity
+ * ("salt", "oil for frying") don't count; null when none has one. Lines that
+ * can't be converted (a unit with no weight for this item) are left out
+ * rather than shown in a second unit.
+ */
+export function combineAmounts(
+  lines: { quantity: number | null; unit: string | null }[],
+  entry?: CatalogEntry,
+): { quantity: number; unit: string | null } | null {
+  const counted = lines.filter((l) => l.quantity !== null && l.quantity > 0)
+    .map((l) => ({ quantity: l.quantity!, unit: l.unit?.trim().toLowerCase() || null }));
+  if (counted.length === 0) return null;
+  const units = new Set(counted.map((l) => l.unit));
+  let quantity: number;
+  let unit: string | null;
+  if (units.size === 1) {
+    return { quantity: Math.round(counted.reduce((s, l) => s + l.quantity, 0) * 100) / 100, unit: counted[0].unit };
+  } else {
+    const weighed = counted.map((l) => ({ ...l, grams: gramsOf(l, entry) }));
+    const known = weighed.filter((l) => l.grams !== null);
+    if (known.length === 0) {
+      // Nothing to convert through: the first line's unit, its lines added up.
+      unit = counted[0].unit;
+      quantity = counted.filter((l) => l.unit === unit).reduce((s, l) => s + l.quantity, 0);
+    } else {
+      const main = known.reduce((a, b) => (b.grams! > a.grams! ? b : a));
+      unit = main.unit;
+      const perUnit = main.grams! / main.quantity;
+      quantity = known.reduce((s, l) => s + l.grams!, 0) / perUnit;
+    }
+  }
+  // Converted: grams and millilitres to the unit; spoons, cloves and pieces to the quarter.
+  const step = unit && METRIC_UNITS.has(unit) && quantity >= 10 ? 1 : 0.25;
+  return { quantity: Math.max(step, Math.round(quantity / step) * step), unit };
+}
+
 export interface MacroEstimate {
   kcalPerServing: number | null;
   proteinGPerServing: number | null;

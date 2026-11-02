@@ -2,6 +2,7 @@
 // "1 c. à s.". Known units (the list's and the ones recipes are read in) are
 // translated; others (typed by someone) show as typed.
 
+import { combineAmounts, type CatalogEntry } from '@logic/ingredients.ts';
 import { GROCERY_UNITS } from '@logic/products.ts';
 import { useI18n } from '../i18n/index.tsx';
 
@@ -29,15 +30,10 @@ export function useAmount() {
   /** On a recipe, whole items read as a bare count: "2", not "2 pcs". */
   const recipeAmount = (quantity: number | null, unit: string | null) =>
     amount(quantity, unit?.trim().toLowerCase() === 'piece' ? null : unit);
-  /** Several lines of one item: same units added up, others joined ("2 cloves + 1 tsp"). */
-  const linesAmount = (lines: { quantity: number | null; unit: string | null }[]) => {
-    const byUnit = new Map<string, number>();
-    for (const l of lines) {
-      if (l.quantity === null) continue;
-      const u = l.unit?.trim().toLowerCase() ?? '';
-      byUnit.set(u, (byUnit.get(u) ?? 0) + l.quantity);
-    }
-    return [...byUnit].map(([u, q]) => recipeAmount(Math.round(q * 100) / 100, u || null)).join(' + ');
+  /** Several lines of one item, in one unit: "1.5 cloves" + "1 tsp" of garlic reads "2 cloves" or so. */
+  const linesAmount = (lines: { quantity: number | null; unit: string | null }[], entry?: CatalogEntry) => {
+    const total = combineAmounts(lines, entry);
+    return total ? recipeAmount(total.quantity, total.unit) : '';
   };
   return { number, unitLabel, amount, recipeAmount, linesAmount };
 }

@@ -4,7 +4,7 @@ import { Icon } from '../../components/Icon.tsx';
 import { Button, ModeBar, ProgressBar, Spinner } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { recipeTitle, recipeSteps } from '../../lib/recipeText.ts';
-import { useLive, useWakeLock } from '../../lib/hooks.ts';
+import { useCatalog, useLive, useWakeLock } from '../../lib/hooks.ts';
 import { groupIngredients, INGREDIENT_SELECT, ingredientName } from '../../lib/products.ts';
 import { must, supabase } from '../../lib/supabase.ts';
 import type { Recipe, RecipeIngredient } from '../../lib/types.ts';
@@ -15,6 +15,7 @@ export function CookingScreen() {
   const { id } = useParams();
   const { t, locale } = useI18n();
   const { linesAmount } = useAmount();
+  const catalog = useCatalog();
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   useWakeLock(true);
@@ -40,7 +41,7 @@ export function CookingScreen() {
         {step === 0 ? (
           <ul className="stack cooking__ingredients">
             {groupIngredients(ingredients).map((lines) => (
-              <li key={lines[0].id} className="row row--between"><span>{ingredientName(lines[0], locale)}</span><span className="muted">{linesAmount(lines)}</span></li>
+              <li key={lines[0].id} className="row row--between"><span>{ingredientName(lines[0], locale)}</span><span className="muted">{linesAmount(lines, catalog?.find(lines[0].name))}</span></li>
             ))}
           </ul>
         ) : (

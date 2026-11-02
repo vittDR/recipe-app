@@ -136,7 +136,7 @@ export function RecipeScreen() {
                     {exotic.has(i.name) && <Tag tone="warning">{t('recipe.exotic')}</Tag>}
                     {p?.why === 'on_list' && <Tag>{t('recipe.onList')}</Tag>}
                     {(p?.why === 'bought_recently' || p?.why === 'staple') && <Tag tone="success">{t('recipe.atHome')}</Tag>}
-                    <span className="muted small">{linesAmount(lines)}</span>
+                    <span className="muted small">{linesAmount(lines, catalog?.find(i.name))}</span>
                   </>
                 )} />
             );
