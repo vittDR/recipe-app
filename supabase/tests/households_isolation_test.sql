@@ -121,6 +121,10 @@ select pg_temp.refused(format('insert into household_products (household_id, pro
                        'B cannot keep history for A''s item');
 select pg_temp.refused(format('insert into taste_rules (user_id, kind, value, product_id) values (auth.uid(), %L, %L, %L)', 'never', 'x', :'product_a'),
                        'B''s tastes cannot name A''s item');
+select pg_temp.refused('insert into taste_rules (user_id, kind, value) values (auth.uid(), ''never'', ''curry'')',
+                       'a never / love rule is a catalogue item, not a word');
+select pg_temp.refused(format('insert into household_staples (household_id, product_id) values (%L, %L)', :'hb', :'product_a'),
+                       'B''s staples cannot name A''s item');
 select pg_temp.refused(format('insert into products (household_id, name_fr, ingredient) values (%L, %L, %L)', :'hb', 'Mon oignon', 'onion'),
                        'a household''s item cannot claim a catalogue ingredient');
 

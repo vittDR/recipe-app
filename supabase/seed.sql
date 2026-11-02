@@ -55,6 +55,7 @@ values
   ('cod fillet', 'dos de cabillaud', '{cod,cabillaud}', 'meat_fish', false, 82, 18, 140, 'fish'),
   ('prawns', 'crevettes', '{shrimp}', 'meat_fish', false, 99, 24, 12, 'fish'),
   ('tuna', 'thon', '{canned tuna}', 'pantry', false, 116, 26, 140, 'fish'),
+  ('offal', 'abats', '{abat}', 'meat_fish', false, 135, 20, 100, 'meat'),
   -- dairy & eggs
   ('eggs', 'œufs', '{egg,oeufs,oeuf}', 'dairy_eggs', false, 143, 12.6, 55, 'veg'),
   ('greek yogurt', 'yaourt grec', '{yogurt,yaourt}', 'dairy_eggs', false, 97, 9, 150, 'veg'),
@@ -159,6 +160,7 @@ update public.ingredient_catalog set name_it = 'pomodoro', aliases = (select arr
 update public.ingredient_catalog set name_it = 'concentrato di pomodoro' where name = 'tomato paste';
 update public.ingredient_catalog set name_it = 'tortillas' where name = 'tortillas';
 update public.ingredient_catalog set name_it = 'tonno' where name = 'tuna';
+update public.ingredient_catalog set name_it = 'frattaglie' where name = 'offal';
 update public.ingredient_catalog set name_it = 'aceto' where name = 'vinegar';
 update public.ingredient_catalog set name_it = 'zucchina', aliases = (select array(select distinct unnest(aliases || '{"zucchine"}'::text[]))) where name = 'zucchini';
 
@@ -498,6 +500,7 @@ from (values
   ('noodles', 'fd4ce13d-daaf-4363-9b5e-1fc0fc76596f'::uuid),
   ('nutmeg', '0fc6311e-854c-4342-ad67-11642010451e'::uuid),
   ('octopus', '62c86120-c6cc-4e11-9e25-a1ed64b31f0f'::uuid),
+  ('offal', 'f4038739-756a-4f05-9d3f-ae7eb7991d0c'::uuid),
   ('olive oil', '31ea62a7-f216-40b6-a6d8-ea8fc749b1a7'::uuid),
   ('olives', '3d88bc6a-ebdc-4384-85e1-e21d2e413d6c'::uuid),
   ('onion', '949d4514-6dcd-4753-8793-c9781c440369'::uuid),

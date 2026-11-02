@@ -13,14 +13,14 @@ const fixed = () => 0;
 
 test('hard filters: never list, diet, time, recently cooked', () => {
   const recipes = [
-    recipe('mushroom risotto', { ingredientNames: ['mushrooms', 'rice'] }),
+    recipe('mushroom risotto', { ingredientNames: ['mushrooms', 'rice'], productIds: ['p-mushroom', 'p-rice'] }),
     recipe('steak', { dietClass: 'meat' }),
     recipe('salmon', { dietClass: 'fish' }),
     recipe('slow stew', { totalMin: 180 }),
     recipe('dal'),
     recipe('tacos'),
   ];
-  const deck = buildDeck(recipes, [member({ never: ['mushroom'] }), member({ userId: 'v', diet: 'pescatarian' })],
+  const deck = buildDeck(recipes, [member({ never: ['p-mushroom'] }), member({ userId: 'v', diet: 'pescatarian' })],
     new Map(), { maxMinutes: 45, recentlyCooked: new Set(['tacos']), random: fixed });
   assert.deepEqual(deck.map((c) => c.recipeId).sort(), ['dal', 'salmon']);
 });
@@ -28,12 +28,11 @@ test('hard filters: never list, diet, time, recently cooked', () => {
 test('a never rule on an optional line keeps the recipe', () => {
   const recipes = [
     recipe('chana masala', { ingredientNames: ['chickpeas', 'fresh coriander'], productIds: ['p-chickpeas', 'p-coriander'],
-      optionalNames: ['fresh coriander'], optionalProductIds: ['p-coriander'] }),
+      optionalProductIds: ['p-coriander'] }),
     recipe('green chutney', { ingredientNames: ['fresh coriander'], productIds: ['p-coriander'] }),
   ];
-  for (const m of [member({ never: ['coriander'] }), member({ neverProducts: ['p-coriander'] })]) {
-    assert.deepEqual(buildDeck(recipes, [m], new Map(), { random: fixed }).map((c) => c.recipeId), ['chana masala']);
-  }
+  assert.deepEqual(buildDeck(recipes, [member({ never: ['p-coriander'] })], new Map(), { random: fixed }).map((c) => c.recipeId),
+    ['chana masala']);
 });
 
 test('mixes known and new, spreads new cards, ranks by score', () => {
@@ -57,22 +56,25 @@ test('fills from the other pool when one is short', () => {
 });
 
 test('preferences, loves, mood and pantry lift a card', () => {
-  const recipes = [recipe('plain'), recipe('bowl', { tags: ['bowl', 'light'], ingredientNames: ['spinach'] })];
-  const deck = buildDeck(recipes, [member({ loves: ['bowl'], weights: new Map([['spinach', 0.8]]) })], new Map(),
+  const recipes = [recipe('plain'), recipe('bowl', { tags: ['bowl', 'light'], ingredientNames: ['spinach'], productIds: ['p-spinach'] })];
+  const deck = buildDeck(recipes, [member({ loves: ['p-spinach'], weights: new Map([['spinach', 0.8]]) })], new Map(),
     { mood: 'light', pantry: ['spinach'], random: fixed });
   assert.equal(deck.find((c) => !c.known && c.recipeId === 'bowl')!.reason, 'pantry:spinach');
   const scores = Object.fromEntries(deck.map((c) => [c.recipeId, c.score]));
   assert.ok(scores.bowl > scores.plain);
 });
 
-test('rules on catalogue items match the recipe’s ingredient products', () => {
+test('rules are catalogue items: they match the recipe’s ingredient products, not its words', () => {
   const recipes = [
     recipe('champignons', { productIds: ['p-mushroom', 'p-rice'] }),
     recipe('saumon', { productIds: ['p-salmon'] }),
     recipe('plain', { productIds: ['p-rice'] }),
   ];
-  const deck = buildDeck(recipes, [member({ neverProducts: ['p-mushroom'], loveProducts: ['p-salmon'] })], new Map(), { random: fixed });
+  const deck = buildDeck(recipes, [member({ never: ['p-mushroom'], loves: ['p-salmon'] })], new Map(), { random: fixed });
   assert.ok(!deck.some((c) => c.recipeId === 'champignons'));
   const scores = Object.fromEntries(deck.map((c) => [c.recipeId, c.score]));
   assert.ok(scores.saumon > scores.plain);
+  // A title or tag that says "mushroom" is not the item.
+  const named = [recipe('mushroom-style tofu', { tags: ['mushroom'], productIds: ['p-tofu'] })];
+  assert.equal(buildDeck(named, [member({ never: ['p-mushroom'] })], new Map(), { random: fixed }).length, 1);
 });

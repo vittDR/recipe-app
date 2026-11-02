@@ -49,6 +49,16 @@ test('proposes what to buy', () => {
   ]);
 });
 
+test('staples are products: a recipe line that is the item starts unchecked', () => {
+  const ings = [
+    { name: 'sel', product_id: 'p-salt', quantity: null, unit: null, aisle: 'pantry' as const, is_staple: false },
+    { name: 'salt', product_id: 'p-salt', quantity: null, unit: null, aisle: 'pantry' as const, is_staple: false },
+    { name: 'p-salt', quantity: null, unit: null, aisle: 'pantry' as const, is_staple: false },
+  ];
+  const p = proposeListItems(ings, [], ['p-salt']);
+  assert.deepEqual(p.map((x) => x.why), ['staple', 'staple', 'to_buy']);
+});
+
 test('scales quantities to the pot', () => {
   assert.equal(scaleQuantity(300, 2, 2.6), 390);
   assert.equal(scaleQuantity(1, 2, 2.6), 1.25);

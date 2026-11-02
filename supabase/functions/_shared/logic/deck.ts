@@ -13,8 +13,7 @@ export interface CandidateRecipe {
   tags: string[];
   ingredientNames: string[]; // non-staple ingredient names, lowercase
   productIds?: string[]; // the catalogue items its ingredients are, staples included
-  /** Names and items found only on optional lines: a "never" rule doesn't rule the recipe out for them. */
-  optionalNames?: string[];
+  /** Items found only on optional lines: a "never" rule doesn't rule the recipe out for them. */
   optionalProductIds?: string[];
   dietClass: 'veg' | 'fish' | 'meat';
   totalMin: number | null;
@@ -23,12 +22,9 @@ export interface CandidateRecipe {
 }
 
 export interface DeckMember extends EaterTargets {
-  /** Free-text rules (older ones, or tags): matched on tags, ingredient names and title. */
+  /** Never / love rules: catalogue items, matched on the recipe's ingredient products. */
   never: string[];
   loves: string[];
-  /** Rules on catalogue items: matched on the recipe's ingredient products. */
-  neverProducts?: string[];
-  loveProducts?: string[];
   diet: Diet;
   /** Soft weights per feature (tags/ingredients), [-1, 1], incl. accepted patterns. */
   weights: Map<string, number>;
@@ -71,37 +67,18 @@ export const MOOD_TAGS: Record<Exclude<Mood, 'any'>, string[]> = {
   fancy: ['fancy'],
 };
 
-function matchesTerm(recipe: CandidateRecipe, term: string): boolean {
-  const t = term.toLowerCase().trim();
-  if (!t) return false;
-  return (
-    recipe.tags.some((tag) => tag.toLowerCase() === t) ||
-    recipe.ingredientNames.some((n) => n === t || n.includes(t)) ||
-    recipe.title.toLowerCase().includes(t)
-  );
-}
-
-const usesProduct = (recipe: CandidateRecipe, ids: string[] | undefined) =>
-  !!ids?.length && !!recipe.productIds?.some((id) => ids.includes(id));
-
-/** The recipe as it's still made when every optional line is left out. */
-function withoutOptional(recipe: CandidateRecipe): CandidateRecipe {
-  if (!recipe.optionalNames?.length && !recipe.optionalProductIds?.length) return recipe;
-  return {
-    ...recipe,
-    ingredientNames: recipe.ingredientNames.filter((n) => !recipe.optionalNames?.includes(n)),
-    productIds: recipe.productIds?.filter((id) => !recipe.optionalProductIds?.includes(id)),
-  };
-}
+const usesProduct = (productIds: string[] | undefined, ids: string[]) =>
+  ids.length > 0 && !!productIds?.some((id) => ids.includes(id));
 
 export function passesHardFilters(recipe: CandidateRecipe, members: DeckMember[], opts: DeckOptions): boolean {
   if (opts.recentlyCooked?.has(recipe.id)) return false;
   if (opts.maxMinutes && recipe.totalMin && recipe.totalMin > opts.maxMinutes) return false;
-  const essential = withoutOptional(recipe);
+  // The recipe as it's still made when every optional line is left out.
+  const essential = recipe.productIds?.filter((id) => !recipe.optionalProductIds?.includes(id));
   for (const m of members) {
     if (m.diet === 'vegetarian' && recipe.dietClass !== 'veg') return false;
     if (m.diet === 'pescatarian' && recipe.dietClass === 'meat') return false;
-    if (m.never.some((n) => matchesTerm(essential, n)) || usesProduct(essential, m.neverProducts)) return false;
+    if (usesProduct(essential, m.never)) return false;
   }
   return true;
 }
@@ -133,7 +110,7 @@ export function scoreRecipe(
     let w = 0;
     for (const f of features) w += m.weights.get(f) ?? 0;
     pref += Math.max(-1, Math.min(1, w / 3));
-    if (m.loves.some((l) => matchesTerm(recipe, l)) || usesProduct(recipe, m.loveProducts)) love += 1;
+    if (usesProduct(recipe.productIds, m.loves)) love += 1;
   }
   pref /= members.length || 1;
   love /= members.length || 1;

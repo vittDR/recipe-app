@@ -19,13 +19,13 @@ export async function loadProposals(
   const [items, staples] = await Promise.all([
     supabase.from('grocery_items').select('*, product:products(ingredient)').eq('household_id', householdId)
       .or(`cleared_at.is.null,checked_at.gte.${since}`),
-    supabase.from('household_staples').select('name').eq('household_id', householdId),
+    supabase.from('household_staples').select('product_id').eq('household_id', householdId),
   ]);
   return proposeListItems(
     ingredients,
     (must(items) as (GroceryRow & { product: { ingredient: string | null } | null })[])
       .map(({ product, ...i }) => ({ ...i, ingredient: product?.ingredient ?? null })),
-    (must(staples) as { name: string }[]).map((s) => s.name),
+    (must(staples) as { product_id: string }[]).map((s) => s.product_id),
   );
 }
 
