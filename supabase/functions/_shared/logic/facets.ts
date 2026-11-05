@@ -2,6 +2,7 @@
 // filters (healthy, comfort, high protein, diet, veggie…). Pure, shared by the
 // web app, the import function and the seed build script.
 
+import type { RecipeClassification } from './classify.ts';
 import { MOOD_TAGS } from './deck.ts';
 
 export type Difficulty = 'easy' | 'medium' | 'hard';
@@ -56,13 +57,15 @@ export interface FacetRecipe {
   equipment: Equipment | null;
   /** Ingredients not sold in most French supermarkets. */
   exoticIngredients: string[];
+  /** From classify.ts; filters fall back to tags and stored macros without it. */
+  classification?: RecipeClassification | null;
 }
 
 export type RecipeFilter =
-  | 'healthy' | 'comfort' | 'high_protein' | 'diet' | 'veggie' | 'fish'
+  | 'healthy' | 'comfort' | 'high_protein' | 'lean' | 'diet' | 'veggie' | 'fish'
   | 'quick' | 'one_pot' | 'easy' | 'everyday';
 export const RECIPE_FILTERS: RecipeFilter[] = [
-  'healthy', 'comfort', 'high_protein', 'diet', 'veggie', 'fish', 'quick', 'one_pot', 'easy', 'everyday',
+  'healthy', 'comfort', 'high_protein', 'lean', 'diet', 'veggie', 'fish', 'quick', 'one_pot', 'easy', 'everyday',
 ];
 
 export const HIGH_PROTEIN_G = 35;
@@ -80,9 +83,14 @@ export function matchesFilter(r: FacetRecipe, f: RecipeFilter): boolean {
       return !has(r, 'treat') && r.kcalPerServing != null && r.kcalPerServing <= HEALTHY_MAX_KCAL
         && (r.proteinGPerServing ?? 0) >= HEALTHY_MIN_PROTEIN_G;
     case 'comfort':
+      if (r.classification) return r.classification.meal_intents.includes('comfort');
       return MOOD_TAGS.comfort.some((t) => has(r, t));
     case 'high_protein':
+      // Enough protein for the calories, not just a big plate (classify.ts).
+      if (r.classification) return r.classification.nutrition_goals.includes('high_protein');
       return (r.proteinGPerServing ?? 0) >= HIGH_PROTEIN_G;
+    case 'lean':
+      return !!r.classification?.nutrition_goals.includes('lean');
     case 'diet':
       return r.kcalPerServing != null && r.kcalPerServing <= DIET_MAX_KCAL;
     case 'veggie':

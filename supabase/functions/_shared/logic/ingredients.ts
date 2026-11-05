@@ -15,6 +15,11 @@ export interface CatalogEntry {
   is_staple: boolean;
   kcal_100g?: number | null;
   protein_100g?: number | null;
+  fat_100g?: number | null;
+  carbs_100g?: number | null;
+  fiber_100g?: number | null;
+  /** Classification traits (protein:fish, starch:rice, sauce:coconut, heat:1.5, liquid): see classify.ts. */
+  traits?: string[] | null;
   grams_per_unit?: number | null;
   diet_class?: 'veg' | 'fish' | 'meat';
   /** Not sold in most French supermarkets. */
@@ -234,6 +239,10 @@ export function combineAmounts(
 export interface MacroEstimate {
   kcalPerServing: number | null;
   proteinGPerServing: number | null;
+  /** Null when ingredients without that value make up over a tenth of the calories. */
+  fatGPerServing: number | null;
+  carbsGPerServing: number | null;
+  fiberGPerServing: number | null;
   /** True when any amount was guessed or an ingredient had no nutrition data. */
   estimated: boolean;
   /** Ingredients that could not be counted. */
@@ -247,6 +256,9 @@ export function estimateMacros(
 ): MacroEstimate {
   let kcal = 0;
   let protein = 0;
+  const other = { fat: 0, carbs: 0, fiber: 0 };
+  // Calories from ingredients that don't have each value, to tell a small gap from an unknown.
+  const missing = { fat: 0, carbs: 0, fiber: 0 };
   let estimated = false;
   const unknown: string[] = [];
   for (const ing of ingredients) {
@@ -261,15 +273,31 @@ export function estimateMacros(
       }
       continue;
     }
-    kcal += (entry.kcal_100g * grams) / 100;
+    const k = (entry.kcal_100g * grams) / 100;
+    kcal += k;
     protein += ((entry.protein_100g ?? 0) * grams) / 100;
+    for (const n of ['fat', 'carbs', 'fiber'] as const) {
+      const v = entry[`${n}_100g`];
+      if (v == null) missing[n] += k;
+      else other[n] += (v * grams) / 100;
+    }
   }
   const s = servings > 0 ? servings : 1;
   const counted = ingredients.length - unknown.length;
-  if (counted === 0) return { kcalPerServing: null, proteinGPerServing: null, estimated: true, unknown };
+  if (counted === 0) {
+    return {
+      kcalPerServing: null, proteinGPerServing: null, fatGPerServing: null, carbsGPerServing: null, fiberGPerServing: null,
+      estimated: true, unknown,
+    };
+  }
+  const per = (n: 'fat' | 'carbs' | 'fiber') =>
+    missing[n] > kcal * 0.1 ? null : Math.round((other[n] / s) * 10) / 10;
   return {
     kcalPerServing: Math.round(kcal / s),
     proteinGPerServing: Math.round((protein / s) * 10) / 10,
+    fatGPerServing: per('fat'),
+    carbsGPerServing: per('carbs'),
+    fiberGPerServing: per('fiber'),
     estimated,
     unknown,
   };

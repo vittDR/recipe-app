@@ -4,6 +4,7 @@ import { Icon } from '../../components/Icon.tsx';
 import { Button, Chip, RecipeThumb, Screen, SearchField, Spinner } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { recipeTitle, allTitles } from '../../lib/recipeText.ts';
+import type { ClassifiableRow } from '@logic/classify.ts';
 import { RECIPE_FILTERS, type RecipeFilter, matchesFilters } from '@logic/facets.ts';
 import { effortLabels, facetsOf } from '../../lib/facets.ts';
 import { useCatalog, useLive } from '../../lib/hooks.ts';
@@ -13,7 +14,7 @@ import { useTags } from '../../lib/tags.ts';
 import { RECIPE_COLLECTIONS, type Recipe, type RecipeCollection } from '../../lib/types.ts';
 
 type Filter = 'all' | RecipeCollection;
-type Row = Recipe & { recipe_ingredients: { name: string }[] };
+type Row = Recipe & { recipe_ingredients: ClassifiableRow['recipe_ingredients'] };
 
 const normalise = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 
@@ -29,7 +30,7 @@ export function RecipesScreen() {
   const catalog = useCatalog();
 
   const { data, loading } = useLive<Row[]>(`recipes:${household!.id}`, async () =>
-    must(await supabase.from('library_recipes').select('*, recipe_ingredients(name)').order('created_at', { ascending: false })) as Row[],
+    must(await supabase.from('library_recipes').select('*, recipe_ingredients(name, quantity, unit, optional, is_staple, guessed)').order('created_at', { ascending: false })) as Row[],
   [{ table: 'recipes', filter: `household_id=eq.${household!.id}` }]);
 
   const shown = useMemo(() => {
@@ -38,7 +39,7 @@ export function RecipesScreen() {
     if (!catalog) return [];
     return (data ?? []).filter((r) => {
       if (filter !== 'all' && r.collection !== filter) return false;
-      if (facets.size && !matchesFilters(facetsOf(r, r.recipe_ingredients.map((i) => i.name), catalog), facets)) return false;
+      if (facets.size && !matchesFilters(facetsOf(r, r.recipe_ingredients, catalog), facets)) return false;
       const hay = normalise([
         ...allTitles(r),
         ...r.tags.flatMap((tag) => [tag, tags?.label(tag, 'en') ?? '', tags?.label(tag, 'fr') ?? '']),

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { useNavigate } from 'react-router';
 import { Icon } from '../../components/Icon.tsx';
-import { ModeBar, ProgressBar, Tag, imageStyle, photoUrl, recipeEmoji } from '../../components/ui.tsx';
+import { Chip, ModeBar, ProgressBar, Tag, imageStyle, photoUrl, recipeEmoji } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { productName } from '@logic/products.ts';
 import { inSentence, useGroceryCatalog } from '../../lib/products.ts';
@@ -10,6 +10,7 @@ import { useSession } from '../../lib/session.tsx';
 import { supabase } from '../../lib/supabase.ts';
 import { useTags } from '../../lib/tags.ts';
 import type { DeckCard, Verdict } from '../../lib/types.ts';
+import { PASS_REASONS, type PassReason } from '@logic/profile.ts';
 import type { TagCatalog } from '@logic/tags.ts';
 import type { DeckData } from './data.ts';
 
@@ -86,6 +87,8 @@ export function SwipeView({ data, onDone }: { data: DeckData; onDone: () => Prom
   const [drag, setDrag] = useState<{ dx: number; dy: number } | null>(null);
   const [leaving, setLeaving] = useState<{ id: string; dx: number; dy: number } | null>(null);
   const [error, setError] = useState<string | null>(null);
+  // The card just passed on, to say why if the person wants to (optional, never blocks swiping).
+  const [lastPass, setLastPass] = useState<{ recipeId: string; reason: PassReason | null } | null>(null);
   const start = useRef<{ x: number; y: number } | null>(null);
 
   // Fetch every card's photo up front, so each card shows at once when it comes to the top.
@@ -135,6 +138,7 @@ export function SwipeView({ data, onDone }: { data: DeckData; onDone: () => Prom
     setLeaving({ id: top.recipe_id, ...off });
     setDrag(null);
     setError(null);
+    setLastPass(verdict === 'pass' ? { recipeId: top.recipe_id, reason: null } : null);
     navigator.vibrate?.(10);
     const saved = save(top.recipe_id, verdict);
     const last = remaining.length === 1;
@@ -199,6 +203,21 @@ export function SwipeView({ data, onDone }: { data: DeckData; onDone: () => Prom
       </div>
 
       {error && <p className="notice">{error}</p>}
+      {lastPass && (
+        <div className="chips chips--scroll" aria-label={t('swipe.why')}>
+          <span className="small muted">{t('swipe.why')}</span>
+          {PASS_REASONS.map((reason) => (
+            <Chip key={reason} pressed={lastPass.reason === reason} onClick={() => {
+              setLastPass({ ...lastPass, reason });
+              // Saved after the swipe itself, which the reason belongs to.
+              void queue.current.then(() => supabase.from('taste_signals').upsert(
+                { user_id: userId, recipe_id: lastPass.recipeId, kind: 'reason', value: reason, deck_id: data.deck.id },
+                { onConflict: 'user_id,key' },
+              ));
+            }}>{t(`swipe.reasons.${reason}`)}</Chip>
+          ))}
+        </div>
+      )}
       <div className="swipe-actions">
         <button type="button" className="btn btn--round btn--lg pass" aria-label={t('swipe.pass')} onClick={() => decide('pass')}>
           <Icon name="x" size={30} strokeWidth={2.5} />

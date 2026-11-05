@@ -7,7 +7,9 @@ import { RecipeTags } from '../../components/Tags.tsx';
 import { Button, confirmSheet, ListRow, Screen, Section, Spinner, Tag, imageStyle, recipeEmoji } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { recipeTitle, recipeSteps } from '../../lib/recipeText.ts';
+import { classifyRow } from '@logic/classify.ts';
 import { MANY_POTS } from '@logic/facets.ts';
+import { classificationChips } from '../../lib/classes.ts';
 import { equipmentLabels, exoticIngredients } from '../../lib/facets.ts';
 import { useCatalog, useLive, useSave } from '../../lib/hooks.ts';
 import { groupIngredients, INGREDIENT_SELECT, ingredientName } from '../../lib/products.ts';
@@ -65,6 +67,8 @@ export function RecipeScreen() {
   const exotic = new Set(catalog ? exoticIngredients(ingredients.map((i) => i.name), catalog) : []);
   const equipment = equipmentLabels(recipe.equipment, i18n);
   const manyPots = (recipe.equipment?.pots ?? 0) >= MANY_POTS;
+  // Worked out from the ingredients, steps and tags, like for every recipe (logic/classify.ts).
+  const about = catalog ? classificationChips(classifyRow({ ...recipe, recipe_ingredients: ingredients }, catalog), t) : [];
   const remove = async () => {
     if (!(await confirmSheet(t('recipe.removeConfirm'), { confirmLabel: t('app.delete') }))) return;
     if (await save(supabase.from('recipes').delete().eq('id', recipe.id))) navigate('/recipes', { replace: true });
@@ -107,6 +111,14 @@ export function RecipeScreen() {
         ) : <span className="muted">{t('recipe.noMacros')}</span>}
         {recipe.macros_estimated && <span className="small text-warning">⚠︎ {t('recipe.estimated')}</span>}
       </div>
+
+      {about.length > 0 && (
+        <Section label={t('recipe.about')}>
+          <div className="row row--wrap">
+            {about.map((label) => <Tag key={label}>{label}</Tag>)}
+          </div>
+        </Section>
+      )}
 
       {equipment.length > 0 && (
         <Section label={t('recipe.equipment')}>
