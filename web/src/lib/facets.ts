@@ -1,6 +1,7 @@
 // Recipe facets on the client: diet class and exotic ingredients come from the
 // catalogue, the rest from the recipe row. Rules live in @logic/facets.ts.
 import { type Equipment, type FacetRecipe, MANY_POTS, SPECIAL_EQUIPMENT } from '@logic/facets.ts';
+import { type ClassifiableRow, classifyRow } from '@logic/classify.ts';
 import { type Catalog, dietClassOf } from '@logic/ingredients.ts';
 import type { MessageKey, useI18n } from '../i18n/index.tsx';
 import type { Recipe } from './types.ts';
@@ -10,7 +11,9 @@ export function exoticIngredients(names: string[], catalog: Catalog): string[] {
   return names.filter((n) => catalog.find(n)?.exotic);
 }
 
-export function facetsOf(r: Recipe, ingredientNames: string[], catalog: Catalog): FacetRecipe {
+/** `ingredients` as selected with CLASSIFY_COLUMNS' recipe_ingredients(...): names, amounts and units. */
+export function facetsOf(r: Recipe, ingredients: ClassifiableRow['recipe_ingredients'], catalog: Catalog): FacetRecipe {
+  const ingredientNames = ingredients.map((i) => i.name);
   return {
     tags: r.tags,
     totalMin: r.total_min,
@@ -20,6 +23,7 @@ export function facetsOf(r: Recipe, ingredientNames: string[], catalog: Catalog)
     difficulty: r.difficulty,
     equipment: r.equipment,
     exoticIngredients: exoticIngredients(ingredientNames, catalog),
+    classification: classifyRow({ ...r, recipe_ingredients: ingredients }, catalog),
   };
 }
 

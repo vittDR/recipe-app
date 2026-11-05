@@ -4,6 +4,8 @@
 
 import { corsHeaders, json, requireMember, serviceClient } from '../_shared/http.ts';
 import { buildDeck, type CandidateRecipe, type DeckMember, type Diet, type Mood, type RecipeHistory } from '../_shared/logic/deck.ts';
+import { canonicalFeature, classifyRow, CLASSIFY_COLUMNS, type ClassifiableRow } from '../_shared/logic/classify.ts';
+import { Catalog, type CatalogEntry } from '../_shared/logic/ingredients.ts';
 import { recipeFeatures, softWeights, type Exposure } from '../_shared/logic/preferences.ts';
 
 const MOODS: Mood[] = ['any', 'comfort', 'light', 'quick', 'fancy'];
@@ -42,21 +44,22 @@ Deno.serve(async (req) => {
     admin.from('member_goals').select('*').in('user_id', eaters),
     admin.from('taste_rules').select('user_id, kind, value, product_id').in('user_id', eaters),
     admin.from('learned_patterns').select('user_id, pattern, weight').in('user_id', eaters).eq('status', 'accepted'),
-    admin.from('swipes').select('user_id, recipe_id, verdict, created_at, decks!inner(household_id)')
+    admin.from('swipes').select('user_id, recipe_id, verdict, created_at, decks!inner(household_id, mood)')
       .eq('decks.household_id', householdId).order('created_at', { ascending: false }).limit(1000),
     admin.from('recipes')
-      .select('id, title, tags, total_min, kcal_per_serving, protein_g_per_serving, household_id, copied_from, recipe_ingredients(name, is_staple, product_id, optional)')
+      .select(`id, kcal_per_serving, protein_g_per_serving, household_id, copied_from, ${CLASSIFY_COLUMNS.replace('recipe_ingredients(', 'recipe_ingredients(product_id, ')}`)
       .or(`household_id.is.null,household_id.eq.${householdId}`),
     admin.from('meals').select('recipe_id, for_date, status').eq('household_id', householdId),
     admin.from('grocery_items').select('name, product:products(ingredient)').eq('household_id', householdId)
       .gte('checked_at', since(PANTRY_DAYS)),
-    admin.from('ingredient_catalog').select('name, diet_class'),
+    admin.from('ingredient_catalog').select('*'),
   ]);
   for (const r of [goals, rules, patterns, swipes, recipes, meals, pantry, catalog]) {
     if (r.error) return json({ error: r.error.message }, 500);
   }
 
   const dietOf = new Map((catalog.data ?? []).map((c) => [c.name as string, c.diet_class as 'veg' | 'fish' | 'meat']));
+  const ingredientCatalog = new Catalog((catalog.data ?? []) as CatalogEntry[]);
 
   // Seed recipes the household copied are replaced by their copy.
   const copied = new Set((recipes.data ?? []).filter((r) => r.copied_from).map((r) => r.copied_from as string));
@@ -68,7 +71,10 @@ Deno.serve(async (req) => {
     const names = ings.filter((i) => !i.is_staple).map((i) => i.name.toLowerCase());
     const required = ings.filter((i) => !i.optional);
     const optional = ings.filter((i) => i.optional);
-    featuresById.set(r.id, recipeFeatures(r.tags ?? [], ings));
+    // What the dish is, from its ingredients, steps and tags (logic/classify.ts).
+    const classification = classifyRow(r as unknown as ClassifiableRow, ingredientCatalog);
+    const features = recipeFeatures(r.tags ?? [], ings, classification);
+    featuresById.set(r.id, features);
     const classes = ings.map((i) => dietOf.get(i.name));
     return {
       id: r.id,
@@ -81,6 +87,8 @@ Deno.serve(async (req) => {
       totalMin: r.total_min,
       kcalPerServing: r.kcal_per_serving,
       proteinGPerServing: r.protein_g_per_serving,
+      features,
+      intents: classification.meal_intents,
     };
   });
 
@@ -90,10 +98,15 @@ Deno.serve(async (req) => {
     const exposures: Exposure[] = (swipes.data ?? [])
       .filter((s) => s.user_id === uid)
       .slice(0, 300)
-      .map((s) => ({ verdict: s.verdict, features: featuresById.get(s.recipe_id) ?? [], createdAt: s.created_at }));
+      .map((s) => {
+        const deck = s.decks as { mood: string | null } | { mood: string | null }[] | null;
+        const mood = (Array.isArray(deck) ? deck[0] : deck)?.mood as Mood | null | undefined;
+        return { verdict: s.verdict, features: featuresById.get(s.recipe_id) ?? [], createdAt: s.created_at, mood };
+      });
     const weights = softWeights(exposures);
     for (const p of (patterns.data ?? []).filter((x) => x.user_id === uid)) {
-      const value = String(p.pattern?.value ?? '').toLowerCase();
+      // Patterns accepted on a tag ("curry") apply to the classified feature it now is ("dish:curry").
+      const value = canonicalFeature(String(p.pattern?.value ?? ''));
       if (value) weights.set(value, (weights.get(value) ?? 0) + Number(p.weight ?? 0));
     }
     return {

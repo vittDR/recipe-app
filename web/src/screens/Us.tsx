@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
+import { canonicalFeature, classifyRow, CLASSIFY_COLUMNS, type ClassifiableRow } from '@logic/classify.ts';
+import type { Mood } from '@logic/deck.ts';
 import { detectPatterns, recipeFeatures, type PatternSuggestion } from '@logic/preferences.ts';
 import { productName } from '@logic/products.ts';
 import { Icon } from '../components/Icon.tsx';
 import { MemberList } from '../components/Members.tsx';
 import { Button, ListRow, Screen, Section } from '../components/ui.tsx';
 import { LOCALE_NAMES, useI18n } from '../i18n/index.tsx';
-import { useLive, useSave } from '../lib/hooks.ts';
+import { classLabel } from '../lib/classes.ts';
+import { useCatalog, useLive, useSave } from '../lib/hooks.ts';
 import { inSentence, useGroceryCatalog } from '../lib/products.ts';
 import { pushState, type PushState } from '../lib/push.ts';
 import { useSession } from '../lib/session.tsx';
@@ -16,7 +19,8 @@ import type { LearnedPattern, TasteRule } from '../lib/types.ts';
 interface SwipeRow {
   verdict: 'pass' | 'yes' | 'must';
   created_at: string;
-  recipe: { tags: string[]; recipe_ingredients: { name: string; is_staple: boolean }[] } | null;
+  recipe: (ClassifiableRow & { tags: string[] }) | null;
+  deck: { mood: Mood | null } | null;
 }
 
 const samePattern = (a: { kind: string; value: string }, b: { kind: string; value: string }) =>
@@ -29,18 +33,26 @@ export function UsScreen() {
   const [push, setPush] = useState<PushState>('unsupported');
   const { data: catalog } = useGroceryCatalog(household!.id);
   const { tags } = useTags(household!.id);
-  const { data, reload } = useLive<{ rules: TasteRule[]; suggestions: PatternSuggestion[] }>(`us:${userId}`, async () => {
+  const ingredientCatalog = useCatalog();
+  const { data, reload } = useLive<{ rules: TasteRule[]; suggestions: PatternSuggestion[] }>(`us:${userId}:${ingredientCatalog ? 'c' : ''}`, async () => {
     const [r, swipes, existing] = await Promise.all([
       supabase.from('taste_rules').select('*').eq('user_id', userId!),
-      supabase.from('swipes').select('verdict, created_at, recipe:recipes(tags, recipe_ingredients(name, is_staple))')
+      supabase.from('swipes').select(`verdict, created_at, deck:decks(mood), recipe:recipes(${CLASSIFY_COLUMNS})`)
         .eq('user_id', userId!).order('created_at', { ascending: false }).limit(300),
       supabase.from('learned_patterns').select('*').eq('user_id', userId!),
     ]);
     const rules = must(r) as TasteRule[];
     const exposures = (must(swipes) as unknown as SwipeRow[])
       .filter((s) => s.recipe)
-      .map((s) => ({ verdict: s.verdict, createdAt: s.created_at, features: recipeFeatures(s.recipe!.tags, s.recipe!.recipe_ingredients) }));
-    const known = (must(existing) as LearnedPattern[]).map((p) => p.pattern);
+      .map((s) => ({
+        verdict: s.verdict,
+        createdAt: s.created_at,
+        mood: s.deck?.mood,
+        features: recipeFeatures(s.recipe!.tags, s.recipe!.recipe_ingredients,
+          ingredientCatalog ? classifyRow(s.recipe!, ingredientCatalog) : null),
+      }));
+    // Patterns accepted on a tag ("curry") cover the classified feature it now is ("dish:curry").
+    const known = (must(existing) as LearnedPattern[]).map((p) => ({ ...p.pattern, value: canonicalFeature(p.pattern.value) }));
     const ruled = new Set(rules.map((x) => x.value));
     return {
       rules,
@@ -76,6 +88,8 @@ export function UsScreen() {
 
   // Tags, ingredients and rules on catalogue items read in the app's language.
   const labelOf = (value: string) => {
+    const classified = classLabel(value, t);
+    if (classified) return classified;
     if (tags?.find(value)?.name === value) return tags.label(value, locale);
     const p = catalog?.index.ofIngredient(value);
     return p ? productName(p, locale) : value;

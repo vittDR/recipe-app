@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { detectPatterns, softWeights, type Exposure } from '../preferences.ts';
+import { detectPatterns, recipeFeatures, softWeights, type Exposure } from '../preferences.ts';
 
 const at = (i: number) => new Date(Date.UTC(2026, 0, 1, 0, i)).toISOString();
 
@@ -28,4 +28,22 @@ test('soft weights sign follows verdicts', () => {
   ]);
   assert.ok(w.get('a')! < 0);
   assert.ok(w.get('b')! > 0);
+});
+
+test('a pass in a mood deck counts half and says nothing about the dish mood', () => {
+  const ex: Exposure[] = [
+    { verdict: 'pass', features: ['dish:curry', 'intent:comfort'], createdAt: at(1), mood: 'light' },
+    { verdict: 'pass', features: ['dish:curry', 'intent:comfort'], createdAt: at(2) },
+  ];
+  const w = softWeights(ex);
+  assert.equal(w.get('dish:curry'), -1.5 / 3.5);
+  assert.equal(w.get('intent:comfort'), -1 / 3); // only the any-mood pass
+  const many: Exposure[] = [];
+  for (let i = 0; i < 10; i++) many.push({ verdict: 'pass', features: ['intent:comfort'], createdAt: at(i), mood: 'light' });
+  assert.deepEqual(detectPatterns(many), []);
+});
+
+test('recipe features: legacy tags become their classified feature, no duplicates', () => {
+  const f = recipeFeatures(['curry', 'Indian'], [{ name: 'Cod fillet' }, { name: 'salt', is_staple: true }]);
+  assert.deepEqual(f, ['dish:curry', 'indian', 'cod fillet']);
 });

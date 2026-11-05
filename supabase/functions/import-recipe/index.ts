@@ -8,6 +8,7 @@
 // app falls back to typing the recipe in.
 
 import { corsHeaders, json, requireMember, serviceClient, type Caller } from '../_shared/http.ts';
+import { classifyRecipe } from '../_shared/logic/classify.ts';
 import { extractJsonLdRecipe } from '../_shared/logic/jsonld.ts';
 import { DIFFICULTIES, normaliseEquipment, type Difficulty, type Equipment } from '../_shared/logic/facets.ts';
 import {
@@ -233,10 +234,19 @@ Deno.serve(async (req) => {
       await caller.db.from('recipes').delete().eq('id', saved.id);
       return json({ error: ingErr.message }, 500);
     }
+    // Nothing to store: the classification is worked out wherever it's used. It's returned so the
+    // app can show what the recipe was understood as (logic/classify.ts).
+    const steps = (r.steps ?? []).map((x) => String(x).trim()).filter(Boolean);
+    const classification = classifyRecipe({
+      titles: [r.title], servings, tags, cuisine: r.cuisine ?? null, steps,
+      prepMin, cookMin, totalMin, difficulty: r.difficulty && DIFFICULTIES.includes(r.difficulty) ? r.difficulty : null, equipment: r.equipment ? normaliseEquipment(r.equipment) : null,
+      ingredients,
+    });
     return json({
       recipe_id: saved.id,
       macros_estimated: macros.estimated,
       unknown_ingredients: macros.unknown,
+      classification,
     });
   }
 

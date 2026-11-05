@@ -16,6 +16,7 @@ import {
 } from '../supabase/functions/_shared/logic/ingredients.ts';
 import { DIFFICULTIES, SPECIAL_EQUIPMENT, normaliseEquipment, type Difficulty, type Equipment } from '../supabase/functions/_shared/logic/facets.ts';
 import { MAX_TAGS, TagCatalog, type TagEntry } from '../supabase/functions/_shared/logic/tags.ts';
+import { classifyRecipe, type RecipeClassification } from '../supabase/functions/_shared/logic/classify.ts';
 
 interface SeedIngredient { id: string; text: string; original_text?: string; guessed?: boolean; optional?: boolean }
 interface SeedRecipe {
@@ -99,6 +100,7 @@ const translationRows: string[] = [];
 const photoRows: string[] = [];
 const names: string[] = [];
 const macroRows: string[] = [];
+const classified: RecipeClassification[] = [];
 
 for (const r of recipes) {
   const where = `${r.title}:`;
@@ -177,6 +179,13 @@ for (const r of recipes) {
     return { ...ing, id: i.id, position, original_text: i.original_text ?? null, optional: !!i.optional };
   });
   const macros = estimateMacros(ingredients, r.servings);
+  classified.push(classifyRecipe({
+    titles: [r.title, ...Object.values(translations).map((x) => x.title)],
+    servings: r.servings, tags: r.tags, cuisine: r.cuisine ?? null,
+    steps: [...r.steps, ...Object.values(translations).flatMap((x) => x.steps)],
+    prepMin: r.prep_min, cookMin: r.cook_min, totalMin, difficulty: r.difficulty, equipment,
+    ingredients,
+  }));
   summary.push(`${r.language}  ${String(macros.proteinGPerServing ?? '?').padStart(5)} g  ${String(macros.kcalPerServing ?? '?').padStart(5)} kcal  ${r.title}`);
 
   adoptRecipes.push(`  (${lit(r.id)}::uuid, ${lit(key)})`);
@@ -265,6 +274,22 @@ out.push('', 'commit;', '');
 console.log(`${recipes.length} recipes, ${recipes.reduce((n, r) => n + r.ingredients.length, 0)} ingredient lines\n`);
 console.log('lang  protein   kcal  (per serving, estimated from the catalogue)');
 console.log(summary.join('\n'));
+// Coverage of the classification (docs/recipe-classification.md): combinations,
+// not counts. A gap or a pile-up here is a reason to add or vary recipes.
+const count = (values: string[]) => {
+  const m = new Map<string, number>();
+  for (const v of values) m.set(v, (m.get(v) ?? 0) + 1);
+  return [...m].sort((a, b) => b[1] - a[1]).map(([k, n]) => `${k} ${n}`).join(', ');
+};
+console.log('\nCoverage (classification, derived from ingredients and steps)');
+console.log(`  dish families: ${count(classified.flatMap((c) => c.dish_families))}`);
+console.log(`  proteins:      ${count(classified.flatMap((c) => c.protein_groups ?? ['unknown']))}`);
+console.log(`  sauces:        ${count(classified.flatMap((c) => (c.sauce_families?.length ? c.sauce_families : ['none'])))}`);
+console.log(`  heat:          ${count(classified.map((c) => `${c.heat_level ?? '?'}`))}`);
+console.log(`  goals:         ${count(classified.flatMap((c) => c.nutrition_goals))}`);
+console.log(`  intents:       ${count(classified.flatMap((c) => c.meal_intents))}`);
+console.log(`  protein × dish: ${count(classified.flatMap((c) => (c.protein_groups ?? []).flatMap((p) => c.dish_families.map((d) => `${p}/${d}`))))}`);
+console.log(`  lean × comfort: ${classified.filter((c) => c.nutrition_goals.includes('lean') && c.meal_intents.includes('comfort')).length}`);
 if (warnings.length) console.log(`\n${warnings.length} warnings:\n  ${warnings.join('\n  ')}`);
 if (errors.length) {
   console.error(`\n${errors.length} errors:\n  ${errors.join('\n  ')}`);

@@ -2,6 +2,7 @@
 // macro fit, learned preferences, mood, pantry overlap and novelty. Roughly
 // two thirds known favourites, one third new.
 
+import type { MealIntent } from './classify.ts';
 import { type EaterTargets, type PotSplit, splitPot } from './portions.ts';
 
 export type Diet = 'everything' | 'pescatarian' | 'vegetarian';
@@ -19,6 +20,10 @@ export interface CandidateRecipe {
   totalMin: number | null;
   kcalPerServing: number | null;
   proteinGPerServing: number | null;
+  /** Learning features (preferences.ts recipeFeatures); defaults to tags plus ingredient names. */
+  features?: string[];
+  /** What the dish is for (classify.ts); moods match on these when given, else on tags. */
+  intents?: MealIntent[];
 }
 
 export interface DeckMember extends EaterTargets {
@@ -86,6 +91,13 @@ export function passesHardFilters(recipe: CandidateRecipe, members: DeckMember[]
 function moodScore(recipe: CandidateRecipe, mood: Mood | undefined): number {
   if (!mood || mood === 'any') return 0;
   if (mood === 'quick' && recipe.totalMin && recipe.totalMin <= 25) return 1;
+  if (recipe.intents && mood !== 'quick') {
+    // Classified: comfort, light and fancy are what the dish is for (its tags included).
+    const want: MealIntent = mood === 'fancy' ? 'special_occasion' : mood;
+    if (recipe.intents.includes(want)) return 1;
+    if (mood === 'light' && recipe.intents.includes('fuel')) return 0.5;
+    return mood === 'fancy' && recipe.totalMin && recipe.totalMin >= 45 ? 0.5 : 0;
+  }
   if (mood === 'fancy' && recipe.totalMin && recipe.totalMin >= 45) return 0.5;
   // Ingredients aren't tags: fish and pasta come from the ingredient list.
   if (mood === 'light' && recipe.dietClass === 'fish') return 1;
@@ -102,7 +114,7 @@ export function scoreRecipe(
 ): { score: number; split: PotSplit | null; reason: string | null } {
   const split = splitPot(recipe, members);
   const fit = split?.fitScore ?? 0.5; // unknown macros: neutral
-  const features = [...recipe.tags.map((t) => t.toLowerCase()), ...recipe.ingredientNames];
+  const features = recipe.features ?? [...recipe.tags.map((t) => t.toLowerCase()), ...recipe.ingredientNames];
 
   let pref = 0;
   let love = 0;

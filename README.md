@@ -43,6 +43,7 @@ Key rules from the handover, and where they live:
 | One pot; each plate is that person's servings (1 by default); fits = calories within 20% of target and protein at least 85% | `logic/portions.ts`, `my_portion()` |
 | 12 cards, ~8 known + 4 new, never/diet/time/recently-cooked filters | `logic/deck.ts` |
 | Patterns suggested at 8 of the last 10 exposures; apply only once accepted | `logic/preferences.ts`, Us tab |
+| Every recipe (seed, imported, typed) is classified from its ingredients, amounts, steps and tags: protein, starch, dish family, sauce, cooking method, chilli heat, how saucy, lean / high protein, comfort / light / treat. Recomputed where used, never stored; learning uses it as namespaced features, and a pass in a mood deck counts half | `logic/classify.ts`, `ingredient_catalog.traits`, [docs/recipe-classification.md](docs/recipe-classification.md) |
 | Recipes tab filters (healthy, comfort, high protein, diet, veggie, fish, quick, one pot, easy, everyday ingredients); difficulty, coarse equipment, exotic ingredients | `logic/facets.ts`, `ingredient_catalog.exotic` |
 | List lines are real products (chicken breast = Blanc de poulet = petto di pollo; plain "poulet" is its own item), French first; a recipe adds to a line of the same product + unit; staples start unchecked | `products`, `put_grocery_item()`, `logic/products.ts`, `mergeTarget()` in `logic/groceries.ts` |
 | Stores (Picard…) are list sections among the aisles | `household_stores`, `household_products`, `set_product_section()` |
