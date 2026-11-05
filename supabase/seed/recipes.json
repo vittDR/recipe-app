@@ -13843,6 +13843,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/halal-cart-chicken-over-rice.webp",
     "cuisine": "american",
     "tags": [
       "street food",
@@ -13971,6 +13972,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/gochujang-salmon-rice-bowl.webp",
     "cuisine": "korean",
     "tags": [
       "bowl",
@@ -14092,6 +14094,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-e-ceci.webp",
     "cuisine": "italian",
     "tags": [
       "soup",
@@ -14195,6 +14198,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/poulet-basquaise.webp",
     "cuisine": "french",
     "tags": [
       "one-pot",
@@ -14310,6 +14314,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/chicken-shawarma-traybake.webp",
     "cuisine": "middle eastern",
     "tags": [
       "traybake",
@@ -14430,6 +14435,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/turkey-taco-lettuce-wraps.webp",
     "cuisine": "mexican",
     "tags": [
       "low carb",
@@ -14549,6 +14555,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/chana-masala.webp",
     "cuisine": "indian",
     "tags": [
       "curry",
@@ -14667,6 +14674,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/chicken-teriyaki-donburi.webp",
     "cuisine": "japanese",
     "tags": [
       "bowl",
@@ -14764,6 +14772,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/shakshuka-with-feta.webp",
     "cuisine": "middle eastern",
     "tags": [
       "vegetarian",
@@ -14875,6 +14884,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/beef-broccoli-stir-fry.webp",
     "cuisine": "chinese",
     "tags": [
       "stir-fry",

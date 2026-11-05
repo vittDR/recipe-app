@@ -26,19 +26,20 @@ The script runs each ingredient line through the app's parser and catalogue, the
 
 The photos are in `web/public/recipe-photos/` and ship with the app, so `image_url` is a path like `/recipe-photos/spaghetti-alle-vongole.webp`. `image_source_url` keeps where each photo came from.
 
-- 98 recipes have a photo. 21 have none and show the emoji (the AI-generated recipes, sources without a photo, and dead photo links).
+- 108 recipes have a photo. 11 have none and show the emoji (sources without a photo, and dead photo links).
+- The 10 AI-generated recipes have AI-generated photos (4:3 PNGs converted with `to_webp` from `download_images.py`). Their `image_source_url` is left out, so it's stored as the local path.
 - 72 source photos were smaller than 1200×900 and were upscaled when downloaded (before the switch to 900×675), so some look soft.
 - A few carry the source blog's watermark (Arrosto di tacchino, Blanquette de veau légère, Frittata di zucchine, Saltimbocca).
 - The service worker doesn't precache them: each loads the first time a card shows it.
 
-To replace or add photos, run `scripts/download_images.py` (needs `pip install requests pillow`), or drop a 4:3 WebP into the folder and point `image_url` at it. Then run `python3 scripts/make_thumbnails.py web/public/recipe-photos` to refresh the small copies in `recipe-photos/thumb/` that the Recipes grid uses.
+To replace or add photos, run `scripts/download_images.py` (needs `pip install requests pillow`), or drop a 4:3 WebP into the folder and point `image_url` at it. Then run `python3 scripts/make_thumbnails.py web/public/recipe-photos` to refresh the small copies in `recipe-photos/thumb/` that the Recipes grid uses. Regenerate `seed_library.sql` and reload it: recipes already in the database (and households' copies still showing the seed photo) pick up the new photo.
 
 ## Known limits
 
 - **Low protein:** eight of the healthy recipes estimate under 25 g per serving: Cozze alla tarantina, Frittata di zucchine e ricotta, Œufs pochés épinards et lentilles, Chicken tinga, Moules marinières, Spaghetti alle vongole, Poulet à l'estragon, Crispy scallion ginger salmon.
 - **Bone-in and in-shell weights overcount** protein and kcal, because the catalogue is per edible weight (satay drumsticks, Peruvian chicken, Moroccan tagine, mussels, clams).
 - **Long `total_min`** for marinated or soaked dishes (tandoori chicken 415 min, brandade 1,485 min), so the time filter treats them as slow. They're tagged `make ahead`. Their `prep_min` and `cook_min` stay short.
-- **AI-generated recipes:** 10 recipes (`ai_generated_recipe: true`) were written by Claude rather than taken from a site. They have no source link or photo, and their amounts and times haven't been tested in a kitchen.
+- **AI-generated recipes:** 10 recipes (`ai_generated_recipe: true`) were written by Claude rather than taken from a site. They have no source link, their photos are AI-generated too, and their amounts and times haven't been tested in a kitchen.
 - **Optional lines** (garnishes, toppings) are judged per recipe; 74 lines in 54 recipes are marked so far.
 - **Estimated prep and cook times:** 42 source pages give no prep/cook split, so those times were estimated from the steps.
 - **Herb bunches** count as 1 g (`grams_per_unit = 1`), and `1 mazzetto rucola` is left out of the macros (arugula has no weight per bunch). Both are negligible.
