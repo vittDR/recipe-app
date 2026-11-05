@@ -96,6 +96,7 @@ const summary: string[] = [];
 const facets: string[] = [];
 const times: string[] = [];
 const translationRows: string[] = [];
+const photoRows: string[] = [];
 const names: string[] = [];
 const macroRows: string[] = [];
 
@@ -199,6 +200,7 @@ for (const r of recipes) {
     ') as v(id, position, name, quantity, unit, aisle, is_staple, guessed, raw_text, original_text, optional);');
   // Recipes loaded before difficulty and equipment existed, and households' copies of them, get them now.
   translationRows.push(`  (${lit(r.id)}::uuid, ${lit(JSON.stringify(translations))}::jsonb)`);
+  photoRows.push(`  (${lit(r.id)}::uuid, ${lit(r.image_url)}, ${lit(r.image_source_url ?? r.image_url)})`);
   times.push(`  (${lit(r.id)}::uuid, ${lit(totalMin)}, ${lit(r.prep_min)}, ${lit(r.cook_min)})`);
   facets.push(`  (${lit(r.id)}::uuid, ${lit(r.difficulty)}, ${lit(JSON.stringify(equipment))}::jsonb)`);
   for (const i of ingredients) {
@@ -246,6 +248,13 @@ out.push('', '-- Translations for seed recipes and copies of them.',
   'from (values', translationRows.join(',\n'), ') as v(id, translations)',
   'where (x.id = v.id or (x.copied_from = v.id and x.title = (select s.title from public.recipes s where s.id = v.id)))',
   '  and x.translations is distinct from v.translations;');
+// Photos can be added or replaced later. Copies follow only while they still show the seed's
+// photo (the subquery reads the rows as they were before this update).
+out.push('', '-- Photos for seed recipes and copies that still use the seed photo.',
+  'update public.recipes x set image_path = v.image_path, image_source_url = v.image_source_url',
+  'from (values', photoRows.join(',\n'), ') as v(id, image_path, image_source_url)',
+  'where (x.id = v.id or (x.copied_from = v.id and x.image_path is not distinct from (select s.image_path from public.recipes s where s.id = v.id)))',
+  '  and (x.image_path, x.image_source_url) is distinct from (v.image_path, v.image_source_url);');
 out.push('', '-- Their macros follow the catalogue too.',
   'update public.recipes x set kcal_per_serving = v.kcal, protein_g_per_serving = v.protein, macros_estimated = v.estimated',
   'from (values', macroRows.join(',\n'), ') as v(id, kcal, protein, estimated)',
