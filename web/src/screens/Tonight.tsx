@@ -1,10 +1,11 @@
 import { useState } from 'react';
+import { RATINGS, type Rating } from '@logic/profile.ts';
 import { Link, useNavigate } from 'react-router';
 import { Icon } from '../components/Icon.tsx';
 import { Avatar, Button, Chip, Screen, Section, Segmented, Spinner } from '../components/ui.tsx';
 import { useI18n } from '../i18n/index.tsx';
 import { recipeTitle } from '../lib/recipeText.ts';
-import { isoWeekday, todayIn, useLive } from '../lib/hooks.ts';
+import { isoWeekday, todayIn, useLive, useSave } from '../lib/hooks.ts';
 import { comingDays, cooksOn } from '../lib/plan.ts';
 import { useSession } from '../lib/session.tsx';
 import { callFunction, must, supabase } from '../lib/supabase.ts';
@@ -19,12 +20,19 @@ interface TonightData {
   meals: (Meal & { recipe: Pick<Recipe, 'title' | 'language' | 'translations'> | null })[];
   plan: PlanDay[];
   dates: PlanDate[];
+  /** A recent meal this person ate and hasn't said how it was. */
+  toRate: { id: string; recipe_id: string; recipe: Pick<Recipe, 'title' | 'language' | 'translations'> | null } | null;
 }
+
+/** Meals from this many days back are offered for a rating. */
+const RATE_DAYS = 3;
+const daysBefore = (date: string, n: number) => new Date(Date.parse(`${date}T12:00:00Z`) - n * 86_400_000).toISOString().slice(0, 10);
 
 export function TonightScreen() {
   const { t, list, locale } = useI18n();
   const { userId, profile, household, partners, memberName, memberColor } = useSession();
   const navigate = useNavigate();
+  const save = useSave();
   const tz = household!.timezone;
   const today = todayIn(tz);
 
@@ -40,19 +48,32 @@ export function TonightScreen() {
   const { data, loading } = useLive<TonightData>(
     `tonight:${household!.id}:${today}`,
     async () => {
-      const [decks, meals, plan, dates] = await Promise.all([
+      const [decks, meals, plan, dates, recent, rated] = await Promise.all([
         supabase.from('decks').select('*').eq('household_id', household!.id).eq('for_date', today)
           .neq('status', 'closed').order('created_at', { ascending: false }).limit(1),
         supabase.from('meals').select('id, for_date, recipe_id, status, deck_id, recipe:recipes(title, language, translations)')
           .eq('household_id', household!.id).gte('for_date', week[0]).lte('for_date', week[6]),
         supabase.from('plan_days').select('*').eq('household_id', household!.id),
         supabase.from('plan_dates').select('*').eq('household_id', household!.id).gte('for_date', week[0]).lte('for_date', week[6]),
+        supabase.from('meals').select('id, for_date, recipe_id, status, deck:decks(who_eating), recipe:recipes(title, language, translations)')
+          .eq('household_id', household!.id).gte('for_date', daysBefore(today, RATE_DAYS)).lte('for_date', today)
+          .neq('status', 'skipped').order('for_date', { ascending: false }),
+        supabase.from('taste_signals').select('meal_id').eq('user_id', userId!).eq('kind', 'rating')
+          .gte('created_at', `${daysBefore(today, RATE_DAYS + 7)}T00:00:00Z`),
       ]);
+      const ratedMeals = new Set((must(rated) as { meal_id: string }[]).map((x) => x.meal_id));
+      type RecentMeal = TonightData['toRate'] & { for_date: string; status: string; deck: { who_eating: string[] } | null };
+      // Eaten: an earlier day, or cooked tonight; by this person when the deck says who ate.
+      const toRate = (must(recent) as unknown as RecentMeal[]).find((m) => !ratedMeals.has(m.id)
+        && (m.for_date < today || m.status === 'cooked') && (!m.deck || m.deck.who_eating.includes(userId!))) ?? null;
       const deck = (must(decks) as Deck[])[0] ?? null;
       const progress = deck
         ? (must(await supabase.from('deck_members').select('*').eq('deck_id', deck.id)) as DeckMemberProgress[])
         : [];
-      return { deck, progress, meals: must(meals) as unknown as TonightData['meals'], plan: must(plan) as PlanDay[], dates: must(dates) as PlanDate[] };
+      return {
+        deck, progress, meals: must(meals) as unknown as TonightData['meals'], plan: must(plan) as PlanDay[], dates: must(dates) as PlanDate[],
+        toRate: toRate && { id: toRate.id, recipe_id: toRate.recipe_id, recipe: toRate.recipe },
+      };
     },
     [
       { table: 'decks', filter: `household_id=eq.${household!.id}` },
@@ -60,6 +81,15 @@ export function TonightScreen() {
       { table: 'plan_dates', filter: `household_id=eq.${household!.id}` },
     ],
   );
+
+  const [rated, setRated] = useState<string | null>(null);
+  const rate = async (mealId: string, recipeId: string, rating: Rating) => {
+    setRated(mealId);
+    await save(supabase.from('taste_signals').upsert(
+      { user_id: userId, recipe_id: recipeId, kind: 'rating', value: rating, meal_id: mealId },
+      { onConflict: 'user_id,key' },
+    ));
+  };
 
   const deal = async () => {
     setDealing(true);
@@ -119,6 +149,20 @@ export function TonightScreen() {
           })}
         </div>
       </Link>
+
+      {data?.toRate && rated !== data.toRate.id && (
+        <section className="card stack" aria-label={t('rating.title')}>
+          <span className="headline">
+            {t('rating.question', { title: data.toRate.recipe ? recipeTitle(data.toRate.recipe, locale) : '' })}
+          </span>
+          <div className="chips">
+            {RATINGS.map((r) => (
+              <Chip key={r} onClick={() => void rate(data.toRate!.id, data.toRate!.recipe_id, r)}>{t(`rating.${r}`)}</Chip>
+            ))}
+            <Chip onClick={() => void rate(data.toRate!.id, data.toRate!.recipe_id, 'not_eaten')}>{t('rating.not_eaten')}</Chip>
+          </div>
+        </section>
+      )}
 
       {tonightMeal && deck?.status !== 'open' && deck?.status !== 'tiebreak' ? (
         <div className="card stack">

@@ -133,9 +133,37 @@ The deck's mood is recorded with each swipe. A pass in a deck dealt for
 dish's own mood (`intent:*` is skipped). Moods are matched on intents
 (comfort → comfort, light → light, fancy → special occasion).
 
-Still to do: separate liking the look of a dish, intending to cook it and
-liking it after eating; record a reason for a pass; never treat unseen
-recipes as negative (already true).
+### Taste profile
+
+`logic/profile.ts` turns every recorded choice into a weight per feature,
+in [-1, 1], with how many choices it rests on. The choices say different
+things, so they weigh differently:
+
+| Choice | Where it's recorded | Weight |
+| --- | --- | --- |
+| Deck swipe ("I'd eat that tonight") | `swipes` | yes +1, must +1.5, pass −1; half in a mood deck |
+| Pass reason | `taste_signals` (`reason`) | not tonight / too long / had recently: the pass counts nothing; not for me: −1 even in a mood deck |
+| Taste quiz ("that looks good") | `taste_signals` (`starter`) | as a swipe × 0.75 |
+| Cooked | `meals.status = cooked`, for the deck's eaters | +0.5 |
+| Rating after eating | `taste_signals` (`rating`) | loved +2, fine +0.5, not again −2; "didn't have it" counts nothing and cancels the cooked signal |
+
+Older choices fade with a 180-day half-life. A feature's weight is the sum
+over the absolute sum plus 2, so a single choice never makes a strong like.
+Recipes never shown say nothing. The profile is rebuilt from the choices
+each time a deck is dealt (and on the Us tab, which shows the clearest
+likes and dislikes), so it follows the classification as it improves.
+
+### Taste quiz
+
+Onboarding ends with 20 recipes to swipe (`/onboarding/quiz`, again from
+the Us tab). `pickStarterSet()` chooses them greedily for variety: each
+next card adds the most protein, dish, sauce, method, heat, goal, mood and
+broad-cuisine values not shown yet, preferring recipes with a photo, after
+the person's diet and never rules. Retaking it shows unanswered recipes
+first.
+
+Still to do: tell liking the look of a dish apart from intending to cook it
+in the deck itself; let a rating name what was wrong (too spicy, too heavy).
 
 ## Catalogue coverage
 

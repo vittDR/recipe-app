@@ -9,6 +9,7 @@ import { HouseholdScreen } from './screens/onboarding/Household.tsx';
 import { InviteScreen } from './screens/onboarding/Invite.tsx';
 import { JoinScreen } from './screens/onboarding/Join.tsx';
 import { ProfileScreen } from './screens/onboarding/Profile.tsx';
+import { TasteQuizScreen } from './screens/onboarding/TasteQuiz.tsx';
 import { TastesScreen } from './screens/onboarding/Tastes.tsx';
 import { WelcomeScreen } from './screens/onboarding/Welcome.tsx';
 import { DeckScreen } from './screens/deck/Deck.tsx';
@@ -100,6 +101,7 @@ export const router = createBrowserRouter([
       { path: '/onboarding/invite', element: <InviteScreen /> },
       { path: '/onboarding/goals', element: <GoalsScreen /> },
       { path: '/onboarding/tastes', element: <TastesScreen /> },
+      { path: '/onboarding/quiz', element: <TasteQuizScreen /> },
       {
         element: <Tabs />,
         children: [
@@ -115,6 +117,7 @@ export const router = createBrowserRouter([
       { path: '/recipes/:id/cook', element: <CookingScreen /> },
       { path: '/us/goals', element: <GoalsScreen editing /> },
       { path: '/us/tastes', element: <TastesScreen editing /> },
+      { path: '/us/quiz', element: <TasteQuizScreen editing /> },
       { path: '/us/notifications', element: <NotificationsScreen /> },
       { path: '/us/catalog', element: <CatalogScreen /> },
       { path: '/us/profile', element: <ProfileSettingsScreen /> },

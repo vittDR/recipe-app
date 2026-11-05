@@ -151,7 +151,7 @@ export function TastesScreen({ editing }: { editing?: boolean }) {
           onAdd={(p) => void add('love', p)} onCreate={(name) => setCreating({ kind: 'love', name })} onRemove={(r) => void remove(r)} />
       </div>
       <div className="spacer spacer--gap" />
-      <Button block onClick={() => (editing ? navigate(-1) : navigate('/', { replace: true }))}>
+      <Button block onClick={() => (editing ? navigate(-1) : navigate('/onboarding/quiz', { replace: true }))}>
         {editing ? t('app.done') : t('app.continue')}
       </Button>
       <CreateItemSheet name={creating?.name ?? null} catalog={catalog} isAdmin={isCatalogAdmin} onClose={() => setCreating(null)}

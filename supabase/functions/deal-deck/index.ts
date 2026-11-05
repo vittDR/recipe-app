@@ -6,7 +6,8 @@ import { corsHeaders, json, requireMember, serviceClient } from '../_shared/http
 import { buildDeck, type CandidateRecipe, type DeckMember, type Diet, type Mood, type RecipeHistory } from '../_shared/logic/deck.ts';
 import { canonicalFeature, classifyRow, CLASSIFY_COLUMNS, type ClassifiableRow } from '../_shared/logic/classify.ts';
 import { Catalog, type CatalogEntry } from '../_shared/logic/ingredients.ts';
-import { recipeFeatures, softWeights, type Exposure } from '../_shared/logic/preferences.ts';
+import { recipeFeatures } from '../_shared/logic/preferences.ts';
+import { buildProfile, signalsFor, weightsOf, type MealRow, type SwipeRow, type TasteSignalRow } from '../_shared/logic/profile.ts';
 
 const MOODS: Mood[] = ['any', 'comfort', 'light', 'quick', 'fancy'];
 const RECENT_COOK_DAYS = 10;
@@ -40,21 +41,24 @@ Deno.serve(async (req) => {
   const eaters = [...new Set([userId, ...requested])].filter((u) => householdUsers.includes(u));
 
   const since = (days: number) => new Date(Date.now() - days * 86_400_000).toISOString();
-  const [goals, rules, patterns, swipes, recipes, meals, pantry, catalog] = await Promise.all([
+  const [goals, rules, patterns, swipes, recipes, meals, pantry, catalog, signals] = await Promise.all([
     admin.from('member_goals').select('*').in('user_id', eaters),
     admin.from('taste_rules').select('user_id, kind, value, product_id').in('user_id', eaters),
     admin.from('learned_patterns').select('user_id, pattern, weight').in('user_id', eaters).eq('status', 'accepted'),
-    admin.from('swipes').select('user_id, recipe_id, verdict, created_at, decks!inner(household_id, mood)')
+    admin.from('swipes').select('user_id, deck_id, recipe_id, verdict, created_at, decks!inner(household_id, mood)')
       .eq('decks.household_id', householdId).order('created_at', { ascending: false }).limit(1000),
     admin.from('recipes')
       .select(`id, kcal_per_serving, protein_g_per_serving, household_id, copied_from, ${CLASSIFY_COLUMNS.replace('recipe_ingredients(', 'recipe_ingredients(product_id, ')}`)
       .or(`household_id.is.null,household_id.eq.${householdId}`),
-    admin.from('meals').select('recipe_id, for_date, status').eq('household_id', householdId),
+    admin.from('meals').select('id, recipe_id, for_date, status, deck:decks(who_eating)').eq('household_id', householdId),
     admin.from('grocery_items').select('name, product:products(ingredient)').eq('household_id', householdId)
       .gte('checked_at', since(PANTRY_DAYS)),
     admin.from('ingredient_catalog').select('*'),
+    // Quiz answers, pass reasons and ratings (logic/profile.ts).
+    admin.from('taste_signals').select('user_id, recipe_id, kind, value, deck_id, meal_id, created_at')
+      .in('user_id', eaters).order('created_at', { ascending: false }).limit(2000),
   ]);
-  for (const r of [goals, rules, patterns, swipes, recipes, meals, pantry, catalog]) {
+  for (const r of [goals, rules, patterns, swipes, recipes, meals, pantry, catalog, signals]) {
     if (r.error) return json({ error: r.error.message }, 500);
   }
 
@@ -75,6 +79,8 @@ Deno.serve(async (req) => {
     const classification = classifyRow(r as unknown as ClassifiableRow, ingredientCatalog);
     const features = recipeFeatures(r.tags ?? [], ings, classification);
     featuresById.set(r.id, features);
+    // Swipes and ratings made on the seed recipe before the household copied it count for the copy.
+    if (r.copied_from) featuresById.set(r.copied_from as string, features);
     const classes = ings.map((i) => dietOf.get(i.name));
     return {
       id: r.id,
@@ -92,18 +98,18 @@ Deno.serve(async (req) => {
     };
   });
 
+  const one = <T>(v: T | T[] | null | undefined) => (Array.isArray(v) ? v[0] : v) ?? null;
+  const signalRows = {
+    swipes: (swipes.data ?? []).map((s) => ({ ...s, mood: one(s.decks as { mood: Mood | null } | null)?.mood ?? null })) as SwipeRow[],
+    tasteSignals: (signals.data ?? []) as TasteSignalRow[],
+    meals: (meals.data ?? []).map((m) => ({ ...m, who_eating: one(m.deck as { who_eating: string[] } | null)?.who_eating ?? null })) as MealRow[],
+  };
+
   const members: DeckMember[] = eaters.map((uid) => {
     const g = (goals.data ?? []).find((x) => x.user_id === uid);
     const mine = (rules.data ?? []).filter((x) => x.user_id === uid);
-    const exposures: Exposure[] = (swipes.data ?? [])
-      .filter((s) => s.user_id === uid)
-      .slice(0, 300)
-      .map((s) => {
-        const deck = s.decks as { mood: string | null } | { mood: string | null }[] | null;
-        const mood = (Array.isArray(deck) ? deck[0] : deck)?.mood as Mood | null | undefined;
-        return { verdict: s.verdict, features: featuresById.get(s.recipe_id) ?? [], createdAt: s.created_at, mood };
-      });
-    const weights = softWeights(exposures);
+    // Everything this person chose, weighed by what it says (logic/profile.ts).
+    const weights = weightsOf(buildProfile(signalsFor(uid, signalRows, (id) => featuresById.get(id))));
     for (const p of (patterns.data ?? []).filter((x) => x.user_id === uid)) {
       // Patterns accepted on a tag ("curry") apply to the classified feature it now is ("dish:curry").
       const value = canonicalFeature(String(p.pattern?.value ?? ''));

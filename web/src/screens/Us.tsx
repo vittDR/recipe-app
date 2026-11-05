@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { canonicalFeature, classifyRow, CLASSIFY_COLUMNS, type ClassifiableRow } from '@logic/classify.ts';
 import type { Mood } from '@logic/deck.ts';
 import { detectPatterns, recipeFeatures, type PatternSuggestion } from '@logic/preferences.ts';
+import { buildProfile, profileHighlights, signalsFor, type MealRow, type SwipeRow, type TasteSignalRow } from '@logic/profile.ts';
 import { productName } from '@logic/products.ts';
 import { Icon } from '../components/Icon.tsx';
 import { MemberList } from '../components/Members.tsx';
-import { Button, ListRow, Screen, Section } from '../components/ui.tsx';
+import { Button, Chip, ListRow, Screen, Section } from '../components/ui.tsx';
 import { LOCALE_NAMES, useI18n } from '../i18n/index.tsx';
 import { classLabel } from '../lib/classes.ts';
 import { useCatalog, useLive, useSave } from '../lib/hooks.ts';
@@ -16,11 +17,11 @@ import { must, supabase } from '../lib/supabase.ts';
 import { useTags } from '../lib/tags.ts';
 import type { LearnedPattern, TasteRule } from '../lib/types.ts';
 
-interface SwipeRow {
-  verdict: 'pass' | 'yes' | 'must';
-  created_at: string;
-  recipe: (ClassifiableRow & { tags: string[] }) | null;
-  deck: { mood: Mood | null } | null;
+interface Loaded {
+  rules: TasteRule[];
+  suggestions: PatternSuggestion[];
+  profile: ReturnType<typeof profileHighlights>;
+  quizDone: boolean;
 }
 
 const samePattern = (a: { kind: string; value: string }, b: { kind: string; value: string }) =>
@@ -34,30 +35,44 @@ export function UsScreen() {
   const { data: catalog } = useGroceryCatalog(household!.id);
   const { tags } = useTags(household!.id);
   const ingredientCatalog = useCatalog();
-  const { data, reload } = useLive<{ rules: TasteRule[]; suggestions: PatternSuggestion[] }>(`us:${userId}:${ingredientCatalog ? 'c' : ''}`, async () => {
-    const [r, swipes, existing] = await Promise.all([
+  const { data, reload } = useLive<Loaded>(`us:${userId}:${ingredientCatalog ? 'c' : ''}`, async () => {
+    const [r, swipes, existing, signals, meals] = await Promise.all([
       supabase.from('taste_rules').select('*').eq('user_id', userId!),
-      supabase.from('swipes').select(`verdict, created_at, deck:decks(mood), recipe:recipes(${CLASSIFY_COLUMNS})`)
+      supabase.from('swipes').select('user_id, deck_id, recipe_id, verdict, created_at, deck:decks(mood)')
         .eq('user_id', userId!).order('created_at', { ascending: false }).limit(300),
       supabase.from('learned_patterns').select('*').eq('user_id', userId!),
+      supabase.from('taste_signals').select('user_id, recipe_id, kind, value, deck_id, meal_id, created_at')
+        .eq('user_id', userId!).order('created_at', { ascending: false }).limit(1000),
+      supabase.from('meals').select('id, recipe_id, for_date, status, deck:decks(who_eating)')
+        .eq('household_id', household!.id).eq('status', 'cooked').order('for_date', { ascending: false }).limit(200),
     ]);
+    const one = <T,>(v: T | T[] | null | undefined) => (Array.isArray(v) ? v[0] : v) ?? null;
+    const rows = {
+      swipes: (must(swipes) as unknown as (SwipeRow & { deck: unknown })[])
+        .map((x) => ({ ...x, mood: one(x.deck as { mood: Mood | null } | null)?.mood ?? null })),
+      tasteSignals: must(signals) as TasteSignalRow[],
+      meals: (must(meals) as unknown as (MealRow & { deck: unknown })[])
+        .map((m) => ({ ...m, who_eating: one(m.deck as { who_eating: string[] } | null)?.who_eating ?? null })),
+    };
+    // Every recipe a choice was about, described the same way as for the deck.
+    const ids = [...new Set([...rows.swipes, ...rows.tasteSignals, ...rows.meals].map((x) => x.recipe_id))];
+    const recipes = ids.length
+      ? must(await supabase.from('recipes').select(`id, ${CLASSIFY_COLUMNS}`).in('id', ids)) as unknown as (ClassifiableRow & { id: string; tags: string[] })[]
+      : [];
+    const features = new Map(recipes.map((x) => [x.id, recipeFeatures(x.tags, x.recipe_ingredients,
+      ingredientCatalog ? classifyRow(x, ingredientCatalog) : null)]));
     const rules = must(r) as TasteRule[];
-    const exposures = (must(swipes) as unknown as SwipeRow[])
-      .filter((s) => s.recipe)
-      .map((s) => ({
-        verdict: s.verdict,
-        createdAt: s.created_at,
-        mood: s.deck?.mood,
-        features: recipeFeatures(s.recipe!.tags, s.recipe!.recipe_ingredients,
-          ingredientCatalog ? classifyRow(s.recipe!, ingredientCatalog) : null),
-      }));
+    const exposures = rows.swipes.filter((x) => features.has(x.recipe_id))
+      .map((x) => ({ verdict: x.verdict, createdAt: x.created_at, mood: x.mood, features: features.get(x.recipe_id)! }));
     // Patterns accepted on a tag ("curry") cover the classified feature it now is ("dish:curry").
     const known = (must(existing) as LearnedPattern[]).map((p) => ({ ...p.pattern, value: canonicalFeature(p.pattern.value) }));
     const ruled = new Set(rules.map((x) => x.value));
     return {
       rules,
-      suggestions: detectPatterns(exposures).filter((s) =>
-        !known.some((k) => samePattern(k, s.pattern)) && !ruled.has(s.pattern.value)).slice(0, 3),
+      suggestions: detectPatterns(exposures).filter((x) =>
+        !known.some((k) => samePattern(k, x.pattern)) && !ruled.has(x.pattern.value)).slice(0, 3),
+      profile: profileHighlights(buildProfile(signalsFor(userId!, rows, (id) => features.get(id))), { limit: 5 }),
+      quizDone: rows.tasteSignals.some((x) => x.kind === 'starter'),
     };
   });
   const rules = data?.rules ?? [];
@@ -112,6 +127,29 @@ export function UsScreen() {
     <Screen title={t('us.title')}>
       <Section label={household?.name ?? t('us.members')} flush>
         <MemberList invite={members.length < 2} />
+      </Section>
+
+      <Section label={t('us.profile')}>
+        <div className="stack">
+          {data && (data.profile.likes.length > 0 || data.profile.dislikes.length > 0) ? (
+            <>
+              {data.profile.likes.length > 0 && (
+                <div className="chips" aria-label={t('us.likes')}>
+                  <span className="small muted">{t('us.likes')}</span>
+                  {data.profile.likes.map((x) => <Chip key={x.feature}>{labelOf(x.feature)}</Chip>)}
+                </div>
+              )}
+              {data.profile.dislikes.length > 0 && (
+                <div className="chips" aria-label={t('us.dislikes')}>
+                  <span className="small muted">{t('us.dislikes')}</span>
+                  {data.profile.dislikes.map((x) => <Chip key={x.feature}>{labelOf(x.feature)}</Chip>)}
+                </div>
+              )}
+            </>
+          ) : <p className="muted small m-0">{t('us.profileEmpty')}</p>}
+          <ListRow to="/us/quiz" icon={<Icon name="heart" />} title={data?.quizDone ? t('us.quizAgain') : t('us.quiz')}
+            meta={t('us.quizMeta')} />
+        </div>
       </Section>
 
       <Section label={t('us.patterns')}>

@@ -480,6 +480,7 @@ each time a deck is dealt.
 | `swipes` | `verdict` per person per card. Hidden from the partner until you've finished the deck too. A trigger (`on_swipe`) resolves the deck when everyone's done. |
 | `tiebreak_picks` | Each person's pick among the three tie-break options. |
 | `meals` | What's planned or cooked per day (one per household per date). |
+| `taste_signals` | One person's choices beyond deck swipes, private to them: `starter` (taste quiz answer: yes / must / pass), `reason` (why a deck card was passed on: not tonight, too long, had recently, not for me) and `rating` (after a meal: loved / fine / not again / not eaten). One per recipe, deck card or meal (`key`); saving again replaces it. Read by `logic/profile.ts`. |
 | `plan_days` | The usual week, per weekday (1 = Monday): `cook_at_home`, plus an optional pre-picked recipe. |
 | `plan_dates` | This week: `cook_at_home` for one date, set on the This week screen. Wins over `plan_days`; `is_cook_day()` combines the two and drives the 17:30 prompt. |
 
