@@ -4,7 +4,7 @@
 
 import { corsHeaders, json, requireMember, serviceClient } from '../_shared/http.ts';
 import { buildDeck, OCCASIONAL_DAYS, type CandidateRecipe, type DeckMember, type Diet, type Mood, type RecipeHistory } from '../_shared/logic/deck.ts';
-import { canonicalFeature, classifyRow, CLASSIFY_COLUMNS, storedClassification, type ClassifiableRow } from '../_shared/logic/classify.ts';
+import { classifyRow, CLASSIFY_COLUMNS, storedClassification, type ClassifiableRow } from '../_shared/logic/classify.ts';
 import { Catalog, type CatalogEntry } from '../_shared/logic/ingredients.ts';
 import { recipeFeatures } from '../_shared/logic/preferences.ts';
 import { splitPot } from '../_shared/logic/portions.ts';
@@ -52,10 +52,9 @@ Deno.serve(async (req) => {
     .filter((x) => x.verdict !== 'pass').map((x) => x.recipe_id)));
 
   const since = (days: number) => new Date(Date.now() - days * 86_400_000).toISOString();
-  const [goals, rules, patterns, swipes, recipes, meals, pantry, catalog, signals, allergies, allergenLinks] = await Promise.all([
+  const [goals, rules, swipes, recipes, meals, pantry, catalog, signals, allergies, allergenLinks] = await Promise.all([
     admin.from('member_goals').select('*').in('user_id', eaters),
     admin.from('taste_rules').select('user_id, kind, value, product_id').in('user_id', eaters),
-    admin.from('learned_patterns').select('user_id, pattern, weight').in('user_id', eaters).eq('status', 'accepted'),
     admin.from('swipes').select('user_id, deck_id, recipe_id, verdict, created_at, decks!inner(household_id, mood)')
       .eq('decks.household_id', householdId).order('created_at', { ascending: false }).limit(1000),
     admin.from('recipes')
@@ -71,7 +70,7 @@ Deno.serve(async (req) => {
     admin.from('member_allergies').select('user_id, allergen, ingredient').in('user_id', eaters),
     admin.from('allergen_ingredients').select('allergen, ingredient'),
   ]);
-  for (const r of [goals, rules, patterns, swipes, recipes, meals, pantry, catalog, signals, allergies, allergenLinks]) {
+  for (const r of [goals, rules, swipes, recipes, meals, pantry, catalog, signals, allergies, allergenLinks]) {
     if (r.error) return json({ error: r.error.message }, 500);
   }
   // Whether each swiped card fit each eater when it was dealt: what lets the diet explain a pass away.
@@ -149,12 +148,6 @@ Deno.serve(async (req) => {
     // Everything this person chose, weighed by what it says, with the diet explained away (logic/profile.ts).
     const memberSignals = signalsFor(uid, signalRows, (id) => featuresById.get(id), fitsNow);
     const profile = buildProfile(memberSignals);
-    for (const p of (patterns.data ?? []).filter((x) => x.user_id === uid)) {
-      // Patterns accepted on a tag ("curry") apply to the classified feature it now is ("dish:curry").
-      const value = canonicalFeature(String(p.pattern?.value ?? ''));
-      const prev = profile.get(value);
-      if (value) profile.set(value, { weight: Math.max(-1, Math.min(1, (prev?.weight ?? 0) + Number(p.weight ?? 0))), evidence: Math.max(prev?.evidence ?? 0, 3) });
-    }
     const weights = weightsOf(profile);
     return {
       userId: uid,

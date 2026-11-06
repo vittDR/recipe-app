@@ -2826,15 +2826,6 @@ body:has(.moment) .tabbar {
   text-decoration: none;
 }
 
-.insight {
-  gap: var(--space-4);
-}
-
-.insight .text-accent {
-  gap: var(--space-2);
-  color: var(--accent-text);
-}
-
 .time-input {
   border: 0;
   background: var(--sunken);

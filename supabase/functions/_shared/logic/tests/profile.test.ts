@@ -16,10 +16,23 @@ test('signals weigh by what they say', () => {
   assert.equal(signalWeight({ kind: 'swipe', verdict: 'pass', reason: 'too_long', features: f, at: at() }).weight, 0);
   // A mood deck halves a pass and leaves out the dish's mood…
   const moody = signalWeight({ kind: 'swipe', verdict: 'pass', mood: 'light', features: f, at: at() });
-  assert.deepEqual(moody, { weight: -0.5, features: ['dish:curry'] });
+  assert.deepEqual(moody, { weight: -0.2, features: ['dish:curry'] });
   // …unless the person said it's not for them.
   assert.deepEqual(signalWeight({ kind: 'swipe', verdict: 'pass', mood: 'light', reason: 'not_for_me', features: f, at: at() }),
     { weight: -1, features: f });
+});
+
+test('a yes says far more than a pass: as many passes as yeses still read as a like', () => {
+  assert.equal(signalWeight({ kind: 'swipe', verdict: 'pass', features: ['dish:curry'], at: at() }).weight, -0.4);
+  const signals: Signal[] = [];
+  for (let i = 0; i < 4; i++) {
+    signals.push({ kind: 'swipe', verdict: 'yes', features: ['dish:curry'], at: at(i) });
+    signals.push({ kind: 'swipe', verdict: 'pass', features: ['dish:curry'], at: at(i) });
+  }
+  assert.ok(buildProfile(signals, now).get('dish:curry')!.weight > 0.2);
+  // And passes alone never make a strong dislike; only "not for me" or a rating does.
+  const passes: Signal[] = Array.from({ length: 20 }, (_, i) => ({ kind: 'swipe', verdict: 'pass', features: ['dish:soup'], at: at(i) }));
+  assert.ok(buildProfile(passes, now).get('dish:soup')!.weight > -0.4);
 });
 
 test('a rating after eating outweighs a swipe; old signals fade', () => {
