@@ -118,6 +118,7 @@ export const router = createBrowserRouter([
       { path: '/recipes/new', element: <ImportScreen /> },
       { path: '/recipes/:id', element: <RecipeScreen /> },
       { path: '/recipes/:id/cook', element: <CookingScreen /> },
+      { path: '/us/preferences', element: <UsScreen view="preferences" /> },
       { path: '/us/goals', element: <GoalsScreen editing /> },
       { path: '/us/tastes', element: <TastesScreen editing /> },
       { path: '/us/quiz', element: <TasteQuizScreen editing /> },

@@ -28,7 +28,8 @@ interface Loaded {
 const samePattern = (a: { kind: string; value: string }, b: { kind: string; value: string }) =>
   a.kind === b.kind && a.value === b.value;
 
-export function UsScreen() {
+/** The Nous tab; `preferences` is its sub-menu: allergies, tastes and goals. */
+export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
   const { t, tn, locale } = useI18n();
   const { userId, members, goals, household, signOut, isCatalogAdmin, memberColor } = useSession();
   const save = useSave();
@@ -132,22 +133,10 @@ export function UsScreen() {
     ...(data?.profile.likes ?? []).map((x) => ({ key: `p:${x.feature}`, label: labelOf(x.feature), tone: 'accent' as const })),
   ];
 
-  return (
-    <Screen>
-      <TabHeader title={t('us.title')} />
-      <div className="stack stack--blocks">
-        <Link to="/us/household" className="card household-row">
-          <AvatarPair people={people} />
-          <span className="grow">
-            <span className="card__title d-block">{household?.name}</span>
-            <span className="t-label muted d-block">{tn('us.householdMeta', members.length)}</span>
-          </span>
-          <span className="chevron"><Icon name="chevron" size={18} /></span>
-        </Link>
-        {members.length < 2 && (
-          <ListRow to="/us/invite" className="card" accent chevron={false} icon={<Icon name="plus" />} title={t('settings.invite')} />
-        )}
-
+  if (view === 'preferences') {
+    return (
+      <Screen back="/us" title={t('us.preferences')}>
+        <div className="stack stack--blocks">
         <AllergiesCard />
 
         <section className="card stack">
@@ -164,6 +153,31 @@ export function UsScreen() {
           ) : <p className="muted t-callout m-0">{t('us.profileEmpty')}</p>}
           <Link to="/us/quiz" className="t-callout accent-link">{data?.quizDone ? t('us.quizAgain') : t('us.quiz')} ›</Link>
         </section>
+          <div className="list">
+          <ListRow to="/us/goals" tile="plain" icon={<Icon name="star" size={18} />} title={t('us.yourGoals')}
+            meta={goals && `${t(`goals.${goals.goal}`)} · ${goals.dinner_kcal} kcal · ${goals.dinner_protein_g} g · ${tn('recipe.servings', goals.servings)}`} />
+          </div>
+        </div>
+      </Screen>
+    );
+  }
+
+  return (
+    <Screen>
+      <TabHeader title={t('us.title')} />
+      <div className="stack stack--blocks">
+        <Link to="/us/household" className="card household-row">
+          <AvatarPair people={people} />
+          <span className="grow">
+            <span className="card__title d-block">{household?.name}</span>
+            <span className="t-label muted d-block">{tn('us.householdMeta', members.length)}</span>
+          </span>
+          <span className="chevron"><Icon name="chevron" size={18} /></span>
+        </Link>
+        {members.length < 2 && (
+          <ListRow to="/us/invite" className="card" accent chevron={false} icon={<Icon name="plus" />} title={t('settings.invite')} />
+        )}
+
 
         {shown.map((s) => {
           const value = inSentence(labelOf(s.pattern.value), locale);
@@ -181,12 +195,12 @@ export function UsScreen() {
         })}
 
         <div className="list">
+          <ListRow to="/us/preferences" tile="accent" icon={<Icon name="heart" size={18} />} title={t('us.preferences')}
+            meta={t('us.preferencesHint')} />
           <ListRow to="/us/notifications" tile="accent" icon={<Icon name="bell" size={18} />} title={t('notifications.title')} meta={pushMeta} />
         </div>
 
         <div className="list">
-          <ListRow to="/us/goals" tile="plain" icon={<Icon name="star" size={18} />} title={t('us.yourGoals')}
-            meta={goals && `${t(`goals.${goals.goal}`)} · ${goals.dinner_kcal} kcal · ${goals.dinner_protein_g} g · ${tn('recipe.servings', goals.servings)}`} />
           <ListRow to="/us/profile" tile="plain" icon={<Icon name="person" size={18} />} title={t('profile.title')} meta={LOCALE_NAMES[locale]} />
           {isCatalogAdmin && (
             <ListRow to="/us/catalog" tile="plain" icon={<Icon name="book" size={18} />} title={t('admin.entry')} meta={t('admin.entryHint')} />

@@ -691,6 +691,8 @@ export const en = {
     search: 'Add an ingredient',
   },
   us: {
+    preferences: 'Preferences',
+    preferencesHint: 'Allergies, tastes and goals',
     householdMeta_one: 'Household · {count} member',
     householdMeta_other: 'Household · {count} members',
     edit: 'Edit',

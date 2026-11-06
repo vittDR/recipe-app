@@ -489,8 +489,8 @@ a {
   display: flex;
   align-items: center;
   gap: var(--space-4);
-  min-height: 54px;
-  padding: var(--space-4) var(--space-5);
+  min-height: 48px;
+  padding: var(--space-2) var(--space-6);
   width: 100%;
   border: 0;
   background: none;
@@ -1277,20 +1277,23 @@ button.grocery-row__amount {
 /* The + / module: fixed size, never shrinks. */
 .amount-add {
   flex: none;
+  width: 38px;
+  height: 38px;
+  margin: 0;
 }
 
 .amount {
   flex: none;
   display: flex;
   align-items: center;
-  gap: var(--space-1);
-  padding: var(--space-1);
+  gap: 2px;
+  padding: 3px;
   border-radius: var(--radius-md);
   background: var(--accent-soft);
 }
 
 .amount__field {
-  height: 36px;
+  height: 32px;
   border: 0;
   border-radius: var(--radius-chip);
   background: var(--surface);
@@ -1301,7 +1304,7 @@ button.grocery-row__amount {
 
 /* Quantity and unit in one field: one tap edits both. */
 .amount__value {
-  width: 136px;
+  width: 112px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1326,8 +1329,8 @@ button.grocery-row__amount {
 }
 
 .amount__trash {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border: 0;
   background: none;
   color: var(--accent);
@@ -2307,8 +2310,8 @@ button.grocery-row__amount {
   display: flex;
   align-items: center;
   gap: var(--space-4);
-  min-height: 50px;
-  padding: var(--space-3) var(--space-5);
+  min-height: 44px;
+  padding: var(--space-2) var(--space-6);
 }
 
 .ingredient-row + .ingredient-row {
@@ -2851,12 +2854,6 @@ body:has(.moment) .tabbar {
   background: linear-gradient(to top, var(--paper) 82%, transparent);
 }
 
-/* Courses: compact rows, as before the redesign; a list is scanned in the shop. */
-.groceries .list-row {
-  min-height: 48px;
-  padding: var(--space-2) var(--space-6);
-  gap: var(--space-4);
-}
 
 .groceries .section-label {
   margin: var(--space-6) var(--space-1) var(--space-2);

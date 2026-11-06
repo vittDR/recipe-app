@@ -689,6 +689,8 @@ export const fr: Dictionary = {
     search: 'Ajouter un ingrédient',
   },
   us: {
+    preferences: 'Préférences',
+    preferencesHint: 'Allergies, goûts et objectifs',
     householdMeta_one: 'Foyer · {count} membre',
     householdMeta_other: 'Foyer · {count} membres',
     edit: 'Modifier',

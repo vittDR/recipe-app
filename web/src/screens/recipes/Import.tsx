@@ -285,8 +285,10 @@ export function ImportScreen() {
           <SectionHeading count={form.steps.length || undefined}>{t('import.stepsField')}</SectionHeading>
           <StepEditor steps={form.steps} onChange={(steps) => update({ steps })} />
 
-          <ListRow className="card mt-6" icon={<Icon name="gear" size={20} />} title={t('import.details')} meta={t('import.detailsHint')}
-            onClick={() => setSheet('details')} chevron />
+          <div className="list mt-6">
+            <ListRow tile="accent" icon={<Icon name="gear" size={18} />} title={t('import.details')} meta={t('import.detailsHint')}
+              onClick={() => setSheet('details')} chevron />
+          </div>
         </div>
       )}
 
