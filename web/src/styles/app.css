@@ -2257,10 +2257,6 @@ button.grocery-row__amount {
   background: var(--sage);
 }
 
-.swipe-why {
-  min-height: 38px;
-}
-
 .swipe-btn {
   flex: none;
   display: inline-flex;

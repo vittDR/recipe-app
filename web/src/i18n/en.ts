@@ -178,13 +178,6 @@ export const en = {
     leansYou: 'More your kind of dish',
     leansPartner: 'More {name}’s kind of dish',
     treat: 'A treat you’d probably love',
-    why: 'Why?',
-    reasons: {
-      not_tonight: 'Not tonight',
-      too_long: 'Too long',
-      had_recently: 'Had it recently',
-      not_for_me: 'Not for me',
-    },
     progress: '{n} of {total}',
     pass: 'Pass',
     yes: 'Yes',

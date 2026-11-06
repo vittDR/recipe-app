@@ -8,8 +8,8 @@
 //                a plain pass is mostly "not tonight", so it weighs far less than a yes:
 //                liking something is news, skipping it rarely is;
 //                a pass in a mood deck counts half again and says nothing about the dish's mood;
-//                a pass marked not tonight / too long / had recently counts nothing;
-//                a pass marked not for me counts in full, whatever the mood
+//                passes from before the reason chips were removed keep their reason:
+//                not tonight / too long / had recently counts nothing, not for me in full
 //   taste quiz   "that looks good"          the same, × 0.75 (looking is not choosing)
 //   cooked       it was made                +0.5 for each person who ate it
 //   rating       how it was after eating    loved +2, fine +0.5, not again −2

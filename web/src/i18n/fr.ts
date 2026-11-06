@@ -176,13 +176,6 @@ export const fr: Dictionary = {
     leansYou: 'Plutôt votre genre de plat',
     leansPartner: 'Plutôt le genre de plat de {name}',
     treat: 'Un petit plaisir qui devrait vous plaire',
-    why: 'Pourquoi ?',
-    reasons: {
-      not_tonight: 'Pas ce soir',
-      too_long: 'Trop long',
-      had_recently: 'Mangé récemment',
-      not_for_me: 'Pas pour moi',
-    },
     progress: '{n} sur {total}',
     pass: 'Non',
     yes: 'Oui',
