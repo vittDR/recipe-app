@@ -2862,3 +2862,19 @@ body:has(.moment) .tabbar {
 .groceries .tab-header {
   margin-bottom: var(--space-5);
 }
+
+/*
+ * Rows size to what they hold: a single line (an ingredient, a list item)
+ * stays slim; a row with an icon tile or a second line (menus, settings)
+ * gets more room above and below.
+ */
+.list-row:has(> .icon-tile),
+.list-row:has(.list-row__meta) {
+  min-height: 60px;
+  padding-top: var(--space-4);
+  padding-bottom: var(--space-4);
+}
+
+.list-row:has(> .icon-tile) .list-row__meta {
+  margin-top: 2px;
+}
