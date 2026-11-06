@@ -45,7 +45,7 @@ export function draftFromLine(
 }
 
 /** Units a recipe line can be written in and read back from (parseIngredientLine). */
-export const RECIPE_LINE_UNITS = ['piece', 'g', 'kg', 'ml', 'cl', 'l', 'tbsp', 'tsp', 'clove', 'pinch', 'bunch', 'slice', 'can'] as const;
+export const RECIPE_LINE_UNITS = ['piece', 'g', 'kg', 'ml', 'cl', 'l', 'tbsp', 'tsp', 'clove', 'pinch', 'bunch', 'slice', 'can', 'pack'] as const;
 
 /** The line again from an amount and a name: "200 g framboises"; whole items as a bare count. */
 export function lineText(quantity: number | null, unit: string | null, name: string): string {

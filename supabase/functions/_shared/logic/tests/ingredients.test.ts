@@ -104,3 +104,12 @@ test('combineAmounts: one unit per item', () => {
   assert.equal(combineAmounts([{ quantity: null, unit: null }]), null);
   assert.deepEqual(combineAmounts([{ quantity: 0.5, unit: 'tbsp' }, { quantity: null, unit: null }]), { quantity: 0.5, unit: 'tbsp' });
 });
+
+test('packs are a unit in every language', () => {
+  for (const line of ['1 paquet lardons', '1 pack lardons', '1 pacchetto lardons']) {
+    const p = parseIngredientLine(line);
+    assert.equal(p.unit, 'pack', line);
+    assert.equal(p.quantity, 1, line);
+    assert.equal(p.name, 'lardons', line);
+  }
+});

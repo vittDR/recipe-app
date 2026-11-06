@@ -58,6 +58,7 @@ const UNIT_SPELLINGS: Record<string, string[]> = {
   bunch: ['bunch', 'bunches', 'botte', 'bottes', 'bouquet', 'mazzetto', 'mazzetti'],
   slice: ['slice', 'slices', 'tranche', 'tranches', 'fetta', 'fette'],
   piece: ['piece', 'pieces', 'pièce', 'pièces', 'pc', 'pcs', 'pezzo', 'pezzi'],
+  pack: ['pack', 'packs', 'packet', 'packets', 'paquet', 'paquets', 'pacchetto', 'pacchetti', 'confezione', 'confezioni'],
 };
 
 const UNIT_LOOKUP = new Map<string, string>();
