@@ -145,7 +145,14 @@ export class Catalog {
   private byKey = new Map<string, CatalogEntry>();
   private keys: string[] = [];
 
-  constructor(entries: CatalogEntry[]) {
+  /**
+   * The catalogue's version (catalog_version()->>'ingredients') when known:
+   * a recipe's stored classification is used only if it was worked out with it.
+   */
+  version: string | null = null;
+
+  constructor(entries: CatalogEntry[], version: string | null = null) {
+    this.version = version;
     for (const e of entries) {
       for (const n of [e.name, e.name_fr, e.name_it, ...(e.aliases ?? [])]) {
         if (!n) continue;

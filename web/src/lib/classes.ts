@@ -32,3 +32,16 @@ export function classificationChips(c: RecipeClassification, t: T): string[] {
   chips.push(...c.meal_intents.map((i) => t(`classes.intent.${i}` as MessageKey)));
   return [...new Set(chips)];
 }
+
+/**
+ * The few things shown as tags on a recipe: diet, then health and mood.
+ * Everything else the classification knows (protein, dish, sauce, heat…)
+ * feeds the deck, and time, difficulty and protein have their own facts.
+ */
+export function visibleTags(c: RecipeClassification, dietClass: 'veg' | 'fish' | 'meat', t: T): string[] {
+  return [...new Set([
+    ...(dietClass === 'veg' ? [t('tastes.vegetarian')] : dietClass === 'fish' ? [t('recipes.fish')] : []),
+    ...c.nutrition_goals.map((g) => t(`classes.goal.${g}` as MessageKey)),
+    ...c.meal_intents.filter((i) => i !== 'everyday').map((i) => t(`classes.intent.${i}` as MessageKey)),
+  ])];
+}

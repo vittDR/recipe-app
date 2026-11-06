@@ -4,15 +4,14 @@ import { classifyRow } from '@logic/classify.ts';
 import { AddToListSheet, loadProposals } from '../../components/AddToListSheet.tsx';
 import { Icon } from '../../components/Icon.tsx';
 import { RecipeBody } from '../../components/RecipeBody.tsx';
-import { RecipeTags } from '../../components/Tags.tsx';
 import { Button, confirmSheet, Screen, Spinner, Tag, imageStyle, recipeEmoji } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
-import { classificationChips } from '../../lib/classes.ts';
+import { visibleTags } from '../../lib/classes.ts';
+import { dietClassOf } from '@logic/ingredients.ts';
 import { useCatalog, useLive, useSave } from '../../lib/hooks.ts';
 import { INGREDIENT_SELECT } from '../../lib/products.ts';
 import { useSession } from '../../lib/session.tsx';
 import { must, supabase } from '../../lib/supabase.ts';
-import { useTags } from '../../lib/tags.ts';
 import type { Recipe, RecipeIngredient } from '../../lib/types.ts';
 
 interface Portion {
@@ -37,7 +36,6 @@ export function RecipeScreen() {
   const { t, tn } = useI18n();
   const catalog = useCatalog();
   const { household } = useSession();
-  const { tags, reload: reloadTags } = useTags(household!.id);
   const navigate = useNavigate();
   const save = useSave();
   const [sheet, setSheet] = useState(false);
@@ -66,7 +64,9 @@ export function RecipeScreen() {
 
   const own = recipe.household_id === household!.id;
   // Worked out from the ingredients, steps and tags, like for every recipe (logic/classify.ts).
-  const about = catalog ? classificationChips(classifyRow({ ...recipe, recipe_ingredients: ingredients }, catalog), t) : [];
+  const about = catalog
+    ? visibleTags(classifyRow({ ...recipe, recipe_ingredients: ingredients }, catalog), dietClassOf(ingredients.map((i) => catalog.find(i.name))), t)
+    : [];
   const remove = async () => {
     if (!(await confirmSheet(t('recipe.removeConfirm'), { confirmLabel: t('app.delete') }))) return;
     if (await save(supabase.from('recipes').delete().eq('id', recipe.id))) navigate('/recipes', { replace: true });
@@ -88,9 +88,8 @@ export function RecipeScreen() {
             <Button small variant="text" onClick={() => setSheet(true)}><Icon name="basket" size={18} /> {t('tonight.groceries')}</Button>
           )}>
           <div className="recipe-page__more">
-            {(about.length > 0 || recipe.tags.length > 0) && (
+            {about.length > 0 && (
               <div className="chips">
-                <RecipeTags names={recipe.tags} tags={tags} householdId={household!.id} onTranslated={() => void reloadTags()} />
                 {about.map((label) => <Tag key={label}>{label}</Tag>)}
                 {(recipe.collection === 'original' || recipe.collection === 'web') && <Tag>{t(`collection.${recipe.collection}One`)}</Tag>}
               </div>

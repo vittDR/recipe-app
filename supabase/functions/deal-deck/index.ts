@@ -4,7 +4,7 @@
 
 import { corsHeaders, json, requireMember, serviceClient } from '../_shared/http.ts';
 import { buildDeck, type CandidateRecipe, type DeckMember, type Diet, type Mood, type RecipeHistory } from '../_shared/logic/deck.ts';
-import { canonicalFeature, classifyRow, CLASSIFY_COLUMNS, type ClassifiableRow } from '../_shared/logic/classify.ts';
+import { canonicalFeature, classifyRow, CLASSIFY_COLUMNS, storedClassification, type ClassifiableRow } from '../_shared/logic/classify.ts';
 import { Catalog, type CatalogEntry } from '../_shared/logic/ingredients.ts';
 import { recipeFeatures } from '../_shared/logic/preferences.ts';
 import { buildProfile, signalsFor, weightsOf, type MealRow, type SwipeRow, type TasteSignalRow } from '../_shared/logic/profile.ts';
@@ -73,7 +73,10 @@ Deno.serve(async (req) => {
   }
 
   const dietOf = new Map((catalog.data ?? []).map((c) => [c.name as string, c.diet_class as 'veg' | 'fish' | 'meat']));
-  const ingredientCatalog = new Catalog((catalog.data ?? []) as CatalogEntry[]);
+  const { data: versions } = await admin.rpc('catalog_version');
+  const ingredientCatalog = new Catalog((catalog.data ?? []) as CatalogEntry[], (versions as { ingredients?: string } | null)?.ingredients ?? null);
+  // Classifications worked out now, to store for next time.
+  const fresh: { id: string; classification: unknown; classified_with: string }[] = [];
 
   // Seed recipes the household copied are replaced by their copy.
   const copied = new Set((recipes.data ?? []).filter((r) => r.copied_from).map((r) => r.copied_from as string));
@@ -86,7 +89,11 @@ Deno.serve(async (req) => {
     const required = ings.filter((i) => !i.optional);
     const optional = ings.filter((i) => i.optional);
     // What the dish is, from its ingredients, steps and tags (logic/classify.ts).
-    const classification = classifyRow(r as unknown as ClassifiableRow, ingredientCatalog);
+    const row = r as unknown as ClassifiableRow;
+    const classification = classifyRow(row, ingredientCatalog);
+    if (ingredientCatalog.version && !storedClassification(row, ingredientCatalog)) {
+      fresh.push({ id: r.id, classification, classified_with: ingredientCatalog.version });
+    }
     const features = recipeFeatures(r.tags ?? [], ings, classification);
     featuresById.set(r.id, features);
     // Swipes and ratings made on the seed recipe before the household copied it count for the copy.
@@ -161,6 +168,9 @@ Deno.serve(async (req) => {
 
   // Specific features only (protein, dish, cuisine…): "dinner" or a staple says nothing about taste.
   const lean = new Set([...likedBefore].flatMap((id) => featuresById.get(id) ?? []).filter((f) => f.includes(':')));
+  // Kept on the recipes; cleared by the database when a recipe or its ingredients change.
+  if (fresh.length) await admin.rpc('store_classifications', { p_rows: fresh });
+
   const cards = buildDeck(candidates, members, history, {
     mood,
     maxMinutes,

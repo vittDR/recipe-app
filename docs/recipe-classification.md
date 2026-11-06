@@ -16,15 +16,25 @@ Code: `supabase/functions/_shared/logic/classify.ts` (rules, vocabulary,
 thresholds), with tests in `logic/tests/classify.test.ts`. Catalogue data:
 the last `update` block of `supabase/seed.sql`.
 
-## Not stored: recomputed where it's used
+## Stored, and cleared when anything it depends on changes
 
-The classification isn't a column. `classifyRow()` runs wherever it's needed:
-in `deal-deck` (scoring and learning), in the app (Recipes filters, the
-recipe page's "About this dish", the Us tab's patterns), in `import-recipe`
-(returned after a save) and in `build-seed-library.ts` (coverage report).
-So it always matches the current catalogue and rules: changing a trait or a
-threshold reclassifies every recipe, with no backfill. `CLASSIFICATION_VERSION`
-is bumped when a rule changes what recipes are called.
+`recipes.classification` keeps the result, with `classified_with` set to the
+ingredient catalogue's version (`catalog_version()->>'ingredients'`) it was
+worked out with. A trigger clears both when the recipe's title, translations,
+servings, tags, cuisine, steps, times, difficulty or equipment change, or
+when any of its ingredient lines is added, changed or removed. A stored
+classification is used only while its `version` is `CLASSIFICATION_VERSION`
+and its `classified_with` is the current catalogue version, so changing a
+trait, a rule or the version reclassifies every recipe with no backfill.
+
+`classifyRow()` returns the stored classification when it's fresh and works
+it out otherwise. `deal-deck` stores what it had to work out
+(`store_classifications()`, server only), so after the first deal following
+a change, the app and the next decks read it instead of recomputing.
+
+On a recipe, only diet, health (`nutrition_goals`) and mood (`meal_intents`)
+are shown as tags (`visibleTags()` in `web/src/lib/classes.ts`); the rest is
+for the deck and learning.
 
 ## Four layers, kept apart
 

@@ -448,6 +448,9 @@ export interface ClassifiableRow {
   difficulty?: Difficulty | null;
   equipment?: Equipment | null;
   translations?: unknown;
+  /** Stored by deal-deck (recipes.classification), with the catalogue version it was worked out with. */
+  classification?: unknown;
+  classified_with?: string | null;
   recipe_ingredients: {
     name: string; quantity?: number | null; unit?: string | null; optional?: boolean | null;
     is_staple?: boolean | null; guessed?: boolean | null;
@@ -456,10 +459,18 @@ export interface ClassifiableRow {
 
 /** The columns classifyRow reads, for a select(): `recipes.select(\`id, ${CLASSIFY_COLUMNS}\`)`. */
 export const CLASSIFY_COLUMNS = 'title, servings, tags, cuisine, steps, prep_min, cook_min, total_min, difficulty, '
-  + 'equipment, translations, recipe_ingredients(name, quantity, unit, optional, is_staple, guessed)';
+  + 'equipment, translations, classification, classified_with, recipe_ingredients(name, quantity, unit, optional, is_staple, guessed)';
+
+/** The recipe's stored classification, when it was worked out with this catalogue and these rules. */
+export function storedClassification(row: Pick<ClassifiableRow, 'classification' | 'classified_with'>, catalog: Catalog): RecipeClassification | null {
+  const c = row.classification as RecipeClassification | null | undefined;
+  return c && c.version === CLASSIFICATION_VERSION && catalog.version && row.classified_with === catalog.version ? c : null;
+}
 
 /** A recipe row as stored (lines named by catalogue ingredient), classified against the catalogue. */
 export function classifyRow(row: ClassifiableRow, catalog: Catalog): RecipeClassification {
+  const stored = storedClassification(row, catalog);
+  if (stored) return stored;
   const tr = (row.translations && typeof row.translations === 'object' ? row.translations : {}) as
     Record<string, { title?: string; steps?: string[] }>;
   const strings = (v: unknown) => (Array.isArray(v) ? v.map(String) : []);

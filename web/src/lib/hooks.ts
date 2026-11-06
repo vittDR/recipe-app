@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Catalog, type CatalogEntry } from '@logic/ingredients.ts';
 import { toast } from '../components/ui.tsx';
 import { useI18n } from '../i18n/index.tsx';
-import { cachedCatalogue, peekCatalogue } from './cache.ts';
+import { cachedCatalogue, peekCatalogue, peekCatalogueVersion } from './cache.ts';
 import { supabase } from './supabase.ts';
 
 /** Today's date (YYYY-MM-DD) in the household's time zone. */
@@ -114,8 +114,8 @@ export function loadCatalog(): Promise<Catalog> {
       if (error) throw new Error(error.message);
       return (data ?? []) as CatalogEntry[];
     },
-    (fresh) => { catalogPromise = Promise.resolve((storedCatalog = new Catalog(fresh))); },
-  ).then((entries) => (storedCatalog = new Catalog(entries))).catch((e) => {
+    (fresh) => { catalogPromise = Promise.resolve((storedCatalog = new Catalog(fresh, peekCatalogueVersion('ingredients')))); },
+  ).then((entries) => (storedCatalog = new Catalog(entries, peekCatalogueVersion('ingredients')))).catch((e) => {
     catalogPromise = null;
     throw e;
   });
@@ -126,7 +126,7 @@ export function useCatalog(): Catalog | null {
   const [catalog, setCatalog] = useState<Catalog | null>(() => {
     if (!storedCatalog) {
       const entries = peekCatalogue<CatalogEntry[]>('ingredients');
-      if (entries) storedCatalog = new Catalog(entries);
+      if (entries) storedCatalog = new Catalog(entries, peekCatalogueVersion('ingredients'));
     }
     return storedCatalog;
   });
