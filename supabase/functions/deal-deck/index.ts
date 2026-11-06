@@ -46,10 +46,10 @@ Deno.serve(async (req) => {
 
   // Tonight's decks that ended without a match: the new deck leaves their cards
   // out and leans towards what anyone said yes to in them.
-  const { data: failed } = await admin.from('decks').select('id, deck_cards(recipe_id), swipes(recipe_id, verdict)')
+  const { data: failedDecks } = await admin.from('decks').select('id, deck_cards(recipe_id), swipes(recipe_id, verdict)')
     .eq('household_id', householdId).eq('for_date', forDate).eq('status', 'no_match');
-  const exclude = new Set((failed ?? []).flatMap((d) => ((d.deck_cards ?? []) as { recipe_id: string }[]).map((c) => c.recipe_id)));
-  const likedBefore = new Set((failed ?? []).flatMap((d) => ((d.swipes ?? []) as { recipe_id: string; verdict: string }[])
+  const exclude = new Set((failedDecks ?? []).flatMap((d) => ((d.deck_cards ?? []) as { recipe_id: string }[]).map((c) => c.recipe_id)));
+  const likedBefore = new Set((failedDecks ?? []).flatMap((d) => ((d.swipes ?? []) as { recipe_id: string; verdict: string }[])
     .filter((x) => x.verdict !== 'pass').map((x) => x.recipe_id)));
 
   const since = (days: number) => new Date(Date.now() - days * 86_400_000).toISOString();
