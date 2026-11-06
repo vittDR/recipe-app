@@ -6,7 +6,7 @@
 // who mind their diet.
 
 import type { MealIntent } from './classify.ts';
-import type { TasteProfile } from './profile.ts';
+import { kindKeys, type TasteProfile } from './profile.ts';
 import {
   diversePick, fitWeight, similarity, TREAT_ADHERENCE, TREAT_MAX_FIT, TREAT_MIN_TASTE, tasteScore, uncertainty,
 } from './recommend.ts';
@@ -46,6 +46,8 @@ export interface DeckMember extends EaterTargets {
    * optional lines and staples count too.
    */
   allergies?: string[];
+  /** Kinds of dish this person likes but not often (profile.ts occasionalKinds). */
+  occasional?: Set<string>;
   /** Soft weights per feature (tags/ingredients), [-1, 1], incl. accepted patterns. Used when there's no profile. */
   weights: Map<string, number>;
   /** Taste profile (profile.ts), accepted patterns included: scored with recommend.ts. */
@@ -75,6 +77,8 @@ export interface DeckOptions {
   recentlyCooked?: Set<string>;
   /** Cards of tonight's decks that ended without a match: left out of the new one. */
   exclude?: Set<string>;
+  /** kindKeys of what the household ate in the last OCCASIONAL_DAYS: an occasional kind among them waits. */
+  recentKinds?: Set<string>;
   /** Features of what someone said yes to in those decks: the new deck leans towards them. */
   lean?: Set<string>;
   random?: () => number;
@@ -200,6 +204,9 @@ export function scoreRecipe(
   return { score: Math.round(score * 1000) / 1000, split, reason, taste: pref, tastes, base, explore };
 }
 
+/** A dish someone likes "but not often" waits this long after one of its kind was eaten. */
+export const OCCASIONAL_DAYS = 14;
+
 // A deck of 12: 5 very close to everyone's taste, 5 close (one person may like
 // it more than the other), 2 wildcards that fit everyone's goals but take
 // liberties with taste. Other sizes keep the proportions.
@@ -247,6 +254,17 @@ export function buildDeck(
       return { r, known, tier: 'close' as 'close' | 'near' | 'wild', value: 0, ...scoreRecipe(r, members, h, opts) };
     });
   type Scored = (typeof scored)[number];
+
+  // "Not often" dishes: none when one of that kind was eaten lately, and at most one per deck (the best).
+  const occasional = (r: CandidateRecipe) => {
+    const keys = kindKeys(r.id, r.features);
+    return members.some((m) => m.occasional?.size && keys.some((k) => m.occasional!.has(k)));
+  };
+  const recentKind = (r: CandidateRecipe) => kindKeys(r.id, r.features).some((k) => opts.recentKinds?.has(k));
+  const bestOccasional = scored.filter((s) => occasional(s.r) && !recentKind(s.r)).sort((a, b) => b.score - a.score)[0];
+  for (let i = scored.length - 1; i >= 0; i--) {
+    if (occasional(scored[i].r) && scored[i] !== bestOccasional) scored.splice(i, 1);
+  }
   const featuresOf = (s: Scored) => s.r.features ?? s.r.tags;
   // Tastes compared relative to each eater's own average over the library: someone who says
   // yes to most things isn't automatically the keener one.

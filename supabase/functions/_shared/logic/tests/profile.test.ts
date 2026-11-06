@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildProfile, pickStarterSet, profileHighlights, signalWeight, type Signal } from '../profile.ts';
+import { buildProfile, occasionalKinds, pickStarterSet, profileHighlights, signalWeight, type Signal } from '../profile.ts';
 import type { RecipeClassification } from '../classify.ts';
 
 const now = Date.UTC(2026, 5, 1);
@@ -63,4 +63,14 @@ test('the starter set varies proteins, dishes and heat before repeating them', (
   assert.equal(picked.length, 3);
   assert.ok(picked.includes('fish curry') && picked.includes('lentil soup'));
   assert.equal(picked.filter((id) => id.startsWith('chicken')).length, 1);
+});
+
+test('"I like it, but not often" is a like, and makes the kind of dish occasional', () => {
+  const at = new Date().toISOString();
+  const signals: Signal[] = [
+    { kind: 'starter', verdict: 'sometimes', features: ['dish:pizza', 'cheese'], at, recipeId: 'r1' },
+    { kind: 'starter', verdict: 'yes', features: ['dish:curry'], at, recipeId: 'r2' },
+  ];
+  assert.ok(buildProfile(signals).get('dish:pizza')!.weight > 0);
+  assert.deepEqual([...occasionalKinds(signals)].sort(), ['dish:pizza', 'recipe:r1']);
 });

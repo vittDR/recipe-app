@@ -34,6 +34,9 @@ export const PASS_REASONS: PassReason[] = ['not_tonight', 'too_long', 'had_recen
 /** Reasons about tonight rather than the dish. */
 export const TEMPORARY_REASONS = new Set<PassReason>(['not_tonight', 'too_long', 'had_recently']);
 
+/** A quiz answer: a swipe verdict, or "I like it, but not often". */
+export type StarterVerdict = Verdict | 'sometimes';
+
 export type Rating = 'loved' | 'fine' | 'not_again' | 'not_eaten';
 export const RATINGS: Rating[] = ['loved', 'fine', 'not_again'];
 
@@ -43,7 +46,7 @@ export type Signal =
     /** Whether the dish fit this person's goals when it was shown; null when unknown. */
     fits?: boolean | null;
   }
-  | { kind: 'starter'; verdict: Verdict; features: string[]; at: string; fits?: boolean | null }
+  | { kind: 'starter'; verdict: StarterVerdict; features: string[]; at: string; fits?: boolean | null; recipeId?: string }
   | { kind: 'cooked'; features: string[]; at: string }
   | { kind: 'rating'; rating: Rating; features: string[]; at: string };
 
@@ -62,7 +65,8 @@ export const PROFILE_HALF_LIFE_DAYS = 180;
 /** Pseudo-count that keeps one signal from making a feature a strong like or dislike. */
 export const PROFILE_PRIOR = 2;
 
-const VERDICT_WEIGHT: Record<Verdict, number> = { yes: 1, must: 1.5, pass: -1 };
+// "Not often" is a like: how often is the deck's business (occasionalKinds), not taste.
+const VERDICT_WEIGHT: Record<StarterVerdict, number> = { yes: 1, must: 1.5, pass: -1, sometimes: 1 };
 
 /** How much a signal says, and about which of the recipe's features. */
 export function signalWeight(s: Signal): { weight: number; features: string[] } {
@@ -226,7 +230,8 @@ export function signalsFor(
   for (const t of mine) {
     if (t.kind === 'starter') {
       push(t.recipe_id, (features) => ({
-        kind: 'starter', verdict: t.value as Verdict, features, at: t.created_at, fits: fitsNow?.(t.recipe_id) ?? null,
+        kind: 'starter', verdict: t.value as StarterVerdict, features, at: t.created_at, fits: fitsNow?.(t.recipe_id) ?? null,
+        recipeId: t.recipe_id,
       }));
     }
     if (t.kind === 'rating') push(t.recipe_id, (features) => ({ kind: 'rating', rating: t.value as Rating, features, at: t.created_at }));
@@ -238,4 +243,24 @@ export function signalsFor(
     push(m.recipe_id, (features) => ({ kind: 'cooked', features, at: `${m.for_date}T20:00:00Z` }));
   }
   return out;
+}
+
+/**
+ * The kinds of dish someone likes but doesn't want often: from quiz answers
+ * "I like it, but not often", the dish's family (dish:pizza, dish:gratin…)
+ * and the recipe itself (recipe:<id>). The deck keeps these occasional.
+ */
+export function occasionalKinds(signals: Signal[]): Set<string> {
+  const kinds = new Set<string>();
+  for (const s of signals) {
+    if (s.kind !== 'starter' || s.verdict !== 'sometimes') continue;
+    for (const f of s.features) if (f.startsWith('dish:') && f !== 'dish:other' && f !== 'dish:plated') kinds.add(f);
+    if (s.recipeId) kinds.add(`recipe:${s.recipeId}`);
+  }
+  return kinds;
+}
+
+/** The keys a recipe is matched on against occasionalKinds. */
+export function kindKeys(recipeId: string, features: string[] | undefined): string[] {
+  return [`recipe:${recipeId}`, ...(features ?? []).filter((f) => f.startsWith('dish:'))];
 }

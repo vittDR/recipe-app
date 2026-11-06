@@ -2878,3 +2878,14 @@ body:has(.moment) .tabbar {
 .list-row:has(> .icon-tile) .list-row__meta {
   margin-top: 2px;
 }
+
+.quiz-sometimes {
+  min-height: 40px;
+  padding: 0 var(--space-6);
+  font: var(--t-callout);
+  font-weight: 600;
+}
+
+.quiz-sometimes svg {
+  color: var(--accent);
+}
