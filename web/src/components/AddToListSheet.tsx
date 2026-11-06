@@ -30,40 +30,43 @@ export async function loadProposals(
   );
 }
 
-export function AddToListSheet({
-  open,
-  onClose,
-  recipe,
-  ingredients,
-  potServings,
-}: {
-  open: boolean;
-  onClose: () => void;
+/** One planned meal whose ingredients may go to the list. */
+export interface MealForList {
   recipe: Recipe;
   ingredients: RecipeIngredient[];
+  /** Servings in the pot, when the deck worked it out; else the recipe's. */
   potServings?: number | null;
-}) {
+  /** A heading when there are several meals ("Jeudi 30 · Poke bowl"). */
+  label?: string;
+}
+
+/**
+ * "What do you already have?": every ingredient of the meals, the ones
+ * probably at home (staples, bought recently, already on the list) ticked.
+ * Everything left unticked goes to the list.
+ */
+export function AddToListSheet({ open, onClose, meals }: { open: boolean; onClose: () => void; meals: MealForList[] }) {
   const { t, tn, locale } = useI18n();
   const { recipeAmount } = useAmount();
   const { userId, household } = useSession();
   const hid = household!.id;
   const { data: catalog } = useGroceryCatalog(hid);
-  const [proposals, setProposals] = useState<ListProposal<RecipeIngredient>[] | null>(null);
-  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [proposals, setProposals] = useState<ListProposal<RecipeIngredient>[][] | null>(null);
+  /** Ingredient ids ticked as already at home. */
+  const [have, setHave] = useState<Set<string>>(new Set());
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
     if (!open) return;
-    void loadProposals(household!.id, ingredients).then((p) => {
-      setProposals(p);
-      setSelected(new Set(p.filter((x) => x.add).map((x) => x.ingredient.id)));
+    void Promise.all(meals.map((m) => loadProposals(hid, m.ingredients))).then((all) => {
+      setProposals(all);
+      setHave(new Set(all.flat().filter((x) => !x.add).map((x) => x.ingredient.id)));
     });
-  }, [open, household, ingredients]);
+  }, [open, hid, meals]);
 
-  const servings = potServings ?? recipe.servings;
-  const scaled = (i: RecipeIngredient) => scaleQuantity(i.quantity, recipe.servings, servings);
-  const toBuy = useMemo(() => proposals?.filter((p) => p.add) ?? [], [proposals]);
-  const atHome = useMemo(() => proposals?.filter((p) => !p.add) ?? [], [proposals]);
+  const scaled = (m: MealForList, i: RecipeIngredient) => scaleQuantity(i.quantity, m.recipe.servings, m.potServings ?? m.recipe.servings);
+  const toAdd = useMemo(() => (proposals ?? []).flatMap((ps, k) => ps.filter((p) => !have.has(p.ingredient.id)).map((p) => ({ p, meal: meals[k] }))),
+    [proposals, have, meals]);
 
   // Through the list's queue, like every other list change: shown at once,
   // saved in the background. A line already on the list (same item and
@@ -81,9 +84,9 @@ export function AddToListSheet({
       return;
     }
     const at = new Date().toISOString();
-    for (const p of (proposals ?? []).filter((x) => selected.has(x.ingredient.id))) {
+    for (const { p, meal } of toAdd) {
       const i = p.ingredient;
-      const quantity = scaled(i);
+      const quantity = scaled(meal, i);
       const unit = i.unit?.trim().toLowerCase() || null;
       const same = mergeTarget(rows, i.product_id, unit);
       if (same) {
@@ -98,7 +101,7 @@ export function AddToListSheet({
       const place = product ? sectionOf(product, catalog?.prefs.get(product.id)) : { aisle: i.aisle, store_id: null };
       const op = {
         kind: 'add' as const, id: crypto.randomUUID(), product_id: product?.id ?? i.product_id, name: product?.name_fr ?? i.name,
-        quantity, unit, aisle: place.aisle, store_id: place.store_id, recipe_id: recipe.id, added_by: userId!, at,
+        quantity, unit, aisle: place.aisle, store_id: place.store_id, recipe_id: meal.recipe.id, added_by: userId!, at,
       };
       queue.push(op);
       rows.push({ ...op, household_id: hid, checked_at: null, checked_by: null, cleared_at: null, sort_key: 0, created_at: at });
@@ -110,42 +113,37 @@ export function AddToListSheet({
     onClose();
   };
 
-  const nameOf = (i: RecipeIngredient) => ingredientName(i, locale);
-
-  const row = (p: ListProposal<RecipeIngredient>) => {
-    const why = p.why === 'staple' ? t('addToList.staple')
-      : p.why === 'bought_recently' ? t('addToList.boughtRecently')
-        : p.why === 'on_list' ? t('addToList.onList') : null;
-    const checked = selected.has(p.ingredient.id);
+  const row = (m: MealForList, p: ListProposal<RecipeIngredient>) => {
+    const i = p.ingredient;
+    const name = ingredientName(i, locale);
+    const owned = have.has(i.id);
     return (
-      <ListRow key={p.ingredient.id} title={nameOf(p.ingredient)} meta={why ?? undefined}
+      <ListRow key={i.id} className={owned ? 'list-row--owned' : undefined} title={name}
         icon={(
-          <Checkbox checked={checked} label={nameOf(p.ingredient)} onChange={(v) => {
-            const next = new Set(selected);
-            if (v) next.add(p.ingredient.id);
-            else next.delete(p.ingredient.id);
-            setSelected(next);
+          <Checkbox checked={owned} label={name} onChange={(v) => {
+            const next = new Set(have);
+            if (v) next.add(i.id);
+            else next.delete(i.id);
+            setHave(next);
           }} />
         )}
-        trailing={<span className="muted small">{recipeAmount(scaled(p.ingredient), p.ingredient.unit)}</span>} />
+        value={recipeAmount(scaled(m, i), i.unit) || undefined} />
     );
   };
 
+  const several = meals.length > 1;
   return (
     <Sheet open={open} onClose={onClose} label={t('addToList.title')}>
-      <SheetHeader title={t('addToList.title')} subtitle={recipeTitle(recipe, locale)} />
-      {toBuy.length > 0 && (
-        <Section label={t('addToList.toBuy')} flush>
-          <div className="list">{toBuy.map(row)}</div>
-        </Section>
-      )}
-      {atHome.length > 0 && (
-        <Section label={t('addToList.atHome')}>
-          <div className="list">{atHome.map(row)}</div>
-        </Section>
-      )}
-      <Button className="sheet__actions" block disabled={busy || selected.size === 0} onClick={() => void add()}>
-        {tn('addToList.add', selected.size)}
+      <SheetHeader title={t('addToList.title')} subtitle={t('addToList.subtitle')} />
+      {proposals && meals.map((m, k) => (
+        several ? (
+          <Section key={m.recipe.id} label={m.label ?? recipeTitle(m.recipe, locale)} flush={k === 0}>
+            <div className="list">{proposals[k].map((p) => row(m, p))}</div>
+          </Section>
+        ) : <div key={m.recipe.id} className="list">{proposals[k].map((p) => row(m, p))}</div>
+      ))}
+      <Button className="sheet__actions" block disabled={busy || !proposals || toAdd.length === 0} onClick={() => void add()}>
+        {toAdd.length === 0 && proposals ? t('addToList.nothing') : tn('addToList.add', toAdd.length)}
       </Button>
     </Sheet>
   );

@@ -7,7 +7,6 @@ import { loadDeck, type DeckData } from './data.ts';
 import { MatchView } from './Match.tsx';
 import { SwipeView } from './Swipe.tsx';
 import { TiebreakView } from './Tiebreak.tsx';
-import { WaitingView } from './Waiting.tsx';
 
 /** One route for the whole deck: shows whichever step the deck is at. */
 export function DeckScreen() {
@@ -34,5 +33,6 @@ export function DeckScreen() {
 
   const mine = data.progress.find((p) => p.user_id === userId);
   const swiping = deck.who_eating.includes(userId!) && !mine?.finished_at && data.mySwipes.length < data.cards.length;
-  return swiping ? <SwipeView data={data} onDone={reload} /> : <WaitingView data={data} />;
+  // Done swiping: Ce soir shows the wait (who's still swiping, your yeses, the nudge).
+  return swiping ? <SwipeView data={data} onDone={reload} /> : <Navigate to="/" replace />;
 }

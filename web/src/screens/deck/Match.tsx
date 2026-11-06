@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { AddToListSheet, loadProposals } from '../../components/AddToListSheet.tsx';
 import { Icon } from '../../components/Icon.tsx';
@@ -61,6 +61,8 @@ export function MatchView({ data }: { data: DeckData }) {
     navigate(`/recipes/${recipeId}/cook`);
   };
 
+  const listMeals = useMemo(() => (match ? [{ recipe: match.recipe, ingredients: match.ingredients, potServings: match.portion?.pot_servings }] : []), [match]);
+
   if (!recipe) return null;
   return (
     <main className="screen">
@@ -109,7 +111,7 @@ export function MatchView({ data }: { data: DeckData }) {
       </div>
 
       <AddToListSheet open={sheet} onClose={() => { setSheet(false); void reload(); }}
-        recipe={recipe} ingredients={match?.ingredients ?? []} potServings={portion?.pot_servings} />
+        meals={listMeals} />
     </main>
   );
 }

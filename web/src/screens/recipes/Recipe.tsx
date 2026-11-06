@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import type { ListProposal } from '@logic/groceries.ts';
 import { AddToListSheet, loadProposals } from '../../components/AddToListSheet.tsx';
@@ -59,6 +59,8 @@ export function RecipeScreen() {
       proposals: new Map(proposals.map((x) => [x.ingredient.id, x])),
     };
   });
+
+  const listMeals = useMemo(() => (data ? [{ recipe: data.recipe, ingredients: data.ingredients }] : []), [data]);
 
   if (!data) return <Screen back><Spinner /></Screen>;
   const { recipe, ingredients, portion, proposals } = data;
@@ -175,7 +177,7 @@ export function RecipeScreen() {
         {own && <Button block variant="danger" onClick={() => void remove()}>{t('recipe.remove')}</Button>}
       </div>
 
-      <AddToListSheet open={sheet} onClose={() => { setSheet(false); void reload(); }} recipe={recipe} ingredients={ingredients} />
+      <AddToListSheet open={sheet} onClose={() => { setSheet(false); void reload(); }} meals={listMeals} />
     </main>
   );
 }
