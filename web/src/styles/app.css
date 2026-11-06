@@ -1913,13 +1913,15 @@ button.grocery-row__amount {
 
 /* The deal card: terracotta, a fan of cards, the question and one white button. */
 .deal-hero {
+  flex: 1;
+  min-height: 340px;
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   gap: var(--space-4);
-  padding: var(--space-8) var(--space-8) var(--space-9);
+  padding: var(--space-7);
   border-radius: var(--radius-2xl);
   background: var(--accent);
   box-shadow: 0 12px 30px rgba(180, 67, 42, 0.28);
@@ -1959,16 +1961,19 @@ button.grocery-row__amount {
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
 }
 
-/* The cards sit in the flow above the title, so the hero is as tall as its content. */
+/* The cards take the room above the title and sit centred in it,
+   so a tall screen adds space around them, not one gap under them. */
 .deal-hero .deal-hero__art {
   position: relative;
   inset: auto;
-  height: 264px;
-  margin: calc(-1 * var(--space-8)) calc(-1 * var(--space-8)) var(--space-6);
+  flex: 1;
+  min-height: 260px;
+  margin: calc(-1 * var(--space-7)) calc(-1 * var(--space-7)) 0;
 }
 
 .deal-hero .fan {
-  top: 44px;
+  top: 50%;
+  margin-top: -95px;
 }
 
 /* Illustrated cards on the deal hero: the artwork carries its own colour and corners. */
