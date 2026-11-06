@@ -1886,9 +1886,6 @@ button.grocery-row__amount {
   font-weight: 600;
 }
 
-.list-row.card {
-  padding: var(--space-4) var(--space-5);
-}
 
 /* Partner launched / your deck: art on a tint, then who and the button. */
 .join-card__art {

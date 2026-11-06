@@ -204,7 +204,9 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
           <span className="chevron"><Icon name="chevron" size={18} /></span>
         </Link>
         {members.length < 2 && (
-          <ListRow to="/us/invite" className="card" accent chevron={false} icon={<Icon name="plus" />} title={t('settings.invite')} />
+          <div className="list">
+            <ListRow to="/us/invite" accent chevron={false} icon={<Icon name="plus" />} title={t('settings.invite')} />
+          </div>
         )}
 
 
