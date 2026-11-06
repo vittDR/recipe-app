@@ -40,7 +40,7 @@ Key rules from the handover, and where they live:
 | Each person's goals and portions stay private; the partner sees only "fits" | RLS + `member_fits()` / `my_portion()` |
 | Swipes hidden until you finish the deck | `swipes_select` policy |
 | First mutual yes in deck order wins; others offered | `resolve_deck()`, `deck_matches()` |
-| Tie-break: 3 near-misses, Must-have counts double; same pick wins, else best fit | `tiebreak_options()`, `on_tiebreak_pick()` |
+| No veto, no tie-break: when nobody agreed the deck ends as no match and Ce soir offers a new one, which leaves out those cards and leans towards what anyone liked in them | `resolve_deck()`, `deal-deck` (`exclude`, `lean` in `logic/deck.ts`) |
 | Undo on the swipe screen takes back your last choice (and its pass reason) until you finish the deck | `undo_swipe()` |
 | One deck per evening on Ce soir; settings are a one-line summary over a sheet, defaulting silently to both of you, under an hour and the mood you say yes to most. Done swiping, Ce soir shows who's still swiping and the nudge; decided, tonight's dish, what's coming up and one groceries card for every planned meal | `screens/Tonight.tsx`, `components/DeckSettings.tsx` |
 | After a match, "What do you already have?": probably-owned items ticked (staples, bought recently, already listed), the rest goes to the list | `components/AddToListSheet.tsx`, `proposeListItems()` |

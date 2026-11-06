@@ -31,7 +31,7 @@ Deno.serve(async (req) => {
 
   // Someone already dealt tonight: join that deck instead of dealing a second one.
   const { data: open } = await admin.from('decks').select('id')
-    .eq('household_id', householdId).eq('for_date', forDate).in('status', ['open', 'tiebreak'])
+    .eq('household_id', householdId).eq('for_date', forDate).eq('status', 'open')
     .order('created_at', { ascending: false }).limit(1).maybeSingle();
   if (open) return json({ deck_id: open.id, existing: true });
 
@@ -39,6 +39,14 @@ Deno.serve(async (req) => {
   const householdUsers = (memberRows ?? []).map((m) => m.user_id as string);
   const requested: string[] = Array.isArray(body.who_eating) ? body.who_eating : householdUsers;
   const eaters = [...new Set([userId, ...requested])].filter((u) => householdUsers.includes(u));
+
+  // Tonight's decks that ended without a match: the new deck leaves their cards
+  // out and leans towards what anyone said yes to in them.
+  const { data: failed } = await admin.from('decks').select('id, deck_cards(recipe_id), swipes(recipe_id, verdict)')
+    .eq('household_id', householdId).eq('for_date', forDate).eq('status', 'no_match');
+  const exclude = new Set((failed ?? []).flatMap((d) => ((d.deck_cards ?? []) as { recipe_id: string }[]).map((c) => c.recipe_id)));
+  const likedBefore = new Set((failed ?? []).flatMap((d) => ((d.swipes ?? []) as { recipe_id: string; verdict: string }[])
+    .filter((x) => x.verdict !== 'pass').map((x) => x.recipe_id)));
 
   const since = (days: number) => new Date(Date.now() - days * 86_400_000).toISOString();
   const [goals, rules, patterns, swipes, recipes, meals, pantry, catalog, signals] = await Promise.all([
@@ -144,10 +152,14 @@ Deno.serve(async (req) => {
     if (m.for_date >= recentCutoff && m.for_date < forDate) recentlyCooked.add(m.recipe_id);
   }
 
+  // Specific features only (protein, dish, cuisine…): "dinner" or a staple says nothing about taste.
+  const lean = new Set([...likedBefore].flatMap((id) => featuresById.get(id) ?? []).filter((f) => f.includes(':')));
   const cards = buildDeck(candidates, members, history, {
     mood,
     maxMinutes,
     recentlyCooked,
+    exclude,
+    lean,
     // Recipe lines are named by catalogue ingredient ("chicken breast"); list
     // lines by their French product name, so compare on the product's ingredient.
     pantry: (pantry.data ?? []).map((p) => {

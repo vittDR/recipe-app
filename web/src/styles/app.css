@@ -2497,14 +2497,7 @@ body:has(.moment) .tabbar {
   box-shadow: var(--shadow-card);
 }
 
-.option__likes {
-  gap: var(--space-2);
-  margin-top: var(--space-1);
-}
 
-.option--picked {
-  background: var(--accent-wash);
-}
 
 /* ---------- Recipes ---------- */
 
@@ -2738,4 +2731,12 @@ body:has(.moment) .tabbar {
   width: 52px;
   height: 52px;
   border-radius: var(--radius-md);
+}
+
+.no-match {
+  margin-top: 120px;
+}
+
+.no-match__sub {
+  max-width: 300px;
 }

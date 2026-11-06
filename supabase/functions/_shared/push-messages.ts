@@ -39,9 +39,9 @@ const MESSAGES: Record<string, Record<Locale, (p: Payload) => Message>> = {
     en: (p) => ({ title: 'It’s a match!', body: 'Tonight’s dinner is decided.', url: `/deck/${p.deck_id}` }),
     fr: (p) => ({ title: 'C’est un match !', body: 'Le dîner de ce soir est choisi.', url: `/deck/${p.deck_id}` }),
   },
-  tiebreak: {
-    en: (p) => ({ title: 'No match this time', body: 'Pick one of the three closest calls.', url: `/deck/${p.deck_id}` }),
-    fr: (p) => ({ title: 'Pas de match cette fois', body: 'Choisissez parmi les trois plus proches.', url: `/deck/${p.deck_id}` }),
+  no_match: {
+    en: () => ({ title: 'No match this time', body: 'Deal a new deck to find tonight’s dinner.', url: '/' }),
+    fr: () => ({ title: 'Pas de match cette fois', body: 'Relancez un deck pour trouver le dîner.', url: '/' }),
   },
   partner_joined: {
     en: (p) => ({ title: `${name(p) || 'Your partner'} joined your household`, body: 'You can now decide dinner together.', url: '/' }),

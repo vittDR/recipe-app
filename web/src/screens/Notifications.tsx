@@ -16,7 +16,7 @@ const KINDS: { key: 'prompt' | 'reminder' | 'deck' | 'waiting' | 'result' | 'joi
   { key: 'reminder', kinds: ['reminder'] },
   { key: 'deck', kinds: ['deck_dealt'] },
   { key: 'waiting', kinds: ['partner_finished', 'nudge'] },
-  { key: 'result', kinds: ['match', 'tiebreak'] },
+  { key: 'result', kinds: ['match', 'no_match'] },
   { key: 'joined', kinds: ['partner_joined'] },
   { key: 'groceries', kinds: ['groceries_added'] },
 ];

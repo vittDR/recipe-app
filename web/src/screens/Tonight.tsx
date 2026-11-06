@@ -267,7 +267,7 @@ export function TonightScreen() {
   );
 
   let main: React.ReactNode;
-  if (tonightMeal && !open && deck?.status !== 'tiebreak') {
+  if (tonightMeal && !open) {
     // Decided: tonight first, then what's coming, then one groceries card for all.
     const r = tonightMeal.recipe!;
     const cooked = tonightMeal.status === 'cooked';
@@ -295,13 +295,6 @@ export function TonightScreen() {
         {upcomingSection}
         {groceriesCard}
       </>
-    );
-  } else if (deck && deck.status === 'tiebreak') {
-    main = (
-      <section className="card stack">
-        <span className="t-title-s">{t('tiebreak.title')}</span>
-        <Button block onClick={() => navigate(`/deck/${deck.id}`)}>{t('tonight.tiebreak')}</Button>
-      </section>
     );
   } else if (deck && open && iSwipe) {
     // A deck is running and I still have cards: only "start swiping".
@@ -391,7 +384,7 @@ export function TonightScreen() {
           <div className="deal-hero__art" aria-hidden>
             <span className="fan fan--left" /><span className="fan fan--right" /><span className="fan fan--mid" />
           </div>
-          <h2 className="deal-hero__title">{t('tonight.ask')}</h2>
+          <h2 className="deal-hero__title">{deck?.status === 'no_match' ? t('noMatch.again') : t('tonight.ask')}</h2>
           <button type="button" className="btn btn--block deal-hero__btn" disabled={dealing} onClick={() => void deal()}>
             {dealing ? t('tonight.dealing') : t('tonight.deal')}
           </button>

@@ -129,7 +129,6 @@ export const en = {
     swiping: '{name} is swiping',
     justThem: 'You’re done, just {name} to go.',
     yourYes: 'Your yeses · {n}',
-    tiebreak: 'Pick from the closest three',
     decidedBadge: 'Tonight · decided',
     cookedBadge: 'Tonight · cooked',
     startCooking: 'Start cooking',
@@ -225,14 +224,12 @@ export const en = {
     other: 'See other match',
     viewRecipe: 'See the recipe',
   },
-  tiebreak: {
-    title: 'No mutual yes',
-    subtitle: 'Pick one of the three closest.',
-    liked: 'Liked by {names}',
-    pick: 'Pick',
-    picked: 'Your pick',
-    waiting: 'Waiting for {name} to pick…',
-    fresh: 'Deal a fresh deck',
+  noMatch: {
+    title: 'No match this time',
+    subtitle: 'No recipe got everyone’s yes. Deal a new deck to find tonight’s dinner!',
+    again: 'No match. Deal again?',
+    deal: 'Deal a new deck',
+    notTonight: 'Not tonight after all',
   },
   addToList: {
     title: 'What do you already have?',

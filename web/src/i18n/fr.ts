@@ -127,7 +127,6 @@ export const fr: Dictionary = {
     swiping: '{name} est en train de swiper',
     justThem: 'Vous avez fini, il ne manque que {name}.',
     yourYes: 'Vos oui · {n}',
-    tiebreak: 'Choisir parmi les trois plus proches',
     decidedBadge: 'Ce soir · c’est décidé',
     cookedBadge: 'Ce soir · cuisiné',
     startCooking: 'Commencer à cuisiner',
@@ -223,14 +222,12 @@ export const fr: Dictionary = {
     other: 'Voir l’autre match',
     viewRecipe: 'Voir la recette',
   },
-  tiebreak: {
-    title: 'Pas de oui commun',
-    subtitle: 'Choisissez parmi les trois plus proches.',
-    liked: 'Aimé par {names}',
-    pick: 'Choisir',
-    picked: 'Votre choix',
-    waiting: 'En attente du choix de {name}…',
-    fresh: 'Relancer un deck',
+  noMatch: {
+    title: 'Pas de match cette fois',
+    subtitle: 'Aucune recette n’a fait l’unanimité. Relancez un deck pour trouver votre plat de ce soir !',
+    again: 'Pas de match. On relance ?',
+    deal: 'Relancer un deck',
+    notTonight: 'Finalement, pas ce soir',
   },
   addToList: {
     title: 'Qu’avez-vous déjà ?',
