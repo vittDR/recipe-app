@@ -343,7 +343,7 @@ Each person does this.
 6. **Test the Tonight flow:**
    1. One person deals a deck from **Tonight**.
    2. The other gets a notification within about a minute and joins.
-   3. Both swipe and get a match, or a tie-break.
+   3. Both swipe and get a match, or no match and a new deck.
    4. Tap **Add to list** and check that the items appear on the other phone's **Groceries** tab.
 
 Then turn off sign-ups (end of Step 4).
@@ -367,7 +367,7 @@ If the project ever does pause, click **Restore project** on the Supabase dashbo
 
 Everything lives in the `public` schema, created by the files in
 `supabase/migrations/` (applied in filename order). The rules both phones must
-agree on (matching, tie-break, grocery merging, scheduled prompts) are SQL
+agree on (matching, no match, grocery merging, scheduled prompts) are SQL
 functions, so they run in one place.
 
 ### The shape of it
@@ -424,7 +424,7 @@ households. Each person belongs to one household.
 | `rule_source` | `manual`, `learned` |
 | `pattern_status` | `suggested`, `accepted`, `dismissed` |
 | `recipe_source` | `web`, `instagram`, `photo`, `typed`, `ai`, `seed` |
-| `deck_status` | `open`, `matched`, `tiebreak`, `closed` |
+| `deck_status` | `open`, `matched`, `no_match`, `closed` (`tiebreak` is left over from before and no longer used) |
 | `deck_mood` | `any`, `comfort`, `light`, `quick`, `fancy` |
 | `verdict` | `pass`, `yes`, `must` |
 | `meal_status` | `planned`, `cooked`, `skipped` |
@@ -469,16 +469,15 @@ divided by `servings`), never copied from the source site. A recipe's diet
 (veg/fish/meat) isn't stored: it's worked out from its ingredients' `diet_class`
 each time a deck is dealt.
 
-### Tonight: decks, swipes, tie-breaks, meals
+### Tonight: decks, swipes, meals
 
 | Table | What it holds |
 | --- | --- |
 | `decks` | One deal: `for_date`, `started_by`, `who_eating[]`, `max_minutes`, `mood`, `status`, `matched_recipe_id`. Written by `deal-deck`. |
-| `deck_cards` | The 12 cards in order, with `score`, `fit_score` (0..1, used by the tie-break), `fits_all` and an optional `reason`. |
+| `deck_cards` | The 12 cards in order, with `score`, `fit_score` (0..1), `fits_all` and an optional `reason`. |
 | `member_portions` | Each person's plate for each card: `kcal`, `protein_g`, `servings`, `fits`. Only that person can read their row. |
 | `deck_members` | Progress the household can see: `swiped_count`, `finished_at`, `nudged_at`. Counts only, no verdicts. |
 | `swipes` | `verdict` per person per card. Hidden from the partner until you've finished the deck too. A trigger (`on_swipe`) resolves the deck when everyone's done. |
-| `tiebreak_picks` | Each person's pick among the three tie-break options. |
 | `meals` | What's planned or cooked per day (one per household per date). |
 | `taste_signals` | One person's choices beyond deck swipes, private to them: `starter` (taste quiz answer: yes / must / pass), `reason` (why a deck card was passed on: not tonight, too long, had recently, not for me) and `rating` (after a meal: loved / fine / not again / not eaten). One per recipe, deck card or meal (`key`); saving again replaces it. Read by `logic/profile.ts`. |
 | `plan_days` | The usual week, per weekday (1 = Monday): `cook_at_home`, plus an optional pre-picked recipe. |

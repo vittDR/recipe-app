@@ -7,6 +7,7 @@ const PATHS = {
   people: 'M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M16 4.5a3.5 3.5 0 0 1 0 6.8M21 20c0-2.6-1.7-4.9-4-5.7',
   person: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21c0-4.4 3.6-8 8-8s8 3.6 8 8',
   plus: 'M12 5v14M5 12h14',
+  minus: 'M5 12h14',
   check: 'M5 12.5l4.5 4.5L19 7.5',
   x: 'M6 6l12 12M18 6L6 18',
   heart: 'M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z',
@@ -30,6 +31,18 @@ const PATHS = {
   caret: 'M7 10l5 5 5-5',
   backspace: 'M9 5h11v14H9l-6-7 6-7zM12 9l5 6M17 9l-5 6',
   pot: 'M4 10h16v6a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-6zM2 10h20M9 6c0-1 1-1 1-2M14 6c0-1 1-1 1-2',
+  // Household Warm v2 line set.
+  bowlSteam: 'M3.5 12h17a8.5 8.5 0 0 1-17 0zM9 21h6M9 3.5c-.9 1 .9 2 0 3.5M12 3.5c-.9 1 .9 2 0 3.5M15 3.5c-.9 1 .9 2 0 3.5',
+  basket: 'M3 10h18l-1.8 9.2a1 1 0 0 1-1 .8H5.8a1 1 0 0 1-1-.8L3 10zM7.5 10L12 4l4.5 6',
+  undo: 'M9 14L4 9l5-5M4 9h10.5a5.5 5.5 0 0 1 0 11H11',
+  home: 'M4 10.5L12 4l8 6.5V20H4zM10 20v-5h4v5',
+  bolt: 'M13 2.5L5 13.5h6.5L10.5 21.5l8-11H12z',
+  flame: 'M12 21a6 6 0 0 0 6-6c0-4.5-3.5-6.5-4.5-11-2 2-3.5 4.5-3.5 7-1-.7-1.5-1.7-1.5-3C6.8 10 6 12.6 6 15a6 6 0 0 0 6 6z',
+  camera: 'M4 8h3.2L9 5h6l1.8 3H20v11H4zM12 16.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z',
+  copy: 'M9 9h11v11H9zM5 15V4h11',
+  pan: 'M3 11h13v1a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5v-1zM16 12h5',
+  sparkle: 'M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z',
+  chart: 'M4 20h16M7 16v-4M12 16V8M17 16v-7',
 } as const;
 
 // Filled artwork (the app's bowl): its own viewBox, no stroke.
@@ -39,7 +52,10 @@ const FILLED = {
 
 export type IconName = keyof typeof PATHS | keyof typeof FILLED;
 
-export function Icon({ name, size = 22, label, strokeWidth = 2 }: { name: IconName; size?: number; label?: string; strokeWidth?: number }) {
+/** Filled glyphs only for heart (like), star (indispensable) and sparkle (smart suggestion). */
+export function Icon({ name, size = 22, label, strokeWidth = 2, filled }: {
+  name: IconName; size?: number; label?: string; strokeWidth?: number; filled?: boolean;
+}) {
   if (name in FILLED) {
     const f = FILLED[name as keyof typeof FILLED];
     return (
@@ -54,7 +70,7 @@ export function Icon({ name, size = 22, label, strokeWidth = 2 }: { name: IconNa
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      fill="none"
+      fill={filled ? 'currentColor' : 'none'}
       stroke="currentColor"
       strokeWidth={strokeWidth}
       strokeLinecap="round"

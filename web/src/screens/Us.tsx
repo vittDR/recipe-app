@@ -8,9 +8,10 @@ import {
 } from '@logic/profile.ts';
 import { dietAdherence } from '@logic/recommend.ts';
 import { productName } from '@logic/products.ts';
+import { AllergiesCard } from '../components/Allergies.tsx';
 import { Icon } from '../components/Icon.tsx';
-import { MemberList } from '../components/Members.tsx';
-import { Button, Chip, ListRow, Screen, Section } from '../components/ui.tsx';
+import { Link } from 'react-router';
+import { AvatarPair, Button, ListRow, Screen, TabHeader, Tag } from '../components/ui.tsx';
 import { LOCALE_NAMES, useI18n } from '../i18n/index.tsx';
 import { classLabel } from '../lib/classes.ts';
 import { useCatalog, useLive, useSave } from '../lib/hooks.ts';
@@ -33,9 +34,10 @@ interface Loaded {
 const samePattern = (a: { kind: string; value: string }, b: { kind: string; value: string }) =>
   a.kind === b.kind && a.value === b.value;
 
-export function UsScreen() {
+/** The Nous tab; `preferences` is its sub-menu: allergies, tastes and goals. */
+export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
   const { t, tn, locale } = useI18n();
-  const { userId, members, goals, household, signOut, isCatalogAdmin } = useSession();
+  const { userId, members, goals, household, signOut, isCatalogAdmin, memberColor } = useSession();
   const save = useSave();
   const [push, setPush] = useState<PushState>('unsupported');
   const { data: catalog } = useGroceryCatalog(household!.id);
@@ -147,86 +149,92 @@ export function UsScreen() {
     : push === 'denied' ? t('us.notificationsDenied')
       : push === 'unsupported' ? t('us.notificationsUnsupported') : undefined;
 
-  return (
-    <Screen title={t('us.title')}>
-      <Section label={household?.name ?? t('us.members')} flush>
-        <MemberList invite={members.length < 2} />
-      </Section>
+  const people = members.map((m) => ({ id: m.user_id, name: m.profile.first_name, color: memberColor(m.user_id) }));
+  const tasteChips = [
+    ...(diet ? [{ key: 'diet', label: t(`tastes.${diet as 'pescatarian' | 'vegetarian'}`), tone: undefined }] : []),
+    ...never.map((n) => ({ key: `n:${n}`, label: t('us.without', { item: n }), tone: undefined })),
+    ...love.map((n) => ({ key: `l:${n}`, label: n, tone: 'accent' as const })),
+    ...(data?.profile.likes ?? []).map((x) => ({ key: `p:${x.feature}`, label: labelOf(x.feature), tone: 'accent' as const })),
+  ];
 
-      <Section label={t('us.profile')}>
-        <div className="stack">
-          {data && (data.profile.likes.length > 0 || data.profile.dislikes.length > 0) ? (
-            <>
-              {data.profile.likes.length > 0 && (
-                <div className="chips" aria-label={t('us.likes')}>
-                  <span className="small muted">{t('us.likes')}</span>
-                  {data.profile.likes.map((x) => <Chip key={x.feature}>{labelOf(x.feature)}</Chip>)}
-                </div>
-              )}
-              {data.profile.dislikes.length > 0 && (
-                <div className="chips" aria-label={t('us.dislikes')}>
-                  <span className="small muted">{t('us.dislikes')}</span>
-                  {data.profile.dislikes.map((x) => <Chip key={x.feature}>{labelOf(x.feature)}</Chip>)}
-                </div>
-              )}
-            </>
-          ) : <p className="muted small m-0">{t('us.profileEmpty')}</p>}
-          {data && data.adherence >= 0.6 && <p className="muted small m-0">{t('us.dietMinded')}</p>}
-          {data && data.adherence <= 0.3 && <p className="muted small m-0">{t('us.dietRelaxed')}</p>}
-          <ListRow to="/us/quiz" icon={<Icon name="heart" />} title={data?.quizDone ? t('us.quizAgain') : t('us.quiz')}
-            meta={t('us.quizMeta')} />
-        </div>
-      </Section>
+  if (view === 'preferences') {
+    return (
+      <Screen back="/us" title={t('us.preferences')}>
+        <div className="stack stack--blocks">
+        <AllergiesCard />
 
-      <Section label={t('us.patterns')}>
-        {shown.length === 0 ? <p className="muted small">{t('us.noPatterns')}</p> : (
-          <div className="stack">
-            {shown.map((s) => (
-              <div key={`${s.pattern.kind}:${s.pattern.value}`} className="card stack">
-                <span>{t(s.pattern.kind === 'avoid' ? 'us.patternAvoid' : 'us.patternPrefer', { value: inSentence(labelOf(s.pattern.value), locale), n: s.evidence, total: s.window })}</span>
-                <div className="row row--wrap">
-                  {s.pattern.kind === 'avoid' ? (
-                    <>
-                      {itemOf(s.pattern.value) && (
-                        <Button small variant="dark" onClick={() => void decide(s, 'never')}>{t('us.neverShow')}</Button>
-                      )}
-                      <Button small variant={itemOf(s.pattern.value) ? 'secondary' : 'dark'} onClick={() => void decide(s, 'less')}>{t('us.showLess')}</Button>
-                    </>
-                  ) : (
-                    <Button small variant="dark" onClick={() => void decide(s, 'more')}>{t('us.showMore')}</Button>
-                  )}
-                  <Button small variant="text" onClick={() => void decide(s, 'ignore')}>{t('us.ignore')}</Button>
-                </div>
-              </div>
-            ))}
+        <section className="card stack">
+          <div className="row row--between">
+            <span className="card__title">{t('us.yourTastes')}</span>
+            <Link to="/us/tastes" className="t-callout accent-link">{t('us.edit')}</Link>
           </div>
-        )}
-      </Section>
-
-      <Section label={t('app.you')}>
-        <div className="list">
-          <ListRow to="/us/goals" icon={<Icon name="star" />} title={t('us.yourGoals')}
+          {tasteChips.length > 0 ? (
+            <div className="chips">
+              {tasteChips.map((c) => (
+                <Tag key={c.key} tone={c.tone}>{c.tone === 'accent' && <Icon name="heart" filled size={11} />} {c.label}</Tag>
+              ))}
+            </div>
+          ) : <p className="muted t-callout m-0">{t('us.profileEmpty')}</p>}
+          {data && data.adherence >= 0.6 && <p className="t-callout muted m-0">{t('us.dietMinded')}</p>}
+          {data && data.adherence <= 0.3 && <p className="t-callout muted m-0">{t('us.dietRelaxed')}</p>}
+          <Link to="/us/quiz" className="t-callout accent-link">{data?.quizDone ? t('us.quizAgain') : t('us.quiz')} ›</Link>
+        </section>
+          <div className="list">
+          <ListRow to="/us/goals" tile="plain" icon={<Icon name="star" size={18} />} title={t('us.yourGoals')}
             meta={goals && `${t(`goals.${goals.goal}`)} · ${goals.dinner_kcal} kcal · ${goals.dinner_protein_g} g · ${tn('recipe.servings', goals.servings)}`} />
-          <ListRow to="/us/tastes" icon={<Icon name="heart" />} title={t('us.yourTastes')}
-            meta={[diet && t(`tastes.${diet as 'pescatarian' | 'vegetarian'}`), never.length && `✕ ${never.slice(0, 3).join(', ')}`, love.length && `♥ ${love.slice(0, 3).join(', ')}`]
-              .filter(Boolean).join(' · ') || undefined} />
-          <ListRow to="/us/notifications" icon={<Icon name="bell" />} title={t('notifications.title')} meta={pushMeta} />
-          <ListRow to="/us/profile" icon={<Icon name="person" />} title={t('profile.title')} meta={LOCALE_NAMES[locale]} />
+          </div>
         </div>
-      </Section>
+      </Screen>
+    );
+  }
 
-      <Section label={t('us.members')}>
+  return (
+    <Screen>
+      <TabHeader title={t('us.title')} />
+      <div className="stack stack--blocks">
+        <Link to="/us/household" className="card household-row">
+          <AvatarPair people={people} />
+          <span className="grow">
+            <span className="card__title d-block">{household?.name}</span>
+            <span className="t-label muted d-block">{tn('us.householdMeta', members.length)}</span>
+          </span>
+          <span className="chevron"><Icon name="chevron" size={18} /></span>
+        </Link>
+        {members.length < 2 && (
+          <ListRow to="/us/invite" className="card" accent chevron={false} icon={<Icon name="plus" />} title={t('settings.invite')} />
+        )}
+
+
+        {shown.map((s) => {
+          const value = inSentence(labelOf(s.pattern.value), locale);
+          const avoid = s.pattern.kind === 'avoid';
+          return (
+            <section key={`${s.pattern.kind}:${s.pattern.value}`} className="card card--accent stack insight">
+              <span className="row t-label text-accent"><Icon name="sparkle" filled size={14} /> {t('us.patterns')}</span>
+              <span>{t(avoid ? 'us.askLess' : 'us.askMore', { value })}</span>
+              <div className="row">
+                <Button small onClick={() => void decide(s, avoid ? 'less' : 'more')}>{t('us.yes')}</Button>
+                <Button small variant="secondary" onClick={() => void decide(s, 'ignore')}>{t('us.noThanks')}</Button>
+              </div>
+            </section>
+          );
+        })}
+
         <div className="list">
-          <ListRow to="/us/week" icon={<Icon name="calendar" />} title={t('us.thisWeek')} />
-          <ListRow to="/us/plan" icon={<Icon name="calendar" />} title={t('us.usualWeek')} />
-          <ListRow to="/us/household" icon={<Icon name="gear" />} title={t('us.settings')} />
+          <ListRow to="/us/preferences" tile="accent" icon={<Icon name="heart" size={18} />} title={t('us.preferences')}
+            meta={t('us.preferencesHint')} />
+          <ListRow to="/us/notifications" tile="accent" icon={<Icon name="bell" size={18} />} title={t('notifications.title')} meta={pushMeta} />
+        </div>
+
+        <div className="list">
+          <ListRow to="/us/profile" tile="plain" icon={<Icon name="person" size={18} />} title={t('profile.title')} meta={LOCALE_NAMES[locale]} />
           {isCatalogAdmin && (
-            <ListRow to="/us/catalog" icon={<Icon name="book" />} title={t('admin.entry')} meta={t('admin.entryHint')} />
+            <ListRow to="/us/catalog" tile="plain" icon={<Icon name="book" size={18} />} title={t('admin.entry')} meta={t('admin.entryHint')} />
           )}
         </div>
-      </Section>
 
-      <Button block variant="text" className="mt-6" onClick={() => void signOut()}>{t('us.signOut')}</Button>
+        <Button variant="text" className="self-center" onClick={() => void signOut()}>{t('us.signOut')}</Button>
+      </div>
     </Screen>
   );
 }

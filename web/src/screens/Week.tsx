@@ -58,12 +58,12 @@ export function WeekScreen() {
                 <span className="headline">{Number(date.slice(8))}</span>
               </span>}
               meta={i === 0 ? t('week.today') : i === 1 ? t('week.tomorrow') : undefined}
-              trailing={<Checkbox checked={cook} label={`${name} ${when}`} onChange={(v) => void toggle(date, v)} color="var(--c-accent)" />} />
+              trailing={<Checkbox checked={cook} label={`${name} ${when}`} onChange={(v) => void toggle(date, v)} color="var(--accent)" />} />
           );
         })}
       </div>
       <div className="list mt-6">
-        <ListRow to="/us/plan" state={{ back: '/us/week', backState: location.state }} icon={<Icon name="calendar" />} title={t('week.usual')} meta={t('week.usualHint')} />
+        <ListRow to="/us/plan" state={{ back: '/us/week', backState: location.state }} tile="accent" icon={<Icon name="calendar" size={18} />} title={t('week.usual')} meta={t('week.usualHint')} />
       </div>
     </Screen>
   );

@@ -3,6 +3,7 @@
 // per kind. Muted kinds are stored on the profile; enqueue_push skips them.
 
 import { useEffect, useState } from 'react';
+import { TimedNotifications } from '../components/TimedNotifications.tsx';
 import { ListRow, Screen, Section, Spinner, Switch } from '../components/ui.tsx';
 import { useI18n, type MessageKey } from '../i18n/index.tsx';
 import { useLive, useSave } from '../lib/hooks.ts';
@@ -11,12 +12,10 @@ import { useSession } from '../lib/session.tsx';
 import { must, supabase } from '../lib/supabase.ts';
 
 /** What people switch, and the outbox kinds each switch covers. */
-const KINDS: { key: 'prompt' | 'reminder' | 'deck' | 'waiting' | 'result' | 'joined' | 'groceries'; kinds: string[] }[] = [
-  { key: 'prompt', kinds: ['prompt'] },
-  { key: 'reminder', kinds: ['reminder'] },
+const KINDS: { key: 'deck' | 'waiting' | 'result' | 'joined' | 'groceries'; kinds: string[] }[] = [
   { key: 'deck', kinds: ['deck_dealt'] },
   { key: 'waiting', kinds: ['partner_finished', 'nudge'] },
-  { key: 'result', kinds: ['match', 'tiebreak'] },
+  { key: 'result', kinds: ['match', 'no_match'] },
   { key: 'joined', kinds: ['partner_joined'] },
   { key: 'groceries', kinds: ['groceries_added'] },
 ];
@@ -50,12 +49,15 @@ export function NotificationsScreen() {
       setPush(state);
       if (state !== 'on') return;
     }
-    await save({ ...prefs, push_enabled: on });
+    setPrefs(() => ({ ...prefs, push_enabled: on }));
+    if (!(await write(supabase.from('profiles').update({ push_enabled: on }).eq('id', userId!)))) await reload();
   };
 
-  const setKind = (kinds: string[], on: boolean) => {
+  const setKind = async (kinds: string[], on: boolean) => {
     if (!prefs) return;
-    const muted = new Set(prefs.push_muted);
+    // Read again: the evening switches above save push_muted on their own.
+    const { data: now } = await supabase.from('profiles').select('push_muted').eq('id', userId!).single();
+    const muted = new Set((now?.push_muted as string[] | undefined) ?? prefs.push_muted);
     for (const k of kinds) {
       if (on) muted.delete(k);
       else muted.add(k);
@@ -78,6 +80,11 @@ export function NotificationsScreen() {
           </div>
 
           {allowed && (
+            <Section label={t('settings.programme')}>
+              <TimedNotifications />
+            </Section>
+          )}
+          {allowed && (
             <Section label={t('notifications.kinds')}>
               <div className="list">
                 {KINDS.map(({ key, kinds }) => {
@@ -85,7 +92,7 @@ export function NotificationsScreen() {
                   const label = t(`notifications.${key}` as MessageKey);
                   return (
                     <ListRow key={key} title={label} meta={t(`notifications.${key}Hint` as MessageKey)}
-                      trailing={<Switch checked={on} label={label} onChange={(v) => setKind(kinds, v)} />} />
+                      trailing={<Switch checked={on} label={label} onChange={(v) => void setKind(kinds, v)} />} />
                   );
                 })}
               </div>

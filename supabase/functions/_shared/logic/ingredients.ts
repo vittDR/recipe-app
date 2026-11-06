@@ -58,6 +58,7 @@ const UNIT_SPELLINGS: Record<string, string[]> = {
   bunch: ['bunch', 'bunches', 'botte', 'bottes', 'bouquet', 'mazzetto', 'mazzetti'],
   slice: ['slice', 'slices', 'tranche', 'tranches', 'fetta', 'fette'],
   piece: ['piece', 'pieces', 'pièce', 'pièces', 'pc', 'pcs', 'pezzo', 'pezzi'],
+  pack: ['pack', 'packs', 'packet', 'packets', 'paquet', 'paquets', 'pacchetto', 'pacchetti', 'confezione', 'confezioni'],
 };
 
 const UNIT_LOOKUP = new Map<string, string>();
@@ -145,7 +146,14 @@ export class Catalog {
   private byKey = new Map<string, CatalogEntry>();
   private keys: string[] = [];
 
-  constructor(entries: CatalogEntry[]) {
+  /**
+   * The catalogue's version (catalog_version()->>'ingredients') when known:
+   * a recipe's stored classification is used only if it was worked out with it.
+   */
+  version: string | null = null;
+
+  constructor(entries: CatalogEntry[], version: string | null = null) {
+    this.version = version;
     for (const e of entries) {
       for (const n of [e.name, e.name_fr, e.name_it, ...(e.aliases ?? [])]) {
         if (!n) continue;

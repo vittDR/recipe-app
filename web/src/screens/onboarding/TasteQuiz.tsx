@@ -99,14 +99,14 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
 
   const chips = catalog ? classificationChips(card.classification, t).slice(0, 3) : [];
   return (
-    <main className="screen">
+    <main className="screen swipe-screen">
       <ModeBar title={t('quiz.progress', { n: index + 1, total: cards.length })} onClose={finish} />
       <ProgressBar value={index} max={cards.length} />
       {index === 0 && <p className="muted small m-0">{t('quiz.intro')}</p>}
       <div className="deck">
         <article
           key={card.id}
-          className="recipe-card"
+          className="swipe-card"
           style={{
             transform: drag ? `translate(${drag.dx}px, ${drag.dy}px) rotate(${drag.dx / 20}deg)` : undefined,
             transition: drag ? 'none' : 'transform 0.25s ease',
@@ -119,24 +119,24 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
           onPointerUp={onPointerUp}
           onPointerCancel={() => { start.current = null; setDrag(null); }}
         >
-          <div className="recipe-card__image" style={imageStyle(card.image_path)}>
+          <div className="swipe-card__photo" style={imageStyle(card.image_path)}>
             {!imageStyle(card.image_path) && <span aria-hidden>{recipeEmoji(card.title, card.tags ?? [])}</span>}
           </div>
-          <div className="recipe-card__body">
-            <h2 className="title2">{recipeTitle(card, locale)}</h2>
+          <div className="swipe-card__body">
+            <h2 className="t-title-s m-0">{recipeTitle(card, locale)}</h2>
             <div className="row row--wrap">{chips.map((c) => <Tag key={c}>{c}</Tag>)}</div>
           </div>
         </article>
       </div>
       <div className="swipe-actions">
-        <button type="button" className="btn btn--round btn--lg pass" aria-label={t('swipe.pass')} onClick={() => decide('pass')}>
-          <Icon name="x" size={30} strokeWidth={2.5} />
+        <button type="button" className="swipe-btn" aria-label={t('swipe.pass')} onClick={() => decide('pass')}>
+          <Icon name="x" size={26} strokeWidth={2.4} />
         </button>
-        <button type="button" className="btn btn--round must" aria-label={t('swipe.must')} onClick={() => decide('must')}>
-          <Icon name="star" size={26} />
+        <button type="button" className="swipe-btn swipe-btn--like" aria-label={t('swipe.yes')} onClick={() => decide('yes')}>
+          <Icon name="heart" filled size={28} />
         </button>
-        <button type="button" className="btn btn--round btn--lg yes" aria-label={t('swipe.yes')} onClick={() => decide('yes')}>
-          <Icon name="heart" size={30} strokeWidth={2.5} />
+        <button type="button" className="swipe-btn swipe-btn--small swipe-btn--star" aria-label={t('swipe.must')} onClick={() => decide('must')}>
+          <Icon name="star" filled size={20} />
         </button>
       </div>
       <Button block variant="text" onClick={finish}>{t('quiz.skip')}</Button>

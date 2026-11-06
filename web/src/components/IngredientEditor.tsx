@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { parseIngredientLine, type Catalog } from '@logic/ingredients.ts';
-import { matchProduct, productName, type Product } from '@logic/products.ts';
+import { matchProduct, productName, unitsFor, type Product } from '@logic/products.ts';
 import { useI18n } from '../i18n/index.tsx';
-import type { GroceryCatalog } from '../lib/products.ts';
+import { searchProducts, type GroceryCatalog } from '../lib/products.ts';
+import { AmountControl, AmountSheet, Highlight, type Amount } from './GroceryControls.tsx';
 import { useAmount } from '../lib/units.ts';
 import { ProductPicker } from './ProductPicker.tsx';
-import { Button, Chip, Field, ListRow, Section, Sheet, SheetHeader } from './ui.tsx';
+import { Button, Chip, CreateRow, Field, ListRow, SearchField, Section, Sheet, SheetHeader } from './ui.tsx';
 
 /** A recipe line being reviewed or typed, with the item it is. */
 export interface DraftIngredient {
@@ -43,7 +44,20 @@ export function draftFromLine(
   return { ...base, product_id: m?.product.id ?? null, match: m?.confidence ?? 'new', ...extra };
 }
 
-/** Recipe ingredients, added the way you add to the groceries list. */
+/** Units a recipe line can be written in and read back from (parseIngredientLine). */
+export const RECIPE_LINE_UNITS = ['piece', 'g', 'kg', 'ml', 'cl', 'l', 'tbsp', 'tsp', 'clove', 'pinch', 'bunch', 'slice', 'can', 'pack'] as const;
+
+/** The line again from an amount and a name: "200 g framboises"; whole items as a bare count. */
+export function lineText(quantity: number | null, unit: string | null, name: string): string {
+  if (quantity === null) return name;
+  return `${quantity}${unit && unit !== 'piece' ? ` ${unit}` : ''} ${name}`;
+}
+
+/**
+ * Recipe ingredients, added exactly like on the groceries list: search the
+ * catalogue, + adds the item and becomes its amount (quantity, unit, remove),
+ * and "Create" adds something the catalogue doesn't have.
+ */
 export function IngredientEditor({
   items,
   onChange,
@@ -54,10 +68,12 @@ export function IngredientEditor({
   catalog: GroceryCatalog | null;
 }) {
   const { t, tn, locale } = useI18n();
-  const { recipeAmount } = useAmount();
   const [draft, setDraft] = useState('');
   const [openKey, setOpenKey] = useState<string | null>(null);
+  const [amountKey, setAmountKey] = useState<string | null>(null);
   const open = items.find((i) => i.key === openKey) ?? null;
+  const amountItem = items.find((i) => i.key === amountKey) ?? null;
+  const { recipeAmount } = useAmount();
   const toCheck = items.filter((i) => i.match === 'close' || i.suggestion_id).length;
 
   const productOf = (i: DraftIngredient) => (i.product_id ? catalog?.index.get(i.product_id) : undefined);
@@ -65,9 +81,9 @@ export function IngredientEditor({
     const p = productOf(i);
     return p ? productName(p, locale) : productName({ name_fr: parseIngredientLine(i.text).name || i.text, name_en: null });
   };
-  const amountOf = (i: DraftIngredient) => {
+  const amountOf = (i: DraftIngredient): Amount => {
     const p = parseIngredientLine(i.text);
-    return recipeAmount(p.quantity, p.unit);
+    return { quantity: p.quantity, unit: p.quantity === null ? null : p.unit };
   };
   const suggestionName = (i: DraftIngredient) => {
     const p = i.suggestion_id ? catalog?.index.get(i.suggestion_id) : undefined;
@@ -77,46 +93,78 @@ export function IngredientEditor({
     i.match === 'close' ? t('ingredients.check')
       : i.match === 'new' ? (suggestionName(i) ? t('ingredients.maybe', { name: suggestionName(i)! }) : t('ingredients.newItem'))
         : i.guessed ? t('recipe.guessed') : '';
-  const flagged = (i: DraftIngredient) => i.match === 'close' || !!i.suggestion_id;
 
   const update = (key: string, patch: Partial<DraftIngredient>) =>
     onChange(items.map((i) => (i.key === key ? { ...i, ...patch } : i)));
+  const setAmount = (i: DraftIngredient, a: Amount) =>
+    update(i.key, { text: lineText(a.quantity, a.unit, parseIngredientLine(i.text).name || titleOf(i)), guessed: false });
+  const remove = (key: string) => onChange(items.filter((i) => i.key !== key));
 
-  const add = (product: Product | null, text: string) => {
+  const parsed = parseIngredientLine(draft);
+  const { results, exact } = searchProducts(catalog, parsed.name, { limit: 6 });
+  const add = (product: Product | null) => {
+    const name = product ? productName(product, locale).toLowerCase() : parsed.name;
     setDraft('');
-    onChange([...items, { key: newKey(), text, guessed: false, product_id: product?.id ?? null, match: product ? 'chosen' : 'new' }]);
+    onChange([...items, {
+      key: newKey(), text: lineText(parsed.quantity, parsed.unit, name), guessed: false,
+      product_id: product?.id ?? null, match: product ? 'chosen' : 'new',
+    }]);
   };
+  const lineOf = (p: Product) => items.find((i) => i.product_id === p.id);
 
   return (
     <div className="stack">
-      {toCheck > 0 && <p className="notice">{tn('ingredients.toCheck', toCheck)}</p>}
-      {items.length > 0 ? (
+      {toCheck > 0 && <p className="t-callout text-sage m-0">{tn('ingredients.checkShort', toCheck)}</p>}
+      {items.length > 0 && (
         <div className="list">
           {items.map((i) => (
-            <ListRow key={i.key} onClick={() => setOpenKey(i.key)} title={titleOf(i)}
-              meta={(metaOf(i) || i.match !== 'chosen') && (
-                <span className="stack-lines">
-                  {metaOf(i) && <span className={flagged(i) ? 'text-warning' : undefined}>{metaOf(i)}</span>}
-                  {i.match !== 'chosen' && <span>{i.text}</span>}
-                </span>
-              )}
-              trailing={<span className="muted small">{amountOf(i)}</span>} />
+            <ListRow key={i.key} className="grocery-pick"
+              title={<button type="button" className="list-row__tap" onClick={() => setOpenKey(i.key)}>{titleOf(i)}</button>}
+              meta={metaOf(i) && <span className={i.match === 'close' || i.suggestion_id ? 'text-sage' : undefined}>{metaOf(i)}</span>}
+              trailing={(
+                // On the recipe, as on the list: the amount in grey; tapping it opens quantity and unit.
+                <button type="button" className="grocery-row__amount" aria-label={t('groceries.amountOf', { name: titleOf(i) })}
+                  onClick={() => setAmountKey(i.key)}>
+                  {recipeAmount(amountOf(i).quantity, amountOf(i).unit) || '–'}
+                </button>
+              )} />
           ))}
         </div>
-      ) : (
-        <p className="muted small m-0">{t('ingredients.empty')}</p>
       )}
 
-      <ProductPicker catalog={catalog} value={draft} onChange={setDraft}
-        onPick={(p, parsed) => add(p, parsed.raw_text)}
-        placeholder={t('ingredients.addPlaceholder')} label={t('ingredients.add')} />
+      <SearchField value={draft} onChange={setDraft} placeholder={t('ingredients.add')} label={t('ingredients.add')}
+        onEnter={() => parsed.name && add(exact ?? results[0] ?? null)} />
+      {parsed.name && (
+        <div className="list" role="list" aria-label={t('groceries.suggestions')}>
+          {results.map((p) => {
+            const name = productName(p, locale);
+            const line = lineOf(p);
+            return (
+              <ListRow key={p.id} role="listitem" className="grocery-pick"
+                title={<span className="grocery-pick__name"><Highlight text={name} query={parsed.name} /></span>}
+                trailing={(
+                  <AmountControl name={name} amount={line ? amountOf(line) : null} units={unitsFor(p)} allUnits={RECIPE_LINE_UNITS}
+                    onAdd={() => add(p)} onChange={(a) => line && setAmount(line, a)} onRemove={() => line && remove(line.key)} />
+                )} />
+            );
+          })}
+          {!exact && (
+            <CreateRow role="listitem" title={t('groceries.createRow', { name: parsed.name })} onClick={() => add(null)} />
+          )}
+        </div>
+      )}
+
+      <AmountSheet open={!!amountItem} title={amountItem ? t('groceries.amountOf', { name: titleOf(amountItem) }) : ''}
+        value={amountItem ? amountOf(amountItem) : { quantity: null, unit: null }}
+        units={amountItem && productOf(amountItem) ? unitsFor(productOf(amountItem)!) : []} allUnits={RECIPE_LINE_UNITS}
+        onClose={() => setAmountKey(null)} onDone={(a) => { if (amountItem) setAmount(amountItem, a); setAmountKey(null); }} />
 
       <Sheet open={!!open} onClose={() => setOpenKey(null)} label={open ? titleOf(open) : ''}>
         {open && (
           <IngredientSheet key={open.key} item={open} title={titleOf(open)} catalog={catalog}
             suggestion={suggestionName(open)}
             onUpdate={(patch) => update(open.key, patch)}
-            onRemove={() => { onChange(items.filter((i) => i.key !== open.key)); setOpenKey(null); }}
+            onRemove={() => { remove(open.key); setOpenKey(null); }}
             onClose={() => setOpenKey(null)} />
         )}
       </Sheet>

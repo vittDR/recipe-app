@@ -4,7 +4,7 @@
 
 import { corsHeaders, json, requireMember, serviceClient } from '../_shared/http.ts';
 import { buildDeck, type CandidateRecipe, type DeckMember, type Diet, type Mood, type RecipeHistory } from '../_shared/logic/deck.ts';
-import { canonicalFeature, classifyRow, CLASSIFY_COLUMNS, type ClassifiableRow } from '../_shared/logic/classify.ts';
+import { canonicalFeature, classifyRow, CLASSIFY_COLUMNS, storedClassification, type ClassifiableRow } from '../_shared/logic/classify.ts';
 import { Catalog, type CatalogEntry } from '../_shared/logic/ingredients.ts';
 import { recipeFeatures } from '../_shared/logic/preferences.ts';
 import { splitPot } from '../_shared/logic/portions.ts';
@@ -35,7 +35,7 @@ Deno.serve(async (req) => {
 
   // Someone already dealt tonight: join that deck instead of dealing a second one.
   const { data: open } = await admin.from('decks').select('id')
-    .eq('household_id', householdId).eq('for_date', forDate).in('status', ['open', 'tiebreak'])
+    .eq('household_id', householdId).eq('for_date', forDate).eq('status', 'open')
     .order('created_at', { ascending: false }).limit(1).maybeSingle();
   if (open) return json({ deck_id: open.id, existing: true });
 
@@ -44,8 +44,16 @@ Deno.serve(async (req) => {
   const requested: string[] = Array.isArray(body.who_eating) ? body.who_eating : householdUsers;
   const eaters = [...new Set([userId, ...requested])].filter((u) => householdUsers.includes(u));
 
+  // Tonight's decks that ended without a match: the new deck leaves their cards
+  // out and leans towards what anyone said yes to in them.
+  const { data: failedDecks } = await admin.from('decks').select('id, deck_cards(recipe_id), swipes(recipe_id, verdict)')
+    .eq('household_id', householdId).eq('for_date', forDate).eq('status', 'no_match');
+  const exclude = new Set((failedDecks ?? []).flatMap((d) => ((d.deck_cards ?? []) as { recipe_id: string }[]).map((c) => c.recipe_id)));
+  const likedBefore = new Set((failedDecks ?? []).flatMap((d) => ((d.swipes ?? []) as { recipe_id: string; verdict: string }[])
+    .filter((x) => x.verdict !== 'pass').map((x) => x.recipe_id)));
+
   const since = (days: number) => new Date(Date.now() - days * 86_400_000).toISOString();
-  const [goals, rules, patterns, swipes, recipes, meals, pantry, catalog, signals] = await Promise.all([
+  const [goals, rules, patterns, swipes, recipes, meals, pantry, catalog, signals, allergies, allergenLinks] = await Promise.all([
     admin.from('member_goals').select('*').in('user_id', eaters),
     admin.from('taste_rules').select('user_id, kind, value, product_id').in('user_id', eaters),
     admin.from('learned_patterns').select('user_id, pattern, weight').in('user_id', eaters).eq('status', 'accepted'),
@@ -61,8 +69,10 @@ Deno.serve(async (req) => {
     // Quiz answers, pass reasons and ratings (logic/profile.ts).
     admin.from('taste_signals').select('user_id, recipe_id, kind, value, deck_id, meal_id, created_at')
       .in('user_id', eaters).order('created_at', { ascending: false }).limit(2000),
+    admin.from('member_allergies').select('user_id, allergen, ingredient').in('user_id', eaters),
+    admin.from('allergen_ingredients').select('allergen, ingredient'),
   ]);
-  for (const r of [goals, rules, patterns, swipes, recipes, meals, pantry, catalog, signals]) {
+  for (const r of [goals, rules, patterns, swipes, recipes, meals, pantry, catalog, signals, allergies, allergenLinks]) {
     if (r.error) return json({ error: r.error.message }, 500);
   }
   // Whether each swiped card fit each eater when it was dealt: what lets the diet explain a pass away.
@@ -73,7 +83,10 @@ Deno.serve(async (req) => {
   if (portions.error) return json({ error: portions.error.message }, 500);
 
   const dietOf = new Map((catalog.data ?? []).map((c) => [c.name as string, c.diet_class as 'veg' | 'fish' | 'meat']));
-  const ingredientCatalog = new Catalog((catalog.data ?? []) as CatalogEntry[]);
+  const { data: versions } = await admin.rpc('catalog_version');
+  const ingredientCatalog = new Catalog((catalog.data ?? []) as CatalogEntry[], (versions as { ingredients?: string } | null)?.ingredients ?? null);
+  // Classifications worked out now, to store for next time.
+  const fresh: { id: string; classification: unknown; classified_with: string }[] = [];
 
   // Seed recipes the household copied are replaced by their copy.
   const copied = new Set((recipes.data ?? []).filter((r) => r.copied_from).map((r) => r.copied_from as string));
@@ -86,13 +99,18 @@ Deno.serve(async (req) => {
     const required = ings.filter((i) => !i.optional);
     const optional = ings.filter((i) => i.optional);
     // What the dish is, from its ingredients, steps and tags (logic/classify.ts).
-    const classification = classifyRow(r as unknown as ClassifiableRow, ingredientCatalog);
+    const row = r as unknown as ClassifiableRow;
+    const classification = classifyRow(row, ingredientCatalog);
+    if (ingredientCatalog.version && !storedClassification(row, ingredientCatalog)) {
+      fresh.push({ id: r.id, classification, classified_with: ingredientCatalog.version });
+    }
     const features = recipeFeatures(r.tags ?? [], ings, classification);
     featuresById.set(r.id, features);
     // Swipes and ratings made on the seed recipe before the household copied it count for the copy.
     if (r.copied_from) featuresById.set(r.copied_from as string, features);
     const classes = ings.map((i) => dietOf.get(i.name));
     return {
+      allIngredients: ings.map((i) => i.name.toLowerCase()),
       id: r.id,
       title: r.title,
       tags: r.tags ?? [],
@@ -147,6 +165,10 @@ Deno.serve(async (req) => {
       never: mine.filter((x) => x.kind === 'never').map((x) => x.product_id as string),
       loves: mine.filter((x) => x.kind === 'love').map((x) => x.product_id as string),
       diet: (mine.find((x) => x.kind === 'diet')?.value ?? 'everything') as Diet,
+      // An allergen stands for every ingredient and preparation linked to it.
+      allergies: (allergies.data ?? []).filter((a) => a.user_id === uid).flatMap((a) => (a.ingredient
+        ? [a.ingredient as string]
+        : (allergenLinks.data ?? []).filter((l) => l.allergen === a.allergen).map((l) => l.ingredient as string))),
       weights,
       profile,
       adherence: dietAdherence(memberSignals),
@@ -170,10 +192,17 @@ Deno.serve(async (req) => {
     if (m.for_date >= recentCutoff && m.for_date < forDate) recentlyCooked.add(m.recipe_id);
   }
 
+  // Specific features only (protein, dish, cuisine…): "dinner" or a staple says nothing about taste.
+  const lean = new Set([...likedBefore].flatMap((id) => featuresById.get(id) ?? []).filter((f) => f.includes(':')));
+  // Kept on the recipes; cleared by the database when a recipe or its ingredients change.
+  if (fresh.length) await admin.rpc('store_classifications', { p_rows: fresh });
+
   const cards = buildDeck(candidates, members, history, {
     mood,
     maxMinutes,
     recentlyCooked,
+    exclude,
+    lean,
     // Recipe lines are named by catalogue ingredient ("chicken breast"); list
     // lines by their French product name, so compare on the product's ingredient.
     pantry: (pantry.data ?? []).map((p) => {

@@ -20,6 +20,8 @@ export interface CandidateRecipe {
   title: string;
   tags: string[];
   ingredientNames: string[]; // non-staple ingredient names, lowercase
+  /** Every line's catalogue ingredient, staples and optional lines included: what allergies are checked against. */
+  allIngredients?: string[];
   productIds?: string[]; // the catalogue items its ingredients are, staples included
   /** Items found only on optional lines: a "never" rule doesn't rule the recipe out for them. */
   optionalProductIds?: string[];
@@ -38,6 +40,12 @@ export interface DeckMember extends EaterTargets {
   never: string[];
   loves: string[];
   diet: Diet;
+  /**
+   * Catalogue ingredients this person is allergic to (an allergen's linked
+   * ingredients and preparations, plus any added by hand). Harder than never:
+   * optional lines and staples count too.
+   */
+  allergies?: string[];
   /** Soft weights per feature (tags/ingredients), [-1, 1], incl. accepted patterns. Used when there's no profile. */
   weights: Map<string, number>;
   /** Taste profile (profile.ts), accepted patterns included: scored with recommend.ts. */
@@ -65,6 +73,10 @@ export interface DeckOptions {
   maxMinutes?: number | null;
   pantry?: string[]; // ingredient names bought or marked at home recently
   recentlyCooked?: Set<string>;
+  /** Cards of tonight's decks that ended without a match: left out of the new one. */
+  exclude?: Set<string>;
+  /** Features of what someone said yes to in those decks: the new deck leans towards them. */
+  lean?: Set<string>;
   random?: () => number;
 }
 
@@ -94,6 +106,7 @@ const usesProduct = (productIds: string[] | undefined, ids: string[]) =>
 
 export function passesHardFilters(recipe: CandidateRecipe, members: DeckMember[], opts: DeckOptions): boolean {
   if (opts.recentlyCooked?.has(recipe.id)) return false;
+  if (opts.exclude?.has(recipe.id)) return false;
   if (opts.maxMinutes && recipe.totalMin && recipe.totalMin > opts.maxMinutes) return false;
   // The recipe as it's still made when every optional line is left out.
   const essential = recipe.productIds?.filter((id) => !recipe.optionalProductIds?.includes(id));
@@ -101,6 +114,10 @@ export function passesHardFilters(recipe: CandidateRecipe, members: DeckMember[]
     if (m.diet === 'vegetarian' && recipe.dietClass !== 'veg') return false;
     if (m.diet === 'pescatarian' && recipe.dietClass === 'meat') return false;
     if (usesProduct(essential, m.never)) return false;
+    if (m.allergies?.length) {
+      const names = recipe.allIngredients ?? recipe.ingredientNames;
+      if (names.some((n) => m.allergies!.includes(n.toLowerCase()))) return false;
+    }
   }
   return true;
 }
@@ -173,8 +190,10 @@ export function scoreRecipe(
 
   const liked = history ? (history.yes - history.pass) / (history.yes + history.pass + 2) : 0;
   const novelty = (opts.random ?? Math.random)() * 0.15;
+  // After a no-match: closer to what someone liked in the deck that failed (counts in every tier).
+  const lean = opts.lean?.size ? Math.min(1, features.filter((f) => opts.lean!.has(f)).length / 3) : 0;
 
-  const base = fitW * fit + 1 * love + 1.2 * moodScore(recipe, opts.mood) + 1 * pantryScore + 0.8 * liked + novelty;
+  const base = fitW * fit + 1 * love + 1.2 * moodScore(recipe, opts.mood) + 1 * pantryScore + 0.8 * liked + 1.2 * lean + novelty;
   const score = base + 1.5 * pref + EXPLORE_WEIGHT * explore;
 
   const reason = pantryHits.length > 0 ? `pantry:${pantryHits[0]}` : love > 0 ? 'love' : null;

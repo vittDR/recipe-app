@@ -1,0 +1,17 @@
+{
+  "$description": "App-only tokens that Household Warm v2 (tokens.json) doesn't define: destructive red, member colours for a third person and beyond, larger spacing steps, one regular-weight small text style, the tab bar shadow and control shadows. Same shape rules as tokens.json; run `npm run theme` in web/ after editing.",
+  "color": {
+    "danger": { "light": "#b3261e", "dark": "#f2857c" }
+  },
+  "member": ["#e07a5f", "#6f7fd6", "#5e8a45", "#8c5a9e", "#b7812a", "#2f8a86"],
+  "spacing": { "space-8": "24px", "space-9": "32px", "space-10": "40px" },
+  "type": {
+    "footnote": { "fontSize": "13px", "lineHeight": "18px", "fontWeight": 400 }
+  },
+  "shadow": {
+    "shadow-bar": { "light": "0 6px 30px rgba(60,40,20,.12)", "dark": "0 6px 30px rgba(0,0,0,.45)" },
+    "shadow-control": { "light": "0 1px 3px rgba(0,0,0,.08)", "dark": "0 1px 3px rgba(0,0,0,.4)" },
+    "shadow-knob": { "light": "0 2px 4px rgba(0,0,0,.2)", "dark": "0 2px 4px rgba(0,0,0,.4)" }
+  },
+  "touch-target": "44px"
+}

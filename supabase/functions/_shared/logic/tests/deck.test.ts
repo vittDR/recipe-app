@@ -131,3 +131,25 @@ test('features given by the caller drive preference scoring', () => {
   const deck = buildDeck(recipes, [member({ weights: new Map([['sauce:coconut', -1]]) })], new Map(), { random: fixed, size: 1, newShare: 1 });
   assert.equal(deck[0].recipeId, 'b');
 });
+
+test('after a no-match: the failed cards are left out and liked features lift a card', () => {
+  const recipes = [
+    recipe('failed', { features: ['protein:chicken'] }),
+    recipe('chicken curry', { features: ['protein:chicken', 'dish:curry', 'cuisine:indian'] }),
+    recipe('tofu salad', { features: ['protein:tofu', 'dish:salad'] }),
+  ];
+  const deck = buildDeck(recipes, [member()], new Map(), {
+    exclude: new Set(['failed']), lean: new Set(['protein:chicken', 'dish:curry']), random: fixed,
+  });
+  assert.deepEqual(deck.map((c) => c.recipeId), ['chicken curry', 'tofu salad']);
+});
+
+test('allergies rule out a recipe on any line, optional or staple', () => {
+  const recipes = [
+    recipe('pesto pasta', { ingredientNames: ['pasta'], allIngredients: ['pasta', 'pesto'] }),
+    recipe('salad', { ingredientNames: ['lettuce'], allIngredients: ['lettuce', 'parmesan'] }),
+    recipe('rice', { ingredientNames: ['rice'], allIngredients: ['rice'] }),
+  ];
+  const deck = buildDeck(recipes, [member({ allergies: ['pesto', 'parmesan'] }), member({ userId: 'v' })], new Map(), { random: fixed });
+  assert.deepEqual(deck.map((c) => c.recipeId), ['rice']);
+});

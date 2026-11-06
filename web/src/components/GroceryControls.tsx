@@ -27,6 +27,7 @@ export function AmountControl({
   onAdd,
   onChange,
   onRemove,
+  allUnits,
 }: {
   name: string;
   /** Null: not on the list. */
@@ -36,6 +37,8 @@ export function AmountControl({
   onAdd: () => void;
   onChange: (a: Amount) => void;
   onRemove: () => void;
+  /** Every unit offered, and no custom ones (recipe lines); default: the list's units plus custom ones. */
+  allUnits?: readonly string[];
 }) {
   const { t } = useI18n();
   const { number, unitLabel } = useAmount();
@@ -59,7 +62,7 @@ export function AmountControl({
       <button type="button" className="amount__trash" aria-label={t('groceries.removeItem')} onClick={onRemove}>
         <Icon name="trash" size={18} />
       </button>
-      <AmountSheet open={editing} title={t('groceries.amountOf', { name })} value={amount} units={units}
+      <AmountSheet open={editing} title={t('groceries.amountOf', { name })} value={amount} units={units} allUnits={allUnits}
         onClose={() => setEditing(false)} onDone={(a) => { setEditing(false); onChange(a); }} />
     </div>
   );
@@ -89,12 +92,14 @@ const writeCustomUnits = (units: string[]) => {
  * ones first, then the rest, then "New unit"), and the keypad under them.
  * Decimals allowed, empty = no quantity.
  */
-export function AmountSheet({ open, title, value, units, onClose, onDone }: {
+export function AmountSheet({ open, title, value, units, allUnits, onClose, onDone }: {
   open: boolean;
   title: string;
   value: Amount;
   /** Units to suggest first. */
   units: string[];
+  /** Every unit offered, and no custom ones; default: the list's units plus custom ones. */
+  allUnits?: readonly string[];
   onClose: () => void;
   onDone: (a: Amount) => void;
 }) {
@@ -127,7 +132,9 @@ export function AmountSheet({ open, title, value, units, onClose, onDone }: {
     if (row && chip) row.scrollLeft = chip.offsetLeft - (row.clientWidth - chip.offsetWidth) / 2;
   }, [open, unit, naming]);
 
-  const pills = [...new Set([...units, ...GROCERY_UNITS, ...custom, ...(unit ? [unit] : [])])];
+  const pills = allUnits
+    ? [...new Set([...units.filter((u) => allUnits.includes(u)), ...allUnits, ...(unit ? [unit] : [])])]
+    : [...new Set([...units, ...GROCERY_UNITS, ...custom, ...(unit ? [unit] : [])])];
 
   const press = (k: (typeof KEYS)[number]) => {
     navigator.vibrate?.(5);
@@ -172,7 +179,7 @@ export function AmountSheet({ open, title, value, units, onClose, onDone }: {
       ) : (
         <div ref={pillsRef} className="chips chips--scroll amount-sheet__units" role="group" aria-label={t('groceries.unit')}>
           {pills.map((u) => <Chip key={u} pressed={u === unit} onClick={() => setUnit(u)}>{unitLabel(u)}</Chip>)}
-          <Chip onClick={() => setNaming(true)}><Icon name="plus" size={16} /> {t('groceries.newUnit')}</Chip>
+          {!allUnits && <Chip onClick={() => setNaming(true)}><Icon name="plus" size={16} /> {t('groceries.newUnit')}</Chip>}
         </div>
       )}
       <div className="keypad">

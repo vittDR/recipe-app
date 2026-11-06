@@ -11,13 +11,13 @@ export function MemberList({ onRemove, invite = true }: {
   invite?: boolean;
 }) {
   const { t } = useI18n();
-  const { userId, household, members } = useSession();
+  const { userId, household, members, memberColor } = useSession();
   const isOwner = household?.owner_id === userId;
   return (
     <div className="list">
       {members.map((m) => (
         <ListRow key={m.user_id}
-          icon={<Avatar name={m.profile.first_name} color={m.profile.color} />}
+          icon={<Avatar name={m.profile.first_name} color={memberColor(m.user_id)} />}
           title={m.user_id === userId ? `${m.profile.first_name} (${t('app.you')})` : m.profile.first_name}
           meta={m.user_id === household?.owner_id ? t('settings.owner') : undefined}
           trailing={onRemove && isOwner && m.user_id !== userId && (

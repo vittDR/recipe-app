@@ -127,8 +127,21 @@ insert into swipes (deck_id, recipe_id, user_id, verdict) values
 select pg_temp.check((select finished_at is not null and swiped_count = 3 from deck_members
                       where user_id = auth.uid()), 'A finished');
 
+-- A finished deck can't be undone.
+select pg_temp.check(undo_swipe('10000000-0000-0000-0000-000000000001') is null, 'no undo once finished');
+
 -- B mid-swipe cannot see A's verdicts; after finishing, can.
 select pg_temp.act_as('00000000-0000-0000-0000-00000000000b');
+insert into swipes (deck_id, recipe_id, user_id, verdict) values
+  ('10000000-0000-0000-0000-000000000001', :'r1', auth.uid(), 'pass');
+insert into taste_signals (recipe_id, kind, value, deck_id)
+values (:'r1', 'reason', 'too_long', '10000000-0000-0000-0000-000000000001');
+-- Undo takes back B's last choice and its reason; B chooses again.
+select pg_temp.check(undo_swipe('10000000-0000-0000-0000-000000000001') = :'r1'::uuid, 'undo returns the card');
+select pg_temp.check((select count(*) = 0 from swipes), 'undone swipe is gone');
+select pg_temp.check((select count(*) = 0 from taste_signals where kind = 'reason'), 'its pass reason is gone');
+select pg_temp.check((select swiped_count = 0 from deck_members where user_id = auth.uid()), 'progress goes back');
+select pg_temp.check(undo_swipe('10000000-0000-0000-0000-000000000001') is null, 'nothing left to undo');
 insert into swipes (deck_id, recipe_id, user_id, verdict) values
   ('10000000-0000-0000-0000-000000000001', :'r1', auth.uid(), 'yes');
 select pg_temp.check((select count(*) = 1 from swipes), 'B mid-deck sees only own swipes');
@@ -137,32 +150,20 @@ insert into swipes (deck_id, recipe_id, user_id, verdict) values
   ('10000000-0000-0000-0000-000000000001', :'r2', auth.uid(), 'pass'),
   ('10000000-0000-0000-0000-000000000001', :'r3', auth.uid(), 'pass');
 select pg_temp.check((select count(*) = 6 from swipes), 'B sees all swipes after finishing');
-select pg_temp.check((select status = 'tiebreak' from decks), 'no mutual yes -> tie-break');
+select pg_temp.check((select status = 'no_match' and resolved_at is not null from decks), 'no mutual yes -> no match');
+select pg_temp.check((select count(*) = 0 from meals where for_date = current_date), 'no meal without a match');
 
--- Tie-break options: r3 (must = 2 votes), r1 and r2 (1 vote each).
-select pg_temp.check((select array_agg(recipe_id order by votes desc, score desc)::text
-                      from tiebreak_options('10000000-0000-0000-0000-000000000001'))
-                      like '{' || :'r3' || ',%', 'must-have ranks first in tie-break');
-
--- Different picks: highest fit wins.
-reset role;
-update deck_cards set fit_score = 0.9 where recipe_id = :'r1';
-select pg_temp.act_as('00000000-0000-0000-0000-00000000000b');
-insert into tiebreak_picks (deck_id, user_id, recipe_id) values ('10000000-0000-0000-0000-000000000001', auth.uid(), :'r1');
-select pg_temp.check((select status = 'tiebreak' from decks), 'waits for both picks');
-select pg_temp.act_as('00000000-0000-0000-0000-00000000000a');
-insert into tiebreak_picks (deck_id, user_id, recipe_id) values ('10000000-0000-0000-0000-000000000001', auth.uid(), :'r3');
-select pg_temp.check((select status = 'matched' and matched_recipe_id = :'r1' from decks),
-                     'different picks -> best fit wins');
-select pg_temp.check((select recipe_id = :'r1' from meals where for_date = current_date), 'meal recorded');
+-- A no-match deck can't be closed or undone; a new deck can be dealt the same evening.
+select close_deck('10000000-0000-0000-0000-000000000001');
+select pg_temp.check((select status = 'no_match' from decks), 'no match stays no match');
 
 -- Clients cannot read the push outbox (RLS with no policies); the server can.
 select pg_temp.check((select count(*) = 0 from push_outbox), 'clients cannot read the outbox');
 reset role;
 select pg_temp.check((select count(*) filter (where kind = 'partner_joined') = 1
-                         and count(*) filter (where kind = 'match') = 2
-                         and count(*) filter (where kind = 'tiebreak') = 2
-                      from push_outbox), 'outbox has join, tie-break and match pushes');
+                         and count(*) filter (where kind = 'match') = 0
+                         and count(*) filter (where kind = 'no_match') = 2
+                      from push_outbox), 'outbox has join and no-match pushes');
 
 -- Second deck: mutual yes on two cards -> first in deck order wins; other offered.
 insert into decks (id, household_id, for_date, started_by, who_eating)

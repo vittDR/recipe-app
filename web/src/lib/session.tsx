@@ -147,7 +147,14 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         clearHouseholdCache();
       },
       memberName: (id) => (id ? byId.get(id)?.first_name ?? '' : ''),
-      memberColor: (id) => (id ? byId.get(id)?.color ?? 'var(--c-muted)' : 'var(--c-muted)'),
+      // Colour = meaning: you are always person-1, the first partner iris;
+      // anyone after that keeps the colour they picked.
+      memberColor: (id) => {
+        if (!id) return 'var(--muted)';
+        if (id === userId) return 'var(--person-1)';
+        if (id === members.find((m) => m.user_id !== userId)?.user_id) return 'var(--iris)';
+        return byId.get(id)?.color ?? 'var(--muted)';
+      },
     };
   }, [loading, session, userId, profile, household, members, goals, isCatalogAdmin, load]);
 

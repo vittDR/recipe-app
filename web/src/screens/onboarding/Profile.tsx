@@ -12,7 +12,7 @@ export function ProfileScreen() {
   const { userId, profile, refresh } = useSession();
   const navigate = useNavigate();
   const [name, setName] = useState(profile?.first_name ?? '');
-  const [color, setColor] = useState(profile?.color ?? MEMBER_COLORS[0]);
+  const color = profile?.color ?? MEMBER_COLORS[0];
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -34,21 +34,11 @@ export function ProfileScreen() {
     <Screen title={t('account.profileTitle')} plain>
       <form className="stack stack--lg" onSubmit={(e) => { e.preventDefault(); void save(); }}>
         <div className="row">
-          <Avatar name={name} color={color} size="lg" />
+          <Avatar name={name} color="var(--person-1)" size="lg" />
           <Field label={t('account.firstName')}>
             <input className="input" autoComplete="given-name" required value={name}
               placeholder={t('account.firstNamePlaceholder')} onChange={(e) => setName(e.target.value)} />
           </Field>
-        </div>
-        <div className="stack">
-          <span className="field__label">{t('account.color')}</span>
-          <div className="swatches">
-            {MEMBER_COLORS.map((c) => (
-              <button key={c} type="button" className="swatch" style={{ background: c }} aria-pressed={c === color}
-                aria-label={c} onClick={() => setColor(c)} />
-            ))}
-          </div>
-          <span className="small muted">{t('account.colorHint')}</span>
         </div>
         <div className="stack">
           <span className="field__label">{t('account.language')}</span>

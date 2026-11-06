@@ -6,7 +6,7 @@ import { defaultAmount, ProductIndex, productName, sectionOf, unitsFor, type Pro
 import { AmountControl, AmountSheet, Highlight, SwipeRow, SyncIcon, type Amount } from '../components/GroceryControls.tsx';
 import { CreateItemSheet, ItemSheet, sectionKeyOf, UsualsSheet, useSectionTitle, type ListItem } from '../components/GrocerySheets.tsx';
 import { Icon } from '../components/Icon.tsx';
-import { Avatar, Button, Checkbox, CreateRow, dismissToast, ListRow, ProgressBar, Screen, SearchField, Section, Segmented, Spinner, toast } from '../components/ui.tsx';
+import { Avatar, Button, Checkbox, CreateRow, dismissToast, ListRow, ProgressBar, Screen, SearchField, Section, Segmented, Spinner, TabHeader, toast } from '../components/ui.tsx';
 import { useI18n } from '../i18n/index.tsx';
 import { recipeTitle } from '../lib/recipeText.ts';
 import { useLive } from '../lib/hooks.ts';
@@ -251,11 +251,8 @@ export function GroceriesScreen() {
   const showList = !(searching && parsed.name);
 
   return (
-    <Screen>
-      <div className="row row--between">
-        <h1 className="screen__title">{t('groceries.title')}</h1>
-        <SyncIcon status={status} onRetry={() => queue.retry()} />
-      </div>
+    <Screen className="groceries">
+      <TabHeader title={t('groceries.title')} right={<SyncIcon status={status} onRetry={() => queue.retry()} />} />
 
       <div className="row grocery-search">
         <SearchField inputRef={searchRef} value={query} onChange={setQuery} placeholder={t('groceries.addPlaceholder')}
@@ -317,7 +314,8 @@ export function GroceriesScreen() {
 
           {loading && !data ? <Spinner /> : total === 0 ? (
             <div className="center mt-8">
-              <p>🧺 {t('groceries.empty')}</p>
+              <span className="icon-tile icon-tile--sage empty-tile"><Icon name="basket" size={24} /></span>
+              <p className="headline">{t('groceries.empty')}</p>
               <p className="muted small">{t('groceries.emptyHint')}</p>
             </div>
           ) : (
@@ -369,7 +367,7 @@ export function GroceriesScreen() {
                           <span className="grocery-row__amount muted">{amount(item.quantity, item.unit)}</span>
                           {by && (
                             <span title={t('groceries.checkedBy', { name: by.profile.first_name })}>
-                              <Avatar name={by.profile.first_name} color={by.profile.color} size="sm" />
+                              <Avatar name={by.profile.first_name} color={memberColor(by.user_id)} size="sm" />
                             </span>
                           )}
                         </div>

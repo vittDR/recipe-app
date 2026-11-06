@@ -9,12 +9,12 @@ Running costs are €0: Supabase free tier, Cloudflare Pages free tier and Web P
 ```
 web/                    Vite + React + TypeScript PWA (Cloudflare Pages)
   src/i18n/             en.ts is the source of truth; fr.ts must match its shape
-  src/styles/tokens.css generated from design/tokens.json (npm run theme)
+  src/styles/tokens.css generated from design/tokens.json + tokens.app.json (npm run theme)
   src/sw.ts             service worker: offline shell, cached photos, push, notification taps
   src/lib/cache.ts      catalogues and grocery setup kept on the phone
   src/lib/theme.ts      light / dark / automatic, saved per device
 supabase/
-  migrations/           schema, server rules (matching, tie-break, lists), RLS, cron
+  migrations/           schema, server rules (matching, no match, lists), RLS, cron
   seed.sql              ingredient catalogue (EN/FR/IT) and its grocery products
   personal/             one-off data for a household (a frequently-bought list, a head start for usuals)
   seed_library.sql      119 seed recipes, generated from seed/recipes.json (don't edit)
@@ -28,7 +28,9 @@ supabase/
 scripts/                build-seed-library.ts, download_images.py, make_thumbnails.py,
                         supabase-sql.sh (run SQL on the live project)
 .github/workflows/      ci.yml (tests, seed check, build), keep-alive.yml
-design/tokens.json      Household Warm tokens (placeholder until the real file lands)
+design/                 Household Warm v2: tokens.json (the design system's file, as delivered),
+                        tokens.app.json (app-only extras), README.md (brand book), components/
+                        (component rules), screens/ (reference renders), HANDOFF.md (intents)
 ```
 
 Key rules from the handover, and where they live:
@@ -38,14 +40,18 @@ Key rules from the handover, and where they live:
 | Each person's goals and portions stay private; the partner sees only "fits" | RLS + `member_fits()` / `my_portion()` |
 | Swipes hidden until you finish the deck | `swipes_select` policy |
 | First mutual yes in deck order wins; others offered | `resolve_deck()`, `deck_matches()` |
-| Tie-break: 3 near-misses, Must-have counts double; same pick wins, else best fit | `tiebreak_options()`, `on_tiebreak_pick()` |
+| No veto, no tie-break: when nobody agreed the deck ends as no match and Ce soir offers a new one, which leaves out those cards and leans towards what anyone liked in them | `resolve_deck()`, `deal-deck` (`exclude`, `lean` in `logic/deck.ts`) |
+| Undo on the swipe screen takes back your last choice (and its pass reason) until you finish the deck | `undo_swipe()` |
+| One deck per evening on Ce soir; settings are a one-line summary over a sheet, defaulting silently to both of you, under an hour and the mood you say yes to most. Done swiping, Ce soir shows who's still swiping and the nudge; decided, tonight's dish, what's coming up and one groceries card for every planned meal | `screens/Tonight.tsx`, `components/DeckSettings.tsx` |
+| After a match, "What do you already have?": probably-owned items ticked (staples, bought recently, already listed), the rest goes to the list | `components/AddToListSheet.tsx`, `proposeListItems()` |
 | Just-me deck skips matching | `on_swipe()` |
 | One pot; each plate is that person's servings (1 by default); fits = calories within 20% of target and protein at least 85% | `logic/portions.ts`, `my_portion()` |
 | 12 cards in three tiers: 5 very close to everyone's taste, 5 close (may lean to one person, labelled), 2 wildcards that fit everyone's calorie and protein goals but take liberties with taste; never/diet/time/recently-cooked filters | `logic/deck.ts` |
 | Recommendation: taste (profile averaged per kind of feature) and diet kept apart: passes on dishes that don't fit someone's goals barely count against them, and how strictly they stick to goals only sets how much fit weighs; an exploration bonus for unknown kinds of dish, varied decks, and a treat slot for people who mind their diet | `logic/recommend.ts`, `logic/deck.ts` |
 | Taste profile from every recorded choice: deck swipes (pass reasons: not tonight / too long / had recently count nothing, not for me in full), a 20-card taste quiz in onboarding, cooked meals and a rating after eating (loved +2 … not again −2); older choices fade (half-life 180 days); shown on the Us tab | `logic/profile.ts`, `taste_signals`, `screens/onboarding/TasteQuiz.tsx` |
+| Allergies are a person's but rule out a recipe for every deck they eat from, on any line (optional and staples too). People pick from the EU's 14 allergens, each linked to the catalogue ingredients and preparations that contain it (`allergen_ingredients`, in seed.sql), or any catalogue item | `member_allergies`, `passesHardFilters()`, `components/Allergies.tsx` |
 | Patterns suggested at 8 of the last 10 exposures; apply only once accepted | `logic/preferences.ts`, Us tab |
-| Every recipe (seed, imported, typed) is classified from its ingredients, amounts, steps and tags: protein, starch, dish family, sauce, cooking method, chilli heat, how saucy, lean / high protein, comfort / light / treat. Recomputed where used, never stored; learning uses it as namespaced features, and a pass in a mood deck counts half | `logic/classify.ts`, `ingredient_catalog.traits`, [docs/recipe-classification.md](docs/recipe-classification.md) |
+| Every recipe (seed, imported, typed) is classified from its ingredients, amounts, steps and tags: protein, starch, dish family, sauce, cooking method, chilli heat, how saucy, lean / high protein, comfort / light / treat. Stored on the recipe (worked out by deal-deck) and cleared when the recipe, its ingredients, the ingredient catalogue or the rules change; only diet, health and mood show as tags, the rest feeds the deck. Learning uses it as namespaced features, and a pass in a mood deck counts half | `logic/classify.ts`, `recipes.classification`, `ingredient_catalog.traits`, [docs/recipe-classification.md](docs/recipe-classification.md) |
 | Recipes tab filters (healthy, comfort, high protein, diet, veggie, fish, quick, one pot, easy, everyday ingredients); difficulty, coarse equipment, exotic ingredients | `logic/facets.ts`, `ingredient_catalog.exotic` |
 | List lines are real products (chicken breast = Blanc de poulet = petto di pollo; plain "poulet" is its own item), French first; a recipe adds to a line of the same product + unit; staples start unchecked | `products`, `put_grocery_item()`, `logic/products.ts`, `mergeTarget()` in `logic/groceries.ts` |
 | Stores (Picard…) are list sections among the aisles | `household_stores`, `household_products`, `set_product_section()` |
@@ -58,7 +64,7 @@ Key rules from the handover, and where they live:
 | Cook days: the next 7 evenings are set on This week; a date left alone follows the usual week (Us > Usual week) | `plan_dates`, `plan_days`, `is_cook_day()`, `web/src/lib/plan.ts` |
 | Catalogues (ingredients, products, tags) stay on the phone and are re-downloaded only when `catalog_version()` changes; recipe photos (900×675 WebP) are cached by the service worker | `web/src/lib/cache.ts`, `catalog_version()`, `src/sw.ts` |
 | Language, light / dark / automatic theme and password change live in Us > Profile settings; the theme is saved per device | `web/src/lib/theme.ts`, `screens/ProfileSettings.tsx` |
-| Screens are built from the shared components in `components/ui.tsx` (ListRow, Section, SearchField, SheetHeader, ProgressBar, confirmation sheet); spacing and colours come from tokens, never inline | `components/ui.tsx`, `styles/app.css` |
+| Screens are built from the shared components in `components/ui.tsx` (TabHeader, ListRow with icon tiles, Chip and fact chips, Section, SectionHeading, SheetHeader, confirmation sheet) and `RecipeBody.tsx`; spacing and colours come from tokens, never inline. Colour = meaning (design/README.md): terracotta for tonight and actions, sage for groceries and at home, iris for the partner, star yellow only for indispensable; you are always `person-1` and the partner `iris` | `components/ui.tsx`, `styles/app.css` |
 
 ## One-time setup
 
@@ -83,12 +89,13 @@ To query or patch the live database, `scripts/supabase-sql.sh "select 1"` (or `<
 
 - Seed library: edit `supabase/seed/recipes.json` (format in [docs/recipe-template.md](docs/recipe-template.md), collection rules in [docs/recipe-collection-guidelines.md](docs/recipe-collection-guidelines.md)), then run `npm run test:sql` and `node scripts/build-seed-library.ts` to regenerate `seed_library.sql`. The script uses the app's own parser and fails on any line that doesn't match the catalogue.
 - Strings: add to `web/src/i18n/en.ts`, then `fr.ts`; TypeScript flags a missing translation.
-- Theme: edit `design/tokens.json`, then run `npm run theme` in `web/`. Never hand-edit `tokens.css`.
+- Theme: replace `design/tokens.json` with the design system's latest file (app-only tokens go in `design/tokens.app.json`), then run `npm run theme` in `web/`. Never hand-edit `tokens.css`.
 - Icons: edit `web/public/favicon.svg`, then run `NODE_PATH=$(npm root -g) npm run icons` (needs Playwright).
 
 ## Not built yet
 
 - Recipe import from Instagram captions and photos. Without AI, Instagram links fall back to typing the recipe in, with the link pre-filled.
 - An AI fallback for pages that don't publish recipe data.
-- Recipe editing and empty-state polish. A dark theme can be switched on, but screens haven't had a dark-mode design pass.
+- Recipe editing and empty-state polish. Dark tokens come from the design system, but screens haven't had a dark-mode design pass.
+- From the design handoff: "Photograph a recipe" (needs OCR). Not planned: a cooking reminder, and "suggest it tonight" after saving a recipe.
 - Carrefour Drive export.

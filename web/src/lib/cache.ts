@@ -51,6 +51,11 @@ function serverVersions(): Promise<Record<Catalogue, string>> {
   return versions;
 }
 
+/** The version of the copy kept on the phone, or null. */
+export function peekCatalogueVersion(name: Catalogue): string | null {
+  return readCache<Versioned<unknown>>(name)?.version || null;
+}
+
 /** Checks the server's versions again on next use, e.g. after editing a catalogue. */
 export function forgetCatalogueVersions(): void {
   versions = null;
