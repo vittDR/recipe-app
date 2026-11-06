@@ -149,6 +149,9 @@ export const en = {
     off: 'Out',
   },
   swipe: {
+    wildcard: 'Something a little different',
+    leansYou: 'More your kind of dish',
+    leansPartner: 'More {name}’s kind of dish',
     treat: 'A treat you’d probably love',
     why: 'Why?',
     reasons: {

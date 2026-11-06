@@ -170,22 +170,36 @@ likes and dislikes), so it follows the classification as it improves.
 - **Taste** (−1..1): the profile's weights, averaged within each kind of
   feature (dish, sauce, protein, starch, heat, texture, method, intent, plain
   tags and ingredients; at most three unknowns dilute a kind), summed with
-  per-kind weights and squashed with tanh. A recipe with fifteen ingredients
-  isn't louder than one with five.
+  per-kind weights into a weighted mean and sharpened with tanh(2 ×). A
+  recipe with fifteen ingredients isn't louder than one with five, and
+  liking most things doesn't make every dish a 1.
 - **How much they mind their diet** (adherence, 0..1): yes rate on dishes
   that fit versus dishes that didn't, shrunk to 0.5 until there are swipes on
   both sides. It sets how much goal fit counts: 2.25 (doesn't mind) to 3.75
   (minds a lot), 3 by default. It never changes their taste.
-- **Exploration**: the less is known about a dish's kind (dish, sauce,
-  protein, starch, heat, method), the bigger the bonus, up to 0.8.
+- **Exploration**: how little is known about a dish's kind (dish, sauce,
+  protein, starch, heat, method) for them, 0..1. It weighs the wildcard draw
+  and adds a little to "close" cards.
 
-Deck score = fit × fit weight + 1.5 × taste + love + 1.2 × mood + pantry +
-0.8 × household history + exploration + a little noise. The deck stays two
-thirds known, one third new, and is picked for variety: a dish much like one
-already in the deck (Jaccard over dish, protein, sauce, starch) loses up to
-1.2. For an eater with adherence ≥ 0.6, one card is kept for a **treat**: the
-dish most to their taste (≥ 0.1) that fits their goals poorly (≤ 0.6),
-labelled as such. The Us tab says which way someone leans.
+A dish's base = fit × fit weight + love + 1.2 × mood + pantry + 0.8 ×
+household history + a little noise. A deck of 12 is built in three tiers
+(`deckShape()` keeps the proportions for other sizes):
+
+| Tier | Cards | Ranked on | On the card |
+| --- | --- | --- | --- |
+| Very close | 5 | base + 2.5 × the **least** keen eater's taste: everyone should like it | |
+| Close | 5 | base + 2 × (0.6 × keenest + 0.4 × least keen) + a little exploration | "More Anna's kind of dish" when tastes differ by ≥ 0.25 |
+| Wildcard | 2 | random draw, likelier the less we know about that kind of dish, among dishes that fit everyone's goals (fit ≥ 0.7), that nobody dislikes (taste ≥ −0.2) and that the household hasn't chosen before | "Something a little different" |
+
+Tastes are compared half raw, half relative to each eater's own average over
+the library, so someone who likes most things isn't always "the keener one".
+Each tier is picked for variety: a dish much like one already in the deck
+(Jaccard over dish, protein, sauce, starch) loses up to 1.2. For an eater
+with adherence ≥ 0.6, one "close" card is kept for a **treat**: the dish most
+to their taste (≥ 0.1) that fits their goals poorly (≤ 0.6), labelled as
+such. Very close and close cards alternate, best first (the first card both
+say yes to wins); the wildcards sit about a third and three quarters of the
+way in. The Us tab says which way someone leans on their diet.
 
 ### Taste quiz
 

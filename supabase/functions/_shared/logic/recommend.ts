@@ -8,8 +8,9 @@
 //    is its own number (adherence), which only sets how much goal fit counts.
 //    Someone who eats lean on weekdays can still love cheesy pasta.
 // 2. Taste is scored per kind of feature (dish, sauce, protein…), averaged
-//    within each kind, so a recipe with fifteen ingredients isn't louder
-//    than one with five.
+//    within each kind and then across kinds, so a recipe with fifteen
+//    ingredients isn't louder than one with five, and liking most things
+//    doesn't make every dish a 1.
 // 3. Discovery: features with little evidence earn an exploration bonus
 //    (optimism under uncertainty), decks are kept varied (diversePick:
 //    similar dishes lose points), and people who mind their diet still get the
@@ -27,6 +28,9 @@ const groupOf = (f: string) => {
   return i < 0 ? 'plain' : f.slice(0, i);
 };
 
+/** Sharpens the mean opinion: a mean of 0.5 over every kind of feature reads as about 0.76. */
+export const TASTE_GAIN = 2;
+
 /** -1..1: how much this person should like a recipe with these features. Unknown features count as neutral. */
 export function tasteScore(features: string[], profile: TasteProfile): number {
   const groups = new Map<string, { sum: number; n: number }>();
@@ -39,12 +43,14 @@ export function tasteScore(features: string[], profile: TasteProfile): number {
     groups.set(g, e);
   }
   let total = 0;
+  let norm = 0;
   for (const [g, e] of groups) {
-    // Within a kind, the strongest opinion matters more than a long list of unknowns:
-    // mean over the features, but with at most 3 unknowns diluting it.
-    total += GROUP_WEIGHT[g] * (e.sum / Math.min(e.n, 3));
+    // Within a kind: mean over the features, with at most 3 unknowns diluting it.
+    total += GROUP_WEIGHT[g] * Math.max(-1, Math.min(1, e.sum / Math.min(e.n, 3)));
+    norm += GROUP_WEIGHT[g];
   }
-  return Math.tanh(total / 2);
+  // A weighted mean across kinds, so liking most things doesn't pile up to 1 for every dish.
+  return norm ? Math.tanh(TASTE_GAIN * (total / norm)) : 0;
 }
 
 /** Uncertainty is about these: what a dish is, not every ingredient. */

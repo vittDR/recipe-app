@@ -147,6 +147,9 @@ export const fr: Dictionary = {
     off: 'Dehors',
   },
   swipe: {
+    wildcard: 'Un peu différent',
+    leansYou: 'Plutôt votre genre de plat',
+    leansPartner: 'Plutôt le genre de plat de {name}',
     treat: 'Un petit plaisir qui devrait vous plaire',
     why: 'Pourquoi ?',
     reasons: {

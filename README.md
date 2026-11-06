@@ -41,7 +41,7 @@ Key rules from the handover, and where they live:
 | Tie-break: 3 near-misses, Must-have counts double; same pick wins, else best fit | `tiebreak_options()`, `on_tiebreak_pick()` |
 | Just-me deck skips matching | `on_swipe()` |
 | One pot; each plate is that person's servings (1 by default); fits = calories within 20% of target and protein at least 85% | `logic/portions.ts`, `my_portion()` |
-| 12 cards, ~8 known + 4 new, never/diet/time/recently-cooked filters | `logic/deck.ts` |
+| 12 cards in three tiers: 5 very close to everyone's taste, 5 close (may lean to one person, labelled), 2 wildcards that fit everyone's calorie and protein goals but take liberties with taste; never/diet/time/recently-cooked filters | `logic/deck.ts` |
 | Recommendation: taste (profile averaged per kind of feature) and diet kept apart: passes on dishes that don't fit someone's goals barely count against them, and how strictly they stick to goals only sets how much fit weighs; an exploration bonus for unknown kinds of dish, varied decks, and a treat slot for people who mind their diet | `logic/recommend.ts`, `logic/deck.ts` |
 | Taste profile from every recorded choice: deck swipes (pass reasons: not tonight / too long / had recently count nothing, not for me in full), a 20-card taste quiz in onboarding, cooked meals and a rating after eating (loved +2 … not again −2); older choices fade (half-life 180 days); shown on the Us tab | `logic/profile.ts`, `taste_signals`, `screens/onboarding/TasteQuiz.tsx` |
 | Patterns suggested at 8 of the last 10 exposures; apply only once accepted | `logic/preferences.ts`, Us tab |
