@@ -1,9 +1,6 @@
 import { useMemo, useState } from 'react';
 import { RATINGS, type Rating } from '@logic/profile.ts';
 import { Link, useNavigate } from 'react-router';
-import pastaCard from '../assets/deck/pasta.webp';
-import pizzaCard from '../assets/deck/pizza.webp';
-import stirFryCard from '../assets/deck/stir-fry.webp';
 import { AddToListSheet, loadProposals, type MealForList } from '../components/AddToListSheet.tsx';
 import { DeckSettingsSheet, DeckSummaryRow, MOODS, useDeckLabels, type DeckSettings } from '../components/DeckSettings.tsx';
 import { Icon } from '../components/Icon.tsx';
@@ -12,6 +9,7 @@ import {
   Avatar, AvatarPair, Button, Chip, ListRow, ProgressBar, RecipeThumb, Screen, Section, Spinner, Tag, TabHeader, imageStyle, recipeEmoji,
 } from '../components/ui.tsx';
 import { useI18n } from '../i18n/index.tsx';
+import { pickDeckArt } from '../lib/deckArt.ts';
 import { recipeTitle } from '../lib/recipeText.ts';
 import { todayIn, useLive, useSave } from '../lib/hooks.ts';
 import { comingDays, cooksOn } from '../lib/plan.ts';
@@ -304,11 +302,13 @@ export function TonightScreen() {
     // A deck is running and I still have cards: only "start swiping".
     const starter = deck.started_by !== userId && !myProgress?.swiped_count;
     const others = deck.who_eating.filter((u) => u !== userId);
+    // Same cards as this deck's no-match screen, should it come to that.
+    const [back, front] = pickDeckArt(deck.id, 2);
     main = (
       <article className="card card--flush join-card">
         <div className={`join-card__art${starter ? ' join-card__art--iris' : ''}`} aria-hidden>
-          <img className="fan fan--left fan--art" src={pastaCard} alt="" />
-          <img className="fan fan--mid fan--art" src={stirFryCard} alt="" />
+          <img className="fan fan--left fan--art" src={back} alt="" />
+          <img className="fan fan--mid fan--art" src={front} alt="" />
         </div>
         <div className="join-card__body">
           <div className="row">
@@ -382,14 +382,15 @@ export function TonightScreen() {
       </>
     );
   } else {
-    // No deck yet: dealing the deck is the only big action.
+    // No deck yet: dealing the deck is the only big action. New cards each day.
+    const [left, right, mid] = pickDeckArt(today, 3);
     main = (
       <>
         <section className="deal-hero">
           <div className="deal-hero__art" aria-hidden>
-            <img className="fan fan--left fan--art" src={pastaCard} alt="" />
-            <img className="fan fan--right fan--art" src={pizzaCard} alt="" />
-            <img className="fan fan--mid fan--art" src={stirFryCard} alt="" />
+            <img className="fan fan--left fan--art" src={left} alt="" />
+            <img className="fan fan--right fan--art" src={right} alt="" />
+            <img className="fan fan--mid fan--art" src={mid} alt="" />
           </div>
           <h2 className="deal-hero__title">{deck?.status === 'no_match' ? t('noMatch.again') : t('tonight.ask')}</h2>
           <button type="button" className="btn btn--block deal-hero__btn" disabled={dealing} onClick={() => void deal()}>
