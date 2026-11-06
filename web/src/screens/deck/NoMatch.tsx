@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import pastaCard from '../../assets/deck/pasta.webp';
+import pizzaCard from '../../assets/deck/pizza.webp';
 import { Icon } from '../../components/Icon.tsx';
 import { Button } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
@@ -44,7 +46,8 @@ export function NoMatchView({ data }: { data: DeckData }) {
     <main className="screen moment">
       <div className="moment__head moment__head--art no-match">
         <div className="no-match-art" aria-hidden>
-          <span className="fan fan--left" /><span className="fan fan--right" />
+          <img className="fan fan--left fan--art" src={pastaCard} alt="" />
+          <img className="fan fan--right fan--art" src={pizzaCard} alt="" />
           <span className="no-match-art__x"><Icon name="x" size={22} strokeWidth={2.4} /></span>
         </div>
         <h1 className="t-title-m m-0">{t('noMatch.title')}</h1>
