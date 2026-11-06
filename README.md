@@ -14,7 +14,7 @@ web/                    Vite + React + TypeScript PWA (Cloudflare Pages)
   src/lib/cache.ts      catalogues and grocery setup kept on the phone
   src/lib/theme.ts      light / dark / automatic, saved per device
 supabase/
-  migrations/           schema, server rules (matching, tie-break, lists), RLS, cron
+  migrations/           schema, server rules (matching, no match, lists), RLS, cron
   seed.sql              ingredient catalogue (EN/FR/IT) and its grocery products
   personal/             one-off data for a household (a frequently-bought list, a head start for usuals)
   seed_library.sql      119 seed recipes, generated from seed/recipes.json (don't edit)
