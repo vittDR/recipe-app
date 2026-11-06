@@ -670,6 +670,7 @@ export const fr: Dictionary = {
     },
   },
   quiz: {
+    sometimes: 'J’aime, mais pas souvent',
     progress: '{n} sur {total}',
     intro: 'Glissez à droite ce qui vous tente, à gauche ce qui ne vous tente pas, vers le haut pour un coup de cœur. Vos premiers decks partiront de là.',
     skip: 'Plus tard',

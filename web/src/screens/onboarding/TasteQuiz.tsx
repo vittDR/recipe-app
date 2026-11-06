@@ -5,7 +5,7 @@ import { useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } fro
 import { useNavigate } from 'react-router';
 import { classifyRow, CLASSIFY_COLUMNS, type ClassifiableRow } from '@logic/classify.ts';
 import { dietClassOf } from '@logic/ingredients.ts';
-import { pickStarterSet, STARTER_SIZE } from '@logic/profile.ts';
+import { pickStarterSet, STARTER_SIZE, type StarterVerdict } from '@logic/profile.ts';
 import { Icon } from '../../components/Icon.tsx';
 import { Button, ModeBar, ProgressBar, Screen, Spinner, Tag, imageStyle, recipeEmoji } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
@@ -14,7 +14,7 @@ import { useCatalog, useLive, useSave } from '../../lib/hooks.ts';
 import { recipeTitle } from '../../lib/recipeText.ts';
 import { useSession } from '../../lib/session.tsx';
 import { must, supabase } from '../../lib/supabase.ts';
-import type { Recipe, TasteRule, Verdict } from '../../lib/types.ts';
+import type { Recipe, TasteRule } from '../../lib/types.ts';
 
 const SWIPE_X = 100;
 const SWIPE_UP = 120;
@@ -31,16 +31,17 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
   const save = useSave();
   const finish = () => (editing ? navigate(-1) : navigate('/', { replace: true }));
 
-  const { data } = useLive<{ recipes: Row[]; rules: TasteRule[]; answered: Set<string> }>(`quiz:${userId}`, async () => {
+  const { data } = useLive<{ recipes: Row[]; rules: TasteRule[]; answered: Map<string, StarterVerdict> }>(`quiz:${userId}`, async () => {
     const [r, rules, answered] = await Promise.all([
       supabase.from('library_recipes').select(`id, image_path, language, ${CLASSIFY_COLUMNS.replace('recipe_ingredients(', 'recipe_ingredients(product_id, ')}`),
       supabase.from('taste_rules').select('*').eq('user_id', userId!),
-      supabase.from('taste_signals').select('recipe_id').eq('user_id', userId!).eq('kind', 'starter'),
+      supabase.from('taste_signals').select('recipe_id, value').eq('user_id', userId!).eq('kind', 'starter'),
     ]);
     return {
       recipes: must(r) as unknown as Row[],
       rules: must(rules) as TasteRule[],
-      answered: new Set((must(answered) as { recipe_id: string }[]).map((x) => x.recipe_id)),
+      // Earlier answers, so undo on a retaken card puts the old one back.
+      answered: new Map((must(answered) as { recipe_id: string; value: StarterVerdict }[]).map((x) => [x.recipe_id, x.value])),
     };
   });
 
@@ -61,6 +62,7 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
   }, [data, catalog]);
 
   const [index, setIndex] = useState(0);
+  const [undoing, setUndoing] = useState(false);
   const [drag, setDrag] = useState<{ dx: number; dy: number } | null>(null);
   const start = useRef<{ x: number; y: number } | null>(null);
 
@@ -68,7 +70,7 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
   const card = cards[index];
   const done = index >= cards.length;
 
-  const decide = (verdict: Verdict) => {
+  const decide = (verdict: StarterVerdict) => {
     if (!card) return;
     setDrag(null);
     navigator.vibrate?.(10);
@@ -78,6 +80,19 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
       { onConflict: 'user_id,key' },
     ));
     setIndex((i) => i + 1);
+  };
+
+  // Takes back the last answer: the earlier one comes back on a retaken card, otherwise it goes.
+  const undo = async () => {
+    const prev = cards[index - 1];
+    if (!prev || undoing) return;
+    setUndoing(true);
+    const before = data?.answered.get(prev.id);
+    await save(before
+      ? supabase.from('taste_signals').upsert({ user_id: userId, recipe_id: prev.id, kind: 'starter', value: before }, { onConflict: 'user_id,key' })
+      : supabase.from('taste_signals').delete().eq('user_id', userId!).eq('kind', 'starter').eq('recipe_id', prev.id));
+    setIndex((i) => Math.max(0, i - 1));
+    setUndoing(false);
   };
 
   const onPointerUp = () => {
@@ -129,6 +144,10 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
         </article>
       </div>
       <div className="swipe-actions">
+        <button type="button" className="swipe-btn swipe-btn--small" aria-label={t('swipe.undo')} disabled={index === 0 || undoing}
+          onClick={() => void undo()}>
+          <Icon name="undo" size={20} />
+        </button>
         <button type="button" className="swipe-btn" aria-label={t('swipe.pass')} onClick={() => decide('pass')}>
           <Icon name="x" size={26} strokeWidth={2.4} />
         </button>
@@ -139,6 +158,9 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
           <Icon name="star" filled size={20} />
         </button>
       </div>
+      <Button variant="secondary" className="self-center quiz-sometimes" onClick={() => decide('sometimes')}>
+        <Icon name="clock" size={18} /> {t('quiz.sometimes')}
+      </Button>
       <Button block variant="text" onClick={finish}>{t('quiz.skip')}</Button>
     </main>
   );
