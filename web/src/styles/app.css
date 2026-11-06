@@ -1029,21 +1029,8 @@ a.notice {
   overflow: hidden;
 }
 
-.option-row {
-  padding: var(--space-4);
-}
 
-.option-row__image {
-  width: 72px;
-  aspect-ratio: 1;
-  border-radius: var(--radius-md);
-  font-size: 32px;
-  flex: none;
-}
 
-.card--picked {
-  box-shadow: inset 0 0 0 2px var(--accent), var(--shadow-card);
-}
 
 .tile__image img {
   position: absolute;
@@ -1084,22 +1071,9 @@ a.notice {
   position: relative;
 }
 
-.match__title {
-  margin-top: var(--space-1);
-}
 
-.recipe__title {
-  margin-top: 0;
-}
 
-.recipe__tags {
-  margin-bottom: var(--space-6);
-}
 
-.recipe__steps {
-  margin: 0;
-  padding-left: var(--space-9);
-}
 
 /* Lines of detail under a list row's title, one under the other. */
 .stack-lines {
@@ -1126,33 +1100,11 @@ a.notice {
   line-height: 1.35;
 }
 
-.hero__back {
-  position: absolute;
-  top: calc(env(safe-area-inset-top) + var(--space-4));
-  left: var(--space-6);
-}
 
-.plates {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-4);
-}
 
 /* Tonight: the week strip in its own card, at the top. */
-.tonight-week {
-  color: inherit;
-  text-decoration: none;
-  margin-bottom: var(--space-6);
-}
 
-.tonight-week h2 {
-  margin: 0;
-}
 
-.tonight-week .week__day--today {
-  background: var(--paper);
-  box-shadow: none;
-}
 
 .week {
   display: grid;
@@ -1177,21 +1129,8 @@ a.notice {
   color: var(--ink);
 }
 
-.week__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--line);
-}
 
-.week__dot--cook {
-  background: var(--accent);
-  opacity: 0.35;
-}
 
-.week__dot--done {
-  background: var(--sage-strong);
-}
 
 .list-row__icon .week__day {
   min-width: 36px;
@@ -1237,10 +1176,6 @@ a.notice {
   color: var(--accent);
 }
 
-.big-emoji {
-  font-size: 88px;
-  line-height: 1;
-}
 
 .spinner {
   width: 28px;
@@ -2749,4 +2684,58 @@ body:has(.moment) .tabbar {
   font: var(--t-callout);
   font-size: 15px;
   font-weight: 600;
+}
+
+/* ---------- Nous ---------- */
+
+.mt-1 {
+  margin-top: var(--space-1);
+}
+
+.stack--blocks {
+  gap: var(--space-5);
+}
+
+.self-center {
+  align-self: center;
+}
+
+.household-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  text-decoration: none;
+  color: inherit;
+}
+
+.accent-link {
+  color: var(--accent-text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.insight {
+  gap: var(--space-4);
+}
+
+.insight .text-accent {
+  gap: var(--space-2);
+  color: var(--accent-text);
+}
+
+.time-input {
+  border: 0;
+  background: var(--sunken);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+  font: var(--t-callout);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.empty-tile {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
 }

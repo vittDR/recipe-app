@@ -1,4 +1,5 @@
-import { Checkbox, Field, ListRow, Screen } from '../components/ui.tsx';
+import { Icon } from '../components/Icon.tsx';
+import { Checkbox, ListRow, Screen, Section } from '../components/ui.tsx';
 import { useI18n } from '../i18n/index.tsx';
 import { useLive, useSave } from '../lib/hooks.ts';
 import { useSession } from '../lib/session.tsx';
@@ -31,21 +32,23 @@ export function PlanScreen() {
         {names.map((name, i) => {
           const cook = days?.find((x) => x.weekday === i + 1)?.cook_at_home ?? true;
           return (
-            <ListRow key={name} title={name}
+            <ListRow key={name} title={<span className={cook ? 'headline' : 'muted'}>{name}</span>}
               trailing={<Checkbox checked={cook} label={name} onChange={(v) => void toggle(i + 1, v)} color="var(--accent)" />} />
           );
         })}
       </div>
-      <div className="row mt-6">
-        <Field label={t('plan.prompt')}>
-          <input className="input" type="time" defaultValue={household!.prompt_time.slice(0, 5)}
-            onChange={(e) => void setTime('prompt_time', e.target.value)} />
-        </Field>
-        <Field label={t('plan.reminder')}>
-          <input className="input" type="time" defaultValue={household!.reminder_time.slice(0, 5)}
-            onChange={(e) => void setTime('reminder_time', e.target.value)} />
-        </Field>
-      </div>
+      <Section label={t('notifications.title')}>
+        <div className="list">
+          <ListRow tile="accent" icon={<Icon name="bell" size={18} />} title={t('settings.promptRow')} trailing={(
+            <input className="time-input" type="time" aria-label={t('plan.prompt')} defaultValue={household!.prompt_time.slice(0, 5)}
+              onChange={(e) => void setTime('prompt_time', e.target.value)} />
+          )} />
+          <ListRow tile="accent" icon={<Icon name="clock" size={18} />} title={t('plan.reminder')} trailing={(
+            <input className="time-input" type="time" aria-label={t('plan.reminder')} defaultValue={household!.reminder_time.slice(0, 5)}
+              onChange={(e) => void setTime('reminder_time', e.target.value)} />
+          )} />
+        </div>
+      </Section>
     </Screen>
   );
 }

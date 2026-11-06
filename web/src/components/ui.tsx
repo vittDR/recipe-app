@@ -277,7 +277,7 @@ export function Screen({
           {back ? (
             <button
               type="button"
-              className="icon-btn"
+              className="icon-btn icon-btn--filled"
               aria-label={t('app.back')}
               onClick={() => (typeof target === 'string' ? navigate(target, { state: routed?.backState }) : navigate(-1))}
             >

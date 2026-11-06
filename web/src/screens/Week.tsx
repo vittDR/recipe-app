@@ -63,7 +63,7 @@ export function WeekScreen() {
         })}
       </div>
       <div className="list mt-6">
-        <ListRow to="/us/plan" state={{ back: '/us/week', backState: location.state }} icon={<Icon name="calendar" />} title={t('week.usual')} meta={t('week.usualHint')} />
+        <ListRow to="/us/plan" state={{ back: '/us/week', backState: location.state }} tile="accent" icon={<Icon name="calendar" size={18} />} title={t('week.usual')} meta={t('week.usualHint')} />
       </div>
     </Screen>
   );
