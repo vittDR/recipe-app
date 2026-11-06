@@ -31,8 +31,10 @@ interface Loaded {
   quizDone: boolean;
 }
 
+// Compared as learning stores them now: an ingredient called "curry" and the legacy tag
+// "curry" both read as "dish:curry", so an answer to one also answers the other.
 const samePattern = (a: { kind: string; value: string }, b: { kind: string; value: string }) =>
-  a.kind === b.kind && a.value === b.value;
+  a.kind === b.kind && canonicalFeature(a.value) === canonicalFeature(b.value);
 
 /** The Nous tab; `preferences` is its sub-menu: allergies, tastes and goals. */
 export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
@@ -76,8 +78,7 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
     const rules = must(r) as TasteRule[];
     const exposures = rows.swipes.filter((x) => features.has(x.recipe_id))
       .map((x) => ({ verdict: x.verdict, createdAt: x.created_at, mood: x.mood, features: features.get(x.recipe_id)! }));
-    // Patterns accepted on a tag ("curry") cover the classified feature it now is ("dish:curry").
-    const known = (must(existing) as LearnedPattern[]).map((p) => ({ ...p.pattern, value: canonicalFeature(p.pattern.value) }));
+    const known = (must(existing) as LearnedPattern[]).map((p) => p.pattern);
     const ruled = new Set(rules.map((x) => x.value));
     return {
       rules,
@@ -117,13 +118,15 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
         { user_id: userId, kind: 'never', value: item.name_fr, product_id: item.id, source: 'learned' },
         { onConflict: 'user_id,kind,value' }));
     }
-    await save(supabase.from('learned_patterns').insert({
+    // An upsert: a pattern already on file (a double tap, an older answer) is updated, not refused.
+    await save(supabase.from('learned_patterns').upsert({
       user_id: userId,
       pattern: s.pattern,
       evidence_count: s.evidence,
       status: action === 'ignore' ? 'dismissed' : 'accepted',
       weight: action === 'less' ? -0.5 : action === 'more' ? 0.5 : 0,
-    }));
+      updated_at: new Date().toISOString(),
+    }, { onConflict: 'user_id,pattern' }));
     await reload();
   };
 
