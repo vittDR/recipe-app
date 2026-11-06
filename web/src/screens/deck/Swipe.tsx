@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import type { ListProposal } from '@logic/groceries.ts';
-import { PASS_REASONS, type PassReason } from '@logic/profile.ts';
 import { loadProposalsMany } from '../../components/AddToListSheet.tsx';
 import { Icon } from '../../components/Icon.tsx';
 import { RecipeBody, RecipeFacts } from '../../components/RecipeBody.tsx';
-import { AvatarPair, Chip, TabHeader, imageStyle, photoUrl, recipeEmoji, toast } from '../../components/ui.tsx';
+import { AvatarPair, TabHeader, imageStyle, photoUrl, recipeEmoji, toast } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { useLive } from '../../lib/hooks.ts';
 import { groupIngredients, INGREDIENT_SELECT } from '../../lib/products.ts';
@@ -142,7 +141,6 @@ export function SwipeView({ data, onDone }: { data: DeckData; onDone: () => Prom
   const [expanded, setExpanded] = useState(false);
   const [undoing, setUndoing] = useState(false);
   // The card just passed on, to say why if the person wants to (optional, never blocks swiping).
-  const [lastPass, setLastPass] = useState<{ recipeId: string; reason: PassReason | null } | null>(null);
   const start = useRef<{ x: number; y: number } | null>(null);
 
   // Fetch every card's photo up front, so each card shows at once when it comes to the top.
@@ -193,7 +191,6 @@ export function SwipeView({ data, onDone }: { data: DeckData; onDone: () => Prom
     setExpanded(false);
     setLeaving({ id: top.recipe_id, ...off });
     setDrag(null);
-    setLastPass(verdict === 'pass' ? { recipeId: top.recipe_id, reason: null } : null);
     navigator.vibrate?.(10);
     const saved = save(top.recipe_id, verdict);
     const last = remaining.length === 1;
@@ -208,7 +205,6 @@ export function SwipeView({ data, onDone }: { data: DeckData; onDone: () => Prom
   const undo = async () => {
     if (!history.length || undoing) return;
     setUndoing(true);
-    setLastPass(null);
     await queue.current;
     const { data: back, error } = await supabase.rpc('undo_swipe', { p_deck: data.deck.id });
     setUndoing(false);
@@ -286,22 +282,6 @@ export function SwipeView({ data, onDone }: { data: DeckData; onDone: () => Prom
         })}
       </div>
 
-      <div className="swipe-why" aria-label={t('swipe.why')}>
-        {lastPass && (
-          <div className="chips chips--scroll">
-            {PASS_REASONS.map((reason) => (
-              <Chip key={reason} pressed={lastPass.reason === reason} onClick={() => {
-                setLastPass({ ...lastPass, reason });
-                // Saved after the swipe itself, which the reason belongs to.
-                void queue.current.then(() => supabase.from('taste_signals').upsert(
-                  { user_id: userId, recipe_id: lastPass.recipeId, kind: 'reason', value: reason, deck_id: data.deck.id },
-                  { onConflict: 'user_id,key' },
-                ));
-              }}>{t(`swipe.reasons.${reason}`)}</Chip>
-            ))}
-          </div>
-        )}
-      </div>
       <Actions onDecide={decide} onUndo={() => void undo()} canUndo={canUndo} />
 
       {expanded && top && (

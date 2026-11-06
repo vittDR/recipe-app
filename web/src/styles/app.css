@@ -2257,10 +2257,6 @@ button.grocery-row__amount {
   background: var(--sage);
 }
 
-.swipe-why {
-  min-height: 38px;
-}
-
 .swipe-btn {
   flex: none;
   display: inline-flex;
@@ -2824,15 +2820,6 @@ body:has(.moment) .tabbar {
   color: var(--accent-text);
   font-weight: 600;
   text-decoration: none;
-}
-
-.insight {
-  gap: var(--space-4);
-}
-
-.insight .text-accent {
-  gap: var(--space-2);
-  color: var(--accent-text);
 }
 
 .time-input {

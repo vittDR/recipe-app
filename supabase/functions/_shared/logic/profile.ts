@@ -4,10 +4,12 @@
 // time, like the classification, so it follows the catalogue and the rules.
 //
 // Signals say different things, so they weigh differently:
-//   deck swipe   "I'd eat that tonight"     yes +1, must +1.5, pass −1
-//                a pass in a mood deck counts half and says nothing about the dish's mood;
-//                a pass marked not tonight / too long / had recently counts nothing;
-//                a pass marked not for me counts in full, whatever the mood
+//   deck swipe   "I'd eat that tonight"     yes +1, must +1.5, pass −0.4
+//                a plain pass is mostly "not tonight", so it weighs far less than a yes:
+//                liking something is news, skipping it rarely is;
+//                a pass in a mood deck counts half again and says nothing about the dish's mood;
+//                passes from before the reason chips were removed keep their reason:
+//                not tonight / too long / had recently counts nothing, not for me in full
 //   taste quiz   "that looks good"          the same, × 0.75 (looking is not choosing)
 //   cooked       it was made                +0.5 for each person who ate it
 //   rating       how it was after eating    loved +2, fine +0.5, not again −2
@@ -51,6 +53,8 @@ export type Signal =
   | { kind: 'rating'; rating: Rating; features: string[]; at: string };
 
 export const STARTER_FACTOR = 0.75;
+/** A plain deck pass, against a yes's 1: not feeling like it tonight is not a dislike. */
+export const PASS_WEIGHT = 0.4;
 export const MOOD_PASS_FACTOR = 0.5;
 /** A pass on a dish that didn't fit the person's goals is mostly the diet talking. */
 export const OFF_DIET_PASS_FACTOR = 0.2;
@@ -79,7 +83,7 @@ export function signalWeight(s: Signal): { weight: number; features: string[] } 
       if (s.verdict !== 'pass') return { weight: VERDICT_WEIGHT[s.verdict] * (s.fits === false ? OFF_DIET_YES_FACTOR : 1), features };
       if (s.reason && TEMPORARY_REASONS.has(s.reason)) return { weight: 0, features };
       if (s.reason === 'not_for_me') return { weight: -1, features: tasteOnly(s.features) };
-      return { weight: -1 * (moody ? MOOD_PASS_FACTOR : 1) * (s.fits === false ? OFF_DIET_PASS_FACTOR : 1), features };
+      return { weight: -PASS_WEIGHT * (moody ? MOOD_PASS_FACTOR : 1) * (s.fits === false ? OFF_DIET_PASS_FACTOR : 1), features };
     }
     case 'starter': {
       if (s.verdict !== 'pass') {
