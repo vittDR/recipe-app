@@ -96,5 +96,5 @@ To query or patch the live database, `scripts/supabase-sql.sh "select 1"` (or `<
 - Recipe import from Instagram captions and photos. Without AI, Instagram links fall back to typing the recipe in, with the link pre-filled.
 - An AI fallback for pages that don't publish recipe data.
 - Recipe editing and empty-state polish. Dark tokens come from the design system, but screens haven't had a dark-mode design pass.
-- From the design handoff: allergies (per person, filtering the household's decks through linked catalogue ingredients), "Photograph a recipe" (needs OCR), adding your own photo to a typed recipe, a cooking reminder, and "suggest it tonight" after saving a recipe.
+- From the design handoff: "Photograph a recipe" (needs OCR). Not planned: a cooking reminder, and "suggest it tonight" after saving a recipe.
 - Carrefour Drive export.
