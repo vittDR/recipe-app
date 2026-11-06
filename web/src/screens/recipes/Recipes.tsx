@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { Icon } from '../../components/Icon.tsx';
-import { Button, Chip, RecipeThumb, Screen, SearchField, Spinner } from '../../components/ui.tsx';
+import { Button, Chip, ListRow, RecipeThumb, Screen, SearchField, Sheet, SheetHeader, Spinner, TabHeader, Tag } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { recipeTitle, allTitles } from '../../lib/recipeText.ts';
 import type { ClassifiableRow } from '@logic/classify.ts';
@@ -28,6 +28,7 @@ export function RecipesScreen() {
   const [filter, setFilter] = useState<Filter>('all');
   const [facets, setFacets] = useState<Set<RecipeFilter>>(new Set());
   const catalog = useCatalog();
+  const [adding, setAdding] = useState(false);
 
   const { data, loading } = useLive<Row[]>(`recipes:${household!.id}`, async () =>
     must(await supabase.from('library_recipes').select('*, recipe_ingredients(name, quantity, unit, optional, is_staple, guessed)').order('created_at', { ascending: false })) as Row[],
@@ -57,12 +58,12 @@ export function RecipesScreen() {
 
   const filters: Filter[] = ['all', ...RECIPE_COLLECTIONS];
   return (
-    <Screen right={
-      <button type="button" className="icon-btn icon-btn--filled" aria-label={t('recipes.add')} onClick={() => navigate('/recipes/new')}>
-        <Icon name="plus" />
-      </button>
-    }>
-      <h1 className="screen__title">{t('recipes.title')}</h1>
+    <Screen>
+      <TabHeader overline={data ? tn('recipes.count', data.length) : undefined} title={t('recipes.title')} right={
+        <button type="button" className="fab" aria-label={t('recipes.add')} onClick={() => setAdding(true)}>
+          <Icon name="plus" size={26} strokeWidth={2.4} />
+        </button>
+      } />
       <div className="stack">
         <SearchField value={query} onChange={setQuery} placeholder={t('recipes.search')} label={t('recipes.search')} />
         <div className="chips chips--scroll">
@@ -73,23 +74,30 @@ export function RecipesScreen() {
         </div>
         {(loading && !data) || !catalog ? <Spinner /> : (
           <>
-            <div className="row row--between">
-              <span className="small muted">{tn('recipes.count', shown.length)}</span>
-              {facets.size > 0 && <Button small variant="text" onClick={() => setFacets(new Set())}>{t('recipes.clear')}</Button>}
-            </div>
+            {(facets.size > 0 || filter !== 'all' || query.trim()) && (
+              <div className="row row--between">
+                <span className="t-label muted">{tn('recipes.count', shown.length)}</span>
+                {facets.size > 0 && <Button small variant="text" onClick={() => setFacets(new Set())}>{t('recipes.clear')}</Button>}
+              </div>
+            )}
             {shown.length === 0 ? <p className="muted center">{t('recipes.empty')}</p> : (
               <div className="grid">
                 {shown.map((r) => (
                   <Link key={r.id} to={`/recipes/${r.id}`} className="tile">
-                    <div className="tile__image"><RecipeThumb recipe={r} /></div>
+                    <div className="tile__image">
+                      <RecipeThumb recipe={r} />
+                      {(r.collection === 'our_import' || r.collection === 'our_recipe') && (
+                        <span className="tile__badge">{t(r.collection === 'our_recipe' ? 'recipes.ours' : 'recipes.imported')}</span>
+                      )}
+                    </div>
                     <div className="tile__body">
                       <span className="tile__title">{recipeTitle(r, i18n.locale)}</span>
-                      <span className="small muted">
-                        {[r.total_min && `${r.total_min} min`, r.kcal_per_serving && `${Math.round(r.kcal_per_serving)} kcal`,
-                          r.difficulty && t(`recipe.${r.difficulty}`)].filter(Boolean).join(' · ')}
+                      <span className="t-callout muted">
+                        {[r.total_min && `${r.total_min} min`,
+                          r.protein_g_per_serving && t('recipe.protein', { n: Math.round(r.protein_g_per_serving) })].filter(Boolean).join(' · ')}
                       </span>
                       {effortLabels(r.equipment, i18n).length > 0 && (
-                        <span className="small text-warning">{effortLabels(r.equipment, i18n).join(' · ')}</span>
+                        <span className="t-caption muted">{effortLabels(r.equipment, i18n).join(' · ')}</span>
                       )}
                     </div>
                   </Link>
@@ -99,6 +107,16 @@ export function RecipesScreen() {
           </>
         )}
       </div>
+      <Sheet open={adding} onClose={() => setAdding(false)} label={t('import.newTitle')}>
+        <SheetHeader title={t('import.newTitle')} subtitle={t('import.how')} />
+        <div className="stack">
+          <ListRow className="card" tile="accent" icon={<Icon name="link" size={20} />} onClick={() => navigate('/recipes/new?mode=link')}
+            title={<span className="row">{t('import.fromLink')} <Tag tone="success">{t('import.fastest')}</Tag></span>}
+            meta={t('import.fromLinkHint')} chevron={false} />
+          <ListRow className="card" tile="plain" icon={<Icon name="pencil" size={20} />} onClick={() => navigate('/recipes/new?mode=type')}
+            title={t('import.write')} meta={t('import.writeHint')} chevron={false} />
+        </div>
+      </Sheet>
     </Screen>
   );
 }

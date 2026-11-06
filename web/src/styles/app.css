@@ -2570,3 +2570,183 @@ body:has(.moment) .tabbar {
 .option--picked {
   background: var(--accent-wash);
 }
+
+/* ---------- Recipes ---------- */
+
+/* The round + on a tab header: the screen's one primary action. */
+.fab {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: var(--shadow-accent);
+}
+
+.tile__badge {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+  padding: 2px var(--space-3);
+  border-radius: var(--radius-full);
+  background: var(--glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  font: var(--t-caption);
+  color: var(--ink-2);
+}
+
+.tile__body {
+  padding: var(--space-4) var(--space-5) var(--space-5);
+  gap: var(--space-1);
+}
+
+.tile__title {
+  font: var(--t-headline);
+}
+
+.grid {
+  gap: var(--space-5) var(--space-4);
+}
+
+/* ---------- Recipe page ---------- */
+
+.recipe-page {
+  min-height: 100dvh;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 110px);
+}
+
+.recipe-page__more {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+/* The one primary action of a detail page, kept in reach. */
+.bottom-action {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-7) calc(env(safe-area-inset-bottom) + var(--space-6));
+  background: linear-gradient(to top, var(--paper) 60%, transparent);
+}
+
+/* ---------- Recipe creation ---------- */
+
+.create {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding-bottom: calc(env(safe-area-inset-bottom) + 150px);
+}
+
+.create__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.create__form .section-heading {
+  margin: var(--space-5) 0 0;
+}
+
+/* The recipe name, typed as a title. */
+.title-input {
+  width: 100%;
+  border: 0;
+  padding: var(--space-3) 0;
+  background: none;
+  font: var(--t-title-m);
+  letter-spacing: var(--t-title-m-tracking);
+  color: var(--ink);
+  outline: none;
+}
+
+.title-input::placeholder {
+  color: var(--faint);
+}
+
+.self-start {
+  align-self: flex-start;
+}
+
+.mb-3 {
+  margin-bottom: var(--space-4);
+}
+
+.check-card {
+  border: 0;
+  text-align: left;
+  color: var(--accent-strong);
+}
+
+.check-card .card__title {
+  color: var(--accent-strong);
+  font: var(--t-callout);
+  font-weight: 600;
+}
+
+.import-photo {
+  position: relative;
+  height: 180px;
+}
+
+.import-photo__link {
+  color: var(--ink-2);
+  font: var(--t-caption);
+}
+
+.big-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-3) var(--space-6);
+}
+
+.big-stepper__value {
+  font: 700 44px/1 var(--font-sans);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.big-stepper__unit {
+  font: var(--t-headline);
+  color: var(--muted);
+}
+
+.chips--center {
+  justify-content: center;
+}
+
+.saved-card {
+  width: 74%;
+  margin: calc(var(--space-10) + 20px) auto 0;
+  transform: rotate(-4deg);
+  box-shadow: var(--shadow-raised);
+}
+
+.saved-card .match-card__photo {
+  height: 150px;
+}
+
+.moment__head--saved {
+  margin-top: var(--space-6);
+}
+
+/* Settings-style rows (with an icon tile) have a semibold title. */
+.icon-tile + .list-row__main .list-row__title {
+  font: var(--t-callout);
+  font-size: 15px;
+  font-weight: 600;
+}
