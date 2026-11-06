@@ -133,7 +133,7 @@ export function AmountSheet({ open, title, value, units, allUnits, onClose, onDo
   }, [open, unit, naming]);
 
   const pills = allUnits
-    ? [...new Set([...units, ...allUnits, ...(unit ? [unit] : [])])]
+    ? [...new Set([...units.filter((u) => allUnits.includes(u)), ...allUnits, ...(unit ? [unit] : [])])]
     : [...new Set([...units, ...GROCERY_UNITS, ...custom, ...(unit ? [unit] : [])])];
 
   const press = (k: (typeof KEYS)[number]) => {

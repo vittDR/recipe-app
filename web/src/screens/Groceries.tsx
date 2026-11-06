@@ -3,7 +3,7 @@ import { groupGroceries, splitCart, type GroupMode } from '@logic/groceries.ts';
 import { parseIngredientLine } from '@logic/ingredients.ts';
 import type { ListOp } from '@logic/listsync.ts';
 import { defaultAmount, ProductIndex, productName, sectionOf, unitsFor, type Product } from '@logic/products.ts';
-import { AmountControl, Highlight, SwipeRow, SyncIcon, type Amount } from '../components/GroceryControls.tsx';
+import { AmountControl, AmountSheet, Highlight, SwipeRow, SyncIcon, type Amount } from '../components/GroceryControls.tsx';
 import { CreateItemSheet, ItemSheet, sectionKeyOf, UsualsSheet, useSectionTitle, type ListItem } from '../components/GrocerySheets.tsx';
 import { Icon } from '../components/Icon.tsx';
 import { Avatar, Button, Checkbox, CreateRow, dismissToast, ListRow, ProgressBar, Screen, SearchField, Section, Segmented, Spinner, TabHeader, toast } from '../components/ui.tsx';
@@ -103,6 +103,7 @@ export function GroceriesScreen() {
   const [usualsOpen, setUsualsOpen] = useState(false);
   const [creating, setCreating] = useState<string | null>(null);
   const [openId, setOpenId] = useState<string | null>(null);
+  const [amountId, setAmountId] = useState<string | null>(null);
   const searchRef = useRef<HTMLInputElement>(null);
 
   const { data: catalog, reload: reloadCatalog } = useGroceryCatalog(hid);
@@ -243,6 +244,8 @@ export function GroceriesScreen() {
   };
 
   const openItem = items.find((i) => i.id === openId) ?? null;
+  const amountItem = items.find((i) => i.id === amountId) ?? null;
+  const amountProduct = productOf(amountItem?.product_id ?? null);
   const notSaved = (id: string) => status === 'error' && pending.has(id);
   const isNew = (i: GroceryRow) => !!i.added_by && i.added_by !== userId && Date.parse(i.created_at) > seenBefore;
   const showList = !(searching && parsed.name);
@@ -336,10 +339,12 @@ export function GroceriesScreen() {
                           </span>
                           {notSaved(item.id) && <span className="list-row__meta not-saved">{t('groceries.notSaved')}</span>}
                         </button>
-                        {/* The same quantity / unit / remove module as in search results and recipes. */}
-                        <AmountControl name={item.display} amount={{ quantity: item.quantity, unit: item.unit }}
-                          units={productOf(item.product_id) ? unitsFor(productOf(item.product_id)!) : unitsFor({ default_aisle: item.aisle })}
-                          onAdd={() => undefined} onChange={(a) => change(item, a)} onRemove={() => remove(item)} />
+                        {item.quantity !== null && (
+                          <button type="button" className="grocery-row__amount" aria-label={t('groceries.amountOf', { name: item.display })}
+                            onClick={() => setAmountId(item.id)}>
+                            {amount(item.quantity, item.unit)}
+                          </button>
+                        )}
                       </SwipeRow>
                     ))}
                   </div>
@@ -382,6 +387,10 @@ export function GroceriesScreen() {
         onUseExisting={(p) => { setCreating(null); setQuery(productName(p, locale)); if (!onListByProduct.has(p.id)) add(p, typedFor(p)); }} />
       <ItemSheet item={openItem} catalog={catalog} onClose={() => setOpenId(null)} onChange={change} onRemove={remove}
         onMoved={() => void Promise.all([reload(), reloadCatalog()])} />
+      <AmountSheet open={!!amountItem} title={t('groceries.amountOf', { name: amountItem?.display ?? '' })}
+        value={{ quantity: amountItem?.quantity ?? null, unit: amountItem?.unit ?? null }}
+        units={amountProduct ? unitsFor(amountProduct) : unitsFor({ default_aisle: amountItem?.aisle ?? 'other' })}
+        onClose={() => setAmountId(null)} onDone={(a) => { if (amountItem) change(amountItem, a); setAmountId(null); }} />
     </Screen>
   );
 }

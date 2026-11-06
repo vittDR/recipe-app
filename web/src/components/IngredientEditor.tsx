@@ -3,7 +3,8 @@ import { parseIngredientLine, type Catalog } from '@logic/ingredients.ts';
 import { matchProduct, productName, unitsFor, type Product } from '@logic/products.ts';
 import { useI18n } from '../i18n/index.tsx';
 import { searchProducts, type GroceryCatalog } from '../lib/products.ts';
-import { AmountControl, Highlight, type Amount } from './GroceryControls.tsx';
+import { AmountControl, AmountSheet, Highlight, type Amount } from './GroceryControls.tsx';
+import { useAmount } from '../lib/units.ts';
 import { ProductPicker } from './ProductPicker.tsx';
 import { Button, Chip, CreateRow, Field, ListRow, SearchField, Section, Sheet, SheetHeader } from './ui.tsx';
 
@@ -69,7 +70,10 @@ export function IngredientEditor({
   const { t, tn, locale } = useI18n();
   const [draft, setDraft] = useState('');
   const [openKey, setOpenKey] = useState<string | null>(null);
+  const [amountKey, setAmountKey] = useState<string | null>(null);
   const open = items.find((i) => i.key === openKey) ?? null;
+  const amountItem = items.find((i) => i.key === amountKey) ?? null;
+  const { recipeAmount } = useAmount();
   const toCheck = items.filter((i) => i.match === 'close' || i.suggestion_id).length;
 
   const productOf = (i: DraftIngredient) => (i.product_id ? catalog?.index.get(i.product_id) : undefined);
@@ -118,8 +122,11 @@ export function IngredientEditor({
               title={<button type="button" className="list-row__tap" onClick={() => setOpenKey(i.key)}>{titleOf(i)}</button>}
               meta={metaOf(i) && <span className={i.match === 'close' || i.suggestion_id ? 'text-sage' : undefined}>{metaOf(i)}</span>}
               trailing={(
-                <AmountControl name={titleOf(i)} amount={amountOf(i)} units={productOf(i) ? unitsFor(productOf(i)!) : []}
-                  allUnits={RECIPE_LINE_UNITS} onAdd={() => undefined} onChange={(a) => setAmount(i, a)} onRemove={() => remove(i.key)} />
+                // On the recipe, as on the list: the amount in grey; tapping it opens quantity and unit.
+                <button type="button" className="grocery-row__amount" aria-label={t('groceries.amountOf', { name: titleOf(i) })}
+                  onClick={() => setAmountKey(i.key)}>
+                  {recipeAmount(amountOf(i).quantity, amountOf(i).unit) || '–'}
+                </button>
               )} />
           ))}
         </div>
@@ -146,6 +153,11 @@ export function IngredientEditor({
           )}
         </div>
       )}
+
+      <AmountSheet open={!!amountItem} title={amountItem ? t('groceries.amountOf', { name: titleOf(amountItem) }) : ''}
+        value={amountItem ? amountOf(amountItem) : { quantity: null, unit: null }}
+        units={amountItem && productOf(amountItem) ? unitsFor(productOf(amountItem)!) : []} allUnits={RECIPE_LINE_UNITS}
+        onClose={() => setAmountKey(null)} onDone={(a) => { if (amountItem) setAmount(amountItem, a); setAmountKey(null); }} />
 
       <Sheet open={!!open} onClose={() => setOpenKey(null)} label={open ? titleOf(open) : ''}>
         {open && (
