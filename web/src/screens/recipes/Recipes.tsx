@@ -109,12 +109,13 @@ export function RecipesScreen() {
       </div>
       <Sheet open={adding} onClose={() => setAdding(false)} label={t('import.newTitle')}>
         <SheetHeader title={t('import.newTitle')} subtitle={t('import.how')} />
-        <div className="stack">
-          <ListRow className="card" tile="accent" icon={<Icon name="link" size={20} />} onClick={() => navigate('/recipes/new?mode=link')}
+        {/* The same menu card as on Nous: rows in one list, each with its icon tile. */}
+        <div className="list">
+          <ListRow tile="accent" icon={<Icon name="link" size={18} />} onClick={() => navigate('/recipes/new?mode=link')}
             title={<span className="row">{t('import.fromLink')} <Tag tone="success">{t('import.fastest')}</Tag></span>}
-            meta={t('import.fromLinkHint')} chevron={false} />
-          <ListRow className="card" tile="plain" icon={<Icon name="pencil" size={20} />} onClick={() => navigate('/recipes/new?mode=type')}
-            title={t('import.write')} meta={t('import.writeHint')} chevron={false} />
+            meta={t('import.fromLinkHint')} chevron />
+          <ListRow tile="accent" icon={<Icon name="pencil" size={18} />} onClick={() => navigate('/recipes/new?mode=type')}
+            title={t('import.write')} meta={t('import.writeHint')} chevron />
         </div>
       </Sheet>
     </Screen>

@@ -37,6 +37,11 @@ insert into recipes (household_id, title, source_type) values (:'hc', 'Soupe de 
 insert into meals (household_id, for_date, recipe_id) values (:'hc', current_date, :'recipe_c') returning id as meal_c \gset
 
 insert into taste_signals (recipe_id, kind, value) values (:'seed_recipe', 'starter', 'yes');
+-- "I like it, but not often" is a quiz answer too; saving again replaces it.
+insert into taste_signals (recipe_id, kind, value) values (:'seed_recipe', 'starter', 'sometimes')
+  on conflict (user_id, key) do update set value = excluded.value;
+select pg_temp.check((select value = 'sometimes' from taste_signals where kind = 'starter' and recipe_id = :'seed_recipe'), 'quiz takes "not often"');
+update taste_signals set value = 'yes' where kind = 'starter' and recipe_id = :'seed_recipe';
 insert into taste_signals (recipe_id, kind, value) values (:'seed_recipe', 'starter', 'pass')
   on conflict (user_id, key) do update set value = excluded.value;
 select pg_temp.check((select count(*) = 1 and min(value) = 'pass' from taste_signals), 'retaking the quiz replaces the answer');

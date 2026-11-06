@@ -3,14 +3,13 @@
 // Body: { who_eating: uuid[], max_minutes?: number, mood?: Mood, for_date?: 'YYYY-MM-DD' }
 
 import { corsHeaders, json, requireMember, serviceClient } from '../_shared/http.ts';
-import { buildDeck, type CandidateRecipe, type DeckMember, type Diet, type Mood, type RecipeHistory } from '../_shared/logic/deck.ts';
+import { buildDeck, OCCASIONAL_DAYS, type CandidateRecipe, type DeckMember, type Diet, type Mood, type RecipeHistory } from '../_shared/logic/deck.ts';
 import { canonicalFeature, classifyRow, CLASSIFY_COLUMNS, storedClassification, type ClassifiableRow } from '../_shared/logic/classify.ts';
 import { Catalog, type CatalogEntry } from '../_shared/logic/ingredients.ts';
 import { recipeFeatures } from '../_shared/logic/preferences.ts';
 import { splitPot } from '../_shared/logic/portions.ts';
 import {
-  buildProfile, signalsFor, weightsOf, type MealRow, type PortionRow, type SwipeRow, type TasteSignalRow,
-} from '../_shared/logic/profile.ts';
+  buildProfile, signalsFor, weightsOf, type MealRow, type PortionRow, type SwipeRow, type TasteSignalRow, kindKeys, occasionalKinds } from '../_shared/logic/profile.ts';
 import { dietAdherence } from '../_shared/logic/recommend.ts';
 
 const MOODS: Mood[] = ['any', 'comfort', 'light', 'quick', 'fancy'];
@@ -172,6 +171,7 @@ Deno.serve(async (req) => {
       weights,
       profile,
       adherence: dietAdherence(memberSignals),
+      occasional: occasionalKinds(memberSignals),
     };
   });
 
@@ -197,12 +197,20 @@ Deno.serve(async (req) => {
   // Kept on the recipes; cleared by the database when a recipe or its ingredients change.
   if (fresh.length) await admin.rpc('store_classifications', { p_rows: fresh });
 
+  // "Not often" dishes wait while one of their kind was eaten, or is planned, within two weeks.
+  const dayMs = 86_400_000;
+  const recentKinds = new Set((meals.data ?? [])
+    .filter((m) => m.status !== 'skipped' && m.for_date !== forDate
+      && Math.abs(Date.parse(`${m.for_date}T12:00:00Z`) - Date.parse(`${forDate}T12:00:00Z`)) < OCCASIONAL_DAYS * dayMs)
+    .flatMap((m) => kindKeys(m.recipe_id, featuresById.get(m.recipe_id))));
+
   const cards = buildDeck(candidates, members, history, {
     mood,
     maxMinutes,
     recentlyCooked,
     exclude,
     lean,
+    recentKinds,
     // Recipe lines are named by catalogue ingredient ("chicken breast"); list
     // lines by their French product name, so compare on the product's ingredient.
     pantry: (pantry.data ?? []).map((p) => {

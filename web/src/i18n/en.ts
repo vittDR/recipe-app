@@ -672,6 +672,7 @@ export const en = {
     },
   },
   quiz: {
+    sometimes: 'I like it, but not often',
     progress: '{n} of {total}',
     intro: 'Swipe right on what looks good, left on what doesn’t, up for a must-have. It gives your first decks a head start.',
     skip: 'Skip for now',

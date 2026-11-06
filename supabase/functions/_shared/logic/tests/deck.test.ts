@@ -153,3 +153,17 @@ test('allergies rule out a recipe on any line, optional or staple', () => {
   const deck = buildDeck(recipes, [member({ allergies: ['pesto', 'parmesan'] }), member({ userId: 'v' })], new Map(), { random: fixed });
   assert.deepEqual(deck.map((c) => c.recipeId), ['rice']);
 });
+
+test('"not often" dishes: one per deck at most, none when one of the kind was eaten lately', () => {
+  const recipes = [
+    recipe('margherita', { features: ['dish:pizza'] }),
+    recipe('calzone', { features: ['dish:pizza'] }),
+    recipe('dal', { features: ['dish:curry'] }),
+  ];
+  const m = member({ occasional: new Set(['dish:pizza']) });
+  const ids = buildDeck(recipes, [m], new Map(), { random: fixed }).map((c) => c.recipeId);
+  assert.equal(ids.filter((id) => id === 'margherita' || id === 'calzone').length, 1);
+  assert.ok(ids.includes('dal'));
+  const later = buildDeck(recipes, [m], new Map(), { random: fixed, recentKinds: new Set(['dish:pizza']) }).map((c) => c.recipeId);
+  assert.deepEqual(later, ['dal']);
+});
