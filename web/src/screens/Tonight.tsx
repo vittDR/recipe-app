@@ -1,6 +1,9 @@
 import { useMemo, useState } from 'react';
 import { RATINGS, type Rating } from '@logic/profile.ts';
 import { Link, useNavigate } from 'react-router';
+import pastaCard from '../assets/deck/pasta.webp';
+import pizzaCard from '../assets/deck/pizza.webp';
+import stirFryCard from '../assets/deck/stir-fry.webp';
 import { AddToListSheet, loadProposals, type MealForList } from '../components/AddToListSheet.tsx';
 import { DeckSettingsSheet, DeckSummaryRow, MOODS, useDeckLabels, type DeckSettings } from '../components/DeckSettings.tsx';
 import { Icon } from '../components/Icon.tsx';
@@ -383,7 +386,9 @@ export function TonightScreen() {
       <>
         <section className="deal-hero">
           <div className="deal-hero__art" aria-hidden>
-            <span className="fan fan--left" /><span className="fan fan--right" /><span className="fan fan--mid" />
+            <img className="fan fan--left fan--art" src={pastaCard} alt="" />
+            <img className="fan fan--right fan--art" src={pizzaCard} alt="" />
+            <img className="fan fan--mid fan--art" src={stirFryCard} alt="" />
           </div>
           <h2 className="deal-hero__title">{deck?.status === 'no_match' ? t('noMatch.again') : t('tonight.ask')}</h2>
           <button type="button" className="btn btn--block deal-hero__btn" disabled={dealing} onClick={() => void deal()}>

@@ -1961,6 +1961,15 @@ button.grocery-row__amount {
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
 }
 
+/* Illustrated cards on the deal hero: the artwork carries its own colour and corners. */
+.fan--art {
+  display: block;
+  object-fit: cover;
+  background: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
 .deal-hero__title {
   position: relative;
   margin: 0;
