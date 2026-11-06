@@ -312,9 +312,14 @@ Use the same `<cron-secret>` as in 5b. To change one of these later, delete it u
    | Environment variable | `NODE_VERSION` = `22` |
 
    The Supabase URL, publishable key and VAPID public key come from `web/.env` in the repository, so you don't add them here. (If you'd rather keep them out of git, add `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY` and `VITE_VAPID_PUBLIC_KEY` as environment variables here instead; Vite reads both.)
-4. **Deploy:** click **Save and Deploy**. The first build takes 1–2 minutes. Every later push to `main` redeploys automatically, and other branches get their own preview address.
-5. **Optional:** back in Supabase, open **Authentication → URL Configuration**, set **Site URL** to your Pages address and click **Save**. Password sign-in doesn't depend on it.
-6. **Optional, custom domain:** in your Pages project, open **Custom domains → Set up a custom domain**. Web Push and installing to the home screen need HTTPS, which Cloudflare provides.
+4. **Deploy:** click **Save and Deploy**. The first build takes 1–2 minutes.
+5. **Deploy only when you say so:** by default Cloudflare redeploys on every push. To trigger deploys yourself instead:
+   1. In your Pages project open **Settings → Build → Branch control**. Turn off **Enable automatic production branch deployments**, set **Preview branch** to **None**, and click **Save**.
+   2. On the same page, under **Deploy hooks**, click **Add deploy hook**. Name it `github-manual`, choose branch `main`, and click **Save**. Copy the URL it shows; treat it as a secret, since anyone with it can start a deploy.
+   3. In GitHub open your repository's **Settings → Secrets and variables → Actions → New repository secret**. Name it `CLOUDFLARE_PAGES_DEPLOY_HOOK` and paste the URL.
+   4. To deploy, open the **Actions** tab, choose **Deploy to Cloudflare Pages**, and click **Run workflow**. It builds the latest commit on `main`. You can also click **Retry deployment** on any deployment in the Cloudflare dashboard.
+6. **Optional:** back in Supabase, open **Authentication → URL Configuration**, set **Site URL** to your Pages address and click **Save**. Password sign-in doesn't depend on it.
+7. **Optional, custom domain:** in your Pages project, open **Custom domains → Set up a custom domain**. Web Push and installing to the home screen need HTTPS, which Cloudflare provides.
 
 `web/public/_headers` tells Cloudflare not to cache the service worker and manifest, so a new deploy reaches phones on the next launch.
 
@@ -732,7 +737,7 @@ GitHub Actions (`.github/workflows/ci.yml`) runs both, checks that `seed_library
 
 | Symptom | Likely cause / fix |
 | --- | --- |
-| The app shows a blank page or "Invalid API key" | `web/.env` still has another project's values, or a typo. Fix it (Step 2), push, and wait for Cloudflare to redeploy. |
+| The app shows a blank page or "Invalid API key" | `web/.env` still has another project's values, or a typo. Fix it (Step 2), push, and run the **Deploy to Cloudflare Pages** workflow (Step 6). |
 | "Account created, but email confirmation is still on" | Turn off **Confirm email** (Step 4). Then delete the half-created user in **Authentication → Users** and sign up again. |
 | "Wrong email or password" | Check for a typo. Forgotten password: see the end of Step 4. |
 | "Deal the deck" fails | Open **Edge Functions → deal-deck → Logs**. A missing key error means Step 5b is incomplete. `no_recipes` means the seed files weren't loaded (Step 3.4), or the filters are too strict. |
