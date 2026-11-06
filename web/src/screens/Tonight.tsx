@@ -393,7 +393,9 @@ export function TonightScreen() {
         {error && !settingsOpen && <p className="notice">{error}</p>}
         <DeckSummaryRow settings={settings} shared={shared} onClick={() => setSettingsOpen(true)} />
         {!shared && (
-          <ListRow to="/us/invite" className="card" icon={<Icon name="people" size={20} />} title={t('tonight.noPartner')} />
+          <div className="list">
+            <ListRow to="/us/invite" tile="accent" icon={<Icon name="people" size={18} />} title={t('tonight.noPartner')} />
+          </div>
         )}
         {upcomingSection}
         {groceriesCard}
