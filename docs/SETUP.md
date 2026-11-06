@@ -424,7 +424,7 @@ households. Each person belongs to one household.
 | `rule_source` | `manual`, `learned` |
 | `pattern_status` | `suggested`, `accepted`, `dismissed` |
 | `recipe_source` | `web`, `instagram`, `photo`, `typed`, `ai`, `seed` |
-| `deck_status` | `open`, `matched`, `tiebreak`, `closed` |
+| `deck_status` | `open`, `matched`, `no_match`, `closed` (`tiebreak` is left over from before and no longer used) |
 | `deck_mood` | `any`, `comfort`, `light`, `quick`, `fancy` |
 | `verdict` | `pass`, `yes`, `must` |
 | `meal_status` | `planned`, `cooked`, `skipped` |
