@@ -432,6 +432,20 @@ export function Sheet({ open, onClose, children, label, className = '' }: {
   closeRef.current = onClose;
   useScrollLock(open);
 
+  // Stays on screen after `open` turns false, until it has slid down. What
+  // it showed is kept for that time: callers often empty it as they close it.
+  const [mounted, setMounted] = useState(open);
+  if (open && !mounted) setMounted(true);
+  const closing = mounted && !open;
+  const shownChildren = useRef(children);
+  if (open) shownChildren.current = children;
+  useEffect(() => {
+    if (!closing) return;
+    // In case animationend never comes (an animation the browser skipped).
+    const timer = window.setTimeout(() => setMounted(false), 400);
+    return () => window.clearTimeout(timer);
+  }, [closing]);
+
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
@@ -496,15 +510,18 @@ export function Sheet({ open, onClose, children, label, className = '' }: {
     };
   }, [open]);
 
-  if (!open) return null;
+  if (!mounted) return null;
   // On <body>, so a sheet opened from inside another (a keypad over the
   // usuals) isn't positioned against the first one's transform.
   return createPortal(
     <>
-      <div className="sheet-backdrop" ref={backdropRef} onClick={onClose} />
-      <div className={`sheet ${className}`} ref={sheetRef} role="dialog" aria-modal="true" aria-label={label}>
+      <div className={`sheet-backdrop${closing ? ' sheet-backdrop--closing' : ''}`} ref={backdropRef}
+        onClick={closing ? undefined : onClose} />
+      <div className={`sheet${closing ? ' sheet--closing' : ''} ${className}`} ref={sheetRef} role="dialog"
+        aria-modal={!closing} aria-hidden={closing || undefined} aria-label={label}
+        onAnimationEnd={(e) => { if (closing && e.target === e.currentTarget) setMounted(false); }}>
         <div className="sheet__grabber" />
-        {children}
+        {open ? children : shownChildren.current}
       </div>
     </>,
     document.body,
@@ -629,14 +646,17 @@ export function dismissToast(msg: string) {
 }
 
 export function ToastHost() {
-  const [current, setCurrent] = useState<{ msg: string; opts: ToastOptions } | null>(null);
+  const [current, setCurrent] = useState<{ msg: string; opts: ToastOptions; id: number; leaving?: boolean } | null>(null);
+  // Hiding first plays the toast's exit; animationend then removes it.
+  const leave = () => setCurrent((c) => (c ? { ...c, leaving: true } : c));
   useEffect(() => {
     let timer: number | undefined;
-    hideToastImpl = (msg) => setCurrent((c) => (c?.msg === msg ? null : c));
+    hideToastImpl = (msg) => setCurrent((c) => (c?.msg === msg ? { ...c, leaving: true } : c));
     showToastImpl = (msg, opts) => {
-      setCurrent({ msg, opts });
+      // A new id restarts the entrance when one toast replaces another.
+      setCurrent({ msg, opts, id: Date.now() });
       window.clearTimeout(timer);
-      timer = window.setTimeout(() => setCurrent(null), opts.duration ?? (opts.action ? 5000 : 2400));
+      timer = window.setTimeout(leave, opts.duration ?? (opts.action ? 5000 : 2400));
     };
     return () => {
       showToastImpl = null;
@@ -645,13 +665,14 @@ export function ToastHost() {
     };
   }, []);
   if (!current) return null;
-  const { msg, opts } = current;
+  const { msg, opts, leaving, id } = current;
   return (
-    <div className={`toast${opts.action ? ' toast--action' : ''}`} role="status" aria-live="polite">
+    <div key={id} className={`toast${opts.action ? ' toast--action' : ''}${leaving ? ' toast--leaving' : ''}`} role="status" aria-live="polite"
+      onAnimationEnd={() => { if (leaving) setCurrent((c) => (c?.leaving ? null : c)); }}>
       <span>{msg}</span>
       {opts.action && (
-        <button type="button" className="toast__action" onClick={() => {
-          setCurrent(null);
+        <button type="button" className="toast__action" disabled={leaving} onClick={() => {
+          leave();
           opts.action!.onClick();
         }}>
           {opts.action.label}
