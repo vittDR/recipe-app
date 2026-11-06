@@ -1913,8 +1913,6 @@ button.grocery-row__amount {
 
 /* The deal card: terracotta, a fan of cards, the question and one white button. */
 .deal-hero {
-  flex: 1;
-  min-height: 340px;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -1959,6 +1957,14 @@ button.grocery-row__amount {
   transform: translateY(6px) rotate(-2deg);
   background: linear-gradient(170deg, #ebc3a2 0%, #d98e66 55%, #a65a3d 100%);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+}
+
+/* The cards sit in the flow above the title, so the hero is as tall as its content. */
+.deal-hero .deal-hero__art {
+  position: relative;
+  inset: auto;
+  height: 236px;
+  margin: calc(-1 * var(--space-7)) calc(-1 * var(--space-7)) 0;
 }
 
 /* Illustrated cards on the deal hero: the artwork carries its own colour and corners. */
