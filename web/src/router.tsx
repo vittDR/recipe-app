@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate, NavLink, Outlet, useLocation } from 'rea
 import { Icon } from './components/Icon.tsx';
 import { ConfirmHost, Spinner, ToastHost } from './components/ui.tsx';
 import { useI18n } from './i18n/index.tsx';
+import { enableNavMotion, useNavDirection } from './lib/navMotion.ts';
 import { useSession } from './lib/session.tsx';
 import { AccountScreen } from './screens/onboarding/Account.tsx';
 import { GoalsScreen } from './screens/onboarding/Goals.tsx';
@@ -39,6 +40,7 @@ const startsWithAny = (path: string, list: string[]) => list.some((p) => path ==
 function Gate() {
   const { loading, session, profile, household, goals } = useSession();
   const { pathname } = useLocation();
+  useNavDirection();
 
   let target: string | null = null;
   if (!loading) {
@@ -137,3 +139,5 @@ export const router = createBrowserRouter([
     ],
   },
 ]);
+
+enableNavMotion(router);
