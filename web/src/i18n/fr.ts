@@ -147,6 +147,7 @@ export const fr: Dictionary = {
     off: 'Dehors',
   },
   swipe: {
+    treat: 'Un petit plaisir qui devrait vous plaire',
     why: 'Pourquoi ?',
     reasons: {
       not_tonight: 'Pas ce soir',
@@ -607,6 +608,8 @@ export const fr: Dictionary = {
     not_eaten: 'Pas mangé',
   },
   us: {
+    dietMinded: 'Vous choisissez surtout ce qui colle à vos objectifs : on s’y tient, avec de temps en temps un plaisir qui devrait vous plaire.',
+    dietRelaxed: 'Vos objectifs pèsent peu dans vos choix : on suit vos goûts.',
     profile: 'Vos goûts',
     likes: 'Vous aimez',
     dislikes: 'Moins fan de',

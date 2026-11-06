@@ -70,6 +70,7 @@ function CardFace({ card, data, tags, drag }: {
         )}
         {pantryItem && <span className="small text-success">{t('swipe.pantry', { item: pantryItem })}</span>}
         {card.reason === 'love' && <span className="small text-accent">{t('swipe.loved')}</span>}
+        {card.reason === 'treat' && <span className="small text-accent">{t('swipe.treat')}</span>}
       </div>
       <span className="recipe-card__stamp recipe-card__stamp--yes" style={{ opacity: yes }}>{t('swipe.yes')}</span>
       <span className="recipe-card__stamp recipe-card__stamp--pass" style={{ opacity: pass }}>{t('swipe.pass')}</span>

@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react';
 import { canonicalFeature, classifyRow, CLASSIFY_COLUMNS, type ClassifiableRow } from '@logic/classify.ts';
 import type { Mood } from '@logic/deck.ts';
 import { detectPatterns, recipeFeatures, type PatternSuggestion } from '@logic/preferences.ts';
-import { buildProfile, profileHighlights, signalsFor, type MealRow, type SwipeRow, type TasteSignalRow } from '@logic/profile.ts';
+import { splitPot } from '@logic/portions.ts';
+import {
+  buildProfile, DIET_FEATURE, profileHighlights, signalsFor, type MealRow, type PortionRow, type SwipeRow, type TasteSignalRow,
+} from '@logic/profile.ts';
+import { dietAdherence } from '@logic/recommend.ts';
 import { productName } from '@logic/products.ts';
 import { Icon } from '../components/Icon.tsx';
 import { MemberList } from '../components/Members.tsx';
@@ -21,6 +25,8 @@ interface Loaded {
   rules: TasteRule[];
   suggestions: PatternSuggestion[];
   profile: ReturnType<typeof profileHighlights>;
+  /** 0..1, how much this person sticks to their goals (recommend.ts). */
+  adherence: number;
   quizDone: boolean;
 }
 
@@ -36,7 +42,7 @@ export function UsScreen() {
   const { tags } = useTags(household!.id);
   const ingredientCatalog = useCatalog();
   const { data, reload } = useLive<Loaded>(`us:${userId}:${ingredientCatalog ? 'c' : ''}`, async () => {
-    const [r, swipes, existing, signals, meals] = await Promise.all([
+    const [r, swipes, existing, signals, meals, portions] = await Promise.all([
       supabase.from('taste_rules').select('*').eq('user_id', userId!),
       supabase.from('swipes').select('user_id, deck_id, recipe_id, verdict, created_at, deck:decks(mood)')
         .eq('user_id', userId!).order('created_at', { ascending: false }).limit(300),
@@ -45,6 +51,8 @@ export function UsScreen() {
         .eq('user_id', userId!).order('created_at', { ascending: false }).limit(1000),
       supabase.from('meals').select('id, recipe_id, for_date, status, deck:decks(who_eating)')
         .eq('household_id', household!.id).eq('status', 'cooked').order('for_date', { ascending: false }).limit(200),
+      // Own rows only (RLS): whether each card fit this person when it was dealt.
+      supabase.from('member_portions').select('deck_id, recipe_id, user_id, fits').eq('user_id', userId!).limit(5000),
     ]);
     const one = <T,>(v: T | T[] | null | undefined) => (Array.isArray(v) ? v[0] : v) ?? null;
     const rows = {
@@ -53,11 +61,13 @@ export function UsScreen() {
       tasteSignals: must(signals) as TasteSignalRow[],
       meals: (must(meals) as unknown as (MealRow & { deck: unknown })[])
         .map((m) => ({ ...m, who_eating: one(m.deck as { who_eating: string[] } | null)?.who_eating ?? null })),
+      portions: must(portions) as PortionRow[],
     };
     // Every recipe a choice was about, described the same way as for the deck.
     const ids = [...new Set([...rows.swipes, ...rows.tasteSignals, ...rows.meals].map((x) => x.recipe_id))];
     const recipes = ids.length
-      ? must(await supabase.from('recipes').select(`id, ${CLASSIFY_COLUMNS}`).in('id', ids)) as unknown as (ClassifiableRow & { id: string; tags: string[] })[]
+      ? must(await supabase.from('recipes').select(`id, kcal_per_serving, protein_g_per_serving, ${CLASSIFY_COLUMNS}`).in('id', ids)) as unknown as
+        (ClassifiableRow & { id: string; tags: string[]; kcal_per_serving: number | null; protein_g_per_serving: number | null })[]
       : [];
     const features = new Map(recipes.map((x) => [x.id, recipeFeatures(x.tags, x.recipe_ingredients,
       ingredientCatalog ? classifyRow(x, ingredientCatalog) : null)]));
@@ -71,7 +81,21 @@ export function UsScreen() {
       rules,
       suggestions: detectPatterns(exposures).filter((x) =>
         !known.some((k) => samePattern(k, x.pattern)) && !ruled.has(x.pattern.value)).slice(0, 3),
-      profile: profileHighlights(buildProfile(signalsFor(userId!, rows, (id) => features.get(id))), { limit: 5 }),
+      ...(() => {
+        // The same profile the deck uses: quiz answers judged against today's goals.
+        const byId = new Map(recipes.map((x) => [x.id, x]));
+        const fitsNow = (id: string) => {
+          const x = byId.get(id);
+          const split = x && splitPot({ kcalPerServing: x.kcal_per_serving, proteinGPerServing: x.protein_g_per_serving },
+            [{ userId: userId!, dinnerKcal: goals?.dinner_kcal ?? null, dinnerProteinG: goals?.dinner_protein_g ?? null, servings: goals?.servings ?? null }]);
+          return split ? split.plates[0].fits : null;
+        };
+        const mySignals = signalsFor(userId!, rows, (id) => features.get(id), fitsNow);
+        const full = buildProfile(mySignals);
+        // Shown as tastes: what a dish does for the diet is the goals' business.
+        const tastes = new Map([...full].filter(([f]) => !DIET_FEATURE.test(f)));
+        return { profile: profileHighlights(tastes, { limit: 5 }), adherence: dietAdherence(mySignals) };
+      })(),
       quizDone: rows.tasteSignals.some((x) => x.kind === 'starter'),
     };
   });
@@ -147,6 +171,8 @@ export function UsScreen() {
               )}
             </>
           ) : <p className="muted small m-0">{t('us.profileEmpty')}</p>}
+          {data && data.adherence >= 0.6 && <p className="muted small m-0">{t('us.dietMinded')}</p>}
+          {data && data.adherence <= 0.3 && <p className="muted small m-0">{t('us.dietRelaxed')}</p>}
           <ListRow to="/us/quiz" icon={<Icon name="heart" />} title={data?.quizDone ? t('us.quizAgain') : t('us.quiz')}
             meta={t('us.quizMeta')} />
         </div>

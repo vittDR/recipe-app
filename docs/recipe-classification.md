@@ -147,11 +147,45 @@ things, so they weigh differently:
 | Cooked | `meals.status = cooked`, for the deck's eaters | +0.5 |
 | Rating after eating | `taste_signals` (`rating`) | loved +2, fine +0.5, not again −2; "didn't have it" counts nothing and cancels the cooked signal |
 
+**Diet explains away.** Each deck card records whether it fit the person's
+goals (`member_portions.fits`; quiz answers are judged against their goals
+now). A pass on a dish that didn't fit counts only 0.2 against its taste:
+someone who eats lean on weekdays isn't saying they dislike cheesy pasta. A
+yes on a dish that didn't fit counts 1.25 ("I want it anyway"). Diet-linked
+features (`goal:*`, `intent:light`, `intent:indulgent`, `intent:fuel`) aren't
+learned from deck swipes or cooking at all, because the deck already ranks on
+fit; they're learned from ratings after eating and the quiz.
+
 Older choices fade with a 180-day half-life. A feature's weight is the sum
-over the absolute sum plus 2, so a single choice never makes a strong like.
-Recipes never shown say nothing. The profile is rebuilt from the choices
+of its signals over their total (each choice counting at least 1) plus 2,
+clamped to [-1, 1]: one choice never makes a strong like, and many weak ones
+stay weak. Recipes never shown say nothing. The profile is rebuilt from the choices
 each time a deck is dealt (and on the Us tab, which shows the clearest
 likes and dislikes), so it follows the classification as it improves.
+
+### Recommendation
+
+`logic/recommend.ts`, used by `logic/deck.ts`. Per eater:
+
+- **Taste** (−1..1): the profile's weights, averaged within each kind of
+  feature (dish, sauce, protein, starch, heat, texture, method, intent, plain
+  tags and ingredients; at most three unknowns dilute a kind), summed with
+  per-kind weights and squashed with tanh. A recipe with fifteen ingredients
+  isn't louder than one with five.
+- **How much they mind their diet** (adherence, 0..1): yes rate on dishes
+  that fit versus dishes that didn't, shrunk to 0.5 until there are swipes on
+  both sides. It sets how much goal fit counts: 2.25 (doesn't mind) to 3.75
+  (minds a lot), 3 by default. It never changes their taste.
+- **Exploration**: the less is known about a dish's kind (dish, sauce,
+  protein, starch, heat, method), the bigger the bonus, up to 0.8.
+
+Deck score = fit × fit weight + 1.5 × taste + love + 1.2 × mood + pantry +
+0.8 × household history + exploration + a little noise. The deck stays two
+thirds known, one third new, and is picked for variety: a dish much like one
+already in the deck (Jaccard over dish, protein, sauce, starch) loses up to
+1.2. For an eater with adherence ≥ 0.6, one card is kept for a **treat**: the
+dish most to their taste (≥ 0.1) that fits their goals poorly (≤ 0.6),
+labelled as such. The Us tab says which way someone leans.
 
 ### Taste quiz
 

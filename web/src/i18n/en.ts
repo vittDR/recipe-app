@@ -149,6 +149,7 @@ export const en = {
     off: 'Out',
   },
   swipe: {
+    treat: 'A treat you’d probably love',
     why: 'Why?',
     reasons: {
       not_tonight: 'Not tonight',
@@ -609,6 +610,8 @@ export const en = {
     not_eaten: 'Didn’t have it',
   },
   us: {
+    dietMinded: 'You mostly pick what fits your goals, so we keep to that, with the odd treat we think you’d love.',
+    dietRelaxed: 'Your goals don’t decide much of what you pick, so taste leads.',
     profile: 'Your taste profile',
     likes: 'You like',
     dislikes: 'Less keen on',
