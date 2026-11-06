@@ -2850,3 +2850,18 @@ body:has(.moment) .tabbar {
 .create .bottom-action {
   background: linear-gradient(to top, var(--paper) 82%, transparent);
 }
+
+/* Courses: compact rows, as before the redesign; a list is scanned in the shop. */
+.groceries .list-row {
+  min-height: 48px;
+  padding: var(--space-2) var(--space-6);
+  gap: var(--space-4);
+}
+
+.groceries .section-label {
+  margin: var(--space-6) var(--space-1) var(--space-2);
+}
+
+.groceries .tab-header {
+  margin-bottom: var(--space-5);
+}

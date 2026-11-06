@@ -141,15 +141,10 @@ export function SettingsScreen() {
         </div>
       </Section>
 
-      <Section label={t('notifications.title')}>
+      <Section label={t('settings.programme')}>
         <div className="list">
           <ListRow to="/us/plan" tile="accent" icon={<Icon name="calendar" size={18} />} title={t('plan.title')}
             meta={together.length ? together.join(', ') : undefined} />
-          <ListRow to="/us/plan" tile="accent" icon={<Icon name="bell" size={18} />} title={t('settings.promptRow')}
-            value={household!.prompt_time.slice(0, 5)} />
-          <ListRow to="/us/plan" tile="accent" icon={<Icon name="clock" size={18} />} title={t('plan.reminder')}
-            value={household!.reminder_time.slice(0, 5)} />
-          <ListRow to="/us/notifications" tile="accent" icon={<Icon name="gear" size={18} />} title={t('notifications.title')} />
         </div>
       </Section>
 
@@ -171,7 +166,7 @@ export function SettingsScreen() {
 
       <Sheet open={open === 'staples'} onClose={() => setOpen(null)} label={t('settings.staplesRow')} className="sheet--fixed">
         <SheetHeader title={t('settings.staplesRow')} subtitle={t('settings.staplesHint')}
-          action={<Button small variant="text" onClick={() => setOpen(null)}>OK</Button>} />
+          action={<Button small variant="text" onClick={() => setOpen(null)}>{t('app.done')}</Button>} />
         <div className="stack">
           <SearchField value={stapleQuery} onChange={setStapleQuery} placeholder={t('tastes.addPlaceholder')} label={t('settings.staples')}
             onEnter={() => stapleResults[0] && void addStaple(stapleResults[0])} />
@@ -192,7 +187,7 @@ export function SettingsScreen() {
       </Sheet>
 
       <Sheet open={open === 'aisles'} onClose={() => setOpen(null)} label={t('settings.aisleOrder')}>
-        <SheetHeader title={t('settings.aisleOrder')} action={<Button small variant="text" onClick={() => setOpen(null)}>OK</Button>} />
+        <SheetHeader title={t('settings.aisleOrder')} action={<Button small variant="text" onClick={() => setOpen(null)}>{t('app.done')}</Button>} />
         {!data ? <Spinner /> : (
           <div className="list">
             {sections.map((x, i) => (

@@ -103,7 +103,7 @@ function AllergiesSheet({ open, onClose, label }: { open: boolean; onClose: () =
 
   return (
     <Sheet open={open} onClose={onClose} label={t('allergies.yours')} className="sheet--fixed">
-      <SheetHeader title={t('allergies.yours')} action={<Button small variant="text" onClick={onClose}>OK</Button>} />
+      <SheetHeader title={t('allergies.yours')} action={<Button small variant="text" onClick={onClose}>{t('app.done')}</Button>} />
       <Section label={t('allergies.common')} flush>
         <div className="chips">
           {(data?.allergens ?? []).map((a) => {

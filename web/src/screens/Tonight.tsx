@@ -102,7 +102,7 @@ export function TonightScreen() {
         const m = s.deck?.mood;
         if (m && m !== 'any' && MOODS.includes(m)) counts.set(m, (counts.get(m) ?? 0) + 1);
       }
-      const [top] = [...counts].sort((a, b) => b[1] - a[1]);
+      const [top, second] = [...counts].sort((a, b) => b[1] - a[1]);
       return {
         deck,
         progress: must(progress) as DeckMemberProgress[],
@@ -112,7 +112,8 @@ export function TonightScreen() {
         plan: must(plan) as PlanDay[],
         dates: must(dates) as PlanDate[],
         toRate: toRate && { id: toRate.id, recipe_id: toRate.recipe_id, recipe: toRate.recipe },
-        favouriteMood: top && top[1] >= 5 ? top[0] : 'any',
+        // Only a clear preference: enough yeses, and well ahead of the next mood.
+        favouriteMood: top && top[1] >= 8 && top[1] >= 2 * (second?.[1] ?? 0) ? top[0] : 'any',
       };
     },
     [

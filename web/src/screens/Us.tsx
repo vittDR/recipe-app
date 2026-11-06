@@ -181,9 +181,12 @@ export function UsScreen() {
         })}
 
         <div className="list">
+          <ListRow to="/us/notifications" tile="accent" icon={<Icon name="bell" size={18} />} title={t('notifications.title')} meta={pushMeta} />
+        </div>
+
+        <div className="list">
           <ListRow to="/us/goals" tile="plain" icon={<Icon name="star" size={18} />} title={t('us.yourGoals')}
             meta={goals && `${t(`goals.${goals.goal}`)} · ${goals.dinner_kcal} kcal · ${goals.dinner_protein_g} g · ${tn('recipe.servings', goals.servings)}`} />
-          <ListRow to="/us/notifications" tile="plain" icon={<Icon name="bell" size={18} />} title={t('notifications.title')} meta={pushMeta} />
           <ListRow to="/us/profile" tile="plain" icon={<Icon name="person" size={18} />} title={t('profile.title')} meta={LOCALE_NAMES[locale]} />
           {isCatalogAdmin && (
             <ListRow to="/us/catalog" tile="plain" icon={<Icon name="book" size={18} />} title={t('admin.entry')} meta={t('admin.entryHint')} />

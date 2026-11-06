@@ -251,7 +251,7 @@ export function GroceriesScreen() {
   const showList = !(searching && parsed.name);
 
   return (
-    <Screen>
+    <Screen className="groceries">
       <TabHeader title={t('groceries.title')} right={<SyncIcon status={status} onRetry={() => queue.retry()} />} />
 
       <div className="row grocery-search">

@@ -255,6 +255,7 @@ export function Screen({
   back,
   right,
   plain,
+  className = '',
   children,
 }: {
   title?: string;
@@ -262,6 +263,7 @@ export function Screen({
   back?: boolean | string;
   right?: ReactNode;
   plain?: boolean;
+  className?: string;
   children: ReactNode;
 }) {
   const navigate = useNavigate();
@@ -271,7 +273,7 @@ export function Screen({
   const routed = useLocation().state as { back?: string; backState?: unknown } | null;
   const target = routed?.back ?? back;
   return (
-    <main className={`screen${plain ? ' screen--plain' : ''}`}>
+    <main className={`screen${plain ? ' screen--plain' : ''}${className ? ` ${className}` : ''}`}>
       {(back || right) && (
         <div className="screen__bar">
           {back ? (

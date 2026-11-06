@@ -1,4 +1,4 @@
-import { Icon } from '../components/Icon.tsx';
+import { TimedNotifications } from '../components/TimedNotifications.tsx';
 import { Checkbox, ListRow, Screen, Section } from '../components/ui.tsx';
 import { useI18n } from '../i18n/index.tsx';
 import { useLive, useSave } from '../lib/hooks.ts';
@@ -8,7 +8,7 @@ import type { PlanDay } from '../lib/types.ts';
 
 export function PlanScreen() {
   const { t, list } = useI18n();
-  const { household, refresh } = useSession();
+  const { household } = useSession();
   const save = useSave();
   const hid = household!.id;
   const { data: days, reload, set } = useLive<PlanDay[]>(`plan:${hid}`, async () =>
@@ -20,10 +20,6 @@ export function PlanScreen() {
     await reload();
   };
 
-  const setTime = async (field: 'prompt_time' | 'reminder_time', value: string) => {
-    if (!value) return;
-    if (await save(supabase.from('households').update({ [field]: value }).eq('id', hid))) await refresh();
-  };
 
   const names = list('plan.daysLong');
   return (
@@ -38,16 +34,7 @@ export function PlanScreen() {
         })}
       </div>
       <Section label={t('notifications.title')}>
-        <div className="list">
-          <ListRow tile="accent" icon={<Icon name="bell" size={18} />} title={t('settings.promptRow')} trailing={(
-            <input className="time-input" type="time" aria-label={t('plan.prompt')} defaultValue={household!.prompt_time.slice(0, 5)}
-              onChange={(e) => void setTime('prompt_time', e.target.value)} />
-          )} />
-          <ListRow tile="accent" icon={<Icon name="clock" size={18} />} title={t('plan.reminder')} trailing={(
-            <input className="time-input" type="time" aria-label={t('plan.reminder')} defaultValue={household!.reminder_time.slice(0, 5)}
-              onChange={(e) => void setTime('reminder_time', e.target.value)} />
-          )} />
-        </div>
+        <TimedNotifications />
       </Section>
     </Screen>
   );
