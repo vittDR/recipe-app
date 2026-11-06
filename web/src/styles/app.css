@@ -1919,7 +1919,7 @@ button.grocery-row__amount {
   flex-direction: column;
   justify-content: flex-end;
   gap: var(--space-4);
-  padding: var(--space-7);
+  padding: var(--space-8) var(--space-8) var(--space-9);
   border-radius: var(--radius-2xl);
   background: var(--accent);
   box-shadow: 0 12px 30px rgba(180, 67, 42, 0.28);
@@ -1963,8 +1963,12 @@ button.grocery-row__amount {
 .deal-hero .deal-hero__art {
   position: relative;
   inset: auto;
-  height: 236px;
-  margin: calc(-1 * var(--space-7)) calc(-1 * var(--space-7)) 0;
+  height: 264px;
+  margin: calc(-1 * var(--space-8)) calc(-1 * var(--space-8)) var(--space-6);
+}
+
+.deal-hero .fan {
+  top: 44px;
 }
 
 /* Illustrated cards on the deal hero: the artwork carries its own colour and corners. */
