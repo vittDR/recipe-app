@@ -53,7 +53,14 @@ function useCardDetails(data: DeckData) {
 /** The one glass badge a card may carry. */
 function useBadge(card: DeckCard, data: DeckData) {
   const { t } = useI18n();
-  const { userId } = useSession();
+  const { userId, memberName } = useSession();
+  // The deck's tier says it best when it has something to say (logic/deck.ts).
+  if (card.reason === 'treat') return t('swipe.treat');
+  if (card.reason === 'wildcard') return t('swipe.wildcard');
+  if (card.reason?.startsWith('leans:')) {
+    const who = card.reason.slice(6);
+    return who === userId ? t('swipe.leansYou') : t('swipe.leansPartner', { name: memberName(who) });
+  }
   const shared = data.deck.who_eating.length > 1;
   const fitsMe = data.fits.get(card.recipe_id)?.get(userId!) ?? data.portions.get(card.recipe_id)?.fits;
   if (shared) return card.fits_all ? t('swipe.perfectBoth') : null;

@@ -35,18 +35,56 @@ test('a never rule on an optional line keeps the recipe', () => {
     ['chana masala']);
 });
 
-test('mixes known and new, spreads new cards, ranks by score', () => {
+test('12 cards: 5 very close, 5 close, 2 wildcards at a third and three quarters in', () => {
   const recipes = Array.from({ length: 30 }, (_, i) => recipe(`r${i}`, { proteinGPerServing: 40 - i }));
   const history = new Map<string, RecipeHistory>();
   for (let i = 0; i < 15; i++) history.set(`r${i}`, { yes: 1, pass: 0, cooked: 0 });
   const deck = buildDeck(recipes, [member()], history, { random: fixed });
   assert.equal(deck.length, 12);
-  assert.equal(deck.filter((c) => c.known).length, 8);
-  assert.equal(deck.filter((c) => !c.known).length, 4);
   assert.deepEqual(deck.map((c) => c.position), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
-  assert.equal(deck[0].recipeId, 'r0'); // best fit known card first
-  const newPositions = deck.filter((c) => !c.known).map((c) => c.position);
-  assert.deepEqual(newPositions, [2, 5, 8, 11]);
+  assert.equal(deck.filter((c) => c.tier === 'close').length, 5);
+  assert.equal(deck.filter((c) => c.tier === 'near').length, 5);
+  const wild = deck.filter((c) => c.tier === 'wild');
+  assert.deepEqual(wild.map((c) => c.position), [5, 10]);
+  // Every recipe not chosen before misses the protein goal here, so wildcards fall back to known ones that fit.
+  assert.ok(wild.every((c) => c.reason === 'wildcard' && c.fitScore >= 0.7));
+  assert.equal(deck[0].recipeId, 'r0'); // best fit first
+  assert.equal(deck[0].tier, 'close');
+});
+
+test('very close cards suit everyone; close ones may lean to one person', () => {
+  const both = ['dish:curry'];
+  const anna = ['dish:salad'];
+  const boris = ['dish:stew'];
+  const recipes = [
+    ...Array.from({ length: 6 }, (_, i) => recipe(`curry ${i}`, { features: [...both, `sauce:s${i}`] })),
+    ...Array.from({ length: 6 }, (_, i) => recipe(`salad ${i}`, { features: [...anna, `sauce:t${i}`] })),
+    ...Array.from({ length: 6 }, (_, i) => recipe(`other ${i}`, { features: [`dish:d${i}`] })),
+  ];
+  const w = (pairs: [string, number][]) => new Map(pairs);
+  const members = [
+    member({ userId: 'anna', weights: w([['dish:curry', 0.8], ['dish:salad', 0.9]]) }),
+    member({ userId: 'boris', weights: w([['dish:curry', 0.8], ['dish:salad', 0], [boris[0], 0.5]]) }),
+  ];
+  const deck = buildDeck(recipes, members, new Map(), { random: fixed });
+  const close = deck.filter((c) => c.tier === 'close');
+  assert.ok(close.every((c) => c.recipeId.startsWith('curry')), 'liked by both');
+  const leaning = deck.filter((c) => c.reason === 'leans:anna');
+  assert.ok(leaning.length > 0 && leaning.every((c) => c.tier === 'near' && c.recipeId.startsWith('salad')));
+});
+
+test('wildcards fit the goals and nobody dislikes them', () => {
+  const recipes = [
+    ...Array.from({ length: 10 }, (_, i) => recipe(`fav ${i}`, { features: ['dish:curry', `sauce:s${i}`] })),
+    recipe('huge', { kcalPerServing: 1500, features: ['dish:pie'] }),
+    recipe('disliked', { features: ['dish:soup'] }),
+    recipe('fresh a', { features: ['dish:salad'] }),
+    recipe('fresh b', { features: ['dish:tacos'] }),
+  ];
+  const m = member({ weights: new Map([['dish:curry', 1], ['dish:soup', -1]]) });
+  const history = new Map<string, RecipeHistory>(Array.from({ length: 10 }, (_, i) => [`fav ${i}`, { yes: 1, pass: 0, cooked: 0 }]));
+  const wild = buildDeck(recipes, [m], history, { random: fixed }).filter((c) => c.tier === 'wild').map((c) => c.recipeId);
+  assert.deepEqual(wild.sort(), ['fresh a', 'fresh b']); // new to the household, fit the goals, not disliked
 });
 
 test('fills from the other pool when one is short', () => {

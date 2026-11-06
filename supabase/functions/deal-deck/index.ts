@@ -7,7 +7,11 @@ import { buildDeck, type CandidateRecipe, type DeckMember, type Diet, type Mood,
 import { canonicalFeature, classifyRow, CLASSIFY_COLUMNS, storedClassification, type ClassifiableRow } from '../_shared/logic/classify.ts';
 import { Catalog, type CatalogEntry } from '../_shared/logic/ingredients.ts';
 import { recipeFeatures } from '../_shared/logic/preferences.ts';
-import { buildProfile, signalsFor, weightsOf, type MealRow, type SwipeRow, type TasteSignalRow } from '../_shared/logic/profile.ts';
+import { splitPot } from '../_shared/logic/portions.ts';
+import {
+  buildProfile, signalsFor, weightsOf, type MealRow, type PortionRow, type SwipeRow, type TasteSignalRow,
+} from '../_shared/logic/profile.ts';
+import { dietAdherence } from '../_shared/logic/recommend.ts';
 
 const MOODS: Mood[] = ['any', 'comfort', 'light', 'quick', 'fancy'];
 const RECENT_COOK_DAYS = 10;
@@ -71,6 +75,12 @@ Deno.serve(async (req) => {
   for (const r of [goals, rules, patterns, swipes, recipes, meals, pantry, catalog, signals, allergies, allergenLinks]) {
     if (r.error) return json({ error: r.error.message }, 500);
   }
+  // Whether each swiped card fit each eater when it was dealt: what lets the diet explain a pass away.
+  const swipedDecks = [...new Set((swipes.data ?? []).filter((s) => eaters.includes(s.user_id)).map((s) => s.deck_id as string))];
+  const portions = swipedDecks.length
+    ? await admin.from('member_portions').select('deck_id, recipe_id, user_id, fits').in('deck_id', swipedDecks).in('user_id', eaters)
+    : { data: [], error: null };
+  if (portions.error) return json({ error: portions.error.message }, 500);
 
   const dietOf = new Map((catalog.data ?? []).map((c) => [c.name as string, c.diet_class as 'veg' | 'fish' | 'meat']));
   const { data: versions } = await admin.rpc('catalog_version');
@@ -121,18 +131,32 @@ Deno.serve(async (req) => {
     swipes: (swipes.data ?? []).map((s) => ({ ...s, mood: one(s.decks as { mood: Mood | null } | null)?.mood ?? null })) as SwipeRow[],
     tasteSignals: (signals.data ?? []) as TasteSignalRow[],
     meals: (meals.data ?? []).map((m) => ({ ...m, who_eating: one(m.deck as { who_eating: string[] } | null)?.who_eating ?? null })) as MealRow[],
+    portions: (portions.data ?? []) as PortionRow[],
   };
+  const macrosById = new Map((recipes.data ?? []).map((r) => [r.id as string, {
+    kcalPerServing: r.kcal_per_serving as number | null, proteinGPerServing: r.protein_g_per_serving as number | null,
+  }]));
+  for (const r of recipes.data ?? []) if (r.copied_from) macrosById.set(r.copied_from as string, macrosById.get(r.id)!);
 
   const members: DeckMember[] = eaters.map((uid) => {
     const g = (goals.data ?? []).find((x) => x.user_id === uid);
     const mine = (rules.data ?? []).filter((x) => x.user_id === uid);
-    // Everything this person chose, weighed by what it says (logic/profile.ts).
-    const weights = weightsOf(buildProfile(signalsFor(uid, signalRows, (id) => featuresById.get(id))));
+    // Quiz answers have no deck: whether the dish fits this person's goals now.
+    const fitsNow = (id: string) => {
+      const macros = macrosById.get(id);
+      const plate = macros && splitPot(macros, [{ userId: uid, dinnerKcal: g?.dinner_kcal ?? null, dinnerProteinG: g?.dinner_protein_g ?? null, servings: g?.servings ?? null }]);
+      return plate ? plate.plates[0].fits : null;
+    };
+    // Everything this person chose, weighed by what it says, with the diet explained away (logic/profile.ts).
+    const memberSignals = signalsFor(uid, signalRows, (id) => featuresById.get(id), fitsNow);
+    const profile = buildProfile(memberSignals);
     for (const p of (patterns.data ?? []).filter((x) => x.user_id === uid)) {
       // Patterns accepted on a tag ("curry") apply to the classified feature it now is ("dish:curry").
       const value = canonicalFeature(String(p.pattern?.value ?? ''));
-      if (value) weights.set(value, (weights.get(value) ?? 0) + Number(p.weight ?? 0));
+      const prev = profile.get(value);
+      if (value) profile.set(value, { weight: Math.max(-1, Math.min(1, (prev?.weight ?? 0) + Number(p.weight ?? 0))), evidence: Math.max(prev?.evidence ?? 0, 3) });
     }
+    const weights = weightsOf(profile);
     return {
       userId: uid,
       dinnerKcal: g?.dinner_kcal ?? null,
@@ -146,6 +170,8 @@ Deno.serve(async (req) => {
         ? [a.ingredient as string]
         : (allergenLinks.data ?? []).filter((l) => l.allergen === a.allergen).map((l) => l.ingredient as string))),
       weights,
+      profile,
+      adherence: dietAdherence(memberSignals),
     };
   });
 
