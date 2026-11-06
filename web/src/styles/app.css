@@ -1961,6 +1961,30 @@ button.grocery-row__amount {
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
 }
 
+/* The cards take the room above the title and sit centred in it,
+   so a tall screen adds space around them, not one gap under them. */
+.deal-hero .deal-hero__art {
+  position: relative;
+  inset: auto;
+  flex: 1;
+  min-height: 260px;
+  margin: calc(-1 * var(--space-7)) calc(-1 * var(--space-7)) 0;
+}
+
+.deal-hero .fan {
+  top: 50%;
+  margin-top: -95px;
+}
+
+/* Illustrated cards (deal hero, join card, no match): the artwork carries its own colour and corners. */
+.fan.fan--art {
+  display: block;
+  object-fit: cover;
+  background: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
 .deal-hero__title {
   position: relative;
   margin: 0;
@@ -2008,12 +2032,20 @@ button.grocery-row__amount {
   background: var(--iris-soft);
 }
 
+/* The pair sits centred in the tint, both ways. */
+.join-card__art .fan {
+  top: 50%;
+  width: 132px;
+  height: 168px;
+  margin: -84px 0 0 -66px;
+}
+
 .join-card__art .fan--left {
-  transform: translateX(-30px) rotate(-10deg);
+  transform: translateX(-24px) rotate(-9deg);
 }
 
 .join-card__art .fan--mid {
-  transform: translateX(20px) rotate(4deg);
+  transform: translateX(24px) rotate(4deg);
 }
 
 .join-card__body {
@@ -2580,20 +2612,18 @@ body:has(.moment) .tabbar {
 
 .no-match-art .fan {
   top: 10px;
-  width: 110px;
-  height: 130px;
-  margin-left: -55px;
-  border-radius: 18px;
+  width: 104px;
+  height: 132px;
+  margin-left: -52px;
+  border-radius: 12px;
 }
 
 .no-match-art .fan--left {
   transform: translateX(-40px) translateY(8px) rotate(-10deg);
-  background: linear-gradient(170deg, #f2b88f 0%, #d9663f 55%, #8e3b24 100%);
 }
 
 .no-match-art .fan--right {
   transform: translateX(40px) rotate(9deg);
-  background: linear-gradient(170deg, #f4c9b5 0%, #e58f73 50%, #6e9a7b 100%);
 }
 
 .no-match-art__x {

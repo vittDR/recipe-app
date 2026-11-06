@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import { Icon } from '../../components/Icon.tsx';
 import { Button } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
+import { pickDeckArt } from '../../lib/deckArt.ts';
 import { useSave } from '../../lib/hooks.ts';
 import { useSession } from '../../lib/session.tsx';
 import { callFunction, supabase } from '../../lib/supabase.ts';
@@ -20,6 +21,8 @@ export function NoMatchView({ data }: { data: DeckData }) {
   const save = useSave();
   const [dealing, setDealing] = useState(false);
   const { deck } = data;
+  // The two cards Tonight showed for this deck.
+  const [right, left] = pickDeckArt(deck.id, 2, deck.mood);
 
   const deal = async () => {
     setDealing(true);
@@ -44,7 +47,8 @@ export function NoMatchView({ data }: { data: DeckData }) {
     <main className="screen moment">
       <div className="moment__head moment__head--art no-match">
         <div className="no-match-art" aria-hidden>
-          <span className="fan fan--left" /><span className="fan fan--right" />
+          <img className="fan fan--left fan--art" src={left} alt="" />
+          <img className="fan fan--right fan--art" src={right} alt="" />
           <span className="no-match-art__x"><Icon name="x" size={22} strokeWidth={2.4} /></span>
         </div>
         <h1 className="t-title-m m-0">{t('noMatch.title')}</h1>

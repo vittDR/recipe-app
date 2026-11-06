@@ -9,6 +9,7 @@ import {
   Avatar, AvatarPair, Button, Chip, ListRow, ProgressBar, RecipeThumb, Screen, Section, Spinner, Tag, TabHeader, imageStyle, recipeEmoji,
 } from '../components/ui.tsx';
 import { useI18n } from '../i18n/index.tsx';
+import { pickDeckArt } from '../lib/deckArt.ts';
 import { recipeTitle } from '../lib/recipeText.ts';
 import { todayIn, useLive, useSave } from '../lib/hooks.ts';
 import { comingDays, cooksOn } from '../lib/plan.ts';
@@ -301,10 +302,13 @@ export function TonightScreen() {
     // A deck is running and I still have cards: only "start swiping".
     const starter = deck.started_by !== userId && !myProgress?.swiped_count;
     const others = deck.who_eating.filter((u) => u !== userId);
+    // Same cards as this deck's no-match screen, should it come to that.
+    const [front, back] = pickDeckArt(deck.id, 2, deck.mood);
     main = (
       <article className="card card--flush join-card">
         <div className={`join-card__art${starter ? ' join-card__art--iris' : ''}`} aria-hidden>
-          <span className="fan fan--left" /><span className="fan fan--mid" />
+          <img className="fan fan--left fan--art" src={back} alt="" />
+          <img className="fan fan--mid fan--art" src={front} alt="" />
         </div>
         <div className="join-card__body">
           <div className="row">
@@ -378,12 +382,16 @@ export function TonightScreen() {
       </>
     );
   } else {
-    // No deck yet: dealing the deck is the only big action.
+    // No deck yet: dealing the deck is the only big action. New cards each day,
+    // to the mood about to be dealt; the best fit in front.
+    const [mid, left, right] = pickDeckArt(today, 3, settings.mood);
     main = (
       <>
         <section className="deal-hero">
           <div className="deal-hero__art" aria-hidden>
-            <span className="fan fan--left" /><span className="fan fan--right" /><span className="fan fan--mid" />
+            <img className="fan fan--left fan--art" src={left} alt="" />
+            <img className="fan fan--right fan--art" src={right} alt="" />
+            <img className="fan fan--mid fan--art" src={mid} alt="" />
           </div>
           <h2 className="deal-hero__title">{deck?.status === 'no_match' ? t('noMatch.again') : t('tonight.ask')}</h2>
           <button type="button" className="btn btn--block deal-hero__btn" disabled={dealing} onClick={() => void deal()}>

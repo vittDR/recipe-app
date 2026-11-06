@@ -38,7 +38,7 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
   const { data: catalog } = useGroceryCatalog(household!.id);
   const { tags } = useTags(household!.id);
   const ingredientCatalog = useCatalog();
-  const { data, reload } = useLive<Loaded>(`us:${userId}:${ingredientCatalog ? 'c' : ''}`, async () => {
+  const { data } = useLive<Loaded>(`us:${userId}:${ingredientCatalog ? 'c' : ''}`, async () => {
     const [r, swipes, signals, meals, portions] = await Promise.all([
       supabase.from('taste_rules').select('*').eq('user_id', userId!),
       supabase.from('swipes').select('user_id, deck_id, recipe_id, verdict, created_at, deck:decks(mood)')
