@@ -307,7 +307,8 @@ export function TonightScreen() {
     main = (
       <article className="card card--flush join-card">
         <div className={`join-card__art${starter ? ' join-card__art--iris' : ''}`} aria-hidden>
-          <span className="fan fan--left" /><span className="fan fan--mid" />
+          <img className="fan fan--left fan--art" src={pastaCard} alt="" />
+          <img className="fan fan--mid fan--art" src={stirFryCard} alt="" />
         </div>
         <div className="join-card__body">
           <div className="row">

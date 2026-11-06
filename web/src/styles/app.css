@@ -1976,7 +1976,7 @@ button.grocery-row__amount {
   margin-top: -95px;
 }
 
-/* Illustrated cards on the deal hero: the artwork carries its own colour and corners. */
+/* Illustrated cards on the deal hero and join card: the artwork carries its own colour and corners. */
 .fan--art {
   display: block;
   object-fit: cover;
