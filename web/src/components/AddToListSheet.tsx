@@ -16,18 +16,24 @@ export async function loadProposals(
   householdId: string,
   ingredients: RecipeIngredient[],
 ): Promise<ListProposal<RecipeIngredient>[]> {
+  return (await loadProposalsMany(householdId, [ingredients]))[0];
+}
+
+/** The same for several recipes at once, reading the list and staples once. */
+export async function loadProposalsMany(
+  householdId: string,
+  recipes: RecipeIngredient[][],
+): Promise<ListProposal<RecipeIngredient>[][]> {
   const since = new Date(Date.now() - AT_HOME_DAYS * 86_400_000).toISOString();
   const [items, staples] = await Promise.all([
     supabase.from('grocery_items').select('*, product:products(ingredient)').eq('household_id', householdId)
       .or(`cleared_at.is.null,checked_at.gte.${since}`),
     supabase.from('household_staples').select('product_id').eq('household_id', householdId),
   ]);
-  return proposeListItems(
-    ingredients,
-    (must(items) as (GroceryRow & { product: { ingredient: string | null } | null })[])
-      .map(({ product, ...i }) => ({ ...i, ingredient: product?.ingredient ?? null })),
-    (must(staples) as { product_id: string }[]).map((s) => s.product_id),
-  );
+  const list = (must(items) as (GroceryRow & { product: { ingredient: string | null } | null })[])
+    .map(({ product, ...i }) => ({ ...i, ingredient: product?.ingredient ?? null }));
+  const stapleIds = (must(staples) as { product_id: string }[]).map((s) => s.product_id);
+  return recipes.map((ingredients) => proposeListItems(ingredients, list, stapleIds));
 }
 
 /** One planned meal whose ingredients may go to the list. */
@@ -45,7 +51,13 @@ export interface MealForList {
  * probably at home (staples, bought recently, already on the list) ticked.
  * Everything left unticked goes to the list.
  */
-export function AddToListSheet({ open, onClose, meals }: { open: boolean; onClose: () => void; meals: MealForList[] }) {
+export function AddToListSheet({ open, onClose, onAdded, meals }: {
+  open: boolean;
+  onClose: () => void;
+  /** After the items went to the list (the sheet closes too). */
+  onAdded?: () => void;
+  meals: MealForList[];
+}) {
   const { t, tn, locale } = useI18n();
   const { recipeAmount } = useAmount();
   const { userId, household } = useSession();
@@ -111,6 +123,7 @@ export function AddToListSheet({ open, onClose, meals }: { open: boolean; onClos
     setBusy(false);
     toast(t('addToList.added'));
     onClose();
+    onAdded?.();
   };
 
   const row = (m: MealForList, p: ListProposal<RecipeIngredient>) => {

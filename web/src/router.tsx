@@ -68,6 +68,7 @@ function Gate() {
 
 function Tabs() {
   const { t } = useI18n();
+  const { pathname } = useLocation();
   const tabs = [
     { to: '/', icon: 'bowlSteam', label: t('tabs.tonight') },
     { to: '/recipes', icon: 'book', label: t('tabs.recipes') },
@@ -79,7 +80,8 @@ function Tabs() {
       <Outlet />
       <nav className="tabbar" aria-label="Main">
         {tabs.map((tab) => (
-          <NavLink key={tab.to} to={tab.to} end={tab.to === '/'}>
+          <NavLink key={tab.to} to={tab.to} end={tab.to === '/'}
+            className={({ isActive }) => (isActive || (tab.to === '/' && pathname.startsWith('/deck/')) ? 'active' : undefined)}>
             <Icon name={tab.icon} />
             {tab.label}
           </NavLink>
@@ -109,9 +111,10 @@ export const router = createBrowserRouter([
           { path: '/recipes', element: <RecipesScreen /> },
           { path: '/groceries', element: <GroceriesScreen /> },
           { path: '/us', element: <UsScreen /> },
+          // Swiping keeps the tab bar; moments (match, tie-break) hide it.
+          { path: '/deck/:id', element: <DeckScreen /> },
         ],
       },
-      { path: '/deck/:id', element: <DeckScreen /> },
       { path: '/recipes/new', element: <ImportScreen /> },
       { path: '/recipes/:id', element: <RecipeScreen /> },
       { path: '/recipes/:id/cook', element: <CookingScreen /> },

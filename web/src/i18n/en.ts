@@ -170,6 +170,11 @@ export const en = {
     off: 'Out',
   },
   swipe: {
+    perfectBoth: 'Perfect for you both',
+    perfectYou: 'Perfect for you',
+    atHome: '{home} of {n} ingredients probably at home',
+    undo: 'Undo last choice',
+    collapse: 'Collapse',
     why: 'Why?',
     reasons: {
       not_tonight: 'Not tonight',
@@ -200,6 +205,12 @@ export const en = {
     nudged: 'Nudged',
   },
   match: {
+    decided: 'It’s decided!',
+    bothYes: 'You both said yes',
+    allYes: 'Everyone said yes',
+    youYes: 'You said yes',
+    pickedTogether: 'Picked together',
+    addIngredients: 'Add the ingredients to groceries',
     title: 'It’s a match!',
     yourPlate: 'Your plate',
     partnerPlate: '{name}’s plate',
@@ -216,7 +227,7 @@ export const en = {
   },
   tiebreak: {
     title: 'No mutual yes',
-    subtitle: 'Pick one of the three closest calls. Same pick wins; otherwise the best fit for both.',
+    subtitle: 'Pick one of the three closest.',
     liked: 'Liked by {names}',
     pick: 'Pick',
     picked: 'Your pick',
@@ -232,6 +243,12 @@ export const en = {
     added: 'Added to the list',
   },
   recipe: {
+    probablyHome: 'probably at home',
+    cookedTimes_one: 'Cooked once',
+    cookedTimes_other: 'Cooked {count} times',
+    kcal: '{n} kcal',
+    protein: '{n} g protein',
+    split: 'Prep {prep} min · cooking {cook} min',
     ingredients: 'Ingredients',
     steps: 'Steps',
     servings_one: '{count} serving',
@@ -411,6 +428,7 @@ export const en = {
     adjustable: 'Chilli on the side',
   },
   equipment: {
+    noOven: 'no oven',
     pots_one: '{count} pot or pan',
     pots_other: '{count} pots and pans',
     oven: 'Oven',

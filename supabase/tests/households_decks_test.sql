@@ -127,8 +127,21 @@ insert into swipes (deck_id, recipe_id, user_id, verdict) values
 select pg_temp.check((select finished_at is not null and swiped_count = 3 from deck_members
                       where user_id = auth.uid()), 'A finished');
 
+-- A finished deck can't be undone.
+select pg_temp.check(undo_swipe('10000000-0000-0000-0000-000000000001') is null, 'no undo once finished');
+
 -- B mid-swipe cannot see A's verdicts; after finishing, can.
 select pg_temp.act_as('00000000-0000-0000-0000-00000000000b');
+insert into swipes (deck_id, recipe_id, user_id, verdict) values
+  ('10000000-0000-0000-0000-000000000001', :'r1', auth.uid(), 'pass');
+insert into taste_signals (recipe_id, kind, value, deck_id)
+values (:'r1', 'reason', 'too_long', '10000000-0000-0000-0000-000000000001');
+-- Undo takes back B's last choice and its reason; B chooses again.
+select pg_temp.check(undo_swipe('10000000-0000-0000-0000-000000000001') = :'r1'::uuid, 'undo returns the card');
+select pg_temp.check((select count(*) = 0 from swipes), 'undone swipe is gone');
+select pg_temp.check((select count(*) = 0 from taste_signals where kind = 'reason'), 'its pass reason is gone');
+select pg_temp.check((select swiped_count = 0 from deck_members where user_id = auth.uid()), 'progress goes back');
+select pg_temp.check(undo_swipe('10000000-0000-0000-0000-000000000001') is null, 'nothing left to undo');
 insert into swipes (deck_id, recipe_id, user_id, verdict) values
   ('10000000-0000-0000-0000-000000000001', :'r1', auth.uid(), 'yes');
 select pg_temp.check((select count(*) = 1 from swipes), 'B mid-deck sees only own swipes');
