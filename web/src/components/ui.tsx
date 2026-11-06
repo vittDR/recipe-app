@@ -674,7 +674,7 @@ export function recipeEmoji(title: string, tags: string[] = []): string {
     [/salmon|saumon|cod|cabillaud|fish|poisson/, '🐟'], [/prawn|crevette|shrimp/, '🍤'], [/soup|soupe/, '🍲'],
     [/salad|salade|bowl/, '🥗'], [/egg|œuf|oeuf|omelette|shakshuka/, '🍳'], [/chicken|poulet/, '🍗'],
     [/beef|bœuf|boeuf|steak/, '🥩'], [/pork|porc/, '🥓'], [/tofu|noodle|nouille|stir/, '🥢'],
-    [/pizza/, '🍕'], [/burger/, '🍔'], [/rice|riz|risotto/, '🍚'], [/veg|légume|traybake/, '🥘'],
+    [/pizza/, '🍕'], [/burger/, '🍔'], [/rice|riz|risotto/, '🍚'], [/veg|légume|au four|oven/, '🥘'],
   ];
   return table.find(([re]) => re.test(t))?.[1] ?? '🍽️';
 }

@@ -122,6 +122,8 @@ test('stir-fry is not also pan-frying; roast wins over baked', () => {
   assert.deepEqual(c.cooking_methods, ['stir_fried']);
   const r = classifyRecipe(input({ steps: ['Preheat the oven.', 'Roast for 40 minutes.'], equipment: { pots: 1, oven: true, special: [] }, lines: [['potato', 400, 'g']] }));
   assert.deepEqual(r.cooking_methods, ['roasted']);
+  const tagged = classifyRecipe(input({ tags: ['oven'], steps: ['Cook the fish.'], lines: [['cod fillet', 200, 'g']] }));
+  assert.deepEqual(tagged.cooking_methods, ['baked']);
   const raw = classifyRecipe(input({ cookMin: 0, steps: ['Slice and serve.'], lines: [['potato', 400, 'g']] }));
   assert.deepEqual(raw.cooking_methods, ['no_cook']);
 });
@@ -134,6 +136,7 @@ test('dish family words in any language, and not Italian "al forno" or pizzaiola
   assert.deepEqual(fam(['Pollo alla pizzaiola']), ['plated']);
   assert.deepEqual(fam(['Tarte flambée']), ['pizza']);
   assert.deepEqual(fam(['Pollo dal contadino']), ['plated']); // "dal" is not dhal
+  assert.deepEqual(fam(['Chicken shawarma traybake']), ['wrap', 'oven_bake']);
 });
 
 test('traits', () => {

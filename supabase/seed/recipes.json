@@ -3454,7 +3454,6 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "traybake",
       "oven"
     ],
     "difficulty": "easy",
@@ -3822,7 +3821,6 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "traybake",
       "oven",
       "light",
       "high protein"
@@ -9762,7 +9760,7 @@
     "cuisine": "british",
     "tags": [
       "british",
-      "traybake",
+      "oven",
       "light",
       "high protein"
     ],
@@ -14317,7 +14315,7 @@
     "image_url": "/recipe-photos/chicken-shawarma-traybake.webp",
     "cuisine": "middle eastern",
     "tags": [
-      "traybake",
+      "oven",
       "high protein",
       "generous",
       "middle eastern"

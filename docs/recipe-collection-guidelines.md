@@ -76,7 +76,7 @@ Field rules:
 - `tags`: 3–8 tag names from `public.tag_catalog` (lowercase **English** always; the build script rejects anything else):
   - cuisine tag (same as `cuisine`; for any Asian cuisine ALSO add `asian`; for Italian/Greek/Spanish/Lebanese etc. you may add `mediterranean`)
   - no ingredient tags (`chicken`, `salmon`, `rice`, `pasta`…): the ingredient list already says it
-  - format: `traybake stew soup curry salad bowl stir-fry grill oven one-pot wrap burger pizza gratin tart risotto`
+  - format: `stew soup curry salad bowl stir-fry grill oven one-pot wrap burger pizza gratin tart risotto`
   - mood words exactly as defined: `comfort` `light` `quick` (only if the total time is <= 25 min) `fancy` (special / date-night dishes) ; `vegetarian` when there is no meat/fish.
 - `difficulty` and `equipment`: see [recipe-template.md](recipe-template.md#equipment). Keep equipment coarse: count pots/pans/dishes, say whether the oven is on, and list only uncommon equipment under `special`.
 - `steps`: rewrite in YOUR OWN WORDS (never copy the site's sentences), in the recipe language, one action per step, in order, keeping concrete temps/times/doneness cues. Typically 4–10 steps. Steps refer to 2 servings implicitly (don't mention quantities that only apply to the original yield).

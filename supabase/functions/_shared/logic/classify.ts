@@ -15,7 +15,7 @@
 import { type Difficulty, type Equipment } from './facets.ts';
 import { type CatalogEntry, type Catalog, estimateMacros, gramsOf, type NormalisedIngredient } from './ingredients.ts';
 
-export const CLASSIFICATION_VERSION = 1;
+export const CLASSIFICATION_VERSION = 2;
 
 export const PROTEIN_GROUPS = [
   'poultry', 'beef', 'pork', 'lamb', 'veal', 'game', 'offal', 'fish', 'shellfish', 'eggs', 'legumes', 'soy', 'dairy',
@@ -25,7 +25,7 @@ export const STARCH_BASES = [
 ] as const;
 export const DISH_FAMILIES = [
   'curry', 'stew', 'soup', 'salad', 'grain_bowl', 'rice_dish', 'pasta_dish', 'noodle_dish', 'stir_fry', 'wrap',
-  'sandwich', 'tacos', 'pizza', 'pie', 'gratin', 'traybake', 'roast', 'savory_pancake', 'egg_dish', 'dumplings',
+  'sandwich', 'tacos', 'pizza', 'pie', 'gratin', 'oven_bake', 'roast', 'savory_pancake', 'egg_dish', 'dumplings',
   'plated', 'other',
 ] as const;
 export const SAUCE_FAMILIES = [
@@ -188,7 +188,7 @@ const DISH_WORDS: [DishFamily, RegExp][] = ([
   ['pie', ['pie', 'pies', 'tourte*', 'quiche*', 'tart', 'tarte', 'tartes', 'parmentier', 'pastilla', 'empanada*']],
   ['gratin', ['gratin*', 'tartiflette', 'croziflette', 'parmigiana', 'moussaka', 'lasagn*', 'bake', 'pasta bake',
     'parmentier']],
-  ['traybake', ['traybake*', 'tray bake*', 'sheet pan', 'one tray']],
+  ['oven_bake', ['traybake*', 'tray bake*', 'sheet pan', 'one tray']], // not "au four" alone: a fish au four is plated
   ['roast', ['roast chicken', 'roasted chicken', 'roast beef', 'roast pork', 'roast lamb', 'roast turkey', 'sunday roast',
     'roti de', 'poulet roti', 'arrosto di', 'rotisserie']],
   ['savory_pancake', ['pancake*', 'galette*', 'crepe*', 'okonomiyaki', 'jeon', 'pajeon', 'buchimgae', 'socca',
@@ -219,9 +219,9 @@ const HEAT_METHODS = new Set<CookingMethod>(COOKING_METHODS.filter((m) => m !== 
 const TAG_DISH: Record<string, DishFamily> = {
   curry: 'curry', stew: 'stew', soup: 'soup', salad: 'salad', bowl: 'grain_bowl', risotto: 'rice_dish',
   'stir-fry': 'stir_fry', wrap: 'wrap', sandwich: 'sandwich', burger: 'sandwich', pizza: 'pizza', tart: 'pie',
-  gratin: 'gratin', traybake: 'traybake',
+  gratin: 'gratin',
 };
-const TAG_METHOD: Record<string, CookingMethod> = { grill: 'grilled', 'no-cook': 'no_cook' };
+const TAG_METHOD: Record<string, CookingMethod> = { grill: 'grilled', oven: 'baked', 'no-cook': 'no_cook' };
 const TAG_INTENT: Record<string, MealIntent> = {
   comfort: 'comfort', treat: 'indulgent', light: 'light', fancy: 'special_occasion',
 };

@@ -362,7 +362,7 @@ export const en = {
       pizza: 'Pizza',
       pie: 'Pie or tart',
       gratin: 'Gratin',
-      traybake: 'Traybake',
+      oven_bake: 'Oven bake',
       roast: 'Roast',
       savory_pancake: 'Savoury pancake',
       egg_dish: 'Egg dish',
