@@ -360,7 +360,7 @@ export const fr: Dictionary = {
       pizza: 'Pizza',
       pie: 'Tourte ou tarte',
       gratin: 'Gratin',
-      traybake: 'Plat sur plaque',
+      oven_bake: 'Plat au four',
       roast: 'Rôti',
       savory_pancake: 'Galette salée',
       egg_dish: 'Plat aux œufs',

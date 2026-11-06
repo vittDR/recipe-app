@@ -221,7 +221,7 @@ Tags drive moods. Use these where they apply, because the deck looks for them:
 | quick | `quick` (or just a total time ≤ 25 min) |
 | fancy | `fancy` |
 
-Add cuisine (`asian`, `mexican`, `mediterranean`…) and format (`traybake`,
+Add cuisine (`asian`, `mexican`, `mediterranean`…) and format (`oven`,
 `stir-fry`, `gratin`…), plus course, diet, season or occasion where it helps
 (`starter`, `vegan`, `summer`, `batch cooking`…). **Tag names are always in
 English, whatever the recipe's `language`.**

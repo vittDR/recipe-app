@@ -3454,7 +3454,6 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "traybake",
       "oven"
     ],
     "difficulty": "easy",
@@ -3822,7 +3821,6 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "traybake",
       "oven",
       "light",
       "high protein"
@@ -9762,7 +9760,7 @@
     "cuisine": "british",
     "tags": [
       "british",
-      "traybake",
+      "oven",
       "light",
       "high protein"
     ],
@@ -14317,7 +14315,7 @@
     "image_url": "/recipe-photos/chicken-shawarma-traybake.webp",
     "cuisine": "middle eastern",
     "tags": [
-      "traybake",
+      "oven",
       "high protein",
       "generous",
       "middle eastern"
@@ -14404,7 +14402,7 @@
     ],
     "translations": {
       "fr": {
-        "title": "Shawarma de poulet à la plaque",
+        "title": "Shawarma de poulet au four",
         "steps": [
           "Préchauffer le four à 220 °C. Mélanger les épices, 2 gousses d'ail, le jus d'un demi-citron, 2 c. à soupe d'huile et du sel.",
           "Enrober le poulet et les quartiers d'oignon de marinade et les étaler en une seule couche sur une plaque.",
