@@ -369,7 +369,7 @@ export function GroceriesScreen() {
                           <span className="grocery-row__amount muted">{amount(item.quantity, item.unit)}</span>
                           {by && (
                             <span title={t('groceries.checkedBy', { name: by.profile.first_name })}>
-                              <Avatar name={by.profile.first_name} color={by.profile.color} size="sm" />
+                              <Avatar name={by.profile.first_name} color={memberColor(by.user_id)} size="sm" />
                             </span>
                           )}
                         </div>

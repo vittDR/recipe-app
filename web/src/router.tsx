@@ -69,9 +69,9 @@ function Gate() {
 function Tabs() {
   const { t } = useI18n();
   const tabs = [
-    { to: '/', icon: 'bowl', label: t('tabs.tonight') },
+    { to: '/', icon: 'bowlSteam', label: t('tabs.tonight') },
     { to: '/recipes', icon: 'book', label: t('tabs.recipes') },
-    { to: '/groceries', icon: 'cart', label: t('tabs.groceries') },
+    { to: '/groceries', icon: 'basket', label: t('tabs.groceries') },
     { to: '/us', icon: 'people', label: t('tabs.us') },
   ] as const;
   return (

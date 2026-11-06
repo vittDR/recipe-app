@@ -8,8 +8,12 @@ import { Link, useLocation, useNavigate } from 'react-router';
 import { useI18n } from '../i18n/index.tsx';
 import { Icon } from './Icon.tsx';
 
-/** `danger`: a text button for destructive actions (leave, remove, delete). */
-type ButtonVariant = 'primary' | 'dark' | 'secondary' | 'text' | 'danger';
+/**
+ * One `primary` per screen. `secondary` is the alternative under it, `iris`
+ * an action aimed at the partner, `sage` the compact action of a groceries
+ * card, `text` a tertiary link and `danger` a destructive text button.
+ */
+type ButtonVariant = 'primary' | 'dark' | 'secondary' | 'iris' | 'sage' | 'text' | 'danger';
 
 export function Button({
   variant = 'primary',
@@ -22,22 +26,31 @@ export function Button({
   return <button type="button" className={cls} {...rest} />;
 }
 
+/**
+ * Chips are for choosing. `dashed`: a value not set yet or an entry to more
+ * options; `suggested`: a value the app filled in; `fact`: a recipe fact
+ * (time, difficulty, kcal, protein), read-only.
+ */
 export function Chip({
   pressed,
   onClick,
   children,
   onRemove,
   removeLabel,
+  variant,
 }: {
   pressed?: boolean;
   onClick?: () => void;
   children: ReactNode;
   onRemove?: () => void;
   removeLabel?: string;
+  variant?: 'dashed' | 'suggested' | 'fact';
 }) {
+  const cls = `chip${variant ? ` chip--${variant}` : ''}`;
+  if (variant === 'fact') return <span className={cls}>{children}</span>;
   if (onRemove) {
     return (
-      <span className="chip">
+      <span className={cls}>
         {children}
         <button type="button" className="chip__remove" onClick={onRemove} aria-label={removeLabel}>
           <Icon name="x" size={16} />
@@ -46,13 +59,14 @@ export function Chip({
     );
   }
   return (
-    <button type="button" className="chip" aria-pressed={pressed ?? false} onClick={onClick}>
+    <button type="button" className={cls} aria-pressed={pressed ?? false} onClick={onClick}>
       {children}
     </button>
   );
 }
 
-export function Tag({ children, tone }: { children: ReactNode; tone?: 'success' | 'warning' }) {
+/** Read-only state. Colour by meaning: success (sage) = at home, accent = to buy, iris = about the partner, warning (star) = indispensable. */
+export function Tag({ children, tone }: { children: ReactNode; tone?: 'success' | 'warning' | 'accent' | 'iris' }) {
   return <span className={`chip chip--tag${tone ? ` chip--${tone}` : ''}`}>{children}</span>;
 }
 
@@ -74,6 +88,8 @@ export function ListRow({
   className = '',
   role,
   selected,
+  value,
+  tile,
 }: {
   icon?: ReactNode;
   title: ReactNode;
@@ -89,15 +105,20 @@ export function ListRow({
   className?: string;
   role?: 'option' | 'listitem';
   selected?: boolean;
+  /** A muted value before the chevron ("17:30", "14 articles"). */
+  value?: ReactNode;
+  /** Puts the icon in a 34px tile in this section colour (settings rows). */
+  tile?: 'accent' | 'sage' | 'iris' | 'plain';
 }) {
   const cls = ['list-row', accent && 'list-row--accent', className].filter(Boolean).join(' ');
   const body = (
     <>
-      {icon && <span className="list-row__icon">{icon}</span>}
+      {icon && (tile ? <span className={`icon-tile icon-tile--${tile}`}>{icon}</span> : <span className="list-row__icon">{icon}</span>)}
       <span className="list-row__main">
         <span className="list-row__title">{title}</span>
         {meta && <span className="list-row__meta">{meta}</span>}
       </span>
+      {value != null && <span className="list-row__value">{value}</span>}
       {trailing}
       {chevron && <span className="chevron"><Icon name="chevron" size={18} /></span>}
     </>
@@ -489,12 +510,54 @@ export function Sheet({ open, onClose, children, label, className = '' }: {
 }
 
 /** The title of a sheet and an optional line under it. */
-export function SheetHeader({ title, subtitle }: { title: ReactNode; subtitle?: ReactNode }) {
+export function SheetHeader({ title, subtitle, action }: {
+  title: ReactNode;
+  subtitle?: ReactNode;
+  /** On the title's line, e.g. "OK" for a list that only selects. */
+  action?: ReactNode;
+}) {
   return (
-    <header className="sheet__header">
-      <h2 className="title2">{title}</h2>
-      {subtitle && <p className="muted small">{subtitle}</p>}
+    <header className={`sheet__header${action ? ' sheet__header--row' : ''}`}>
+      <div>
+        <h2 className="title2">{title}</h2>
+        {subtitle && <p className="muted">{subtitle}</p>}
+      </div>
+      {action}
     </header>
+  );
+}
+
+/** The top of a tab screen: an overline, the large title, and something on the right (avatars, a + button). */
+export function TabHeader({ overline, title, right }: { overline?: ReactNode; title: string; right?: ReactNode }) {
+  return (
+    <header className="tab-header">
+      <div className="tab-header__text">
+        {overline && <span className="tab-header__overline">{overline}</span>}
+        <h1 className="tab-header__title">{title}</h1>
+      </div>
+      {right}
+    </header>
+  );
+}
+
+/** A heading inside a scrolling page, with an optional count badge ("Ingrédients 9"). */
+export function SectionHeading({ children, count, action }: { children: ReactNode; count?: number; action?: ReactNode }) {
+  return (
+    <div className="section-heading">
+      <h2 className="t-section m-0">{children}</h2>
+      {count != null && <span className="count-badge">{count}</span>}
+      {action && <span className="spacer" />}
+      {action}
+    </div>
+  );
+}
+
+/** Overlapping avatars of the household, you first. */
+export function AvatarPair({ people }: { people: { id: string; name: string; color: string }[] }) {
+  return (
+    <span className="avatars">
+      {people.map((p) => <Avatar key={p.id} name={p.name} color={p.color} />)}
+    </span>
   );
 }
 

@@ -58,7 +58,7 @@ export function WeekScreen() {
                 <span className="headline">{Number(date.slice(8))}</span>
               </span>}
               meta={i === 0 ? t('week.today') : i === 1 ? t('week.tomorrow') : undefined}
-              trailing={<Checkbox checked={cook} label={`${name} ${when}`} onChange={(v) => void toggle(date, v)} color="var(--c-accent)" />} />
+              trailing={<Checkbox checked={cook} label={`${name} ${when}`} onChange={(v) => void toggle(date, v)} color="var(--accent)" />} />
           );
         })}
       </div>

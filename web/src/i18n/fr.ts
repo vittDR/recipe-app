@@ -51,8 +51,6 @@ export const fr: Dictionary = {
     profileTitle: 'À propos de vous',
     firstName: 'Prénom',
     firstNamePlaceholder: 'Votre prénom',
-    color: 'Votre couleur',
-    colorHint: 'Indique qui a ajouté ou coché un article.',
     language: 'Langue',
   },
   household: {

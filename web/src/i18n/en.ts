@@ -53,8 +53,6 @@ export const en = {
     profileTitle: 'About you',
     firstName: 'First name',
     firstNamePlaceholder: 'Your first name',
-    color: 'Your colour',
-    colorHint: 'Shows who added or checked things off.',
     language: 'Language',
   },
   household: {

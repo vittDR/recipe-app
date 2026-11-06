@@ -32,7 +32,7 @@ export function PlanScreen() {
           const cook = days?.find((x) => x.weekday === i + 1)?.cook_at_home ?? true;
           return (
             <ListRow key={name} title={name}
-              trailing={<Checkbox checked={cook} label={name} onChange={(v) => void toggle(i + 1, v)} color="var(--c-accent)" />} />
+              trailing={<Checkbox checked={cook} label={name} onChange={(v) => void toggle(i + 1, v)} color="var(--accent)" />} />
           );
         })}
       </div>

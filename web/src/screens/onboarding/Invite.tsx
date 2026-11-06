@@ -7,7 +7,7 @@ import { supabase } from '../../lib/supabase.ts';
 
 export function InviteScreen({ editing }: { editing?: boolean }) {
   const { t, formatRelative } = useI18n();
-  const { partners, goals } = useSession();
+  const { partners, goals, memberColor } = useSession();
   const navigate = useNavigate();
   const [invite, setInvite] = useState<{ code: string; expires_at: string } | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -60,7 +60,7 @@ export function InviteScreen({ editing }: { editing?: boolean }) {
         {error && <p className="error">{error}</p>}
         {joined ? (
           <div className="notice notice--success row">
-            <Avatar name={joined.profile.first_name} color={joined.profile.color} />
+            <Avatar name={joined.profile.first_name} color={memberColor(joined.user_id)} />
             {t('invite.joined', { name: joined.profile.first_name })}
           </div>
         ) : (

@@ -4,8 +4,8 @@
 export type Theme = 'system' | 'light' | 'dark';
 export const THEMES: Theme[] = ['system', 'light', 'dark'];
 const STORAGE_KEY = 'dineamite.theme';
-// Keep in sync with --c-paper in tokens.css.
-const PAPER = { light: '#F8F5F0', dark: '#191614' } as const;
+// Keep in sync with --paper in tokens.css.
+const PAPER = { light: '#F8F5F0', dark: '#181614' } as const;
 
 export function getTheme(): Theme {
   try {
