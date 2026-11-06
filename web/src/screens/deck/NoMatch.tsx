@@ -22,7 +22,7 @@ export function NoMatchView({ data }: { data: DeckData }) {
   const [dealing, setDealing] = useState(false);
   const { deck } = data;
   // The two cards Tonight showed for this deck.
-  const [left, right] = pickDeckArt(deck.id, 2);
+  const [right, left] = pickDeckArt(deck.id, 2, deck.mood);
 
   const deal = async () => {
     setDealing(true);

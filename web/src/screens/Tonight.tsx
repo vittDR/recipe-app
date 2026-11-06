@@ -303,7 +303,7 @@ export function TonightScreen() {
     const starter = deck.started_by !== userId && !myProgress?.swiped_count;
     const others = deck.who_eating.filter((u) => u !== userId);
     // Same cards as this deck's no-match screen, should it come to that.
-    const [back, front] = pickDeckArt(deck.id, 2);
+    const [front, back] = pickDeckArt(deck.id, 2, deck.mood);
     main = (
       <article className="card card--flush join-card">
         <div className={`join-card__art${starter ? ' join-card__art--iris' : ''}`} aria-hidden>
@@ -382,8 +382,9 @@ export function TonightScreen() {
       </>
     );
   } else {
-    // No deck yet: dealing the deck is the only big action. New cards each day.
-    const [left, right, mid] = pickDeckArt(today, 3);
+    // No deck yet: dealing the deck is the only big action. New cards each day,
+    // to the mood about to be dealt; the best fit in front.
+    const [mid, left, right] = pickDeckArt(today, 3, settings.mood);
     main = (
       <>
         <section className="deal-hero">
