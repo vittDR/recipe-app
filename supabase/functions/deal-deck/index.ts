@@ -49,7 +49,7 @@ Deno.serve(async (req) => {
     .filter((x) => x.verdict !== 'pass').map((x) => x.recipe_id)));
 
   const since = (days: number) => new Date(Date.now() - days * 86_400_000).toISOString();
-  const [goals, rules, patterns, swipes, recipes, meals, pantry, catalog, signals] = await Promise.all([
+  const [goals, rules, patterns, swipes, recipes, meals, pantry, catalog, signals, allergies, allergenLinks] = await Promise.all([
     admin.from('member_goals').select('*').in('user_id', eaters),
     admin.from('taste_rules').select('user_id, kind, value, product_id').in('user_id', eaters),
     admin.from('learned_patterns').select('user_id, pattern, weight').in('user_id', eaters).eq('status', 'accepted'),
@@ -65,8 +65,10 @@ Deno.serve(async (req) => {
     // Quiz answers, pass reasons and ratings (logic/profile.ts).
     admin.from('taste_signals').select('user_id, recipe_id, kind, value, deck_id, meal_id, created_at')
       .in('user_id', eaters).order('created_at', { ascending: false }).limit(2000),
+    admin.from('member_allergies').select('user_id, allergen, ingredient').in('user_id', eaters),
+    admin.from('allergen_ingredients').select('allergen, ingredient'),
   ]);
-  for (const r of [goals, rules, patterns, swipes, recipes, meals, pantry, catalog, signals]) {
+  for (const r of [goals, rules, patterns, swipes, recipes, meals, pantry, catalog, signals, allergies, allergenLinks]) {
     if (r.error) return json({ error: r.error.message }, 500);
   }
 
@@ -91,6 +93,7 @@ Deno.serve(async (req) => {
     if (r.copied_from) featuresById.set(r.copied_from as string, features);
     const classes = ings.map((i) => dietOf.get(i.name));
     return {
+      allIngredients: ings.map((i) => i.name.toLowerCase()),
       id: r.id,
       title: r.title,
       tags: r.tags ?? [],
@@ -131,6 +134,10 @@ Deno.serve(async (req) => {
       never: mine.filter((x) => x.kind === 'never').map((x) => x.product_id as string),
       loves: mine.filter((x) => x.kind === 'love').map((x) => x.product_id as string),
       diet: (mine.find((x) => x.kind === 'diet')?.value ?? 'everything') as Diet,
+      // An allergen stands for every ingredient and preparation linked to it.
+      allergies: (allergies.data ?? []).filter((a) => a.user_id === uid).flatMap((a) => (a.ingredient
+        ? [a.ingredient as string]
+        : (allergenLinks.data ?? []).filter((l) => l.allergen === a.allergen).map((l) => l.ingredient as string))),
       weights,
     };
   });

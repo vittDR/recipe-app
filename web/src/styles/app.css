@@ -2740,3 +2740,17 @@ body:has(.moment) .tabbar {
 .no-match__sub {
   max-width: 300px;
 }
+
+.allergies-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+  border: 0;
+  text-align: left;
+  color: inherit;
+}
+
+.allergy-tag {
+  gap: var(--space-2);
+}

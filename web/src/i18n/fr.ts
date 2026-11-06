@@ -677,6 +677,14 @@ export const fr: Dictionary = {
     not_again: 'Plus jamais',
     not_eaten: 'Pas mangé',
   },
+  allergies: {
+    title: 'Allergies',
+    none: 'Aucune',
+    yours: 'Vos allergies',
+    common: 'Allergènes courants',
+    others: 'Autres ingrédients',
+    search: 'Ajouter un ingrédient',
+  },
   us: {
     householdMeta_one: 'Foyer · {count} membre',
     householdMeta_other: 'Foyer · {count} membres',

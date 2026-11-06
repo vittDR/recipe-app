@@ -4,6 +4,7 @@ import type { Mood } from '@logic/deck.ts';
 import { detectPatterns, recipeFeatures, type PatternSuggestion } from '@logic/preferences.ts';
 import { buildProfile, profileHighlights, signalsFor, type MealRow, type SwipeRow, type TasteSignalRow } from '@logic/profile.ts';
 import { productName } from '@logic/products.ts';
+import { AllergiesCard } from '../components/Allergies.tsx';
 import { Icon } from '../components/Icon.tsx';
 import { Link } from 'react-router';
 import { AvatarPair, Button, ListRow, Screen, TabHeader, Tag } from '../components/ui.tsx';
@@ -146,6 +147,8 @@ export function UsScreen() {
         {members.length < 2 && (
           <ListRow to="/us/invite" className="card" accent chevron={false} icon={<Icon name="plus" />} title={t('settings.invite')} />
         )}
+
+        <AllergiesCard />
 
         <section className="card stack">
           <div className="row row--between">

@@ -950,3 +950,38 @@ from (values
 ) as v(name, fat, carbs, fiber, traits)
 where c.name = v.name
   and (c.fat_100g, c.carbs_100g, c.fiber_100g, c.traits) is distinct from (v.fat::real, v.carbs::real, v.fiber::real, v.traits::text[]);
+
+-- Allergens (migrations/20261120000001_allergies.sql): the catalogue
+-- ingredients and preparations that contain each one. When unsure, a
+-- preparation is linked (curry paste often holds shrimp paste and fish
+-- sauce; stock cubes often hold celery): an allergy rules a recipe out, so
+-- leaving one out is the worse mistake.
+insert into public.allergen_ingredients (allergen, ingredient)
+select v.allergen, v.ingredient
+from (values
+  ('gluten', 'bread'), ('gluten', 'pita'), ('gluten', 'tortillas'), ('gluten', 'barley'), ('gluten', 'breadcrumbs'),
+  ('gluten', 'couscous'), ('gluten', 'farro'), ('gluten', 'flour'), ('gluten', 'noodles'), ('gluten', 'pasta'),
+  ('gluten', 'soy sauce'), ('gluten', 'gravy mix'), ('gluten', 'oyster sauce'), ('gluten', 'worcestershire sauce'),
+  ('gluten', 'gochujang'), ('gluten', 'ssamjang'), ('gluten', 'miso paste'), ('gluten', 'frozen fries'),
+  ('milk', 'butter'), ('milk', 'cheese curds'), ('milk', 'cream'), ('milk', 'cream cheese'), ('milk', 'crème fraîche'),
+  ('milk', 'emmental'), ('milk', 'feta'), ('milk', 'fontina'), ('milk', 'fromage blanc'), ('milk', 'greek yogurt'),
+  ('milk', 'milk'), ('milk', 'mozzarella'), ('milk', 'parmesan'), ('milk', 'pecorino'), ('milk', 'plain yogurt'),
+  ('milk', 'reblochon'), ('milk', 'ricotta'), ('milk', 'pesto'), ('milk', 'gravy mix'),
+  ('nuts', 'almonds'), ('nuts', 'cashews'), ('nuts', 'pistachios'), ('nuts', 'pesto'),
+  ('peanuts', 'peanuts'), ('peanuts', 'peanut butter'),
+  ('eggs', 'eggs'), ('eggs', 'mayonnaise'),
+  ('fish', 'cod fillet'), ('fish', 'mackerel'), ('fish', 'salmon fillet'), ('fish', 'salt cod'), ('fish', 'sea bream'),
+  ('fish', 'swordfish'), ('fish', 'tuna'), ('fish', 'fish sauce'), ('fish', 'fish stock'), ('fish', 'worcestershire sauce'),
+  ('fish', 'curry paste'), ('fish', 'kimchi'), ('fish', 'nasi goreng paste'),
+  ('crustaceans', 'prawns'), ('crustaceans', 'curry paste'), ('crustaceans', 'nasi goreng paste'), ('crustaceans', 'kimchi'),
+  ('molluscs', 'clams'), ('molluscs', 'mussels'), ('molluscs', 'octopus'), ('molluscs', 'oyster sauce'),
+  ('soy', 'tofu'), ('soy', 'edamame'), ('soy', 'soy sauce'), ('soy', 'miso paste'), ('soy', 'gochujang'),
+  ('soy', 'ssamjang'), ('soy', 'oyster sauce'),
+  ('sesame', 'sesame oil'), ('sesame', 'sesame seeds'), ('sesame', 'ssamjang'),
+  ('celery', 'celery'), ('celery', 'vegetable stock'), ('celery', 'chicken stock'), ('celery', 'beef stock'),
+  ('mustard', 'dijon mustard'), ('mustard', 'mustard'), ('mustard', 'mayonnaise'),
+  ('sulphites', 'white wine'), ('sulphites', 'red wine'), ('sulphites', 'sherry'), ('sulphites', 'balsamic vinegar'),
+  ('sulphites', 'vinegar'), ('sulphites', 'rice wine'), ('sulphites', 'mirin'), ('sulphites', 'gherkins')
+) as v(allergen, ingredient)
+join public.ingredient_catalog c on c.name = v.ingredient
+on conflict do nothing;

@@ -679,6 +679,14 @@ export const en = {
     not_again: 'Not again',
     not_eaten: 'Didn’t have it',
   },
+  allergies: {
+    title: 'Allergies',
+    none: 'None',
+    yours: 'Your allergies',
+    common: 'Common allergens',
+    others: 'Other ingredients',
+    search: 'Add an ingredient',
+  },
   us: {
     householdMeta_one: 'Household · {count} member',
     householdMeta_other: 'Household · {count} members',
