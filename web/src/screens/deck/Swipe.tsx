@@ -31,7 +31,7 @@ function CardFace({ card, data, tags, drag }: {
   card: DeckCard; data: DeckData; tags: TagCatalog | null; drag?: { dx: number; dy: number };
 }) {
   const { t, tn, locale } = useI18n();
-  const { userId, household } = useSession();
+  const { userId, household, memberName } = useSession();
   const { data: catalog } = useGroceryCatalog(household!.id);
   const r = card.recipe;
   const plate = data.portions.get(card.recipe_id);
@@ -70,6 +70,13 @@ function CardFace({ card, data, tags, drag }: {
         )}
         {pantryItem && <span className="small text-success">{t('swipe.pantry', { item: pantryItem })}</span>}
         {card.reason === 'love' && <span className="small text-accent">{t('swipe.loved')}</span>}
+        {card.reason === 'treat' && <span className="small text-accent">{t('swipe.treat')}</span>}
+        {card.reason === 'wildcard' && <span className="small text-accent">{t('swipe.wildcard')}</span>}
+        {card.reason?.startsWith('leans:') && (
+          <span className="small muted">
+            {card.reason.slice(6) === userId ? t('swipe.leansYou') : t('swipe.leansPartner', { name: memberName(card.reason.slice(6)) })}
+          </span>
+        )}
       </div>
       <span className="recipe-card__stamp recipe-card__stamp--yes" style={{ opacity: yes }}>{t('swipe.yes')}</span>
       <span className="recipe-card__stamp recipe-card__stamp--pass" style={{ opacity: pass }}>{t('swipe.pass')}</span>

@@ -11,6 +11,17 @@
 //   taste quiz   "that looks good"          the same, × 0.75 (looking is not choosing)
 //   cooked       it was made                +0.5 for each person who ate it
 //   rating       how it was after eating    loved +2, fine +0.5, not again −2
+//
+// Diet explains away. Someone who minds their diet passes on cheesy pasta
+// because of the calories, not the cheese. Each swipe knows whether the dish
+// fit that person's goals (member_portions.fits, or their goals now for the
+// quiz). A pass on a dish that didn't fit counts only OFF_DIET_PASS_FACTOR
+// against its taste; a yes on one ("I want it anyway") counts more. And
+// diet-linked features (goal:*, intent:light/indulgent/fuel) aren't learned
+// from deck swipes or cooking at all: the deck already ranks on fit, so those
+// choices say what the diet is, not what tastes good. They're learned from
+// ratings after eating, which do say what tastes good.
+//
 // Older signals fade (half-life PROFILE_HALF_LIFE_DAYS). Recipes that were never
 // shown say nothing: there are no negative signals for them.
 
@@ -27,13 +38,24 @@ export type Rating = 'loved' | 'fine' | 'not_again' | 'not_eaten';
 export const RATINGS: Rating[] = ['loved', 'fine', 'not_again'];
 
 export type Signal =
-  | { kind: 'swipe'; verdict: Verdict; mood?: Mood | null; reason?: PassReason | null; features: string[]; at: string }
-  | { kind: 'starter'; verdict: Verdict; features: string[]; at: string }
+  | {
+    kind: 'swipe'; verdict: Verdict; mood?: Mood | null; reason?: PassReason | null; features: string[]; at: string;
+    /** Whether the dish fit this person's goals when it was shown; null when unknown. */
+    fits?: boolean | null;
+  }
+  | { kind: 'starter'; verdict: Verdict; features: string[]; at: string; fits?: boolean | null }
   | { kind: 'cooked'; features: string[]; at: string }
   | { kind: 'rating'; rating: Rating; features: string[]; at: string };
 
 export const STARTER_FACTOR = 0.75;
 export const MOOD_PASS_FACTOR = 0.5;
+/** A pass on a dish that didn't fit the person's goals is mostly the diet talking. */
+export const OFF_DIET_PASS_FACTOR = 0.2;
+/** A yes on a dish that didn't fit says they really want it. */
+export const OFF_DIET_YES_FACTOR = 1.25;
+/** Features that describe what a dish does for a diet rather than how it tastes. */
+export const DIET_FEATURE = /^(goal:|intent:(light|indulgent|fuel)$)/;
+const tasteOnly = (features: string[]) => features.filter((f) => !DIET_FEATURE.test(f));
 export const COOKED_WEIGHT = 0.5;
 export const RATING_WEIGHT: Record<Rating, number> = { loved: 2, fine: 0.5, not_again: -2, not_eaten: 0 };
 export const PROFILE_HALF_LIFE_DAYS = 180;
@@ -47,17 +69,25 @@ export function signalWeight(s: Signal): { weight: number; features: string[] } 
   switch (s.kind) {
     case 'swipe': {
       const moody = !!s.mood && s.mood !== 'any';
-      // In a mood deck the dish's own mood was asked for, not judged.
-      const features = moody ? s.features.filter((f) => !f.startsWith('intent:')) : s.features;
-      if (s.verdict !== 'pass') return { weight: VERDICT_WEIGHT[s.verdict], features };
+      // The deck was ranked on diet fit, so diet features say nothing here; in a mood
+      // deck the dish's own mood was asked for, not judged.
+      const features = tasteOnly(s.features).filter((f) => !(moody && f.startsWith('intent:')));
+      if (s.verdict !== 'pass') return { weight: VERDICT_WEIGHT[s.verdict] * (s.fits === false ? OFF_DIET_YES_FACTOR : 1), features };
       if (s.reason && TEMPORARY_REASONS.has(s.reason)) return { weight: 0, features };
-      if (s.reason === 'not_for_me') return { weight: -1, features: s.features };
-      return { weight: moody ? -MOOD_PASS_FACTOR : -1, features };
+      if (s.reason === 'not_for_me') return { weight: -1, features: tasteOnly(s.features) };
+      return { weight: -1 * (moody ? MOOD_PASS_FACTOR : 1) * (s.fits === false ? OFF_DIET_PASS_FACTOR : 1), features };
     }
-    case 'starter':
-      return { weight: VERDICT_WEIGHT[s.verdict] * STARTER_FACTOR, features: s.features };
+    case 'starter': {
+      if (s.verdict !== 'pass') {
+        return { weight: VERDICT_WEIGHT[s.verdict] * STARTER_FACTOR * (s.fits === false ? OFF_DIET_YES_FACTOR : 1), features: s.features };
+      }
+      // Passing on a dish that doesn't fit: likely the diet, and not a dislike of indulgence itself.
+      return s.fits === false
+        ? { weight: -STARTER_FACTOR * OFF_DIET_PASS_FACTOR, features: tasteOnly(s.features) }
+        : { weight: -STARTER_FACTOR, features: s.features };
+    }
     case 'cooked':
-      return { weight: COOKED_WEIGHT, features: s.features };
+      return { weight: COOKED_WEIGHT, features: tasteOnly(s.features) };
     case 'rating':
       return { weight: RATING_WEIGHT[s.rating], features: s.features };
   }
@@ -75,19 +105,23 @@ export function buildProfile(signals: Signal[], now: number = Date.now()): Taste
   const sums = new Map<string, { sum: number; abs: number; n: number }>();
   for (const s of signals) {
     const { weight, features } = signalWeight(s);
-    const ageDays = Math.max(0, (now - Date.parse(s.at)) / 86_400_000);
-    const w = weight * 0.5 ** (ageDays / PROFILE_HALF_LIFE_DAYS);
+    if (weight === 0) continue; // "not tonight": nothing about taste
+    const decay = 0.5 ** (Math.max(0, (now - Date.parse(s.at)) / 86_400_000) / PROFILE_HALF_LIFE_DAYS);
+    const w = weight * decay;
     for (const f of new Set(features)) {
       const e = sums.get(f) ?? { sum: 0, abs: 0, n: 0 };
       e.sum += w;
-      e.abs += Math.abs(w);
+      // Every choice is at least one unit of evidence, so many weak signals (passes the diet
+      // explains) stay weak instead of adding up to a strong opinion.
+      e.abs += Math.max(Math.abs(weight), 1) * decay;
       e.n += 1;
       sums.set(f, e);
     }
   }
   const profile: TasteProfile = new Map();
   for (const [f, e] of sums) {
-    profile.set(f, { weight: Math.round((e.sum / (e.abs + PROFILE_PRIOR)) * 1000) / 1000, evidence: e.n });
+    const weight = Math.max(-1, Math.min(1, e.sum / (e.abs + PROFILE_PRIOR)));
+    profile.set(f, { weight: Math.round(weight * 1000) / 1000, evidence: e.n });
   }
   return profile;
 }
@@ -162,14 +196,20 @@ export interface TasteSignalRow {
   deck_id: string | null; meal_id: string | null; created_at: string;
 }
 export interface MealRow { id: string; recipe_id: string; for_date: string; status: string; who_eating?: string[] | null }
+/** member_portions: whether a deck card fit a person's goals when it was dealt. */
+export interface PortionRow { deck_id: string; recipe_id: string; user_id: string; fits: boolean }
 
 /** One person's signals: their deck swipes (with pass reasons), quiz answers, ratings and the meals they ate. */
 export function signalsFor(
   userId: string,
-  rows: { swipes: SwipeRow[]; tasteSignals: TasteSignalRow[]; meals: MealRow[] },
+  rows: { swipes: SwipeRow[]; tasteSignals: TasteSignalRow[]; meals: MealRow[]; portions?: PortionRow[] },
   featuresOf: (recipeId: string) => string[] | undefined,
+  /** Whether a recipe fits this person's goals now: for quiz answers, which have no deck. */
+  fitsNow?: (recipeId: string) => boolean | null,
 ): Signal[] {
   const mine = rows.tasteSignals.filter((t) => t.user_id === userId);
+  const fitAtDeal = new Map((rows.portions ?? []).filter((p) => p.user_id === userId)
+    .map((p) => [`${p.deck_id}:${p.recipe_id}`, p.fits]));
   const reasons = new Map(mine.filter((t) => t.kind === 'reason').map((t) => [`${t.deck_id}:${t.recipe_id}`, t.value as PassReason]));
   const out: Signal[] = [];
   const push = (recipeId: string, make: (features: string[]) => Signal) => {
@@ -180,11 +220,15 @@ export function signalsFor(
     if (s.user_id !== userId) continue;
     push(s.recipe_id, (features) => ({
       kind: 'swipe', verdict: s.verdict, mood: s.mood ?? null, reason: reasons.get(`${s.deck_id}:${s.recipe_id}`) ?? null,
-      features, at: s.created_at,
+      features, at: s.created_at, fits: fitAtDeal.get(`${s.deck_id}:${s.recipe_id}`) ?? null,
     }));
   }
   for (const t of mine) {
-    if (t.kind === 'starter') push(t.recipe_id, (features) => ({ kind: 'starter', verdict: t.value as Verdict, features, at: t.created_at }));
+    if (t.kind === 'starter') {
+      push(t.recipe_id, (features) => ({
+        kind: 'starter', verdict: t.value as Verdict, features, at: t.created_at, fits: fitsNow?.(t.recipe_id) ?? null,
+      }));
+    }
     if (t.kind === 'rating') push(t.recipe_id, (features) => ({ kind: 'rating', rating: t.value as Rating, features, at: t.created_at }));
   }
   const notEaten = new Set(mine.filter((t) => t.kind === 'rating' && t.value === 'not_eaten').map((t) => t.meal_id));
