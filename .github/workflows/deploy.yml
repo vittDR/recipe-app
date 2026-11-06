@@ -1,0 +1,27 @@
+# Manual production deploy. Cloudflare Pages' automatic builds are switched
+# off (see docs/SETUP.md, Step 6), so nothing goes live until someone runs
+# this workflow from the Actions tab. It calls a Cloudflare Pages deploy hook,
+# which builds the latest commit on main.
+name: Deploy to Cloudflare Pages
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger the Pages deploy hook
+        env:
+          DEPLOY_HOOK: ${{ secrets.CLOUDFLARE_PAGES_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$DEPLOY_HOOK" ]; then
+            echo "::error::Add the CLOUDFLARE_PAGES_DEPLOY_HOOK repository secret (docs/SETUP.md, Step 6)."
+            exit 1
+          fi
+          curl -fsS -X POST "$DEPLOY_HOOK"
+          echo
+          echo "Build started. Follow it in Cloudflare: Workers & Pages → your project → Deployments."
