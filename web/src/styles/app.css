@@ -1508,8 +1508,8 @@ button.grocery-row__amount {
 
 /* A value the app filled in: removable, never explained. */
 .chip--suggested {
-  background: var(--accent-soft);
-  color: var(--accent-strong);
+  background: var(--sage-soft);
+  color: var(--sage-strong);
   box-shadow: none;
 }
 
@@ -2616,11 +2616,10 @@ body:has(.moment) .tabbar {
 .check-card {
   border: 0;
   text-align: left;
-  color: var(--accent-strong);
 }
 
 .check-card .card__title {
-  color: var(--accent-strong);
+  color: var(--sage-strong);
   font: var(--t-callout);
   font-weight: 600;
 }
@@ -2753,4 +2752,101 @@ body:has(.moment) .tabbar {
 
 .allergy-tag {
   gap: var(--space-2);
+}
+
+/* Recipe creation: actions and facts in terracotta, text in full ink. */
+.create .chip svg,
+.create .amount-add,
+.create .step-list + .row .icon-btn--filled,
+.create .stack > .row > .icon-btn--filled {
+  color: var(--accent);
+}
+
+.create .amount-add,
+.create .stack > .row > .icon-btn--filled {
+  background: var(--accent-soft);
+  box-shadow: none;
+}
+
+.create .input::placeholder,
+.create .search-field input::placeholder {
+  color: var(--muted);
+}
+
+.create .chip--dashed {
+  color: var(--ink);
+}
+
+.photo-pick {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-8) var(--space-6);
+  border-radius: var(--radius-xl);
+  border: 1.5px dashed var(--line-strong);
+  background: var(--accent-wash);
+  text-align: center;
+  cursor: pointer;
+}
+
+.photo-pick__tile {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--surface);
+  margin-bottom: var(--space-2);
+}
+
+.photo-pick--set {
+  position: relative;
+  display: block;
+  height: 200px;
+  padding: 0;
+  border: 0;
+  background: var(--sunken) center / cover;
+}
+
+.photo-pick__change {
+  top: auto;
+  left: auto;
+  right: var(--space-4);
+  bottom: var(--space-4);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.big-stepper__value {
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.big-stepper__input {
+  min-width: 1ch;
+  max-width: 4ch;
+  border: 0;
+  padding: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: right;
+  outline: none;
+  border-bottom: 2px dashed var(--line-strong);
+}
+
+.big-stepper__input:focus {
+  border-bottom-color: var(--accent);
+}
+
+.create .chip--suggested svg {
+  color: inherit;
+}
+
+.create .title-input::placeholder {
+  color: var(--muted);
+}
+
+.create .bottom-action {
+  background: linear-gradient(to top, var(--paper) 82%, transparent);
 }

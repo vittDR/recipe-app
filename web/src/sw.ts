@@ -19,12 +19,14 @@ registerRoute(new NavigationRoute(createHandlerBoundToURL('index.html')));
 // Recipe photos: kept on the phone once seen, so each downloads once (the
 // browser's HTTP cache can be evicted at any time, especially on iOS).
 registerRoute(
-  ({ url, request }) => url.origin === self.location.origin && url.pathname.startsWith('/recipe-photos/')
-    && request.destination === 'image',
+  ({ url, request }) => request.destination === 'image' && (
+    (url.origin === self.location.origin && url.pathname.startsWith('/recipe-photos/'))
+    // Photos people added, from the project's public bucket (opaque responses: status 0).
+    || url.pathname.startsWith('/storage/v1/object/public/recipe-photos/')),
   new CacheFirst({
     cacheName: 'recipe-photos',
     plugins: [
-      new CacheableResponsePlugin({ statuses: [200] }),
+      new CacheableResponsePlugin({ statuses: [0, 200] }),
       new ExpirationPlugin({ maxEntries: 300, maxAgeSeconds: 60 * 86_400, purgeOnQuotaError: true }),
     ],
   }),

@@ -14,6 +14,7 @@ import { useGroceryCatalog } from '../../lib/products.ts';
 import { useSession } from '../../lib/session.tsx';
 import { callFunction } from '../../lib/supabase.ts';
 import { useTags } from '../../lib/tags.ts';
+import { shrinkPhoto, uploadPhoto } from '../../lib/photo.ts';
 
 interface Draft {
   title: string;
@@ -32,6 +33,8 @@ interface Draft {
   source_url: string | null;
   source_type: 'web' | 'instagram' | 'typed';
   image_url: string | null;
+  /** A photo picked on the phone, shrunk, uploaded on save. */
+  photo: { blob: Blob; preview: string } | null;
   language: string | null;
   difficulty: Difficulty | null;
   /** 0 = not said. */
@@ -42,7 +45,7 @@ interface Draft {
 
 const EMPTY: Draft = {
   title: '', servings: '2', minutes: '', prep: '', cook: '', ingredients: [], pendingLines: null, steps: [], tags: [], pendingTags: null,
-  source_url: null, source_type: 'typed', image_url: null, language: null,
+  source_url: null, source_type: 'typed', image_url: null, photo: null, language: null,
   difficulty: null, pots: 0, oven: false, special: [],
 };
 
@@ -135,13 +138,14 @@ export function ImportScreen() {
     setNotice(null);
     const minutes = (s: string) => (s.trim() && Number(s) >= 0 ? Math.round(Number(s)) : null);
     try {
+      const imageUrl = draft.photo ? await uploadPhoto(household!.id, draft.photo.blob) : draft.image_url;
       const res = await callFunction<{ recipe_id: string; unknown_ingredients: string[] }>('import-recipe', {
         action: 'save',
         recipe: {
           title: draft.title,
           source_type: draft.source_type,
           source_url: draft.source_url,
-          image_url: draft.image_url,
+          image_url: imageUrl,
           servings: Number(draft.servings) || 2,
           total_min: minutes(draft.minutes),
           prep_min: minutes(draft.prep),
@@ -162,7 +166,7 @@ export function ImportScreen() {
       void reloadTags();
       if (res.unknown_ingredients.length) toast(t('import.unknown', { items: res.unknown_ingredients.slice(0, 3).join(', ') }));
       setSaved({
-        id: res.recipe_id, title: draft.title, image: draft.image_url,
+        id: res.recipe_id, title: draft.title, image: imageUrl,
         facts: [minutes(draft.minutes) != null && t('swipe.minutes', { n: minutes(draft.minutes)! }),
           draft.difficulty && t(`recipe.${draft.difficulty}`), tn('import.people', Number(draft.servings) || 2)].filter(Boolean).join(' · '),
       });
@@ -251,7 +255,7 @@ export function ImportScreen() {
             </div>
           </article>
           {toCheck > 0 && (
-            <button type="button" className="card card--accent check-card" onClick={() => setReviewing(true)}>
+            <button type="button" className="card card--sage check-card" onClick={() => setReviewing(true)}>
               <span className="card__title">{tn('ingredients.checkShort', toCheck)}</span>
             </button>
           )}
@@ -261,6 +265,7 @@ export function ImportScreen() {
 
       {form && !summary && (
         <div className="create__form">
+          <PhotoPicker image={form.photo?.preview ?? form.image_url} onPick={(photo) => update({ photo })} />
           <input className="title-input" value={form.title} placeholder={t('import.namePlaceholder')} aria-label={t('import.titleField')}
             onChange={(e) => update({ title: e.target.value })} />
           <div className="chips">
@@ -360,7 +365,18 @@ function BigStepper({ value, onChange, min, max, step, unit }: {
       <button type="button" className="swipe-btn swipe-btn--small" aria-label="−" onClick={() => onChange(Math.max(min, value - step))}>
         <Icon name="minus" size={20} />
       </button>
-      <span className="big-stepper__value">{value}{unit && <span className="big-stepper__unit"> {unit}</span>}</span>
+      <label className="big-stepper__value">
+        {/* Tapping the number opens the number pad. */}
+        <input className="big-stepper__input" type="text" inputMode="numeric" pattern="[0-9]*" value={value === 0 ? '' : String(value)}
+          placeholder="0" style={{ width: `${Math.max(1, String(value).length)}ch` }}
+          onFocus={(e) => e.target.select()}
+          onChange={(e) => {
+            const n = Number(e.target.value.replace(/\D/g, '').slice(0, 3));
+            onChange(Math.min(max, n));
+          }}
+          onBlur={() => value < min && onChange(min)} />
+        {unit && <span className="big-stepper__unit"> {unit}</span>}
+      </label>
       <button type="button" className="swipe-btn swipe-btn--small" aria-label="+" onClick={() => onChange(Math.min(max, value + step))}>
         <Icon name="plus" size={20} />
       </button>
@@ -369,6 +385,46 @@ function BigStepper({ value, onChange, min, max, step, unit }: {
 }
 
 const PRESETS = [10, 15, 20, 30, 45, 60, 90, 120];
+
+/** The photo block at the top of the form: add one, or change it. */
+function PhotoPicker({ image, onPick }: { image: string | null; onPick: (photo: Draft['photo']) => void }) {
+  const { t } = useI18n();
+  const [busy, setBusy] = useState(false);
+  const input = (
+    <input type="file" accept="image/*" hidden onChange={async (e) => {
+      const file = e.target.files?.[0];
+      e.target.value = '';
+      if (!file) return;
+      setBusy(true);
+      try {
+        const blob = await shrinkPhoto(file);
+        onPick({ blob, preview: URL.createObjectURL(blob) });
+      } catch {
+        toast(t('app.error'));
+      } finally {
+        setBusy(false);
+      }
+    }} />
+  );
+  if (image) {
+    return (
+      <div className="photo-pick photo-pick--set" style={imageStyle(image)}>
+        <label className="glass-badge photo-pick__change">
+          <Icon name="camera" size={16} /> {t('import.changePhoto')}
+          {input}
+        </label>
+      </div>
+    );
+  }
+  return (
+    <label className="photo-pick">
+      <span className="icon-tile photo-pick__tile"><Icon name="camera" size={22} /></span>
+      <span className="headline">{busy ? t('app.loading') : t('import.addPhoto')}</span>
+      <span className="t-callout muted">{t('import.addPhotoHint')}</span>
+      {input}
+    </label>
+  );
+}
 
 /** One total time by default; prep and cooking apart only when asked. */
 function TimeSheet({ form, update, onDone }: { form: Draft; update: (p: Partial<Draft>) => void; onDone: () => void }) {

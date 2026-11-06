@@ -457,6 +457,9 @@ export const en = {
     save: 'Save',
   },
   import: {
+    addPhoto: 'Add a photo',
+    addPhotoHint: 'Take one or choose from your library',
+    changePhoto: 'Change',
     newTitle: 'New recipe',
     how: 'How would you like to add it?',
     fromLink: 'Paste a link',

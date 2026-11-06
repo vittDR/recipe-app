@@ -455,6 +455,9 @@ export const fr: Dictionary = {
     save: 'Enregistrer',
   },
   import: {
+    addPhoto: 'Ajouter une photo',
+    addPhotoHint: 'Prendre ou choisir dans la galerie',
+    changePhoto: 'Changer',
     newTitle: 'Nouvelle recette',
     how: 'Comment voulez-vous l’ajouter ?',
     fromLink: 'Coller un lien',

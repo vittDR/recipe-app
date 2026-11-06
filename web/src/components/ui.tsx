@@ -679,7 +679,7 @@ export function recipeEmoji(title: string, tags: string[] = []): string {
 
 /** The photo's URL when it can be shown: absolute URLs, or photos served by the app itself ("/recipe-photos/…"). */
 export function photoUrl(path: string | null): string | null {
-  return path && /^(https?:\/\/|\/(?!\/))/.test(path) ? path : null;
+  return path && /^(https?:\/\/|blob:|\/(?!\/))/.test(path) ? path : null;
 }
 
 export function imageStyle(path: string | null): React.CSSProperties | undefined {
