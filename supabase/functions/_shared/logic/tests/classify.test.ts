@@ -168,3 +168,42 @@ test('classifyRow reads a stored recipe, translations included', () => {
   assert.deepEqual(c.cooking_methods, ['pan_fried']);
   assert.deepEqual(c.sauce_families, ['coconut']);
 });
+
+test('season: the months the main seasonal ingredients share', async () => {
+  const { inSeason, isSeasonal } = await import('../classify.ts');
+  const seasonal = new Catalog([
+    e('tomato', { season_months: [6, 7, 8, 9] }),
+    e('zucchini', { season_months: [6, 7, 8, 9] }),
+    e('eggplant', { season_months: [7, 8, 9] }),
+    e('pumpkin', { season_months: [9, 10, 11, 12] }),
+    e('fresh basil', { season_months: [6, 7, 8, 9] }),
+    e('leek', { season_months: [9, 10, 11, 12, 1, 2, 3, 4] }),
+    e('asparagus', { season_months: [4, 5, 6] }),
+    e('potato'),
+  ]);
+  const season = (lines: [string, number, string, boolean?][]) => classifyRecipe({
+    ...input({ lines: [] }),
+    ingredients: lines.map(([name, quantity, unit, optional]) => ({ name, quantity, unit, optional, catalog: seasonal.find(name) })),
+  }).season_months;
+
+  assert.deepEqual(season([['tomato', 300, 'g'], ['eggplant', 300, 'g'], ['zucchini', 200, 'g']]), [7, 8, 9]);
+  // A garnish or an optional line doesn't make a winter dish summery.
+  assert.deepEqual(season([['leek', 400, 'g'], ['potato', 500, 'g'], ['fresh basil', 10, 'g']]), [1, 2, 3, 4, 9, 10, 11, 12]);
+  assert.deepEqual(season([['leek', 400, 'g'], ['tomato', 300, 'g', true]]), [1, 2, 3, 4, 9, 10, 11, 12]);
+  // Overlapping seasons narrow it; clashing ones leave the heaviest to decide.
+  assert.deepEqual(season([['pumpkin', 500, 'g'], ['tomato', 200, 'g']]), [9]);
+  assert.deepEqual(season([['pumpkin', 500, 'g'], ['tomato', 120, 'g']]), [9, 10, 11, 12]); // one tomato in the sauce
+  assert.deepEqual(season([['pumpkin', 500, 'g'], ['asparagus', 200, 'g']]), [9, 10, 11, 12]);
+  assert.deepEqual(season([['pumpkin', 100, 'g'], ['asparagus', 300, 'g']]), [4, 5, 6]);
+  // Nothing seasonal: all year. Nothing readable: unknown.
+  const allYear = classifyRecipe(input({ lines: [['potato', 400, 'g'], ['cod fillet', 300, 'g']] }));
+  assert.equal(allYear.season_months?.length, 12);
+  assert.equal(isSeasonal(allYear), false);
+  assert.equal(classifyRecipe(input({ lines: [['dragon fruit', 1, 'piece']] })).season_months, null);
+
+  const ratatouille = { season_months: [7, 8, 9] };
+  assert.equal(inSeason(ratatouille, 8), true);
+  assert.equal(inSeason(ratatouille, 1), false);
+  assert.equal(inSeason({ season_months: null }, 1), true);
+  assert.equal(isSeasonal(ratatouille), true);
+});

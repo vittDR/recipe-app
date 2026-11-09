@@ -20,7 +20,7 @@ The script runs each ingredient line through the app's parser and catalogue, the
 - Each recipe comes from its source page (`source_url`, credited by `source_name`). Titles, ingredient lines and steps are in the source's language: 27 Italian, 27 French, 56 English. Tags are always English.
 - Quantities are scaled to 2 servings. `original_text` keeps the source's line for `original_servings`. Vague amounts ("q.b.", "a glass") were converted to g/ml and marked `guessed`.
 - Steps are rewritten, one action per step.
-- Collection rules for adding more: [docs/recipe-collection-guidelines.md](../../docs/recipe-collection-guidelines.md).
+- Collection rules for adding more: [docs/recipe-collection-guidelines.md](../../docs/recipe-collection-guidelines.md). What to add next (cuisine, base, time and season quotas): [docs/recipe-library-plan.md](../../docs/recipe-library-plan.md).
 
 ## Photos
 

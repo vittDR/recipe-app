@@ -15,7 +15,7 @@
 import { type Difficulty, type Equipment } from './facets.ts';
 import { type CatalogEntry, type Catalog, estimateMacros, gramsOf, type NormalisedIngredient } from './ingredients.ts';
 
-export const CLASSIFICATION_VERSION = 2;
+export const CLASSIFICATION_VERSION = 3;
 
 export const PROTEIN_GROUPS = [
   'poultry', 'beef', 'pork', 'lamb', 'veal', 'game', 'offal', 'fish', 'shellfish', 'eggs', 'legumes', 'soy', 'dairy',
@@ -80,6 +80,9 @@ export const LEAN_MAX_KCAL = 700;
 export const LOW_KCAL_MAX = 500;
 export const HIGH_FIBRE_MIN_G = 8;
 export const EVERYDAY_MAX_MIN = 45;
+/** Grams per serving from which a seasonal ingredient sets the recipe's season: about a portion of vegetables, so half a pepper in a stew or one tomato in a sauce doesn't. */
+export const SEASON_MIN_G = 75;
+export const ALL_MONTHS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 // ---------------------------------------------------------------------------
 
@@ -132,6 +135,11 @@ export interface RecipeClassification {
   heat_adjustable: boolean;
   /** 0 dry, 1 coated, 2 saucy, 3 brothy. */
   sauce_level: number | null;
+  /**
+   * Months (1 = January) when its main seasonal ingredients are all in season;
+   * all twelve when none is seasonal; null when no ingredient could be read.
+   */
+  season_months: number[] | null;
   /** Per serving. */
   nutrition: Nutrition;
   nutrition_goals: NutritionGoal[];
@@ -425,11 +433,41 @@ export function classifyRecipe(input: ClassifyInput): RecipeClassification {
     heat_level: heatLevel,
     heat_adjustable: optionalHeat >= HEAT_STEPS[0],
     sauce_level: sauceLevel,
+    season_months: readable ? seasonMonths(required, perServing) : null,
     nutrition,
     nutrition_goals: ordered(NUTRITION_GOALS, goals),
     meal_intents: ordered(MEAL_INTENTS, intents),
     sourced: [...sourced].sort(),
   };
+}
+
+// ---------------------------------------------------------------------------
+// Season
+// ---------------------------------------------------------------------------
+
+/**
+ * When a dish is in season: the months its seasonal main ingredients (from
+ * SEASON_MIN_G a serving) share. Ingredients that clash (asparagus with
+ * pumpkin) leave the heaviest one to decide. No seasonal ingredient: all year.
+ */
+function seasonMonths(lines: ClassifyIngredient[], perServing: (i: ClassifyIngredient) => number | null): number[] {
+  const seasonal = lines
+    .map((i) => ({ months: i.catalog?.season_months ?? [], g: perServing(i) ?? 0 }))
+    .filter((x) => x.months.length > 0 && x.g >= SEASON_MIN_G)
+    .sort((a, b) => b.g - a.g);
+  if (!seasonal.length) return [...ALL_MONTHS];
+  const shared = seasonal.reduce((acc, x) => acc.filter((m) => x.months.includes(m)), ALL_MONTHS);
+  return shared.length ? shared : [...seasonal[0].months].sort((a, b) => a - b);
+}
+
+/** Whether a classified recipe is in season in a month (1 = January); unknown counts as yes. */
+export function inSeason(c: Pick<RecipeClassification, 'season_months'>, month: number): boolean {
+  return !c.season_months || c.season_months.includes(month);
+}
+
+/** A seasonal dish, as opposed to one you can cook all year. */
+export function isSeasonal(c: Pick<RecipeClassification, 'season_months'>): boolean {
+  return !!c.season_months && c.season_months.length < 12;
 }
 
 // ---------------------------------------------------------------------------
@@ -501,7 +539,8 @@ export function classifyRow(row: ClassifiableRow, catalog: Catalog): RecipeClass
  * thing ("sauce:coconut" is not the ingredient "coconut milk"). Heat is
  * cumulative ("heat:2+" for anything at least medium) so a liking for spicy
  * food is one feature, not five unrelated ones. Cuisines stay plain names,
- * like the cuisine tags they come from.
+ * like the cuisine tags they come from. Season is left out: when a dish is
+ * cooked says nothing about whether someone likes it.
  */
 export function classificationFeatures(c: RecipeClassification): string[] {
   const out = [

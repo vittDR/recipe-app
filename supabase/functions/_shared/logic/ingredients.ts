@@ -24,6 +24,8 @@ export interface CatalogEntry {
   diet_class?: 'veg' | 'fish' | 'meat';
   /** Not sold in most French supermarkets. */
   exotic?: boolean;
+  /** Months (1 = January) it's in season in France; null or empty = all year. */
+  season_months?: number[] | null;
 }
 
 export interface ParsedIngredient {

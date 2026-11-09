@@ -375,6 +375,44 @@ update public.ingredient_catalog set exotic = (name in (
   'rice syrup', 'rice wine', 'sichuan pepper', 'ssamjang', 'tamarind paste'
 ));
 
+-- In season in France, by month (1 = January), from the usual fruit and
+-- vegetable calendars. Anything not listed is all year (null): pantry and
+-- frozen goods, stored crops (onion, potato, carrot), cultivated mushrooms and
+-- imports sold all year (lemon, avocado, sweet potato). Only main ingredients
+-- set a recipe's season (classify.ts), so herbs used by the spoonful are left
+-- out. Re-running overwrites them.
+with v(name, months) as (values
+  ('apple', '{8,9,10,11,12,1,2,3,4}'::smallint[]),
+  ('arugula', '{4,5,6,7,8,9,10}'),
+  ('bell pepper', '{7,8,9,10}'),
+  ('broccoli', '{6,7,8,9,10,11}'),
+  ('butternut squash', '{9,10,11,12,1,2}'),
+  ('cabbage', '{10,11,12,1,2,3}'),
+  ('cauliflower', '{9,10,11,12,1,2,3,4}'),
+  ('celery', '{7,8,9,10,11,12}'),
+  ('cherry tomatoes', '{6,7,8,9}'),
+  ('cucumber', '{5,6,7,8,9}'),
+  ('eggplant', '{7,8,9}'),
+  ('green beans', '{6,7,8,9}'),
+  ('leek', '{9,10,11,12,1,2,3,4}'),
+  ('lettuce', '{4,5,6,7,8,9,10}'),
+  ('mussels', '{7,8,9,10,11,12,1}'),
+  ('orange', '{12,1,2,3,4}'),
+  ('pear', '{8,9,10,11,12,1}'),
+  ('pumpkin', '{9,10,11,12}'),
+  ('radish', '{4,5,6,7}'),
+  ('snow peas', '{5,6,7}'),
+  ('sorrel', '{4,5,6,7}'),
+  ('spinach', '{3,4,5,6,9,10,11}'),
+  ('tomato', '{6,7,8,9}'),
+  ('turnip', '{10,11,12,1,2,3}'),
+  ('zucchini', '{6,7,8,9}')
+)
+update public.ingredient_catalog c
+set season_months = v.months
+from public.ingredient_catalog c2 left join v on v.name = c2.name
+where c.name = c2.name and c.season_months is distinct from v.months;
+
 -- ---------------------------------------------------------------------------
 -- Grocery products: one per catalogue ingredient (French name first). The
 -- everyday items that aren't recipe ingredients are in the grocery_products
