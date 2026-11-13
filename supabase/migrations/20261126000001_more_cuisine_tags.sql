@@ -6,6 +6,7 @@ from (values
   ('polish', 'Polish', 'Polonais', array['polonais', 'polonaise', 'pologne']::text[]),
   ('cuban', 'Cuban', 'Cubain', array['cubain', 'cubaine', 'cuba']::text[]),
   ('danish', 'Danish', 'Danois', array['danois', 'danoise', 'danemark']::text[]),
+  ('russian', 'Russian', 'Russe', array['russe', 'russie', 'ukrainian', 'ukrainien', 'ukrainienne']::text[]),
   ('creole', 'Creole', 'Créole', array['créole', 'cajun', 'louisiana', 'louisiane']::text[]),
   ('senegalese', 'Senegalese', 'Sénégalais', array['sénégalais', 'sénégalaise', 'sénégal', 'west african', 'afrique de l''ouest']::text[])
 ) as v(name, name_en, name_fr, aliases)
