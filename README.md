@@ -17,7 +17,7 @@ supabase/
   migrations/           schema, server rules (matching, no match, lists), RLS, cron
   seed.sql              ingredient catalogue (EN/FR/IT) and its grocery products
   personal/             one-off data for a household (a frequently-bought list, a head start for usuals)
-  seed_library.sql      119 seed recipes, generated from seed/recipes.json (don't edit)
+  seed_library.sql      319 seed recipes, generated from seed/recipes.json (don't edit)
   seed/                 the seed library source: recipes.json + review sheet
   functions/            edge functions (Deno)
     deal-deck/          scores the library and deals tonight's 12 cards

@@ -138,7 +138,7 @@ git push
 4. **Load the ingredient catalogue and the recipe library.** The migrations create empty tables; these two files fill them.
 
    - `supabase/seed.sql`: the ingredient catalogue (about 190 ingredients with EN/FR/IT names, aisles and nutrition).
-   - `supabase/seed_library.sql`: the 119 seed recipes. Load it **after** `seed.sql`.
+   - `supabase/seed_library.sql`: the 319 seed recipes. Load it **after** `seed.sql`.
 
    Either paste them into the dashboard:
    1. Open **SQL Editor → New query**.
@@ -157,7 +157,7 @@ git push
 
 5. **Check it worked:**
    - **Table Editor** lists `households`, `recipes`, `grocery_items` and the other tables (the full list is in the [database reference](#reference-database-structure)).
-   - `recipes` has 119 rows and `ingredient_catalog` has about 190.
+   - `recipes` has 319 rows and `ingredient_catalog` has about 270.
    - **Integrations → Cron** (or **Database → Cron Jobs**) shows three jobs: `dineamite-prompts`, `dineamite-purge-invites` and `dineamite-push-dispatch`.
    - **Storage** may show an empty `recipe-images` bucket left by an early migration; the app doesn't use it (photos ship with the app).
 

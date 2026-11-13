@@ -54,9 +54,9 @@ select pg_temp.check((select i.id = 'b6b4b263-9d00-433a-a43b-af72a2b7bd33' from 
 \i seed_library.sql
 select pg_temp.check((select count(*) = 109 from lib), 're-running seed_library.sql adds no duplicates');
 
-select pg_temp.check((select count(*) filter (where collection = 'original') = 10
+select pg_temp.check((select count(*) filter (where collection = 'original') = 210
                              and count(*) filter (where collection = 'web') = 109
-                      from recipes where household_id is null), 'seed collections: 10 originals, 109 web');
+                      from recipes where household_id is null), 'seed collections: 210 originals, 109 web');
 
 -- Every seed recipe is in English, French and Italian: its own language plus two translations, step for step.
 select pg_temp.check(not exists (
@@ -70,10 +70,10 @@ select pg_temp.check(not exists (select 1 from recipes where household_id is nul
 
 -- AI-generated seed recipes have no source link: they're known by language and title.
 create temp view ai as select * from recipes where household_id is null and ai_generated_recipe;
-select pg_temp.check((select count(*) = 10 and count(source_url) = 0 from ai), '10 AI-generated seed recipes, without a source link');
+select pg_temp.check((select count(*) = 210 and count(source_url) = 0 from ai), '210 AI-generated seed recipes, without a source link');
 select pg_temp.check(not exists (select 1 from lib where ai_generated_recipe), 'sourced recipes are not marked AI-generated');
 \i seed_library.sql
-select pg_temp.check((select count(*) = 10 from ai), 're-running seed_library.sql adds no duplicate AI recipes');
+select pg_temp.check((select count(*) = 210 from ai), 're-running seed_library.sql adds no duplicate AI recipes');
 select pg_temp.check(not exists (
   select 1 from recipe_ingredients i join ai r on r.id = i.recipe_id
   where not exists (select 1 from ingredient_catalog c where c.name = i.name)), 'AI recipe ingredients are in the catalogue');

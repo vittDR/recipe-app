@@ -276,3 +276,19 @@ weekend dishes, which moves the time mix towards the targets.
 3. **Re-audit after each batch.** Count cuisines and bases, work out time
    tiers from the stored times, and check months from `season_months`. Then
    pick the next batch from whatever is furthest below target.
+
+## Status (November 2026)
+
+200 of the planned recipes are written and in the seed library
+(`supabase/seed/recipes.json`). They are the 127 kept and reworked dishes from
+the triage, plus 73 of the additions, chosen in proportion to each cuisine's gap.
+
+- **Seasons:** 102 of the 200 are all year. Every month has at least 21
+  seasonal dishes in season, so the deck's 3-in-season rule always has enough
+  to choose from. April and May are the thinnest months (23 and 21); the
+  remaining additions should lean towards spring (asparagus, peas, radish,
+  broad beans).
+- **Exotic ingredients:** 7 recipes use one, and none uses more than one.
+- **Protein:** all but one have at least 25 g a serving. Several hearty
+  dishes run over 1,000 kcal, so trim them if the calorie fit matters.
+- **New ingredients:** 58 were added to the catalogue, with their seasons and allergens.

@@ -5,6 +5,7 @@ from (values
   ('persian', 'Persian', 'Persan', array['persan', 'persane', 'iranian', 'iranien', 'iranienne', 'iran']::text[]),
   ('polish', 'Polish', 'Polonais', array['polonais', 'polonaise', 'pologne']::text[]),
   ('cuban', 'Cuban', 'Cubain', array['cubain', 'cubaine', 'cuba']::text[]),
+  ('argentinian', 'Argentinian', 'Argentin', array['argentin', 'argentine', 'argentina', 'argentinean']::text[]),
   ('danish', 'Danish', 'Danois', array['danois', 'danoise', 'danemark']::text[]),
   ('russian', 'Russian', 'Russe', array['russe', 'russie', 'ukrainian', 'ukrainien', 'ukrainienne']::text[]),
   ('creole', 'Creole', 'Créole', array['créole', 'cajun', 'louisiana', 'louisiane']::text[]),
