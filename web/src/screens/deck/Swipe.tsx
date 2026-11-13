@@ -56,6 +56,7 @@ function useBadge(card: DeckCard, data: DeckData) {
   // The deck's tier says it best when it has something to say (logic/deck.ts).
   if (card.reason === 'treat') return t('swipe.treat');
   if (card.reason === 'wildcard') return t('swipe.wildcard');
+  if (card.reason === 'season') return t('swipe.inSeason');
   if (card.reason?.startsWith('leans:')) {
     const who = card.reason.slice(6);
     return who === userId ? t('swipe.leansYou') : t('swipe.leansPartner', { name: memberName(who) });

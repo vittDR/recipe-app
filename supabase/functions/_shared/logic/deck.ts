@@ -3,7 +3,7 @@
 // mood, pantry overlap and household history. 12 cards in three tiers: 5 very
 // close to everyone's taste, 5 close (maybe more one person's), 2 wildcards
 // that fit the goals but take liberties; kept varied, with a treat for people
-// who mind their diet.
+// who mind their diet, and always a few dishes that are in season this month.
 
 import type { MealIntent } from './classify.ts';
 import { kindKeys, type TasteProfile } from './profile.ts';
@@ -33,6 +33,8 @@ export interface CandidateRecipe {
   features?: string[];
   /** What the dish is for (classify.ts); moods match on these when given, else on tags. */
   intents?: MealIntent[];
+  /** Months it's in season (classify.ts season_months); all twelve, null or absent = all year. */
+  seasonMonths?: number[] | null;
 }
 
 export interface DeckMember extends EaterTargets {
@@ -81,6 +83,8 @@ export interface DeckOptions {
   recentKinds?: Set<string>;
   /** Features of what someone said yes to in those decks: the new deck leans towards them. */
   lean?: Set<string>;
+  /** This month (1 = January), in the household's time zone: seasonal dishes in season come first. */
+  month?: number;
   random?: () => number;
 }
 
@@ -104,6 +108,20 @@ export const MOOD_TAGS: Record<Exclude<Mood, 'any'>, string[]> = {
   quick: ['quick'],
   fancy: ['fancy'],
 };
+
+/** A seasonal dish (not all year) in season this month: worth this much more. */
+export const SEASON_BONUS = 0.5;
+/** A seasonal dish out of season: worth this much less, but never left out (there are imports). */
+export const OFF_SEASON_PENALTY = 0.8;
+/** At least this share of a deck is seasonal dishes in season, when the library has them (3 of 12). */
+export const SEASONAL_SHARE = 3 / 12;
+
+/** 1 for a seasonal dish in season, -1 out of season, 0 for an all-year dish or no month given. */
+export function seasonFit(recipe: Pick<CandidateRecipe, 'seasonMonths'>, month: number | undefined): -1 | 0 | 1 {
+  const months = recipe.seasonMonths;
+  if (!month || !months?.length || months.length >= 12) return 0;
+  return months.includes(month) ? 1 : -1;
+}
 
 const usesProduct = (productIds: string[] | undefined, ids: string[]) =>
   ids.length > 0 && !!productIds?.some((id) => ids.includes(id));
@@ -197,7 +215,11 @@ export function scoreRecipe(
   // After a no-match: closer to what someone liked in the deck that failed (counts in every tier).
   const lean = opts.lean?.size ? Math.min(1, features.filter((f) => opts.lean!.has(f)).length / 3) : 0;
 
-  const base = fitW * fit + 1 * love + 1.2 * moodScore(recipe, opts.mood) + 1 * pantryScore + 0.8 * liked + 1.2 * lean + novelty;
+  const season = seasonFit(recipe, opts.month);
+  const seasonScore = season > 0 ? SEASON_BONUS : season < 0 ? -OFF_SEASON_PENALTY : 0;
+
+  const base = fitW * fit + 1 * love + 1.2 * moodScore(recipe, opts.mood) + 1 * pantryScore + 0.8 * liked + 1.2 * lean
+    + seasonScore + novelty;
   const score = base + 1.5 * pref + EXPLORE_WEIGHT * explore;
 
   const reason = pantryHits.length > 0 ? `pantry:${pantryHits[0]}` : love > 0 ? 'love' : null;
@@ -326,6 +348,30 @@ export function buildDeck(
       treat.value = nearValue(treat);
       if (inDeck.length >= size && near.length) near.pop(); // the last "close" pick
       near.push(treat);
+    }
+  }
+
+  // Always some dishes of the season: when too few made it on taste, the best in-season ones
+  // the deck doesn't have take the places of its weakest close (then very close) cards.
+  // Wildcards and the treat keep their places.
+  const inSeason = (s: Scored) => seasonFit(s.r, opts.month) > 0;
+  const wanted = opts.month ? Math.round(size * SEASONAL_SHARE) : 0;
+  const have = [...close, ...near, ...wild].filter(inSeason).length;
+  if (have < wanted) {
+    const inDeck = [...close, ...near, ...wild];
+    const extra = diversePick(left(inDeck).filter(inSeason).sort((a, b) => nearValue(b) - nearValue(a)),
+      wanted - have, nearValue, featuresOf, inDeck);
+    for (const add of extra) {
+      const swappable = (list: Scored[]) => list.filter((s) => !inSeason(s) && s.reason !== 'treat')
+        .sort((a, b) => a.value - b.value)[0];
+      const fromNear = swappable(near);
+      const out = fromNear ?? swappable(close);
+      if (!out) break;
+      const list = fromNear ? near : close;
+      list.splice(list.indexOf(out), 1, add);
+      add.tier = out.tier;
+      add.value = add.tier === 'close' ? closeValue(add) : nearValue(add);
+      add.reason ??= 'season';
     }
   }
 

@@ -240,7 +240,8 @@ export const CUISINE_PARENTS: Record<string, string[]> = {
   thai: ['asian'], vietnamese: ['asian'], indonesian: ['asian'], filipino: ['asian'], malaysian: ['asian'],
   taiwanese: ['asian'], italian: ['mediterranean'], greek: ['mediterranean'], spanish: ['mediterranean'],
   portuguese: ['mediterranean'], lebanese: ['middle eastern', 'mediterranean'], turkish: ['middle eastern', 'mediterranean'],
-  moroccan: ['north african'], 'north african': ['african'], ethiopian: ['african'],
+  moroccan: ['north african'], 'north african': ['african'], ethiopian: ['african'], senegalese: ['african'],
+  persian: ['middle eastern'], creole: ['american'],
 };
 
 // ---------------------------------------------------------------------------

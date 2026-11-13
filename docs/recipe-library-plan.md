@@ -113,10 +113,14 @@ the richest months.
 
 Not done yet:
 
-- **Deck and filters.** Nothing reads the season yet. Next steps: an "In
-  season" filter on the Recipes tab (`logic/facets.ts`), and a small bonus in
-  `deal-deck` for dishes in season this month. Out-of-season dishes shouldn't
-  be excluded, since imports exist.
+- **Deck: done.** `logic/deck.ts` gives a seasonal dish in season this month
+  (the household's time zone) a bonus (`SEASON_BONUS`) and one out of season
+  a penalty (`OFF_SEASON_PENALTY`), without excluding it (imports exist).
+  Every deck holds at least 3 of 12 in-season dishes (`SEASONAL_SHARE`) when
+  the library has them. They replace the weakest close, then very close,
+  cards, never a wildcard or the treat, and show an "In season now" badge.
+- **Filters.** Not done yet: an "In season" filter on the Recipes tab
+  (`logic/facets.ts`).
 - **Missing produce.** The new recipes need catalogue entries that don't
   exist yet: asparagus, fennel, beetroot, kale, celeriac, parsnip, endive,
   squid, peach, fig, chestnut, artichoke, broad beans. Give each one its

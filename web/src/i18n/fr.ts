@@ -173,6 +173,7 @@ export const fr: Dictionary = {
     undo: 'Annuler le dernier choix',
     collapse: 'Réduire',
     wildcard: 'Un peu différent',
+    inSeason: 'De saison',
     leansYou: 'Plutôt votre genre de plat',
     leansPartner: 'Plutôt le genre de plat de {name}',
     treat: 'Un petit plaisir qui devrait vous plaire',

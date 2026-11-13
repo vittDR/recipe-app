@@ -121,6 +121,7 @@ Deno.serve(async (req) => {
       proteinGPerServing: r.protein_g_per_serving,
       features,
       intents: classification.meal_intents,
+      seasonMonths: classification.season_months,
     };
   });
 
@@ -204,6 +205,8 @@ Deno.serve(async (req) => {
     exclude,
     lean,
     recentKinds,
+    // The evening's month, in the household's time zone: seasonal dishes in season come first.
+    month: Number(forDate.slice(5, 7)),
     // Recipe lines are named by catalogue ingredient ("chicken breast"); list
     // lines by their French product name, so compare on the product's ingredient.
     pantry: (pantry.data ?? []).map((p) => {
