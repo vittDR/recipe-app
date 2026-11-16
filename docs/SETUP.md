@@ -687,7 +687,7 @@ on conflict (name) do nothing;
 | `grams_per_unit` | Grams in one piece, clove, can… Needed if recipes count it rather than weigh it |
 | `diet_class` | `veg`, `fish` or `meat`. **This drives the diet filters**, so get it right. |
 | `exotic` | `true` if most French supermarkets don't sell it. Drives the "Everyday ingredients" filter. |
-| `seasons` | The seasons it's in season in France, from `spring`, `summer`, `autumn`, `winter` (e.g. `{summer}` for tomatoes); null = all year. Set it in the season block of `seed.sql` for fresh produce (and mussels) only. A recipe's season comes from its own season tags, else its main ingredients: see [recipe-classification.md](recipe-classification.md#season). |
+| `seasons` | The seasons it's in season in France, from `spring`, `summer`, `autumn`, `winter`; null = all year. Set only for produce people think of as seasonal (asparagus, broad beans, peaches, pumpkin…), in the season block of `seed.sql`; peppers, courgettes, tomatoes and the like stay all year. A recipe's season comes from its own season tags first: see [recipe-classification.md](recipe-classification.md#season). |
 | `fat_100g`, `carbs_100g`, `fiber_100g` | Per 100 g, like kcal. Without fat a recipe that's mostly this ingredient can't be called lean. |
 | `traits` | What it says about a dish, for the classification: `protein:<group>`, `starch:<base>`, `sauce:<family>` (optionally `@<grams per serving>` when the default amount is wrong, e.g. `sauce:cream@60` for milk), `heat:<points per gram>` for chilli, `liquid`. Set them in the `update … set fat_100g …` block at the end of `seed.sql`. See [recipe-classification.md](recipe-classification.md). |
 
