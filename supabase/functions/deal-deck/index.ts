@@ -122,6 +122,7 @@ Deno.serve(async (req) => {
       features,
       intents: classification.meal_intents,
       seasons: classification.seasons,
+      weeknightPlate: classification.weeknight_plate,
     };
   });
 

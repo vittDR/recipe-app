@@ -196,3 +196,21 @@ test('season: at least 3 of 12 cards are dishes of the season, and out-of-season
   const anySeason = buildDeck(recipes, [member()], new Map(), { random: fixed });
   assert.ok(anySeason.every((c) => c.reason !== 'season'));
 });
+
+test('weeknight plates: at least 7 of 12 cards, and the season rule never takes the deck below that', () => {
+  // Non-plates fit the goals better, so on taste and fit alone no plate would make it.
+  const recipes = [
+    ...Array.from({ length: 20 }, (_, i) => recipe(`project ${i}`, { features: [`dish:p${i}`] })),
+    ...Array.from({ length: 10 }, (_, i) => recipe(`plate ${i}`, { weeknightPlate: true, proteinGPerServing: 25, features: [`sauce:s${i}`] })),
+    ...Array.from({ length: 5 }, (_, i) => recipe(`summer ${i}`, { seasons: ['summer'], proteinGPerServing: 20, features: [`starch:w${i}`] })),
+  ];
+  const deck = buildDeck(recipes, [member()], new Map(), { random: fixed, season: 'summer' });
+  const byId = new Map(recipes.map((r) => [r.id, r]));
+  assert.equal(deck.length, 12);
+  assert.ok(deck.filter((c) => byId.get(c.recipeId)!.weeknightPlate).length >= 7);
+  assert.ok(deck.filter((c) => c.recipeId.startsWith('summer')).length >= 3);
+  assert.equal(deck.filter((c) => c.tier === 'wild').length, 2);
+  // Without plates in the library, nothing changes.
+  const none = buildDeck(recipes.filter((r) => !r.weeknightPlate), [member()], new Map(), { random: fixed });
+  assert.equal(none.length, 12);
+});

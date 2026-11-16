@@ -15,7 +15,7 @@
 import { type Difficulty, type Equipment } from './facets.ts';
 import { type CatalogEntry, type Catalog, estimateMacros, gramsOf, type NormalisedIngredient } from './ingredients.ts';
 
-export const CLASSIFICATION_VERSION = 3;
+export const CLASSIFICATION_VERSION = 4;
 
 export const PROTEIN_GROUPS = [
   'poultry', 'beef', 'pork', 'lamb', 'veal', 'game', 'offal', 'fish', 'shellfish', 'eggs', 'legumes', 'soy', 'dairy',
@@ -80,6 +80,17 @@ export const LEAN_MAX_KCAL = 700;
 export const LOW_KCAL_MAX = 500;
 export const HIGH_FIBRE_MIN_G = 8;
 export const EVERYDAY_MAX_MIN = 45;
+/**
+ * A weeknight plate: a filling, everyday dinner the app is built around.
+ * Cooking and hands-on prep are short (marinating isn't prep, so it may wait
+ * longer), it needs one or two pans or one oven dish (an air fryer or rice
+ * cooker doesn't count), it has a base and enough protein, and it isn't hard.
+ */
+export const PLATE_MAX_COOK_MIN = 30;
+export const PLATE_MAX_PREP_MIN = 25;
+export const PLATE_MAX_POTS = 2;
+export const PLATE_MIN_PROTEIN_G = 25;
+export const PLATE_KCAL = [500, 900] as const;
 /** Grams per serving from which a seasonal ingredient sets the recipe's season: about a portion of vegetables, so half a pepper in a stew or one tomato in a sauce doesn't. */
 export const SEASON_MIN_G = 75;
 export const SEASONS = ['spring', 'summer', 'autumn', 'winter'] as const;
@@ -149,6 +160,10 @@ export interface RecipeClassification {
   /** Per serving. */
   nutrition: Nutrition;
   nutrition_goals: NutritionGoal[];
+  /** A weeknight plate (PLATE_*): what most of the library and most of a deck should be. */
+  weeknight_plate: boolean;
+  /** The plate rules it misses, for the library audit ([] for a plate). */
+  plate_misses: string[];
   meal_intents: MealIntent[];
   /** Fields set from the recipe's own tags or cuisine rather than worked out. */
   sourced: string[];
@@ -446,8 +461,25 @@ export function classifyRecipe(input: ClassifyInput): RecipeClassification {
     nutrition,
     nutrition_goals: ordered(NUTRITION_GOALS, goals),
     meal_intents: ordered(MEAL_INTENTS, intents),
+    ...plate(input, nutrition, starches.size > 0),
     sourced: [...sourced].sort(),
   };
+}
+
+// ---------------------------------------------------------------------------
+// Weeknight plate
+// ---------------------------------------------------------------------------
+
+function plate(input: ClassifyInput, n: Nutrition, hasBase: boolean): { weeknight_plate: boolean; plate_misses: string[] } {
+  const misses: string[] = [];
+  if (input.cookMin === null || input.cookMin > PLATE_MAX_COOK_MIN) misses.push('cook_time');
+  if (input.prepMin === null || input.prepMin > PLATE_MAX_PREP_MIN) misses.push('prep_time');
+  if (!input.equipment || input.equipment.pots > PLATE_MAX_POTS) misses.push('pots');
+  if (input.difficulty === 'hard') misses.push('hard');
+  if (n.protein_g === null || n.protein_g < PLATE_MIN_PROTEIN_G) misses.push('protein');
+  if (n.kcal === null || n.kcal < PLATE_KCAL[0] || n.kcal > PLATE_KCAL[1]) misses.push('kcal');
+  if (!hasBase) misses.push('base');
+  return { weeknight_plate: misses.length === 0, plate_misses: misses };
 }
 
 // ---------------------------------------------------------------------------
