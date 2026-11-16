@@ -108,4 +108,4 @@ from this plan.
 - **Calories:** 262 of the 290 are 500–900 kcal a serving.
 - **Protein:** 6 are under 25 g.
 - **Exotic ingredients:** 82 recipes use at least one, flagged in the catalogue.
-- **Illustrations:** 250 of the 300 have one. The 50 weeknight plates don't yet.
+- **Illustrations:** all 300 have one.

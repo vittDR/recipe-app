@@ -2786,8 +2786,7 @@
     "source_type": "seed",
     "source_name": "Evous",
     "source_url": "https://www.evous.fr/recettes-de-cuisine/Recettes-Plat/Recette-Blanc-de-poulet-a-la,1116941/",
-    "image_url": null,
-    "image_source_url": "https://www.evous.fr/IMG/jpg/poulet_basquaise-675ed.jpg",
+    "image_url": "/recipe-photos/blanc-de-poulet-a-la-basquaise.webp",
     "cuisine": "french",
     "tags": [
       "french",
@@ -7063,8 +7062,7 @@
     "source_type": "seed",
     "source_name": "My Korean Kitchen",
     "source_url": "https://mykoreankitchen.com/dak-galbi/",
-    "image_url": null,
-    "image_source_url": null,
+    "image_url": "/recipe-photos/dak-galbi-spicy-chicken-stir-fry.webp",
     "cuisine": "korean",
     "tags": [
       "korean",
@@ -7327,8 +7325,7 @@
     "source_type": "seed",
     "source_name": "Tesco Real Food",
     "source_url": "https://realfood.tesco.com/recipes/goan-style-fish-curry.html",
-    "image_url": null,
-    "image_source_url": null,
+    "image_url": "/recipe-photos/goan-style-fish-curry.webp",
     "cuisine": "indian",
     "tags": [
       "asian",
@@ -8402,8 +8399,7 @@
     "source_type": "seed",
     "source_name": "Just One Cookbook",
     "source_url": "https://www.justonecookbook.com/recipes/oyakodon/",
-    "image_url": null,
-    "image_source_url": null,
+    "image_url": "/recipe-photos/oyakodon-chicken-and-egg-rice-bowl.webp",
     "cuisine": "japanese",
     "tags": [
       "japanese",
@@ -9179,8 +9175,7 @@
     "source_type": "seed",
     "source_name": "Feasting at Home",
     "source_url": "https://www.feastingathome.com/brazilian-fish-stew-aka-moqueca",
-    "image_url": null,
-    "image_source_url": null,
+    "image_url": "/recipe-photos/brazilian-fish-stew-moqueca.webp",
     "cuisine": "brazilian",
     "tags": [
       "brazilian",
@@ -9338,8 +9333,7 @@
     "source_type": "seed",
     "source_name": "WW",
     "source_url": "https://www.weightwatchers.com/us/recipe/cajun-salmon-sweet-potato-chowder/56d82afd0ac646df0ee3e08f",
-    "image_url": null,
-    "image_source_url": null,
+    "image_url": "/recipe-photos/cajun-salmon-and-sweet-potato-chowder.webp",
     "cuisine": "american",
     "tags": [
       "american",
@@ -10237,8 +10231,7 @@
     "source_type": "seed",
     "source_name": "The Mediterranean Dish",
     "source_url": "https://www.themediterraneandish.com/baked-greek-fish-psari-plaki",
-    "image_url": null,
-    "image_source_url": null,
+    "image_url": "/recipe-photos/greek-baked-fish-psari-plaki.webp",
     "cuisine": "greek",
     "tags": [
       "greek",
@@ -12929,8 +12922,7 @@
     "source_type": "seed",
     "source_name": "delicious. magazine",
     "source_url": "https://www.deliciousmagazine.co.uk/?p=791",
-    "image_url": null,
-    "image_source_url": null,
+    "image_url": "/recipe-photos/fish-and-chips.webp",
     "cuisine": "british",
     "tags": [
       "british",
@@ -13057,8 +13049,7 @@
     "source_type": "seed",
     "source_name": "Maangchi",
     "source_url": "https://www.maangchi.com/?p=11562",
-    "image_url": null,
-    "image_source_url": null,
+    "image_url": "/recipe-photos/korean-fried-chicken-yangnyeom-tongdak.webp",
     "cuisine": "korean",
     "tags": [
       "korean",
@@ -13474,8 +13465,7 @@
     "source_type": "seed",
     "source_name": "Waitrose",
     "source_url": "https://www.waitrose.com/content/waitrose/en/home/recipes/recipe_directory/o/okonomiyaki.html",
-    "image_url": null,
-    "image_source_url": null,
+    "image_url": "/recipe-photos/prawn-okonomiyaki.webp",
     "cuisine": "japanese",
     "tags": [
       "japanese",
@@ -13615,8 +13605,7 @@
     "source_type": "seed",
     "source_name": "Based Cooking",
     "source_url": "https://git.pikami.org/random-mirrors/based.cooking/src/branch/master/content/roesti.md",
-    "image_url": null,
-    "image_source_url": "https://git.pikami.org/random-mirrors/based.cooking/media/branch/master/pix/roesti.webp",
+    "image_url": "/recipe-photos/rosti-with-fried-eggs.webp",
     "cuisine": "swiss",
     "tags": [
       "swiss",
@@ -46503,7 +46492,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/air-fryer-lemon-chicken-with-herby-bulgur-peas-and-lemon-herb-yogurt.webp",
     "cuisine": "mediterranean",
     "tags": [
       "mediterranean",
@@ -46631,7 +46620,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/peanut-lime-chicken-noodles-with-carrot-and-pepper.webp",
     "cuisine": "asian",
     "tags": [
       "asian",
@@ -46762,7 +46751,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/air-fryer-pesto-chicken-with-crushed-new-potatoes-and-green-beans.webp",
     "cuisine": "italian",
     "tags": [
       "italian",
@@ -46870,7 +46859,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/air-fryer-harissa-chicken-with-pepper-and-chickpea-couscous.webp",
     "cuisine": "north african",
     "tags": [
       "north african",
@@ -46993,7 +46982,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/miso-ginger-chicken-with-soba-and-broccoli.webp",
     "cuisine": "japanese",
     "tags": [
       "japanese",
@@ -47121,7 +47110,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/air-fryer-honey-gochujang-chicken-thighs-with-rice-and-cucumber.webp",
     "cuisine": "korean",
     "tags": [
       "korean",
@@ -47246,7 +47235,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/air-fryer-chicken-thighs-with-tahini-lemon-sauce-quinoa-and-kale.webp",
     "cuisine": "middle eastern",
     "tags": [
       "middle eastern",
@@ -47367,7 +47356,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/cajun-chicken-wraps-with-sweetcorn-salsa.webp",
     "cuisine": "american",
     "tags": [
       "american",
@@ -47489,7 +47478,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/air-fryer-sweet-chilli-lime-chicken-thighs-with-rice-noodle-salad.webp",
     "cuisine": "asian",
     "tags": [
       "asian",
@@ -47613,7 +47602,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/chicken-thighs-with-salsa-verde-new-potatoes-and-asparagus.webp",
     "cuisine": "italian",
     "tags": [
       "italian",
@@ -47738,7 +47727,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/turkey-steaks-with-chimichurri-air-fryer-wedges-and-tomato-salad.webp",
     "cuisine": "american",
     "tags": [
       "american",
@@ -47870,7 +47859,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/air-fryer-turkey-shawarma-flatbreads-with-tahini-sauce.webp",
     "cuisine": "middle eastern",
     "tags": [
       "middle eastern",
@@ -48012,7 +48001,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/air-fryer-turkey-tikka-with-spinach-pilau-rice.webp",
     "cuisine": "indian",
     "tags": [
       "indian",
@@ -48157,7 +48146,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/turkey-escalopes-with-honey-mustard-leeks-and-potatoes.webp",
     "cuisine": "french",
     "tags": [
       "french",
@@ -48289,7 +48278,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/air-fryer-turkey-souvlaki-with-bulgur-tomato-salad-and-tzatziki.webp",
     "cuisine": "greek",
     "tags": [
       "greek",
@@ -48423,7 +48412,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/steak-with-romesco-air-fryer-potatoes-and-broccoli.webp",
     "cuisine": "spanish",
     "tags": [
       "spanish",
@@ -48551,7 +48540,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/air-fryer-teriyaki-beef-meatballs-with-rice-and-green-beans.webp",
     "cuisine": "japanese",
     "tags": [
       "japanese",
@@ -48678,7 +48667,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/harissa-beef-with-roasted-squash-and-couscous.webp",
     "cuisine": "north african",
     "tags": [
       "north african",
@@ -48803,7 +48792,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/honey-gochujang-beef-noodles-with-spinach.webp",
     "cuisine": "korean",
     "tags": [
       "korean",
@@ -48933,7 +48922,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/black-pepper-beef-udon-with-cabbage.webp",
     "cuisine": "asian",
     "tags": [
       "asian",
@@ -49056,7 +49045,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/air-fryer-honey-mustard-pork-chops-with-potatoes-and-brussels-sprouts.webp",
     "cuisine": "british",
     "tags": [
       "british",
@@ -49176,7 +49165,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/air-fryer-jerk-pork-tenderloin-with-rice-and-peas-and-slaw.webp",
     "cuisine": "caribbean",
     "tags": [
       "caribbean",
@@ -49303,7 +49292,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/pork-and-green-bean-stir-fry-with-chilli-garlic-sauce-and-rice.webp",
     "cuisine": "chinese",
     "tags": [
       "chinese",
@@ -49432,7 +49421,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/air-fryer-pork-satay-with-rice-and-quick-cucumber-pickle.webp",
     "cuisine": "indonesian",
     "tags": [
       "indonesian",
@@ -49575,7 +49564,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/pork-medallions-with-salsa-verde-and-courgette-couscous.webp",
     "cuisine": "mediterranean",
     "tags": [
       "mediterranean",
@@ -49709,7 +49698,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/air-fryer-teriyaki-salmon-with-rice-and-broccoli.webp",
     "cuisine": "japanese",
     "tags": [
       "japanese",
@@ -49835,7 +49824,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/pesto-salmon-pasta-with-peas-and-spinach.webp",
     "cuisine": "italian",
     "tags": [
       "italian",
@@ -49946,7 +49935,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/air-fryer-honey-mustard-salmon-with-new-potatoes-and-leeks.webp",
     "cuisine": "british",
     "tags": [
       "british",
@@ -50066,7 +50055,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/salmon-with-peanut-lime-noodles-and-crunchy-veg.webp",
     "cuisine": "asian",
     "tags": [
       "asian",
@@ -50199,7 +50188,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/air-fryer-salmon-pittas-with-tzatziki.webp",
     "cuisine": "greek",
     "tags": [
       "greek",
@@ -50334,7 +50323,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/cod-with-romesco-potatoes-and-green-beans.webp",
     "cuisine": "spanish",
     "tags": [
       "spanish",
@@ -50459,7 +50448,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/air-fryer-harissa-hake-with-couscous-and-courgettes.webp",
     "cuisine": "north african",
     "tags": [
       "north african",
@@ -50582,7 +50571,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/air-fryer-miso-ginger-cod-with-rice-and-pak-choi.webp",
     "cuisine": "japanese",
     "tags": [
       "japanese",
@@ -50708,7 +50697,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/air-fryer-cajun-cod-tacos-with-lime-slaw.webp",
     "cuisine": "american",
     "tags": [
       "american",
@@ -50827,7 +50816,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/hake-with-salsa-verde-new-potatoes-and-asparagus.webp",
     "cuisine": "italian",
     "tags": [
       "italian",
@@ -50949,7 +50938,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/air-fryer-honey-gochujang-prawns-with-rice-and-cucumber.webp",
     "cuisine": "korean",
     "tags": [
       "korean",
@@ -51085,7 +51074,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/black-pepper-prawn-noodles-with-mangetout.webp",
     "cuisine": "chinese",
     "tags": [
       "chinese",
@@ -51215,7 +51204,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/satay-prawn-noodles-with-pak-choi.webp",
     "cuisine": "malaysian",
     "tags": [
       "malaysian",
@@ -51348,7 +51337,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/air-fryer-prawn-tikka-wraps-with-mint-yogurt.webp",
     "cuisine": "indian",
     "tags": [
       "indian",
@@ -51487,7 +51476,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/air-fryer-chimichurri-prawn-quinoa-bowls.webp",
     "cuisine": "american",
     "tags": [
       "american",
@@ -51612,7 +51601,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/air-fryer-sweet-chilli-tofu-with-noodles-and-peppers.webp",
     "cuisine": "thai",
     "tags": [
       "thai",
@@ -51745,7 +51734,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/air-fryer-tofu-katsu-curry-with-rice.webp",
     "cuisine": "japanese",
     "tags": [
       "japanese",
@@ -51874,7 +51863,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/black-pepper-tofu-with-rice-and-green-beans.webp",
     "cuisine": "asian",
     "tags": [
       "asian",
@@ -52000,7 +51989,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/air-fryer-harissa-tofu-with-bulgur-and-carrots.webp",
     "cuisine": "north african",
     "tags": [
       "north african",
@@ -52124,7 +52113,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/tahini-lemon-tofu-with-roast-squash-and-quinoa.webp",
     "cuisine": "middle eastern",
     "tags": [
       "middle eastern",
@@ -52247,7 +52236,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/air-fryer-halloumi-with-chickpea-couscous-and-tahini-lemon.webp",
     "cuisine": "mediterranean",
     "tags": [
       "mediterranean",
@@ -52381,7 +52370,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/air-fryer-paneer-kathi-rolls.webp",
     "cuisine": "indian",
     "tags": [
       "indian",
@@ -52521,7 +52510,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/gochujang-egg-fried-rice-with-edamame.webp",
     "cuisine": "korean",
     "tags": [
       "korean",
@@ -52648,7 +52637,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/black-bean-and-egg-burritos-with-tomato-salsa.webp",
     "cuisine": "mexican",
     "tags": [
       "mexican",
@@ -52784,7 +52773,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
-    "image_url": null,
+    "image_url": "/recipe-photos/puy-lentils-with-salsa-verde-soft-eggs-and-new-potatoes.webp",
     "cuisine": "french",
     "tags": [
       "french",
