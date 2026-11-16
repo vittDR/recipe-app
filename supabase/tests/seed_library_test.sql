@@ -116,8 +116,11 @@ insert into auth.users (id, email) values ('00000000-0000-0000-0000-0000000000d1
 select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-0000000000d1', false);
 set role authenticated;
 select create_household('Seed test', 'Europe/Paris');
-select pg_temp.check((select count(*) >= 110 from library_recipes where household_id is null), 'household browses the seed library');
-select id as src from library_recipes where title = 'Spaghetti alle vongole' \gset
+select pg_temp.check((select count(*) = 300 and bool_and(collection = 'original') from library_recipes where household_id is null),
+                     'household browses our 300 recipes; the ones taken from sites are hidden');
+-- A recipe taken from a site still opens (past decks and meals point at it) and can still be copied.
+select id as src from recipes where household_id is null and title = 'Spaghetti alle vongole' \gset
+select pg_temp.check(exists (select 1 from recipes where id = :'src'), 'a hidden recipe still opens');
 select copy_recipe(:'src') as cp \gset
 select pg_temp.check((select source_name = 'Dissapore' and cuisine = 'italian' and original_servings = 4 and language = 'it'
                       from recipes where id = :'cp'), 'copy keeps source name, cuisine, yield and language');

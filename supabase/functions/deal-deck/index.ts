@@ -59,7 +59,8 @@ Deno.serve(async (req) => {
       .eq('decks.household_id', householdId).order('created_at', { ascending: false }).limit(1000),
     admin.from('recipes')
       .select(`id, kcal_per_serving, protein_g_per_serving, household_id, copied_from, ${CLASSIFY_COLUMNS.replace('recipe_ingredients(', 'recipe_ingredients(product_id, ')}`)
-      .or(`household_id.is.null,household_id.eq.${householdId}`),
+      // Our own seed recipes and the household's; recipes taken from sites (collection 'web') are hidden.
+      .or(`and(household_id.is.null,collection.neq.web),household_id.eq.${householdId}`),
     admin.from('meals').select('id, recipe_id, for_date, status, deck:decks(who_eating)').eq('household_id', householdId),
     admin.from('grocery_items').select('name, product:products(ingredient)').eq('household_id', householdId)
       .gte('checked_at', since(PANTRY_DAYS)),

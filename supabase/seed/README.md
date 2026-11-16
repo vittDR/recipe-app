@@ -2,7 +2,7 @@
 
 409 recipes:
 
-- **109 from recipe sites:** 25 Italian, 24 French, 25 Asian, 25 from other cuisines and 10 "treat" dishes.
+- **109 from recipe sites (hidden in the app** since November 2026: the library view and the deck leave out the `web` collection; they still open from past decks and meals): 25 Italian, 24 French, 25 Asian, 25 from other cuisines and 10 "treat" dishes.
 - **10 AI-generated recipes**, whose Poulet basquaise replaced the Chef Simon one.
 - **The original library, 290 recipes written for the app** (November 2026): 240 from the plan, plus 50 everyday weeknight plates (30 of them air-fryer). It follows the plan in [docs/recipe-library-plan.md](../../docs/recipe-library-plan.md): the draft list's kept and reworked dishes, plus named additions across 14 cuisine groups.
   - Each one was written from published recipes, listed in its `references` (name and URL; the build ignores the field). It keeps their proportions, technique, times and temperatures, with steps in our own words.
