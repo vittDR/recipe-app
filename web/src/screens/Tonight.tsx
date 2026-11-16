@@ -5,7 +5,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router';
 import { AddToListSheet, loadProposalsMany, type MealForList } from '../components/AddToListSheet.tsx';
 import { DeckSettingsSheet, DeckSummaryRow, MOODS, useDeckLabels, type DeckSettings } from '../components/DeckSettings.tsx';
 import { Icon } from '../components/Icon.tsx';
-import { WeekStrip } from '../components/WeekStrip.tsx';
+import { WeekSheet, WeekStrip, type StripDay } from '../components/WeekStrip.tsx';
 import {
   Avatar, AvatarPair, Button, Chip, ListRow, ProgressBar, RecipeThumb, Screen, Section, Spinner, Tag, TabHeader, imageStyle, recipeEmoji,
 } from '../components/ui.tsx';
@@ -60,6 +60,7 @@ export function TonightScreen() {
   const [picked, setPicked] = useState<DeckSettings | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [listOpen, setListOpen] = useState(false);
+  const [weekOpen, setWeekOpen] = useState(false);
   const [dealing, setDealing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [nudged, setNudged] = useState(false);
@@ -225,7 +226,14 @@ export function TonightScreen() {
   const people = [userId!, ...partners.map((p) => p.user_id)].map((id) => ({ id, name: memberName(id), color: memberColor(id) }));
   const header = (
     <TabHeader overline={cap(longFormat.format(new Date(`${selected}T12:00:00Z`)))} title={eveningName(selected, today)}
-      right={members.length > 0 ? <AvatarPair people={people} /> : undefined} />
+      right={(
+        <span className="tab-header__actions">
+          <button type="button" className="icon-btn icon-btn--filled" aria-label={t('week.open')} onClick={() => setWeekOpen(true)}>
+            <Icon name="calendar" size={20} />
+          </button>
+          {members.length > 0 && <AvatarPair people={people} />}
+        </span>
+      )} />
   );
 
   // The week (strip, meals) carries over while another evening's deck loads.
@@ -243,17 +251,12 @@ export function TonightScreen() {
   const total = data?.total || 12;
   const deckSummary = deck && labels.summary({ who: deck.who_eating.length > 1 ? 'both' : 'me', maxMinutes: deck.max_minutes, mood: deck.mood }, shared);
 
-  const strip = (
-    <WeekStrip today={today} selected={selected} onSelect={selectDay} onToggle={(d, c) => void toggleDay(d, c)}
-      back={eveningPath(selected, today)} days={week.map((date) => {
-      const meal = data?.meals.find((m) => m.for_date === date && m.status !== 'skipped');
-      return {
-        date,
-        together: cooksOn(date, data?.plan, data?.dates),
-        meal: meal && { cooked: meal.status === 'cooked', image_path: meal.recipe?.image_path ?? null },
-      };
-    })} />
-  );
+  const stripDays: StripDay[] = week.map((date) => ({
+    date,
+    together: cooksOn(date, data?.plan, data?.dates),
+    chosen: !!data?.meals.some((m) => m.for_date === date && m.status !== 'skipped'),
+  }));
+  const strip = <WeekStrip today={today} selected={selected} onSelect={selectDay} days={stripDays} />;
 
   const rating = isToday && data?.toRate && rated !== data.toRate.id && (
     <section className="card stack" aria-label={t('rating.title')}>
@@ -467,6 +470,8 @@ export function TonightScreen() {
       </div>
       <DeckSettingsSheet open={settingsOpen} onClose={() => setSettingsOpen(false)} settings={settings} onChange={setPicked}
         shared={shared} dealing={dealing} error={error} onDeal={() => void deal()} />
+      <WeekSheet open={weekOpen} onClose={() => setWeekOpen(false)} days={stripDays} today={today}
+        onToggle={(d, c) => void toggleDay(d, c)} back={eveningPath(selected, today)} />
       {groceries && (
         <AddToListSheet open={listOpen} onClose={() => setListOpen(false)} meals={groceries.meals} />
       )}

@@ -786,9 +786,12 @@ export const en = {
     nameRequired: 'A French name is needed',
   },
   week: {
-    edit: 'Set the evenings you cook at home',
-    hint: 'Tap the evenings you cook at home.',
+    open: 'This week',
+    hint: 'Tick the evenings you cook at home. The others follow your regular schedule.',
+    today: 'Today',
+    tomorrow: 'Tomorrow',
     usual: 'Regular schedule',
+    usualHint: 'The evenings ticked by default, and prompt times',
   },
   plan: {
     title: 'Regular schedule',

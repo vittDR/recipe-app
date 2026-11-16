@@ -784,9 +784,12 @@ export const fr: Dictionary = {
     nameRequired: 'Il faut un nom en français',
   },
   week: {
-    edit: 'Choisir les soirs où vous cuisinez',
-    hint: 'Touchez les soirs où vous mangez à la maison.',
+    open: 'Cette semaine',
+    hint: 'Cochez les soirs où vous cuisinez. Les autres suivent votre programme régulier.',
+    today: 'Aujourd’hui',
+    tomorrow: 'Demain',
     usual: 'Programme régulier',
+    usualHint: 'Les soirs cochés par défaut et les heures des rappels',
   },
   plan: {
     title: 'Programme régulier',
