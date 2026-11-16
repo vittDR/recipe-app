@@ -28,7 +28,7 @@ export function NoMatchView({ data }: { data: DeckData }) {
     setDealing(true);
     try {
       const res = await callFunction<{ deck_id: string }>('deal-deck', {
-        who_eating: deck.who_eating, max_minutes: deck.max_minutes, mood: deck.mood, for_date: deck.for_date,
+        who_eating: deck.who_eating, max_minutes: deck.max_minutes, mood: deck.mood, filters: deck.filters ?? {}, for_date: deck.for_date,
       }, 30_000);
       navigate(`/deck/${res.deck_id}`, { replace: true });
     } catch {

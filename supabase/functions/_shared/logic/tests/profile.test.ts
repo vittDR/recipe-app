@@ -22,6 +22,14 @@ test('signals weigh by what they say', () => {
     { weight: -1, features: f });
 });
 
+test('a filtered deck: a pass counts half and says nothing about what was filtered on', () => {
+  const f = ['protein:poultry', 'japanese', 'asian', 'dish:curry'];
+  assert.deepEqual(signalWeight({ kind: 'swipe', verdict: 'pass', filters: { proteins: ['chicken'], cuisines: ['japanese'] }, features: f, at: at() }),
+    { weight: -0.2, features: ['dish:curry'] });
+  assert.deepEqual(signalWeight({ kind: 'swipe', verdict: 'yes', filters: { proteins: ['chicken'] }, features: f, at: at() }),
+    { weight: 1, features: ['japanese', 'asian', 'dish:curry'] });
+});
+
 test('a yes says far more than a pass: as many passes as yeses still read as a like', () => {
   assert.equal(signalWeight({ kind: 'swipe', verdict: 'pass', features: ['dish:curry'], at: at() }).weight, -0.4);
   const signals: Signal[] = [];

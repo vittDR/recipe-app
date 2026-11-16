@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { classifyRow, CLASSIFY_COLUMNS, type ClassifiableRow } from '@logic/classify.ts';
 import type { Mood } from '@logic/deck.ts';
+import { normaliseFilters } from '@logic/deckFilters.ts';
 import { recipeFeatures } from '@logic/preferences.ts';
 import { splitPot } from '@logic/portions.ts';
 import {
@@ -41,7 +42,7 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
   const { data } = useLive<Loaded>(`us:${userId}:${ingredientCatalog ? 'c' : ''}`, async () => {
     const [r, swipes, signals, meals, portions] = await Promise.all([
       supabase.from('taste_rules').select('*').eq('user_id', userId!),
-      supabase.from('swipes').select('user_id, deck_id, recipe_id, verdict, created_at, deck:decks(mood)')
+      supabase.from('swipes').select('user_id, deck_id, recipe_id, verdict, created_at, deck:decks(mood, filters)')
         .eq('user_id', userId!).order('created_at', { ascending: false }).limit(300),
       supabase.from('taste_signals').select('user_id, recipe_id, kind, value, deck_id, meal_id, created_at')
         .eq('user_id', userId!).order('created_at', { ascending: false }).limit(1000),
@@ -53,7 +54,10 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
     const one = <T,>(v: T | T[] | null | undefined) => (Array.isArray(v) ? v[0] : v) ?? null;
     const rows = {
       swipes: (must(swipes) as unknown as (SwipeRow & { deck: unknown })[])
-        .map((x) => ({ ...x, mood: one(x.deck as { mood: Mood | null } | null)?.mood ?? null })),
+        .map((x) => {
+          const d = one(x.deck as { mood: Mood | null; filters: unknown } | null);
+          return { ...x, mood: d?.mood ?? null, filters: normaliseFilters(d?.filters) };
+        }),
       tasteSignals: must(signals) as TasteSignalRow[],
       meals: (must(meals) as unknown as (MealRow & { deck: unknown })[])
         .map((m) => ({ ...m, who_eating: one(m.deck as { who_eating: string[] } | null)?.who_eating ?? null })),
