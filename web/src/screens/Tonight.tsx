@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
+import { combineProposals, scaleQuantity } from '@logic/groceries.ts';
 import { RATINGS, type Rating } from '@logic/profile.ts';
 import { Link, useNavigate, useSearchParams } from 'react-router';
-import { AddToListSheet, loadProposals, type MealForList } from '../components/AddToListSheet.tsx';
+import { AddToListSheet, loadProposalsMany, type MealForList } from '../components/AddToListSheet.tsx';
 import { DeckSettingsSheet, DeckSummaryRow, MOODS, useDeckLabels, type DeckSettings } from '../components/DeckSettings.tsx';
 import { Icon } from '../components/Icon.tsx';
 import { WeekStrip } from '../components/WeekStrip.tsx';
@@ -11,7 +12,7 @@ import {
 import { useI18n } from '../i18n/index.tsx';
 import { pickDeckArt } from '../lib/deckArt.ts';
 import { recipeTitle } from '../lib/recipeText.ts';
-import { todayIn, useLive, useSave } from '../lib/hooks.ts';
+import { isoWeekday, todayIn, useLive, useSave } from '../lib/hooks.ts';
 import { comingDays, cooksOn, eveningPath, useEveningName } from '../lib/plan.ts';
 import { INGREDIENT_SELECT } from '../lib/products.ts';
 import { useSession } from '../lib/session.tsx';
@@ -20,7 +21,7 @@ import type { Deck, DeckMemberProgress, Meal, Mood, PlanDate, PlanDay, Recipe, R
 
 type MealRecipe = Pick<Recipe, 'id' | 'title' | 'language' | 'translations' | 'image_path' | 'tags' | 'total_min' | 'difficulty'
   | 'protein_g_per_serving' | 'servings'>;
-type PlannedMeal = Meal & { recipe: MealRecipe | null; deck: { who_eating: string[] } | null };
+type PlannedMeal = Meal & { listed_at: string | null; recipe: MealRecipe | null; deck: { who_eating: string[] } | null };
 type RateMeal = { id: string; recipe_id: string; recipe: Pick<Recipe, 'title' | 'language' | 'translations'> | null };
 
 interface TonightData {
@@ -47,7 +48,7 @@ const daysBefore = (date: string, n: number) => new Date(Date.parse(`${date}T12:
 const MEAL_RECIPE = 'id, title, language, translations, image_path, tags, total_min, difficulty, protein_g_per_serving, servings';
 
 export function TonightScreen() {
-  const { t, locale } = useI18n();
+  const { t, list, locale } = useI18n();
   const { userId, household, partners, members, memberName, memberColor } = useSession();
   const navigate = useNavigate();
   const save = useSave();
@@ -79,13 +80,13 @@ export function TonightScreen() {
     setParams(date === today ? {} : { day: date }, { replace: true });
   };
 
-  const { data, loading } = useLive<TonightData>(
+  const { data, loading, set } = useLive<TonightData>(
     `tonight:${household!.id}:${today}:${selected}`,
     async () => {
       const [decks, meals, plan, dates, recent, rated, liked] = await Promise.all([
         supabase.from('decks').select('*').eq('household_id', household!.id).eq('for_date', selected)
           .neq('status', 'closed').order('created_at', { ascending: false }).limit(1),
-        supabase.from('meals').select(`id, for_date, recipe_id, status, deck_id, deck:decks(who_eating), recipe:recipes(${MEAL_RECIPE})`)
+        supabase.from('meals').select(`id, for_date, recipe_id, status, deck_id, listed_at, deck:decks(who_eating), recipe:recipes(${MEAL_RECIPE})`)
           .eq('household_id', household!.id).gte('for_date', week[0]).lte('for_date', week[6]),
         supabase.from('plan_days').select('*').eq('household_id', household!.id),
         supabase.from('plan_dates').select('*').eq('household_id', household!.id).gte('for_date', week[0]).lte('for_date', week[6]),
@@ -146,27 +147,39 @@ export function TonightScreen() {
   const planned = useMemo(() => (data?.meals ?? [])
     .filter((m) => m.recipe && m.status !== 'skipped' && m.status !== 'cooked')
     .sort((a, b) => a.for_date.localeCompare(b.for_date)), [data?.meals]);
-  const plannedKey = planned.map((m) => m.id).join(',');
+  // The groceries card only counts meals whose ingredients haven't gone to the list yet.
+  const unlisted = useMemo(() => planned.filter((m) => !m.listed_at), [planned]);
+  const unlistedKey = unlisted.map((m) => m.id).join(',');
+  const shortDays = list('plan.days');
 
   const { data: groceries } = useLive<{ meals: MealForList[]; total: number; toBuy: number }>(
-    plannedKey ? `tonight-groceries:${plannedKey}` : null,
+    unlistedKey ? `tonight-groceries:${unlistedKey}` : null,
     async () => {
       const ingredients = must(await supabase.from('recipe_ingredients').select(INGREDIENT_SELECT)
-        .in('recipe_id', planned.map((m) => m.recipe_id)).order('position')) as RecipeIngredient[];
+        .in('recipe_id', unlisted.map((m) => m.recipe_id)).order('position')) as RecipeIngredient[];
       // One pot: the servings of everyone eating, as on the match screen.
-      const pots = await Promise.all(planned.map((m) => supabase.rpc('my_portion', {
+      const pots = await Promise.all(unlisted.map((m) => supabase.rpc('my_portion', {
         p_recipe: m.recipe_id, p_eaters: m.deck?.who_eating ?? members.map((x) => x.user_id),
       })));
-      const lists = planned.map((m, k) => ({
+      const lists: MealForList[] = unlisted.map((m, k) => ({
         recipe: m.recipe as Recipe,
         ingredients: ingredients.filter((i) => i.recipe_id === m.recipe_id),
         potServings: ((pots[k].data ?? []) as { pot_servings: number }[])[0]?.pot_servings ?? null,
-        label: `${dayLabel(m.for_date)} · ${recipeTitle(m.recipe!, locale)}`,
+        mealId: m.id,
+        day: shortDays[isoWeekday(m.for_date) - 1],
       }));
-      const proposals = await Promise.all(lists.map((l) => loadProposals(household!.id, l.ingredients)));
-      return { meals: lists, total: proposals.flat().length, toBuy: proposals.flat().filter((p) => p.add).length };
+      // Counted as the sheet shows them: one line per product, whatever the number of meals.
+      const lines = combineProposals(await loadProposalsMany(household!.id, lists.map((l) => l.ingredients)),
+        (k, i) => scaleQuantity(i.quantity, lists[k].recipe.servings, lists[k].potServings ?? lists[k].recipe.servings));
+      return { meals: lists, total: lines.length, toBuy: lines.filter((l) => l.add).length };
     },
   );
+
+  // Switched on the week strip: shown at once, saved in the background.
+  const toggleDay = async (date: string, cook: boolean) => {
+    set((d) => d && { ...d, dates: [...d.dates.filter((x) => x.for_date !== date), { household_id: household!.id, for_date: date, cook_at_home: cook }] });
+    await save(supabase.from('plan_dates').upsert({ household_id: household!.id, for_date: date, cook_at_home: cook }));
+  };
 
   const deal = async () => {
     setDealing(true);
@@ -231,7 +244,8 @@ export function TonightScreen() {
   const deckSummary = deck && labels.summary({ who: deck.who_eating.length > 1 ? 'both' : 'me', maxMinutes: deck.max_minutes, mood: deck.mood }, shared);
 
   const strip = (
-    <WeekStrip today={today} selected={selected} onSelect={selectDay} days={week.map((date) => {
+    <WeekStrip today={today} selected={selected} onSelect={selectDay} onToggle={(d, c) => void toggleDay(d, c)}
+      back={eveningPath(selected, today)} days={week.map((date) => {
       const meal = data?.meals.find((m) => m.for_date === date && m.status !== 'skipped');
       return {
         date,
@@ -271,26 +285,28 @@ export function TonightScreen() {
     </Section>
   );
 
-  const groceriesCard = planned.length > 0 && groceries && (
+  const weekday = (date: string) => new Intl.DateTimeFormat(locale, { weekday: 'long', timeZone: 'UTC' }).format(new Date(`${date}T12:00:00Z`));
+  const groceriesLine = () => {
+    if (unlisted.length === 0) return t('tonight.groceriesListed');
+    if (!groceries) return null;
+    if (groceries.toBuy === 0) return t('tonight.groceriesNone');
+    if (unlisted.length > 1) return t('tonight.groceriesMany', { recipes: unlisted.length, n: groceries.toBuy });
+    const d = unlisted[0].for_date;
+    return d === today ? t('tonight.groceriesTonight', { n: groceries.toBuy })
+      : d === week[1] ? t('tonight.groceriesTomorrow', { n: groceries.toBuy })
+        : t('tonight.groceriesOn', { day: weekday(d), n: groceries.toBuy });
+  };
+  const groceriesCard = planned.length > 0 && (unlisted.length === 0 || groceries) && (
     <section className="card card--sage groceries-card">
       <span className="icon-tile icon-tile--sage icon-tile--white"><Icon name="basket" size={20} /></span>
       <span className="grow">
         <span className="card__title d-block">{t('tonight.groceries')}</span>
-        <span className="t-callout text-sage d-block">
-          {groceries.toBuy === 0 ? t('tonight.groceriesNone')
-            : planned.length > 1 ? t('tonight.groceriesMany', { recipes: planned.length, n: groceries.toBuy })
-              : t('tonight.groceriesOne', { n: groceries.total, home: groceries.total - groceries.toBuy })}
-        </span>
+        <span className="t-callout text-sage d-block">{groceriesLine()}</span>
       </span>
-      {groceries.toBuy > 0 && <Button small variant="sage" onClick={() => setListOpen(true)}>{t('tonight.groceriesAdd')}</Button>}
+      {unlisted.length > 0 && groceries && groceries.toBuy > 0 && (
+        <Button small variant="sage" onClick={() => setListOpen(true)}>{t('tonight.groceriesAdd')}</Button>
+      )}
     </section>
-  );
-
-  const thisWeekRow = (
-    <div className="list">
-      <ListRow to="/us/week" state={{ back: eveningPath(selected, today) }} tile="accent" icon={<Icon name="calendar" size={18} />}
-        title={t('us.thisWeek')} meta={t('tonight.weekHint')} />
-    </div>
   );
 
   let main: React.ReactNode;
@@ -414,8 +430,7 @@ export function TonightScreen() {
     // evening, to the mood about to be dealt; the best fit in front.
     const [mid, left, right] = pickDeckArt(selected, 3, settings.mood);
     const ask = isToday ? t('tonight.ask')
-      : selected === week[1] ? t('tonight.askTomorrow')
-        : t('tonight.askOn', { day: new Intl.DateTimeFormat(locale, { weekday: 'long', timeZone: 'UTC' }).format(new Date(`${selected}T12:00:00Z`)) });
+      : selected === week[1] ? t('tonight.askTomorrow') : t('tonight.askOn', { day: weekday(selected) });
     main = (
       <>
         <section className="deal-hero">
@@ -438,7 +453,6 @@ export function TonightScreen() {
         )}
         {upcomingSection}
         {groceriesCard}
-        {thisWeekRow}
       </>
     );
   }

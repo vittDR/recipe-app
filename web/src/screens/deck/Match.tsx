@@ -48,13 +48,14 @@ export function MatchView({ data }: { data: DeckData }) {
   const save = useSave();
   const [sheet, setSheet] = useState(false);
   const { data: match } = useLive<{
-    recipe: Recipe; ingredients: RecipeIngredient[]; portion: Portion | null; matches: string[]; missing: number; mutual: boolean;
+    recipe: Recipe; ingredients: RecipeIngredient[]; portion: Portion | null; matches: string[]; missing: number; mutual: boolean; mealId: string | null;
   }>(`match:${data.deck.id}:${recipeId}`, async () => {
-    const [r, ings, p, m] = await Promise.all([
+    const [r, ings, p, m, meal] = await Promise.all([
       card ? Promise.resolve({ data: card.recipe, error: null }) : supabase.from('recipes').select('*').eq('id', recipeId).single(),
       supabase.from('recipe_ingredients').select(INGREDIENT_SELECT).eq('recipe_id', recipeId).order('position'),
       supabase.rpc('my_portion', { p_recipe: recipeId, p_eaters: data.deck.who_eating }),
       supabase.rpc('deck_matches', { p_deck: data.deck.id }),
+      supabase.from('meals').select('id').eq('deck_id', data.deck.id).maybeSingle(),
     ]);
     const ingredients = must(ings) as RecipeIngredient[];
     const proposals = await loadProposals(household!.id, ingredients);
@@ -65,13 +66,14 @@ export function MatchView({ data }: { data: DeckData }) {
       portion: ((p.data ?? []) as Portion[])[0] ?? null,
       matches,
       missing: proposals.filter((x) => x.add).length,
+      mealId: (meal.data as { id: string } | null)?.id ?? null,
       // A recipe everyone said yes to; otherwise it came out of the tie-break.
       mutual: data.deck.who_eating.length === 1 || matches.includes(recipeId),
     };
   });
   const recipe = match?.recipe ?? card?.recipe ?? null;
   const portion = match?.portion ?? null;
-  const listMeals = useMemo(() => (match ? [{ recipe: match.recipe, ingredients: match.ingredients, potServings: match.portion?.pot_servings }] : []), [match]);
+  const listMeals = useMemo(() => (match ? [{ recipe: match.recipe, ingredients: match.ingredients, potServings: match.portion?.pot_servings, mealId: match.mealId ?? undefined }] : []), [match]);
 
   const eaters = [userId!, ...data.deck.who_eating.filter((u) => u !== userId)];
   const otherMatch = match?.matches.find((id) => id !== recipeId);
