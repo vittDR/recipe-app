@@ -1,7 +1,6 @@
 // Exports the seed library as one JSON list for review or for an illustrator:
 // every recipe from supabase/seed/recipes.json with whether it has an
-// illustration (and the file name to give one), whether it's a weeknight
-// plate (and the rules it misses), its seasons, kcal, protein and exotic
+// illustration (and the file name to give one), whether it's healthy, its seasons, kcal, protein and exotic
 // ingredients. Reads the catalogue and the loaded library from a database
 // with the migrations, seed.sql and seed_library.sql applied (npm run test:sql
 // leaves one behind as dineamite_test):
@@ -10,7 +9,7 @@
 
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
-import { classifyRow } from '../supabase/functions/_shared/logic/classify.ts';
+import { classifyRow, isHealthy } from '../supabase/functions/_shared/logic/classify.ts';
 import { Catalog, type CatalogEntry } from '../supabase/functions/_shared/logic/ingredients.ts';
 
 const root = new URL('..', import.meta.url).pathname;
@@ -45,8 +44,7 @@ const recipes = JSON.parse(readFileSync(`${root}supabase/seed/recipes.json`, 'ut
     illustration: has ? photo : null,
     photo_file: has ? null : `${slug(r.title)}.webp`,
     collection: row.collection,
-    weeknight_plate: c.weeknight_plate,
-    plate_misses: c.plate_misses,
+    healthy: isHealthy((r.tags as string[] | undefined) ?? [], c),
     seasons: (c.seasons?.length ?? 4) === 4 ? ['all year'] : c.seasons,
     kcal_per_serving: row.kcal_per_serving,
     protein_g_per_serving: row.protein_g_per_serving,
@@ -59,14 +57,14 @@ const files = recipes.flatMap((r: { photo_file: string | null }) => (r.photo_fil
 if (new Set(files).size !== files.length) throw new Error('two recipes would share a photo_file: give one a different title');
 const counts = {
   recipes: recipes.length,
-  weeknight_plates: recipes.filter((r: { weeknight_plate: boolean }) => r.weeknight_plate).length,
+  healthy: recipes.filter((r: { healthy: boolean }) => r.healthy).length,
   with_illustration: recipes.length - files.length,
   without_illustration: files.length,
 };
 writeFileSync(out, JSON.stringify({
   about: 'DINEAMITE seed recipes. has_illustration says whether a recipe has a photo (illustration is its path); '
     + 'those without one have photo_file: name the illustration after it (4:3, 900x675, WebP; docs/recipe-template.md#image-specs). '
-    + 'weeknight_plate and plate_misses: docs/recipe-classification.md#weeknight-plate. '
+    + 'healthy: by what is on the plate (docs/recipe-classification.md). '
     + 'collection: web = taken from a recipe site, original = written for the app.',
   counts,
   recipes,

@@ -63,7 +63,6 @@ for the deck and learning.
 | `heat_adjustable` | true/false | chilli on optional lines (it doesn't raise the level) |
 | `sauce_level` | 0 dry, 1 coated, 2 saucy, 3 brothy | grams of `liquid` ingredients per serving; soups are brothy, baked dishes at most saucy |
 | `seasons` | spring, summer, autumn, winter (all four = all year) | season tags (sourced), else `ingredient_catalog.seasons` of the main ingredients (below) |
-| `weeknight_plate`, `plate_misses` | true/false, and the rules it misses | times, equipment, difficulty, nutrition and base (below) |
 | `nutrition` | kcal, protein, fat, carbs, fibre per serving | `estimateMacros()`; a nutrient is null when ingredients without it carry over a tenth of the calories |
 | `veg_g` | grams of vegetables per serving | `isVegetable()`: produce that isn't a starch, citrus or above 120 kcal/100 g (garlic, avocado), plus tinned tomatoes and vegetables; optional lines left out |
 | `nutrition_goals` | high_protein, lean, low_kcal, high_fibre | numbers only (below) |
@@ -104,8 +103,8 @@ halloumi count), a base (a starch, or pulses), at least 75 g of vegetables a
 serving, and nothing deep-fried, no cream, cheese or mayonnaise sauce, no
 gratin or pizza, no `treat` tag. Fat over half the calories is the only
 number, a loose guard against greasy plates. Plate size never counts: portions
-are scaled to each eater. Chicken, rice and broccoli is healthy; about 70 % of
-the library is.
+are scaled to each eater. Chicken, rice and broccoli is healthy; about three
+quarters of our own recipes are.
 
 ## Catalogue traits
 
@@ -123,25 +122,6 @@ Ingredients carry what they say about a dish in `ingredient_catalog.traits`:
 Plus `fat_100g`, `carbs_100g` and `fiber_100g` alongside kcal and protein. A
 new ingredient without traits is still matched and counted; it just doesn't
 make a dish fish, rice-based or spicy until someone adds them.
-
-## Weeknight plate
-
-The app is built around everyday dinners, so the classifier says whether a
-recipe is a **weeknight plate**: a filling dinner that's quick to get on the
-table. It is one when all of these hold (`PLATE_*` in `classify.ts`):
-
-| Rule | Limit |
-| --- | --- |
-| cooking (`cook_min`) | 30 min or less |
-| hands-on prep (`prep_min`) | 25 min or less; marinating and resting are waiting time, not prep |
-| pots, pans and oven dishes | 2 or fewer; an air fryer or rice cooker doesn't count |
-| difficulty | not hard |
-| protein | 25 g a serving or more |
-| calories | 500–900 kcal a serving |
-| base | a starch base (rice, pasta, noodles, potato, bread, flatbread, tortilla, grain), or pulses from 100 g a serving |
-
-`plate_misses` lists the rules a recipe misses, for the library audit. The deck
-keeps at least 7 of 12 cards as plates (`PLATE_SHARE` in `deck.ts`).
 
 ## Season
 

@@ -479,7 +479,7 @@ update public.products
 set aliases = (select array(select distinct unnest(aliases || '{"cured ham","jambon de Bayonne"}'::text[])))
 where household_id is null and ingredient = 'prosciutto';
 
--- For the quick, healthy weeknight plates.
+-- For the quick, healthy dishes.
 insert into public.ingredient_catalog
   (name, name_fr, name_it, aliases, default_aisle, is_staple, kcal_100g, protein_100g, grams_per_unit, diet_class)
 values

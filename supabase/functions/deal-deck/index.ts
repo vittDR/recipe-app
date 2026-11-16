@@ -124,7 +124,6 @@ Deno.serve(async (req) => {
       healthy: isHealthy(r.tags ?? [], classification),
       intents: classification.meal_intents,
       seasons: classification.seasons,
-      weeknightPlate: classification.weeknight_plate,
     };
   });
 
