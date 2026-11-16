@@ -1,6 +1,6 @@
 # Seed recipe library
 
-409 recipes:
+509 recipes:
 
 - **109 from recipe sites (hidden in the app** since November 2026: the library view and the deck leave out the `web` collection; they still open from past decks and meals): 25 Italian, 24 French, 25 Asian, 25 from other cuisines and 10 "treat" dishes.
 - **10 AI-generated recipes**, whose Poulet basquaise replaced the Chef Simon one.
@@ -8,6 +8,7 @@
   - Each one was written from published recipes, listed in its `references` (name and URL; the build ignores the field). It keeps their proportions, technique, times and temperatures, with steps in our own words.
   - They keep the dish's real ingredients: anything most French supermarkets don't sell is flagged `exotic` in the catalogue rather than swapped.
   - They are `ai_generated_recipe: true` with no `source_url`, so they belong to the `original` collection. All of them have illustrations (supplied as 900×675 WebP, re-encoded to about 100 KB where larger).
+- **100 quick, healthy weeknight plates** (November 2026), written the same way: 30 min or less in total, healthy by the app's rule, at least 30 g of protein, 500–750 kcal, 42 in the air fryer. No illustrations yet.
 
 | File | What it is |
 | --- | --- |
@@ -46,7 +47,7 @@ To replace or add photos, run `scripts/download_images.py` (needs `pip install r
 - **Low protein:** eight of the healthy recipes estimate under 25 g per serving: Cozze alla tarantina, Frittata di zucchine e ricotta, Œufs pochés épinards et lentilles, Chicken tinga, Moules marinières, Spaghetti alle vongole, Poulet à l'estragon, Crispy scallion ginger salmon.
 - **Bone-in and in-shell weights overcount** protein and kcal, because the catalogue is per edible weight (satay drumsticks, Peruvian chicken, Moroccan tagine, mussels, clams).
 - **Long `total_min`** for marinated or soaked dishes (tandoori chicken 415 min, brandade 1,485 min), so the time filter treats them as slow. They're tagged `make ahead`. Their `prep_min` and `cook_min` stay short.
-- **AI-generated recipes:** 300 recipes (`ai_generated_recipe: true`) were written by Claude rather than taken from a site. None has a source link, and none has been tested in a kitchen. The first 10 have AI-generated photos; the other 290 have illustrations.
+- **AI-generated recipes:** 400 recipes (`ai_generated_recipe: true`) were written by Claude rather than taken from a site. None has a source link, and none has been tested in a kitchen. The first 10 have AI-generated photos, 290 have illustrations, and the 100 quick, healthy plates added last don't have one yet (the app shows an emoji).
 - **The original library's references:** many recipe sites refused automated reading, so some references were only seen in search results. Two recipes (the prawn tacos and the squash burritos) rest on search results alone.
 - **Ingredient mappings:** a few ingredients are mapped to the nearest catalogue entry rather than added (sour cream to crème fraîche, Comté to emmental, Napa cabbage to cabbage). Real exotic ingredients are kept and flagged, not swapped.
 - **Protein is a guide:** 6 of the 290 original recipes are under 25 g a serving, written as their references make them (gołąbki, pumpkin and sage risotto, rajma, some vegetarian dishes).

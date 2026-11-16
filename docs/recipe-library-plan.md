@@ -37,7 +37,7 @@ they decide what the next recipe should be.
 ### Cuisines: depth over breadth
 
 Fourteen groups, each deep enough to show a range (an everyday dish, a soup or
-stew, something quick, something slow). Targets for a library of 300:
+stew, something quick, something slow). Targets for a library of 300 (scale them with the library):
 
 | Cuisine | Target |
 | --- | ---: |
@@ -96,18 +96,14 @@ dishes** of its own, so the deck can always keep 3 of 12 cards for the season.
 
 ## Status (November 2026)
 
-Our own library is **300 recipes**: the 10 first AI recipes and 290 written
-from this plan.
+Our own library is **400 recipes**: the 10 first AI recipes, 290 written from
+this plan, and 100 quick, healthy weeknight plates added because decks for
+"healthy, under 40 min" kept showing the same dishes.
 
-- **Weeknight plates: 232 of 300 (77%).**
-  - 50 were written as plates from the start (protein × base × sauce, 30 of
-    them in the air fryer).
-  - About 90 were converted honestly: the side they're served with, normal
-    portions, a common quicker version.
-  - The other 68 are weekend dishes (braises, pies, doughs) or lighter meals.
-- **Seasons:** 218 of the 300 are all year (73%). The others are the key
-  seasonal dishes: 22 spring, 24 summer, 22 autumn and 30 winter.
-- **Calories:** 262 of the 290 are 500–900 kcal a serving.
-- **Protein:** 6 are under 25 g.
-- **Exotic ingredients:** 82 recipes use at least one, flagged in the catalogue.
-- **Illustrations:** all 300 have one.
+- **Weeknight plates: 332 of 400 (83%).**
+- **Healthy and 40 min or less in total: 205** (it was 105). Healthy in all: 311.
+- **The 100 quick, healthy plates** all take 30 min or less in total, have at
+  least 30 g of protein and 500–750 kcal, and 42 use the air fryer.
+- **Seasons:** 316 of the 400 are all year (79%). The others are the key
+  seasonal dishes: 22 spring, 26 summer, 22 autumn and 30 winter.
+- **Illustrations:** 300 have one. The 100 new plates don't yet.
