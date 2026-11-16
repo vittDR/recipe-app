@@ -154,6 +154,7 @@ export const en = {
       any: 'Anything',
       comfort: 'Comfort',
       light: 'Light',
+      healthy: 'Healthy',
       quick: 'Quick',
       fancy: 'Fancy',
     },

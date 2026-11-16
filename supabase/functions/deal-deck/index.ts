@@ -12,7 +12,7 @@ import {
   buildProfile, signalsFor, weightsOf, type MealRow, type PortionRow, type SwipeRow, type TasteSignalRow, kindKeys, occasionalKinds } from '../_shared/logic/profile.ts';
 import { dietAdherence } from '../_shared/logic/recommend.ts';
 
-const MOODS: Mood[] = ['any', 'comfort', 'light', 'quick', 'fancy'];
+const MOODS: Mood[] = ['any', 'comfort', 'light', 'healthy', 'quick', 'fancy'];
 const RECENT_COOK_DAYS = 10;
 const PANTRY_DAYS = 7;
 

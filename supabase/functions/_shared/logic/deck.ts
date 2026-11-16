@@ -13,7 +13,7 @@ import {
 import { type EaterTargets, type PotSplit, splitPot } from './portions.ts';
 
 export type Diet = 'everything' | 'pescatarian' | 'vegetarian';
-export type Mood = 'any' | 'comfort' | 'light' | 'quick' | 'fancy';
+export type Mood = 'any' | 'comfort' | 'light' | 'healthy' | 'quick' | 'fancy';
 
 export interface CandidateRecipe {
   id: string;
@@ -107,9 +107,22 @@ export interface DeckCard {
 export const MOOD_TAGS: Record<Exclude<Mood, 'any'>, string[]> = {
   comfort: ['comfort', 'curry', 'stew', 'soup'],
   light: ['light', 'salad', 'bowl'],
+  healthy: ['healthy'],
   quick: ['quick'],
   fancy: ['fancy'],
 };
+
+export const HEALTHY_MAX_KCAL = 650;
+export const HEALTHY_MIN_PROTEIN_G = 25;
+
+/**
+ * The seed library's brief for healthy: real meals, reasonable calories, enough
+ * protein, not a treat. The Recipes tab's healthy filter (facets.ts) and the deck's mood.
+ */
+export function isHealthy(r: { tags: string[]; kcalPerServing: number | null; proteinGPerServing: number | null }): boolean {
+  return !r.tags.some((t) => t.toLowerCase() === 'treat') && r.kcalPerServing != null
+    && r.kcalPerServing <= HEALTHY_MAX_KCAL && (r.proteinGPerServing ?? 0) >= HEALTHY_MIN_PROTEIN_G;
+}
 
 /** A seasonal dish (not all year) of this season: worth this much more. */
 export const SEASON_BONUS = 0.5;
@@ -151,6 +164,12 @@ export function passesHardFilters(recipe: CandidateRecipe, members: DeckMember[]
 function moodScore(recipe: CandidateRecipe, mood: Mood | undefined): number {
   if (!mood || mood === 'any') return 0;
   if (mood === 'quick' && recipe.totalMin && recipe.totalMin <= 25) return 1;
+  if (mood === 'healthy') {
+    // The numbers first (the same rule as the Recipes tab's filter), then what the dish is for.
+    if (isHealthy(recipe)) return 1;
+    if (recipe.intents?.includes('fuel') || recipe.intents?.includes('light')) return 0.5;
+    return recipe.tags.some((t) => MOOD_TAGS.healthy.includes(t.toLowerCase())) ? 0.5 : 0;
+  }
   if (recipe.intents && mood !== 'quick') {
     // Classified: comfort, light and fancy are what the dish is for (its tags included).
     const want: MealIntent = mood === 'fancy' ? 'special_occasion' : mood;

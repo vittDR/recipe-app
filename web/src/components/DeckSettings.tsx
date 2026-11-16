@@ -11,8 +11,8 @@ export interface DeckSettings {
   mood: Mood;
 }
 
-export const TIMES = [20, 40, 60, null] as const;
-export const MOODS: Mood[] = ['any', 'comfort', 'light', 'quick', 'fancy'];
+export const TIMES = [20, 30, 40, 60, null] as const;
+export const MOODS: Mood[] = ['any', 'comfort', 'light', 'healthy', 'quick', 'fancy'];
 
 export function useDeckLabels() {
   const { t } = useI18n();

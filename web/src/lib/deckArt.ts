@@ -46,6 +46,7 @@ type Card = keyof typeof CARDS;
 const MOOD_ART: Record<Exclude<Mood, 'any'>, Card[]> = {
   comfort: ['pasta', 'pizza', 'curry', 'burger', 'shakshuka', 'croqueMonsieur'],
   light: ['salmon', 'stirFry', 'greekSalad', 'pokeBowl', 'springRolls'],
+  healthy: ['pokeBowl', 'greekSalad', 'salmon', 'stirFry', 'springRolls'],
   quick: ['stirFry', 'tacos', 'shakshuka', 'herbOmelette', 'croqueMonsieur'],
   fancy: ['steak', 'mushroomRisotto', 'scallops', 'roastChicken'],
 };

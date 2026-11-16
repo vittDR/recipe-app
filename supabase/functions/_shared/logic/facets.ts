@@ -3,7 +3,9 @@
 // web app, the import function and the seed build script.
 
 import type { RecipeClassification } from './classify.ts';
-import { MOOD_TAGS } from './deck.ts';
+import { isHealthy, MOOD_TAGS } from './deck.ts';
+
+export { HEALTHY_MAX_KCAL, HEALTHY_MIN_PROTEIN_G } from './deck.ts';
 
 export type Difficulty = 'easy' | 'medium' | 'hard';
 export const DIFFICULTIES: Difficulty[] = ['easy', 'medium', 'hard'];
@@ -70,8 +72,6 @@ export const RECIPE_FILTERS: RecipeFilter[] = [
 
 export const HIGH_PROTEIN_G = 35;
 export const DIET_MAX_KCAL = 500;
-export const HEALTHY_MAX_KCAL = 650;
-export const HEALTHY_MIN_PROTEIN_G = 25;
 export const QUICK_MAX_MIN = 25;
 
 const has = (r: FacetRecipe, tag: string) => r.tags.some((t) => t.toLowerCase() === tag);
@@ -79,9 +79,7 @@ const has = (r: FacetRecipe, tag: string) => r.tags.some((t) => t.toLowerCase() 
 export function matchesFilter(r: FacetRecipe, f: RecipeFilter): boolean {
   switch (f) {
     case 'healthy':
-      // The seed library's brief: real meals, reasonable calories, enough protein, not a treat.
-      return !has(r, 'treat') && r.kcalPerServing != null && r.kcalPerServing <= HEALTHY_MAX_KCAL
-        && (r.proteinGPerServing ?? 0) >= HEALTHY_MIN_PROTEIN_G;
+      return isHealthy(r);
     case 'comfort':
       if (r.classification) return r.classification.meal_intents.includes('comfort');
       return MOOD_TAGS.comfort.some((t) => has(r, t));
