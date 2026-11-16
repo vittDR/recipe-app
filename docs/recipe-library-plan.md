@@ -75,10 +75,13 @@ meat. Within meat and fish, include:
 ### Season
 
 By season, not by month, to keep it flexible
-([recipe-classification.md](recipe-classification.md#season)). Each season
-should have at least **40 seasonal dishes** of its own, on top of the
-all-year ones, and the library should be about half all-year and half
-seasonal. The deck keeps at least 3 of 12 cards as dishes of the season.
+([recipe-classification.md](recipe-classification.md#season)). **Most dishes
+are all year** (about three quarters). Only the dishes people link to a
+season are seasonal: tag them `spring`, `summer`, `autumn` or `winter`, for
+example tartiflette in winter, gazpacho in summer, and ceviche in spring and
+summer. A few ingredients (asparagus, broad beans, peaches, pumpkin and squash)
+make a dish seasonal on their own. Each season should have at least **20
+dishes** of its own, so the deck can always keep 3 of 12 cards for the season.
 
 ## How to add recipes
 
@@ -102,9 +105,8 @@ from this plan.
   - About 90 were converted honestly: the side they're served with, normal
     portions, a common quicker version.
   - The other 68 are weekend dishes (braises, pies, doughs) or lighter meals.
-- **Seasons:** 98 of the 290 are all year. By season there are 39 seasonal
-  dishes in spring, 90 in summer, 59 in autumn and 53 in winter. Spring is the
-  thinnest, so the next additions should be spring dishes.
+- **Seasons:** 218 of the 300 are all year (73%). The others are the key
+  seasonal dishes: 22 spring, 24 summer, 22 autumn and 30 winter.
 - **Calories:** 262 of the 290 are 500–900 kcal a serving.
 - **Protein:** 6 are under 25 g.
 - **Exotic ingredients:** 82 recipes use at least one, flagged in the catalogue.

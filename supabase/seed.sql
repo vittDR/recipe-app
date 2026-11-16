@@ -493,52 +493,23 @@ update public.ingredient_catalog set exotic = (name in (
   'tamarind paste', 'thai basil', 'water chestnuts', 'wood ear mushrooms'
 ));
 
--- In season in France, by season (spring = March to May, summer = June to
--- August, autumn = September to November, winter = December to February),
--- from the usual fruit and vegetable calendars: an ingredient counts for a
--- season when it's in season for most of it. Anything not listed is all year
--- (null): pantry and frozen goods, stored crops (onion, potato, carrot),
--- cultivated mushrooms and imports sold all year (lemon, avocado, sweet
--- potato). Only main ingredients set a recipe's season (classify.ts), so herbs
--- used by the spoonful are left out. Re-running overwrites them.
+-- Seasonal ingredients: only the produce people think of as seasonal, the
+-- kind a dish is made for when it's around (spring = March to May, summer =
+-- June to August, autumn = September to November, winter = December to
+-- February). Everything else is all year (null): supermarkets sell peppers,
+-- courgettes, aubergines, tomatoes, broccoli and the like all year, so they
+-- don't make a dish seasonal. Dishes everyone links to a season (tartiflette,
+-- gazpacho) carry a season tag instead, which wins (classify.ts). Only main
+-- ingredients count. Re-running overwrites them.
 with v(name, seasons) as (values
-  ('apple', '{spring,autumn,winter}'::text[]),
-  ('artichoke', '{spring,summer}'),
-  ('arugula', '{spring,summer,autumn}'),
+  ('artichoke', '{spring}'::text[]),
   ('asparagus', '{spring}'),
-  ('beetroot', '{summer,autumn,winter}'),
-  ('bell pepper', '{summer,autumn}'),
-  ('broad beans', '{spring,summer}'),
-  ('broccoli', '{summer,autumn}'),
+  ('broad beans', '{spring}'),
   ('brussels sprouts', '{autumn,winter}'),
   ('butternut squash', '{autumn,winter}'),
-  ('cabbage', '{autumn,winter}'),
-  ('cauliflower', '{spring,autumn,winter}'),
-  ('celeriac', '{autumn,winter}'),
-  ('celery', '{summer,autumn}'),
-  ('cherry tomatoes', '{summer}'),
-  ('cucumber', '{summer}'),
-  ('daikon', '{autumn,winter}'),
-  ('eggplant', '{summer}'),
-  ('endive', '{spring,autumn,winter}'),
-  ('fennel', '{summer,autumn}'),
-  ('green beans', '{summer}'),
-  ('kale', '{autumn,winter}'),
-  ('leek', '{spring,autumn,winter}'),
-  ('lettuce', '{spring,summer,autumn}'),
-  ('mussels', '{summer,autumn,winter}'),
-  ('orange', '{spring,winter}'),
   ('parsnip', '{autumn,winter}'),
   ('peach', '{summer}'),
-  ('pear', '{autumn,winter}'),
-  ('pumpkin', '{autumn}'),
-  ('radish', '{spring,summer}'),
-  ('snow peas', '{summer}'),
-  ('sorrel', '{spring,summer}'),
-  ('spinach', '{spring,autumn}'),
-  ('tomato', '{summer}'),
-  ('turnip', '{autumn,winter}'),
-  ('zucchini', '{summer}')
+  ('pumpkin', '{autumn}')
 )
 update public.ingredient_catalog c
 set seasons = v.seasons

@@ -139,23 +139,24 @@ Seasons, not months, to keep it flexible: a dish of the season is good any
 time in those three months (spring is March to May, summer June to August,
 autumn September to November, winter December to February).
 
-`ingredient_catalog.seasons` holds the seasons an ingredient is in season in
-France (`{summer}` for tomatoes, `{spring,autumn}` for spinach). It counts
-for a season when it's in season for most of it. Null means all year: pantry,
-frozen, stored crops like onions and potatoes, and imports sold all year like
-lemons. The values are in the season block of `seed.sql`.
+**Most dishes are all year.** What makes a dish seasonal is the dish itself
+(tartiflette is winter, gazpacho summer, ceviche spring and summer), not the
+vegetables in it: supermarkets sell peppers, courgettes, aubergines, tomatoes
+and broccoli all year.
 
-A recipe's `seasons`:
-
-- **Season tags win.** When the recipe has `spring`, `summer`, `autumn` or
-  `winter` tags, those are its seasons (sourced). That's how someone marks a
-  dish seasonal by hand.
-- **Otherwise it's worked out from the main ingredients.** Only required
-  lines with at least `SEASON_MIN_G` (75 g) a serving count, about a portion
-  of vegetables. Half a pepper in a stew, a tomato in a sauce or a handful of
-  basil don't make a dish seasonal.
-- **Shared seasons.** The recipe is in the seasons those ingredients share:
-  courgette, aubergine and tomato give summer.
+- **Season tags are the main source.** A recipe with `spring`, `summer`,
+  `autumn` or `winter` tags is a dish of those seasons (sourced). Only the
+  dishes people link to a season carry one: 63 of our 300.
+- **A few ingredients make a dish seasonal too.** `ingredient_catalog.seasons`
+  is set only for produce people think of as seasonal: asparagus, broad beans
+  and artichokes (spring), peaches (summer), pumpkin (autumn), butternut
+  squash, Brussels sprouts and parsnips (autumn and winter). Everything else
+  is null, meaning all year. The values are in the season block of `seed.sql`.
+  - **Main ingredients only.** An untagged recipe takes their seasons when it
+    has at least `SEASON_MIN_G` (75 g) of one a serving, about a portion of
+    vegetables; a garnish doesn't count.
+  - **Shared seasons.** With more than one, the recipe is in the seasons they
+    share.
 - **Clashes.** When they share none (a pumpkin dish with asparagus), the
   heaviest decides.
 - **Nothing seasonal:** all four seasons. **Nothing readable:** null.

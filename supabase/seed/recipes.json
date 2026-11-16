@@ -15500,9 +15500,9 @@
     "tags": [
       "french",
       "tart",
-      "summer",
       "vegetarian",
-      "oven"
+      "oven",
+      "summer"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -15648,7 +15648,6 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "summer",
       "healthy"
     ],
     "difficulty": "medium",
@@ -15760,9 +15759,9 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "summer",
       "oven",
-      "healthy"
+      "healthy",
+      "summer"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -16367,9 +16366,10 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "winter",
       "vegetarian",
-      "oven"
+      "oven",
+      "autumn",
+      "winter"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -16505,9 +16505,9 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "summer",
       "mediterranean",
-      "healthy"
+      "healthy",
+      "summer"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -16616,8 +16616,7 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "fancy",
-      "summer"
+      "fancy"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -16725,8 +16724,8 @@
     "tags": [
       "french",
       "salad",
-      "summer",
-      "mediterranean"
+      "mediterranean",
+      "summer"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -16998,10 +16997,10 @@
     "tags": [
       "french",
       "comfort",
-      "winter",
       "gratin",
       "oven",
-      "freezer-friendly"
+      "freezer-friendly",
+      "winter"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -17133,8 +17132,8 @@
     "tags": [
       "french",
       "quick",
-      "summer",
-      "mediterranean"
+      "mediterranean",
+      "summer"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -17258,7 +17257,6 @@
     "tags": [
       "french",
       "quick",
-      "summer",
       "high protein"
     ],
     "difficulty": "easy",
@@ -17371,9 +17369,9 @@
     "tags": [
       "french",
       "soup",
-      "summer",
       "vegetarian",
-      "one-pot"
+      "one-pot",
+      "summer"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -17510,8 +17508,8 @@
       "italian",
       "vegetarian",
       "quick",
-      "spring",
-      "mediterranean"
+      "mediterranean",
+      "spring"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -18020,10 +18018,11 @@
     "tags": [
       "italian",
       "soup",
-      "winter",
       "comfort",
       "vegetarian",
-      "make ahead"
+      "make ahead",
+      "autumn",
+      "winter"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -18164,8 +18163,7 @@
       "italian",
       "vegetarian",
       "oven",
-      "comfort",
-      "summer"
+      "comfort"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -18282,8 +18280,8 @@
       "italian",
       "vegetarian",
       "risotto",
-      "autumn",
-      "comfort"
+      "comfort",
+      "autumn"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -18407,8 +18405,8 @@
     "tags": [
       "italian",
       "quick",
-      "summer",
-      "mediterranean"
+      "mediterranean",
+      "summer"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -18643,8 +18641,7 @@
       "pizza",
       "treat",
       "quick",
-      "vegetarian",
-      "summer"
+      "vegetarian"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -18758,7 +18755,6 @@
     "tags": [
       "italian",
       "risotto",
-      "autumn",
       "comfort"
     ],
     "difficulty": "medium",
@@ -19360,8 +19356,8 @@
     "tags": [
       "italian",
       "risotto",
-      "spring",
-      "high protein"
+      "high protein",
+      "spring"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -19485,7 +19481,6 @@
     "tags": [
       "italian",
       "risotto",
-      "spring",
       "vegetarian"
     ],
     "difficulty": "easy",
@@ -19616,7 +19611,6 @@
     "cuisine": "italian",
     "tags": [
       "italian",
-      "winter",
       "light",
       "mediterranean",
       "fancy"
@@ -19736,7 +19730,6 @@
       "italian",
       "vegetarian",
       "oven",
-      "autumn",
       "comfort",
       "gratin"
     ],
@@ -19855,7 +19848,6 @@
     "tags": [
       "italian",
       "quick",
-      "spring",
       "high protein"
     ],
     "difficulty": "easy",
@@ -20332,7 +20324,6 @@
     "cuisine": "italian",
     "tags": [
       "italian",
-      "winter",
       "comfort",
       "high protein"
     ],
@@ -20708,7 +20699,6 @@
     "cuisine": "spanish",
     "tags": [
       "spanish",
-      "summer",
       "picnic",
       "comfort",
       "mediterranean"
@@ -21056,10 +21046,10 @@
     "cuisine": "spanish",
     "tags": [
       "spanish",
-      "summer",
       "soup",
       "light",
-      "make ahead"
+      "make ahead",
+      "summer"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -21674,11 +21664,11 @@
     "cuisine": "spanish",
     "tags": [
       "spanish",
-      "winter",
       "stew",
       "comfort",
       "one-pot",
-      "freezer-friendly"
+      "freezer-friendly",
+      "winter"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -21911,10 +21901,10 @@
     "cuisine": "spanish",
     "tags": [
       "spanish",
-      "summer",
       "comfort",
       "budget",
-      "mediterranean"
+      "mediterranean",
+      "summer"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -22032,10 +22022,10 @@
     "cuisine": "spanish",
     "tags": [
       "spanish",
-      "autumn",
       "fancy",
       "high protein",
-      "mediterranean"
+      "mediterranean",
+      "autumn"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -22299,8 +22289,7 @@
       "turkish",
       "high protein",
       "grill",
-      "street food",
-      "summer"
+      "street food"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -22451,7 +22440,8 @@
       "wrap",
       "grill",
       "high protein",
-      "mediterranean"
+      "mediterranean",
+      "summer"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -22596,9 +22586,9 @@
     "tags": [
       "greek",
       "oven",
-      "summer",
       "mediterranean",
-      "generous"
+      "generous",
+      "summer"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -23446,8 +23436,7 @@
       "middle eastern",
       "vegetarian",
       "street food",
-      "sandwich",
-      "summer"
+      "sandwich"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -23583,8 +23572,7 @@
       "middle eastern",
       "vegetarian",
       "oven",
-      "healthy",
-      "autumn"
+      "healthy"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -23736,7 +23724,6 @@
       "salad",
       "vegetarian",
       "quick",
-      "summer",
       "light"
     ],
     "difficulty": "easy",
@@ -23869,8 +23856,8 @@
       "greek",
       "burger",
       "grill",
-      "summer",
-      "mediterranean"
+      "mediterranean",
+      "summer"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -24139,10 +24126,10 @@
     "tags": [
       "greek",
       "stew",
-      "winter",
       "comfort",
       "freezer-friendly",
-      "mediterranean"
+      "mediterranean",
+      "winter"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -24417,9 +24404,9 @@
     "tags": [
       "turkish",
       "oven",
-      "summer",
       "comfort",
-      "mediterranean"
+      "mediterranean",
+      "summer"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -24551,7 +24538,6 @@
       "turkish",
       "quick",
       "vegetarian",
-      "summer",
       "one-pot",
       "budget"
     ],
@@ -24670,10 +24656,10 @@
     "tags": [
       "lebanese",
       "salad",
-      "summer",
       "light",
       "high protein",
-      "mediterranean"
+      "mediterranean",
+      "summer"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -25506,7 +25492,6 @@
       "north african",
       "moroccan",
       "stew",
-      "winter",
       "comfort",
       "high protein"
     ],
@@ -25765,9 +25750,10 @@
       "north african",
       "moroccan",
       "soup",
-      "autumn",
       "comfort",
-      "high protein"
+      "high protein",
+      "autumn",
+      "winter"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -26068,9 +26054,9 @@
     "cuisine": "north african",
     "tags": [
       "north african",
-      "summer",
       "oven",
-      "generous"
+      "generous",
+      "summer"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -26890,7 +26876,6 @@
       "asian",
       "curry",
       "vegan",
-      "autumn",
       "budget"
     ],
     "difficulty": "easy",
@@ -27034,7 +27019,6 @@
       "asian",
       "curry",
       "dairy-free",
-      "summer",
       "high protein"
     ],
     "difficulty": "easy",
@@ -27632,8 +27616,7 @@
       "indian",
       "asian",
       "vegetarian",
-      "grill",
-      "summer"
+      "grill"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -30227,7 +30210,6 @@
       "chinese",
       "asian",
       "quick",
-      "summer",
       "vegetarian",
       "comfort"
     ],
@@ -30612,8 +30594,7 @@
     "tags": [
       "japanese",
       "asian",
-      "vegetarian",
-      "summer"
+      "vegetarian"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -31245,7 +31226,8 @@
       "salad",
       "bowl",
       "vegetarian",
-      "make ahead"
+      "make ahead",
+      "summer"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -31647,8 +31629,7 @@
       "japanese",
       "asian",
       "stew",
-      "comfort",
-      "winter"
+      "comfort"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -31888,7 +31869,6 @@
       "asian",
       "curry",
       "comfort",
-      "winter",
       "kid-friendly"
     ],
     "difficulty": "medium",
@@ -32034,10 +32014,10 @@
     "tags": [
       "japanese",
       "asian",
-      "summer",
       "light",
       "vegetarian",
-      "high protein"
+      "high protein",
+      "summer"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -32438,8 +32418,7 @@
       "asian",
       "curry",
       "vegetarian",
-      "spicy",
-      "summer"
+      "spicy"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -32557,9 +32536,9 @@
       "vietnamese",
       "asian",
       "light",
-      "summer",
       "healthy",
-      "high protein"
+      "high protein",
+      "summer"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -32685,7 +32664,6 @@
       "asian",
       "curry",
       "comfort",
-      "winter",
       "oven",
       "batch cooking"
     ],
@@ -32824,7 +32802,6 @@
       "thai",
       "asian",
       "curry",
-      "autumn",
       "comfort",
       "high protein"
     ],
@@ -32936,9 +32913,9 @@
       "thai",
       "asian",
       "grill",
-      "summer",
       "make ahead",
-      "high protein"
+      "high protein",
+      "summer"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -33370,7 +33347,6 @@
       "indonesian",
       "asian",
       "salad",
-      "summer",
       "vegetarian"
     ],
     "difficulty": "easy",
@@ -34063,8 +34039,7 @@
       "asian",
       "stew",
       "spicy",
-      "comfort",
-      "winter"
+      "comfort"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -34594,8 +34569,7 @@
       "stew",
       "vegetarian",
       "one-pot",
-      "batch cooking",
-      "winter"
+      "batch cooking"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -35269,8 +35243,7 @@
       "mexican",
       "wrap",
       "vegetarian",
-      "oven",
-      "autumn"
+      "oven"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -36111,10 +36084,11 @@
     "cuisine": "peruvian",
     "tags": [
       "peruvian",
-      "summer",
       "light",
       "high protein",
-      "fancy"
+      "fancy",
+      "spring",
+      "summer"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -36226,10 +36200,10 @@
     "cuisine": "argentinian",
     "tags": [
       "argentinian",
-      "summer",
       "grill",
       "high protein",
-      "generous"
+      "generous",
+      "summer"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -36487,7 +36461,8 @@
       "soup",
       "comfort",
       "one-pot",
-      "high protein"
+      "high protein",
+      "winter"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -36725,8 +36700,9 @@
       "british",
       "oven",
       "comfort",
-      "winter",
-      "one-pot"
+      "one-pot",
+      "autumn",
+      "winter"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -36963,8 +36939,9 @@
       "tart",
       "oven",
       "comfort",
-      "winter",
-      "high protein"
+      "high protein",
+      "autumn",
+      "winter"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -37204,7 +37181,8 @@
     "tags": [
       "british",
       "light",
-      "high protein"
+      "high protein",
+      "spring"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -37425,9 +37403,9 @@
     "cuisine": "british",
     "tags": [
       "british",
-      "spring",
       "high protein",
-      "fancy"
+      "fancy",
+      "spring"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -37540,10 +37518,11 @@
     "tags": [
       "british",
       "vegetarian",
-      "winter",
       "comfort",
       "tart",
-      "oven"
+      "oven",
+      "autumn",
+      "winter"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -37905,9 +37884,10 @@
       "british",
       "comfort",
       "oven",
-      "winter",
       "freezer-friendly",
-      "high protein"
+      "high protein",
+      "autumn",
+      "winter"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -38418,8 +38398,8 @@
     "tags": [
       "german",
       "comfort",
-      "winter",
-      "stew"
+      "stew",
+      "winter"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -38970,8 +38950,7 @@
       "polish",
       "vegetarian",
       "oven",
-      "comfort",
-      "winter"
+      "comfort"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -39109,9 +39088,9 @@
       "persian",
       "middle eastern",
       "grill",
-      "summer",
       "high protein",
-      "make ahead"
+      "make ahead",
+      "summer"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -39788,8 +39767,8 @@
       "hungarian",
       "soup",
       "comfort",
-      "winter",
-      "one-pot"
+      "one-pot",
+      "winter"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -39926,10 +39905,10 @@
     "tags": [
       "polish",
       "stew",
-      "winter",
       "comfort",
       "batch cooking",
-      "one-pot"
+      "one-pot",
+      "winter"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -40190,8 +40169,8 @@
       "belgian",
       "stew",
       "comfort",
-      "winter",
-      "batch cooking"
+      "batch cooking",
+      "winter"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -40861,7 +40840,8 @@
       "vegetarian",
       "quick",
       "light",
-      "budget"
+      "budget",
+      "spring"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -40970,7 +40950,6 @@
       "mediterranean",
       "burger",
       "high protein",
-      "summer",
       "kid-friendly"
     ],
     "difficulty": "easy",
@@ -41210,10 +41189,10 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "winter",
       "comfort",
       "stew",
-      "make ahead"
+      "make ahead",
+      "winter"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -41337,10 +41316,10 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "winter",
       "gratin",
       "comfort",
-      "oven"
+      "oven",
+      "winter"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -41454,7 +41433,6 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "spring",
       "light",
       "healthy"
     ],
@@ -41568,10 +41546,10 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "spring",
       "oven",
       "comfort",
-      "high protein"
+      "high protein",
+      "spring"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -41696,7 +41674,6 @@
     "tags": [
       "italian",
       "risotto",
-      "autumn",
       "vegetarian",
       "comfort"
     ],
@@ -41812,7 +41789,6 @@
     "cuisine": "italian",
     "tags": [
       "italian",
-      "spring",
       "stew",
       "light"
     ],
@@ -41955,8 +41931,8 @@
     "tags": [
       "italian",
       "vegetarian",
-      "spring",
-      "comfort"
+      "comfort",
+      "spring"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -42079,7 +42055,6 @@
     "cuisine": "spanish",
     "tags": [
       "spanish",
-      "spring",
       "quick",
       "high protein"
     ],
@@ -42621,10 +42596,10 @@
     "cuisine": "greek",
     "tags": [
       "greek",
-      "spring",
       "stew",
       "one-pot",
-      "comfort"
+      "comfort",
+      "spring"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -42749,9 +42724,9 @@
     "tags": [
       "turkish",
       "quick",
-      "spring",
       "vegetarian",
-      "light"
+      "light",
+      "spring"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -43125,9 +43100,9 @@
     "tags": [
       "north african",
       "stew",
-      "winter",
       "comfort",
-      "one-pot"
+      "one-pot",
+      "winter"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -43405,7 +43380,6 @@
     "cuisine": "indian",
     "tags": [
       "indian",
-      "summer",
       "grill",
       "healthy",
       "high protein"
@@ -43686,7 +43660,6 @@
     "cuisine": "british",
     "tags": [
       "british",
-      "spring",
       "oven",
       "healthy",
       "high protein"
@@ -43947,8 +43920,8 @@
       "chinese",
       "asian",
       "comfort",
-      "winter",
-      "stew"
+      "stew",
+      "winter"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -44088,7 +44061,6 @@
       "asian",
       "stir-fry",
       "quick",
-      "spring",
       "light"
     ],
     "difficulty": "easy",
@@ -44485,8 +44457,7 @@
     "cuisine": "japanese",
     "tags": [
       "japanese",
-      "asian",
-      "spring"
+      "asian"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -45176,7 +45147,6 @@
     "tags": [
       "korean",
       "asian",
-      "winter",
       "generous"
     ],
     "difficulty": "medium",
@@ -45323,8 +45293,7 @@
       "brazilian",
       "stew",
       "comfort",
-      "generous",
-      "winter"
+      "generous"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -45712,6 +45681,7 @@
       "middle eastern",
       "stew",
       "fancy",
+      "autumn",
       "winter"
     ],
     "difficulty": "medium",
@@ -46111,9 +46081,9 @@
     "cuisine": "ukrainian",
     "tags": [
       "soup",
-      "winter",
       "comfort",
-      "batch cooking"
+      "batch cooking",
+      "winter"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -46370,8 +46340,8 @@
     "tags": [
       "danish",
       "salad",
-      "spring",
-      "light"
+      "light",
+      "spring"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -46755,7 +46725,6 @@
     "cuisine": "italian",
     "tags": [
       "italian",
-      "summer",
       "high protein",
       "kid-friendly"
     ],
@@ -46986,7 +46955,6 @@
     "cuisine": "japanese",
     "tags": [
       "japanese",
-      "autumn",
       "high protein",
       "quick",
       "healthy"
@@ -47116,8 +47084,7 @@
       "korean",
       "asian",
       "spicy",
-      "bowl",
-      "summer"
+      "bowl"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -47239,7 +47206,6 @@
     "cuisine": "middle eastern",
     "tags": [
       "middle eastern",
-      "winter",
       "healthy",
       "high protein",
       "bowl"
@@ -47482,7 +47448,6 @@
     "cuisine": "asian",
     "tags": [
       "asian",
-      "summer",
       "salad",
       "high protein"
     ],
@@ -47606,7 +47571,6 @@
     "cuisine": "italian",
     "tags": [
       "italian",
-      "spring",
       "high protein"
     ],
     "difficulty": "easy",
@@ -47731,7 +47695,6 @@
     "cuisine": "american",
     "tags": [
       "american",
-      "summer",
       "high protein",
       "grill"
     ],
@@ -48150,7 +48113,6 @@
     "cuisine": "french",
     "tags": [
       "french",
-      "winter",
       "high protein",
       "comfort"
     ],
@@ -48283,7 +48245,6 @@
     "tags": [
       "greek",
       "mediterranean",
-      "summer",
       "high protein",
       "healthy"
     ],
@@ -48416,7 +48377,6 @@
     "cuisine": "spanish",
     "tags": [
       "spanish",
-      "autumn",
       "high protein",
       "generous"
     ],
@@ -48545,8 +48505,7 @@
     "tags": [
       "japanese",
       "asian",
-      "kid-friendly",
-      "summer"
+      "kid-friendly"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -48671,7 +48630,6 @@
     "cuisine": "north african",
     "tags": [
       "north african",
-      "autumn",
       "spicy",
       "high protein"
     ],
@@ -48928,7 +48886,6 @@
       "asian",
       "chinese",
       "stir-fry",
-      "winter",
       "quick"
     ],
     "difficulty": "easy",
@@ -49049,7 +49006,6 @@
     "cuisine": "british",
     "tags": [
       "british",
-      "winter",
       "high protein",
       "comfort"
     ],
@@ -49298,7 +49254,6 @@
       "chinese",
       "asian",
       "stir-fry",
-      "summer",
       "spicy",
       "quick"
     ],
@@ -49569,7 +49524,6 @@
     "tags": [
       "mediterranean",
       "italian",
-      "summer",
       "high protein"
     ],
     "difficulty": "easy",
@@ -49705,8 +49659,7 @@
       "asian",
       "healthy",
       "high protein",
-      "bowl",
-      "autumn"
+      "bowl"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -49830,8 +49783,7 @@
       "italian",
       "healthy",
       "high protein",
-      "quick",
-      "spring"
+      "quick"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -49940,8 +49892,7 @@
     "tags": [
       "british",
       "healthy",
-      "high protein",
-      "winter"
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -50196,8 +50147,7 @@
       "healthy",
       "high protein",
       "quick",
-      "sandwich",
-      "summer"
+      "sandwich"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -50329,8 +50279,7 @@
       "spanish",
       "mediterranean",
       "healthy",
-      "high protein",
-      "summer"
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -50455,8 +50404,7 @@
       "moroccan",
       "healthy",
       "high protein",
-      "quick",
-      "summer"
+      "quick"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -50704,8 +50652,7 @@
       "mexican",
       "healthy",
       "high protein",
-      "quick",
-      "winter"
+      "quick"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -50822,8 +50769,7 @@
       "italian",
       "mediterranean",
       "healthy",
-      "high protein",
-      "spring"
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -50946,8 +50892,7 @@
       "spicy",
       "high protein",
       "bowl",
-      "quick",
-      "summer"
+      "quick"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -51081,8 +51026,7 @@
       "asian",
       "stir-fry",
       "high protein",
-      "quick",
-      "spring"
+      "quick"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -51483,7 +51427,6 @@
       "healthy",
       "high protein",
       "bowl",
-      "summer",
       "gluten-free"
     ],
     "difficulty": "easy",
@@ -51741,8 +51684,7 @@
       "asian",
       "vegan",
       "curry",
-      "comfort",
-      "winter"
+      "comfort"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -52120,7 +52062,6 @@
       "vegan",
       "healthy",
       "oven",
-      "autumn",
       "gluten-free"
     ],
     "difficulty": "easy",
@@ -52779,8 +52720,7 @@
       "french",
       "vegetarian",
       "healthy",
-      "high protein",
-      "spring"
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
