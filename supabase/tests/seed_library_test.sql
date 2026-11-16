@@ -50,9 +50,28 @@ select pg_temp.check((select id = 'd8e4ac12-403d-4d06-97cf-022682d08894' from re
 select pg_temp.check((select i.id = 'b6b4b263-9d00-433a-a43b-af72a2b7bd33' from recipe_ingredients i join recipes r on r.id = i.recipe_id
                       where r.title = 'Arrosto di tacchino alle erbe' and i.position = 0), 'seed lines have their fixed id');
 
+-- A seed recipe loaded earlier follows recipes.json when it's loaded again: its title,
+-- times and lines (one changed, one gone, one extra), but not a household's copy of it.
+create temp table before_lines as
+  select i.id, i.quantity, i.raw_text from recipe_ingredients i join recipes r on r.id = i.recipe_id
+  where r.id = 'd8e4ac12-403d-4d06-97cf-022682d08894';
+update recipes set title = 'Old title', cook_min = 999 where id = 'd8e4ac12-403d-4d06-97cf-022682d08894';
+update recipe_ingredients set quantity = 1, raw_text = 'old line' where id = 'b6b4b263-9d00-433a-a43b-af72a2b7bd33';
+insert into recipe_ingredients (recipe_id, position, name, aisle, raw_text)
+  values ('d8e4ac12-403d-4d06-97cf-022682d08894', 99, 'salt', 'spices', 'a line recipes.json no longer has');
+delete from recipe_ingredients where recipe_id = 'd8e4ac12-403d-4d06-97cf-022682d08894' and position = 1;
+
 -- Loading it again adds nothing.
 \i seed_library.sql
 select pg_temp.check((select count(*) = 109 from lib), 're-running seed_library.sql adds no duplicates');
+select pg_temp.check((select title = 'Arrosto di tacchino alle erbe' and cook_min = 110 from recipes
+                      where id = 'd8e4ac12-403d-4d06-97cf-022682d08894'), 'a seed recipe takes its title and times from recipes.json again');
+select pg_temp.check((select count(*) = 0 from (
+                        select id, quantity, raw_text from recipe_ingredients where recipe_id = 'd8e4ac12-403d-4d06-97cf-022682d08894'
+                        except select * from before_lines) x)
+                     and (select count(*) from recipe_ingredients where recipe_id = 'd8e4ac12-403d-4d06-97cf-022682d08894')
+                         = (select count(*) from before_lines),
+                     'its lines are as in recipes.json again: changed, gone and extra lines put right');
 
 select pg_temp.check((select count(*) filter (where collection = 'original') = 300
                              and count(*) filter (where collection = 'web') = 109
