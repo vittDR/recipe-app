@@ -1,10 +1,10 @@
 {
-  "about": "Our 300 original DINEAMITE recipes (the seed library without the recipes taken from sites). weeknight_plate says whether the app counts it as a weeknight plate (docs/recipe-classification.md#weeknight-plate). has_illustration says whether a recipe has a photo; those without one have photo_file: name the illustration after it (4:3, 900x675, WebP; see docs/recipe-template.md#image-specs).",
+  "about": "Our 300 original DINEAMITE recipes (the seed library without the recipes taken from sites). weeknight_plate says whether the app counts it as a weeknight plate (docs/recipe-classification.md#weeknight-plate). has_illustration says whether a recipe has a photo (illustration is its path); those without one have photo_file: name the illustration after it (4:3, 900x675, WebP; see docs/recipe-template.md#image-specs).",
   "counts": {
     "recipes": 300,
     "weeknight_plates": 232,
-    "with_illustration": 10,
-    "without_illustration": 290
+    "with_illustration": 250,
+    "without_illustration": 50
   },
   "recipes": [
     {
@@ -1271,9 +1271,9 @@
       }
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "normandy-pork-medallions-with-apples-and-mash.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/normandy-pork-medallions-with-apples-and-mash.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -1291,7 +1291,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/normandy-pork-medallions-with-apples-and-mash.webp",
       "cuisine": "french",
       "tags": [
         "french",
@@ -1405,9 +1405,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "warm-lentil-salad-with-beetroot-and-goat-cheese.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/warm-lentil-salad-with-beetroot-and-goat-cheese.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -1426,7 +1426,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/warm-lentil-salad-with-beetroot-and-goat-cheese.webp",
       "cuisine": "french",
       "tags": [
         "french",
@@ -1549,9 +1549,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "pan-fried-trout-with-mustard-lentils.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/pan-fried-trout-with-mustard-lentils.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -1569,7 +1569,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/pan-fried-trout-with-mustard-lentils.webp",
       "cuisine": "french",
       "tags": [
         "french",
@@ -1694,9 +1694,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "chicken-with-leeks-and-mushrooms.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/chicken-with-leeks-and-mushrooms.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -1715,7 +1715,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/chicken-with-leeks-and-mushrooms.webp",
       "cuisine": "french",
       "tags": [
         "french",
@@ -1839,9 +1839,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "ratatouille-tart-with-green-salad.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/ratatouille-tart-with-green-salad.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -1859,7 +1859,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/ratatouille-tart-with-green-salad.webp",
       "cuisine": "french",
       "tags": [
         "french",
@@ -1999,9 +1999,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "truite-aux-amandes-with-green-beans-and-potatoes.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/truite-aux-amandes-with-green-beans-and-potatoes.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -2019,7 +2019,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/truite-aux-amandes-with-green-beans-and-potatoes.webp",
       "cuisine": "french",
       "tags": [
         "french",
@@ -2122,9 +2122,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "courgettes-farcies-with-turkey.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/courgettes-farcies-with-turkey.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -2142,7 +2142,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/courgettes-farcies-with-turkey.webp",
       "cuisine": "french",
       "tags": [
         "french",
@@ -2265,9 +2265,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "smoked-salmon-and-leek-quiche.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/smoked-salmon-and-leek-quiche.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -2287,7 +2287,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/smoked-salmon-and-leek-quiche.webp",
       "cuisine": "french",
       "tags": [
         "french",
@@ -2400,9 +2400,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "galette-complete.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/galette-complete.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -2421,7 +2421,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/galette-complete.webp",
       "cuisine": "french",
       "tags": [
         "french",
@@ -2513,9 +2513,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "roast-chicken-thighs-with-carrots-and-potatoes.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/roast-chicken-thighs-with-carrots-and-potatoes.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -2533,7 +2533,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/roast-chicken-thighs-with-carrots-and-potatoes.webp",
       "cuisine": "french",
       "tags": [
         "french",
@@ -2638,9 +2638,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "pork-chops-with-mustard-white-beans.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/pork-chops-with-mustard-white-beans.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -2658,7 +2658,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/pork-chops-with-mustard-white-beans.webp",
       "cuisine": "french",
       "tags": [
         "french",
@@ -2786,9 +2786,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "roast-celeriac-steaks-with-puy-lentils.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/roast-celeriac-steaks-with-puy-lentils.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -2806,7 +2806,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/roast-celeriac-steaks-with-puy-lentils.webp",
       "cuisine": "french",
       "tags": [
         "french",
@@ -2935,9 +2935,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "sea-bass-with-crushed-potatoes-tomatoes-and-olives.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/sea-bass-with-crushed-potatoes-tomatoes-and-olives.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -2955,7 +2955,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/sea-bass-with-crushed-potatoes-tomatoes-and-olives.webp",
       "cuisine": "french",
       "tags": [
         "french",
@@ -3057,9 +3057,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "sole-meuniere-with-potatoes-and-green-beans.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/sole-meuniere-with-potatoes-and-green-beans.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -3077,7 +3077,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/sole-meuniere-with-potatoes-and-green-beans.webp",
       "cuisine": "french",
       "tags": [
         "french",
@@ -3176,9 +3176,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "salade-nicoise-with-tuna-and-green-beans.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/salade-nicoise-with-tuna-and-green-beans.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -3196,7 +3196,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/salade-nicoise-with-tuna-and-green-beans.webp",
       "cuisine": "french",
       "tags": [
         "french",
@@ -3322,9 +3322,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "lapin-a-la-moutarde.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/lapin-a-la-moutarde.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -3342,7 +3342,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/lapin-a-la-moutarde.webp",
       "cuisine": "french",
       "tags": [
         "french",
@@ -3471,9 +3471,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "hachis-parmentier.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/hachis-parmentier.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -3491,7 +3491,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/hachis-parmentier.webp",
       "cuisine": "french",
       "tags": [
         "french",
@@ -3617,9 +3617,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "calamars-a-la-provencale.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/calamars-a-la-provencale.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -3637,7 +3637,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/calamars-a-la-provencale.webp",
       "cuisine": "french",
       "tags": [
         "french",
@@ -3753,9 +3753,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "bavette-a-l-echalote-with-potatoes-and-green-beans.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/bavette-a-l-echalote-with-potatoes-and-green-beans.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -3773,7 +3773,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/bavette-a-l-echalote-with-potatoes-and-green-beans.webp",
       "cuisine": "french",
       "tags": [
         "french",
@@ -3877,9 +3877,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "soupe-au-pistou-with-white-beans.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/soupe-au-pistou-with-white-beans.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -3897,7 +3897,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/soupe-au-pistou-with-white-beans.webp",
       "cuisine": "french",
       "tags": [
         "french",
@@ -4026,9 +4026,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "lemon-pea-and-ricotta-pasta.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/lemon-pea-and-ricotta-pasta.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -4046,7 +4046,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/lemon-pea-and-ricotta-pasta.webp",
       "cuisine": "italian",
       "tags": [
         "italian",
@@ -4149,9 +4149,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "mushroom-and-spinach-frittata-with-bread.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/mushroom-and-spinach-frittata-with-bread.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -4170,7 +4170,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/mushroom-and-spinach-frittata-with-bread.webp",
       "cuisine": "italian",
       "tags": [
         "italian",
@@ -4285,9 +4285,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "turkey-meatballs-with-tomato-sauce-and-polenta.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/turkey-meatballs-with-tomato-sauce-and-polenta.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -4305,7 +4305,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/turkey-meatballs-with-tomato-sauce-and-polenta.webp",
       "cuisine": "italian",
       "tags": [
         "italian",
@@ -4424,9 +4424,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "mushroom-lentil-and-walnut-ragu.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/mushroom-lentil-and-walnut-ragu.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -4444,7 +4444,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/mushroom-lentil-and-walnut-ragu.webp",
       "cuisine": "italian",
       "tags": [
         "italian",
@@ -4582,9 +4582,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "ribollita.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/ribollita.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -4602,7 +4602,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/ribollita.webp",
       "cuisine": "italian",
       "tags": [
         "italian",
@@ -4736,9 +4736,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "roasted-pepper-and-mozzarella-gnocchi.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/roasted-pepper-and-mozzarella-gnocchi.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -4756,7 +4756,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/roasted-pepper-and-mozzarella-gnocchi.webp",
       "cuisine": "italian",
       "tags": [
         "italian",
@@ -4865,9 +4865,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "orzotto-ai-funghi.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/orzotto-ai-funghi.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -4885,7 +4885,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/orzotto-ai-funghi.webp",
       "cuisine": "italian",
       "tags": [
         "italian",
@@ -5002,9 +5002,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "prawn-courgette-and-lemon-linguine.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/prawn-courgette-and-lemon-linguine.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -5022,7 +5022,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/prawn-courgette-and-lemon-linguine.webp",
       "cuisine": "italian",
       "tags": [
         "italian",
@@ -5122,9 +5122,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "spinach-and-mushroom-lasagne.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/spinach-and-mushroom-lasagne.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -5144,7 +5144,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/spinach-and-mushroom-lasagne.webp",
       "cuisine": "italian",
       "tags": [
         "italian",
@@ -5259,9 +5259,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "tomato-and-mozzarella-flatbread-pizzas.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/tomato-and-mozzarella-flatbread-pizzas.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -5279,7 +5279,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/tomato-and-mozzarella-flatbread-pizzas.webp",
       "cuisine": "italian",
       "tags": [
         "italian",
@@ -5387,9 +5387,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "pumpkin-sausage-and-sage-risotto.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/pumpkin-sausage-and-sage-risotto.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -5407,7 +5407,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/pumpkin-sausage-and-sage-risotto.webp",
       "cuisine": "italian",
       "tags": [
         "italian",
@@ -5521,9 +5521,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "tuna-tomato-and-spinach-pasta-bake.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/tuna-tomato-and-spinach-pasta-bake.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -5542,7 +5542,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/tuna-tomato-and-spinach-pasta-bake.webp",
       "cuisine": "italian",
       "tags": [
         "italian",
@@ -5650,9 +5650,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "spinach-and-ricotta-stuffed-pasta-shells.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/spinach-and-ricotta-stuffed-pasta-shells.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -5671,7 +5671,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/spinach-and-ricotta-stuffed-pasta-shells.webp",
       "cuisine": "italian",
       "tags": [
         "italian",
@@ -5784,9 +5784,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "sardine-lemon-and-breadcrumb-spaghetti.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/sardine-lemon-and-breadcrumb-spaghetti.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -5804,7 +5804,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/sardine-lemon-and-breadcrumb-spaghetti.webp",
       "cuisine": "italian",
       "tags": [
         "italian",
@@ -5905,9 +5905,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "turkey-bolognese-tagliatelle.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/turkey-bolognese-tagliatelle.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -5925,7 +5925,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/turkey-bolognese-tagliatelle.webp",
       "cuisine": "italian",
       "tags": [
         "italian",
@@ -6046,9 +6046,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "lemon-prawn-and-pea-risotto.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/lemon-prawn-and-pea-risotto.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -6066,7 +6066,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/lemon-prawn-and-pea-risotto.webp",
       "cuisine": "italian",
       "tags": [
         "italian",
@@ -6182,9 +6182,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "pea-and-asparagus-lemon-risotto.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/pea-and-asparagus-lemon-risotto.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -6202,7 +6202,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/pea-and-asparagus-lemon-risotto.webp",
       "cuisine": "italian",
       "tags": [
         "italian",
@@ -6325,9 +6325,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "sea-bass-with-fennel-and-orange-salad.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/sea-bass-with-fennel-and-orange-salad.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -6345,7 +6345,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/sea-bass-with-fennel-and-orange-salad.webp",
       "cuisine": "italian",
       "tags": [
         "italian",
@@ -6454,9 +6454,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "baked-gnocchi-with-pumpkin-and-blue-cheese.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/baked-gnocchi-with-pumpkin-and-blue-cheese.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -6474,7 +6474,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/baked-gnocchi-with-pumpkin-and-blue-cheese.webp",
       "cuisine": "italian",
       "tags": [
         "italian",
@@ -6585,9 +6585,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "smoked-salmon-and-pea-spaghetti.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/smoked-salmon-and-pea-spaghetti.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -6605,7 +6605,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/smoked-salmon-and-pea-spaghetti.webp",
       "cuisine": "italian",
       "tags": [
         "italian",
@@ -6709,9 +6709,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "chicken-pesto-and-tomato-traybake.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/chicken-pesto-and-tomato-traybake.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -6729,7 +6729,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/chicken-pesto-and-tomato-traybake.webp",
       "cuisine": "italian",
       "tags": [
         "italian",
@@ -6828,9 +6828,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "mushroom-and-mozzarella-calzones.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/mushroom-and-mozzarella-calzones.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -6849,7 +6849,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/mushroom-and-mozzarella-calzones.webp",
       "cuisine": "italian",
       "tags": [
         "italian",
@@ -6969,9 +6969,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "ricotta-and-lemon-ravioli-with-peas.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/ricotta-and-lemon-ravioli-with-peas.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -6990,7 +6990,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/ricotta-and-lemon-ravioli-with-peas.webp",
       "cuisine": "italian",
       "tags": [
         "italian",
@@ -7107,9 +7107,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "orecchiette-with-broccoli-and-sausage.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/orecchiette-with-broccoli-and-sausage.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -7127,7 +7127,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/orecchiette-with-broccoli-and-sausage.webp",
       "cuisine": "italian",
       "tags": [
         "italian",
@@ -7236,9 +7236,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "espinacas-con-garbanzos.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/espinacas-con-garbanzos.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -7257,7 +7257,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/espinacas-con-garbanzos.webp",
       "cuisine": "spanish",
       "tags": [
         "spanish",
@@ -7379,9 +7379,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "tomato-poached-cod-with-white-beans.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/tomato-poached-cod-with-white-beans.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -7399,7 +7399,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/tomato-poached-cod-with-white-beans.webp",
       "cuisine": "spanish",
       "tags": [
         "spanish",
@@ -7517,9 +7517,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "tortilla-de-patatas-with-tomato-salad.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/tortilla-de-patatas-with-tomato-salad.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -7537,7 +7537,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/tortilla-de-patatas-with-tomato-salad.webp",
       "cuisine": "spanish",
       "tags": [
         "spanish",
@@ -7642,9 +7642,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "paprika-hake-with-peppers-and-potatoes.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/paprika-hake-with-peppers-and-potatoes.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -7663,7 +7663,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/paprika-hake-with-peppers-and-potatoes.webp",
       "cuisine": "spanish",
       "tags": [
         "spanish",
@@ -7773,9 +7773,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "gambas-al-ajillo-with-white-beans.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/gambas-al-ajillo-with-white-beans.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -7793,7 +7793,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/gambas-al-ajillo-with-white-beans.webp",
       "cuisine": "spanish",
       "tags": [
         "spanish",
@@ -7898,9 +7898,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "gazpacho-with-eggs-and-jamon.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/gazpacho-with-eggs-and-jamon.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -7919,7 +7919,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/gazpacho-with-eggs-and-jamon.webp",
       "cuisine": "spanish",
       "tags": [
         "spanish",
@@ -8026,9 +8026,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "cod-with-crispy-chickpeas-and-spinach.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/cod-with-crispy-chickpeas-and-spinach.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -8047,7 +8047,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/cod-with-crispy-chickpeas-and-spinach.webp",
       "cuisine": "spanish",
       "tags": [
         "spanish",
@@ -8149,9 +8149,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "arroz-con-gambas.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/arroz-con-gambas.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -8170,7 +8170,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/arroz-con-gambas.webp",
       "cuisine": "spanish",
       "tags": [
         "spanish",
@@ -8294,9 +8294,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "arroz-con-pollo-y-chorizo.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/arroz-con-pollo-y-chorizo.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -8316,7 +8316,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/arroz-con-pollo-y-chorizo.webp",
       "cuisine": "spanish",
       "tags": [
         "spanish",
@@ -8445,9 +8445,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "pollo-al-ajillo.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/pollo-al-ajillo.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -8465,7 +8465,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/pollo-al-ajillo.webp",
       "cuisine": "spanish",
       "tags": [
         "spanish",
@@ -8574,9 +8574,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "lentejas-con-chorizo.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/lentejas-con-chorizo.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -8594,7 +8594,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/lentejas-con-chorizo.webp",
       "cuisine": "spanish",
       "tags": [
         "spanish",
@@ -8704,9 +8704,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "bacalhau-a-bras.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/bacalhau-a-bras.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -8725,7 +8725,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/bacalhau-a-bras.webp",
       "cuisine": "portuguese",
       "tags": [
         "portuguese",
@@ -8833,9 +8833,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "pisto-manchego-con-huevo.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/pisto-manchego-con-huevo.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -8853,7 +8853,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/pisto-manchego-con-huevo.webp",
       "cuisine": "spanish",
       "tags": [
         "spanish",
@@ -8965,9 +8965,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "mejillones-a-la-marinera.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/mejillones-a-la-marinera.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -8985,7 +8985,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/mejillones-a-la-marinera.webp",
       "cuisine": "spanish",
       "tags": [
         "spanish",
@@ -9097,9 +9097,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "baked-falafel-in-pitta.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/baked-falafel-in-pitta.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -9118,7 +9118,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/baked-falafel-in-pitta.webp",
       "cuisine": "middle eastern",
       "tags": [
         "middle eastern",
@@ -9252,9 +9252,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "turkey-kofta-pitta-platter.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/turkey-kofta-pitta-platter.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -9272,7 +9272,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/turkey-kofta-pitta-platter.webp",
       "cuisine": "turkish",
       "tags": [
         "turkish",
@@ -9412,9 +9412,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "pork-souvlaki-pitas.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/pork-souvlaki-pitas.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -9433,7 +9433,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/pork-souvlaki-pitas.webp",
       "cuisine": "greek",
       "tags": [
         "greek",
@@ -9571,9 +9571,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "gemista-with-beef.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/gemista-with-beef.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -9592,7 +9592,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/gemista-with-beef.webp",
       "cuisine": "greek",
       "tags": [
         "greek",
@@ -9719,9 +9719,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "beef-kofta-with-tomato-bulgur.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/beef-kofta-with-tomato-bulgur.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -9739,7 +9739,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/beef-kofta-with-tomato-bulgur.webp",
       "cuisine": "turkish",
       "tags": [
         "turkish",
@@ -9876,9 +9876,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "lentil-and-aubergine-moussaka.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/lentil-and-aubergine-moussaka.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -9897,7 +9897,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/lentil-and-aubergine-moussaka.webp",
       "cuisine": "greek",
       "tags": [
         "greek",
@@ -10034,9 +10034,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "gigantes-plaki.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/gigantes-plaki.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -10055,7 +10055,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/gigantes-plaki.webp",
       "cuisine": "greek",
       "tags": [
         "greek",
@@ -10191,9 +10191,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "arni-me-melitzanes-lamb-and-aubergine-stew.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/arni-me-melitzanes-lamb-and-aubergine-stew.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -10211,7 +10211,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/arni-me-melitzanes-lamb-and-aubergine-stew.webp",
       "cuisine": "greek",
       "tags": [
         "greek",
@@ -10339,9 +10339,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "mercimek-corbas-turkish-lentil-soup.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/mercimek-corbasi-turkish-lentil-soup.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -10361,7 +10361,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/mercimek-corbasi-turkish-lentil-soup.webp",
       "cuisine": "turkish",
       "tags": [
         "turkish",
@@ -10489,9 +10489,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "sabich.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/sabich.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -10511,7 +10511,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/sabich.webp",
       "cuisine": "middle eastern",
       "tags": [
         "middle eastern",
@@ -10639,9 +10639,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "cauliflower-and-chickpea-shawarma-platter.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/cauliflower-and-chickpea-shawarma-platter.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -10659,7 +10659,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/cauliflower-and-chickpea-shawarma-platter.webp",
       "cuisine": "middle eastern",
       "tags": [
         "middle eastern",
@@ -10802,9 +10802,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "halloumi-and-peach-couscous-salad.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/halloumi-and-peach-couscous-salad.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -10822,7 +10822,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/halloumi-and-peach-couscous-salad.webp",
       "cuisine": "mediterranean",
       "tags": [
         "mediterranean",
@@ -10946,9 +10946,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "lamb-burgers-with-feta-and-tomato-salad.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/lamb-burgers-with-feta-and-tomato-salad.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -10967,7 +10967,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/lamb-burgers-with-feta-and-tomato-salad.webp",
       "cuisine": "greek",
       "tags": [
         "greek",
@@ -11097,9 +11097,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "lamb-kleftiko.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/lamb-kleftiko.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -11118,7 +11118,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/lamb-kleftiko.webp",
       "cuisine": "greek",
       "tags": [
         "greek",
@@ -11240,9 +11240,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "beef-stifado.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/beef-stifado.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -11260,7 +11260,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/beef-stifado.webp",
       "cuisine": "greek",
       "tags": [
         "greek",
@@ -11394,9 +11394,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "youvetsi-beef-and-orzo-bake.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/youvetsi-beef-and-orzo-bake.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -11417,7 +11417,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/youvetsi-beef-and-orzo-bake.webp",
       "cuisine": "greek",
       "tags": [
         "greek",
@@ -11542,9 +11542,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "karn-yar-k-stuffed-aubergines.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/karniyarik-stuffed-aubergines.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -11564,7 +11564,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/karniyarik-stuffed-aubergines.webp",
       "cuisine": "turkish",
       "tags": [
         "turkish",
@@ -11688,9 +11688,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "menemen.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/menemen.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -11710,7 +11710,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/menemen.webp",
       "cuisine": "turkish",
       "tags": [
         "turkish",
@@ -11820,9 +11820,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "fattoush-with-grilled-chicken.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/fattoush-with-grilled-chicken.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -11841,7 +11841,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/fattoush-with-grilled-chicken.webp",
       "cuisine": "lebanese",
       "tags": [
         "lebanese",
@@ -11971,9 +11971,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "shish-tawook-with-garlic-sauce.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/shish-tawook-with-garlic-sauce.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -11992,7 +11992,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/shish-tawook-with-garlic-sauce.webp",
       "cuisine": "lebanese",
       "tags": [
         "lebanese",
@@ -12128,9 +12128,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "mujadara-with-halloumi.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/mujadara-with-halloumi.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -12148,7 +12148,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/mujadara-with-halloumi.webp",
       "cuisine": "lebanese",
       "tags": [
         "lebanese",
@@ -12266,9 +12266,9 @@
       "total_min": 50
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "chickpea-and-apricot-tagine-with-couscous.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/chickpea-and-apricot-tagine-with-couscous.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -12286,7 +12286,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/chickpea-and-apricot-tagine-with-couscous.webp",
       "cuisine": "moroccan",
       "tags": [
         "moroccan",
@@ -12422,9 +12422,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "lamb-meatballs-with-tomato-chickpeas.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/lamb-meatballs-with-tomato-chickpeas.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -12442,7 +12442,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/lamb-meatballs-with-tomato-chickpeas.webp",
       "cuisine": "north african",
       "tags": [
         "north african",
@@ -12558,9 +12558,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "couscous-royal.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/couscous-royal.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -12578,7 +12578,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/couscous-royal.webp",
       "cuisine": "north african",
       "tags": [
         "north african",
@@ -12722,9 +12722,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "tajine-d-agneau-aux-pruneaux.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/tajine-d-agneau-aux-pruneaux.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -12742,7 +12742,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/tajine-d-agneau-aux-pruneaux.webp",
       "cuisine": "north african",
       "tags": [
         "north african",
@@ -12861,9 +12861,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "tajine-de-kefta-aux-oeufs.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/tajine-de-kefta-aux-oeufs.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -12881,7 +12881,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/tajine-de-kefta-aux-oeufs.webp",
       "cuisine": "north african",
       "tags": [
         "north african",
@@ -13003,9 +13003,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "harira.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/harira.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -13023,7 +13023,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/harira.webp",
       "cuisine": "north african",
       "tags": [
         "north african",
@@ -13165,9 +13165,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "tajine-de-poisson-with-cod.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/tajine-de-poisson-with-cod.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -13185,7 +13185,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/tajine-de-poisson-with-cod.webp",
       "cuisine": "north african",
       "tags": [
         "north african",
@@ -13330,9 +13330,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "merguez-and-roast-vegetable-couscous.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/merguez-and-roast-vegetable-couscous.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -13350,7 +13350,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/merguez-and-roast-vegetable-couscous.webp",
       "cuisine": "north african",
       "tags": [
         "north african",
@@ -13468,9 +13468,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "chermoula-prawns-with-couscous.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/chermoula-prawns-with-couscous.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -13488,7 +13488,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/chermoula-prawns-with-couscous.webp",
       "cuisine": "north african",
       "tags": [
         "north african",
@@ -13597,9 +13597,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "red-lentil-coconut-dal-with-rice.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/red-lentil-coconut-dal-with-rice.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -13617,7 +13617,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/red-lentil-coconut-dal-with-rice.webp",
       "cuisine": "indian",
       "tags": [
         "indian",
@@ -13744,9 +13744,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "kerala-chicken-curry.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/kerala-chicken-curry.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -13766,7 +13766,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/kerala-chicken-curry.webp",
       "cuisine": "indian",
       "tags": [
         "indian",
@@ -13894,9 +13894,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "aloo-chana-chaat.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/aloo-chana-chaat.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -13918,7 +13918,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/aloo-chana-chaat.webp",
       "cuisine": "indian",
       "tags": [
         "indian",
@@ -14043,9 +14043,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "cauliflower-and-pea-biryani.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/cauliflower-and-pea-biryani.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -14066,7 +14066,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/cauliflower-and-pea-biryani.webp",
       "cuisine": "indian",
       "tags": [
         "indian",
@@ -14223,9 +14223,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "coconut-chickpea-and-pumpkin-curry.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/coconut-chickpea-and-pumpkin-curry.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -14245,7 +14245,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/coconut-chickpea-and-pumpkin-curry.webp",
       "cuisine": "indian",
       "tags": [
         "indian",
@@ -14380,9 +14380,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "goan-coconut-prawn-curry-with-green-beans.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/goan-coconut-prawn-curry-with-green-beans.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -14403,7 +14403,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/goan-coconut-prawn-curry-with-green-beans.webp",
       "cuisine": "indian",
       "tags": [
         "indian",
@@ -14546,9 +14546,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "palak-paneer-with-rice.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/palak-paneer-with-rice.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -14569,7 +14569,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/palak-paneer-with-rice.webp",
       "cuisine": "indian",
       "tags": [
         "indian",
@@ -14700,9 +14700,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "keema-aloo.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/keema-aloo.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -14720,7 +14720,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/keema-aloo.webp",
       "cuisine": "indian",
       "tags": [
         "indian",
@@ -14872,9 +14872,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "saag-gosht-with-basmati-rice.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/saag-gosht-with-basmati-rice.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -14895,7 +14895,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/saag-gosht-with-basmati-rice.webp",
       "cuisine": "indian",
       "tags": [
         "indian",
@@ -15031,9 +15031,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "paneer-tikka-skewers-with-cucumber-rice.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/paneer-tikka-skewers-with-cucumber-rice.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -15052,7 +15052,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/paneer-tikka-skewers-with-cucumber-rice.webp",
       "cuisine": "indian",
       "tags": [
         "indian",
@@ -15177,9 +15177,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "rajma-chawal.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/rajma-chawal.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -15199,7 +15199,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/rajma-chawal.webp",
       "cuisine": "indian",
       "tags": [
         "indian",
@@ -15347,9 +15347,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "chicken-jalfrezi.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/chicken-jalfrezi.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -15370,7 +15370,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/chicken-jalfrezi.webp",
       "cuisine": "indian",
       "tags": [
         "indian",
@@ -15504,9 +15504,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "anda-curry.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/anda-curry.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -15526,7 +15526,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/anda-curry.webp",
       "cuisine": "indian",
       "tags": [
         "indian",
@@ -15668,9 +15668,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "rogan-josh.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/rogan-josh.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -15690,7 +15690,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/rogan-josh.webp",
       "cuisine": "indian",
       "tags": [
         "indian",
@@ -15810,9 +15810,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "chicken-biryani.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/chicken-biryani.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -15831,7 +15831,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/chicken-biryani.webp",
       "cuisine": "indian",
       "tags": [
         "indian",
@@ -15978,9 +15978,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "matar-paneer.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/matar-paneer.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -16000,7 +16000,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/matar-paneer.webp",
       "cuisine": "indian",
       "tags": [
         "indian",
@@ -16138,9 +16138,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "prawn-masala.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/prawn-masala.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -16161,7 +16161,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/prawn-masala.webp",
       "cuisine": "indian",
       "tags": [
         "indian",
@@ -16290,9 +16290,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "pork-and-cabbage-stir-fry-with-rice.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/pork-and-cabbage-stir-fry-with-rice.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -16314,7 +16314,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/pork-and-cabbage-stir-fry-with-rice.webp",
       "cuisine": "chinese",
       "tags": [
         "chinese",
@@ -16426,9 +16426,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "ginger-beef-lettuce-cups-with-rice.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/ginger-beef-lettuce-cups-with-rice.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -16449,7 +16449,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/ginger-beef-lettuce-cups-with-rice.webp",
       "cuisine": "chinese",
       "tags": [
         "chinese",
@@ -16580,9 +16580,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "chicken-and-vegetable-fried-rice.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/chicken-and-vegetable-fried-rice.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -16604,7 +16604,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/chicken-and-vegetable-fried-rice.webp",
       "cuisine": "chinese",
       "tags": [
         "chinese",
@@ -16735,9 +16735,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "pork-meatballs-in-ginger-broth-with-noodles.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/pork-meatballs-in-ginger-broth-with-noodles.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -16757,7 +16757,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/pork-meatballs-in-ginger-broth-with-noodles.webp",
       "cuisine": "chinese",
       "tags": [
         "chinese",
@@ -16882,9 +16882,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "mushroom-and-cabbage-potstickers.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/mushroom-and-cabbage-potstickers.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -16905,7 +16905,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/mushroom-and-cabbage-potstickers.webp",
       "cuisine": "chinese",
       "tags": [
         "chinese",
@@ -17030,9 +17030,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "chicken-and-mushroom-noodle-soup.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/chicken-and-mushroom-noodle-soup.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -17052,7 +17052,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/chicken-and-mushroom-noodle-soup.webp",
       "cuisine": "chinese",
       "tags": [
         "chinese",
@@ -17163,9 +17163,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "hoisin-pork-and-broccoli-noodles.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/hoisin-pork-and-broccoli-noodles.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -17184,7 +17184,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/hoisin-pork-and-broccoli-noodles.webp",
       "cuisine": "chinese",
       "tags": [
         "chinese",
@@ -17311,9 +17311,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "ginger-salmon-with-pak-choi-and-noodles.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/ginger-salmon-with-pak-choi-and-noodles.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -17332,7 +17332,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/ginger-salmon-with-pak-choi-and-noodles.webp",
       "cuisine": "chinese",
       "tags": [
         "chinese",
@@ -17443,9 +17443,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "crispy-tofu-with-orange-ginger-sauce-and-rice.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/crispy-tofu-with-orange-ginger-sauce-and-rice.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -17465,7 +17465,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/crispy-tofu-with-orange-ginger-sauce-and-rice.webp",
       "cuisine": "chinese",
       "tags": [
         "chinese",
@@ -17579,9 +17579,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "mapo-tofu.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/mapo-tofu.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -17604,7 +17604,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/mapo-tofu.webp",
       "cuisine": "chinese",
       "tags": [
         "chinese",
@@ -17743,9 +17743,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "hong-shao-rou.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/hong-shao-rou.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -17766,7 +17766,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/hong-shao-rou.webp",
       "cuisine": "chinese",
       "tags": [
         "chinese",
@@ -17877,9 +17877,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "tomato-and-egg-stir-fry.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/tomato-and-egg-stir-fry.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -17899,7 +17899,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/tomato-and-egg-stir-fry.webp",
       "cuisine": "chinese",
       "tags": [
         "chinese",
@@ -18008,9 +18008,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "char-siu-pork-with-greens.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/char-siu-pork-with-greens.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -18031,7 +18031,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/char-siu-pork-with-greens.webp",
       "cuisine": "chinese",
       "tags": [
         "chinese",
@@ -18149,9 +18149,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "cumin-lamb-stir-fry.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/cumin-lamb-stir-fry.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -18172,7 +18172,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/cumin-lamb-stir-fry.webp",
       "cuisine": "chinese",
       "tags": [
         "chinese",
@@ -18303,9 +18303,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "nasu-dengaku-with-tofu-and-soba.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/nasu-dengaku-with-tofu-and-soba.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -18325,7 +18325,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/nasu-dengaku-with-tofu-and-soba.webp",
       "cuisine": "japanese",
       "tags": [
         "japanese",
@@ -18433,9 +18433,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "teriyaki-tofu-with-broccoli-and-rice.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/teriyaki-tofu-with-broccoli-and-rice.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -18454,7 +18454,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/teriyaki-tofu-with-broccoli-and-rice.webp",
       "cuisine": "japanese",
       "tags": [
         "japanese",
@@ -18577,9 +18577,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "miso-mushroom-udon-soup-with-tofu-and-egg.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/miso-mushroom-udon-soup-with-tofu-and-egg.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -18599,7 +18599,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/miso-mushroom-udon-soup-with-tofu-and-egg.webp",
       "cuisine": "japanese",
       "tags": [
         "japanese",
@@ -18720,9 +18720,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "seared-tuna-with-sesame-spinach-and-rice.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/seared-tuna-with-sesame-spinach-and-rice.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -18741,7 +18741,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/seared-tuna-with-sesame-spinach-and-rice.webp",
       "cuisine": "japanese",
       "tags": [
         "japanese",
@@ -18855,9 +18855,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "baked-chicken-katsu-with-rice-and-cabbage.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/baked-chicken-katsu-with-rice-and-cabbage.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -18876,7 +18876,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/baked-chicken-katsu-with-rice-and-cabbage.webp",
       "cuisine": "japanese",
       "tags": [
         "japanese",
@@ -18994,9 +18994,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "tofu-and-edamame-sushi-rice-salad.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/tofu-and-edamame-sushi-rice-salad.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -19015,7 +19015,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/tofu-and-edamame-sushi-rice-salad.webp",
       "cuisine": "japanese",
       "tags": [
         "japanese",
@@ -19143,9 +19143,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "tsukune-donburi.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/tsukune-donburi.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -19166,7 +19166,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/tsukune-donburi.webp",
       "cuisine": "japanese",
       "tags": [
         "japanese",
@@ -19297,9 +19297,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "butaniku-shogayaki.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/butaniku-shogayaki.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -19320,7 +19320,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/butaniku-shogayaki.webp",
       "cuisine": "japanese",
       "tags": [
         "japanese",
@@ -19438,9 +19438,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "nikujaga.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/nikujaga.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -19461,7 +19461,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/nikujaga.webp",
       "cuisine": "japanese",
       "tags": [
         "japanese",
@@ -19574,9 +19574,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "saba-shioyaki.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/saba-shioyaki.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -19596,7 +19596,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/saba-shioyaki.webp",
       "cuisine": "japanese",
       "tags": [
         "japanese",
@@ -19705,9 +19705,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "japanese-chicken-curry.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/japanese-chicken-curry.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -19725,7 +19725,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/japanese-chicken-curry.webp",
       "cuisine": "japanese",
       "tags": [
         "japanese",
@@ -19864,9 +19864,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "cold-soba-with-tofu-and-edamame.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/cold-soba-with-tofu-and-edamame.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -19888,7 +19888,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/cold-soba-with-tofu-and-edamame.webp",
       "cuisine": "japanese",
       "tags": [
         "japanese",
@@ -20000,9 +20000,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "crispy-tofu-banh-mi.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/crispy-tofu-banh-mi.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -20022,7 +20022,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/crispy-tofu-banh-mi.webp",
       "cuisine": "vietnamese",
       "tags": [
         "vietnamese",
@@ -20159,9 +20159,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "pad-thai-with-prawns.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/pad-thai-with-prawns.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -20181,7 +20181,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/pad-thai-with-prawns.webp",
       "cuisine": "thai",
       "tags": [
         "thai",
@@ -20307,9 +20307,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "aubergine-and-tofu-green-curry.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/aubergine-and-tofu-green-curry.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -20329,7 +20329,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/aubergine-and-tofu-green-curry.webp",
       "cuisine": "thai",
       "tags": [
         "thai",
@@ -20440,9 +20440,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "prawn-and-avocado-rice-paper-rolls.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/prawn-and-avocado-rice-paper-rolls.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -20460,7 +20460,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/prawn-and-avocado-rice-paper-rolls.webp",
       "cuisine": "vietnamese",
       "tags": [
         "vietnamese",
@@ -20578,9 +20578,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "massaman-beef-curry.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/massaman-beef-curry.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -20598,7 +20598,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/massaman-beef-curry.webp",
       "cuisine": "thai",
       "tags": [
         "thai",
@@ -20729,9 +20729,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "thai-red-curry-with-butternut-and-chicken.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/thai-red-curry-with-butternut-and-chicken.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -20751,7 +20751,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/thai-red-curry-with-butternut-and-chicken.webp",
       "cuisine": "thai",
       "tags": [
         "thai",
@@ -20853,9 +20853,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "gai-yang-with-cucumber-salad.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/gai-yang-with-cucumber-salad.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -20876,7 +20876,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/gai-yang-with-cucumber-salad.webp",
       "cuisine": "thai",
       "tags": [
         "thai",
@@ -21004,9 +21004,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "bun-cha.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/bun-cha.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -21027,7 +21027,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/bun-cha.webp",
       "cuisine": "vietnamese",
       "tags": [
         "vietnamese",
@@ -21172,9 +21172,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "bo-luc-lac.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/bo-luc-lac.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -21194,7 +21194,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/bo-luc-lac.webp",
       "cuisine": "vietnamese",
       "tags": [
         "vietnamese",
@@ -21327,9 +21327,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "gado-gado-with-egg-and-tofu.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/gado-gado-with-egg-and-tofu.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -21349,7 +21349,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/gado-gado-with-egg-and-tofu.webp",
       "cuisine": "indonesian",
       "tags": [
         "indonesian",
@@ -21487,9 +21487,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "singapore-noodles.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/singapore-noodles.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -21510,7 +21510,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/singapore-noodles.webp",
       "cuisine": "chinese",
       "tags": [
         "chinese",
@@ -21638,9 +21638,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "gochujang-tofu-with-sesame-rice-and-cucumber.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/gochujang-tofu-with-sesame-rice-and-cucumber.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -21660,7 +21660,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/gochujang-tofu-with-sesame-rice-and-cucumber.webp",
       "cuisine": "korean",
       "tags": [
         "korean",
@@ -21789,9 +21789,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "kimchi-fried-rice-with-tuna-mushrooms-and-egg.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/kimchi-fried-rice-with-tuna-mushrooms-and-egg.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -21813,7 +21813,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/kimchi-fried-rice-with-tuna-mushrooms-and-egg.webp",
       "cuisine": "korean",
       "tags": [
         "korean",
@@ -21930,9 +21930,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "japchae.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/japchae.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -21952,7 +21952,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/japchae.webp",
       "cuisine": "korean",
       "tags": [
         "korean",
@@ -22087,9 +22087,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "kimchi-jjigae.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/kimchi-jjigae.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -22111,7 +22111,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/kimchi-jjigae.webp",
       "cuisine": "korean",
       "tags": [
         "korean",
@@ -22225,9 +22225,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "jeyuk-bokkeum.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/jeyuk-bokkeum.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -22249,7 +22249,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/jeyuk-bokkeum.webp",
       "cuisine": "korean",
       "tags": [
         "korean",
@@ -22376,9 +22376,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "andong-jjimdak.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/andong-jjimdak.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -22398,7 +22398,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/andong-jjimdak.webp",
       "cuisine": "korean",
       "tags": [
         "korean",
@@ -22523,9 +22523,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "chicken-and-pepper-fajitas.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/chicken-and-pepper-fajitas.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -22545,7 +22545,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/chicken-and-pepper-fajitas.webp",
       "cuisine": "mexican",
       "tags": [
         "mexican",
@@ -22672,9 +22672,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "black-bean-and-sweet-potato-chilli.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/black-bean-and-sweet-potato-chilli.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -22692,7 +22692,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/black-bean-and-sweet-potato-chilli.webp",
       "cuisine": "mexican",
       "tags": [
         "mexican",
@@ -22820,9 +22820,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "black-bean-and-pepper-quesadillas.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/black-bean-and-pepper-quesadillas.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -22841,7 +22841,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/black-bean-and-pepper-quesadillas.webp",
       "cuisine": "mexican",
       "tags": [
         "mexican",
@@ -22963,9 +22963,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "smoky-prawn-tacos-with-cabbage-and-avocado.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/smoky-prawn-tacos-with-cabbage-and-avocado.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -22983,7 +22983,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/smoky-prawn-tacos-with-cabbage-and-avocado.webp",
       "cuisine": "mexican",
       "tags": [
         "mexican",
@@ -23104,9 +23104,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "sweet-potato-and-black-bean-burgers.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/sweet-potato-and-black-bean-burgers.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -23124,7 +23124,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/sweet-potato-and-black-bean-burgers.webp",
       "cuisine": "american",
       "tags": [
         "american",
@@ -23259,9 +23259,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "chicken-and-roasted-pepper-enchiladas.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/chicken-and-roasted-pepper-enchiladas.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -23280,7 +23280,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/chicken-and-roasted-pepper-enchiladas.webp",
       "cuisine": "mexican",
       "tags": [
         "mexican",
@@ -23405,9 +23405,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "roasted-squash-and-black-bean-burritos.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/roasted-squash-and-black-bean-burritos.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -23425,7 +23425,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/roasted-squash-and-black-bean-burritos.webp",
       "cuisine": "mexican",
       "tags": [
         "mexican",
@@ -23552,9 +23552,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "beef-and-black-bean-burrito-bowls.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/beef-and-black-bean-burrito-bowls.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -23572,7 +23572,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/beef-and-black-bean-burrito-bowls.webp",
       "cuisine": "mexican",
       "tags": [
         "mexican",
@@ -23718,9 +23718,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "lomo-saltado.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/lomo-saltado.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -23740,7 +23740,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/lomo-saltado.webp",
       "cuisine": "peruvian",
       "tags": [
         "peruvian",
@@ -23866,9 +23866,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "ropa-vieja.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/ropa-vieja.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -23887,7 +23887,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/ropa-vieja.webp",
       "cuisine": "cuban",
       "tags": [
         "cuban",
@@ -24026,9 +24026,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "carnitas-tacos.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/carnitas-tacos.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -24046,7 +24046,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/carnitas-tacos.webp",
       "cuisine": "mexican",
       "tags": [
         "mexican",
@@ -24168,9 +24168,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "sopa-de-tortilla-with-chicken.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/sopa-de-tortilla-with-chicken.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -24193,7 +24193,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/sopa-de-tortilla-with-chicken.webp",
       "cuisine": "mexican",
       "tags": [
         "mexican",
@@ -24321,9 +24321,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "ceviche-with-sweet-potato.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/ceviche-with-sweet-potato.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -24344,7 +24344,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/ceviche-with-sweet-potato.webp",
       "cuisine": "peruvian",
       "tags": [
         "peruvian",
@@ -24449,9 +24449,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "steak-with-chimichurri-and-potatoes.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/steak-with-chimichurri-and-potatoes.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -24470,7 +24470,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/steak-with-chimichurri-and-potatoes.webp",
       "cuisine": "argentinian",
       "tags": [
         "argentinian",
@@ -24582,9 +24582,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "picadillo-with-rice.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/picadillo-with-rice.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -24603,7 +24603,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/picadillo-with-rice.webp",
       "cuisine": "cuban",
       "tags": [
         "cuban",
@@ -24731,9 +24731,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "smoked-haddock-and-sweetcorn-chowder.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/smoked-haddock-and-sweetcorn-chowder.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -24751,7 +24751,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/smoked-haddock-and-sweetcorn-chowder.webp",
       "cuisine": "british",
       "tags": [
         "british",
@@ -24853,9 +24853,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "salmon-fishcakes-with-peas-and-lemon-yogurt.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/salmon-fishcakes-with-peas-and-lemon-yogurt.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -24874,7 +24874,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/salmon-fishcakes-with-peas-and-lemon-yogurt.webp",
       "cuisine": "british",
       "tags": [
         "british",
@@ -24992,9 +24992,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "sausage-and-root-vegetable-tray-roast.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/sausage-and-root-vegetable-tray-roast.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -25012,7 +25012,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/sausage-and-root-vegetable-tray-roast.webp",
       "cuisine": "british",
       "tags": [
         "british",
@@ -25114,9 +25114,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "cod-and-potato-fish-pie.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/cod-and-potato-fish-pie.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -25134,7 +25134,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/cod-and-potato-fish-pie.webp",
       "cuisine": "british",
       "tags": [
         "british",
@@ -25250,9 +25250,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "turkey-and-leek-puff-pastry-pie.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/turkey-and-leek-puff-pastry-pie.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -25271,7 +25271,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/turkey-and-leek-puff-pastry-pie.webp",
       "cuisine": "british",
       "tags": [
         "british",
@@ -25381,9 +25381,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "four-cheese-baked-macaroni-with-broccoli.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/four-cheese-baked-macaroni-with-broccoli.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -25402,7 +25402,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/four-cheese-baked-macaroni-with-broccoli.webp",
       "cuisine": "british",
       "tags": [
         "british",
@@ -25517,9 +25517,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "pan-fried-hake-with-pea-and-mint-mash.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/pan-fried-hake-with-pea-and-mint-mash.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -25537,7 +25537,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/pan-fried-hake-with-pea-and-mint-mash.webp",
       "cuisine": "british",
       "tags": [
         "british",
@@ -25633,9 +25633,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "tuna-and-sweetcorn-jacket-potatoes.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/tuna-and-sweetcorn-jacket-potatoes.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -25653,7 +25653,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/tuna-and-sweetcorn-jacket-potatoes.webp",
       "cuisine": "british",
       "tags": [
         "british",
@@ -25760,9 +25760,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "lamb-chops-with-crushed-peas-and-potatoes.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/lamb-chops-with-crushed-peas-and-potatoes.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -25781,7 +25781,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/lamb-chops-with-crushed-peas-and-potatoes.webp",
       "cuisine": "british",
       "tags": [
         "british",
@@ -25885,9 +25885,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "mushroom-and-chestnut-pot-pie.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/mushroom-and-chestnut-pot-pie.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -25906,7 +25906,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/mushroom-and-chestnut-pot-pie.webp",
       "cuisine": "british",
       "tags": [
         "british",
@@ -26015,9 +26015,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "cauliflower-cheese-with-crispy-potato-topping.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/cauliflower-cheese-with-crispy-potato-topping.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -26035,7 +26035,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/cauliflower-cheese-with-crispy-potato-topping.webp",
       "cuisine": "british",
       "tags": [
         "british",
@@ -26145,9 +26145,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "beef-meatball-subs-with-mozzarella.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/beef-meatball-subs-with-mozzarella.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -26165,7 +26165,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/beef-meatball-subs-with-mozzarella.webp",
       "cuisine": "american",
       "tags": [
         "american",
@@ -26283,9 +26283,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "lamb-and-lentil-shepherd-s-pie.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/lamb-and-lentil-shepherd-s-pie.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -26303,7 +26303,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/lamb-and-lentil-shepherd-s-pie.webp",
       "cuisine": "british",
       "tags": [
         "british",
@@ -26429,9 +26429,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "chicken-caesar-style-wraps.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/chicken-caesar-style-wraps.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -26451,7 +26451,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/chicken-caesar-style-wraps.webp",
       "cuisine": "british",
       "tags": [
         "british",
@@ -26564,9 +26564,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "smoked-mackerel-beetroot-and-potato-salad.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/smoked-mackerel-beetroot-and-potato-salad.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -26586,7 +26586,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/smoked-mackerel-beetroot-and-potato-salad.webp",
       "cuisine": "danish",
       "tags": [
         "danish",
@@ -26700,9 +26700,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "chicken-schnitzel-with-slaw-and-potato-wedges.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/chicken-schnitzel-with-slaw-and-potato-wedges.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -26721,7 +26721,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/chicken-schnitzel-with-slaw-and-potato-wedges.webp",
       "cuisine": "german",
       "tags": [
         "german",
@@ -26846,9 +26846,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "sausages-with-braised-cabbage-and-mash.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/sausages-with-braised-cabbage-and-mash.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -26866,7 +26866,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/sausages-with-braised-cabbage-and-mash.webp",
       "cuisine": "german",
       "tags": [
         "german",
@@ -26991,9 +26991,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "sweet-potato-and-peanut-stew.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/sweet-potato-and-peanut-stew.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -27011,7 +27011,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/sweet-potato-and-peanut-stew.webp",
       "cuisine": "african",
       "tags": [
         "african",
@@ -27154,9 +27154,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "beef-stroganoff-with-tagliatelle.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/beef-stroganoff-with-tagliatelle.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -27174,7 +27174,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/beef-stroganoff-with-tagliatelle.webp",
       "cuisine": "russian",
       "tags": [
         "russian",
@@ -27305,9 +27305,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "baked-trout-with-dill-potatoes-and-pressgurka.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/baked-trout-with-dill-potatoes-and-pressgurka.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -27325,7 +27325,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/baked-trout-with-dill-potatoes-and-pressgurka.webp",
       "cuisine": "swedish",
       "tags": [
         "swedish",
@@ -27441,9 +27441,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "golabki-with-mushrooms-spinach-and-rice.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/goabki-with-mushrooms-spinach-and-rice.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -27461,7 +27461,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/goabki-with-mushrooms-spinach-and-rice.webp",
       "cuisine": "polish",
       "tags": [
         "polish",
@@ -27590,9 +27590,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "joojeh-kabab-with-saffron-rice.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/joojeh-kabab-with-saffron-rice.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -27611,7 +27611,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/joojeh-kabab-with-saffron-rice.webp",
       "cuisine": "persian",
       "tags": [
         "persian",
@@ -27724,9 +27724,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "kuku-sabzi.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/kuku-sabzi.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -27744,7 +27744,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/kuku-sabzi.webp",
       "cuisine": "persian",
       "tags": [
         "persian",
@@ -27863,9 +27863,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "jollof-rice-with-chicken.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/jollof-rice-with-chicken.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -27885,7 +27885,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/jollof-rice-with-chicken.webp",
       "cuisine": "african",
       "tags": [
         "african",
@@ -28023,9 +28023,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "poulet-yassa.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/poulet-yassa.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -28046,7 +28046,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/poulet-yassa.webp",
       "cuisine": "senegalese",
       "tags": [
         "senegalese",
@@ -28160,9 +28160,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "brown-stew-chicken-with-rice-and-peas.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/brown-stew-chicken-with-rice-and-peas.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -28183,7 +28183,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/brown-stew-chicken-with-rice-and-peas.webp",
       "cuisine": "caribbean",
       "tags": [
         "caribbean",
@@ -28331,9 +28331,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "gulyas.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/gulyas.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -28351,7 +28351,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/gulyas.webp",
       "cuisine": "hungarian",
       "tags": [
         "hungarian",
@@ -28481,9 +28481,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "bigos.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/bigos.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -28503,7 +28503,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/bigos.webp",
       "cuisine": "polish",
       "tags": [
         "polish",
@@ -28642,9 +28642,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "chkmeruli.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/chkmeruli.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -28662,7 +28662,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/chkmeruli.webp",
       "cuisine": "georgian",
       "tags": [
         "georgian",
@@ -28768,9 +28768,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "carbonnade-flamande.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/carbonnade-flamande.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -28788,7 +28788,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/carbonnade-flamande.webp",
       "cuisine": "belgian",
       "tags": [
         "belgian",
@@ -28916,9 +28916,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "waterzooi.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/waterzooi.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -28938,7 +28938,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/waterzooi.webp",
       "cuisine": "belgian",
       "tags": [
         "belgian",
@@ -29070,9 +29070,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "jambalaya.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/jambalaya.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -29092,7 +29092,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/jambalaya.webp",
       "cuisine": "creole",
       "tags": [
         "creole",
@@ -29229,9 +29229,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "frikadeller-with-potatoes-and-cucumber-salad.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/frikadeller-with-potatoes-and-cucumber-salad.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -29249,7 +29249,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/frikadeller-with-potatoes-and-cucumber-salad.webp",
       "cuisine": "danish",
       "tags": [
         "danish",
@@ -29380,9 +29380,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "lemon-salmon-potato-and-green-bean-traybake.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/lemon-salmon-potato-and-green-bean-traybake.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -29400,7 +29400,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/lemon-salmon-potato-and-green-bean-traybake.webp",
       "cuisine": "british",
       "tags": [
         "british",
@@ -29497,9 +29497,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "pea-and-mint-omelette-with-potatoes.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/pea-and-mint-omelette-with-potatoes.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -29517,7 +29517,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/pea-and-mint-omelette-with-potatoes.webp",
       "cuisine": "british",
       "tags": [
         "british",
@@ -29618,9 +29618,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "turkey-burgers-with-roasted-peppers-and-feta.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/turkey-burgers-with-roasted-peppers-and-feta.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -29638,7 +29638,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/turkey-burgers-with-roasted-peppers-and-feta.webp",
       "cuisine": "mediterranean",
       "tags": [
         "mediterranean",
@@ -29751,9 +29751,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "sweet-potato-and-feta-hash-with-eggs.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/sweet-potato-and-feta-hash-with-eggs.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -29771,7 +29771,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/sweet-potato-and-feta-hash-with-eggs.webp",
       "cuisine": "american",
       "tags": [
         "american",
@@ -29882,9 +29882,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "pot-au-feu.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/pot-au-feu.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -29902,7 +29902,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/pot-au-feu.webp",
       "cuisine": "french",
       "tags": [
         "french",
@@ -30020,9 +30020,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "endives-au-jambon.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/endives-au-jambon.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -30040,7 +30040,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/endives-au-jambon.webp",
       "cuisine": "french",
       "tags": [
         "french",
@@ -30148,9 +30148,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "asparagus-with-soft-boiled-eggs-and-ham.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/asparagus-with-soft-boiled-eggs-and-ham.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -30168,7 +30168,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/asparagus-with-soft-boiled-eggs-and-ham.webp",
       "cuisine": "french",
       "tags": [
         "french",
@@ -30273,9 +30273,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "petits-pois-a-la-francaise-with-roast-chicken-thighs.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/petits-pois-a-la-francaise-with-roast-chicken-thighs.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -30293,7 +30293,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/petits-pois-a-la-francaise-with-roast-chicken-thighs.webp",
       "cuisine": "french",
       "tags": [
         "french",
@@ -30411,9 +30411,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "pumpkin-and-sage-risotto.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/pumpkin-and-sage-risotto.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -30431,7 +30431,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/pumpkin-and-sage-risotto.webp",
       "cuisine": "italian",
       "tags": [
         "italian",
@@ -30539,9 +30539,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "vignarola-with-poached-eggs.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/vignarola-with-poached-eggs.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -30559,7 +30559,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/vignarola-with-poached-eggs.webp",
       "cuisine": "italian",
       "tags": [
         "italian",
@@ -30691,9 +30691,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "spinach-and-ricotta-gnudi-with-tomato-sauce.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/spinach-and-ricotta-gnudi-with-tomato-sauce.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -30712,7 +30712,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/spinach-and-ricotta-gnudi-with-tomato-sauce.webp",
       "cuisine": "italian",
       "tags": [
         "italian",
@@ -30828,9 +30828,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "habas-con-jamon.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/habas-con-jamon.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -30848,7 +30848,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/habas-con-jamon.webp",
       "cuisine": "spanish",
       "tags": [
         "spanish",
@@ -30950,9 +30950,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "lahmacun.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/lahmacun.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -30973,7 +30973,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/lahmacun.webp",
       "cuisine": "turkish",
       "tags": [
         "turkish",
@@ -31123,9 +31123,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "hunkar-begendi.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/hunkar-begendi.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -31145,7 +31145,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/hunkar-begendi.webp",
       "cuisine": "turkish",
       "tags": [
         "turkish",
@@ -31276,9 +31276,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "kibbeh-bil-sayniyeh.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/kibbeh-bil-sayniyeh.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -31296,7 +31296,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/kibbeh-bil-sayniyeh.webp",
       "cuisine": "lebanese",
       "tags": [
         "lebanese",
@@ -31418,9 +31418,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "kotopoulo-me-araka.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/kotopoulo-me-araka.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -31438,7 +31438,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/kotopoulo-me-araka.webp",
       "cuisine": "greek",
       "tags": [
         "greek",
@@ -31556,9 +31556,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "ispanakl-yumurta.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/ispanakli-yumurta.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -31578,7 +31578,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/ispanakli-yumurta.webp",
       "cuisine": "turkish",
       "tags": [
         "turkish",
@@ -31695,9 +31695,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "mechoui-style-slow-roast-lamb-shoulder.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/mechoui-style-slow-roast-lamb-shoulder.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -31715,7 +31715,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/mechoui-style-slow-roast-lamb-shoulder.webp",
       "cuisine": "north african",
       "tags": [
         "north african",
@@ -31832,9 +31832,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "lablabi.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/lablabi.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -31852,7 +31852,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/lablabi.webp",
       "cuisine": "north african",
       "tags": [
         "north african",
@@ -31967,9 +31967,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "loubia-with-lamb.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/loubia-with-lamb.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -31987,7 +31987,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/loubia-with-lamb.webp",
       "cuisine": "north african",
       "tags": [
         "north african",
@@ -32106,9 +32106,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "chicken-korma.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/chicken-korma.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -32129,7 +32129,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/chicken-korma.webp",
       "cuisine": "indian",
       "tags": [
         "indian",
@@ -32271,9 +32271,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "fish-tikka.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/fish-tikka.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -32296,7 +32296,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/fish-tikka.webp",
       "cuisine": "indian",
       "tags": [
         "indian",
@@ -32447,9 +32447,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "moong-dal-khichdi-with-fried-eggs.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/moong-dal-khichdi-with-fried-eggs.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -32469,7 +32469,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/moong-dal-khichdi-with-fried-eggs.webp",
       "cuisine": "indian",
       "tags": [
         "indian",
@@ -32581,9 +32581,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "salmon-asparagus-and-new-potato-traybake.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/salmon-asparagus-and-new-potato-traybake.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -32601,7 +32601,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/salmon-asparagus-and-new-potato-traybake.webp",
       "cuisine": "british",
       "tags": [
         "british",
@@ -32705,9 +32705,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "hot-and-sour-soup-with-pork-and-tofu.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/hot-and-sour-soup-with-pork-and-tofu.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -32730,7 +32730,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/hot-and-sour-soup-with-pork-and-tofu.webp",
       "cuisine": "chinese",
       "tags": [
         "chinese",
@@ -32866,9 +32866,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "lion-s-head-meatballs-with-cabbage.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/lion-s-head-meatballs-with-cabbage.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -32889,7 +32889,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/lion-s-head-meatballs-with-cabbage.webp",
       "cuisine": "chinese",
       "tags": [
         "chinese",
@@ -33020,9 +33020,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "prawn-and-asparagus-stir-fry.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/prawn-and-asparagus-stir-fry.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -33042,7 +33042,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/prawn-and-asparagus-stir-fry.webp",
       "cuisine": "chinese",
       "tags": [
         "chinese",
@@ -33160,9 +33160,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "yakisoba-with-pork.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/yakisoba-with-pork.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -33180,7 +33180,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/yakisoba-with-pork.webp",
       "cuisine": "japanese",
       "tags": [
         "japanese",
@@ -33305,9 +33305,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "hambagu-japanese-hamburg-steak.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/hambagu-japanese-hamburg-steak.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -33325,7 +33325,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/hambagu-japanese-hamburg-steak.webp",
       "cuisine": "japanese",
       "tags": [
         "japanese",
@@ -33455,9 +33455,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "asparagus-butabara-maki-with-rice.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/asparagus-butabara-maki-with-rice.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -33477,7 +33477,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/asparagus-butabara-maki-with-rice.webp",
       "cuisine": "japanese",
       "tags": [
         "japanese",
@@ -33584,9 +33584,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "pho-bo.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/pho-bo.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -33606,7 +33606,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/pho-bo.webp",
       "cuisine": "vietnamese",
       "tags": [
         "vietnamese",
@@ -33769,9 +33769,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "ca-ri-ga-vietnamese-chicken-curry.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/ca-ri-ga-vietnamese-chicken-curry.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -33790,7 +33790,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/ca-ri-ga-vietnamese-chicken-curry.webp",
       "cuisine": "vietnamese",
       "tags": [
         "vietnamese",
@@ -33924,9 +33924,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "ayam-kecap-indonesian-sweet-soy-chicken.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/ayam-kecap-indonesian-sweet-soy-chicken.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -33947,7 +33947,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/ayam-kecap-indonesian-sweet-soy-chicken.webp",
       "cuisine": "indonesian",
       "tags": [
         "indonesian",
@@ -34070,9 +34070,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "haemul-pajeon-seafood-pancake.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/haemul-pajeon-seafood-pancake.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -34092,7 +34092,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/haemul-pajeon-seafood-pancake.webp",
       "cuisine": "korean",
       "tags": [
         "korean",
@@ -34208,9 +34208,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "bossam-korean-boiled-pork-wraps.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/bossam-korean-boiled-pork-wraps.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -34235,7 +34235,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/bossam-korean-boiled-pork-wraps.webp",
       "cuisine": "korean",
       "tags": [
         "korean",
@@ -34372,9 +34372,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "feijoada.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/feijoada.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -34392,7 +34392,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/feijoada.webp",
       "cuisine": "brazilian",
       "tags": [
         "brazilian",
@@ -34513,9 +34513,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "huevos-rancheros.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/huevos-rancheros.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -34535,7 +34535,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/huevos-rancheros.webp",
       "cuisine": "mexican",
       "tags": [
         "mexican",
@@ -34647,9 +34647,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "empanadas-de-carne.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/empanadas-de-carne.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -34668,7 +34668,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/empanadas-de-carne.webp",
       "cuisine": "argentinian",
       "tags": [
         "argentinian",
@@ -34795,9 +34795,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "fesenjan.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/fesenjan.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -34817,7 +34817,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/fesenjan.webp",
       "cuisine": "persian",
       "tags": [
         "persian",
@@ -34938,9 +34938,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "thieboudienne.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/thieboudienne.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -34962,7 +34962,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/thieboudienne.webp",
       "cuisine": "senegalese",
       "tags": [
         "senegalese",
@@ -35107,9 +35107,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "kasespatzle.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/kasespatzle.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -35128,7 +35128,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/kasespatzle.webp",
       "cuisine": "german",
       "tags": [
         "german",
@@ -35236,9 +35236,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "borscht-with-beef.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/borscht-with-beef.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -35256,7 +35256,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/borscht-with-beef.webp",
       "cuisine": "ukrainian",
       "tags": [
         "soup",
@@ -35388,9 +35388,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "misir-wot-with-eggs.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/misir-wot-with-eggs.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": false,
       "seasons": [
@@ -35411,7 +35411,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/misir-wot-with-eggs.webp",
       "cuisine": "ethiopian",
       "tags": [
         "ethiopian",
@@ -35519,9 +35519,9 @@
       ]
     },
     {
-      "has_illustration": false,
-      "illustration": null,
-      "photo_file": "radish-egg-and-smoked-trout-salad-with-new-potatoes.webp",
+      "has_illustration": true,
+      "illustration": "/recipe-photos/radish-egg-and-smoked-trout-salad-with-new-potatoes.webp",
+      "photo_file": null,
       "collection": "original",
       "weeknight_plate": true,
       "seasons": [
@@ -35539,7 +35539,7 @@
       "source_type": "seed",
       "ai_generated_recipe": true,
       "source_name": "Claude",
-      "image_url": null,
+      "image_url": "/recipe-photos/radish-egg-and-smoked-trout-salad-with-new-potatoes.webp",
       "cuisine": "danish",
       "tags": [
         "danish",
