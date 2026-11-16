@@ -275,7 +275,7 @@ weekend dishes, which moves the time mix towards the targets.
 240 recipes are written and in the seed library (`supabase/seed/recipes.json`):
 
 - the 127 kept and reworked dishes from the triage
-- 102 of the named additions
+- 101 of the named additions
 - 11 spring dishes added to fill the thinnest season
 - the plain pumpkin and sage risotto, which sits alongside the one with sausage
 
