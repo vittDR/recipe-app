@@ -1,8 +1,10 @@
+import { useRef } from 'react';
 import { createBrowserRouter, Navigate, NavLink, Outlet, useLocation } from 'react-router';
 import { Icon } from './components/Icon.tsx';
 import { ConfirmHost, Spinner, ToastHost } from './components/ui.tsx';
 import { useI18n } from './i18n/index.tsx';
 import { enableNavMotion, useNavDirection } from './lib/navMotion.ts';
+import { useScrollMemory } from './lib/scrollMemory.ts';
 import { useSession } from './lib/session.tsx';
 import { AccountScreen } from './screens/onboarding/Account.tsx';
 import { GoalsScreen } from './screens/onboarding/Goals.tsx';
@@ -40,7 +42,9 @@ const startsWithAny = (path: string, list: string[]) => list.some((p) => path ==
 function Gate() {
   const { loading, session, profile, household, goals } = useSession();
   const { pathname } = useLocation();
+  const scroller = useRef<HTMLDivElement>(null);
   useNavDirection();
+  useScrollMemory(scroller);
 
   let target: string | null = null;
   if (!loading) {
@@ -58,7 +62,7 @@ function Gate() {
   }
 
   return (
-    <div className="scroller">
+    <div className="scroller" ref={scroller}>
       <div className="app">
         {loading ? <Spinner /> : target && target !== pathname ? <Navigate to={target} replace /> : <Outlet />}
         <ToastHost />

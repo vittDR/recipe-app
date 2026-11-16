@@ -10,7 +10,17 @@ import './styles/tokens.css';
 import './styles/app.css';
 
 applyTheme(getTheme());
-registerSW({ immediate: true });
+// A new version takes over by itself, but reloading mid-use would throw away
+// where the person is: wait until the app is in the background.
+registerSW({
+  immediate: true,
+  onNeedReload: () => {
+    if (document.visibilityState === 'hidden') return window.location.reload();
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') window.location.reload();
+    });
+  },
+});
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

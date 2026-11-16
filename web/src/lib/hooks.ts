@@ -30,9 +30,21 @@ interface Loaded<T> {
 }
 
 /**
+ * The last data each query loaded, for this page's lifetime. A screen opened
+ * again (going back to it, mostly) shows it at once and refreshes behind it,
+ * instead of a spinner that loses the scroll position.
+ */
+const lastLoaded = new Map<string, unknown>();
+
+/** Forgets the copies kept in memory, e.g. on sign-out. */
+export function clearLiveMemory(): void {
+  lastLoaded.clear();
+}
+
+/**
  * Runs `fetcher` now and whenever one of `tables` changes for this filter.
- * `key` identifies the query; changing it re-subscribes. `initial` can give
- * stored data to show until the first load lands.
+ * `key` identifies the query; changing it re-subscribes. Until the first load
+ * lands it shows what the same key last loaded, else `initial` (stored data).
  */
 export function useLive<T>(
   key: string | null,
@@ -40,27 +52,44 @@ export function useLive<T>(
   tables: { table: string; filter?: string; event?: 'INSERT' | 'UPDATE' | 'DELETE' }[] = [],
   initial?: () => T | null,
 ): Loaded<T> {
-  const [data, setData] = useState<T | null>(() => initial?.() ?? null);
+  const remembered = () => (key && lastLoaded.has(key) ? (lastLoaded.get(key) as T) : null);
+  const [data, setState] = useState<T | null>(() => remembered() ?? initial?.() ?? null);
   const [loading, setLoading] = useState(data === null);
   const [error, setError] = useState<string | null>(null);
   const fetcherRef = useRef(fetcher);
   fetcherRef.current = fetcher;
+  const keyRef = useRef(key);
+  keyRef.current = key;
+
+  const setData = useCallback((update: T | null | ((data: T | null) => T | null)) => {
+    setState((cur) => {
+      const next = typeof update === 'function' ? (update as (data: T | null) => T | null)(cur) : update;
+      if (keyRef.current && next !== null) lastLoaded.set(keyRef.current, next);
+      return next;
+    });
+  }, []);
 
   const reload = useCallback(async () => {
+    const forKey = keyRef.current;
     try {
-      setData(await fetcherRef.current());
+      const fresh = await fetcherRef.current();
+      // A load for a key the screen has since left is not this query's data.
+      if (forKey !== keyRef.current) return;
+      setData(fresh);
       setError(null);
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     } finally {
-      setLoading(false);
+      if (forKey === keyRef.current) setLoading(false);
     }
-  }, []);
+  }, [setData]);
 
   const tablesKey = JSON.stringify(tables);
   useEffect(() => {
     if (!key) return;
-    if (!initial) setLoading(true);
+    const known = remembered();
+    if (known !== null) setState(known);
+    else if (!initial) setLoading(true);
     void reload();
     if (tables.length === 0) return;
     let channel = supabase.channel(`live:${key}:${Math.random().toString(36).slice(2)}`);
@@ -80,7 +109,7 @@ export function useLive<T>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key, tablesKey, reload]);
 
-  return { data, loading, error, reload, set: setData };
+  return { data, loading, error, reload, set: setData as Loaded<T>['set'] };
 }
 
 type Write = PromiseLike<{ error: { message: string } | null }>;
