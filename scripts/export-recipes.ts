@@ -67,7 +67,7 @@ writeFileSync(out, JSON.stringify({
   about: 'DINEAMITE seed recipes. has_illustration says whether a recipe has a photo (illustration is its path); '
     + 'those without one have photo_file: name the illustration after it (4:3, 900x675, WebP; docs/recipe-template.md#image-specs). '
     + 'weeknight_plate and plate_misses: docs/recipe-classification.md#weeknight-plate. '
-    + 'collection: web = taken from a recipe site, original = written for the app (references = the published recipes it was written from).',
+    + 'collection: web = taken from a recipe site, original = written for the app.',
   counts,
   recipes,
 }, null, 2) + '\n');

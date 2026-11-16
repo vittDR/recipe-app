@@ -24,7 +24,7 @@ recipes taken from recipe sites are not counted or changed by this plan.
   the "Everyday ingredients" filter leaves the recipe out. Never swap it for a
   supermarket stand-in.
 - **Protein is a guide, not a rule.** Most dishes land at 25 g or more, but a
-  dish is written as its references make it; protein isn't bolted on.
+  dish is written the way it's really made; protein isn't bolted on.
 - **Calories.** Hearty dishes over 1,000 kcal are fine, as long as most of the
   library sits between 500 and 900 kcal a serving.
 - **Air fryer.** It doesn't count as a pan, and many weeknight plates use it.
@@ -87,8 +87,9 @@ dishes** of its own, so the deck can always keep 3 of 12 cards for the season.
 
 1. **Pick from whatever is furthest below target:** plates first, then
    cuisine, base, protein and season.
-2. **Collect** with the guidelines. Write the dish from published recipes,
-   listed in its `references`, in our own words.
+2. **Write** with the guidelines: the dish as it's commonly made (looking at
+   published versions for inspiration is fine), with quantities and steps in
+   our own words. Don't name or link a source in the recipe.
 3. **Re-audit** after each batch.
    - `node scripts/build-seed-library.ts` prints the classification coverage.
    - `node scripts/export-recipes.ts` lists every recipe with its plate,
@@ -102,8 +103,12 @@ this plan, and 100 quick, healthy weeknight plates added because decks for
 
 - **Weeknight plates: 332 of 400 (83%).**
 - **Healthy and 40 min or less in total: 205** (it was 105). Healthy in all: 311.
-- **The 100 quick, healthy plates** all take 30 min or less in total, have at
-  least 30 g of protein and 500–750 kcal, and 42 use the air fryer.
+- **The 100 quick, healthy plates** all take 30 min or less in total and are
+  healthy by the app's rule, which is about the plate's make-up, not its
+  numbers (a protein, a base, at least 75 g of vegetables a serving, nothing
+  fried, creamy or cheesy). They were also written to at least 30 g of
+  protein and 500–750 kcal, but those are targets, not part of healthy. 42
+  use the air fryer.
 - **Seasons:** 316 of the 400 are all year (79%). The others are the key
   seasonal dishes: 22 spring, 26 summer, 22 autumn and 30 winter.
 - **Illustrations:** 300 have one. The 100 new plates don't yet.
