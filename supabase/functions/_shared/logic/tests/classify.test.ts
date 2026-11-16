@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  canonicalFeature, classificationFeatures, classifyRecipe, classifyRow, parseTrait, type ClassifyInput,
+  canonicalFeature, classificationFeatures, classifyRecipe, classifyRow, isHealthy, isVegetable, parseTrait, type ClassifyInput,
 } from '../classify.ts';
 import { Catalog, type CatalogEntry } from '../ingredients.ts';
 
@@ -20,6 +20,12 @@ const catalog = new Catalog([
   e('vegetable oil', { kcal_100g: 884, fat_100g: 100, is_staple: true }),
   e('parmesan', { kcal_100g: 431, protein_100g: 38, fat_100g: 29, traits: ['protein:dairy', 'sauce:cheese@20'] }),
   e('pasta', { kcal_100g: 371, protein_100g: 13, fat_100g: 1.5, carbs_100g: 75, fiber_100g: 3, traits: ['starch:pasta'] }),
+  e('chicken breast', { kcal_100g: 120, protein_100g: 23, fat_100g: 1.5, traits: ['protein:poultry'], diet_class: 'meat' }),
+  e('broccoli', { kcal_100g: 34, protein_100g: 2.8, fat_100g: 0.4, fiber_100g: 2.6, default_aisle: 'produce' }),
+  e('garlic', { kcal_100g: 149, default_aisle: 'produce' }),
+  e('lemon', { kcal_100g: 29, default_aisle: 'produce', traits: ['sauce:citrus'] }),
+  e('passata', { kcal_100g: 30, default_aisle: 'pantry', traits: ['sauce:tomato', 'liquid'] }),
+  e('cream', { kcal_100g: 340, protein_100g: 2, fat_100g: 36, traits: ['sauce:cream'] }),
   e('mystery'),
 ]);
 
@@ -115,6 +121,44 @@ test('fat is unknown when ingredients without it carry the calories', () => {
   assert.notEqual(c.nutrition.fat_g, null); // mystery has fat_100g 0 in this catalogue
   assert.equal(d.nutrition.fat_g, null);
   assert.ok(!d.nutrition_goals.includes('lean'));
+});
+
+test('vegetables: produce that isn\'t a starch, citrus juice or a rich ingredient, plus tinned vegetables', () => {
+  assert.ok(isVegetable(catalog.find('broccoli')));
+  assert.ok(isVegetable(catalog.find('passata')));
+  assert.ok(!isVegetable(catalog.find('potato'))); // a starch
+  assert.ok(!isVegetable(catalog.find('garlic'))); // an aromatic
+  assert.ok(!isVegetable(catalog.find('lemon'))); // juice
+  assert.ok(!isVegetable(catalog.find('coconut milk')));
+  assert.equal(classifyRecipe(input({ lines: [['broccoli', 300, 'g'], ['potato', 400, 'g']] })).veg_g, 150);
+});
+
+test('healthy is a balanced plate: a protein, vegetables and a base, nothing fried, creamy or cheesy', () => {
+  // Chicken breast with a sauce, rice and broccoli, for two: healthy, however big the plate.
+  const plate = (lines: [string, number | null, string | null][], over: Partial<ClassifyInput> = {}) => {
+    const i = input({ steps: ['Pan-fry the chicken.', 'Boil the rice.', 'Steam the broccoli.'], lines, ...over });
+    return isHealthy(i.tags, classifyRecipe(i));
+  };
+  const chickenRiceBroccoli: [string, number | null, string | null][] = [
+    ['chicken breast', 360, 'g'], ['rice', 160, 'g'], ['broccoli', 300, 'g'], ['vegetable oil', 1, 'tbsp'],
+  ];
+  assert.ok(plate(chickenRiceBroccoli));
+  assert.ok(plate(chickenRiceBroccoli.map(([n, q, u]) => [n, q! * 1.5, u]))); // a bigger plate is still healthy
+  assert.ok(!plate(chickenRiceBroccoli.filter(([n]) => n !== 'broccoli'))); // no vegetables
+  assert.ok(!plate(chickenRiceBroccoli.filter(([n]) => n !== 'rice'))); // no base
+  assert.ok(!plate(chickenRiceBroccoli.filter(([n]) => n !== 'chicken breast'))); // no protein
+  assert.ok(!plate([...chickenRiceBroccoli, ['cream', 200, 'ml']])); // creamy
+  assert.ok(!plate([...chickenRiceBroccoli, ['parmesan', 80, 'g']])); // cheesy
+  assert.ok(!plate(chickenRiceBroccoli, { steps: ['Deep-fry the chicken.'] }));
+  assert.ok(!plate(chickenRiceBroccoli, { tags: ['treat'] }));
+});
+
+test('a deep frying pan or an air fryer is not deep-frying', () => {
+  const methods = (step: string) => classifyRecipe(input({ steps: [step], lines: [['cod fillet', 200, 'g']] })).cooking_methods;
+  assert.ok(!methods('Soften the onion in a deep frying pan.').includes('deep_fried'));
+  assert.ok(!methods('Air-fry the cod for 12 minutes.').includes('deep_fried'));
+  assert.ok(!methods('Faites cuire à la friteuse à air 12 minutes.').includes('deep_fried'));
+  assert.ok(methods('Deep-fry the cod until golden.').includes('deep_fried'));
 });
 
 test('stir-fry is not also pan-frying; roast wins over baked', () => {

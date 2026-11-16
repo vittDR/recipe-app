@@ -65,6 +65,7 @@ for the deck and learning.
 | `seasons` | spring, summer, autumn, winter (all four = all year) | season tags (sourced), else `ingredient_catalog.seasons` of the main ingredients (below) |
 | `weeknight_plate`, `plate_misses` | true/false, and the rules it misses | times, equipment, difficulty, nutrition and base (below) |
 | `nutrition` | kcal, protein, fat, carbs, fibre per serving | `estimateMacros()`; a nutrient is null when ingredients without it carry over a tenth of the calories |
+| `veg_g` | grams of vegetables per serving | `isVegetable()`: produce that isn't a starch, citrus or above 120 kcal/100 g (garlic, avocado), plus tinned tomatoes and vegetables; optional lines left out |
 | `nutrition_goals` | high_protein, lean, low_kcal, high_fibre | numbers only (below) |
 | `meal_intents` | comfort, indulgent, light, fuel, everyday, special_occasion | mood tags (sourced), then rules (below) |
 
@@ -98,10 +99,13 @@ for. Keeping them apart lets a turkey chilli be both lean and comfort food.
 | special_occasion | `fancy` tag, or hard |
 
 **Healthy** (`isHealthy`: the Recipes tab's filter and the deck's healthy mood)
-is about what the plate is made of, not its size, since portions are scaled to
-each eater: ≥ 20 % of calories from protein, ≤ 35 % from fat, ≥ 10 g fibre per
-1000 kcal, and never a treat or indulgent. Each bound sits near the library's
-median; together they pick about one recipe in six.
+is a balanced plate, not a set of macro targets: a protein (paneer and
+halloumi count), a base (a starch, or pulses), at least 75 g of vegetables a
+serving, and nothing deep-fried, no cream, cheese or mayonnaise sauce, no
+gratin or pizza, no `treat` tag. Fat over half the calories is the only
+number, a loose guard against greasy plates. Plate size never counts: portions
+are scaled to each eater. Chicken, rice and broccoli is healthy; about 70 % of
+the library is.
 
 ## Catalogue traits
 

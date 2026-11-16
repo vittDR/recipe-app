@@ -21,19 +21,7 @@ test('one pot means exactly one pot, pan or dish', () => {
   assert.ok(!matchesFilter(recipe({ equipment: null }), 'one_pot'));
 });
 
-test('healthy: by composition, whatever the size; never a treat or indulgent', () => {
-  const classified = (nutrition: { kcal: number; protein_g: number; fat_g: number | null; fiber_g: number }, intents: string[] = []) =>
-    recipe({ classification: { nutrition: { carbs_g: null, estimated: false, ...nutrition }, meal_intents: intents } as never });
-  // 860 kcal, 25% protein, 31% fat, 12 g fibre per 1000 kcal: a big plate, still healthy.
-  const big = { kcal: 860, protein_g: 54, fat_g: 30, fiber_g: 10.5 };
-  assert.ok(matchesFilter(classified(big), 'healthy'));
-  assert.ok(!matchesFilter({ ...classified(big), tags: ['treat'] }, 'healthy'));
-  assert.ok(!matchesFilter(classified(big, ['indulgent']), 'healthy'));
-  assert.ok(!matchesFilter(classified({ ...big, protein_g: 40 }), 'healthy')); // 19% protein
-  assert.ok(!matchesFilter(classified({ ...big, fat_g: 36 }), 'healthy')); // 38% fat
-  assert.ok(!matchesFilter(classified({ ...big, fiber_g: 8 }), 'healthy')); // 9 g / 1000 kcal
-  assert.ok(!matchesFilter(classified({ ...big, fat_g: null }), 'healthy'));
-  // Unclassified: only its own tag says so, never its size.
+test('healthy: the classification decides; unclassified recipes only by their own tag, never their size', () => {
   assert.ok(!matchesFilter(recipe({ kcalPerServing: 400 }), 'healthy'));
   assert.ok(matchesFilter(recipe({ tags: ['healthy'] }), 'healthy'));
 });

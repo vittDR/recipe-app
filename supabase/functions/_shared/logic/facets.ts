@@ -77,7 +77,7 @@ const has = (r: FacetRecipe, tag: string) => r.tags.some((t) => t.toLowerCase() 
 export function matchesFilter(r: FacetRecipe, f: RecipeFilter): boolean {
   switch (f) {
     case 'healthy':
-      // Composition, not size (classify.ts); unclassified recipes fall back to their own tag.
+      // A balanced plate (classify.ts); unclassified recipes fall back to their own tag.
       if (r.classification) return isHealthy(r.tags, r.classification);
       return has(r, 'healthy');
     case 'comfort':

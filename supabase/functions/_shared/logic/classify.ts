@@ -15,7 +15,7 @@
 import { type Difficulty, type Equipment } from './facets.ts';
 import { type CatalogEntry, type Catalog, estimateMacros, gramsOf, type NormalisedIngredient } from './ingredients.ts';
 
-export const CLASSIFICATION_VERSION = 4;
+export const CLASSIFICATION_VERSION = 5;
 
 export const PROTEIN_GROUPS = [
   'poultry', 'beef', 'pork', 'lamb', 'veal', 'game', 'offal', 'fish', 'shellfish', 'eggs', 'legumes', 'soy', 'dairy',
@@ -75,21 +75,49 @@ export const HIGH_PROTEIN_MIN_G = 30;
 /** Share of calories from protein for high protein: 25% is about 6 g per 100 kcal. */
 export const HIGH_PROTEIN_MIN_SHARE = 0.25;
 /**
- * Healthy: what the plate is made of, not how big it is (portions are scaled to
- * each eater), so it holds for anyone. Calibrated on the library: each bound is
- * near its median, together about one recipe in six.
+ * Healthy means a balanced plate rather than a set of macro targets: a protein,
+ * a real portion of vegetables and a carb base, and nothing fried, creamy or
+ * cheesy. Chicken, rice and broccoli is healthy; a gratin or katsu isn't.
  */
-export const HEALTHY_MIN_PROTEIN_SHARE = 0.2;
-export const HEALTHY_MAX_FAT_SHARE = 0.35;
-export const HEALTHY_MIN_FIBRE_PER_1000_KCAL = 10;
+/** About a portion of vegetables per serving (300 g for four counts). */
+export const HEALTHY_MIN_VEG_G = 75;
+/**
+ * Only a loose guard against greasy plates (pork belly, sausages); olive oil on
+ * fish and vegetables stays under it. The dish's make-up does the real work.
+ */
+export const HEALTHY_MAX_FAT_SHARE = 0.5;
+const RICH_SAUCES: readonly SauceFamily[] = ['cream', 'cheese', 'mayonnaise'];
+const RICH_DISHES: readonly DishFamily[] = ['gratin', 'pizza'];
+/** Fresh or frozen produce above this many kcal per 100 g isn't counted as vegetables (avocado, cassava, garlic, dried herbs). */
+const VEG_MAX_KCAL_100G = 120;
+/** Vegetables from the pantry aisle: tins and jars of vegetables, not sauces or pulses. */
+const PANTRY_VEG = new Set(['canned tomatoes', 'passata', 'bamboo shoots', 'corn', 'sauerkraut', 'kimchi', 'water chestnuts']);
 
-/** Healthy by composition, never a treat or an indulgent dish; false when fat or fibre isn't known. */
-export function isHealthy(tags: string[], c: Pick<RecipeClassification, 'nutrition' | 'meal_intents'> | null | undefined): boolean {
-  if (!c || tags.some((t) => t.toLowerCase() === 'treat') || c.meal_intents.includes('indulgent')) return false;
-  const { kcal, protein_g: protein, fat_g: fat, fiber_g: fiber } = c.nutrition;
-  if (!kcal || protein === null || fat === null || fiber === null) return false;
-  return (protein * 4) / kcal >= HEALTHY_MIN_PROTEIN_SHARE && (fat * 9) / kcal <= HEALTHY_MAX_FAT_SHARE
-    && (fiber * 1000) / kcal >= HEALTHY_MIN_FIBRE_PER_1000_KCAL;
+/** A vegetable (or fruit) by its catalogue entry: produce that isn't a starch, citrus juice or a rich ingredient, plus tinned vegetables. */
+export function isVegetable(e: CatalogEntry | null | undefined): boolean {
+  if (!e) return false;
+  if (PANTRY_VEG.has(e.name)) return true;
+  if (e.default_aisle !== 'produce' && e.default_aisle !== 'frozen') return false;
+  if ((e.kcal_100g ?? 0) > VEG_MAX_KCAL_100G) return false;
+  return !traitsOf(e).some((t) => t.kind === 'starch' || (t.kind === 'sauce' && t.value === 'citrus'));
+}
+
+type HealthyFields = 'nutrition' | 'veg_g' | 'protein_groups' | 'starch_bases' | 'sauce_families'
+  | 'dish_families' | 'cooking_methods';
+
+/** A balanced plate (above); false when the ingredients couldn't be read. */
+export function isHealthy(tags: string[], c: Pick<RecipeClassification, HealthyFields> | null | undefined): boolean {
+  if (!c || c.veg_g === null || !c.protein_groups || !c.starch_bases) return false;
+  // Not the indulgent intent: part of it is plate size, which portions take care of.
+  if (tags.some((t) => t.toLowerCase() === 'treat')) return false;
+  if (c.cooking_methods.includes('deep_fried') || c.dish_families.some((d) => RICH_DISHES.includes(d))) return false;
+  if (c.sauce_families?.some((f) => RICH_SAUCES.includes(f))) return false;
+  const { kcal, fat_g: fat } = c.nutrition;
+  if (kcal && fat !== null && (fat * 9) / kcal > HEALTHY_MAX_FAT_SHARE) return false;
+  // Paneer and halloumi count (a cheese sauce is ruled out above); pulses are both a protein and a base (dal, chilli).
+  const protein = c.protein_groups.length > 0;
+  const base = c.starch_bases.length > 0 || c.protein_groups.includes('legumes');
+  return protein && base && c.veg_g >= HEALTHY_MIN_VEG_G;
 }
 
 /** Lean: at most this share of calories from fat, and not a huge plate. */
@@ -179,6 +207,8 @@ export interface RecipeClassification {
   seasons: Season[] | null;
   /** Per serving. */
   nutrition: Nutrition;
+  /** Grams of vegetables per serving (isVegetable), optional lines left out; null when no ingredient could be read. */
+  veg_g: number | null;
   nutrition_goals: NutritionGoal[];
   /** A weeknight plate (PLATE_*): what most of the library and most of a deck should be. */
   weeknight_plate: boolean;
@@ -262,6 +292,7 @@ const METHOD_WORDS: [CookingMethod, RegExp][] = ([
   ['boiled', ['boil*', 'bouillir', 'bouillante*', 'ebullition', 'bolli*', 'bollente', 'salted water', 'eau salee',
     'acqua salata']],
 ] as [CookingMethod, string[]][]).map(([m, w]) => [m, matcher(w)]);
+const AIR_AND_PANS = / (?:deep (?:frying |fry )?(?:pan|pans|skillet|skillets)|friteuse a air|friteuse sans huile|air fr[a-z]*)(?= )/g;
 const HEAT_METHODS = new Set<CookingMethod>(COOKING_METHODS.filter((m) => m !== 'no_cook'));
 
 /** Tags that already name something classified: the tag is sourced, the classification follows it. */
@@ -378,7 +409,8 @@ export function classifyRecipe(input: ClassifyInput): RecipeClassification {
   // How it's cooked: steps, then tags and equipment.
   const steps = textKey(input.steps.join(' . '));
   const methods = new Set<CookingMethod>();
-  let rest = steps;
+  // A deep frying pan and an air fryer (une friteuse à air) are not deep-frying.
+  let rest = steps.replace(AIR_AND_PANS, ' ');
   for (const [method, re] of METHOD_WORDS) {
     if (has(rest, re)) {
       methods.add(method);
@@ -479,6 +511,7 @@ export function classifyRecipe(input: ClassifyInput): RecipeClassification {
       ? SEASONS.filter((x) => tags.includes(x))
       : readable ? recipeSeasons(required, perServing) : null,
     nutrition,
+    veg_g: readable ? Math.round(required.filter((i) => isVegetable(i.catalog)).reduce((sum, i) => sum + (perServing(i) ?? 0), 0)) : null,
     nutrition_goals: ordered(NUTRITION_GOALS, goals),
     meal_intents: ordered(MEAL_INTENTS, intents),
     ...plate(input, nutrition, starches.size > 0 || legumeGrams(required, perServing) >= PLATE_LEGUME_BASE_G),
