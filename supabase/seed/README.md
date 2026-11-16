@@ -8,7 +8,7 @@
   - Each one was written for the app, informed by how the dish is commonly made (proportions, technique, times and temperatures), with quantities and steps in our own words. The recipes don't name or link any source.
   - They keep the dish's real ingredients: anything most French supermarkets don't sell is flagged `exotic` in the catalogue rather than swapped.
   - They are `ai_generated_recipe: true` with no `source_url`, so they belong to the `original` collection. All of them have illustrations (supplied as 900×675 WebP, re-encoded to about 100 KB where larger).
-- **100 quick, healthy weeknight plates** (November 2026), written the same way. All take 30 min or less in total and are healthy by the app's rule, which looks at what's on the plate rather than its numbers (see [recipe-classification.md](../../docs/recipe-classification.md)). They were also written to at least 30 g of protein and 500–750 kcal as targets. 42 use the air fryer. No illustrations yet.
+- **100 quick, healthy weeknight plates** (November 2026), written the same way. All take 30 min or less in total and are healthy by the app's rule, which looks at what's on the plate rather than its numbers (see [recipe-classification.md](../../docs/recipe-classification.md)). Portions are each dish's normal ones, with no calorie or protein target. 42 use the air fryer. No illustrations yet.
 
 | File | What it is |
 | --- | --- |

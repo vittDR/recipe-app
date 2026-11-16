@@ -51219,7 +51219,7 @@
       },
       {
         "id": "93d5016a-b6b4-5831-b78c-f55f53a4a1bb",
-        "text": "130 g pasta, orzo"
+        "text": "150 g pasta, orzo"
       },
       {
         "id": "ba7a64b8-74d2-56b6-b70e-f5781d05ea12",
@@ -51361,11 +51361,11 @@
       },
       {
         "id": "639cf53a-6a6d-51fd-b1fa-d79faad7b006",
-        "text": "2 tsp vegetable oil"
+        "text": "1 tbsp vegetable oil"
       },
       {
         "id": "3857c2dc-6bc7-5e58-901e-4411c74fcbb3",
-        "text": "130 g noodles, egg noodles"
+        "text": "150 g noodles, egg noodles"
       },
       {
         "id": "b3df6f43-ceaf-5166-847c-69aafdcdbeff",
@@ -51408,7 +51408,7 @@
   },
   {
     "id": "d7abf651-5d99-580a-8c8f-3a5ce00d0f20",
-    "title": "Pollo saltado with air-fryer potatoes",
+    "title": "Pollo saltado with air-fryer potatoes and rice",
     "language": "en",
     "servings": 2,
     "prep_min": 10,
@@ -51426,7 +51426,7 @@
     ],
     "difficulty": "easy",
     "equipment": {
-      "pots": 1,
+      "pots": 2,
       "oven": false,
       "special": [
         "air fryer"
@@ -51484,37 +51484,44 @@
       {
         "id": "9e2f6b16-a379-5b22-b3e2-7b4759441280",
         "text": "black pepper"
+      },
+      {
+        "id": "09db194d-4cdd-5818-b246-0eafb288d26f",
+        "text": "140 g rice"
       }
     ],
     "steps": [
+      "Rinse the rice and cook it covered in 210 ml salted water on low heat for 12 min, then rest with the lid on.",
       "Toss the potato batons with 1 tsp oil and a pinch of salt and air-fry at 200°C for 18–20 min, shaking twice, until golden and crisp.",
       "Season the chicken with the cumin, salt and pepper.",
       "When the potatoes have 8 min left, heat the rest of the oil in a wok over very high heat and sear the chicken for 4–5 min until browned and cooked through.",
       "Add the garlic and aji amarillo paste, then the onion, and toss for 1 min so the onion stays crunchy.",
       "Add the tomato, then pour the soy sauce and vinegar around the hot wok and toss for 30 seconds until it sizzles into a light sauce.",
-      "Fold in the potatoes and coriander and serve straight away."
+      "Fold in the potatoes and coriander and serve straight away with the rice."
     ],
     "translations": {
       "fr": {
-        "title": "Pollo saltado et pommes de terre à l'air fryer",
+        "title": "Pollo saltado, pommes de terre à l'air fryer et riz",
         "steps": [
+          "Rincer le riz et le cuire à couvert dans 210 ml d'eau salée 12 min à feu doux, puis laisser reposer à couvert.",
           "Mélanger les frites avec 1 c. à café d'huile et une pincée de sel et les cuire à l'air fryer à 200 °C pendant 18 à 20 min en secouant deux fois, jusqu'à ce qu'elles soient dorées et croustillantes.",
           "Assaisonner le poulet avec le cumin, du sel et du poivre.",
           "Quand il reste 8 min aux frites, chauffer le reste de l'huile dans un wok à feu très vif et saisir le poulet 4 à 5 min jusqu'à ce qu'il soit doré et cuit.",
           "Ajouter l'ail et la pâte d'ají amarillo, puis l'oignon, et faire sauter 1 min pour que l'oignon reste croquant.",
           "Ajouter la tomate, puis verser la sauce soja et le vinaigre sur les bords du wok chaud et faire sauter 30 secondes, jusqu'à ce qu'ils grésillent en une sauce légère.",
-          "Ajouter les frites et la coriandre et servir aussitôt."
+          "Ajouter les frites et la coriandre et servir aussitôt avec le riz."
         ]
       },
       "it": {
-        "title": "Pollo saltado con patate in friggitrice ad aria",
+        "title": "Pollo saltado con patate in friggitrice ad aria e riso",
         "steps": [
+          "Sciacquare il riso e cuocerlo coperto in 210 ml d'acqua salata a fuoco basso per 12 min, poi lasciarlo riposare coperto.",
           "Condire i bastoncini di patata con 1 cucchiaino d'olio e un pizzico di sale e cuocerli in friggitrice ad aria a 200 °C per 18–20 min, scuotendo due volte, finché sono dorati e croccanti.",
           "Condire il pollo con cumino, sale e pepe.",
           "Quando alle patate mancano 8 min, scaldare il resto dell'olio in un wok a fuoco vivissimo e scottare il pollo per 4–5 min finché è dorato e cotto.",
           "Unire aglio e pasta di ají amarillo, poi la cipolla, e saltare 1 min perché la cipolla resti croccante.",
           "Aggiungere il pomodoro, poi versare salsa di soia e aceto lungo i bordi del wok caldo e saltare 30 secondi finché sfrigolano in un sughetto leggero.",
-          "Unire le patate e il coriandolo e servire subito."
+          "Unire le patate e il coriandolo e servire subito con il riso."
         ]
       }
     }
@@ -51655,7 +51662,7 @@
     "ingredients": [
       {
         "id": "378c0475-8cbc-51f0-91f1-ef74ce67d09b",
-        "text": "300 g chicken thigh, boneless, skinless"
+        "text": "320 g chicken thigh, boneless, skinless"
       },
       {
         "id": "b106083a-44db-5798-a83e-a7f3877ddaea",
@@ -51679,15 +51686,15 @@
       },
       {
         "id": "ad931370-2e79-5413-82eb-71da2ad79732",
-        "text": "2 tsp olive oil"
+        "text": "1 tbsp olive oil"
       },
       {
         "id": "6066467b-ef37-53fc-b562-9c099ef5505c",
-        "text": "80 g rice"
+        "text": "120 g rice"
       },
       {
         "id": "fbe8e572-02af-5d3f-8fa1-4b0ab79ff6e3",
-        "text": "200 g black beans, drained"
+        "text": "240 g black beans, drained"
       },
       {
         "id": "71f97b3d-2de2-5f02-87fe-81446cbde7a6",
@@ -51718,7 +51725,7 @@
     "steps": [
       "Whisk the orange and lime juice with the garlic, half the cumin, the oregano, the oil, salt and pepper: this is the mojo.",
       "Toss the chicken in a third of the mojo and air-fry at 200°C for 16–18 min, turning halfway, until browned and 75°C inside.",
-      "Meanwhile rinse the rice and cook it covered in 125 ml salted water on low heat for 12 min.",
+      "Meanwhile rinse the rice and cook it covered in 180 ml salted water on low heat for 12 min.",
       "In a second pan, soften the onion and green pepper in 2 tbsp of the mojo for 5 min, then add the black beans, bay leaf, the rest of the cumin and 4 tbsp water and simmer 8 min.",
       "Slice the chicken and spoon the remaining mojo over it.",
       "Serve with the rice and black beans, scattered with coriander."
@@ -51729,7 +51736,7 @@
         "steps": [
           "Fouetter les jus d'orange et de citron vert avec l'ail, la moitié du cumin, l'origan, l'huile, du sel et du poivre : c'est le mojo.",
           "Enrober le poulet d'un tiers du mojo et le cuire à l'air fryer à 200 °C pendant 16 à 18 min en le retournant à mi-cuisson, jusqu'à ce qu'il soit doré et à 75 °C à cœur.",
-          "Pendant ce temps, rincer le riz et le cuire à couvert dans 125 ml d'eau salée 12 min à feu doux.",
+          "Pendant ce temps, rincer le riz et le cuire à couvert dans 180 ml d'eau salée 12 min à feu doux.",
           "Dans une seconde casserole, faire revenir l'oignon et le poivron vert dans 2 c. à soupe de mojo 5 min, puis ajouter les haricots noirs, le laurier, le reste du cumin et 4 c. à soupe d'eau et laisser mijoter 8 min.",
           "Trancher le poulet et l'arroser du reste de mojo.",
           "Servir avec le riz et les haricots noirs, parsemés de coriandre."
@@ -51740,7 +51747,7 @@
         "steps": [
           "Sbattere i succhi d'arancia e lime con aglio, metà del cumino, origano, olio, sale e pepe: è il mojo.",
           "Condire il pollo con un terzo del mojo e cuocerlo in friggitrice ad aria a 200 °C per 16–18 min, girandolo a metà, finché è dorato e a 75 °C al cuore.",
-          "Nel frattempo sciacquare il riso e cuocerlo coperto in 125 ml d'acqua salata a fuoco basso per 12 min.",
+          "Nel frattempo sciacquare il riso e cuocerlo coperto in 180 ml d'acqua salata a fuoco basso per 12 min.",
           "In un secondo tegame stufare cipolla e peperone verde in 2 cucchiai di mojo per 5 min, poi unire fagioli neri, alloro, il resto del cumino e 4 cucchiai d'acqua e cuocere 8 min.",
           "Affettare il pollo e irrorarlo con il resto del mojo.",
           "Servire con riso e fagioli neri, con coriandolo sopra."
@@ -51908,7 +51915,7 @@
     "ingredients": [
       {
         "id": "82147016-50b0-5ff0-af15-d79b9efd7e9e",
-        "text": "140 g noodles, wheat or egg noodles"
+        "text": "180 g noodles, wheat or egg noodles"
       },
       {
         "id": "3e8fba17-2ab1-581e-8b5d-c466376df0e2",
@@ -51920,7 +51927,7 @@
       },
       {
         "id": "e65d96fe-984b-5fc9-b550-d0dcf1c3c06c",
-        "text": "300 g ground turkey"
+        "text": "200 g ground turkey"
       },
       {
         "id": "4187cd45-e09b-50a6-9e30-77589f190a7b",
@@ -52629,7 +52636,7 @@
       },
       {
         "id": "eed47aec-d1a7-5a45-a472-f3c997afad71",
-        "text": "130 g rice, basmati"
+        "text": "150 g rice, basmati"
       },
       {
         "id": "e8f1fcdf-0b6f-55b7-b878-4da0bf7ce09a",
@@ -52689,7 +52696,7 @@
       },
       {
         "id": "d8f1ce74-dbde-5028-86bf-b71f0608fb3b",
-        "text": "200 g greek yogurt"
+        "text": "150 g plain yogurt"
       },
       {
         "id": "d752a970-cd89-51d4-9bda-fb4400b8e7ad",
@@ -52714,7 +52721,7 @@
       "Meanwhile rinse the rice in several changes of water until it runs clear.",
       "Heat the oil in a lidded pan and sizzle the cumin, bay leaf, cardamom and cinnamon for 30 seconds, then cook the onion for 5 min until golden.",
       "Add the garlic, ginger, tomato, carrot, turmeric, garam masala and chilli and cook 2 min, then turn the eggs in this masala for 1 min.",
-      "Stir in the rice and peas, pour in 280 ml water with a good pinch of salt, bring to the boil, cover and cook on low heat for 12 min; rest 3 min.",
+      "Stir in the rice and peas, pour in 300 ml water with a good pinch of salt, bring to the boil, cover and cook on low heat for 12 min; rest 3 min.",
       "For the raita, mix the yogurt with the cucumber, mint and a pinch of salt.",
       "Fluff the pulao gently, halve the eggs on top, scatter with coriander and serve with the raita."
     ],
@@ -52726,7 +52733,7 @@
           "Pendant ce temps, rincer le riz à plusieurs eaux jusqu'à ce que l'eau soit claire.",
           "Chauffer l'huile dans une casserole avec couvercle et faire grésiller le cumin, le laurier, la cardamome et la cannelle 30 secondes, puis cuire l'oignon 5 min jusqu'à ce qu'il soit doré.",
           "Ajouter l'ail, le gingembre, la tomate, la carotte, le curcuma, le garam masala et le piment et cuire 2 min, puis rouler les œufs dans ce masala 1 min.",
-          "Ajouter le riz et les petits pois, verser 280 ml d'eau avec une bonne pincée de sel, porter à ébullition, couvrir et cuire 12 min à feu doux ; laisser reposer 3 min.",
+          "Ajouter le riz et les petits pois, verser 300 ml d'eau avec une bonne pincée de sel, porter à ébullition, couvrir et cuire 12 min à feu doux ; laisser reposer 3 min.",
           "Pour la raïta, mélanger le yaourt avec le concombre, la menthe et une pincée de sel.",
           "Égrener délicatement le pulao, poser dessus les œufs coupés en deux, parsemer de coriandre et servir avec la raïta."
         ]
@@ -52738,7 +52745,7 @@
           "Nel frattempo sciacquare il riso in più acque finché l'acqua è limpida.",
           "Scaldare l'olio in un tegame con coperchio e far sfrigolare cumino, alloro, cardamomo e cannella per 30 secondi, poi cuocere la cipolla per 5 min finché è dorata.",
           "Unire aglio, zenzero, pomodoro, carota, curcuma, garam masala e peperoncino e cuocere 2 min, poi girare le uova in questo masala per 1 min.",
-          "Unire riso e piselli, versare 280 ml d'acqua con un buon pizzico di sale, portare a bollore, coprire e cuocere a fuoco basso per 12 min; far riposare 3 min.",
+          "Unire riso e piselli, versare 300 ml d'acqua con un buon pizzico di sale, portare a bollore, coprire e cuocere a fuoco basso per 12 min; far riposare 3 min.",
           "Per la raita mescolare lo yogurt con il cetriolo, la menta e un pizzico di sale.",
           "Sgranare delicatamente il pulao, adagiarvi sopra le uova tagliate a metà, cospargere di coriandolo e servire con la raita."
         ]
@@ -52773,11 +52780,11 @@
     "ingredients": [
       {
         "id": "fdde5d31-7950-5956-9abb-fb917fd86019",
-        "text": "130 g rice, jasmine"
+        "text": "150 g rice, jasmine"
       },
       {
         "id": "7b4992ac-b2d8-5b33-a41e-269f842f19a2",
-        "text": "2 tsp vegetable oil"
+        "text": "1 tbsp vegetable oil"
       },
       {
         "id": "7fe69957-6ae6-59c4-b6d7-206293298974",
@@ -52881,11 +52888,11 @@
     "ingredients": [
       {
         "id": "6a8ef6cb-ed75-5e18-891b-981f19eba617",
-        "text": "140 g rice, jasmine"
+        "text": "150 g rice, jasmine"
       },
       {
         "id": "f2303b66-7069-5def-ae58-101ac2a47546",
-        "text": "320 g chicken breast, in 4 cm pieces"
+        "text": "320 g chicken thigh, boneless, skinless, in 4 cm pieces"
       },
       {
         "id": "94c9e961-05f5-59cf-97c5-d8b1f1cbdffc",
@@ -52893,7 +52900,7 @@
       },
       {
         "id": "2113c19c-7dec-577d-8777-35d9a5036c51",
-        "text": "2 tsp vegetable oil"
+        "text": "1 tbsp vegetable oil"
       },
       {
         "id": "3c84b5c5-41a7-5b6d-8f63-7dbeff5f835d",
@@ -53150,11 +53157,11 @@
     "ingredients": [
       {
         "id": "18b66dfe-e74f-45a6-bfb1-28a34399af99",
-        "text": "280 g ground beef, lean (5% fat)"
+        "text": "320 g ground beef, lean (5% fat)"
       },
       {
         "id": "e111cea8-ad12-429b-aa49-e77cbecb43b2",
-        "text": "130 g rice, jasmine"
+        "text": "150 g rice, jasmine"
       },
       {
         "id": "b213ed14-984a-47de-b4bf-4c60be8b610f",
@@ -53208,7 +53215,7 @@
     ],
     "steps": [
       "Toast the 1 tbsp raw rice in a dry frying pan over medium heat, shaking often, 4-5 min until deep golden. Grind it coarsely in a mortar or spice grinder.",
-      "Rinse the jasmine rice and simmer it covered in 195 ml water for 12 min on low heat.",
+      "Rinse the jasmine rice and simmer it covered in 225 ml water for 12 min on low heat.",
       "Lay the green beans on top of the rice, cover again and steam 5 min, then rest off the heat.",
       "In the same frying pan, cook the beef with 3 tbsp water over medium-high heat, breaking it up, 5-6 min until no pink remains and most of the liquid has gone.",
       "Take the pan off the heat. Stir in the fish sauce, lime juice, chili flakes and sugar, then the shallots, toasted rice powder, spring onions, mint and coriander. Taste: it should be sour, salty and hot.",
@@ -53219,7 +53226,7 @@
         "title": "Larb de bœuf thaï, riz jasmin et haricots verts",
         "steps": [
           "Faire griller la cuillère de riz cru dans une poêle sèche à feu moyen, en secouant souvent, 4 à 5 min jusqu'à ce qu'il soit bien doré. Le moudre grossièrement au mortier ou au moulin à épices.",
-          "Rincer le riz jasmin et le cuire à couvert dans 195 ml d'eau 12 min à feu doux.",
+          "Rincer le riz jasmin et le cuire à couvert dans 225 ml d'eau 12 min à feu doux.",
           "Poser les haricots verts sur le riz, recouvrir et cuire à la vapeur 5 min, puis laisser reposer hors du feu.",
           "Dans la même poêle, cuire le bœuf avec 3 c. à soupe d'eau à feu moyen-vif en l'émiettant, 5 à 6 min, jusqu'à ce qu'il ne soit plus rosé et que le liquide ait presque disparu.",
           "Retirer du feu. Incorporer la sauce poisson, le jus de citron vert, le piment et le sucre, puis les échalotes, la poudre de riz grillé, les oignons nouveaux, la menthe et la coriandre. Goûter : c'est acide, salé et piquant.",
@@ -53230,7 +53237,7 @@
         "title": "Larb di manzo thai con riso jasmine e fagiolini",
         "steps": [
           "Tostare il cucchiaio di riso crudo in una padella asciutta a fuoco medio, scuotendo spesso, 4-5 min finché è ben dorato. Macinarlo grossolanamente nel mortaio o nel macinaspezie.",
-          "Sciacquare il riso jasmine e cuocerlo coperto in 195 ml d'acqua per 12 min a fuoco basso.",
+          "Sciacquare il riso jasmine e cuocerlo coperto in 225 ml d'acqua per 12 min a fuoco basso.",
           "Adagiare i fagiolini sul riso, coprire di nuovo e cuocere a vapore 5 min, poi lasciar riposare fuori dal fuoco.",
           "Nella stessa padella cuocere il manzo con 3 cucchiai d'acqua a fuoco medio-alto, sgranandolo, 5-6 min finché non è più rosa e il liquido è quasi evaporato.",
           "Togliere dal fuoco. Unire salsa di pesce, succo di lime, peperoncino e zucchero, poi scalogni, polvere di riso tostato, cipollotti, menta e coriandolo. Assaggiare: deve essere aspro, sapido e piccante.",
@@ -53270,7 +53277,7 @@
     "ingredients": [
       {
         "id": "e5d3ccc6-619a-40e6-b7bc-a492c6fcba5e",
-        "text": "300 g beef steak, flank or rump, in 1 cm strips"
+        "text": "320 g beef steak, flank or rump, in 1 cm strips"
       },
       {
         "id": "fcfa2025-4c26-466c-88e4-a26a1570e2ee",
@@ -53310,7 +53317,7 @@
       },
       {
         "id": "e2a0381a-cc55-40e9-85c2-83bba74c0eb6",
-        "text": "160 g tortillas, 4 small wheat tortillas"
+        "text": "240 g tortillas, 6 small wheat tortillas"
       },
       {
         "id": "f13c0549-23b5-49b5-8e8b-b0fcb2d1c464",
@@ -53394,7 +53401,7 @@
     "ingredients": [
       {
         "id": "1def3c51-0a00-4eea-8679-d1b74c1f0105",
-        "text": "280 g beef steak, flank, in thin slices across the grain"
+        "text": "300 g beef steak, flank, in thin slices across the grain"
       },
       {
         "id": "6b897ded-1f72-4df4-844e-15aa4ceee41b",
@@ -53410,7 +53417,7 @@
       },
       {
         "id": "f263a116-af57-4b71-915c-236a44429e19",
-        "text": "1 tbsp vegetable oil"
+        "text": "2 tbsp vegetable oil"
       },
       {
         "id": "ff9e58ba-0131-4fe0-aaab-da8a4cbfef8d",
@@ -53621,7 +53628,7 @@
     "ingredients": [
       {
         "id": "de0c6566-a790-4df1-8664-93a9d216b974",
-        "text": "280 g ground beef, lean (5% fat)"
+        "text": "320 g ground beef, lean (5% fat)"
       },
       {
         "id": "63b81ac6-b92c-4e88-b578-5e5464be7456",
@@ -53759,11 +53766,11 @@
     "ingredients": [
       {
         "id": "63d09aa3-2ac2-43df-8e21-6e91699aa3dc",
-        "text": "260 g beef steak, rump or sirloin, in thin strips"
+        "text": "300 g beef steak, rump or sirloin, in thin strips"
       },
       {
         "id": "d7b240d5-4b76-4cdf-bff9-ff3e73add66a",
-        "text": "150 g noodles, somyeon (thin wheat noodles)"
+        "text": "180 g noodles, somyeon (thin wheat noodles)"
       },
       {
         "id": "fb3bdbf5-d5e1-494d-886c-2e4b6e64292a",
@@ -53799,7 +53806,7 @@
       },
       {
         "id": "df683b02-9822-4e79-93c8-b315ff0df979",
-        "text": "2 tsp sugar"
+        "text": "1 tbsp sugar"
       },
       {
         "id": "8f2e4257-861b-4a6e-be50-34b3e737ea1a",
@@ -53882,11 +53889,11 @@
     "ingredients": [
       {
         "id": "983fab0e-3b4f-44a5-9553-8882a59bfb1b",
-        "text": "260 g ground pork, lean"
+        "text": "300 g ground pork, lean"
       },
       {
         "id": "46b022a6-3006-46bb-a668-69df0aade30e",
-        "text": "130 g rice, jasmine"
+        "text": "150 g rice, jasmine"
       },
       {
         "id": "c0630a44-6f74-4774-9fdf-6678154043b6",
@@ -53894,7 +53901,7 @@
       },
       {
         "id": "aacb3df5-e8b9-422f-afef-6749d5e212ed",
-        "text": "2 tsp vegetable oil"
+        "text": "1 tbsp vegetable oil"
       },
       {
         "id": "c7a2a2ad-ba6c-47d5-9b55-bbb05f922844",
@@ -53934,9 +53941,9 @@
       }
     ],
     "steps": [
-      "Rinse the rice and simmer it covered in 195 ml water for 12 min on low heat, then rest it off the heat.",
+      "Rinse the rice and simmer it covered in 225 ml water for 12 min on low heat, then rest it off the heat.",
       "Pound the garlic and chillies to a rough paste in a mortar, or chop them finely together.",
-      "Heat 1 tsp oil in a wok over high heat. Fry the garlic-chilli paste 20 s, then add the pork and stir-fry 3-4 min, breaking it up, until no longer pink.",
+      "Heat 2 tsp oil in a wok over high heat. Fry the garlic-chilli paste 20 s, then add the pork and stir-fry 3-4 min, breaking it up, until no longer pink.",
       "Add the onion and green beans and stir-fry 2 min, splashing in 2 tbsp water, until the beans are bright green.",
       "Add the oyster sauce, soy sauce, fish sauce and sugar and toss 1 min, until the pork is glossy. Off the heat, stir in the holy basil until it just wilts.",
       "Wipe the wok, heat the rest of the oil over medium-high heat and fry the eggs 2-3 min, until the edges are crisp and the yolks still runny.",
@@ -53946,9 +53953,9 @@
       "fr": {
         "title": "Pad kra pao au porc, riz jasmin et œuf au plat",
         "steps": [
-          "Rincer le riz et le cuire à couvert dans 195 ml d'eau 12 min à feu doux, puis le laisser reposer hors du feu.",
+          "Rincer le riz et le cuire à couvert dans 225 ml d'eau 12 min à feu doux, puis le laisser reposer hors du feu.",
           "Piler l'ail et les piments en pâte grossière au mortier, ou les hacher finement ensemble.",
-          "Chauffer 1 c. à café d'huile dans un wok à feu vif. Faire revenir la pâte ail-piment 20 s, puis ajouter le porc et le faire sauter 3 à 4 min en l'émiettant, jusqu'à ce qu'il ne soit plus rosé.",
+          "Chauffer 2 c. à café d'huile dans un wok à feu vif. Faire revenir la pâte ail-piment 20 s, puis ajouter le porc et le faire sauter 3 à 4 min en l'émiettant, jusqu'à ce qu'il ne soit plus rosé.",
           "Ajouter l'oignon et les haricots verts et faire sauter 2 min avec 2 c. à soupe d'eau, jusqu'à ce que les haricots soient vert vif.",
           "Ajouter la sauce huître, la sauce soja, la sauce poisson et le sucre et faire sauter 1 min, jusqu'à ce que le porc soit brillant. Hors du feu, incorporer le basilic sacré juste le temps qu'il fane.",
           "Essuyer le wok, chauffer le reste d'huile à feu moyen-vif et cuire les œufs 2 à 3 min, jusqu'à ce que les bords soient croustillants et les jaunes encore coulants.",
@@ -53958,9 +53965,9 @@
       "it": {
         "title": "Pad kra pao di maiale con riso jasmine e uovo all'occhio di bue",
         "steps": [
-          "Sciacquare il riso e cuocerlo coperto in 195 ml d'acqua per 12 min a fuoco basso, poi lasciarlo riposare fuori dal fuoco.",
+          "Sciacquare il riso e cuocerlo coperto in 225 ml d'acqua per 12 min a fuoco basso, poi lasciarlo riposare fuori dal fuoco.",
           "Pestare aglio e peperoncini in una pasta grossolana nel mortaio, o tritarli finemente insieme.",
-          "Scaldare 1 cucchiaino d'olio nel wok a fuoco vivo. Soffriggere la pasta di aglio e peperoncino 20 s, poi unire il maiale e saltarlo 3-4 min sgranandolo, finché non è più rosa.",
+          "Scaldare 2 cucchiaini d'olio nel wok a fuoco vivo. Soffriggere la pasta di aglio e peperoncino 20 s, poi unire il maiale e saltarlo 3-4 min sgranandolo, finché non è più rosa.",
           "Aggiungere cipolla e fagiolini e saltare 2 min con 2 cucchiai d'acqua, finché i fagiolini sono verde brillante.",
           "Unire salsa d'ostriche, salsa di soia, salsa di pesce e zucchero e saltare 1 min, finché il maiale è lucido. Fuori dal fuoco aggiungere il basilico sacro e mescolare finché appassisce.",
           "Pulire il wok, scaldare il resto dell'olio a fuoco medio-alto e cuocere le uova 2-3 min, finché i bordi sono croccanti e i tuorli ancora morbidi.",
@@ -54023,11 +54030,11 @@
       },
       {
         "id": "e5c8525e-5f2b-45bd-b6df-eb7e16d0f96e",
-        "text": "1 tbsp olive oil"
+        "text": "1.5 tbsp olive oil"
       },
       {
         "id": "99afb703-f968-4e20-8d4e-7f46a70e46f6",
-        "text": "80 g rice, long-grain"
+        "text": "150 g rice, long-grain"
       },
       {
         "id": "0ecd73cd-1e86-42da-983c-c914a6fec49b",
@@ -54055,9 +54062,9 @@
       }
     ],
     "steps": [
-      "Mix the orange and lime juice, garlic, cumin, oregano, 2 tsp oil and a good pinch of salt and pepper: this is the mojo. Rub 2 tbsp of it over the pork.",
+      "Mix the orange and lime juice, garlic, cumin, oregano, 1 tbsp oil and a good pinch of salt and pepper: this is the mojo. Rub 2 tbsp of it over the pork.",
       "Air-fry the pork at 200°C for 18-20 min, turning halfway, until it reads 63°C in the thickest part. Rest it 5 min.",
-      "Meanwhile, rinse the rice and simmer it covered in 135 ml salted water for 12 min on low heat, then rest it off the heat.",
+      "Meanwhile, rinse the rice and simmer it covered in 225 ml salted water for 12 min on low heat, then rest it off the heat.",
       "Heat the rest of the oil in a frying pan over medium heat and soften the onion and pepper 6-7 min.",
       "Add the black beans, 3 tbsp of the mojo and 4 tbsp water and simmer 5 min, lightly crushing a few beans to thicken. Season.",
       "Bring the rest of the mojo to a bubble in the pan for 30 s after the beans come out, or simply warm it.",
@@ -54067,9 +54074,9 @@
       "fr": {
         "title": "Filet mignon de porc au mojo au air fryer, haricots noirs et riz",
         "steps": [
-          "Mélanger le jus d'orange et de citron vert, l'ail, le cumin, l'origan, 2 c. à café d'huile et une bonne pincée de sel et de poivre : c'est le mojo. En frotter 2 c. à soupe sur le porc.",
+          "Mélanger le jus d'orange et de citron vert, l'ail, le cumin, l'origan, 1 c. à soupe d'huile et une bonne pincée de sel et de poivre : c'est le mojo. En frotter 2 c. à soupe sur le porc.",
           "Cuire le porc au air fryer à 200 °C 18 à 20 min en le retournant à mi-cuisson, jusqu'à 63 °C au plus épais. Le laisser reposer 5 min.",
-          "Pendant ce temps, rincer le riz et le cuire à couvert dans 135 ml d'eau salée 12 min à feu doux, puis le laisser reposer hors du feu.",
+          "Pendant ce temps, rincer le riz et le cuire à couvert dans 225 ml d'eau salée 12 min à feu doux, puis le laisser reposer hors du feu.",
           "Chauffer le reste d'huile dans une poêle à feu moyen et faire fondre l'oignon et le poivron 6 à 7 min.",
           "Ajouter les haricots noirs, 3 c. à soupe de mojo et 4 c. à soupe d'eau et laisser mijoter 5 min en écrasant quelques haricots pour épaissir. Assaisonner.",
           "Une fois les haricots retirés, faire bouillonner le reste du mojo 30 s dans la poêle, ou simplement le tiédir.",
@@ -54079,9 +54086,9 @@
       "it": {
         "title": "Filetto di maiale al mojo in friggitrice ad aria con fagioli neri e riso",
         "steps": [
-          "Mescolare succo d'arancia e di lime, aglio, cumino, origano, 2 cucchiaini d'olio e un buon pizzico di sale e pepe: è il mojo. Massaggiarne 2 cucchiai sul maiale.",
+          "Mescolare succo d'arancia e di lime, aglio, cumino, origano, 1 cucchiaio d'olio e un buon pizzico di sale e pepe: è il mojo. Massaggiarne 2 cucchiai sul maiale.",
           "Cuocere il maiale in friggitrice ad aria a 200 °C per 18-20 min, girandolo a metà, finché segna 63 °C nel punto più spesso. Farlo riposare 5 min.",
-          "Intanto sciacquare il riso e cuocerlo coperto in 135 ml d'acqua salata per 12 min a fuoco basso, poi lasciarlo riposare fuori dal fuoco.",
+          "Intanto sciacquare il riso e cuocerlo coperto in 225 ml d'acqua salata per 12 min a fuoco basso, poi lasciarlo riposare fuori dal fuoco.",
           "Scaldare il resto dell'olio in una padella a fuoco medio e appassire cipolla e peperone 6-7 min.",
           "Unire i fagioli neri, 3 cucchiai di mojo e 4 cucchiai d'acqua e cuocere 5 min, schiacciando qualche fagiolo per addensare. Regolare di sale.",
           "Tolti i fagioli, far sobbollire il resto del mojo nella padella per 30 s, o semplicemente intiepidirlo.",
@@ -54149,11 +54156,11 @@
       },
       {
         "id": "64ae62b7-5b48-4a02-b2eb-8dd8a04af332",
-        "text": "2 tsp vegetable oil"
+        "text": "1 tbsp vegetable oil"
       },
       {
         "id": "8c864b44-91c0-439e-af11-cb269b2174b4",
-        "text": "130 g rice noodles, vermicelli"
+        "text": "150 g rice noodles, vermicelli"
       },
       {
         "id": "6d221f72-d157-4de8-89c2-189824f870c5",
@@ -54259,7 +54266,7 @@
       },
       {
         "id": "eab87aed-a80a-4c30-b13e-01ffa407bf71",
-        "text": "150 g noodles, wheat noodles"
+        "text": "180 g noodles, wheat noodles"
       },
       {
         "id": "6154b71b-7bea-4996-94b5-530237095be5",
@@ -54283,7 +54290,7 @@
       },
       {
         "id": "8db73658-0a51-4371-8912-fda3dba455b2",
-        "text": "1 tbsp sesame paste"
+        "text": "2 tbsp sesame paste"
       },
       {
         "id": "6e817644-19eb-430d-83d3-e3b0aa8ff773",
@@ -54503,11 +54510,11 @@
     "ingredients": [
       {
         "id": "27112fb4-fbd5-4ced-8e62-dcbd3ddd2462",
-        "text": "280 g ground pork, lean"
+        "text": "300 g ground pork, lean"
       },
       {
         "id": "efb2351d-dcca-4c94-97bf-5fbe0f3b4ddd",
-        "text": "130 g rice, jasmine"
+        "text": "150 g rice, jasmine"
       },
       {
         "id": "065e70e4-52be-4ad5-baae-99f198dd31fd",
@@ -54577,7 +54584,7 @@
       }
     ],
     "steps": [
-      "Rinse the rice and simmer it covered in 195 ml water for 12 min on low heat, then rest it off the heat.",
+      "Rinse the rice and simmer it covered in 225 ml water for 12 min on low heat, then rest it off the heat.",
       "Toss the cucumber and carrot with the vinegar, 1 tsp sugar and a pinch of salt and leave to pickle lightly while you cook.",
       "Heat the oil in a frying pan over medium-high heat and fry the garlic and shallot 1 min.",
       "Add the pork and cook 4-5 min, breaking it up, until no longer pink and the liquid has cooked off.",
@@ -54588,7 +54595,7 @@
       "fr": {
         "title": "Bols de riz au porc caramélisé à la vietnamienne et légumes marinés minute",
         "steps": [
-          "Rincer le riz et le cuire à couvert dans 195 ml d'eau 12 min à feu doux, puis le laisser reposer hors du feu.",
+          "Rincer le riz et le cuire à couvert dans 225 ml d'eau 12 min à feu doux, puis le laisser reposer hors du feu.",
           "Mélanger le concombre et la carotte avec le vinaigre, 1 c. à café de sucre et une pincée de sel et laisser mariner légèrement pendant la cuisson.",
           "Chauffer l'huile dans une poêle à feu moyen-vif et faire revenir l'ail et l'échalote 1 min.",
           "Ajouter le porc et cuire 4 à 5 min en l'émiettant, jusqu'à ce qu'il ne soit plus rosé et que le liquide se soit évaporé.",
@@ -54599,7 +54606,7 @@
       "it": {
         "title": "Ciotole di riso con maiale caramellato alla vietnamita e verdure in salamoia veloce",
         "steps": [
-          "Sciacquare il riso e cuocerlo coperto in 195 ml d'acqua per 12 min a fuoco basso, poi lasciarlo riposare fuori dal fuoco.",
+          "Sciacquare il riso e cuocerlo coperto in 225 ml d'acqua per 12 min a fuoco basso, poi lasciarlo riposare fuori dal fuoco.",
           "Condire cetriolo e carota con aceto, 1 cucchiaino di zucchero e un pizzico di sale e lasciarli marinare leggermente durante la cottura.",
           "Scaldare l'olio in una padella a fuoco medio-alto e soffriggere aglio e scalogno 1 min.",
           "Aggiungere il maiale e cuocere 4-5 min sgranandolo, finché non è più rosa e il liquido è evaporato.",
@@ -54639,7 +54646,7 @@
     "ingredients": [
       {
         "id": "84b615b1-7bea-4265-9921-e9e5e90857fa",
-        "text": "300 g lamb, leg, boneless, trimmed, in 3 cm cubes"
+        "text": "320 g lamb, leg, boneless, trimmed, in 3 cm cubes"
       },
       {
         "id": "9328e482-64f0-40b9-95c3-fef3bacac94c",
@@ -54667,7 +54674,7 @@
       },
       {
         "id": "4f7961d2-08bf-47c3-b353-2a73870adc5e",
-        "text": "120 g bulgur, coarse"
+        "text": "150 g bulgur, coarse"
       },
       {
         "id": "7fb79df2-f6cc-4337-8c12-9c1317a81602",
@@ -54679,7 +54686,7 @@
       },
       {
         "id": "6b7884b1-b5ce-44dc-9a69-a71fc7bb613f",
-        "text": "250 ml chicken stock"
+        "text": "300 ml chicken stock"
       },
       {
         "id": "dbe89ab7-1830-475e-a568-34d8d4d3d1fe",
@@ -54772,7 +54779,7 @@
       },
       {
         "id": "43728f4b-353c-4dc3-93f6-0d1207f695b1",
-        "text": "120 g rice, basmati, rinsed"
+        "text": "150 g rice, basmati, rinsed"
       },
       {
         "id": "1dfb024e-299e-4ee9-a45a-8f4915a66349",
@@ -54797,11 +54804,11 @@
       },
       {
         "id": "43d7c1b7-325f-49f9-bc04-8f5d88a5fc91",
-        "text": "250 ml chicken stock"
+        "text": "300 ml chicken stock"
       },
       {
         "id": "bcadfe31-ceb7-43db-a3d4-e1e6af18b441",
-        "text": "15 g pine nuts"
+        "text": "25 g pine nuts"
       },
       {
         "id": "b4a0554e-136d-4010-8d49-dc9420c29f7e",
@@ -54899,7 +54906,7 @@
     "ingredients": [
       {
         "id": "71b19b5f-4e8e-423b-9b5b-cf49998567f5",
-        "text": "300 g lamb, 2 leg steaks, trimmed"
+        "text": "320 g lamb, 2 leg steaks, trimmed"
       },
       {
         "id": "fb7d36f3-97cc-4e7f-b0a6-06ddbeb7c7ab",
@@ -54947,7 +54954,7 @@
       },
       {
         "id": "80cdbfb4-6744-45f6-a223-d5334bd05a75",
-        "text": "2.5 tsp olive oil"
+        "text": "1.5 tbsp olive oil"
       },
       {
         "id": "ee328958-aeaa-4a0a-9d99-3f5cc354e5fa",
@@ -54961,7 +54968,7 @@
     "steps": [
       "Rub the steaks with 0.5 tsp oil, the rosemary, salt and pepper.",
       "Air-fry the steaks at 200°C for 8-10 min, turning halfway, for pink in the middle. Rest them 5 min.",
-      "Meanwhile, finely chop the parsley, mint, capers and anchovy together, then stir in the mustard, vinegar, 1.5 tsp oil and 1 tbsp water: this is the salsa verde.",
+      "Meanwhile, finely chop the parsley, mint, capers and anchovy together, then stir in the mustard, vinegar, 1 tbsp oil and 1 tbsp water: this is the salsa verde.",
       "Warm the rest of the oil in a frying pan over medium heat and fry the garlic 1 min. Add the tomatoes and cook 3 min until they start to burst.",
       "Add the beans with 4 tbsp water and simmer 3 min, then stir in the spinach until it wilts. Season.",
       "Slice the lamb and serve on the beans with the salsa verde spooned over."
@@ -54972,7 +54979,7 @@
         "steps": [
           "Frotter les tranches avec 0,5 c. à café d'huile, le romarin, du sel et du poivre.",
           "Cuire l'agneau au air fryer à 200 °C 8 à 10 min en le retournant à mi-cuisson, pour qu'il reste rosé à cœur. Le laisser reposer 5 min.",
-          "Pendant ce temps, hacher finement ensemble le persil, la menthe, les câpres et l'anchois, puis incorporer la moutarde, le vinaigre, 1,5 c. à café d'huile et 1 c. à soupe d'eau : c'est la salsa verde.",
+          "Pendant ce temps, hacher finement ensemble le persil, la menthe, les câpres et l'anchois, puis incorporer la moutarde, le vinaigre, 1 c. à soupe d'huile et 1 c. à soupe d'eau : c'est la salsa verde.",
           "Chauffer le reste d'huile dans une poêle à feu moyen et faire revenir l'ail 1 min. Ajouter les tomates et cuire 3 min jusqu'à ce qu'elles commencent à éclater.",
           "Ajouter les haricots avec 4 c. à soupe d'eau et laisser mijoter 3 min, puis incorporer les épinards jusqu'à ce qu'ils tombent. Assaisonner.",
           "Trancher l'agneau et le servir sur les haricots, nappé de salsa verde."
@@ -54983,7 +54990,7 @@
         "steps": [
           "Massaggiare le fette con 0,5 cucchiaini d'olio, il rosmarino, sale e pepe.",
           "Cuocere l'agnello in friggitrice ad aria a 200 °C per 8-10 min, girandolo a metà, perché resti rosa al centro. Farlo riposare 5 min.",
-          "Intanto tritare finemente insieme prezzemolo, menta, capperi e acciuga, poi unire senape, aceto, 1,5 cucchiaini d'olio e 1 cucchiaio d'acqua: è la salsa verde.",
+          "Intanto tritare finemente insieme prezzemolo, menta, capperi e acciuga, poi unire senape, aceto, 1 cucchiaio d'olio e 1 cucchiaio d'acqua: è la salsa verde.",
           "Scaldare il resto dell'olio in una padella a fuoco medio e soffriggere l'aglio 1 min. Aggiungere i pomodorini e cuocere 3 min finché iniziano ad aprirsi.",
           "Unire i fagioli con 4 cucchiai d'acqua e cuocere 3 min, poi aggiungere gli spinaci finché appassiscono. Regolare di sale.",
           "Affettare l'agnello e servirlo sui fagioli con la salsa verde sopra."
@@ -55021,7 +55028,7 @@
     "ingredients": [
       {
         "id": "0e0039e1-e294-476f-bf14-f90dc6eeaf56",
-        "text": "300 g lamb, lean mince"
+        "text": "320 g lamb, lean mince"
       },
       {
         "id": "9496fb92-f926-467c-a254-35a80d04ad10",
@@ -55277,7 +55284,7 @@
       },
       {
         "id": "3a01531d-4a72-49b2-9840-b6511e8f4885",
-        "text": "600 g potato, new, halved"
+        "text": "500 g potato, new, halved"
       },
       {
         "id": "38a82b9d-bf58-49ba-8df9-dab2df0cb613",
@@ -55305,7 +55312,7 @@
       },
       {
         "id": "0b82079a-a759-4a25-b330-845647e46879",
-        "text": "1.5 tbsp olive oil"
+        "text": "2.5 tbsp olive oil"
       },
       {
         "id": "6bb4ad39-cf4f-4dfa-90b0-d8aaf2118ed2",
@@ -55330,7 +55337,7 @@
     ],
     "steps": [
       "Simmer the potatoes in salted water 15-18 min until tender.",
-      "Meanwhile, blitz or finely chop the chillies and garlic, then mix with the paprika, oregano, the juice of half the lemon, the vinegar, 2 tsp oil and a pinch of salt: this is the piri-piri. Toss the prawns in half of it.",
+      "Meanwhile, blitz or finely chop the chillies and garlic, then mix with the paprika, oregano, the juice of half the lemon, the vinegar, 1.5 tbsp oil and a pinch of salt: this is the piri-piri. Toss the prawns in half of it.",
       "Air-fry the prawns at 200°C for 6-7 min, shaking halfway, until pink and just firm.",
       "Toss the tomatoes, red onion and lettuce with 1 tsp oil, a squeeze of lemon and a pinch of salt.",
       "Drain the potatoes, crush them lightly with a fork, and toss with the rest of the oil, the parsley and a pinch of salt.",
@@ -55341,7 +55348,7 @@
         "title": "Crevettes piri-piri au air fryer, pommes de terre écrasées et salade de tomates",
         "steps": [
           "Cuire les pommes de terre dans l'eau salée frémissante 15 à 18 min jusqu'à ce qu'elles soient tendres.",
-          "Pendant ce temps, mixer ou hacher finement les piments et l'ail, puis les mélanger avec le paprika, l'origan, le jus d'un demi-citron, le vinaigre, 2 c. à café d'huile et une pincée de sel : c'est le piri-piri. En enrober les crevettes avec la moitié.",
+          "Pendant ce temps, mixer ou hacher finement les piments et l'ail, puis les mélanger avec le paprika, l'origan, le jus d'un demi-citron, le vinaigre, 1,5 c. à soupe d'huile et une pincée de sel : c'est le piri-piri. En enrober les crevettes avec la moitié.",
           "Cuire les crevettes au air fryer à 200 °C 6 à 7 min en secouant à mi-cuisson, jusqu'à ce qu'elles soient roses et juste fermes.",
           "Mélanger les tomates, l'oignon rouge et la laitue avec 1 c. à café d'huile, un filet de citron et une pincée de sel.",
           "Égoutter les pommes de terre, les écraser grossièrement à la fourchette et les mélanger avec le reste d'huile, le persil et une pincée de sel.",
@@ -55352,7 +55359,7 @@
         "title": "Gamberi piri-piri in friggitrice ad aria con patate schiacciate e insalata di pomodori",
         "steps": [
           "Cuocere le patate in acqua salata a bollore leggero 15-18 min finché sono tenere.",
-          "Intanto frullare o tritare finemente peperoncini e aglio, poi mescolarli con paprika, origano, il succo di mezzo limone, aceto, 2 cucchiaini d'olio e un pizzico di sale: è il piri-piri. Condire i gamberi con metà.",
+          "Intanto frullare o tritare finemente peperoncini e aglio, poi mescolarli con paprika, origano, il succo di mezzo limone, aceto, 1,5 cucchiai d'olio e un pizzico di sale: è il piri-piri. Condire i gamberi con metà.",
           "Cuocere i gamberi in friggitrice ad aria a 200 °C per 6-7 min, scuotendo a metà, finché sono rosa e appena sodi.",
           "Condire pomodori, cipolla rossa e lattuga con 1 cucchiaino d'olio, un goccio di limone e un pizzico di sale.",
           "Scolare le patate, schiacciarle grossolanamente con una forchetta e condirle con il resto dell'olio, il prezzemolo e un pizzico di sale.",
@@ -55392,7 +55399,7 @@
       },
       {
         "id": "7f4fab34-1a53-4bdc-92e7-3125acbcda73",
-        "text": "140 g pasta, orzo (risoni)"
+        "text": "150 g pasta, orzo (risoni)"
       },
       {
         "id": "d2009a73-af30-48b4-abcd-fec5f8e615ae",
@@ -55428,7 +55435,7 @@
       },
       {
         "id": "01332988-36e2-4376-be10-e76c5c09479f",
-        "text": "40 g feta, crumbled"
+        "text": "50 g feta, crumbled"
       },
       {
         "id": "744d1cfa-5a0c-47e4-9a47-63caf6766039",
@@ -55637,11 +55644,11 @@
       },
       {
         "id": "005724ed-d1ee-4738-b69f-ace1890d50f9",
-        "text": "140 g rice, long-grain"
+        "text": "150 g rice, long-grain"
       },
       {
         "id": "cf6c69df-1778-4f76-a124-5ad3b971f75e",
-        "text": "1 tbsp vegetable oil"
+        "text": "1.5 tbsp vegetable oil"
       },
       {
         "id": "60dffbe2-3762-4c90-b9d8-692d5e0563df",
@@ -55685,11 +55692,11 @@
       },
       {
         "id": "15948173-23d9-4823-a467-aedaa9cfa6b9",
-        "text": "30 g peanuts, roasted unsalted"
+        "text": "40 g peanuts, roasted unsalted"
       }
     ],
     "steps": [
-      "Rinse the rice and simmer it covered in 210 ml water for 12 min on low heat, then rest it off the heat.",
+      "Rinse the rice and simmer it covered in 225 ml water for 12 min on low heat, then rest it off the heat.",
       "Toss the prawns with 1 tsp cornstarch and the rice wine. Mix the soy sauce, black vinegar, sugar, the rest of the cornstarch and 3 tbsp water for the sauce.",
       "Heat the oil in a wok over medium heat and fry the chillies and Sichuan pepper 30 s, until fragrant and darkening but not burnt.",
       "Turn the heat to high, add the prawns and stir-fry 1-2 min until they turn pink.",
@@ -55700,7 +55707,7 @@
       "fr": {
         "title": "Crevettes kung pao et riz",
         "steps": [
-          "Rincer le riz et le cuire à couvert dans 210 ml d'eau 12 min à feu doux, puis le laisser reposer hors du feu.",
+          "Rincer le riz et le cuire à couvert dans 225 ml d'eau 12 min à feu doux, puis le laisser reposer hors du feu.",
           "Mélanger les crevettes avec 1 c. à café de fécule et le vin de riz. Mélanger la sauce soja, le vinaigre noir, le sucre, le reste de fécule et 3 c. à soupe d'eau pour la sauce.",
           "Chauffer l'huile dans un wok à feu moyen et faire revenir les piments et le poivre du Sichuan 30 s, jusqu'à ce qu'ils embaument et foncent sans brûler.",
           "Passer à feu vif, ajouter les crevettes et les faire sauter 1 à 2 min jusqu'à ce qu'elles deviennent roses.",
@@ -55711,7 +55718,7 @@
       "it": {
         "title": "Gamberi kung pao con riso",
         "steps": [
-          "Sciacquare il riso e cuocerlo coperto in 210 ml d'acqua per 12 min a fuoco basso, poi lasciarlo riposare fuori dal fuoco.",
+          "Sciacquare il riso e cuocerlo coperto in 225 ml d'acqua per 12 min a fuoco basso, poi lasciarlo riposare fuori dal fuoco.",
           "Condire i gamberi con 1 cucchiaino di amido e il vino di riso. Mescolare salsa di soia, aceto nero, zucchero, il resto dell'amido e 3 cucchiai d'acqua per la salsa.",
           "Scaldare l'olio nel wok a fuoco medio e soffriggere peperoncini e pepe di Sichuan 30 s, finché profumano e scuriscono senza bruciare.",
           "Alzare a fuoco vivo, unire i gamberi e saltarli 1-2 min finché diventano rosa.",
@@ -55775,7 +55782,7 @@
       },
       {
         "id": "b1fdfd10-6f19-4427-ab6b-465847ce3178",
-        "text": "140 g noodles, dried egg noodles"
+        "text": "150 g noodles, dried egg noodles"
       },
       {
         "id": "8ce42143-8cec-46e1-b54b-6e54dc1d9b05",
@@ -55867,7 +55874,7 @@
     "ingredients": [
       {
         "id": "4b92b417-91a8-4c0e-a52c-a00295b33d8c",
-        "text": "1.2 kg mussels, in shell, scrubbed and debearded"
+        "text": "1 kg mussels, in shell, scrubbed and debearded"
       },
       {
         "id": "d1a45fc9-f348-48ec-8cab-fee2a57604bd",
@@ -56092,7 +56099,7 @@
       },
       {
         "id": "bba91bf2-bb94-4faf-9cb9-2420978e66d7",
-        "text": "130 g rice, short-grain"
+        "text": "150 g rice, short-grain"
       },
       {
         "id": "07a5ebaf-c6bf-48bc-8398-1859330b9365",
@@ -56153,7 +56160,7 @@
       }
     ],
     "steps": [
-      "Rinse the rice and simmer it covered in 170 ml water for 12 min on low heat, then rest it off the heat.",
+      "Rinse the rice and simmer it covered in 195 ml water for 12 min on low heat, then rest it off the heat.",
       "Mix the gochugaru, gochujang, soy sauce, sugar, garlic, ginger and 1 tbsp water to a paste.",
       "Heat the oil in a wok over high heat and stir-fry the onion, carrot and cabbage 2-3 min, until just softening.",
       "Add the squid and the paste and stir-fry 2-3 min, just until the squid turns opaque and curls.",
@@ -56164,7 +56171,7 @@
       "fr": {
         "title": "Ojingeo bokkeum (calamars sautés épicés à la coréenne) et riz",
         "steps": [
-          "Rincer le riz et le cuire à couvert dans 170 ml d'eau 12 min à feu doux, puis le laisser reposer hors du feu.",
+          "Rincer le riz et le cuire à couvert dans 195 ml d'eau 12 min à feu doux, puis le laisser reposer hors du feu.",
           "Mélanger le gochugaru, le gochujang, la sauce soja, le sucre, l'ail, le gingembre et 1 c. à soupe d'eau en pâte.",
           "Chauffer l'huile dans un wok à feu vif et faire sauter l'oignon, la carotte et le chou 2 à 3 min, jusqu'à ce qu'ils commencent à s'attendrir.",
           "Ajouter les calamars et la pâte et faire sauter 2 à 3 min, juste jusqu'à ce que les calamars deviennent opaques et s'enroulent.",
@@ -56175,7 +56182,7 @@
       "it": {
         "title": "Ojingeo bokkeum (calamari saltati piccanti alla coreana) con riso",
         "steps": [
-          "Sciacquare il riso e cuocerlo coperto in 170 ml d'acqua per 12 min a fuoco basso, poi lasciarlo riposare fuori dal fuoco.",
+          "Sciacquare il riso e cuocerlo coperto in 195 ml d'acqua per 12 min a fuoco basso, poi lasciarlo riposare fuori dal fuoco.",
           "Mescolare gochugaru, gochujang, salsa di soia, zucchero, aglio, zenzero e 1 cucchiaio d'acqua fino a ottenere una pasta.",
           "Scaldare l'olio nel wok a fuoco vivo e saltare cipolla, carota e cavolo 2-3 min, finché iniziano ad ammorbidirsi.",
           "Unire i calamari e la pasta e saltare 2-3 min, giusto finché i calamari diventano opachi e si arricciano.",
@@ -56214,7 +56221,7 @@
     "ingredients": [
       {
         "id": "69a3e695-767e-4662-b6e9-511856bca78a",
-        "text": "280 g salmon fillet, 2 skin-on fillets"
+        "text": "320 g salmon fillet, 2 skin-on fillets"
       },
       {
         "id": "05fec9d9-8269-4dd9-86ac-c814f5b6d693",
@@ -56246,7 +56253,7 @@
       },
       {
         "id": "476a15dd-57cd-464a-bc59-d0ef1a6b1597",
-        "text": "1 tbsp olive oil"
+        "text": "1.5 tbsp olive oil"
       },
       {
         "id": "c5825cb4-657c-477d-bfa5-1b099ffafb57",
@@ -56258,11 +56265,11 @@
       },
       {
         "id": "cb25f575-cd66-4a48-b7bb-e9e53e0d8951",
-        "text": "120 g couscous"
+        "text": "150 g couscous"
       },
       {
         "id": "6c2d8436-f894-4988-80bf-7440f30f1c9f",
-        "text": "180 ml vegetable stock, boiling"
+        "text": "220 ml vegetable stock, boiling"
       },
       {
         "id": "518a5864-5765-4047-817a-9a67157c2c33",
@@ -56271,7 +56278,7 @@
       }
     ],
     "steps": [
-      "Make the chermoula: mix the coriander, parsley, garlic, cumin, paprika, chilli, lemon zest and juice, 2 tsp of the oil and a good pinch of salt.",
+      "Make the chermoula: mix the coriander, parsley, garlic, cumin, paprika, chilli, lemon zest and juice, 1 tbsp of the oil and a good pinch of salt.",
       "Toss the peppers and onion with the rest of the oil and a pinch of salt and air-fry them at 200°C for 12 min, shaking once, until soft and charred at the edges.",
       "Push the vegetables to the sides, lay the salmon skin-side down in the middle and spread a third of the chermoula over it.",
       "Air-fry at 200°C for 8 min, until the salmon flakes but is still just pink in the centre.",
@@ -56282,7 +56289,7 @@
       "fr": {
         "title": "Saumon à la chermoula au air fryer, couscous et poivrons",
         "steps": [
-          "Préparer la chermoula : mélanger la coriandre, le persil, l'ail, le cumin, le paprika, le piment, le zeste et le jus de citron, 2 c. à café d'huile et une bonne pincée de sel.",
+          "Préparer la chermoula : mélanger la coriandre, le persil, l'ail, le cumin, le paprika, le piment, le zeste et le jus de citron, 1 c. à soupe d'huile et une bonne pincée de sel.",
           "Mélanger les poivrons et l'oignon avec le reste d'huile et une pincée de sel, puis les cuire au air fryer à 200 °C 12 min en secouant une fois, jusqu'à ce qu'ils soient tendres et grillés sur les bords.",
           "Pousser les légumes sur les côtés, poser le saumon côté peau au centre et le napper d'un tiers de la chermoula.",
           "Cuire au air fryer à 200 °C 8 min, jusqu'à ce que le saumon s'effeuille tout en restant juste rosé à cœur.",
@@ -56293,7 +56300,7 @@
       "it": {
         "title": "Salmone alla chermoula in friggitrice ad aria con cuscus e peperoni",
         "steps": [
-          "Preparare la chermoula: mescolare coriandolo, prezzemolo, aglio, cumino, paprica, peperoncino, scorza e succo di limone, 2 cucchiaini d'olio e un buon pizzico di sale.",
+          "Preparare la chermoula: mescolare coriandolo, prezzemolo, aglio, cumino, paprica, peperoncino, scorza e succo di limone, 1 cucchiaio d'olio e un buon pizzico di sale.",
           "Condire peperoni e cipolla con il resto dell'olio e un pizzico di sale e cuocerli in friggitrice ad aria a 200 °C per 12 min, scuotendo una volta, finché sono morbidi e abbrustoliti ai bordi.",
           "Spostare le verdure ai lati, adagiare il salmone al centro con la pelle in basso e spalmarvi un terzo della chermoula.",
           "Cuocere in friggitrice ad aria a 200 °C per 8 min, finché il salmone si sfalda ma resta appena rosato al centro.",
@@ -56330,11 +56337,11 @@
     "ingredients": [
       {
         "id": "40c6cfa1-7ec8-4ec9-9a77-868151eedeb4",
-        "text": "130 g rice, sushi or short-grain"
+        "text": "150 g rice, sushi or short-grain"
       },
       {
         "id": "e36858b9-1e63-4be7-b45d-b0a93d953784",
-        "text": "280 g salmon fillet, sashimi-grade, skinless, in 2 cm cubes"
+        "text": "320 g salmon fillet, sashimi-grade, skinless, in 2 cm cubes"
       },
       {
         "id": "cba5fb97-e3e3-4049-b776-26e5cdb50e5e",
@@ -56380,7 +56387,7 @@
       }
     ],
     "steps": [
-      "Rinse the rice until the water runs clear, then simmer it covered in 200 ml water for 12 min on low heat. Rest it off the heat, lid on, for 5 min.",
+      "Rinse the rice until the water runs clear, then simmer it covered in 230 ml water for 12 min on low heat. Rest it off the heat, lid on, for 5 min.",
       "Pour boiling water over the edamame, leave 3 min and drain.",
       "Mix the soy sauce, sesame oil, vinegar and ginger in a bowl.",
       "Add the salmon, sliced onion and half the spring onion and toss gently. Leave it in the fridge while the rice rests, no longer than 15 min.",
@@ -56391,7 +56398,7 @@
       "fr": {
         "title": "Poke bowl au saumon, edamame et concombre",
         "steps": [
-          "Rincer le riz jusqu'à ce que l'eau soit claire, puis le cuire à couvert dans 200 ml d'eau 12 min à feu doux. Le laisser reposer 5 min hors du feu, couvercle fermé.",
+          "Rincer le riz jusqu'à ce que l'eau soit claire, puis le cuire à couvert dans 230 ml d'eau 12 min à feu doux. Le laisser reposer 5 min hors du feu, couvercle fermé.",
           "Verser de l'eau bouillante sur les edamame, laisser 3 min et égoutter.",
           "Mélanger la sauce soja, l'huile de sésame, le vinaigre et le gingembre dans un bol.",
           "Ajouter le saumon, l'oignon émincé et la moitié de l'oignon nouveau et mélanger délicatement. Réserver au frais pendant que le riz repose, pas plus de 15 min.",
@@ -56402,7 +56409,7 @@
       "it": {
         "title": "Poke bowl di salmone con edamame e cetriolo",
         "steps": [
-          "Sciacquare il riso finché l'acqua è limpida, poi cuocerlo coperto in 200 ml d'acqua per 12 min a fuoco basso. Lasciarlo riposare 5 min fuori dal fuoco, con il coperchio.",
+          "Sciacquare il riso finché l'acqua è limpida, poi cuocerlo coperto in 230 ml d'acqua per 12 min a fuoco basso. Lasciarlo riposare 5 min fuori dal fuoco, con il coperchio.",
           "Versare acqua bollente sugli edamame, lasciarli 3 min e scolarli.",
           "Mescolare salsa di soia, olio di sesamo, aceto e zenzero in una ciotola.",
           "Aggiungere il salmone, la cipolla affettata e metà del cipollotto e mescolare delicatamente. Tenere in frigo mentre il riso riposa, non più di 15 min.",
@@ -56441,7 +56448,7 @@
     "ingredients": [
       {
         "id": "7ad63798-4311-437e-829a-dcca5674a78d",
-        "text": "120 g rice, jasmine"
+        "text": "150 g rice, jasmine"
       },
       {
         "id": "1ad82e06-a6d4-48ed-b564-b95fb519cf3c",
@@ -56453,11 +56460,11 @@
       },
       {
         "id": "7bfbd625-9fa8-42b7-a401-4800b1a5f7e8",
-        "text": "120 ml coconut milk"
+        "text": "200 ml coconut milk"
       },
       {
         "id": "4d1d30e3-73c6-4d90-b735-e67a34ac93a9",
-        "text": "180 ml vegetable stock"
+        "text": "100 ml vegetable stock"
       },
       {
         "id": "d09793c2-c9c6-4755-9b8f-4615f6a51378",
@@ -56477,7 +56484,7 @@
       },
       {
         "id": "6eab4c30-0152-4dde-ac34-7609fb3475ab",
-        "text": "280 g salmon fillet, skinless, in 4 cm chunks"
+        "text": "300 g salmon fillet, skinless, in 4 cm chunks"
       },
       {
         "id": "d93644bf-a3df-4d64-9263-52a5dce88154",
@@ -56495,7 +56502,7 @@
       }
     ],
     "steps": [
-      "Rinse the rice and simmer it covered in 200 ml water for 12 min on low heat, then rest it 5 min off the heat.",
+      "Rinse the rice and simmer it covered in 230 ml water for 12 min on low heat, then rest it 5 min off the heat.",
       "Heat the oil in a deep frying pan and fry the curry paste for 1 min, stirring, until fragrant.",
       "Stir in the coconut milk, stock, fish sauce, sugar and lime leaves and bring to a simmer.",
       "Add the green beans and pepper and simmer 4 min, until just tender.",
@@ -56506,7 +56513,7 @@
       "fr": {
         "title": "Curry vert thaï au saumon, riz jasmin et haricots verts",
         "steps": [
-          "Rincer le riz et le cuire à couvert dans 200 ml d'eau 12 min à feu doux, puis le laisser reposer 5 min hors du feu.",
+          "Rincer le riz et le cuire à couvert dans 230 ml d'eau 12 min à feu doux, puis le laisser reposer 5 min hors du feu.",
           "Chauffer l'huile dans une sauteuse et faire revenir la pâte de curry 1 min en remuant, jusqu'à ce qu'elle embaume.",
           "Ajouter le lait de coco, le bouillon, la sauce de poisson, le sucre et les feuilles de combava, et porter à frémissement.",
           "Ajouter les haricots verts et le poivron et laisser frémir 4 min, jusqu'à ce qu'ils soient juste tendres.",
@@ -56517,7 +56524,7 @@
       "it": {
         "title": "Curry verde thai di salmone con riso jasmine e fagiolini",
         "steps": [
-          "Sciacquare il riso e cuocerlo coperto in 200 ml d'acqua per 12 min a fuoco basso, poi lasciarlo riposare 5 min fuori dal fuoco.",
+          "Sciacquare il riso e cuocerlo coperto in 230 ml d'acqua per 12 min a fuoco basso, poi lasciarlo riposare 5 min fuori dal fuoco.",
           "Scaldare l'olio in una padella profonda e soffriggere la pasta di curry per 1 min mescolando, finché profuma.",
           "Unire latte di cocco, brodo, salsa di pesce, zucchero e foglie di lime kaffir e portare a sobbollire.",
           "Aggiungere fagiolini e peperone e sobbollire 4 min, finché sono appena teneri.",
@@ -56556,7 +56563,7 @@
     "ingredients": [
       {
         "id": "f7ecffae-f2a9-4606-9c26-56223df96379",
-        "text": "300 g salmon fillet, skinless, in 2 pieces"
+        "text": "320 g salmon fillet, skinless, in 2 pieces"
       },
       {
         "id": "85b59f9a-4361-4317-a9a2-f58d02f13900",
@@ -56592,7 +56599,7 @@
       },
       {
         "id": "352b2276-aae1-4461-b55e-c155d545cefb",
-        "text": "140 g rice, basmati"
+        "text": "150 g rice, basmati"
       },
       {
         "id": "eec21192-468c-4332-87c7-aca95405d003",
@@ -56680,7 +56687,7 @@
     "ingredients": [
       {
         "id": "4dc65b36-ae09-42e2-badd-1f761ab6c826",
-        "text": "300 g salmon fillet, skinless, 2 fillets"
+        "text": "320 g salmon fillet, skinless, 2 fillets"
       },
       {
         "id": "548c334f-604f-4b6a-9b0c-be255e4a44ac",
@@ -56704,11 +56711,11 @@
       },
       {
         "id": "9c53d100-6606-430c-8b8d-8d2633b1a53e",
-        "text": "140 g pasta, orzo"
+        "text": "150 g pasta, orzo"
       },
       {
         "id": "96afd5e1-9e7c-4543-b8c1-d735c1cbdc83",
-        "text": "450 ml vegetable stock, hot"
+        "text": "480 ml vegetable stock, hot"
       },
       {
         "id": "549af545-029d-4289-8da4-2945476b44b7",
@@ -56786,11 +56793,11 @@
     "ingredients": [
       {
         "id": "5da30368-d08b-4e9d-83b8-f8bedad78a83",
-        "text": "70 g quinoa, rinsed"
+        "text": "140 g quinoa, rinsed"
       },
       {
         "id": "f7c1d869-7342-4cec-9597-2229c4d84111",
-        "text": "280 g salmon fillet, skinless, 2 fillets"
+        "text": "320 g salmon fillet, skinless, 2 fillets"
       },
       {
         "id": "91ca6819-cbee-407f-b7b7-c5ae8cae92c5",
@@ -56810,7 +56817,7 @@
       },
       {
         "id": "8d6d6b2a-a108-4b6b-8cec-5d7da6f571cf",
-        "text": "1 can black beans, drained and rinsed"
+        "text": "0.5 can black beans, drained and rinsed"
       },
       {
         "id": "70c0d179-7358-4dd8-b1f8-658ae5f68c02",
@@ -56842,7 +56849,7 @@
       }
     ],
     "steps": [
-      "Simmer the quinoa in 150 ml salted water, covered, for 15 min, then leave it 5 min off the heat and fluff it.",
+      "Simmer the quinoa in 280 ml salted water, covered, for 15 min, then leave it 5 min off the heat and fluff it.",
       "Rub the salmon with the oil, chilli powder, cumin, paprika and a pinch of salt.",
       "Air-fry the salmon at 200°C for 8 min, until it flakes.",
       "Meanwhile, warm the black beans and corn in a small pan with a splash of water and a pinch of salt, 3 min.",
@@ -56853,7 +56860,7 @@
       "fr": {
         "title": "Burrito bowl au saumon au air fryer, quinoa, haricots noirs et pico de gallo",
         "steps": [
-          "Cuire la quinoa à couvert dans 150 ml d'eau salée 15 min, puis la laisser 5 min hors du feu et l'égrener.",
+          "Cuire la quinoa à couvert dans 280 ml d'eau salée 15 min, puis la laisser 5 min hors du feu et l'égrener.",
           "Frotter le saumon avec l'huile, le piment en poudre, le cumin, le paprika et une pincée de sel.",
           "Cuire le saumon au air fryer à 200 °C 8 min, jusqu'à ce qu'il s'effeuille.",
           "Pendant ce temps, réchauffer les haricots noirs et le maïs dans une petite casserole avec un filet d'eau et une pincée de sel, 3 min.",
@@ -56864,7 +56871,7 @@
       "it": {
         "title": "Burrito bowl di salmone in friggitrice ad aria con quinoa, fagioli neri e pico de gallo",
         "steps": [
-          "Cuocere la quinoa coperta in 150 ml d'acqua salata per 15 min, poi lasciarla 5 min fuori dal fuoco e sgranarla.",
+          "Cuocere la quinoa coperta in 280 ml d'acqua salata per 15 min, poi lasciarla 5 min fuori dal fuoco e sgranarla.",
           "Massaggiare il salmone con olio, peperoncino in polvere, cumino, paprica e un pizzico di sale.",
           "Cuocere il salmone in friggitrice ad aria a 200 °C per 8 min, finché si sfalda.",
           "Intanto scaldare fagioli neri e mais in un pentolino con un goccio d'acqua e un pizzico di sale, 3 min.",
@@ -56902,7 +56909,7 @@
     "ingredients": [
       {
         "id": "09f2e506-b188-48f2-b551-ce73efdf47aa",
-        "text": "125 g noodles, egg"
+        "text": "150 g noodles, egg"
       },
       {
         "id": "d3c9e4c5-6edd-4ecd-9e3a-b862188d5e4d",
@@ -56910,11 +56917,11 @@
       },
       {
         "id": "1affa8be-860f-4265-afa6-9f0ae4846a8e",
-        "text": "2 tsp vegetable oil"
+        "text": "1 tbsp vegetable oil"
       },
       {
         "id": "76315db4-4c73-4430-87f8-a3b29a703087",
-        "text": "300 g salmon fillet, skinless, in 3 cm pieces"
+        "text": "320 g salmon fillet, skinless, in 3 cm pieces"
       },
       {
         "id": "67aa7df2-fb40-4ebe-b591-0f9d46784578",
@@ -57274,10 +57281,6 @@
       {
         "id": "f9863e73-2989-45ec-9467-0244075341f1",
         "text": "1 tbsp vinegar, rice"
-      },
-      {
-        "id": "6b648fa3-c7a4-4d5c-b552-12f2435407d4",
-        "text": "20 g peanuts, roasted, chopped"
       }
     ],
     "steps": [
@@ -57285,7 +57288,7 @@
       "For the nam jim, pound or finely chop the garlic, 1.5 chillies and the coriander stems, then stir in the lime juice, fish sauce and 2 tsp of the sugar until it dissolves.",
       "For the salad, toss the cucumber and shallot with the vinegar, the rest of the sugar, the last half chilli, sliced, and a pinch of salt.",
       "Pat the sea bass dry, rub with the oil and salt, and air-fry skin-side up at 200°C for 7-8 min, until the skin is crisp and the flesh flakes.",
-      "Serve the fish on the rice with the nam jim spooned over, the cucumber salad on the side, and the peanuts and coriander leaves scattered over."
+      "Serve the fish on the rice with the nam jim spooned over, the cucumber salad on the side, and coriander leaves scattered over."
     ],
     "translations": {
       "fr": {
@@ -57295,7 +57298,7 @@
           "Pour le nam jim, piler ou hacher finement l'ail, 1,5 piment et les tiges de coriandre, puis ajouter le jus de citron vert, la sauce de poisson et 2 c. à café de sucre en remuant jusqu'à dissolution.",
           "Pour la salade, mélanger le concombre et l'échalote avec le vinaigre, le reste du sucre, le dernier demi-piment émincé et une pincée de sel.",
           "Sécher le bar, le frotter d'huile et de sel, puis le cuire au air fryer côté peau vers le haut à 200 °C 7 à 8 min, jusqu'à ce que la peau soit croustillante et la chair s'effeuille.",
-          "Servir le poisson sur le riz nappé de nam jim, avec la salade de concombre à côté, parsemé de cacahuètes et de feuilles de coriandre."
+          "Servir le poisson sur le riz nappé de nam jim, avec la salade de concombre à côté, parsemé de feuilles de coriandre."
         ]
       },
       "it": {
@@ -57305,7 +57308,7 @@
           "Per il nam jim, pestare o tritare finemente aglio, 1,5 peperoncini e i gambi di coriandolo, poi unire succo di lime, salsa di pesce e 2 cucchiaini di zucchero mescolando finché si scioglie.",
           "Per l'insalata, condire cetriolo e scalogno con l'aceto, il resto dello zucchero, l'ultimo mezzo peperoncino a fettine e un pizzico di sale.",
           "Asciugare il branzino, ungerlo con l'olio e salarlo, poi cuocerlo in friggitrice ad aria con la pelle in alto a 200 °C per 7-8 min, finché la pelle è croccante e la carne si sfalda.",
-          "Servire il pesce sul riso condito con il nam jim, con l'insalata di cetrioli a parte, e cospargere di arachidi e foglie di coriandolo."
+          "Servire il pesce sul riso condito con il nam jim, con l'insalata di cetrioli a parte, e cospargere di foglie di coriandolo."
         ]
       }
     }
@@ -57560,7 +57563,7 @@
     "ingredients": [
       {
         "id": "3dadbf18-25ff-4314-885f-498fed5d2af9",
-        "text": "130 g bulgur"
+        "text": "150 g bulgur"
       },
       {
         "id": "7ecd0927-2986-49de-bbe1-36f2d740de1c",
@@ -57620,7 +57623,7 @@
       }
     ],
     "steps": [
-      "Simmer the bulgur in 260 ml salted water, covered, for 12 min, then leave it 5 min off the heat.",
+      "Simmer the bulgur in 300 ml salted water, covered, for 12 min, then leave it 5 min off the heat.",
       "Rub the cod with 1 tsp of the oil, the paprika, cumin and salt, and air-fry at 200°C for 9-10 min, until it flakes.",
       "Meanwhile, soften the onion in the rest of the oil in a frying pan for 6 min, add the garlic, chilli and walnuts and cook 2 min more, then stir in most of the coriander.",
       "Whisk the tahini, yogurt and three quarters of the lemon juice with 3-4 tbsp water and a pinch of salt into a pourable sauce.",
@@ -57631,7 +57634,7 @@
       "fr": {
         "title": "Samke harra au air fryer (cabillaud épicé au tahini) et boulgour",
         "steps": [
-          "Cuire le boulgour à couvert dans 260 ml d'eau salée 12 min, puis le laisser gonfler 5 min hors du feu.",
+          "Cuire le boulgour à couvert dans 300 ml d'eau salée 12 min, puis le laisser gonfler 5 min hors du feu.",
           "Frotter le cabillaud avec 1 c. à café d'huile, le paprika, le cumin et du sel, puis le cuire au air fryer à 200 °C 9 à 10 min, jusqu'à ce qu'il s'effeuille.",
           "Pendant ce temps, faire fondre l'oignon dans le reste d'huile à la poêle 6 min, ajouter l'ail, le piment et les noix et cuire encore 2 min, puis incorporer presque toute la coriandre.",
           "Fouetter le tahini, le yaourt et les trois quarts du jus de citron avec 3 à 4 c. à soupe d'eau et une pincée de sel pour obtenir une sauce nappante.",
@@ -57642,7 +57645,7 @@
       "it": {
         "title": "Samke harra in friggitrice ad aria (merluzzo piccante al tahini) con bulgur",
         "steps": [
-          "Cuocere il bulgur coperto in 260 ml d'acqua salata per 12 min, poi lasciarlo riposare 5 min fuori dal fuoco.",
+          "Cuocere il bulgur coperto in 300 ml d'acqua salata per 12 min, poi lasciarlo riposare 5 min fuori dal fuoco.",
           "Massaggiare il merluzzo con 1 cucchiaino d'olio, paprica, cumino e sale, e cuocerlo in friggitrice ad aria a 200 °C per 9-10 min, finché si sfalda.",
           "Intanto appassire la cipolla nel resto dell'olio in padella per 6 min, unire aglio, peperoncino e noci e cuocere altri 2 min, poi aggiungere quasi tutto il coriandolo.",
           "Sbattere tahini, yogurt e tre quarti del succo di limone con 3-4 cucchiai d'acqua e un pizzico di sale fino a ottenere una salsa fluida.",
@@ -57751,7 +57754,7 @@
       },
       {
         "id": "87367913-ae67-49ce-b15e-092e6f293a94",
-        "text": "180 g pita, 2 large flatbreads"
+        "text": "4 pita, flatbreads"
       },
       {
         "id": "98e35c0e-7df6-4166-ba45-b1c493900245",
@@ -57939,7 +57942,7 @@
     "ingredients": [
       {
         "id": "23f48922-cd57-47b1-b782-3d88a9fdfb20",
-        "text": "160 g pasta, penne"
+        "text": "180 g pasta, penne"
       },
       {
         "id": "2229cb05-7e13-4cbe-80dc-c9e899eea4c4",
@@ -57963,7 +57966,7 @@
       },
       {
         "id": "10a2827b-e211-4b83-a8a0-95db7753f3a8",
-        "text": "240 g tuna, canned, well drained"
+        "text": "140 g tuna, canned, well drained"
       },
       {
         "id": "2a9afc09-af06-4469-8561-a4ccf5198250",
@@ -58260,7 +58263,7 @@
     "ingredients": [
       {
         "id": "6c01ff36-cd96-444e-9d8b-b7b171d2ff12",
-        "text": "140 g rice, short-grain"
+        "text": "160 g rice, short-grain"
       },
       {
         "id": "2979cf9a-b93e-40c2-ba31-f51db4db0d72",
@@ -58296,7 +58299,7 @@
       },
       {
         "id": "72435ab5-e21c-47ed-bc5d-82b8b299e717",
-        "text": "200 g tuna, canned, drained"
+        "text": "150 g tuna, canned, drained"
       },
       {
         "id": "d71d0540-4d5a-44cd-8894-20942373dc28",
@@ -58388,7 +58391,7 @@
     "ingredients": [
       {
         "id": "6c33efa4-754f-4aaf-8c1e-156db8a3bda9",
-        "text": "140 g rice, short-grain"
+        "text": "150 g rice, short-grain"
       },
       {
         "id": "1e0f19e5-9135-4a70-bcdc-1c66aa1a40e0",
@@ -58396,7 +58399,7 @@
       },
       {
         "id": "226398f6-07b5-46dd-98d0-11ecd1ee3df2",
-        "text": "280 g mackerel, 4 fillets, skin on"
+        "text": "320 g mackerel, 4 fillets, skin on"
       },
       {
         "id": "65624991-5496-4ce1-be14-83aea23dc802",
@@ -58433,7 +58436,7 @@
       }
     ],
     "steps": [
-      "Rinse the rice and simmer it covered in 210 ml water for 12 min on low heat. Lay the pak choi on top, cover again and steam 4 min off the heat.",
+      "Rinse the rice and simmer it covered in 230 ml water for 12 min on low heat. Lay the pak choi on top, cover again and steam 4 min off the heat.",
       "Mix the soy sauce, mirin, sake, sugar and ginger for the teriyaki sauce.",
       "Pat the mackerel dry, rub with the oil and a pinch of salt and air-fry skin-side up at 200°C for 7-8 min, until the skin is crisp and the flesh opaque.",
       "Meanwhile, simmer the sauce in a small pan for 2-3 min, until syrupy and glossy.",
@@ -58444,7 +58447,7 @@
       "fr": {
         "title": "Donburi de maquereau teriyaki au air fryer et pak choï",
         "steps": [
-          "Rincer le riz et le cuire à couvert dans 210 ml d'eau 12 min à feu doux. Poser le pak choï dessus, recouvrir et laisser cuire à la vapeur 4 min hors du feu.",
+          "Rincer le riz et le cuire à couvert dans 230 ml d'eau 12 min à feu doux. Poser le pak choï dessus, recouvrir et laisser cuire à la vapeur 4 min hors du feu.",
           "Mélanger la sauce soja, le mirin, le saké, le sucre et le gingembre pour la sauce teriyaki.",
           "Sécher le maquereau, le frotter d'huile et d'une pincée de sel, puis le cuire au air fryer côté peau vers le haut à 200 °C 7 à 8 min, jusqu'à ce que la peau soit croustillante et la chair opaque.",
           "Pendant ce temps, faire réduire la sauce dans une petite casserole 2 à 3 min, jusqu'à ce qu'elle soit sirupeuse et brillante.",
@@ -58455,7 +58458,7 @@
       "it": {
         "title": "Donburi di sgombro teriyaki in friggitrice ad aria con pak choi",
         "steps": [
-          "Sciacquare il riso e cuocerlo coperto in 210 ml d'acqua per 12 min a fuoco basso. Adagiarvi sopra il pak choi, coprire di nuovo e cuocere a vapore 4 min fuori dal fuoco.",
+          "Sciacquare il riso e cuocerlo coperto in 230 ml d'acqua per 12 min a fuoco basso. Adagiarvi sopra il pak choi, coprire di nuovo e cuocere a vapore 4 min fuori dal fuoco.",
           "Mescolare salsa di soia, mirin, sakè, zucchero e zenzero per la salsa teriyaki.",
           "Asciugare lo sgombro, ungerlo con l'olio e un pizzico di sale e cuocerlo in friggitrice ad aria con la pelle in alto a 200 °C per 7-8 min, finché la pelle è croccante e la carne opaca.",
           "Intanto far ridurre la salsa in un pentolino per 2-3 min, finché è sciropposa e lucida.",
@@ -58629,10 +58632,6 @@
         "text": "320 g trout, 4 fillets, skin on"
       },
       {
-        "id": "2e15860d-5b33-4014-8267-f52af7b50a98",
-        "text": "2 pita, warmed"
-      },
-      {
         "id": "e529070d-67e2-43fd-b833-71af1124799b",
         "text": "2 tbsp greek yogurt",
         "optional": true
@@ -58648,7 +58647,7 @@
       "Add the tomatoes, chickpeas and stock and simmer 6-8 min, crushing a few chickpeas, until the tomatoes collapse and the sauce thickens.",
       "Stir in the spinach until it wilts and season with salt and a squeeze of lemon.",
       "Meanwhile, season the trout, heat the rest of the oil in a frying pan and cook it skin-side down 3 min, until crisp, then 1 min on the other side.",
-      "Serve the trout on the harissa chickpeas with a spoonful of yogurt, the coriander, lemon wedges and the warm pittas."
+      "Serve the trout on the harissa chickpeas with a spoonful of yogurt, the coriander, and lemon wedges."
     ],
     "translations": {
       "fr": {
@@ -58658,7 +58657,7 @@
           "Ajouter les tomates, les pois chiches et le bouillon et laisser mijoter 6 à 8 min en écrasant quelques pois chiches, jusqu'à ce que les tomates s'affaissent et que la sauce épaississe.",
           "Incorporer les épinards jusqu'à ce qu'ils tombent et assaisonner de sel et d'un filet de citron.",
           "Pendant ce temps, assaisonner la truite, chauffer le reste de l'huile dans une poêle et la cuire côté peau 3 min, jusqu'à ce qu'elle soit croustillante, puis 1 min de l'autre côté.",
-          "Servir la truite sur les pois chiches à la harissa avec une cuillerée de yaourt, la coriandre, des quartiers de citron et les pitas chaudes."
+          "Servir la truite sur les pois chiches à la harissa avec une cuillerée de yaourt, la coriandre, et des quartiers de citron."
         ]
       },
       "it": {
@@ -58668,7 +58667,7 @@
           "Aggiungere pomodorini, ceci e brodo e sobbollire 6-8 min schiacciando qualche cece, finché i pomodorini si disfano e il sugo si addensa.",
           "Unire gli spinaci finché appassiscono e condire con sale e una spruzzata di limone.",
           "Intanto condire la trota, scaldare il resto dell'olio in padella e cuocerla dal lato della pelle per 3 min, finché è croccante, poi 1 min dall'altro lato.",
-          "Servire la trota sui ceci alla harissa con un cucchiaio di yogurt, il coriandolo, spicchi di limone e le pite calde."
+          "Servire la trota sui ceci alla harissa con un cucchiaio di yogurt, il coriandolo, e spicchi di limone."
         ]
       }
     }
@@ -58812,15 +58811,15 @@
       },
       {
         "id": "59b90105-eb0f-4edf-9027-3d6c1725e47c",
-        "text": "150 g pasta, bucatini"
+        "text": "180 g pasta, bucatini"
       },
       {
         "id": "cceaeca8-21f6-43c4-85de-36d37ee5a879",
-        "text": "15 g breadcrumbs"
+        "text": "20 g breadcrumbs"
       },
       {
         "id": "ad607972-4a5a-436c-ab3c-a726e1bf6bcc",
-        "text": "1 tbsp olive oil"
+        "text": "1.5 tbsp olive oil"
       },
       {
         "id": "9cb0cca0-382f-4241-b8ab-7446dc5d64e7",
@@ -58832,11 +58831,11 @@
       },
       {
         "id": "39ae1be8-c66d-49f2-909f-3a7617c31928",
-        "text": "220 g sardines, fresh, filleted"
+        "text": "250 g sardines, fresh, filleted"
       },
       {
         "id": "b1f81622-b8ad-4bd9-b87f-d87064aa7722",
-        "text": "10 g pine nuts"
+        "text": "15 g pine nuts"
       }
     ],
     "steps": [
@@ -58900,7 +58899,7 @@
     "ingredients": [
       {
         "id": "5c80a1eb-7c7c-4139-883f-76376bbcf384",
-        "text": "130 g quinoa, rinsed"
+        "text": "140 g quinoa, rinsed"
       },
       {
         "id": "04848bdd-ec42-4475-bf4c-d08c7bc2fad8",
@@ -59020,11 +59019,11 @@
       },
       {
         "id": "a5c91359-8c09-5d3c-80f0-63f652692f33",
-        "text": "1 tsp vegetable oil"
+        "text": "2 tsp vegetable oil"
       },
       {
         "id": "67f84e3b-cb42-5254-9555-15393584dc59",
-        "text": "120 g rice, jasmine"
+        "text": "150 g rice, jasmine"
       },
       {
         "id": "971c54da-fbe9-50a1-8cca-3ce20bbe7086",
@@ -59070,7 +59069,7 @@
       }
     ],
     "steps": [
-      "Rinse the rice and simmer it covered in 180 ml water on low heat for 12 min.",
+      "Rinse the rice and simmer it covered in 225 ml water on low heat for 12 min.",
       "Pat the tofu dry and toss it with the soy sauce, curry powder and turmeric, then with the cornstarch and oil.",
       "Air-fry the tofu at 200°C for 15 min, shaking the basket halfway, until crisp and golden at the edges.",
       "Lay the green beans over the rice, cover again and steam 5 min, then leave off the heat.",
@@ -59081,7 +59080,7 @@
       "fr": {
         "title": "Tofu satay au air fryer, riz, concombre et haricots verts",
         "steps": [
-          "Rincer le riz et le cuire à couvert dans 180 ml d'eau à feu doux pendant 12 min.",
+          "Rincer le riz et le cuire à couvert dans 225 ml d'eau à feu doux pendant 12 min.",
           "Sécher le tofu et l'enrober de sauce soja, de curry et de curcuma, puis de fécule et d'huile.",
           "Cuire le tofu au air fryer à 200 °C pendant 15 min en secouant le panier à mi-cuisson, jusqu'à ce qu'il soit doré et croustillant sur les bords.",
           "Poser les haricots verts sur le riz, recouvrir et cuire à la vapeur 5 min, puis retirer du feu.",
@@ -59092,7 +59091,7 @@
       "it": {
         "title": "Tofu satay in friggitrice ad aria con riso, cetriolo e fagiolini",
         "steps": [
-          "Sciacquare il riso e cuocerlo coperto in 180 ml d'acqua a fuoco basso per 12 min.",
+          "Sciacquare il riso e cuocerlo coperto in 225 ml d'acqua a fuoco basso per 12 min.",
           "Asciugare il tofu e condirlo con salsa di soia, curry e curcuma, poi con l'amido e l'olio.",
           "Cuocere il tofu in friggitrice ad aria a 200 °C per 15 min, scuotendo il cestello a metà, finché è dorato e croccante ai bordi.",
           "Disporre i fagiolini sul riso, coprire di nuovo e cuocere a vapore 5 min, poi togliere dal fuoco.",
@@ -59157,7 +59156,7 @@
       },
       {
         "id": "dbfd6f67-3bd1-50ea-af04-a802817bc64c",
-        "text": "130 g rice"
+        "text": "150 g rice"
       },
       {
         "id": "9f7db8d1-64e4-5a6b-b298-b80205e4121f",
@@ -59189,7 +59188,7 @@
       }
     ],
     "steps": [
-      "Rinse the rice and simmer it covered in 200 ml water on low heat for 12 min, then rest 5 min off the heat.",
+      "Rinse the rice and simmer it covered in 225 ml water on low heat for 12 min, then rest 5 min off the heat.",
       "Mix the cornstarch with the Sichuan pepper, white pepper and salt. Toss the dry tofu in it, then with 2 tsp of the oil.",
       "Air-fry at 200°C for 12-15 min, shaking twice, until crisp all over.",
       "Heat the rest of the oil in a wok and stir-fry the garlic, chilli and pepper for 2 min.",
@@ -59200,7 +59199,7 @@
       "fr": {
         "title": "Tofu sel et poivre au air fryer, riz et pak-choï",
         "steps": [
-          "Rincer le riz et le cuire à couvert dans 200 ml d'eau à feu doux 12 min, puis laisser reposer 5 min hors du feu.",
+          "Rincer le riz et le cuire à couvert dans 225 ml d'eau à feu doux 12 min, puis laisser reposer 5 min hors du feu.",
           "Mélanger la fécule avec le poivre du Sichuan, le poivre blanc et le sel. Y rouler le tofu bien sec, puis l'enrober de 2 c. à café d'huile.",
           "Cuire au air fryer à 200 °C pendant 12 à 15 min en secouant deux fois, jusqu'à ce qu'il soit croustillant de partout.",
           "Chauffer le reste d'huile dans un wok et faire sauter l'ail, le piment et le poivron 2 min.",
@@ -59211,7 +59210,7 @@
       "it": {
         "title": "Tofu sale e pepe in friggitrice ad aria con riso e pak choi",
         "steps": [
-          "Sciacquare il riso e cuocerlo coperto in 200 ml d'acqua a fuoco basso per 12 min, poi lasciarlo riposare 5 min fuori dal fuoco.",
+          "Sciacquare il riso e cuocerlo coperto in 225 ml d'acqua a fuoco basso per 12 min, poi lasciarlo riposare 5 min fuori dal fuoco.",
           "Mescolare l'amido con pepe di Sichuan, pepe bianco e sale. Passarvi il tofu ben asciutto, poi condirlo con 2 cucchiaini d'olio.",
           "Cuocere in friggitrice ad aria a 200 °C per 12-15 min, scuotendo due volte, finché è croccante su tutti i lati.",
           "Scaldare il resto dell'olio nel wok e saltare aglio, peperoncino e peperone per 2 min.",
@@ -59284,11 +59283,11 @@
       },
       {
         "id": "22d9699b-1696-55d5-8e85-77e57e26e377",
-        "text": "2 tsp vegetable oil"
+        "text": "1 tbsp vegetable oil"
       },
       {
         "id": "f0788d17-8b0f-5eaa-9acf-198c1ebb6a62",
-        "text": "110 g rice noodles, thin vermicelli"
+        "text": "150 g rice noodles, thin vermicelli"
       },
       {
         "id": "99787f96-2bb7-59cb-b04a-05743744ccd7",
@@ -59435,7 +59434,7 @@
       },
       {
         "id": "5d46241b-748b-5926-84ec-b448a3b8844a",
-        "text": "120 g rice, short-grain"
+        "text": "150 g rice, short-grain"
       },
       {
         "id": "88b038a3-bb4d-5d1c-a7ef-c18be814c17d",
@@ -59452,7 +59451,7 @@
       }
     ],
     "steps": [
-      "Rinse the rice and simmer it covered in 180 ml water on low heat for 12 min, then rest 5 min off the heat.",
+      "Rinse the rice and simmer it covered in 225 ml water on low heat for 12 min, then rest 5 min off the heat.",
       "Mix the ginger, garlic, soy sauce, mirin, sake and sugar.",
       "Pat the tofu dry and dust it with the cornstarch. Fry it in the oil in a large frying pan over medium-high heat, 3 min per side, until golden.",
       "Push the tofu to the side, add the onion and cook 3 min, until soft.",
@@ -59463,7 +59462,7 @@
       "fr": {
         "title": "Tofu shogayaki, riz et chou émincé",
         "steps": [
-          "Rincer le riz et le cuire à couvert dans 180 ml d'eau à feu doux 12 min, puis laisser reposer 5 min hors du feu.",
+          "Rincer le riz et le cuire à couvert dans 225 ml d'eau à feu doux 12 min, puis laisser reposer 5 min hors du feu.",
           "Mélanger le gingembre, l'ail, la sauce soja, le mirin, le saké et le sucre.",
           "Sécher le tofu et le fariner de fécule. Le dorer dans l'huile dans une grande poêle à feu moyen-vif, 3 min de chaque côté.",
           "Pousser le tofu sur le côté, ajouter l'oignon et cuire 3 min, jusqu'à ce qu'il soit tendre.",
@@ -59474,7 +59473,7 @@
       "it": {
         "title": "Tofu shogayaki con riso e cavolo a julienne",
         "steps": [
-          "Sciacquare il riso e cuocerlo coperto in 180 ml d'acqua a fuoco basso per 12 min, poi lasciarlo riposare 5 min fuori dal fuoco.",
+          "Sciacquare il riso e cuocerlo coperto in 225 ml d'acqua a fuoco basso per 12 min, poi lasciarlo riposare 5 min fuori dal fuoco.",
           "Mescolare zenzero, aglio, salsa di soia, mirin, sake e zucchero.",
           "Asciugare il tofu e infarinarlo con l'amido. Rosolarlo nell'olio in una padella larga a fuoco medio-alto, 3 min per lato, finché è dorato.",
           "Spostare il tofu di lato, aggiungere la cipolla e cuocerla 3 min, finché è morbida.",
@@ -59518,7 +59517,7 @@
       },
       {
         "id": "12c45a76-c62b-5a4d-9a41-6594e49c53c6",
-        "text": "120 g noodles, egg noodles"
+        "text": "150 g noodles, egg noodles"
       },
       {
         "id": "4ce48683-5f48-553b-9af0-e9832dbd43ed",
@@ -59637,7 +59636,7 @@
       },
       {
         "id": "397bd037-e604-508e-9c6b-004e77866ea0",
-        "text": "140 g rice, jasmine"
+        "text": "150 g rice, jasmine"
       },
       {
         "id": "789ccd49-c2b4-5355-a548-279a882a8356",
@@ -59681,7 +59680,7 @@
       }
     ],
     "steps": [
-      "Rinse the rice and simmer it covered in 210 ml water on low heat for 12 min, then rest 5 min off the heat.",
+      "Rinse the rice and simmer it covered in 225 ml water on low heat for 12 min, then rest 5 min off the heat.",
       "Heat 1 tbsp oil in a wok until very hot and fry the eggs one at a time for 2 min, spooning oil over, until the edges are crisp and the yolks still runny. Lift out.",
       "Pound or finely chop the garlic and chillies together. Mix the soy sauce, dark soy sauce, sugar and 2 tbsp water.",
       "Add the rest of the oil to the wok, fry the garlic and chilli for 30 seconds, then the tempeh for 3 min, until browned.",
@@ -59692,7 +59691,7 @@
       "fr": {
         "title": "Pad kra pao au tempeh et œuf frit",
         "steps": [
-          "Rincer le riz et le cuire à couvert dans 210 ml d'eau à feu doux 12 min, puis laisser reposer 5 min hors du feu.",
+          "Rincer le riz et le cuire à couvert dans 225 ml d'eau à feu doux 12 min, puis laisser reposer 5 min hors du feu.",
           "Chauffer fortement 1 c. à soupe d'huile dans un wok et y frire les œufs un par un 2 min en les arrosant d'huile, jusqu'à ce que les bords soient croustillants et le jaune encore coulant. Réserver.",
           "Piler ou hacher finement l'ail et les piments ensemble. Mélanger la sauce soja, la sauce soja foncée, le sucre et 2 c. à soupe d'eau.",
           "Ajouter le reste d'huile dans le wok, faire revenir l'ail et le piment 30 secondes, puis le tempeh 3 min, jusqu'à ce qu'il soit doré.",
@@ -59703,7 +59702,7 @@
       "it": {
         "title": "Pad kra pao con tempeh e uovo fritto",
         "steps": [
-          "Sciacquare il riso e cuocerlo coperto in 210 ml d'acqua a fuoco basso per 12 min, poi lasciarlo riposare 5 min fuori dal fuoco.",
+          "Sciacquare il riso e cuocerlo coperto in 225 ml d'acqua a fuoco basso per 12 min, poi lasciarlo riposare 5 min fuori dal fuoco.",
           "Scaldare bene 1 cucchiaio d'olio nel wok e friggere le uova una alla volta per 2 min, bagnandole con l'olio, finché i bordi sono croccanti e il tuorlo ancora morbido. Toglierle.",
           "Pestare o tritare finemente aglio e peperoncini insieme. Mescolare salsa di soia, salsa di soia scura, zucchero e 2 cucchiai d'acqua.",
           "Aggiungere il resto dell'olio nel wok, soffriggere aglio e peperoncino per 30 secondi, poi il tempeh per 3 min, finché è rosolato.",
@@ -59715,7 +59714,7 @@
   },
   {
     "id": "5bbf80f0-4280-559d-840e-8a3798e4f5d4",
-    "title": "Chana saag with rice and cucumber raita",
+    "title": "Chana saag with rice",
     "language": "en",
     "servings": 2,
     "prep_min": 10,
@@ -59741,11 +59740,11 @@
     "ingredients": [
       {
         "id": "e5976064-1bf8-5094-86f3-8b7c509262d4",
-        "text": "400 g chickpeas, drained"
+        "text": "480 g chickpeas, drained"
       },
       {
         "id": "ac231122-9a8d-5eb1-baab-a08041acf65c",
-        "text": "110 g rice, basmati"
+        "text": "150 g rice, basmati"
       },
       {
         "id": "6f24b1aa-9fba-5c7b-b7b2-1c265be797fc",
@@ -59789,54 +59788,38 @@
       },
       {
         "id": "f0c760dc-e4ea-527d-ae1b-d62a9346a357",
-        "text": "2 tsp vegetable oil"
-      },
-      {
-        "id": "72e5433c-08b1-5c3d-8525-406ad3ac1db7",
-        "text": "150 g greek yogurt"
-      },
-      {
-        "id": "1945419b-a594-5bcf-860b-b3b495d756ad",
-        "text": "100 g cucumber, grated"
-      },
-      {
-        "id": "30e297c5-4289-50e3-977d-150d479af134",
-        "text": "5 g fresh mint, chopped",
-        "optional": true
+        "text": "1 tbsp vegetable oil"
       }
     ],
     "steps": [
-      "Rinse the rice and simmer it covered in 170 ml water on low heat for 12 min, then rest 5 min off the heat.",
+      "Rinse the rice and simmer it covered in 225 ml water on low heat for 12 min, then rest 5 min off the heat.",
       "Fry the onion in the oil in a wide pan over medium heat for 5 min, until soft and golden.",
       "Add the garlic, ginger, chilli, cumin, coriander and turmeric and stir 1 min, until fragrant.",
       "Add the tomatoes and cook 3 min, then the chickpeas and 100 ml water. Simmer 5 min, crushing a few chickpeas to thicken the sauce.",
       "Stir in the spinach a handful at a time until wilted, then the garam masala. Season with salt.",
-      "For the raita, squeeze the cucumber dry and stir it into the yogurt with the mint, a pinch of cumin and salt.",
-      "Serve the chana saag with the rice and raita."
+      "Serve the chana saag with the rice."
     ],
     "translations": {
       "fr": {
-        "title": "Chana saag, riz et raïta au concombre",
+        "title": "Chana saag et riz",
         "steps": [
-          "Rincer le riz et le cuire à couvert dans 170 ml d'eau à feu doux 12 min, puis laisser reposer 5 min hors du feu.",
+          "Rincer le riz et le cuire à couvert dans 225 ml d'eau à feu doux 12 min, puis laisser reposer 5 min hors du feu.",
           "Faire revenir l'oignon dans l'huile dans une sauteuse à feu moyen 5 min, jusqu'à ce qu'il soit tendre et doré.",
           "Ajouter l'ail, le gingembre, le piment, le cumin, la coriandre et le curcuma et remuer 1 min, jusqu'à ce que ça embaume.",
           "Ajouter les tomates et cuire 3 min, puis les pois chiches et 100 ml d'eau. Laisser mijoter 5 min en écrasant quelques pois chiches pour épaissir la sauce.",
           "Incorporer les épinards poignée par poignée jusqu'à ce qu'ils tombent, puis le garam masala. Saler.",
-          "Pour le raïta, presser le concombre et le mélanger au yaourt avec la menthe, une pincée de cumin et du sel.",
-          "Servir le chana saag avec le riz et le raïta."
+          "Servir le chana saag avec le riz."
         ]
       },
       "it": {
-        "title": "Chana saag con riso e raita al cetriolo",
+        "title": "Chana saag con riso",
         "steps": [
-          "Sciacquare il riso e cuocerlo coperto in 170 ml d'acqua a fuoco basso per 12 min, poi lasciarlo riposare 5 min fuori dal fuoco.",
+          "Sciacquare il riso e cuocerlo coperto in 225 ml d'acqua a fuoco basso per 12 min, poi lasciarlo riposare 5 min fuori dal fuoco.",
           "Soffriggere la cipolla nell'olio in una padella larga a fuoco medio per 5 min, finché è morbida e dorata.",
           "Aggiungere aglio, zenzero, peperoncino, cumino, coriandolo e curcuma e mescolare 1 min, finché profumano.",
           "Aggiungere i pomodori e cuocere 3 min, poi i ceci e 100 ml d'acqua. Sobbollire 5 min, schiacciando qualche cece per addensare il sugo.",
           "Unire gli spinaci una manciata alla volta finché appassiscono, poi il garam masala. Salare.",
-          "Per la raita, strizzare il cetriolo e mescolarlo allo yogurt con la menta, un pizzico di cumino e sale.",
-          "Servire il chana saag con il riso e la raita."
+          "Servire il chana saag con il riso."
         ]
       }
     }
@@ -59872,15 +59855,15 @@
     "ingredients": [
       {
         "id": "b35695ea-8b79-5245-97d3-3da7fce05f94",
-        "text": "120 g tortillas, 6 small corn tortillas"
+        "text": "150 g tortillas, 6 small corn tortillas"
       },
       {
         "id": "4c7ad735-764e-5a3b-957a-f23aad36ffe6",
-        "text": "500 g black beans, drained"
+        "text": "480 g black beans, drained"
       },
       {
         "id": "1cf84d8a-d274-55b3-b292-d0ecda209d07",
-        "text": "2 tsp vegetable oil"
+        "text": "1 tbsp vegetable oil"
       },
       {
         "id": "6b5e00c1-b8e2-5755-91b3-f03b1587ef6c",
@@ -59984,11 +59967,11 @@
     "ingredients": [
       {
         "id": "b71fe338-e94d-52a6-8838-4c17e87f0987",
-        "text": "120 g pasta, ditalini"
+        "text": "150 g pasta, ditalini"
       },
       {
         "id": "13b48f76-0011-5df0-b7d7-5381f0720d5b",
-        "text": "550 g white beans, drained"
+        "text": "480 g white beans, drained"
       },
       {
         "id": "a8a19e72-bdc9-58b5-a436-f799996d7a1b",
@@ -60024,7 +60007,7 @@
       },
       {
         "id": "10fe51b7-2348-5917-8500-20fd0c3dbc8f",
-        "text": "1 tbsp olive oil"
+        "text": "1.5 tbsp olive oil"
       },
       {
         "id": "58c37bac-3c61-5e29-aed5-21bfd68e285e",
@@ -60033,7 +60016,7 @@
       }
     ],
     "steps": [
-      "Soften the onion, carrot and celery in 2 tsp of the oil in a large pot over medium heat for 6 min.",
+      "Soften the onion, carrot and celery in 1 tbsp of the oil in a large pot over medium heat for 6 min.",
       "Add the garlic, rosemary and tomato paste and stir 1 min.",
       "Add the tomatoes, beans and stock, bring to the boil and simmer 3 min.",
       "Scoop out a ladle of beans, mash them with a fork and stir them back in to thicken the soup.",
@@ -60044,7 +60027,7 @@
       "fr": {
         "title": "Pasta e fagioli (soupe de pâtes aux haricots)",
         "steps": [
-          "Faire suer l'oignon, la carotte et le céleri dans 2 c. à café d'huile dans une grande casserole à feu moyen 6 min.",
+          "Faire suer l'oignon, la carotte et le céleri dans 1 c. à soupe d'huile dans une grande casserole à feu moyen 6 min.",
           "Ajouter l'ail, le romarin et le concentré de tomate et remuer 1 min.",
           "Ajouter les tomates, les haricots et le bouillon, porter à ébullition et laisser frémir 3 min.",
           "Prélever une louche de haricots, les écraser à la fourchette et les remettre pour épaissir la soupe.",
@@ -60055,7 +60038,7 @@
       "it": {
         "title": "Pasta e fagioli",
         "steps": [
-          "Far appassire cipolla, carota e sedano in 2 cucchiaini d'olio in una pentola capiente a fuoco medio per 6 min.",
+          "Far appassire cipolla, carota e sedano in 1 cucchiaio d'olio in una pentola capiente a fuoco medio per 6 min.",
           "Aggiungere aglio, rosmarino e concentrato di pomodoro e mescolare 1 min.",
           "Aggiungere pomodori, fagioli e brodo, portare a bollore e sobbollire 3 min.",
           "Prelevare un mestolo di fagioli, schiacciarli con una forchetta e rimetterli per addensare la minestra.",
@@ -60067,7 +60050,7 @@
   },
   {
     "id": "0bea3390-8cab-59e2-96c7-b2464bd0572a",
-    "title": "Musabaha with eggs, warm pitta and chopped salad",
+    "title": "Musabaha with warm pitta and chopped salad",
     "language": "en",
     "servings": 2,
     "prep_min": 10,
@@ -60087,18 +60070,18 @@
     ],
     "difficulty": "easy",
     "equipment": {
-      "pots": 2,
+      "pots": 1,
       "oven": false,
       "special": []
     },
     "ingredients": [
       {
         "id": "c0d5138d-1507-5c35-ad77-68d68ada93c7",
-        "text": "400 g chickpeas, drained"
+        "text": "480 g chickpeas, drained"
       },
       {
         "id": "0f8ecbca-07c4-5098-ad5b-2206201b3209",
-        "text": "30 g tahini"
+        "text": "40 g tahini"
       },
       {
         "id": "5b6ee7dc-2d1c-5c34-bad0-1299549cf12e",
@@ -60111,10 +60094,6 @@
       {
         "id": "40cbcfe2-b3aa-54f8-aa4f-9e8c5d6ae473",
         "text": "0.5 tsp cumin"
-      },
-      {
-        "id": "50f6474c-f843-59d8-a77f-79c4951f5703",
-        "text": "2 eggs"
       },
       {
         "id": "6c6927f3-5251-5f85-acd0-1b432bae55be",
@@ -60148,36 +60127,33 @@
     ],
     "steps": [
       "Cover the chickpeas with water in a pan, add the cumin and simmer 10-12 min, until very soft.",
-      "Meanwhile, boil the eggs for 8 min, cool and peel.",
       "Whisk the tahini with three quarters of the lemon juice, the garlic, a pinch of salt and 3-4 tbsp cold water into a smooth sauce.",
       "Mix the tomato, cucumber, onion and parsley with the rest of the lemon juice, 1 tsp of the oil and salt.",
       "Drain the chickpeas, keeping a little liquid. Roughly mash a third of them with half the tahini sauce and 2-3 tbsp of the liquid.",
       "Warm the pitta in the empty pan for 1 min per side.",
-      "Spread the mash in bowls, pile the whole chickpeas on top, pour over the rest of the sauce and oil, dust with paprika and serve with the halved eggs, salad and pitta."
+      "Spread the mash in bowls, pile the whole chickpeas on top, pour over the rest of the sauce and oil, dust with paprika and serve with the salad and pitta."
     ],
     "translations": {
       "fr": {
-        "title": "Musabaha aux œufs, pita chaude et salade hachée",
+        "title": "Musabaha, pita chaude et salade hachée",
         "steps": [
           "Couvrir les pois chiches d'eau dans une casserole, ajouter le cumin et laisser frémir 10 à 12 min, jusqu'à ce qu'ils soient très tendres.",
-          "Pendant ce temps, cuire les œufs 8 min dans l'eau bouillante, les refroidir et les écaler.",
           "Fouetter le tahini avec les trois quarts du jus de citron, l'ail, une pincée de sel et 3 à 4 c. à soupe d'eau froide pour obtenir une sauce lisse.",
           "Mélanger la tomate, le concombre, l'oignon et le persil avec le reste du jus de citron, 1 c. à café d'huile et du sel.",
           "Égoutter les pois chiches en gardant un peu d'eau de cuisson. Écraser grossièrement un tiers des pois chiches avec la moitié de la sauce tahini et 2 à 3 c. à soupe de liquide.",
           "Réchauffer les pitas dans la casserole vide 1 min de chaque côté.",
-          "Étaler la purée dans des bols, poser les pois chiches entiers dessus, arroser du reste de sauce et d'huile, saupoudrer de paprika et servir avec les œufs coupés en deux, la salade et la pita."
+          "Étaler la purée dans des bols, poser les pois chiches entiers dessus, arroser du reste de sauce et d'huile, saupoudrer de paprika et servir avec la salade et la pita."
         ]
       },
       "it": {
-        "title": "Musabaha con uova, pita calda e insalata tritata",
+        "title": "Musabaha con pita calda e insalata tritata",
         "steps": [
           "Coprire i ceci d'acqua in un pentolino, aggiungere il cumino e sobbollire 10-12 min, finché sono molto morbidi.",
-          "Nel frattempo cuocere le uova in acqua bollente per 8 min, raffreddarle e sgusciarle.",
           "Sbattere la tahina con tre quarti del succo di limone, l'aglio, un pizzico di sale e 3-4 cucchiai d'acqua fredda fino a una salsa liscia.",
           "Mescolare pomodoro, cetriolo, cipolla e prezzemolo con il resto del succo di limone, 1 cucchiaino d'olio e sale.",
           "Scolare i ceci tenendo un po' di liquido. Schiacciarne grossolanamente un terzo con metà della salsa tahina e 2-3 cucchiai di liquido.",
           "Scaldare le pite nel pentolino vuoto 1 min per lato.",
-          "Stendere la purea nelle ciotole, disporre sopra i ceci interi, condire con il resto della salsa e dell'olio, spolverare di paprika e servire con le uova tagliate a metà, l'insalata e la pita."
+          "Stendere la purea nelle ciotole, disporre sopra i ceci interi, condire con il resto della salsa e dell'olio, spolverare di paprika e servire con l'insalata e la pita."
         ]
       }
     }
@@ -60434,7 +60410,7 @@
       },
       {
         "id": "52f409d0-65ab-5f02-82a5-08b67abba91c",
-        "text": "120 g rice"
+        "text": "150 g rice"
       },
       {
         "id": "c8ff99a1-0257-5d03-9627-b327b1367fd8",
@@ -60494,7 +60470,7 @@
       }
     ],
     "steps": [
-      "Rinse the rice and simmer it covered in 190 ml water on low heat for 12 min, then rest 5 min off the heat.",
+      "Rinse the rice and simmer it covered in 225 ml water on low heat for 12 min, then rest 5 min off the heat.",
       "Beat the eggs with the soy sauce and white pepper, then stir in the bean sprouts, mushrooms, carrot, peas and spring onion.",
       "Heat half the oil in a frying pan over medium-high heat. Ladle in three patties of the mixture and fry 2 min per side, until golden and set.",
       "Keep them warm on a plate and fry the rest of the mixture the same way in the rest of the oil.",
@@ -60505,7 +60481,7 @@
       "fr": {
         "title": "Egg foo young, riz et sauce au soja",
         "steps": [
-          "Rincer le riz et le cuire à couvert dans 190 ml d'eau à feu doux 12 min, puis laisser reposer 5 min hors du feu.",
+          "Rincer le riz et le cuire à couvert dans 225 ml d'eau à feu doux 12 min, puis laisser reposer 5 min hors du feu.",
           "Battre les œufs avec la sauce soja et le poivre blanc, puis incorporer les germes de soja, les champignons, la carotte, les petits pois et l'oignon nouveau.",
           "Chauffer la moitié de l'huile dans une poêle à feu moyen-vif. Y verser trois galettes de mélange à la louche et les cuire 2 min de chaque côté, jusqu'à ce qu'elles soient dorées et prises.",
           "Les garder au chaud sur une assiette et cuire le reste du mélange de la même façon dans le reste d'huile.",
@@ -60516,7 +60492,7 @@
       "it": {
         "title": "Egg foo young con riso e salsa di soia",
         "steps": [
-          "Sciacquare il riso e cuocerlo coperto in 190 ml d'acqua a fuoco basso per 12 min, poi lasciarlo riposare 5 min fuori dal fuoco.",
+          "Sciacquare il riso e cuocerlo coperto in 225 ml d'acqua a fuoco basso per 12 min, poi lasciarlo riposare 5 min fuori dal fuoco.",
           "Sbattere le uova con salsa di soia e pepe bianco, poi unire germogli, funghi, carota, piselli e cipollotto.",
           "Scaldare metà dell'olio in padella a fuoco medio-alto. Versare con il mestolo tre frittatine di composto e cuocerle 2 min per lato, finché sono dorate e rapprese.",
           "Tenerle in caldo su un piatto e cuocere il resto del composto allo stesso modo nel resto dell'olio.",
@@ -60557,7 +60533,7 @@
     "ingredients": [
       {
         "id": "83de9f12-1af8-5cff-91b5-d92e0e534254",
-        "text": "140 g rice, short-grain"
+        "text": "150 g rice, short-grain"
       },
       {
         "id": "fbfbf85e-7f5a-5c58-a8a3-6b4c33081683",
@@ -60621,7 +60597,7 @@
       }
     ],
     "steps": [
-      "Rinse the rice and simmer it covered in 210 ml water on low heat for 12 min, then rest 5 min off the heat.",
+      "Rinse the rice and simmer it covered in 225 ml water on low heat for 12 min, then rest 5 min off the heat.",
       "Toss the tofu with half the soy sauce, then the cornstarch, and air-fry at 200°C for 12-15 min, shaking halfway, until crisp.",
       "Blanch the spinach for 30 seconds and the bean sprouts for 1 min in a pan of boiling water. Drain, squeeze the spinach and season each with a little garlic, sesame oil, soy sauce and salt.",
       "Dry the pan, heat half the vegetable oil and stir-fry the carrot and then the zucchini for 2 min each, seasoning with salt.",
@@ -60633,7 +60609,7 @@
       "fr": {
         "title": "Bibimbap au tofu au air fryer et œufs au plat",
         "steps": [
-          "Rincer le riz et le cuire à couvert dans 210 ml d'eau à feu doux 12 min, puis laisser reposer 5 min hors du feu.",
+          "Rincer le riz et le cuire à couvert dans 225 ml d'eau à feu doux 12 min, puis laisser reposer 5 min hors du feu.",
           "Mélanger le tofu avec la moitié de la sauce soja, puis la fécule, et le cuire au air fryer à 200 °C pendant 12 à 15 min en secouant à mi-cuisson, jusqu'à ce qu'il soit croustillant.",
           "Blanchir les épinards 30 secondes et les germes de soja 1 min dans une poêle d'eau bouillante. Égoutter, presser les épinards et assaisonner chacun d'un peu d'ail, d'huile de sésame, de sauce soja et de sel.",
           "Sécher la poêle, chauffer la moitié de l'huile végétale et faire sauter la carotte puis la courgette 2 min chacune, en salant.",
@@ -60645,7 +60621,7 @@
       "it": {
         "title": "Bibimbap con tofu in friggitrice ad aria e uova all'occhio di bue",
         "steps": [
-          "Sciacquare il riso e cuocerlo coperto in 210 ml d'acqua a fuoco basso per 12 min, poi lasciarlo riposare 5 min fuori dal fuoco.",
+          "Sciacquare il riso e cuocerlo coperto in 225 ml d'acqua a fuoco basso per 12 min, poi lasciarlo riposare 5 min fuori dal fuoco.",
           "Condire il tofu con metà della salsa di soia, poi con l'amido, e cuocerlo in friggitrice ad aria a 200 °C per 12-15 min, scuotendo a metà, finché è croccante.",
           "Sbollentare gli spinaci per 30 secondi e i germogli per 1 min in una padella d'acqua bollente. Scolare, strizzare gli spinaci e condire ciascuno con poco aglio, olio di sesamo, salsa di soia e sale.",
           "Asciugare la padella, scaldare metà dell'olio di semi e saltare la carota e poi la zucchina per 2 min ciascuna, salando.",
@@ -60658,7 +60634,7 @@
   },
   {
     "id": "4c670d9d-c2d4-5210-b5a1-1b41458ccad7",
-    "title": "Tamagodon with spinach and edamame",
+    "title": "Tofu and egg rice bowl with spinach",
     "language": "en",
     "servings": 2,
     "prep_min": 8,
@@ -60685,11 +60661,11 @@
     "ingredients": [
       {
         "id": "abb568fc-0a3b-5aa8-93f5-d068836669f0",
-        "text": "140 g rice, short-grain"
+        "text": "150 g rice, short-grain"
       },
       {
         "id": "a22abf2d-db54-50b6-a440-a4bffd7e28ae",
-        "text": "5 eggs"
+        "text": "4 eggs"
       },
       {
         "id": "3452e5cb-be2d-592e-a72d-88769fd85af5",
@@ -60716,8 +60692,8 @@
         "text": "200 g spinach"
       },
       {
-        "id": "b6a4262d-3ced-505f-b3de-a45680437932",
-        "text": "100 g edamame"
+        "id": "eccdc94c-d88b-5a0c-b292-8d2616c43eb8",
+        "text": "200 g tofu, silken or soft, in 2 cm cubes"
       },
       {
         "id": "881fd743-9f3d-57aa-a096-839af33bb10c",
@@ -60729,34 +60705,34 @@
       }
     ],
     "steps": [
-      "Rinse the rice and simmer it covered in 210 ml water on low heat for 12 min.",
-      "Scatter the edamame over the rice, cover again and steam 5 min off the heat.",
+      "Rinse the rice and simmer it covered in 225 ml water on low heat for 12 min.",
+      "Take the rice off the heat and leave it covered to rest 5 min.",
       "Wilt the spinach in a frying pan with 2 tbsp water for 1-2 min. Squeeze it dry and dress it with 1 tsp of the soy sauce and the sesame seeds.",
-      "In the same pan, bring 150 ml water, the dashi, the rest of the soy sauce, the mirin and sugar to a simmer, add the onion and cook 4-5 min, until soft.",
-      "Lightly beat the eggs and pour two thirds over the onion. Cover and cook 1 min, then add the rest of the egg and cook 30-60 seconds more, until just set and still soft.",
-      "Spoon the rice into bowls, slide the egg and its broth on top and scatter with spring onion. Serve the spinach and edamame alongside."
+      "In the same pan, bring 150 ml water, the dashi, the rest of the soy sauce, the mirin and sugar to a simmer, add the onion and cook 3 min, then lay in the tofu and simmer 2-3 min, until hot through.",
+      "Lightly beat the eggs and pour two thirds over the onion and tofu. Cover and cook 1 min, then add the rest of the egg and cook 30-60 seconds more, until just set and still soft.",
+      "Spoon the rice into bowls, slide the tofu, egg and broth on top and scatter with spring onion. Serve the spinach alongside."
     ],
     "translations": {
       "fr": {
-        "title": "Tamagodon aux épinards et edamame",
+        "title": "Bol de riz au tofu et à l'œuf, épinards",
         "steps": [
-          "Rincer le riz et le cuire à couvert dans 210 ml d'eau à feu doux 12 min.",
-          "Répartir les edamame sur le riz, recouvrir et laisser cuire à la vapeur 5 min hors du feu.",
+          "Rincer le riz et le cuire à couvert dans 225 ml d'eau à feu doux 12 min.",
+          "Retirer le riz du feu et le laisser reposer 5 min à couvert.",
           "Faire tomber les épinards dans une poêle avec 2 c. à soupe d'eau 1 à 2 min. Les presser et les assaisonner d'1 c. à café de sauce soja et des graines de sésame.",
-          "Dans la même poêle, porter à frémissement 150 ml d'eau, le dashi, le reste de sauce soja, le mirin et le sucre, ajouter l'oignon et cuire 4 à 5 min, jusqu'à ce qu'il soit tendre.",
-          "Battre légèrement les œufs et en verser les deux tiers sur l'oignon. Couvrir et cuire 1 min, puis ajouter le reste et cuire encore 30 à 60 secondes, jusqu'à ce qu'ils soient juste pris et encore moelleux.",
-          "Répartir le riz dans des bols, y faire glisser l'omelette et son bouillon et parsemer d'oignon nouveau. Servir les épinards et les edamame à côté."
+          "Dans la même poêle, porter à frémissement 150 ml d'eau, le dashi, le reste de sauce soja, le mirin et le sucre, ajouter l'oignon et cuire 3 min, puis ajouter le tofu et laisser frémir 2 à 3 min, jusqu'à ce qu'il soit chaud.",
+          "Battre légèrement les œufs et en verser les deux tiers sur l'oignon et le tofu. Couvrir et cuire 1 min, puis ajouter le reste et cuire encore 30 à 60 secondes, jusqu'à ce qu'ils soient juste pris et encore moelleux.",
+          "Répartir le riz dans des bols, y faire glisser le tofu, l'œuf et le bouillon et parsemer d'oignon nouveau. Servir les épinards à côté."
         ]
       },
       "it": {
-        "title": "Tamagodon con spinaci ed edamame",
+        "title": "Ciotola di riso con tofu e uova, spinaci",
         "steps": [
-          "Sciacquare il riso e cuocerlo coperto in 210 ml d'acqua a fuoco basso per 12 min.",
-          "Distribuire gli edamame sul riso, coprire di nuovo e lasciar cuocere a vapore 5 min fuori dal fuoco.",
+          "Sciacquare il riso e cuocerlo coperto in 225 ml d'acqua a fuoco basso per 12 min.",
+          "Togliere il riso dal fuoco e lasciarlo riposare coperto 5 min.",
           "Far appassire gli spinaci in padella con 2 cucchiai d'acqua per 1-2 min. Strizzarli e condirli con 1 cucchiaino di salsa di soia e il sesamo.",
           "Nella stessa padella portare a sobbollire 150 ml d'acqua, il dashi, il resto della salsa di soia, il mirin e lo zucchero, aggiungere la cipolla e cuocere 4-5 min, finché è morbida.",
-          "Sbattere leggermente le uova e versarne due terzi sulla cipolla. Coprire e cuocere 1 min, poi aggiungere il resto e cuocere ancora 30-60 secondi, finché sono appena rapprese e ancora morbide.",
-          "Distribuire il riso nelle ciotole, farvi scivolare sopra l'uovo con il suo brodo e cospargere di cipollotto. Servire spinaci ed edamame a parte."
+          "Sbattere leggermente le uova e versarne due terzi su cipolla e tofu. Coprire e cuocere 1 min, poi aggiungere il resto e cuocere ancora 30-60 secondi, finché sono appena rapprese e ancora morbide.",
+          "Distribuire il riso nelle ciotole, farvi scivolare sopra tofu, uovo e brodo e cospargere di cipollotto. Servire gli spinaci a parte."
         ]
       }
     }
@@ -60793,7 +60769,7 @@
     "ingredients": [
       {
         "id": "23cbdf52-c539-5fe3-be26-baabb24ad96f",
-        "text": "250 g paneer, in 2 cm cubes"
+        "text": "200 g paneer, in 2 cm cubes"
       },
       {
         "id": "adfa64f6-69d6-5da7-b7cb-f1bb5897b6d7",
@@ -60809,11 +60785,11 @@
       },
       {
         "id": "a35617c6-1db7-5e37-bbed-cbb7817c5bb1",
-        "text": "90 g noodles, egg noodles"
+        "text": "150 g noodles, egg noodles"
       },
       {
         "id": "4782ba3d-5cf9-56e3-bb2b-6aa7807a9c82",
-        "text": "2 tsp vegetable oil"
+        "text": "1 tbsp vegetable oil"
       },
       {
         "id": "7e292685-a9e3-5c68-ab25-94e25f299806",
@@ -60927,7 +60903,7 @@
     "ingredients": [
       {
         "id": "9dd9a6ef-4af8-5cb0-bc5e-92f1eb1bdf63",
-        "text": "220 g paneer, in 2 cm cubes"
+        "text": "200 g paneer, in 2 cm cubes"
       },
       {
         "id": "1707c009-a66a-5e63-a7de-6d9fb2c8dabf",
@@ -60939,7 +60915,7 @@
       },
       {
         "id": "4c8a1358-5529-5754-a35e-601baf2614c5",
-        "text": "2 tsp vegetable oil"
+        "text": "1 tbsp vegetable oil"
       },
       {
         "id": "ebfc4cbc-e093-5c18-b07d-b6cc981482b2",
@@ -60947,7 +60923,7 @@
       },
       {
         "id": "22695d14-489c-5c4c-87b2-fbbc946ba2c3",
-        "text": "120 g rice, basmati"
+        "text": "150 g rice, basmati"
       },
       {
         "id": "aa539ef9-50e9-5f0d-aad1-1c46e98816fe",
@@ -60984,7 +60960,7 @@
       }
     ],
     "steps": [
-      "Rinse the rice and simmer it covered in 190 ml water on low heat for 12 min, then rest 5 min off the heat.",
+      "Rinse the rice and simmer it covered in 225 ml water on low heat for 12 min, then rest 5 min off the heat.",
       "Toss the paneer, peppers and onion with 1 tsp of the oil, the chili powder and salt. Air-fry at 200°C for 8 min, stirring at 4 min, until charred at the edges.",
       "Toast the coriander seeds and cumin in a dry pan for 1 min, then crush them coarsely.",
       "Heat the rest of the oil in the pan, fry the garlic and ginger 1 min, then add the tomatoes and the crushed spices and cook 7-8 min, until thick and jammy.",
@@ -60995,7 +60971,7 @@
       "fr": {
         "title": "Kadai paneer au air fryer et riz",
         "steps": [
-          "Rincer le riz et le cuire à couvert dans 190 ml d'eau à feu doux 12 min, puis laisser reposer 5 min hors du feu.",
+          "Rincer le riz et le cuire à couvert dans 225 ml d'eau à feu doux 12 min, puis laisser reposer 5 min hors du feu.",
           "Mélanger le paneer, les poivrons et l'oignon avec 1 c. à café d'huile, le piment du Cachemire et du sel. Cuire au air fryer à 200 °C pendant 8 min en remuant à 4 min, jusqu'à ce que les bords grillent.",
           "Torréfier les graines de coriandre et le cumin à sec dans une poêle 1 min, puis les concasser.",
           "Chauffer le reste d'huile dans la poêle, faire revenir l'ail et le gingembre 1 min, puis ajouter les tomates et les épices concassées et cuire 7 à 8 min, jusqu'à ce que la sauce soit épaisse et confite.",
@@ -61006,7 +60982,7 @@
       "it": {
         "title": "Kadai paneer in friggitrice ad aria con riso",
         "steps": [
-          "Sciacquare il riso e cuocerlo coperto in 190 ml d'acqua a fuoco basso per 12 min, poi lasciarlo riposare 5 min fuori dal fuoco.",
+          "Sciacquare il riso e cuocerlo coperto in 225 ml d'acqua a fuoco basso per 12 min, poi lasciarlo riposare 5 min fuori dal fuoco.",
           "Condire paneer, peperoni e cipolla con 1 cucchiaino d'olio, il peperoncino del Kashmir e sale. Cuocere in friggitrice ad aria a 200 °C per 8 min, mescolando a 4 min, finché i bordi sono abbrustoliti.",
           "Tostare i semi di coriandolo e il cumino in una padella asciutta per 1 min, poi pestarli grossolanamente.",
           "Scaldare il resto dell'olio nella padella, soffriggere aglio e zenzero 1 min, poi aggiungere i pomodori e le spezie pestate e cuocere 7-8 min, finché il sugo è denso e ristretto.",
@@ -61047,7 +61023,7 @@
     "ingredients": [
       {
         "id": "e962f1ce-bd89-5f2b-8563-f2fa0b56d591",
-        "text": "180 g halloumi, in 2.5 cm cubes"
+        "text": "225 g halloumi, in 2.5 cm cubes"
       },
       {
         "id": "74051301-d57c-5bb6-bae0-4ea1b7a3614d",
@@ -61159,7 +61135,7 @@
     "ingredients": [
       {
         "id": "e49cc325-12ef-5e6c-ab93-3ec5522c736a",
-        "text": "180 g halloumi, in 1 cm strips"
+        "text": "225 g halloumi, in 1 cm strips"
       },
       {
         "id": "d1b61014-7bd4-586c-9730-59657f0e2370",
@@ -61191,7 +61167,7 @@
       },
       {
         "id": "d044c1b6-64c7-5e17-a011-0cb4619c4786",
-        "text": "160 g tortillas, 4 small flour tortillas"
+        "text": "180 g tortillas, 4 small flour tortillas"
       },
       {
         "id": "99ed8b6a-5270-54e2-8e37-f2232a6080b2",
@@ -61278,15 +61254,11 @@
     "ingredients": [
       {
         "id": "cb1b5615-d084-567e-962b-9aba98e3665e",
-        "text": "120 g pasta, orzo"
+        "text": "150 g pasta, orzo"
       },
       {
         "id": "ecea1b62-4103-57b5-9a07-57089840d732",
-        "text": "300 g chickpeas, drained"
-      },
-      {
-        "id": "60442d22-ae5b-570a-a728-8c539cde1c01",
-        "text": "100 g frozen peas"
+        "text": "240 g chickpeas, drained"
       },
       {
         "id": "f04ffa09-82e2-526f-bb65-fb3630bbc3bf",
@@ -61294,7 +61266,7 @@
       },
       {
         "id": "1716b039-85b1-5bff-a3f6-12b48ed04d65",
-        "text": "100 g feta, crumbled"
+        "text": "80 g feta, crumbled"
       },
       {
         "id": "84ed652b-8249-58a8-930a-ad794f8f28ee",
@@ -61306,11 +61278,11 @@
       },
       {
         "id": "28233736-de7d-5a82-8072-d513002f9590",
-        "text": "2 tsp olive oil"
+        "text": "1 tbsp olive oil"
       },
       {
         "id": "ad85728e-ef24-5cda-b738-c042d635185c",
-        "text": "450 ml vegetable stock"
+        "text": "550 ml vegetable stock"
       },
       {
         "id": "64144f0d-d669-543c-969e-c0eec32011d5",
@@ -61325,7 +61297,7 @@
       "Soften the shallot and garlic in the oil in a deep frying pan over medium heat for 2 min.",
       "Add the orzo and stir 1 min to toast it lightly.",
       "Pour in the stock, bring to a simmer and cook 8 min, stirring often so it doesn't stick.",
-      "Add the chickpeas and peas and cook 2-3 min more, until the orzo is tender and most of the stock is absorbed.",
+      "Add the chickpeas and cook 2-3 min more, until the orzo is tender and most of the stock is absorbed.",
       "Stir in the spinach until it wilts, then take off the heat and add the lemon zest, the juice of half the lemon and the dill. Season.",
       "Serve topped with the feta and the rest of the lemon in wedges."
     ],
@@ -61336,7 +61308,7 @@
           "Faire suer l'échalote et l'ail dans l'huile dans une sauteuse à feu moyen 2 min.",
           "Ajouter l'orzo et remuer 1 min pour le nacrer légèrement.",
           "Verser le bouillon, porter à frémissement et cuire 8 min en remuant souvent pour que ça n'attache pas.",
-          "Ajouter les pois chiches et les petits pois et cuire encore 2 à 3 min, jusqu'à ce que l'orzo soit tendre et ait absorbé presque tout le bouillon.",
+          "Ajouter les pois chiches et cuire encore 2 à 3 min, jusqu'à ce que l'orzo soit tendre et ait absorbé presque tout le bouillon.",
           "Incorporer les épinards jusqu'à ce qu'ils tombent, puis retirer du feu et ajouter le zeste du citron, le jus d'un demi-citron et l'aneth. Assaisonner.",
           "Servir parsemé de feta, avec le reste du citron en quartiers."
         ]
@@ -61347,7 +61319,7 @@
           "Far appassire scalogno e aglio nell'olio in una padella profonda a fuoco medio per 2 min.",
           "Aggiungere l'orzo e mescolare 1 min per tostarlo leggermente.",
           "Versare il brodo, portare a sobbollire e cuocere 8 min mescolando spesso perché non attacchi.",
-          "Aggiungere ceci e piselli e cuocere altri 2-3 min, finché l'orzo è tenero e ha assorbito quasi tutto il brodo.",
+          "Aggiungere i ceci e cuocere altri 2-3 min, finché l'orzo è tenero e ha assorbito quasi tutto il brodo.",
           "Unire gli spinaci finché appassiscono, poi togliere dal fuoco e aggiungere la scorza del limone, il succo di mezzo limone e l'aneto. Regolare di sale.",
           "Servire con la feta sopra e il resto del limone a spicchi."
         ]
@@ -61384,11 +61356,11 @@
     "ingredients": [
       {
         "id": "880d8e86-8a0c-520c-8067-348e1abb4ce6",
-        "text": "100 g green lentils, rinsed"
+        "text": "60 g green lentils, rinsed"
       },
       {
         "id": "7b6f9d2c-672e-5159-945d-0b61d6dafbab",
-        "text": "100 g bulgur, coarse"
+        "text": "150 g bulgur, coarse"
       },
       {
         "id": "3240f0b8-055d-5a98-8c01-b1674cd1317e",
@@ -61400,7 +61372,7 @@
       },
       {
         "id": "fb6c3a91-3e63-5d01-8697-ca33bc0aa665",
-        "text": "300 ml vegetable stock, hot"
+        "text": "350 ml vegetable stock, hot"
       },
       {
         "id": "3981358a-e378-5023-a729-0cbf28393901",
@@ -61646,7 +61618,7 @@
       },
       {
         "id": "d41a220a-9769-5ee7-a846-4caa773884d9",
-        "text": "90 g rice"
+        "text": "150 g rice"
       },
       {
         "id": "a8f03499-8803-5f29-96af-ac56e2eed8f6",
@@ -61670,7 +61642,7 @@
       }
     ],
     "steps": [
-      "Rinse the rice and fry it in the butter in a small pan for 1 min, then add 150 ml boiling water and a pinch of salt, cover and cook on low heat 12 min. Rest 5 min off the heat.",
+      "Rinse the rice and fry it in the butter in a small pan for 1 min, then add 250 ml boiling water and a pinch of salt, cover and cook on low heat 12 min. Rest 5 min off the heat.",
       "Soften the onion and pepper in the oil in a pan over medium heat for 5 min, then add the garlic for 1 min.",
       "Stir in the tomato paste and Aleppo pepper for 1 min, then the tomatoes.",
       "Add the beans and 250 ml water and simmer 12-15 min, until the sauce is thick and the beans have soaked up the flavour. Season.",
@@ -61681,7 +61653,7 @@
       "fr": {
         "title": "Kuru fasulye (haricots blancs à la turque), pilaf de riz et cacık",
         "steps": [
-          "Rincer le riz et le nacrer dans le beurre dans une petite casserole 1 min, puis ajouter 150 ml d'eau bouillante et une pincée de sel, couvrir et cuire à feu doux 12 min. Laisser reposer 5 min hors du feu.",
+          "Rincer le riz et le nacrer dans le beurre dans une petite casserole 1 min, puis ajouter 250 ml d'eau bouillante et une pincée de sel, couvrir et cuire à feu doux 12 min. Laisser reposer 5 min hors du feu.",
           "Faire suer l'oignon et le poivron dans l'huile dans une casserole à feu moyen 5 min, puis ajouter l'ail 1 min.",
           "Ajouter le concentré de tomate et le piment d'Alep et remuer 1 min, puis les tomates.",
           "Ajouter les haricots et 250 ml d'eau et laisser mijoter 12 à 15 min, jusqu'à ce que la sauce épaississe et que les haricots s'en imprègnent. Assaisonner.",
@@ -61692,7 +61664,7 @@
       "it": {
         "title": "Kuru fasulye (fagioli bianchi alla turca) con pilaf di riso e cacık",
         "steps": [
-          "Sciacquare il riso e tostarlo nel burro in un pentolino per 1 min, poi aggiungere 150 ml d'acqua bollente e un pizzico di sale, coprire e cuocere a fuoco basso 12 min. Lasciar riposare 5 min fuori dal fuoco.",
+          "Sciacquare il riso e tostarlo nel burro in un pentolino per 1 min, poi aggiungere 250 ml d'acqua bollente e un pizzico di sale, coprire e cuocere a fuoco basso 12 min. Lasciar riposare 5 min fuori dal fuoco.",
           "Far appassire cipolla e peperone nell'olio in una casseruola a fuoco medio per 5 min, poi aggiungere l'aglio per 1 min.",
           "Unire concentrato di pomodoro e pepe di Aleppo e mescolare 1 min, poi i pomodori.",
           "Aggiungere i fagioli e 250 ml d'acqua e sobbollire 12-15 min, finché il sugo è denso e i fagioli si sono insaporiti. Regolare di sale.",
@@ -61836,15 +61808,15 @@
     "ingredients": [
       {
         "id": "1df7fa4a-6337-5b71-8438-386495d2b31a",
-        "text": "110 g quinoa, rinsed"
+        "text": "150 g quinoa, rinsed"
       },
       {
         "id": "03cf4dc6-e7d5-5523-9231-4f26c70f0342",
-        "text": "380 g black beans, drained"
+        "text": "400 g black beans, drained"
       },
       {
         "id": "15f8d77f-c30f-513f-ae28-36eb5b39ba0b",
-        "text": "2 tsp olive oil"
+        "text": "1 tbsp olive oil"
       },
       {
         "id": "9f85852e-900e-5781-a6b1-76ff09a15320",
@@ -61892,7 +61864,7 @@
       }
     ],
     "steps": [
-      "Simmer the quinoa in 220 ml salted water, covered, for 13-15 min, until the water is absorbed. Rest 2 min and fluff.",
+      "Simmer the quinoa in 300 ml salted water, covered, for 13-15 min, until the water is absorbed. Rest 2 min and fluff.",
       "Warm the oil in a pan with the garlic, cumin and chili powder for 1 min, add the beans and 3 tbsp water and heat 4-5 min. Add the juice of half a lime and salt.",
       "Mix the corn, pepper, tomato, onion, chilli and half the coriander with the juice of 1 lime and salt.",
       "Toss the avocado with the rest of the lime juice.",
@@ -61902,7 +61874,7 @@
       "fr": {
         "title": "Bols de quinoa aux haricots noirs, salsa de maïs et avocat",
         "steps": [
-          "Cuire le quinoa à couvert dans 220 ml d'eau salée 13 à 15 min, jusqu'à absorption de l'eau. Laisser reposer 2 min et l'égrener.",
+          "Cuire le quinoa à couvert dans 300 ml d'eau salée 13 à 15 min, jusqu'à absorption de l'eau. Laisser reposer 2 min et l'égrener.",
           "Chauffer l'huile dans une poêle avec l'ail, le cumin et le piment 1 min, ajouter les haricots et 3 c. à soupe d'eau et réchauffer 4 à 5 min. Ajouter le jus d'un demi-citron vert et du sel.",
           "Mélanger le maïs, le poivron, la tomate, l'oignon, le piment et la moitié de la coriandre avec le jus d'un citron vert et du sel.",
           "Arroser l'avocat du reste de jus de citron vert.",
@@ -61912,7 +61884,7 @@
       "it": {
         "title": "Bowl di quinoa e fagioli neri con salsa di mais e avocado",
         "steps": [
-          "Cuocere la quinoa coperta in 220 ml d'acqua salata per 13-15 min, finché l'acqua è assorbita. Lasciar riposare 2 min e sgranarla.",
+          "Cuocere la quinoa coperta in 300 ml d'acqua salata per 13-15 min, finché l'acqua è assorbita. Lasciar riposare 2 min e sgranarla.",
           "Scaldare l'olio in padella con aglio, cumino e peperoncino per 1 min, aggiungere i fagioli e 3 cucchiai d'acqua e scaldare 4-5 min. Unire il succo di mezzo lime e sale.",
           "Mescolare mais, peperone, pomodoro, cipolla, peperoncino e metà del coriandolo con il succo di 1 lime e sale.",
           "Condire l'avocado con il resto del succo di lime.",
