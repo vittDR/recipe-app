@@ -33,7 +33,13 @@ export function WeekStrip({ days, today, selected, onSelect }: {
           <button key={d.date} type="button" className={cls} aria-pressed={d.date === selected}
             aria-label={long.format(new Date(`${d.date}T12:00:00Z`))} onClick={() => onSelect(d.date)}>
             <span className="week-strip__letter" aria-hidden>{names[isoWeekday(d.date) - 1].slice(0, 1)}</span>
-            <span className="week-strip__circle" aria-hidden>{Number(d.date.slice(8))}</span>
+            <span className="week-strip__circle" aria-hidden>
+              {state === 'open' && d.date !== selected && (
+                // 18 round dots spaced exactly evenly (pathLength), which a CSS dotted border can't do.
+                <svg className="week-strip__ring" viewBox="0 0 34 34"><circle cx="17" cy="17" r="16" pathLength={18} /></svg>
+              )}
+              <span className="week-strip__num">{Number(d.date.slice(8))}</span>
+            </span>
           </button>
         );
       })}
