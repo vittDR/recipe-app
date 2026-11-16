@@ -125,7 +125,7 @@ export function TonightScreen() {
   );
 
   // Deck defaults are silent: both of us, under an hour, the favourite mood.
-  const settings: DeckSettings = picked ?? { who: 'both', maxMinutes: 60, mood: data?.favouriteMood ?? 'any' };
+  const settings: DeckSettings = picked ?? { who: 'both', maxMinutes: 60, mood: data?.favouriteMood ?? 'any', filters: {} };
 
   // Meals still to cook this week, tonight first: what the groceries card covers.
   const planned = useMemo(() => (data?.meals ?? [])
@@ -159,7 +159,7 @@ export function TonightScreen() {
     try {
       const whoEating = settings.who === 'me' || !shared ? [userId] : [userId, ...partners.map((p) => p.user_id)];
       const res = await callFunction<{ deck_id: string }>('deal-deck', {
-        who_eating: whoEating, max_minutes: settings.maxMinutes, mood: settings.mood, for_date: today,
+        who_eating: whoEating, max_minutes: settings.maxMinutes, mood: settings.mood, filters: settings.filters, for_date: today,
       }, 30_000);
       navigate(`/deck/${res.deck_id}`);
     } catch (e) {
@@ -210,7 +210,7 @@ export function TonightScreen() {
   const iAmEating = !!deck && deck.who_eating.includes(userId!);
   const iSwipe = open && iAmEating && !myProgress?.finished_at;
   const total = data?.total || 12;
-  const deckSummary = deck && labels.summary({ who: deck.who_eating.length > 1 ? 'both' : 'me', maxMinutes: deck.max_minutes, mood: deck.mood }, shared);
+  const deckSummary = deck && labels.summary({ who: deck.who_eating.length > 1 ? 'both' : 'me', maxMinutes: deck.max_minutes, mood: deck.mood, filters: deck.filters ?? {} }, shared);
 
   const strip = (
     <WeekStrip today={today} days={week.map((date) => {
