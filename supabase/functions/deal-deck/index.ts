@@ -1,9 +1,10 @@
 // Deals tonight's deck for the household: filters on everyone's hard rules,
 // scores the library and stores 12 cards plus each eater's private plate.
-// Body: { who_eating: uuid[], max_minutes?: number, mood?: Mood, for_date?: 'YYYY-MM-DD' }
+// Body: { who_eating: uuid[], max_minutes?: number, mood?: Mood, filters?: DeckFilters, for_date?: 'YYYY-MM-DD' }
 
 import { corsHeaders, json, requireMember, serviceClient } from '../_shared/http.ts';
 import { buildDeck, OCCASIONAL_DAYS, type CandidateRecipe, type DeckMember, type Diet, type Mood, type RecipeHistory } from '../_shared/logic/deck.ts';
+import { deckFacets, normaliseFilters } from '../_shared/logic/deckFilters.ts';
 import { classifyRow, CLASSIFY_COLUMNS, isHealthy, seasonOfMonth, storedClassification, type ClassifiableRow } from '../_shared/logic/classify.ts';
 import { Catalog, type CatalogEntry } from '../_shared/logic/ingredients.ts';
 import { recipeFeatures } from '../_shared/logic/preferences.ts';
@@ -26,6 +27,7 @@ Deno.serve(async (req) => {
   const body = await req.json().catch(() => ({}));
   const mood: Mood = MOODS.includes(body.mood) ? body.mood : 'any';
   const maxMinutes = Number.isFinite(body.max_minutes) && body.max_minutes > 0 ? Math.round(body.max_minutes) : null;
+  const filters = normaliseFilters(body.filters);
 
   const { data: household } = await admin.from('households').select('timezone').eq('id', householdId).single();
   const forDate: string = /^\d{4}-\d{2}-\d{2}$/.test(body.for_date ?? '')
@@ -55,7 +57,7 @@ Deno.serve(async (req) => {
   const [goals, rules, swipes, recipes, meals, pantry, catalog, signals, allergies, allergenLinks] = await Promise.all([
     admin.from('member_goals').select('*').in('user_id', eaters),
     admin.from('taste_rules').select('user_id, kind, value, product_id').in('user_id', eaters),
-    admin.from('swipes').select('user_id, deck_id, recipe_id, verdict, created_at, decks!inner(household_id, mood)')
+    admin.from('swipes').select('user_id, deck_id, recipe_id, verdict, created_at, decks!inner(household_id, mood, filters)')
       .eq('decks.household_id', householdId).order('created_at', { ascending: false }).limit(1000),
     admin.from('recipes')
       .select(`id, kcal_per_serving, protein_g_per_serving, household_id, copied_from, ${CLASSIFY_COLUMNS.replace('recipe_ingredients(', 'recipe_ingredients(product_id, ')}`)
@@ -122,6 +124,7 @@ Deno.serve(async (req) => {
       proteinGPerServing: r.protein_g_per_serving,
       features,
       healthy: isHealthy(r.tags ?? [], classification),
+      facets: deckFacets(classification),
       intents: classification.meal_intents,
       seasons: classification.seasons,
       weeknightPlate: classification.weeknight_plate,
@@ -130,7 +133,10 @@ Deno.serve(async (req) => {
 
   const one = <T>(v: T | T[] | null | undefined) => (Array.isArray(v) ? v[0] : v) ?? null;
   const signalRows = {
-    swipes: (swipes.data ?? []).map((s) => ({ ...s, mood: one(s.decks as { mood: Mood | null } | null)?.mood ?? null })) as SwipeRow[],
+    swipes: (swipes.data ?? []).map((s) => {
+      const d = one(s.decks as { mood: Mood | null; filters: unknown } | null);
+      return { ...s, mood: d?.mood ?? null, filters: normaliseFilters(d?.filters) };
+    }) as SwipeRow[],
     tasteSignals: (signals.data ?? []) as TasteSignalRow[],
     meals: (meals.data ?? []).map((m) => ({ ...m, who_eating: one(m.deck as { who_eating: string[] } | null)?.who_eating ?? null })) as MealRow[],
     portions: (portions.data ?? []) as PortionRow[],
@@ -204,6 +210,7 @@ Deno.serve(async (req) => {
   const cards = buildDeck(candidates, members, history, {
     mood,
     maxMinutes,
+    filters,
     recentlyCooked,
     exclude,
     lean,
@@ -221,7 +228,7 @@ Deno.serve(async (req) => {
 
   const { data: deck, error: deckErr } = await admin.from('decks').insert({
     household_id: householdId, for_date: forDate, started_by: userId, who_eating: eaters,
-    max_minutes: maxMinutes, mood,
+    max_minutes: maxMinutes, mood, filters,
   }).select('id').single();
   if (deckErr) return json({ error: deckErr.message }, 500);
 

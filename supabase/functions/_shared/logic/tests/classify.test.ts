@@ -153,6 +153,13 @@ test('healthy is a balanced plate: a protein, vegetables and a base, nothing fri
   assert.ok(!plate(chickenRiceBroccoli, { tags: ['treat'] }));
 });
 
+test('protein items: the catalogue ingredients the proteins come from, by the same rule', () => {
+  const c = classifyRecipe(input({ lines: [['chicken breast', 360, 'g'], ['parmesan', 4, 'g'], ['rice', 160, 'g']] }));
+  assert.deepEqual(c.protein_groups, ['poultry']);
+  assert.deepEqual(c.protein_items, ['chicken breast']); // a sprinkle of parmesan isn't one
+  assert.equal(classifyRecipe(input({ lines: [['dragon fruit leather', 100, 'g']] })).protein_items, null); // nothing could be read
+});
+
 test('a deep frying pan or an air fryer is not deep-frying', () => {
   const methods = (step: string) => classifyRecipe(input({ steps: [step], lines: [['cod fillet', 200, 'g']] })).cooking_methods;
   assert.ok(!methods('Soften the onion in a deep frying pan.').includes('deep_fried'));

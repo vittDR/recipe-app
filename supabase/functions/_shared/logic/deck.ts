@@ -6,6 +6,7 @@
 // who mind their diet, mostly weeknight plates and always a few dishes of the season.
 
 import { SEASONS, type MealIntent, type Season } from './classify.ts';
+import { type DeckFacets, type DeckFilters, filterCount, matchesDeckFilters } from './deckFilters.ts';
 import { kindKeys, type TasteProfile } from './profile.ts';
 import {
   diversePick, fitWeight, similarity, TREAT_ADHERENCE, TREAT_MAX_FIT, TREAT_MIN_TASTE, tasteScore, uncertainty,
@@ -31,7 +32,9 @@ export interface CandidateRecipe {
   proteinGPerServing: number | null;
   /** Learning features (preferences.ts recipeFeatures); defaults to tags plus ingredient names. */
   features?: string[];
-  /** Healthy by composition (classify.ts isHealthy): what the healthy mood matches first. */
+  /** What the advanced filters look at (deckFilters.ts); without it, filters leave the recipe out. */
+  facets?: DeckFacets;
+  /** A balanced plate (classify.ts isHealthy): what the healthy mood matches first. */
   healthy?: boolean;
   /** What the dish is for (classify.ts); moods match on these when given, else on tags. */
   intents?: MealIntent[];
@@ -79,6 +82,8 @@ export interface DeckOptions {
   newShare?: number;
   mood?: Mood;
   maxMinutes?: number | null;
+  /** Protein, cuisine, base, spice (deckFilters.ts): hard filters, like time. */
+  filters?: DeckFilters;
   pantry?: string[]; // ingredient names bought or marked at home recently
   recentlyCooked?: Set<string>;
   /** Cards of tonight's decks that ended without a match: left out of the new one. */
@@ -137,6 +142,7 @@ export function passesHardFilters(recipe: CandidateRecipe, members: DeckMember[]
   if (opts.recentlyCooked?.has(recipe.id)) return false;
   if (opts.exclude?.has(recipe.id)) return false;
   if (opts.maxMinutes && recipe.totalMin && recipe.totalMin > opts.maxMinutes) return false;
+  if (opts.filters && !(recipe.facets ? matchesDeckFilters(recipe.facets, opts.filters) : filterCount(opts.filters) === 0)) return false;
   // The recipe as it's still made when every optional line is left out.
   const essential = recipe.productIds?.filter((id) => !recipe.optionalProductIds?.includes(id));
   for (const m of members) {

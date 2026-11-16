@@ -25,6 +25,15 @@ test('hard filters: never list, diet, time, recently cooked', () => {
   assert.deepEqual(deck.map((c) => c.recipeId).sort(), ['dal', 'salmon']);
 });
 
+test('advanced filters are hard filters; a recipe that can\'t be read is left out of a filtered deck', () => {
+  const facets = (proteins: ('chicken' | 'prawns')[]) => ({ proteins, cuisines: [], bases: [], heat: 0 });
+  const recipes = [recipe('teriyaki chicken', { facets: facets(['chicken']) }), recipe('prawn curry', { facets: facets(['prawns']) }), recipe('unread')];
+  const ids = (filters: object) => buildDeck(recipes, [member()], new Map(), { filters, random: fixed }).map((c) => c.recipeId).sort();
+  assert.deepEqual(ids({ proteins: ['chicken'] }), ['teriyaki chicken']);
+  assert.deepEqual(ids({ proteins: ['chicken', 'prawns'] }), ['prawn curry', 'teriyaki chicken']);
+  assert.deepEqual(ids({}), ['prawn curry', 'teriyaki chicken', 'unread']);
+});
+
 test('a never rule on an optional line keeps the recipe', () => {
   const recipes = [
     recipe('chana masala', { ingredientNames: ['chickpeas', 'fresh coriander'], productIds: ['p-chickpeas', 'p-coriander'],
