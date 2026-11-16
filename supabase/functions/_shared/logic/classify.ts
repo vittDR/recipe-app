@@ -74,6 +74,24 @@ export const LIQUID_STEPS = [8, 60, 300];
 export const HIGH_PROTEIN_MIN_G = 30;
 /** Share of calories from protein for high protein: 25% is about 6 g per 100 kcal. */
 export const HIGH_PROTEIN_MIN_SHARE = 0.25;
+/**
+ * Healthy: what the plate is made of, not how big it is (portions are scaled to
+ * each eater), so it holds for anyone. Calibrated on the library: each bound is
+ * near its median, together about one recipe in six.
+ */
+export const HEALTHY_MIN_PROTEIN_SHARE = 0.2;
+export const HEALTHY_MAX_FAT_SHARE = 0.35;
+export const HEALTHY_MIN_FIBRE_PER_1000_KCAL = 10;
+
+/** Healthy by composition, never a treat or an indulgent dish; false when fat or fibre isn't known. */
+export function isHealthy(tags: string[], c: Pick<RecipeClassification, 'nutrition' | 'meal_intents'> | null | undefined): boolean {
+  if (!c || tags.some((t) => t.toLowerCase() === 'treat') || c.meal_intents.includes('indulgent')) return false;
+  const { kcal, protein_g: protein, fat_g: fat, fiber_g: fiber } = c.nutrition;
+  if (!kcal || protein === null || fat === null || fiber === null) return false;
+  return (protein * 4) / kcal >= HEALTHY_MIN_PROTEIN_SHARE && (fat * 9) / kcal <= HEALTHY_MAX_FAT_SHARE
+    && (fiber * 1000) / kcal >= HEALTHY_MIN_FIBRE_PER_1000_KCAL;
+}
+
 /** Lean: at most this share of calories from fat, and not a huge plate. */
 export const LEAN_MAX_FAT_SHARE = 0.3;
 export const LEAN_MAX_KCAL = 700;

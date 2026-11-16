@@ -97,6 +97,12 @@ for. Keeping them apart lets a turkey chilli be both lean and comfort food.
 | everyday | ≤ 45 min total, not hard, no exotic ingredients |
 | special_occasion | `fancy` tag, or hard |
 
+**Healthy** (`isHealthy`: the Recipes tab's filter and the deck's healthy mood)
+is about what the plate is made of, not its size, since portions are scaled to
+each eater: ≥ 20 % of calories from protein, ≤ 35 % from fat, ≥ 10 g fibre per
+1000 kcal, and never a treat or indulgent. Each bound sits near the library's
+median; together they pick about one recipe in six.
+
 ## Catalogue traits
 
 Ingredients carry what they say about a dish in `ingredient_catalog.traits`:

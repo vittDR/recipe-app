@@ -31,6 +31,8 @@ export interface CandidateRecipe {
   proteinGPerServing: number | null;
   /** Learning features (preferences.ts recipeFeatures); defaults to tags plus ingredient names. */
   features?: string[];
+  /** Healthy by composition (classify.ts isHealthy): what the healthy mood matches first. */
+  healthy?: boolean;
   /** What the dish is for (classify.ts); moods match on these when given, else on tags. */
   intents?: MealIntent[];
   /** Seasons it's a dish of (classify.ts seasons); all four, null or absent = all year. */
@@ -112,18 +114,6 @@ export const MOOD_TAGS: Record<Exclude<Mood, 'any'>, string[]> = {
   fancy: ['fancy'],
 };
 
-export const HEALTHY_MAX_KCAL = 650;
-export const HEALTHY_MIN_PROTEIN_G = 25;
-
-/**
- * The seed library's brief for healthy: real meals, reasonable calories, enough
- * protein, not a treat. The Recipes tab's healthy filter (facets.ts) and the deck's mood.
- */
-export function isHealthy(r: { tags: string[]; kcalPerServing: number | null; proteinGPerServing: number | null }): boolean {
-  return !r.tags.some((t) => t.toLowerCase() === 'treat') && r.kcalPerServing != null
-    && r.kcalPerServing <= HEALTHY_MAX_KCAL && (r.proteinGPerServing ?? 0) >= HEALTHY_MIN_PROTEIN_G;
-}
-
 /** A seasonal dish (not all year) of this season: worth this much more. */
 export const SEASON_BONUS = 0.5;
 /** A seasonal dish out of season: worth this much less, but never left out (there are imports). */
@@ -165,8 +155,9 @@ function moodScore(recipe: CandidateRecipe, mood: Mood | undefined): number {
   if (!mood || mood === 'any') return 0;
   if (mood === 'quick' && recipe.totalMin && recipe.totalMin <= 25) return 1;
   if (mood === 'healthy') {
-    // The numbers first (the same rule as the Recipes tab's filter), then what the dish is for.
-    if (isHealthy(recipe)) return 1;
+    // Its composition first (the same rule as the Recipes tab's filter), then what the dish is for.
+    if (recipe.healthy) return 1;
+    if (recipe.intents?.includes('indulgent')) return 0;
     if (recipe.intents?.includes('fuel') || recipe.intents?.includes('light')) return 0.5;
     return recipe.tags.some((t) => MOOD_TAGS.healthy.includes(t.toLowerCase())) ? 0.5 : 0;
   }

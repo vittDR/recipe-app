@@ -126,14 +126,10 @@ test('moods match on what the dish is for when it is classified', () => {
   assert.equal(deck[0].recipeId, 'roast');
 });
 
-test('healthy mood: reasonable calories and enough protein, not a treat', () => {
-  // Both fit the eater equally well (same macros), so only the mood tells them apart.
-  const recipes = [
-    recipe('brownie bowl', { tags: ['treat'] }),
-    recipe('poke bowl'),
-  ];
+test('healthy mood: dishes healthy by composition come first', () => {
+  const recipes = [recipe('lasagne', { intents: ['comfort'] }), recipe('pot-au-feu', { healthy: true })];
   const deck = buildDeck(recipes, [member()], new Map(), { mood: 'healthy', random: fixed, size: 1, newShare: 1 });
-  assert.equal(deck[0].recipeId, 'poke bowl');
+  assert.equal(deck[0].recipeId, 'pot-au-feu');
 });
 
 test('features given by the caller drive preference scoring', () => {

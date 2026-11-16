@@ -4,7 +4,7 @@
 
 import { corsHeaders, json, requireMember, serviceClient } from '../_shared/http.ts';
 import { buildDeck, OCCASIONAL_DAYS, type CandidateRecipe, type DeckMember, type Diet, type Mood, type RecipeHistory } from '../_shared/logic/deck.ts';
-import { classifyRow, CLASSIFY_COLUMNS, seasonOfMonth, storedClassification, type ClassifiableRow } from '../_shared/logic/classify.ts';
+import { classifyRow, CLASSIFY_COLUMNS, isHealthy, seasonOfMonth, storedClassification, type ClassifiableRow } from '../_shared/logic/classify.ts';
 import { Catalog, type CatalogEntry } from '../_shared/logic/ingredients.ts';
 import { recipeFeatures } from '../_shared/logic/preferences.ts';
 import { splitPot } from '../_shared/logic/portions.ts';
@@ -121,6 +121,7 @@ Deno.serve(async (req) => {
       kcalPerServing: r.kcal_per_serving,
       proteinGPerServing: r.protein_g_per_serving,
       features,
+      healthy: isHealthy(r.tags ?? [], classification),
       intents: classification.meal_intents,
       seasons: classification.seasons,
       weeknightPlate: classification.weeknight_plate,
