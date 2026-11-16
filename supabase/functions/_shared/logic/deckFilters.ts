@@ -1,5 +1,5 @@
-// Advanced deck filters: protein, cuisine, base and spice, picked in tonight's
-// deck settings. Hard filters, like time: within a row any choice matches,
+// Advanced deck filters: protein, cuisine, base, spice, and calories and
+// protein per serving, picked in tonight's deck settings. Hard filters, like time: within a row any choice matches,
 // across rows all must. Worked out from the recipe's classification
 // (classify.ts), so seed, imported and typed recipes are filtered alike.
 // Pure, shared by deal-deck, the web app and the learning (profile.ts).
@@ -25,7 +25,15 @@ export interface DeckFilters {
   cuisines?: FilterCuisine[];
   bases?: FilterBase[];
   spice?: FilterSpice;
+  /** At most this many kcal per serving. */
+  maxKcal?: number;
+  /** At least this many grams of protein per serving. */
+  minProteinG?: number;
 }
+
+/** Bounds for the two numbers, so a typo can't store something absurd. */
+export const MAX_KCAL_LIMIT = 3000;
+export const MIN_PROTEIN_LIMIT = 200;
 
 /** The recipe cuisines (classification.cuisines, parents included) each choice covers. */
 export const CUISINE_MATCH: Record<FilterCuisine, string[]> = {
@@ -64,6 +72,9 @@ export interface DeckFacets {
   bases: FilterBase[];
   /** classify.ts heat_level; null when unknown. */
   heat: number | null;
+  /** Per serving, from the recipe; null when unknown. */
+  kcal?: number | null;
+  proteinG?: number | null;
 }
 
 type FacetFields = 'protein_groups' | 'protein_items' | 'cuisines' | 'starch_bases' | 'heat_level';
@@ -83,7 +94,10 @@ export function deckFacets(c: Pick<RecipeClassification, FacetFields>): DeckFace
   };
 }
 
-/** Within a row any choice matches; across rows all must. Unknown heat counts as mild. */
+/**
+ * Within a row any choice matches; across rows all must. Unknown heat counts
+ * as mild; unknown calories or protein never pass a number asked for.
+ */
 export function matchesDeckFilters(f: DeckFacets, filters: DeckFilters | null | undefined): boolean {
   if (!filters) return true;
   if (filters.proteins?.length && !filters.proteins.some((p) => f.proteins.includes(p))) return false;
@@ -91,6 +105,8 @@ export function matchesDeckFilters(f: DeckFacets, filters: DeckFilters | null | 
   if (filters.bases?.length && !filters.bases.some((b) => f.bases.includes(b))) return false;
   if (filters.spice === 'mild' && (f.heat ?? 0) > MILD_MAX_HEAT) return false;
   if (filters.spice === 'spicy' && (f.heat ?? 0) <= MILD_MAX_HEAT) return false;
+  if (filters.maxKcal && !(f.kcal != null && f.kcal <= filters.maxKcal)) return false;
+  if (filters.minProteinG && !(f.proteinG != null && f.proteinG >= filters.minProteinG)) return false;
   return true;
 }
 
@@ -98,6 +114,12 @@ const pick = <T extends string>(vocab: readonly T[], raw: unknown): T[] | undefi
   if (!Array.isArray(raw)) return undefined;
   const out = vocab.filter((v) => raw.includes(v));
   return out.length ? out : undefined;
+};
+
+/** A whole number in 1..limit, or nothing. */
+const amount = (raw: unknown, limit: number): number | undefined => {
+  const n = typeof raw === 'string' ? Number(raw) : raw;
+  return typeof n === 'number' && Number.isFinite(n) && n >= 1 ? Math.min(Math.round(n), limit) : undefined;
 };
 
 /** Cleans filters from an untrusted source (a request body, a stored deck); anything unknown is dropped. */
@@ -111,6 +133,10 @@ export function normaliseFilters(raw: unknown): DeckFilters {
   if (cuisines) out.cuisines = cuisines;
   if (bases) out.bases = bases;
   if (r.spice === 'mild' || r.spice === 'spicy') out.spice = r.spice;
+  const maxKcal = amount(r.maxKcal, MAX_KCAL_LIMIT);
+  const minProteinG = amount(r.minProteinG, MIN_PROTEIN_LIMIT);
+  if (maxKcal) out.maxKcal = maxKcal;
+  if (minProteinG) out.minProteinG = minProteinG;
   return out;
 }
 
@@ -118,7 +144,7 @@ export function normaliseFilters(raw: unknown): DeckFilters {
 export function filterCount(filters: DeckFilters | null | undefined): number {
   if (!filters) return 0;
   return (filters.proteins?.length ?? 0) + (filters.cuisines?.length ?? 0) + (filters.bases?.length ?? 0)
-    + (filters.spice && filters.spice !== 'any' ? 1 : 0);
+    + (filters.spice && filters.spice !== 'any' ? 1 : 0) + (filters.maxKcal ? 1 : 0) + (filters.minProteinG ? 1 : 0);
 }
 
 /**
