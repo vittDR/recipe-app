@@ -15,7 +15,7 @@
 import { type Difficulty, type Equipment } from './facets.ts';
 import { type CatalogEntry, type Catalog, estimateMacros, gramsOf, type NormalisedIngredient } from './ingredients.ts';
 
-export const CLASSIFICATION_VERSION = 2;
+export const CLASSIFICATION_VERSION = 4;
 
 export const PROTEIN_GROUPS = [
   'poultry', 'beef', 'pork', 'lamb', 'veal', 'game', 'offal', 'fish', 'shellfish', 'eggs', 'legumes', 'soy', 'dairy',
@@ -80,6 +80,27 @@ export const LEAN_MAX_KCAL = 700;
 export const LOW_KCAL_MAX = 500;
 export const HIGH_FIBRE_MIN_G = 8;
 export const EVERYDAY_MAX_MIN = 45;
+/**
+ * A weeknight plate: a filling, everyday dinner the app is built around.
+ * Cooking and hands-on prep are short (marinating isn't prep, so it may wait
+ * longer), it needs one or two pans or one oven dish (an air fryer or rice
+ * cooker doesn't count), it has a base and enough protein, and it isn't hard.
+ */
+export const PLATE_MAX_COOK_MIN = 30;
+export const PLATE_MAX_PREP_MIN = 25;
+export const PLATE_MAX_POTS = 2;
+export const PLATE_MIN_PROTEIN_G = 25;
+export const PLATE_KCAL = [500, 900] as const;
+/** Pulses from this many grams a serving fill a plate like rice does (lentils, beans, chickpeas as the base). */
+export const PLATE_LEGUME_BASE_G = 100;
+/** Grams per serving from which a seasonal ingredient sets the recipe's season: about a portion of vegetables, so half a pepper in a stew or one tomato in a sauce doesn't. */
+export const SEASON_MIN_G = 75;
+export const SEASONS = ['spring', 'summer', 'autumn', 'winter'] as const;
+export type Season = (typeof SEASONS)[number];
+/** The season of a month (1 = January), northern hemisphere: March to May is spring. */
+export function seasonOfMonth(month: number): Season {
+  return SEASONS[Math.floor(((month + 9) % 12) / 3)];
+}
 
 // ---------------------------------------------------------------------------
 
@@ -132,9 +153,19 @@ export interface RecipeClassification {
   heat_adjustable: boolean;
   /** 0 dry, 1 coated, 2 saucy, 3 brothy. */
   sauce_level: number | null;
+  /**
+   * Seasons it's a dish of: its own season tags when it has any, else the
+   * seasons its main seasonal ingredients share; all four when none is
+   * seasonal; null when no ingredient could be read.
+   */
+  seasons: Season[] | null;
   /** Per serving. */
   nutrition: Nutrition;
   nutrition_goals: NutritionGoal[];
+  /** A weeknight plate (PLATE_*): what most of the library and most of a deck should be. */
+  weeknight_plate: boolean;
+  /** The plate rules it misses, for the library audit ([] for a plate). */
+  plate_misses: string[];
   meal_intents: MealIntent[];
   /** Fields set from the recipe's own tags or cuisine rather than worked out. */
   sourced: string[];
@@ -232,7 +263,8 @@ export const CUISINE_PARENTS: Record<string, string[]> = {
   thai: ['asian'], vietnamese: ['asian'], indonesian: ['asian'], filipino: ['asian'], malaysian: ['asian'],
   taiwanese: ['asian'], italian: ['mediterranean'], greek: ['mediterranean'], spanish: ['mediterranean'],
   portuguese: ['mediterranean'], lebanese: ['middle eastern', 'mediterranean'], turkish: ['middle eastern', 'mediterranean'],
-  moroccan: ['north african'], 'north african': ['african'], ethiopian: ['african'],
+  moroccan: ['north african'], 'north african': ['african'], ethiopian: ['african'], senegalese: ['african'],
+  persian: ['middle eastern'], creole: ['american'],
 };
 
 // ---------------------------------------------------------------------------
@@ -425,11 +457,55 @@ export function classifyRecipe(input: ClassifyInput): RecipeClassification {
     heat_level: heatLevel,
     heat_adjustable: optionalHeat >= HEAT_STEPS[0],
     sauce_level: sauceLevel,
+    seasons: tags.some((t) => (SEASONS as readonly string[]).includes(t))
+      ? SEASONS.filter((x) => tags.includes(x))
+      : readable ? recipeSeasons(required, perServing) : null,
     nutrition,
     nutrition_goals: ordered(NUTRITION_GOALS, goals),
     meal_intents: ordered(MEAL_INTENTS, intents),
+    ...plate(input, nutrition, starches.size > 0 || legumeGrams(required, perServing) >= PLATE_LEGUME_BASE_G),
     sourced: [...sourced].sort(),
   };
+}
+
+// ---------------------------------------------------------------------------
+// Weeknight plate
+// ---------------------------------------------------------------------------
+
+function legumeGrams(lines: ClassifyIngredient[], perServing: (i: ClassifyIngredient) => number | null): number {
+  return lines.filter((i) => traitsOf(i.catalog).some((t) => t.kind === 'protein' && t.value === 'legumes'))
+    .reduce((sum, i) => sum + (perServing(i) ?? 0), 0);
+}
+
+function plate(input: ClassifyInput, n: Nutrition, hasBase: boolean): { weeknight_plate: boolean; plate_misses: string[] } {
+  const misses: string[] = [];
+  if (input.cookMin === null || input.cookMin > PLATE_MAX_COOK_MIN) misses.push('cook_time');
+  if (input.prepMin === null || input.prepMin > PLATE_MAX_PREP_MIN) misses.push('prep_time');
+  if (!input.equipment || input.equipment.pots > PLATE_MAX_POTS) misses.push('pots');
+  if (input.difficulty === 'hard') misses.push('hard');
+  if (n.protein_g === null || n.protein_g < PLATE_MIN_PROTEIN_G) misses.push('protein');
+  if (n.kcal === null || n.kcal < PLATE_KCAL[0] || n.kcal > PLATE_KCAL[1]) misses.push('kcal');
+  if (!hasBase) misses.push('base');
+  return { weeknight_plate: misses.length === 0, plate_misses: misses };
+}
+
+// ---------------------------------------------------------------------------
+// Season
+// ---------------------------------------------------------------------------
+
+/**
+ * When a dish is in season: the seasons its seasonal main ingredients (from
+ * SEASON_MIN_G a serving) share. Ingredients that clash (asparagus with
+ * pumpkin) leave the heaviest one to decide. No seasonal ingredient: all year.
+ */
+function recipeSeasons(lines: ClassifyIngredient[], perServing: (i: ClassifyIngredient) => number | null): Season[] {
+  const seasonal = lines
+    .map((i) => ({ seasons: (i.catalog?.seasons ?? []).filter((x): x is Season => (SEASONS as readonly string[]).includes(x)), g: perServing(i) ?? 0 }))
+    .filter((x) => x.seasons.length > 0 && x.g >= SEASON_MIN_G)
+    .sort((a, b) => b.g - a.g);
+  if (!seasonal.length) return [...SEASONS];
+  const shared = seasonal.reduce<Season[]>((acc, x) => acc.filter((v) => x.seasons.includes(v)), [...SEASONS]);
+  return shared.length ? shared : SEASONS.filter((v) => seasonal[0].seasons.includes(v));
 }
 
 // ---------------------------------------------------------------------------
@@ -501,7 +577,8 @@ export function classifyRow(row: ClassifiableRow, catalog: Catalog): RecipeClass
  * thing ("sauce:coconut" is not the ingredient "coconut milk"). Heat is
  * cumulative ("heat:2+" for anything at least medium) so a liking for spicy
  * food is one feature, not five unrelated ones. Cuisines stay plain names,
- * like the cuisine tags they come from.
+ * like the cuisine tags they come from. Season is left out: when a dish is
+ * cooked says nothing about whether someone likes it.
  */
 export function classificationFeatures(c: RecipeClassification): string[] {
   const out = [

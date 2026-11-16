@@ -1,6 +1,13 @@
 # Seed recipe library
 
-119 recipes: 25 Italian, 24 French, 25 Asian, 25 from other cuisines and 10 "treat" dishes taken from recipe sites, plus 10 AI-generated recipes (whose Poulet basquaise replaced the Chef Simon one).
+409 recipes:
+
+- **109 from recipe sites (hidden in the app** since November 2026: the library view and the deck leave out the `web` collection; they still open from past decks and meals): 25 Italian, 24 French, 25 Asian, 25 from other cuisines and 10 "treat" dishes.
+- **10 AI-generated recipes**, whose Poulet basquaise replaced the Chef Simon one.
+- **The original library, 290 recipes written for the app** (November 2026): 240 from the plan, plus 50 everyday weeknight plates (30 of them air-fryer). It follows the plan in [docs/recipe-library-plan.md](../../docs/recipe-library-plan.md): the draft list's kept and reworked dishes, plus named additions across 14 cuisine groups.
+  - Each one was written from published recipes, listed in its `references` (name and URL; the build ignores the field). It keeps their proportions, technique, times and temperatures, with steps in our own words.
+  - They keep the dish's real ingredients: anything most French supermarkets don't sell is flagged `exotic` in the catalogue rather than swapped.
+  - They are `ai_generated_recipe: true` with no `source_url`, so they belong to the `original` collection. All of them have illustrations (supplied as 900×675 WebP, re-encoded to about 100 KB where larger).
 
 | File | What it is |
 | --- | --- |
@@ -20,13 +27,13 @@ The script runs each ingredient line through the app's parser and catalogue, the
 - Each recipe comes from its source page (`source_url`, credited by `source_name`). Titles, ingredient lines and steps are in the source's language: 27 Italian, 27 French, 56 English. Tags are always English.
 - Quantities are scaled to 2 servings. `original_text` keeps the source's line for `original_servings`. Vague amounts ("q.b.", "a glass") were converted to g/ml and marked `guessed`.
 - Steps are rewritten, one action per step.
-- Collection rules for adding more: [docs/recipe-collection-guidelines.md](../../docs/recipe-collection-guidelines.md).
+- Collection rules for adding more: [docs/recipe-collection-guidelines.md](../../docs/recipe-collection-guidelines.md). What to add next (cuisine, base, time and season quotas): [docs/recipe-library-plan.md](../../docs/recipe-library-plan.md).
 
 ## Photos
 
 The photos are in `web/public/recipe-photos/` and ship with the app, so `image_url` is a path like `/recipe-photos/spaghetti-alle-vongole.webp`. `image_source_url` keeps where each photo came from.
 
-- 108 recipes have a photo. 11 have none and show the emoji (sources without a photo, and dead photo links).
+- Every recipe has a photo. The 11 site recipes whose source had none (or a dead link) have illustrations like the original library, so their `image_source_url` is the local path.
 - The 10 AI-generated recipes have AI-generated photos (4:3 PNGs converted with `to_webp` from `download_images.py`). Their `image_source_url` is left out, so it's stored as the local path.
 - 72 source photos were smaller than 1200×900 and were upscaled when downloaded (before the switch to 900×675), so some look soft.
 - A few carry the source blog's watermark (Arrosto di tacchino, Blanquette de veau légère, Frittata di zucchine, Saltimbocca).
@@ -39,7 +46,10 @@ To replace or add photos, run `scripts/download_images.py` (needs `pip install r
 - **Low protein:** eight of the healthy recipes estimate under 25 g per serving: Cozze alla tarantina, Frittata di zucchine e ricotta, Œufs pochés épinards et lentilles, Chicken tinga, Moules marinières, Spaghetti alle vongole, Poulet à l'estragon, Crispy scallion ginger salmon.
 - **Bone-in and in-shell weights overcount** protein and kcal, because the catalogue is per edible weight (satay drumsticks, Peruvian chicken, Moroccan tagine, mussels, clams).
 - **Long `total_min`** for marinated or soaked dishes (tandoori chicken 415 min, brandade 1,485 min), so the time filter treats them as slow. They're tagged `make ahead`. Their `prep_min` and `cook_min` stay short.
-- **AI-generated recipes:** 10 recipes (`ai_generated_recipe: true`) were written by Claude rather than taken from a site. They have no source link, their photos are AI-generated too, and their amounts and times haven't been tested in a kitchen.
+- **AI-generated recipes:** 300 recipes (`ai_generated_recipe: true`) were written by Claude rather than taken from a site. None has a source link, and none has been tested in a kitchen. The first 10 have AI-generated photos; the other 290 have illustrations.
+- **The original library's references:** many recipe sites refused automated reading, so some references were only seen in search results. Two recipes (the prawn tacos and the squash burritos) rest on search results alone.
+- **Ingredient mappings:** a few ingredients are mapped to the nearest catalogue entry rather than added (sour cream to crème fraîche, Comté to emmental, Napa cabbage to cabbage). Real exotic ingredients are kept and flagged, not swapped.
+- **Protein is a guide:** 6 of the 290 original recipes are under 25 g a serving, written as their references make them (gołąbki, pumpkin and sage risotto, rajma, some vegetarian dishes).
 - **Optional lines** (garnishes, toppings) are judged per recipe; 74 lines in 54 recipes are marked so far.
 - **Estimated prep and cook times:** 42 source pages give no prep/cook split, so those times were estimated from the steps.
 - **Herb bunches** count as 1 g (`grams_per_unit = 1`), and `1 mazzetto rucola` is left out of the macros (arugula has no weight per bunch). Both are negligible.

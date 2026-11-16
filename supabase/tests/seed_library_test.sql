@@ -23,7 +23,9 @@ select pg_temp.check(not exists (select 1 from lib where kcal_per_serving is nul
                      'every recipe has estimated macros');
 select pg_temp.check(not exists (select 1 from lib where source_name is null or cuisine is null or original_servings is null),
                      'source name, cuisine and original yield are set');
-select pg_temp.check((select count(*) = 98 from lib where image_path like '/recipe-photos/%.webp'), '98 recipes have a photo served by the app');
+select pg_temp.check((select count(*) = 109 from lib where image_path like '/recipe-photos/%.webp'), 'every recipe taken from a site has a photo served by the app');
+select pg_temp.check(not exists (select 1 from recipes where household_id is null and (image_path is null or image_path not like '/recipe-photos/%.webp')),
+                     'every seed recipe has a photo served by the app');
 select pg_temp.check(not exists (select 1 from lib where difficulty is null or equipment is null),
                      'every recipe has a difficulty and equipment');
 select pg_temp.check((select count(*) > 0 from ingredient_catalog where exotic)
@@ -50,13 +52,32 @@ select pg_temp.check((select id = 'd8e4ac12-403d-4d06-97cf-022682d08894' from re
 select pg_temp.check((select i.id = 'b6b4b263-9d00-433a-a43b-af72a2b7bd33' from recipe_ingredients i join recipes r on r.id = i.recipe_id
                       where r.title = 'Arrosto di tacchino alle erbe' and i.position = 0), 'seed lines have their fixed id');
 
+-- A seed recipe loaded earlier follows recipes.json when it's loaded again: its title,
+-- times and lines (one changed, one gone, one extra), but not a household's copy of it.
+create temp table before_lines as
+  select i.id, i.quantity, i.raw_text from recipe_ingredients i join recipes r on r.id = i.recipe_id
+  where r.id = 'd8e4ac12-403d-4d06-97cf-022682d08894';
+update recipes set title = 'Old title', cook_min = 999 where id = 'd8e4ac12-403d-4d06-97cf-022682d08894';
+update recipe_ingredients set quantity = 1, raw_text = 'old line' where id = 'b6b4b263-9d00-433a-a43b-af72a2b7bd33';
+insert into recipe_ingredients (recipe_id, position, name, aisle, raw_text)
+  values ('d8e4ac12-403d-4d06-97cf-022682d08894', 99, 'salt', 'spices', 'a line recipes.json no longer has');
+delete from recipe_ingredients where recipe_id = 'd8e4ac12-403d-4d06-97cf-022682d08894' and position = 1;
+
 -- Loading it again adds nothing.
 \i seed_library.sql
 select pg_temp.check((select count(*) = 109 from lib), 're-running seed_library.sql adds no duplicates');
+select pg_temp.check((select title = 'Arrosto di tacchino alle erbe' and cook_min = 110 from recipes
+                      where id = 'd8e4ac12-403d-4d06-97cf-022682d08894'), 'a seed recipe takes its title and times from recipes.json again');
+select pg_temp.check((select count(*) = 0 from (
+                        select id, quantity, raw_text from recipe_ingredients where recipe_id = 'd8e4ac12-403d-4d06-97cf-022682d08894'
+                        except select * from before_lines) x)
+                     and (select count(*) from recipe_ingredients where recipe_id = 'd8e4ac12-403d-4d06-97cf-022682d08894')
+                         = (select count(*) from before_lines),
+                     'its lines are as in recipes.json again: changed, gone and extra lines put right');
 
-select pg_temp.check((select count(*) filter (where collection = 'original') = 10
+select pg_temp.check((select count(*) filter (where collection = 'original') = 300
                              and count(*) filter (where collection = 'web') = 109
-                      from recipes where household_id is null), 'seed collections: 10 originals, 109 web');
+                      from recipes where household_id is null), 'seed collections: 300 originals, 109 web');
 
 -- Every seed recipe is in English, French and Italian: its own language plus two translations, step for step.
 select pg_temp.check(not exists (
@@ -70,10 +91,10 @@ select pg_temp.check(not exists (select 1 from recipes where household_id is nul
 
 -- AI-generated seed recipes have no source link: they're known by language and title.
 create temp view ai as select * from recipes where household_id is null and ai_generated_recipe;
-select pg_temp.check((select count(*) = 10 and count(source_url) = 0 from ai), '10 AI-generated seed recipes, without a source link');
+select pg_temp.check((select count(*) = 300 and count(source_url) = 0 from ai), '300 AI-generated seed recipes, without a source link');
 select pg_temp.check(not exists (select 1 from lib where ai_generated_recipe), 'sourced recipes are not marked AI-generated');
 \i seed_library.sql
-select pg_temp.check((select count(*) = 10 from ai), 're-running seed_library.sql adds no duplicate AI recipes');
+select pg_temp.check((select count(*) = 300 from ai), 're-running seed_library.sql adds no duplicate AI recipes');
 select pg_temp.check(not exists (
   select 1 from recipe_ingredients i join ai r on r.id = i.recipe_id
   where not exists (select 1 from ingredient_catalog c where c.name = i.name)), 'AI recipe ingredients are in the catalogue');
@@ -97,8 +118,11 @@ insert into auth.users (id, email) values ('00000000-0000-0000-0000-0000000000d1
 select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-0000000000d1', false);
 set role authenticated;
 select create_household('Seed test', 'Europe/Paris');
-select pg_temp.check((select count(*) >= 110 from library_recipes where household_id is null), 'household browses the seed library');
-select id as src from library_recipes where title = 'Spaghetti alle vongole' \gset
+select pg_temp.check((select count(*) = 300 and bool_and(collection = 'original') from library_recipes where household_id is null),
+                     'household browses our 300 recipes; the ones taken from sites are hidden');
+-- A recipe taken from a site still opens (past decks and meals point at it) and can still be copied.
+select id as src from recipes where household_id is null and title = 'Spaghetti alle vongole' \gset
+select pg_temp.check(exists (select 1 from recipes where id = :'src'), 'a hidden recipe still opens');
 select copy_recipe(:'src') as cp \gset
 select pg_temp.check((select source_name = 'Dissapore' and cuisine = 'italian' and original_servings = 4 and language = 'it'
                       from recipes where id = :'cp'), 'copy keeps source name, cuisine, yield and language');

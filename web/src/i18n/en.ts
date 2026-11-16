@@ -175,6 +175,7 @@ export const en = {
     undo: 'Undo last choice',
     collapse: 'Collapse',
     wildcard: 'Something a little different',
+    inSeason: 'In season now',
     leansYou: 'More your kind of dish',
     leansPartner: 'More {name}’s kind of dish',
     treat: 'A treat you’d probably love',

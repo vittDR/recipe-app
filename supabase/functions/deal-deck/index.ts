@@ -4,7 +4,7 @@
 
 import { corsHeaders, json, requireMember, serviceClient } from '../_shared/http.ts';
 import { buildDeck, OCCASIONAL_DAYS, type CandidateRecipe, type DeckMember, type Diet, type Mood, type RecipeHistory } from '../_shared/logic/deck.ts';
-import { classifyRow, CLASSIFY_COLUMNS, storedClassification, type ClassifiableRow } from '../_shared/logic/classify.ts';
+import { classifyRow, CLASSIFY_COLUMNS, seasonOfMonth, storedClassification, type ClassifiableRow } from '../_shared/logic/classify.ts';
 import { Catalog, type CatalogEntry } from '../_shared/logic/ingredients.ts';
 import { recipeFeatures } from '../_shared/logic/preferences.ts';
 import { splitPot } from '../_shared/logic/portions.ts';
@@ -59,7 +59,8 @@ Deno.serve(async (req) => {
       .eq('decks.household_id', householdId).order('created_at', { ascending: false }).limit(1000),
     admin.from('recipes')
       .select(`id, kcal_per_serving, protein_g_per_serving, household_id, copied_from, ${CLASSIFY_COLUMNS.replace('recipe_ingredients(', 'recipe_ingredients(product_id, ')}`)
-      .or(`household_id.is.null,household_id.eq.${householdId}`),
+      // Our own seed recipes and the household's; recipes taken from sites (collection 'web') are hidden.
+      .or(`and(household_id.is.null,collection.neq.web),household_id.eq.${householdId}`),
     admin.from('meals').select('id, recipe_id, for_date, status, deck:decks(who_eating)').eq('household_id', householdId),
     admin.from('grocery_items').select('name, product:products(ingredient)').eq('household_id', householdId)
       .gte('checked_at', since(PANTRY_DAYS)),
@@ -121,6 +122,8 @@ Deno.serve(async (req) => {
       proteinGPerServing: r.protein_g_per_serving,
       features,
       intents: classification.meal_intents,
+      seasons: classification.seasons,
+      weeknightPlate: classification.weeknight_plate,
     };
   });
 
@@ -204,6 +207,8 @@ Deno.serve(async (req) => {
     exclude,
     lean,
     recentKinds,
+    // The evening's season (from its month, in the household's time zone): dishes of the season come first.
+    season: seasonOfMonth(Number(forDate.slice(5, 7))),
     // Recipe lines are named by catalogue ingredient ("chicken breast"); list
     // lines by their French product name, so compare on the product's ingredient.
     pantry: (pantry.data ?? []).map((p) => {

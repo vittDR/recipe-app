@@ -100,6 +100,8 @@ const translationRows: string[] = [];
 const photoRows: string[] = [];
 const names: string[] = [];
 const macroRows: string[] = [];
+const contentRows: string[] = [];
+const lineRows: string[][] = [];
 const classified: RecipeClassification[] = [];
 
 for (const r of recipes) {
@@ -216,6 +218,13 @@ for (const r of recipes) {
     names.push(`  (${lit(i.id)}::uuid, ${lit(r.id)}::uuid, ${i.position}, ${lit(i.name)}, ${lit(i.aisle)}::public.aisle, ${lit(i.is_staple)}, ${lit(i.optional)})`);
   }
   macroRows.push(`  (${lit(r.id)}::uuid, ${lit(macros.kcalPerServing)}::real, ${lit(macros.proteinGPerServing)}::real, ${lit(macros.estimated)})`);
+  contentRows.push(`  (${lit(r.id)}::uuid, ${lit(r.title.trim().slice(0, 200))}, ${r.servings}, ${lit(r.original_servings)}::int, ${lit(totalMin)}::int, `
+    + `${lit(r.prep_min)}::int, ${lit(r.cook_min)}::int, ${lit(JSON.stringify(r.steps))}::jsonb, array[${r.tags.map(lit).join(', ')}]::text[], `
+    + `${lit(r.cuisine)}, ${lit(r.difficulty)}, ${lit(JSON.stringify(equipment))}::jsonb, ${lit(r.source_name)}, ${lit(r.source_url)})`);
+  lineRows.push([]);
+  for (const i of ingredients) {
+    lineRows[lineRows.length - 1].push(`  (${lit(i.id)}::uuid, ${lit(r.id)}::uuid, ${i.position}, ${lit(i.name)}, ${lit(i.quantity)}::real, ${lit(i.unit)}, ${lit(i.aisle)}::public.aisle, ${lit(i.is_staple)}, ${lit(i.guessed)}, ${lit(i.raw_text)}, ${lit(i.original_text)}, ${lit(i.optional)})`);
+  }
 }
 // Recipes loaded before they had fixed ids take theirs first; whatever points at them follows
 // (on update cascade). Lines are matched by position.
@@ -269,6 +278,41 @@ out.push('', '-- Their macros follow the catalogue too.',
   'from (values', macroRows.join(',\n'), ') as v(id, kcal, protein, estimated)',
   'where (x.id = v.id or x.copied_from = v.id)',
   '  and (x.kcal_per_serving, x.protein_g_per_serving) is distinct from (v.kcal, v.protein);');
+// Seed recipes follow recipes.json: a recipe loaded earlier takes the current title, times,
+// steps, tags and ingredient lines (households' copies are their own and stay as they are).
+// Nothing references a recipe line, so lines are replaced by id.
+out.push('', '-- Content of seed recipes loaded earlier, as in recipes.json.',
+  'update public.recipes x set title = v.title, servings = v.servings, original_servings = v.original_servings,',
+  '  total_min = v.total_min, prep_min = v.prep_min, cook_min = v.cook_min, steps = v.steps, tags = v.tags,',
+  '  cuisine = v.cuisine, difficulty = v.difficulty, equipment = v.equipment, source_name = v.source_name, source_url = v.source_url',
+  'from (values', contentRows.join(',\n'),
+  ') as v(id, title, servings, original_servings, total_min, prep_min, cook_min, steps, tags, cuisine, difficulty, equipment, source_name, source_url)',
+  'where x.id = v.id and x.household_id is null',
+  '  and (x.title, x.servings, x.original_servings, x.total_min, x.prep_min, x.cook_min, x.steps, x.tags, x.cuisine, x.difficulty, x.equipment, x.source_name, x.source_url)',
+  '  is distinct from (v.title, v.servings, v.original_servings, v.total_min, v.prep_min, v.cook_min, v.steps, v.tags, v.cuisine, v.difficulty, v.equipment, v.source_name, v.source_url);');
+// In groups of recipes, so no statement is too big to send on its own.
+const LINE_GROUP = 100;
+for (let g = 0; g < recipes.length; g += LINE_GROUP) {
+  const ids = recipes.slice(g, g + LINE_GROUP).map((r) => `${lit(r.id)}::uuid`).join(', ');
+  const rows = lineRows.slice(g, g + LINE_GROUP).flat();
+  out.push('', `-- Ingredient lines of seed recipes ${g + 1}-${Math.min(g + LINE_GROUP, recipes.length)}, as in recipes.json: gone lines removed.`,
+    'delete from public.recipe_ingredients i using public.recipes r',
+    `where i.recipe_id = r.id and r.household_id is null and r.id in (${ids})`,
+    `  and i.id not in (${rows.map((l) => l.replace(/^  \((.*?), .*$/, '$1')).join(', ')});`,
+    '', `-- Ingredient lines of seed recipes ${g + 1}-${Math.min(g + LINE_GROUP, recipes.length)}: added or brought up to date.`,
+    'insert into public.recipe_ingredients (id, recipe_id, position, name, quantity, unit, aisle, is_staple, guessed, raw_text, original_text, optional)',
+    'select v.id, v.recipe_id, v.position, v.name, v.quantity, v.unit, v.aisle, v.is_staple, v.guessed, v.raw_text, v.original_text, v.optional',
+    'from (values', rows.join(',\n'),
+    ') as v(id, recipe_id, position, name, quantity, unit, aisle, is_staple, guessed, raw_text, original_text, optional)',
+    'join public.recipes r on r.id = v.recipe_id and r.household_id is null',
+    'on conflict (id) do update set position = excluded.position, name = excluded.name, quantity = excluded.quantity, unit = excluded.unit,',
+    '  aisle = excluded.aisle, is_staple = excluded.is_staple, guessed = excluded.guessed, raw_text = excluded.raw_text,',
+    '  original_text = excluded.original_text, optional = excluded.optional',
+    'where (recipe_ingredients.position, recipe_ingredients.name, recipe_ingredients.quantity, recipe_ingredients.unit, recipe_ingredients.aisle,',
+    '  recipe_ingredients.is_staple, recipe_ingredients.guessed, recipe_ingredients.raw_text, recipe_ingredients.original_text, recipe_ingredients.optional)',
+    '  is distinct from (excluded.position, excluded.name, excluded.quantity, excluded.unit, excluded.aisle,',
+    '  excluded.is_staple, excluded.guessed, excluded.raw_text, excluded.original_text, excluded.optional);');
+}
 out.push('', 'commit;', '');
 
 console.log(`${recipes.length} recipes, ${recipes.reduce((n, r) => n + r.ingredients.length, 0)} ingredient lines\n`);

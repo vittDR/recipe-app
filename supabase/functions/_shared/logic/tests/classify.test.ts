@@ -168,3 +168,68 @@ test('classifyRow reads a stored recipe, translations included', () => {
   assert.deepEqual(c.cooking_methods, ['pan_fried']);
   assert.deepEqual(c.sauce_families, ['coconut']);
 });
+
+test('season: the seasons the main seasonal ingredients share, or the recipe\'s own season tags', async () => {
+  const { seasonOfMonth } = await import('../classify.ts');
+  const seasonal = new Catalog([
+    e('tomato', { seasons: ['summer'] }),
+    e('zucchini', { seasons: ['summer'] }),
+    e('bell pepper', { seasons: ['summer', 'autumn'] }),
+    e('pumpkin', { seasons: ['autumn'] }),
+    e('fresh basil', { seasons: ['summer'] }),
+    e('leek', { seasons: ['spring', 'autumn', 'winter'] }),
+    e('asparagus', { seasons: ['spring'] }),
+    e('potato'),
+  ]);
+  const season = (lines: [string, number, string, boolean?][], tags: string[] = []) => classifyRecipe({
+    ...input({ lines: [], tags }),
+    ingredients: lines.map(([name, quantity, unit, optional]) => ({ name, quantity, unit, optional, catalog: seasonal.find(name) })),
+  }).seasons;
+
+  assert.deepEqual(season([['tomato', 300, 'g'], ['bell pepper', 300, 'g'], ['zucchini', 200, 'g']]), ['summer']);
+  assert.deepEqual(season([['bell pepper', 300, 'g'], ['pumpkin', 300, 'g']]), ['autumn']);
+  // A garnish or an optional line doesn't make a winter dish summery.
+  assert.deepEqual(season([['leek', 400, 'g'], ['potato', 500, 'g'], ['fresh basil', 10, 'g']]), ['spring', 'autumn', 'winter']);
+  assert.deepEqual(season([['leek', 400, 'g'], ['tomato', 300, 'g', true]]), ['spring', 'autumn', 'winter']);
+  // One tomato in the sauce (60 g a serving) doesn't count.
+  assert.deepEqual(season([['pumpkin', 500, 'g'], ['tomato', 120, 'g']]), ['autumn']);
+  // Clashing main ingredients: the heaviest decides.
+  assert.deepEqual(season([['pumpkin', 500, 'g'], ['asparagus', 200, 'g']]), ['autumn']);
+  assert.deepEqual(season([['pumpkin', 100, 'g'], ['asparagus', 300, 'g']]), ['spring']);
+  // The recipe's own season tags win.
+  assert.deepEqual(season([['pumpkin', 500, 'g']], ['winter', 'comfort']), ['winter']);
+  assert.deepEqual(season([['potato', 400, 'g']], ['summer', 'spring']), ['spring', 'summer']);
+  // Nothing seasonal: all year. Nothing readable: unknown.
+  const allYear = classifyRecipe(input({ lines: [['potato', 400, 'g'], ['cod fillet', 300, 'g']] }));
+  assert.equal(allYear.seasons?.length, 4);
+  assert.equal(classifyRecipe(input({ lines: [['dragon fruit', 1, 'piece']] })).seasons, null);
+
+  assert.deepEqual([1, 2, 3, 5, 6, 8, 9, 11, 12].map(seasonOfMonth),
+    ['winter', 'winter', 'spring', 'spring', 'summer', 'summer', 'autumn', 'autumn', 'winter']);
+});
+
+test('weeknight plate: short cooking, one or two pans, a base, enough protein, 500-900 kcal', () => {
+  const plate = input({
+    titles: ['Cod with rice'], prepMin: 10, cookMin: 20, totalMin: 30, equipment: { pots: 2, oven: false, special: [] },
+    lines: [['cod fillet', 400, 'g'], ['rice', 160, 'g'], ['vegetable oil', 2, 'tbsp']],
+  });
+  const c = classifyRecipe(plate);
+  assert.equal(c.weeknight_plate, true, String(c.plate_misses));
+  assert.deepEqual(c.plate_misses, []);
+  // Marinating isn't prep: a long total with short prep and cooking is still a plate.
+  assert.equal(classifyRecipe({ ...plate, totalMin: 400 }).weeknight_plate, true);
+  // An air fryer isn't a pan.
+  assert.equal(classifyRecipe({ ...plate, equipment: { pots: 1, oven: false, special: ['air fryer'] } }).weeknight_plate, true);
+  assert.deepEqual(classifyRecipe({ ...plate, cookMin: 90 }).plate_misses, ['cook_time']);
+  assert.deepEqual(classifyRecipe({ ...plate, equipment: { pots: 3, oven: true, special: [] } }).plate_misses, ['pots']);
+  const lines = (l: [string, number | null, string | null, boolean?][]) => classifyRecipe({ ...plate, ...input({ lines: l }), prepMin: 10, cookMin: 20, equipment: plate.equipment });
+  assert.ok(lines([['cod fillet', 600, 'g'], ['vegetable oil', 4, 'tbsp'], ['coconut milk', 400, 'ml']]).plate_misses.includes('base'));
+  assert.ok(lines([['rice', 300, 'g']]).plate_misses.includes('protein'));
+  // Pulses in a main-dish amount are a base.
+  const legumes = new Catalog([e('red lentils', { kcal_100g: 350, protein_100g: 24, carbs_100g: 60, traits: ['protein:legumes'] })]);
+  const dal = classifyRecipe({ ...plate, ingredients: [
+    { name: 'red lentils', quantity: 240, unit: 'g', catalog: legumes.find('red lentils') },
+    { name: 'cod fillet', quantity: 200, unit: 'g', catalog: catalog.find('cod fillet') },
+  ] });
+  assert.ok(!dal.plate_misses.includes('base'), String(dal.plate_misses));
+});

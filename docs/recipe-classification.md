@@ -62,6 +62,8 @@ for the deck and learning.
 | `heat_level` | 0 none, 1 mild, 2 medium, 3 hot, 4 very hot | grams per serving × `heat:*` of each chilli ingredient (spoons of spices weighed as dry); a `spicy` tag means at least 2 |
 | `heat_adjustable` | true/false | chilli on optional lines (it doesn't raise the level) |
 | `sauce_level` | 0 dry, 1 coated, 2 saucy, 3 brothy | grams of `liquid` ingredients per serving; soups are brothy, baked dishes at most saucy |
+| `seasons` | spring, summer, autumn, winter (all four = all year) | season tags (sourced), else `ingredient_catalog.seasons` of the main ingredients (below) |
+| `weeknight_plate`, `plate_misses` | true/false, and the rules it misses | times, equipment, difficulty, nutrition and base (below) |
 | `nutrition` | kcal, protein, fat, carbs, fibre per serving | `estimateMacros()`; a nutrient is null when ingredients without it carry over a tenth of the calories |
 | `nutrition_goals` | high_protein, lean, low_kcal, high_fibre | numbers only (below) |
 | `meal_intents` | comfort, indulgent, light, fuel, everyday, special_occasion | mood tags (sourced), then rules (below) |
@@ -111,6 +113,57 @@ Ingredients carry what they say about a dish in `ingredient_catalog.traits`:
 Plus `fat_100g`, `carbs_100g` and `fiber_100g` alongside kcal and protein. A
 new ingredient without traits is still matched and counted; it just doesn't
 make a dish fish, rice-based or spicy until someone adds them.
+
+## Weeknight plate
+
+The app is built around everyday dinners, so the classifier says whether a
+recipe is a **weeknight plate**: a filling dinner that's quick to get on the
+table. It is one when all of these hold (`PLATE_*` in `classify.ts`):
+
+| Rule | Limit |
+| --- | --- |
+| cooking (`cook_min`) | 30 min or less |
+| hands-on prep (`prep_min`) | 25 min or less; marinating and resting are waiting time, not prep |
+| pots, pans and oven dishes | 2 or fewer; an air fryer or rice cooker doesn't count |
+| difficulty | not hard |
+| protein | 25 g a serving or more |
+| calories | 500–900 kcal a serving |
+| base | a starch base (rice, pasta, noodles, potato, bread, flatbread, tortilla, grain), or pulses from 100 g a serving |
+
+`plate_misses` lists the rules a recipe misses, for the library audit. The deck
+keeps at least 7 of 12 cards as plates (`PLATE_SHARE` in `deck.ts`).
+
+## Season
+
+Seasons, not months, to keep it flexible: a dish of the season is good any
+time in those three months (spring is March to May, summer June to August,
+autumn September to November, winter December to February).
+
+`ingredient_catalog.seasons` holds the seasons an ingredient is in season in
+France (`{summer}` for tomatoes, `{spring,autumn}` for spinach). It counts
+for a season when it's in season for most of it. Null means all year: pantry,
+frozen, stored crops like onions and potatoes, and imports sold all year like
+lemons. The values are in the season block of `seed.sql`.
+
+A recipe's `seasons`:
+
+- **Season tags win.** When the recipe has `spring`, `summer`, `autumn` or
+  `winter` tags, those are its seasons (sourced). That's how someone marks a
+  dish seasonal by hand.
+- **Otherwise it's worked out from the main ingredients.** Only required
+  lines with at least `SEASON_MIN_G` (75 g) a serving count, about a portion
+  of vegetables. Half a pepper in a stew, a tomato in a sauce or a handful of
+  basil don't make a dish seasonal.
+- **Shared seasons.** The recipe is in the seasons those ingredients share:
+  courgette, aubergine and tomato give summer.
+- **Clashes.** When they share none (a pumpkin dish with asparagus), the
+  heaviest decides.
+- **Nothing seasonal:** all four seasons. **Nothing readable:** null.
+
+`seasonOfMonth(month)` gives the season of a date; the deck reads `seasons` (`seasonFit` in `deck.ts`).
+Season isn't a learning feature: when a dish is eaten says nothing about
+whether someone likes it. Editing a season changes the catalogue version, so
+every recipe is reseasoned on the next deal with no backfill.
 
 ## Conventions
 
