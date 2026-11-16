@@ -5,7 +5,8 @@ import { Icon } from '../../components/Icon.tsx';
 import { RecipeFacts } from '../../components/RecipeBody.tsx';
 import { AvatarPair, Button, imageStyle, recipeEmoji } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
-import { useLive, useSave } from '../../lib/hooks.ts';
+import { todayIn, useLive, useSave } from '../../lib/hooks.ts';
+import { eveningPath } from '../../lib/plan.ts';
 import { recipeTitle } from '../../lib/recipeText.ts';
 import { useSession } from '../../lib/session.tsx';
 import { INGREDIENT_SELECT } from '../../lib/products.ts';
@@ -42,6 +43,7 @@ export function MatchView({ data }: { data: DeckData }) {
   const { userId, household, memberName, memberColor } = useSession();
   const navigate = useNavigate();
   const recipeId = data.deck.matched_recipe_id!;
+  const home = eveningPath(data.deck.for_date, todayIn(household!.timezone));
   const card = data.cards.find((c) => c.recipe_id === recipeId);
   const save = useSave();
   const [sheet, setSheet] = useState(false);
@@ -86,7 +88,7 @@ export function MatchView({ data }: { data: DeckData }) {
           transform: c.r ? `rotate(${c.r}deg)` : undefined, borderRadius: c.round ? '50%' : 2,
         }} />
       ))}
-      <button type="button" className="icon-btn icon-btn--filled moment__close" aria-label={t('app.close')} onClick={() => navigate('/')}>
+      <button type="button" className="icon-btn icon-btn--filled moment__close" aria-label={t('app.close')} onClick={() => navigate(home)}>
         <Icon name="x" />
       </button>
 
@@ -121,7 +123,7 @@ export function MatchView({ data }: { data: DeckData }) {
       </div>
 
       {/* Once the groceries are sorted, the evening is decided: back to Ce soir. */}
-      <AddToListSheet open={sheet} onClose={() => setSheet(false)} onAdded={() => navigate('/')} meals={listMeals} />
+      <AddToListSheet open={sheet} onClose={() => setSheet(false)} onAdded={() => navigate(home)} meals={listMeals} />
     </main>
   );
 }

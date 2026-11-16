@@ -4,7 +4,8 @@ import { Icon } from '../../components/Icon.tsx';
 import { Button } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { pickDeckArt } from '../../lib/deckArt.ts';
-import { useSave } from '../../lib/hooks.ts';
+import { todayIn, useSave } from '../../lib/hooks.ts';
+import { eveningPath } from '../../lib/plan.ts';
 import { useSession } from '../../lib/session.tsx';
 import { callFunction, supabase } from '../../lib/supabase.ts';
 import type { DeckData } from './data.ts';
@@ -23,6 +24,7 @@ export function NoMatchView({ data }: { data: DeckData }) {
   const { deck } = data;
   // The two cards Tonight showed for this deck.
   const [right, left] = pickDeckArt(deck.id, 2, deck.mood);
+  const home = eveningPath(deck.for_date, todayIn(household!.timezone));
 
   const deal = async () => {
     setDealing(true);
@@ -33,14 +35,14 @@ export function NoMatchView({ data }: { data: DeckData }) {
       navigate(`/deck/${res.deck_id}`, { replace: true });
     } catch {
       setDealing(false);
-      navigate('/', { replace: true });
+      navigate(home, { replace: true });
     }
   };
 
   // Not tonight: the evening is off on This week, and Ce soir moves on.
   const skip = async () => {
     await save(supabase.from('plan_dates').upsert({ household_id: household!.id, for_date: deck.for_date, cook_at_home: false }));
-    navigate('/', { replace: true });
+    navigate(home, { replace: true });
   };
 
   return (

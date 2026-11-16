@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { RATINGS, type Rating } from '@logic/profile.ts';
-import { Link, useNavigate } from 'react-router';
+import { Link, useNavigate, useSearchParams } from 'react-router';
 import { AddToListSheet, loadProposals, type MealForList } from '../components/AddToListSheet.tsx';
 import { DeckSettingsSheet, DeckSummaryRow, MOODS, useDeckLabels, type DeckSettings } from '../components/DeckSettings.tsx';
 import { Icon } from '../components/Icon.tsx';
@@ -12,7 +12,7 @@ import { useI18n } from '../i18n/index.tsx';
 import { pickDeckArt } from '../lib/deckArt.ts';
 import { recipeTitle } from '../lib/recipeText.ts';
 import { todayIn, useLive, useSave } from '../lib/hooks.ts';
-import { comingDays, cooksOn } from '../lib/plan.ts';
+import { comingDays, cooksOn, eveningPath, useEveningName } from '../lib/plan.ts';
 import { INGREDIENT_SELECT } from '../lib/products.ts';
 import { useSession } from '../lib/session.tsx';
 import { callFunction, must, supabase } from '../lib/supabase.ts';
@@ -24,6 +24,8 @@ type PlannedMeal = Meal & { recipe: MealRecipe | null; deck: { who_eating: strin
 type RateMeal = { id: string; recipe_id: string; recipe: Pick<Recipe, 'title' | 'language' | 'translations'> | null };
 
 interface TonightData {
+  /** The evening the deck part was loaded for. */
+  forDate: string;
   deck: Deck | null;
   progress: DeckMemberProgress[];
   /** Cards in the deck. */
@@ -62,14 +64,26 @@ export function TonightScreen() {
   const [nudged, setNudged] = useState(false);
   const [rated, setRated] = useState<string | null>(null);
 
-  // Tonight and the six evenings after it.
+  // Tonight and the six evenings after it; the strip picks which one Ce soir is about.
   const week = comingDays(tz);
+  const [params, setParams] = useSearchParams();
+  const day = params.get('day');
+  const selected = day && week.includes(day) ? day : today;
+  const isToday = selected === today;
+  const eveningName = useEveningName();
+  const selectDay = (date: string) => {
+    if (date === selected) return;
+    setPicked(null);
+    setError(null);
+    setNudged(false);
+    setParams(date === today ? {} : { day: date }, { replace: true });
+  };
 
   const { data, loading } = useLive<TonightData>(
-    `tonight:${household!.id}:${today}`,
+    `tonight:${household!.id}:${today}:${selected}`,
     async () => {
       const [decks, meals, plan, dates, recent, rated, liked] = await Promise.all([
-        supabase.from('decks').select('*').eq('household_id', household!.id).eq('for_date', today)
+        supabase.from('decks').select('*').eq('household_id', household!.id).eq('for_date', selected)
           .neq('status', 'closed').order('created_at', { ascending: false }).limit(1),
         supabase.from('meals').select(`id, for_date, recipe_id, status, deck_id, deck:decks(who_eating), recipe:recipes(${MEAL_RECIPE})`)
           .eq('household_id', household!.id).gte('for_date', week[0]).lte('for_date', week[6]),
@@ -105,6 +119,7 @@ export function TonightScreen() {
       }
       const [top, second] = [...counts].sort((a, b) => b[1] - a[1]);
       return {
+        forDate: selected,
         deck,
         progress: must(progress) as DeckMemberProgress[],
         total: cards.count ?? 12,
@@ -159,7 +174,7 @@ export function TonightScreen() {
     try {
       const whoEating = settings.who === 'me' || !shared ? [userId] : [userId, ...partners.map((p) => p.user_id)];
       const res = await callFunction<{ deck_id: string }>('deal-deck', {
-        who_eating: whoEating, max_minutes: settings.maxMinutes, mood: settings.mood, for_date: today,
+        who_eating: whoEating, max_minutes: settings.maxMinutes, mood: settings.mood, for_date: selected,
       }, 30_000);
       navigate(`/deck/${res.deck_id}`);
     } catch (e) {
@@ -196,16 +211,19 @@ export function TonightScreen() {
 
   const people = [userId!, ...partners.map((p) => p.user_id)].map((id) => ({ id, name: memberName(id), color: memberColor(id) }));
   const header = (
-    <TabHeader overline={cap(longFormat.format(new Date(`${today}T12:00:00Z`)))} title={t('tonight.title')}
+    <TabHeader overline={cap(longFormat.format(new Date(`${selected}T12:00:00Z`)))} title={eveningName(selected, today)}
       right={members.length > 0 ? <AvatarPair people={people} /> : undefined} />
   );
 
+  // The week (strip, meals) carries over while another evening's deck loads.
+  const dayLoading = !data || data.forDate !== selected;
   if (loading && !data) return <Screen>{header}<Spinner /></Screen>;
 
-  const deck = data?.deck ?? null;
+  const deck = dayLoading ? null : data?.deck ?? null;
   const open = deck?.status === 'open';
-  const tonightMeal = (data?.meals ?? []).find((m) => m.for_date === today && m.status !== 'skipped' && m.recipe);
-  const upcoming = planned.filter((m) => m.for_date > today);
+  const dayMeal = (data?.meals ?? []).find((m) => m.for_date === selected && m.status !== 'skipped' && m.recipe);
+  // Everything else still to cook this week, today included when looking at another evening.
+  const upcoming = planned.filter((m) => m.for_date !== selected);
   const myProgress = deck ? data?.progress.find((p) => p.user_id === userId) : undefined;
   const iAmEating = !!deck && deck.who_eating.includes(userId!);
   const iSwipe = open && iAmEating && !myProgress?.finished_at;
@@ -213,7 +231,7 @@ export function TonightScreen() {
   const deckSummary = deck && labels.summary({ who: deck.who_eating.length > 1 ? 'both' : 'me', maxMinutes: deck.max_minutes, mood: deck.mood }, shared);
 
   const strip = (
-    <WeekStrip today={today} days={week.map((date) => {
+    <WeekStrip today={today} selected={selected} onSelect={selectDay} days={week.map((date) => {
       const meal = data?.meals.find((m) => m.for_date === date && m.status !== 'skipped');
       return {
         date,
@@ -223,7 +241,7 @@ export function TonightScreen() {
     })} />
   );
 
-  const rating = data?.toRate && rated !== data.toRate.id && (
+  const rating = isToday && data?.toRate && rated !== data.toRate.id && (
     <section className="card stack" aria-label={t('rating.title')}>
       <span className="card__title">
         {t('rating.question', { title: data.toRate.recipe ? recipeTitle(data.toRate.recipe, locale) : '' })}
@@ -268,11 +286,20 @@ export function TonightScreen() {
     </section>
   );
 
+  const thisWeekRow = (
+    <div className="list">
+      <ListRow to="/us/week" state={{ back: eveningPath(selected, today) }} tile="accent" icon={<Icon name="calendar" size={18} />}
+        title={t('us.thisWeek')} meta={t('tonight.weekHint')} />
+    </div>
+  );
+
   let main: React.ReactNode;
-  if (tonightMeal && !open) {
-    // Decided: tonight first, then what's coming, then one groceries card for all.
-    const r = tonightMeal.recipe!;
-    const cooked = tonightMeal.status === 'cooked';
+  if (dayLoading) {
+    main = <Spinner />;
+  } else if (dayMeal && !open) {
+    // Decided: this evening first, then what's coming, then one groceries card for all.
+    const r = dayMeal.recipe!;
+    const cooked = dayMeal.status === 'cooked';
     const facts = [
       r.total_min && t('swipe.minutes', { n: r.total_min }),
       r.difficulty && t(`recipe.${r.difficulty}`),
@@ -284,14 +311,15 @@ export function TonightScreen() {
           <Link to={`/recipes/${r.id}`} className="decided__photo" style={imageStyle(r.image_path)}>
             {!imageStyle(r.image_path) && <span aria-hidden>{recipeEmoji(r.title, r.tags)}</span>}
             <span className="glass-badge"><Icon name="check" size={16} strokeWidth={2.4} />
-              {cooked ? t('tonight.cookedBadge') : t('tonight.decidedBadge')}</span>
+              {cooked ? t('tonight.cookedBadge')
+                : isToday ? t('tonight.decidedBadge') : t('tonight.decidedOn', { day: eveningName(selected, today) })}</span>
           </Link>
           <div className="decided__body">
             <h2 className="t-title-s m-0">{recipeTitle(r, locale)}</h2>
             {facts && <p className="muted m-0">{facts}</p>}
-            {cooked
+            {cooked || !isToday
               ? <Button block variant="secondary" onClick={() => navigate(`/recipes/${r.id}`)}>{t('match.viewRecipe')}</Button>
-              : <Button block onClick={() => void cook(tonightMeal)}><Icon name="pot" /> {t('tonight.startCooking')}</Button>}
+              : <Button block onClick={() => void cook(dayMeal)}><Icon name="pot" /> {t('tonight.startCooking')}</Button>}
           </div>
         </article>
         {upcomingSection}
@@ -382,9 +410,12 @@ export function TonightScreen() {
       </>
     );
   } else {
-    // No deck yet: dealing the deck is the only big action. New cards each day,
-    // to the mood about to be dealt; the best fit in front.
-    const [mid, left, right] = pickDeckArt(today, 3, settings.mood);
+    // No deck yet: dealing the deck is the only big action. New cards each
+    // evening, to the mood about to be dealt; the best fit in front.
+    const [mid, left, right] = pickDeckArt(selected, 3, settings.mood);
+    const ask = isToday ? t('tonight.ask')
+      : selected === week[1] ? t('tonight.askTomorrow')
+        : t('tonight.askOn', { day: new Intl.DateTimeFormat(locale, { weekday: 'long', timeZone: 'UTC' }).format(new Date(`${selected}T12:00:00Z`)) });
     main = (
       <>
         <section className="deal-hero">
@@ -393,7 +424,7 @@ export function TonightScreen() {
             <img className="fan fan--right fan--art" src={right} alt="" />
             <img className="fan fan--mid fan--art" src={mid} alt="" />
           </div>
-          <h2 className="deal-hero__title">{deck?.status === 'no_match' ? t('noMatch.again') : t('tonight.ask')}</h2>
+          <h2 className="deal-hero__title">{deck?.status === 'no_match' ? t('noMatch.again') : ask}</h2>
           <button type="button" className="btn btn--block deal-hero__btn" disabled={dealing} onClick={() => void deal()}>
             {dealing ? t('tonight.dealing') : t('tonight.deal')}
           </button>
@@ -407,6 +438,7 @@ export function TonightScreen() {
         )}
         {upcomingSection}
         {groceriesCard}
+        {thisWeekRow}
       </>
     );
   }

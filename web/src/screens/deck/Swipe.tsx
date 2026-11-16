@@ -5,7 +5,8 @@ import { Icon } from '../../components/Icon.tsx';
 import { RecipeBody, RecipeFacts } from '../../components/RecipeBody.tsx';
 import { AvatarPair, TabHeader, imageStyle, photoUrl, recipeEmoji, toast } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
-import { useLive } from '../../lib/hooks.ts';
+import { todayIn, useLive } from '../../lib/hooks.ts';
+import { useEveningName } from '../../lib/plan.ts';
 import { groupIngredients, INGREDIENT_SELECT } from '../../lib/products.ts';
 import { recipeTitle } from '../../lib/recipeText.ts';
 import { useSession } from '../../lib/session.tsx';
@@ -128,7 +129,8 @@ function Actions({ onDecide, onUndo, canUndo }: { onDecide: (v: Verdict) => void
 
 export function SwipeView({ data, onDone }: { data: DeckData; onDone: () => Promise<void> }) {
   const { t, locale } = useI18n();
-  const { userId, partners, memberName, memberColor } = useSession();
+  const { userId, household, partners, memberName, memberColor } = useSession();
+  const eveningName = useEveningName();
   const plateOf = (id: string) => {
     const p = data.portions.get(id);
     return p?.kcal != null ? { kcal: p.kcal, protein_g: p.protein_g ?? 0 } : null;
@@ -254,7 +256,7 @@ export function SwipeView({ data, onDone }: { data: DeckData; onDone: () => Prom
 
   return (
     <main className="screen swipe-screen">
-      <TabHeader overline={t('swipe.progress', { n: Math.min(done + 1, total), total })} title={t('tonight.title')}
+      <TabHeader overline={t('swipe.progress', { n: Math.min(done + 1, total), total })} title={eveningName(data.deck.for_date, todayIn(household!.timezone))}
         right={<AvatarPair people={people} />} />
       <div className="segments" aria-hidden>
         {data.cards.map((c, k) => <span key={c.recipe_id} className={k < done ? 'segments__on' : undefined} />)}
