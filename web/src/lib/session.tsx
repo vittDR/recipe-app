@@ -5,6 +5,7 @@ import type { Session } from '@supabase/supabase-js';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useI18n } from '../i18n/index.tsx';
 import { clearHouseholdCache } from './cache.ts';
+import { clearLiveMemory } from './hooks.ts';
 import { supabase } from './supabase.ts';
 import type { Household, Member, MemberGoals, Profile } from './types.ts';
 
@@ -145,6 +146,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       signOut: async () => {
         await supabase.auth.signOut();
         clearHouseholdCache();
+        clearLiveMemory();
       },
       memberName: (id) => (id ? byId.get(id)?.first_name ?? '' : ''),
       // Colour = meaning: you are always person-1, the first partner iris;

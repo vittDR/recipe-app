@@ -7,7 +7,7 @@ import { recipeTitle, allTitles } from '../../lib/recipeText.ts';
 import type { ClassifiableRow } from '@logic/classify.ts';
 import { RECIPE_FILTERS, type RecipeFilter, matchesFilters } from '@logic/facets.ts';
 import { effortLabels, facetsOf } from '../../lib/facets.ts';
-import { useCatalog, useLive } from '../../lib/hooks.ts';
+import { todayIn, useCatalog, useLive } from '../../lib/hooks.ts';
 import { useSession } from '../../lib/session.tsx';
 import { must, supabase } from '../../lib/supabase.ts';
 import { useTags } from '../../lib/tags.ts';
@@ -17,6 +17,29 @@ type Filter = 'all' | RecipeCollection;
 type Row = Recipe & { recipe_ingredients: ClassifiableRow['recipe_ingredients'] };
 
 const normalise = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+
+/** FNV-1a: a stable number for a string. */
+function hash(s: string): number {
+  let h = 2166136261;
+  for (let i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 16777619);
+  return h >>> 0;
+}
+
+const FRESH_MS = 2 * 86_400_000;
+
+/**
+ * The library in a new order each day, so other recipes come up, but the same
+ * order all day (going back finds things where they were). Recipes the
+ * household added in the last two days stay first, newest first.
+ */
+function dailyOrder<T extends Pick<Recipe, 'id' | 'household_id' | 'created_at'>>(rows: T[], day: string): T[] {
+  const now = Date.now();
+  // Only the household's own: the shared library can be (re)seeded any day.
+  const fresh = (r: T) => r.household_id !== null && now - Date.parse(r.created_at) < FRESH_MS;
+  const newest = rows.filter(fresh);
+  const rest = rows.filter((r) => !fresh(r)).map((r) => [hash(`${day}:${r.id}`), r] as const);
+  return [...newest, ...rest.sort((a, b) => a[0] - b[0]).map(([, r]) => r)];
+}
 
 export function RecipesScreen() {
   const i18n = useI18n();
@@ -34,11 +57,14 @@ export function RecipesScreen() {
     must(await supabase.from('library_recipes').select('*, recipe_ingredients(name, quantity, unit, optional, is_staple, guessed)').order('created_at', { ascending: false })) as Row[],
   [{ table: 'recipes', filter: `household_id=eq.${household!.id}` }]);
 
+  const day = useMemo(() => todayIn(household!.timezone), [household]);
+  const ordered = useMemo(() => dailyOrder(data ?? [], day), [data, day]);
+
   const shown = useMemo(() => {
     // Every word must match the title, a tag or an ingredient, in either language: "quick chicken" and "poulet rapide" work.
     const words = normalise(query).split(/\s+/).filter(Boolean);
     if (!catalog) return [];
-    return (data ?? []).filter((r) => {
+    return ordered.filter((r) => {
       if (filter !== 'all' && r.collection !== filter) return false;
       if (facets.size && !matchesFilters(facetsOf(r, r.recipe_ingredients, catalog), facets)) return false;
       const hay = normalise([
@@ -48,7 +74,7 @@ export function RecipesScreen() {
       ].join(' '));
       return words.every((w) => hay.includes(w));
     });
-  }, [data, query, filter, facets, catalog, tags]);
+  }, [ordered, query, filter, facets, catalog, tags]);
 
   const toggle = (f: RecipeFilter) => setFacets((cur) => {
     const next = new Set(cur);
