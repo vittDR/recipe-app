@@ -128,7 +128,7 @@ table. It is one when all of these hold (`PLATE_*` in `classify.ts`):
 | difficulty | not hard |
 | protein | 25 g a serving or more |
 | calories | 500–900 kcal a serving |
-| base | a starch base (rice, pasta, noodles, potato, bread, flatbread, tortilla, grain) |
+| base | a starch base (rice, pasta, noodles, potato, bread, flatbread, tortilla, grain), or pulses from 100 g a serving |
 
 `plate_misses` lists the rules a recipe misses, for the library audit. The deck
 keeps at least 7 of 12 cards as plates (`PLATE_SHARE` in `deck.ts`).

@@ -232,4 +232,11 @@ test('weeknight plate: short cooking, one or two pans, a base, enough protein, 5
   const lines = (l: [string, number | null, string | null, boolean?][]) => classifyRecipe({ ...plate, ...input({ lines: l }), prepMin: 10, cookMin: 20, equipment: plate.equipment });
   assert.ok(lines([['cod fillet', 600, 'g'], ['vegetable oil', 4, 'tbsp'], ['coconut milk', 400, 'ml']]).plate_misses.includes('base'));
   assert.ok(lines([['rice', 300, 'g']]).plate_misses.includes('protein'));
+  // Pulses in a main-dish amount are a base.
+  const legumes = new Catalog([e('red lentils', { kcal_100g: 350, protein_100g: 24, carbs_100g: 60, traits: ['protein:legumes'] })]);
+  const dal = classifyRecipe({ ...plate, ingredients: [
+    { name: 'red lentils', quantity: 240, unit: 'g', catalog: legumes.find('red lentils') },
+    { name: 'cod fillet', quantity: 200, unit: 'g', catalog: catalog.find('cod fillet') },
+  ] });
+  assert.ok(!dal.plate_misses.includes('base'), String(dal.plate_misses));
 });

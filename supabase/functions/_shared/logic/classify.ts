@@ -91,6 +91,8 @@ export const PLATE_MAX_PREP_MIN = 25;
 export const PLATE_MAX_POTS = 2;
 export const PLATE_MIN_PROTEIN_G = 25;
 export const PLATE_KCAL = [500, 900] as const;
+/** Pulses from this many grams a serving fill a plate like rice does (lentils, beans, chickpeas as the base). */
+export const PLATE_LEGUME_BASE_G = 100;
 /** Grams per serving from which a seasonal ingredient sets the recipe's season: about a portion of vegetables, so half a pepper in a stew or one tomato in a sauce doesn't. */
 export const SEASON_MIN_G = 75;
 export const SEASONS = ['spring', 'summer', 'autumn', 'winter'] as const;
@@ -461,7 +463,7 @@ export function classifyRecipe(input: ClassifyInput): RecipeClassification {
     nutrition,
     nutrition_goals: ordered(NUTRITION_GOALS, goals),
     meal_intents: ordered(MEAL_INTENTS, intents),
-    ...plate(input, nutrition, starches.size > 0),
+    ...plate(input, nutrition, starches.size > 0 || legumeGrams(required, perServing) >= PLATE_LEGUME_BASE_G),
     sourced: [...sourced].sort(),
   };
 }
@@ -469,6 +471,11 @@ export function classifyRecipe(input: ClassifyInput): RecipeClassification {
 // ---------------------------------------------------------------------------
 // Weeknight plate
 // ---------------------------------------------------------------------------
+
+function legumeGrams(lines: ClassifyIngredient[], perServing: (i: ClassifyIngredient) => number | null): number {
+  return lines.filter((i) => traitsOf(i.catalog).some((t) => t.kind === 'protein' && t.value === 'legumes'))
+    .reduce((sum, i) => sum + (perServing(i) ?? 0), 0);
+}
 
 function plate(input: ClassifyInput, n: Nutrition, hasBase: boolean): { weeknight_plate: boolean; plate_misses: string[] } {
   const misses: string[] = [];
