@@ -153,6 +153,51 @@ export function proposeListItems<T extends RecipeIngredientLike>(
   });
 }
 
+/** One line of the "What do you already have?" sheet, across several meals. */
+export interface CombinedProposal<T extends RecipeIngredientLike> {
+  /** Product (or name) + unit: the same thing bought the same way. */
+  key: string;
+  /** The first meal's ingredient, for its name, product and aisle. */
+  ingredient: T;
+  /** The amounts of every meal needing it, added up; null when none says. */
+  quantity: number | null;
+  unit: string | null;
+  /** Indexes of the meals that need it, in meal order. */
+  meals: number[];
+  /** Proposed to buy when any meal's ingredient is. */
+  add: boolean;
+}
+
+/**
+ * Folds several meals' proposals into one line per product and unit, so
+ * onions for Wednesday and Thursday are one line ticked once, with both
+ * amounts. Ingredients without a product match on their name. `quantityOf`
+ * gives a meal's amount (scaled to its pot).
+ */
+export function combineProposals<T extends RecipeIngredientLike>(
+  perMeal: ListProposal<T>[][],
+  quantityOf: (meal: number, ingredient: T) => number | null,
+): CombinedProposal<T>[] {
+  const lines = new Map<string, CombinedProposal<T>>();
+  perMeal.forEach((proposals, meal) => {
+    for (const p of proposals) {
+      const i = p.ingredient;
+      const unit = i.unit?.trim().toLowerCase() || null;
+      const key = `${i.product_id ?? `name:${i.name.trim().toLowerCase()}`}|${unit ?? ''}`;
+      const q = quantityOf(meal, i);
+      const line = lines.get(key);
+      if (!line) {
+        lines.set(key, { key, ingredient: i, quantity: q, unit, meals: [meal], add: p.add });
+        continue;
+      }
+      if (q !== null) line.quantity = (line.quantity ?? 0) + q;
+      if (!line.meals.includes(meal)) line.meals.push(meal);
+      line.add ||= p.add;
+    }
+  });
+  return [...lines.values()];
+}
+
 /** Scales recipe quantities to the pot actually being cooked. */
 export function scaleQuantity(q: number | null, recipeServings: number, potServings: number): number | null {
   if (q === null || recipeServings <= 0) return q;

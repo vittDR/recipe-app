@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { groupGroceries, mergeTarget, proposeListItems, scaleQuantity, splitCart, storeKey, type GroceryItem } from '../groceries.ts';
+import { combineProposals, groupGroceries, mergeTarget, proposeListItems, scaleQuantity, splitCart, storeKey, type GroceryItem } from '../groceries.ts';
 
 const item = (name: string, over: Partial<GroceryItem> = {}): GroceryItem => ({
   id: name, name, quantity: null, unit: null, aisle: 'other', recipe_id: null, checked_at: null, sort_key: 0, ...over,
@@ -121,4 +121,29 @@ test('a recipe line adds to the same item in the same unit, not to a ticked one'
   assert.equal(mergeTarget(lines, 'p1', null)?.id, 'c');
   assert.equal(mergeTarget(lines, 'p1', 'kg'), undefined);
   assert.equal(mergeTarget(lines, null, 'g'), undefined);
+});
+
+test('several meals: one line per product and unit, amounts added up', () => {
+  const ing = (name: string, over: Record<string, unknown> = {}) =>
+    ({ name, product_id: null, quantity: null, unit: null, aisle: 'produce' as const, is_staple: false, ...over });
+  const wed = [
+    { ingredient: ing('onion', { product_id: 'p-onion', quantity: 2 }), add: true, why: 'to_buy' as const },
+    { ingredient: ing('Basil', { quantity: 10, unit: 'g' }), add: false, why: 'bought_recently' as const },
+    { ingredient: ing('salt', { product_id: 'p-salt' }), add: false, why: 'staple' as const },
+  ];
+  const thu = [
+    { ingredient: ing('red onion', { product_id: 'p-onion', quantity: 1 }), add: true, why: 'to_buy' as const },
+    { ingredient: ing('basil', { quantity: 5, unit: 'G' }), add: true, why: 'to_buy' as const },
+    { ingredient: ing('onion', { product_id: 'p-onion', quantity: 200, unit: 'g' }), add: true, why: 'to_buy' as const },
+    { ingredient: ing('salt', { product_id: 'p-salt' }), add: false, why: 'staple' as const },
+  ];
+  // Thursday's pot is twice the recipe.
+  const lines = combineProposals([wed, thu], (meal, i) => (i.quantity === null ? null : i.quantity * (meal === 1 ? 2 : 1)));
+  assert.deepEqual(lines.map((l) => [l.key, l.quantity, l.meals, l.add]), [
+    ['p-onion|', 4, [0, 1], true],
+    ['name:basil|g', 20, [0, 1], true],
+    ['p-salt|', null, [0, 1], false],
+    ['p-onion|g', 400, [1], true],
+  ]);
+  assert.equal(lines[0].ingredient.name, 'onion');
 });

@@ -185,7 +185,13 @@ select pg_temp.check((select matched_recipe_id = :'r1' from decks where id = '10
                      'first mutual yes in deck order wins');
 select pg_temp.check((select count(*) = 2 from deck_matches('10000000-0000-0000-0000-000000000002')),
                      'other match offered');
+-- Ingredients sent to the list are remembered on the meal, until the dish changes.
+update meals set listed_at = now() where deck_id = '10000000-0000-0000-0000-000000000002';
+select pg_temp.check((select listed_at is not null from meals where deck_id = '10000000-0000-0000-0000-000000000002'),
+                     'meal remembers its groceries were added');
 select choose_match('10000000-0000-0000-0000-000000000002', :'r2');
+select pg_temp.check((select listed_at is null and recipe_id = :'r2' from meals where for_date = current_date + 1),
+                     'a new dish for the evening needs its groceries again');
 select pg_temp.check((select matched_recipe_id = :'r2' from decks where id = '10000000-0000-0000-0000-000000000002'),
                      'switch to other match');
 
