@@ -87,6 +87,8 @@ export interface DeckOptions {
   recentKinds?: Set<string>;
   /** Features of what someone said yes to in those decks: the new deck leans towards them. */
   lean?: Set<string>;
+  /** How many recent decks dealt each recipe without it being chosen: it gives way to others (ROTATION_*). */
+  recentlyDealt?: Map<string, number>;
   /** The evening's season (classify.ts seasonOfMonth): dishes of the season come first. */
   season?: Season;
   random?: () => number;
@@ -113,6 +115,13 @@ export const MOOD_TAGS: Record<Exclude<Mood, 'any'>, string[]> = {
   quick: ['quick'],
   fancy: ['fancy'],
 };
+
+/** Rotation: a recipe dealt lately without being chosen loses this much per deck it was in… */
+export const ROTATION_PENALTY = 0.35;
+/** …counting at most this many decks, so a favourite still comes back. */
+export const ROTATION_MAX_DECKS = 3;
+/** How far back dealt decks count, in days. */
+export const ROTATION_DAYS = 14;
 
 /** A seasonal dish (not all year) of this season: worth this much more. */
 export const SEASON_BONUS = 0.5;
@@ -232,8 +241,10 @@ export function scoreRecipe(
   const season = seasonFit(recipe, opts.season);
   const seasonScore = season > 0 ? SEASON_BONUS : season < 0 ? -OFF_SEASON_PENALTY : 0;
 
+  const rotation = ROTATION_PENALTY * Math.min(ROTATION_MAX_DECKS, opts.recentlyDealt?.get(recipe.id) ?? 0);
+
   const base = fitW * fit + 1 * love + 1.2 * moodScore(recipe, opts.mood) + 1 * pantryScore + 0.8 * liked + 1.2 * lean
-    + seasonScore + novelty;
+    + seasonScore - rotation + novelty;
   const score = base + 1.5 * pref + EXPLORE_WEIGHT * explore;
 
   const reason = pantryHits.length > 0 ? `pantry:${pantryHits[0]}` : love > 0 ? 'love' : null;
