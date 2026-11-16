@@ -4,7 +4,7 @@ import type { Aisle } from '@logic/ingredients.ts';
 
 export type { Aisle };
 export type Verdict = 'pass' | 'yes' | 'must';
-export type Mood = 'any' | 'comfort' | 'light' | 'quick' | 'fancy';
+export type Mood = 'any' | 'comfort' | 'light' | 'healthy' | 'quick' | 'fancy';
 export type DeckStatus = 'open' | 'matched' | 'no_match' | 'closed';
 export type Goal = 'lean' | 'maintain' | 'build';
 export type Diet = 'everything' | 'pescatarian' | 'vegetarian';

@@ -152,6 +152,7 @@ export const fr: Dictionary = {
       any: 'Tout',
       comfort: 'Réconfort',
       light: 'Léger',
+      healthy: 'Healthy',
       quick: 'Rapide',
       fancy: 'Festif',
     },

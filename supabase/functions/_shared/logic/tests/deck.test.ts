@@ -126,6 +126,12 @@ test('moods match on what the dish is for when it is classified', () => {
   assert.equal(deck[0].recipeId, 'roast');
 });
 
+test('healthy mood: dishes healthy by composition come first', () => {
+  const recipes = [recipe('lasagne', { intents: ['comfort'] }), recipe('pot-au-feu', { healthy: true })];
+  const deck = buildDeck(recipes, [member()], new Map(), { mood: 'healthy', random: fixed, size: 1, newShare: 1 });
+  assert.equal(deck[0].recipeId, 'pot-au-feu');
+});
+
 test('features given by the caller drive preference scoring', () => {
   const recipes = [recipe('a', { features: ['sauce:coconut'] }), recipe('b', { features: ['sauce:tomato'] })];
   const deck = buildDeck(recipes, [member({ weights: new Map([['sauce:coconut', -1]]) })], new Map(), { random: fixed, size: 1, newShare: 1 });

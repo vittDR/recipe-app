@@ -13,7 +13,7 @@ import {
 import { type EaterTargets, type PotSplit, splitPot } from './portions.ts';
 
 export type Diet = 'everything' | 'pescatarian' | 'vegetarian';
-export type Mood = 'any' | 'comfort' | 'light' | 'quick' | 'fancy';
+export type Mood = 'any' | 'comfort' | 'light' | 'healthy' | 'quick' | 'fancy';
 
 export interface CandidateRecipe {
   id: string;
@@ -31,6 +31,8 @@ export interface CandidateRecipe {
   proteinGPerServing: number | null;
   /** Learning features (preferences.ts recipeFeatures); defaults to tags plus ingredient names. */
   features?: string[];
+  /** Healthy by composition (classify.ts isHealthy): what the healthy mood matches first. */
+  healthy?: boolean;
   /** What the dish is for (classify.ts); moods match on these when given, else on tags. */
   intents?: MealIntent[];
   /** Seasons it's a dish of (classify.ts seasons); all four, null or absent = all year. */
@@ -107,6 +109,7 @@ export interface DeckCard {
 export const MOOD_TAGS: Record<Exclude<Mood, 'any'>, string[]> = {
   comfort: ['comfort', 'curry', 'stew', 'soup'],
   light: ['light', 'salad', 'bowl'],
+  healthy: ['healthy'],
   quick: ['quick'],
   fancy: ['fancy'],
 };
@@ -151,6 +154,13 @@ export function passesHardFilters(recipe: CandidateRecipe, members: DeckMember[]
 function moodScore(recipe: CandidateRecipe, mood: Mood | undefined): number {
   if (!mood || mood === 'any') return 0;
   if (mood === 'quick' && recipe.totalMin && recipe.totalMin <= 25) return 1;
+  if (mood === 'healthy') {
+    // Its composition first (the same rule as the Recipes tab's filter), then what the dish is for.
+    if (recipe.healthy) return 1;
+    if (recipe.intents?.includes('indulgent')) return 0;
+    if (recipe.intents?.includes('fuel') || recipe.intents?.includes('light')) return 0.5;
+    return recipe.tags.some((t) => MOOD_TAGS.healthy.includes(t.toLowerCase())) ? 0.5 : 0;
+  }
   if (recipe.intents && mood !== 'quick') {
     // Classified: comfort, light and fancy are what the dish is for (its tags included).
     const want: MealIntent = mood === 'fancy' ? 'special_occasion' : mood;
