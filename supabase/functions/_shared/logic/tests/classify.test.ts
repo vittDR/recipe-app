@@ -170,7 +170,7 @@ test('classifyRow reads a stored recipe, translations included', () => {
 });
 
 test('season: the seasons the main seasonal ingredients share, or the recipe\'s own season tags', async () => {
-  const { inSeason, isSeasonal, seasonOfMonth } = await import('../classify.ts');
+  const { seasonOfMonth } = await import('../classify.ts');
   const seasonal = new Catalog([
     e('tomato', { seasons: ['summer'] }),
     e('zucchini', { seasons: ['summer'] }),
@@ -202,14 +202,7 @@ test('season: the seasons the main seasonal ingredients share, or the recipe\'s 
   // Nothing seasonal: all year. Nothing readable: unknown.
   const allYear = classifyRecipe(input({ lines: [['potato', 400, 'g'], ['cod fillet', 300, 'g']] }));
   assert.equal(allYear.seasons?.length, 4);
-  assert.equal(isSeasonal(allYear), false);
   assert.equal(classifyRecipe(input({ lines: [['dragon fruit', 1, 'piece']] })).seasons, null);
-
-  const ratatouille = { seasons: ['summer' as const] };
-  assert.equal(inSeason(ratatouille, 'summer'), true);
-  assert.equal(inSeason(ratatouille, 'winter'), false);
-  assert.equal(inSeason({ seasons: null }, 'winter'), true);
-  assert.equal(isSeasonal(ratatouille), true);
 
   assert.deepEqual([1, 2, 3, 5, 6, 8, 9, 11, 12].map(seasonOfMonth),
     ['winter', 'winter', 'spring', 'spring', 'summer', 'summer', 'autumn', 'autumn', 'winter']);

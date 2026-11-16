@@ -160,7 +160,7 @@ A recipe's `seasons`:
   heaviest decides.
 - **Nothing seasonal:** all four seasons. **Nothing readable:** null.
 
-`inSeason(c, season)`, `isSeasonal(c)` and `seasonOfMonth(month)` read it.
+`seasonOfMonth(month)` gives the season of a date; the deck reads `seasons` (`seasonFit` in `deck.ts`).
 Season isn't a learning feature: when a dish is eaten says nothing about
 whether someone likes it. Editing a season changes the catalogue version, so
 every recipe is reseasoned on the next deal with no backfill.

@@ -1,90 +1,72 @@
-# Recipe library plan: the next 240
+# Recipe library plan
 
-The editorial brief for growing the library past the 119 seed recipes. It
-covers what the collection is for, the quotas it's checked against, and what
-fills the gaps. The draft list of 240 names has been triaged against it in
-[recipe-list-triage.md](recipe-list-triage.md). Collection mechanics
-(sources, JSON shape, catalogue names) stay in
-[recipe-collection-guidelines.md](recipe-collection-guidelines.md).
-
-Assumption: the 240 add to the seed library. If they replace it, the 20 seed
-duplicates in the triage come back and the Italian and French targets below
-go up by about 25 each.
+The editorial brief for our own recipe library (the `original` collection):
+what it's for, the quotas it's checked against, and what to add next.
+Collection mechanics (sources, JSON shape, catalogue names) are in
+[recipe-collection-guidelines.md](recipe-collection-guidelines.md). The 109
+recipes taken from recipe sites are not counted or changed by this plan.
 
 ## What the library is for
 
-- **Weekly cooking for two in France.** Most dishes are reliable weeknight
-  food. Safe flavours are fine. A dish is distinctive because it's the real
-  version of something, not because it uses rare ingredients.
-- **The supermarket first, but authentic.** Most recipes should use only
-  ingredients a Carrefour or Monoprix sells, fresh or frozen. When a dish
-  really needs something else (doubanjiang, gochugaru, curry leaves), the
-  recipe keeps it, and the catalogue flags it `exotic` so the app can say so
-  and the "Everyday ingredients" filter leaves the recipe out. Never swap it
-  for a supermarket stand-in.
-- **Protein is a guide, not a rule.** Most dishes land at 25 g or more, but
-  a dish is written as its references make it; protein isn't bolted on.
-- **Calories.** Hearty dishes over 1,000 kcal are fine, as long as most of
-  the library sits between 500 and 900 kcal a serving.
+- **Weeknight plates first.** DINEAMITE is a weeknight-dinner app, so at least
+  60% of the library are weeknight plates: quick to get on the table, one or
+  two pans, a base, enough protein. The rule is worked out from each recipe's
+  data ([recipe-classification.md](recipe-classification.md#weeknight-plate)),
+  and the deck keeps at least 7 of 12 cards as plates. Braises, pies and
+  doughs stay as weekend dishes, in the minority.
+- **Weekly cooking for two in France.** Safe flavours are fine. A dish is
+  distinctive because it's the real version of something, not because it
+  uses rare ingredients.
+- **The supermarket first, but authentic.** Most recipes use what a Carrefour
+  or Monoprix sells, its world-food aisle included (soy sauce, mirin, curry
+  paste). When a dish really needs something else (doubanjiang, gochugaru,
+  curry leaves), the recipe keeps it and the catalogue flags it `exotic`, so
+  the "Everyday ingredients" filter leaves the recipe out. Never swap it for a
+  supermarket stand-in.
+- **Protein is a guide, not a rule.** Most dishes land at 25 g or more, but a
+  dish is written as its references make it; protein isn't bolted on.
+- **Calories.** Hearty dishes over 1,000 kcal are fine, as long as most of the
+  library sits between 500 and 900 kcal a serving.
+- **Air fryer.** It doesn't count as a pan, and many weeknight plates use it.
 
 ## Quotas
 
-The library is checked against these. None is a hard rule on a single
-recipe; they decide what the next recipe should be.
+The library is checked against these. None is a hard rule on a single recipe;
+they decide what the next recipe should be.
 
 ### Cuisines: depth over breadth
 
-Fourteen buckets, each deep enough to show a range: an everyday dish, a soup
-or stew, something quick, something slow. "No cuisine" covers house
-weeknight dishes (a salmon traybake) and is capped so that it doesn't become
-the default.
+Fourteen groups, each deep enough to show a range (an everyday dish, a soup or
+stew, something quick, something slow). Targets for a library of 300:
 
-| Cuisine | Target | Kept from the list | To add |
-| --- | ---: | ---: | ---: |
-| French | 22 | 15 | 7 |
-| Italian | 24 | 23 | 1 |
-| Spanish & Portuguese | 16 | 9 | 7 |
-| Eastern Mediterranean (Greek, Turkish, Levantine) | 24 | 13 | 11 |
-| North African | 12 | 2 | 10 |
-| Indian | 20 | 10 | 10 |
-| Chinese | 16 | 9 | 7 |
-| Japanese | 14 | 7 | 7 |
-| Thai, Vietnamese & South-East Asian | 14 | 4 | 10 |
-| Korean | 8 | 2 | 6 |
-| Mexican & Latin American | 18 | 8 | 10 |
-| British & Irish | 14 | 14 | 0 |
-| Discovery (Persian, West African, Caribbean, Central & Eastern European, Belgian, Creole…) | 24 | 7 | 17 |
-| No cuisine (house dishes) | at most 14 | 4 | up to 10 |
-| **Total** | **240** | **127** | **113** |
-
-Italian and French are already the core of the seed library (27 each),
-which is why their targets here are modest.
+| Cuisine | Target |
+| --- | ---: |
+| French | 27 |
+| Italian | 30 |
+| Spanish & Portuguese | 20 |
+| Eastern Mediterranean (Greek, Turkish, Levantine) | 30 |
+| North African | 15 |
+| Indian | 25 |
+| Chinese | 20 |
+| Japanese | 18 |
+| Thai, Vietnamese & South-East Asian | 18 |
+| Korean | 10 |
+| Mexican & Latin American | 22 |
+| British & Irish | 18 |
+| Discovery (Persian, West African, Caribbean, Central & Eastern European, Belgian, Creole…) | 30 |
+| House weeknight dishes, no particular cuisine | at most 17 |
 
 ### Bases
 
 No single base (pasta, rice, potato, bread and wraps) should be more than
-**18%** of the library. Polenta, farro, barley, bulgur, couscous, freekeh,
-buckwheat, gnocchi, noodles and dumplings should together be at least **20%**.
-
-### Time
-
-Worked out from `prep_min`, `cook_min` and `total_min`, never tagged:
-
-| Tier | Rule | Target |
-| --- | --- | ---: |
-| Quick | total ≤ 20 min | 20% |
-| Weeknight | total ≤ 45 min | 50% |
-| Slow, hands-off | total > 45 min, prep ≤ 20 min | 18% |
-| Weekend project | prep > 20 min and total > 60 min | 12% |
-
-"Slow, hands-off" is the tier the list was missing. A braise with 15 minutes
-of prep is still a Tuesday dinner.
+**18%** of the library. Polenta, farro, barley, bulgur, couscous, quinoa,
+buckwheat, gnocchi, noodles and pulses should together be at least **20%**.
 
 ### Protein
 
-Roughly a third vegetarian (eggs, legumes, dairy and tofu, with no more
-than a third of those relying on cheese), a quarter fish and seafood, and the
-rest meat. Within meat and fish, include:
+Roughly a third vegetarian (eggs, legumes, dairy and tofu, with no more than a
+third of those relying on cheese), a quarter fish and seafood, and the rest
+meat. Within meat and fish, include:
 
 - cheaper cuts (chicken thighs, pork shoulder and belly, beef shin, lamb shoulder)
 - shellfish beyond prawns (mussels, squid)
@@ -92,201 +74,38 @@ rest meat. Within meat and fish, include:
 
 ### Season
 
-By season, not by month, to keep it flexible. Recipes are seasoned from their
-season tags, else their ingredients (see below). Each season should have at
-least **40 seasonal dishes** of its own, on top of the all-year ones. Aim for
-about half all-year and half seasonal. The draft list leaned towards autumn
-and winter, and spring was the thinnest, so the later additions lean towards
-spring and summer.
+By season, not by month, to keep it flexible
+([recipe-classification.md](recipe-classification.md#season)). Each season
+should have at least **40 seasonal dishes** of its own, on top of the
+all-year ones, and the library should be about half all-year and half
+seasonal. The deck keeps at least 3 of 12 cards as dishes of the season.
 
-## Seasonality in the database
+## How to add recipes
 
-Added in `migrations/20261125000001_ingredient_seasons.sql`:
-
-- **Ingredients.** `ingredient_catalog.seasons` holds the seasons each fresh
-  ingredient is in season in France (spring, summer, autumn, winter). The
-  values are in the season block of `seed.sql`.
-- **Recipes.** A recipe's seasons are part of its classification (`seasons`,
-  `logic/classify.ts`): its own season tags when it has any, else its main
-  ingredients (75 g a serving or more). They're recomputed when the catalogue
-  changes. Details: [recipe-classification.md](recipe-classification.md#season).
-- **Deck.** `logic/deck.ts` gives a seasonal dish of the evening's season a
-  bonus (`SEASON_BONUS`) and one out of season a penalty
-  (`OFF_SEASON_PENALTY`), without excluding it, since imports exist. Every
-  deck holds at least 3 of 12 dishes of the season (`SEASONAL_SHARE`) when
-  the library has them. They replace the weakest close, then very close,
-  cards, never a wildcard or the treat, and show an "In season now" badge.
-- **Not done yet:** an "In season" filter on the Recipes tab
-  (`logic/facets.ts`).
-
-## Additions
-
-These dishes fill the "to add" column. Each one is the name of a real
-dish, so collection searches find a source page. Notes: **Q** quick,
-**S** slow and hands-off, **P** weekend project, a season where it matters, and
-**ex** where it needs an exotic ingredient.
-
-**French (7):**
-- Lapin à la moutarde (S)
-- Hachis parmentier (winter)
-- Pot-au-feu (P, winter)
-- Endives au jambon (winter)
-- Calamars à la provençale (Q, summer)
-- Bavette à l'échalote, haricots verts (Q, summer)
-- Soupe au pistou with white beans (summer)
-
-**Italian (1):**
-- Orecchiette, broccoli e salsiccia (winter)
-
-**Spanish & Portuguese (7):**
-- Pollo al ajillo
-- Lentejas con chorizo (S, winter)
-- Bacalhau à Brás
-- Pisto manchego con huevo (summer)
-- Albóndigas en salsa de almendras
-- Mejillones a la marinera (autumn)
-- Caldo verde with chouriço (winter)
-
-**Eastern Mediterranean (11):**
-- Kleftiko (P)
-- Stifado (S, winter)
-- Youvetsi
-- Karnıyarık (summer)
-- Menemen (Q, summer)
-- Lahmacun (P)
-- Fattoush with grilled chicken (summer)
-- Hünkar beğendi (P)
-- Shish tawook with garlic sauce
-- Kibbeh bil sayniyeh (P)
-- Mujadara with halloumi
-
-**North African (10):**
-- Couscous royal (P)
-- Tajine d'agneau aux pruneaux (S)
-- Tajine de kefta aux œufs
-- Harira (autumn)
-- Lablabi (Q)
-- Tajine de poisson
-- Méchoui-style lamb shoulder (S)
-- Merguez and roast vegetable couscous (summer)
-- Chermoula prawns with couscous (Q)
-- Loubia with lamb (S, winter)
-
-**Indian (10):**
-- Rajma chawal
-- Chicken jalfrezi (Q)
-- Anda curry (egg curry)
-- Rogan josh (S)
-- Chicken biryani (P)
-- Matar paneer (Q)
-- Prawn masala
-- Chicken korma
-- Fish tikka (summer)
-- Moong dal khichdi with egg (Q)
-
-**Chinese (7):**
-- Mapo tofu (ex: Sichuan pepper)
-- Hong shao rou (P)
-- Tomato and egg stir-fry (Q, summer)
-- Char siu pork with greens
-- Hot and sour soup with pork and tofu
-- Cumin lamb stir-fry (Q)
-- Lion's head meatballs with cabbage (winter)
-
-**Japanese (7):**
-- Butaniku shōgayaki (Q)
-- Nikujaga (S)
-- Saba shioyaki (Q)
-- Japanese chicken curry
-- Yakisoba with pork (Q)
-- Hambāgu
-- Cold soba with tofu and edamame (summer)
-
-**Thai, Vietnamese & South-East Asian (10):**
-- Massaman beef curry (S)
-- Thai red curry with butternut and chicken (autumn)
-- Gai yang with cucumber salad (summer)
-- Phở bò (P)
-- Bún chả
-- Bò lúc lắc (Q)
-- Cà ri gà
-- Gado-gado with egg and tofu (summer)
-- Singapore noodles (Q)
-- Ayam kecap (ex: kecap manis)
-
-**Korean (6):**
-- Japchae
-- Kimchi jjigae (ex: kimchi)
-- Jeyuk bokkeum (ex: gochujang)
-- Andong jjimdak
-- Haemul pajeon
-- Bossam (P)
-
-**Mexican & Latin American (10):**
-- Lomo saltado (Q)
-- Ropa vieja (S)
-- Carnitas tacos (S)
-- Sopa de tortilla with chicken
-- Ceviche with sweet potato (summer)
-- Steak with chimichurri and potatoes (summer)
-- Feijoada (P)
-- Huevos rancheros (Q)
-- Picadillo with rice (Q)
-- Empanadas (P)
-
-**Discovery (17):**
-- Joojeh kabab with saffron rice (summer)
-- Fesenjan (ex: pomegranate molasses)
-- Kuku sabzi (Q, spring)
-- Jollof rice with chicken
-- Poulet yassa
-- Thieboudienne (P)
-- Brown stew chicken (S)
-- Gulyás (S)
-- Bigos (P, winter)
-- Chkmeruli (Q)
-- Carbonnade flamande (S)
-- Waterzooi
-- Käsespätzle (treat)
-- Jambalaya
-- Borscht with beef (winter)
-- Misir wot with eggs (ex: berbere)
-- Frikadeller with potatoes
-
-**No cuisine (up to 10):** these slots are left open. Fill them with house
-weeknight dishes only when a quota above is met, or to fix a base, time or
-season shortfall.
-
-After the additions, 8 of the 240 recipes use an exotic ingredient, well
-within the 20% limit. About half of the 103 named additions are quick, slow or
-weekend dishes, which moves the time mix towards the targets.
-
-## How to use this
-
-1. **Cut first.** Apply the triage decisions before collecting anything new.
-2. **Collect by bucket.** Use the guidelines, and take the source's version
-   of the dish, not a lighter rewrite.
-3. **Re-audit after each batch.** Count cuisines and bases, work out time
-   tiers from the stored times, and check seasons from `seasons`. Then
-   pick the next batch from whatever is furthest below target.
+1. **Pick from whatever is furthest below target:** plates first, then
+   cuisine, base, protein and season.
+2. **Collect** with the guidelines. Write the dish from published recipes,
+   listed in its `references`, in our own words.
+3. **Re-audit** after each batch.
+   - `node scripts/build-seed-library.ts` prints the classification coverage.
+   - `node scripts/export-recipes.ts` lists every recipe with its plate,
+     season and illustration status.
 
 ## Status (November 2026)
 
-Our own library is **300 recipes** (the 109 taken from recipe sites aren't
-counted): the 10 first AI recipes and 290 written from this plan.
+Our own library is **300 recipes**: the 10 first AI recipes and 290 written
+from this plan.
 
-- **Weeknight plates: 232 of 300 (77%).** The target is at least 60%.
-  - 50 recipes were written as plates from the start (protein × base ×
-    sauce, 30 of them in the air fryer).
+- **Weeknight plates: 232 of 300 (77%).**
+  - 50 were written as plates from the start (protein × base × sauce, 30 of
+    them in the air fryer).
   - About 90 were converted honestly: the side they're served with, normal
     portions, a common quicker version.
-  - The remaining 68 are kept as weekend dishes (braises, pies, doughs) or
-    lighter meals.
-- **Deck:** keeps at least 7 of 12 cards as plates and 3 as dishes of the season.
+  - The other 68 are weekend dishes (braises, pies, doughs) or lighter meals.
 - **Seasons:** 98 of the 290 are all year. By season there are 39 seasonal
-  dishes in spring, 90 in summer, 59 in autumn and 53 in winter. Spring is
-  still the thinnest, so the next additions should be spring dishes.
+  dishes in spring, 90 in summer, 59 in autumn and 53 in winter. Spring is the
+  thinnest, so the next additions should be spring dishes.
 - **Calories:** 262 of the 290 are 500–900 kcal a serving.
 - **Protein:** 6 are under 25 g.
-- **Exotic ingredients:** 82 use at least one, flagged in the catalogue.
-- **Catalogue:** 106 ingredients were added.
+- **Exotic ingredients:** 82 recipes use at least one, flagged in the catalogue.
+- **Illustrations:** 250 of the 300 have one. The 50 weeknight plates don't yet.

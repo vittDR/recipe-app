@@ -25,7 +25,8 @@ supabase/
     push-dispatch/      sends queued notifications as Web Push (run by pg_cron)
     _shared/logic/      pure TypeScript shared with the web app, with tests
   tests/                runs every migration on plain Postgres and checks the rules
-scripts/                build-seed-library.ts, download_images.py, make_thumbnails.py,
+scripts/                build-seed-library.ts, export-recipes.ts (the library as one JSON list:
+                        plates, seasons, illustrations), download_images.py, make_thumbnails.py,
                         supabase-sql.sh (run SQL on the live project)
 .github/workflows/      ci.yml (tests, seed check, build), keep-alive.yml
 design/                 Household Warm v2: tokens.json (the design system's file, as delivered),

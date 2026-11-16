@@ -508,16 +508,6 @@ function recipeSeasons(lines: ClassifyIngredient[], perServing: (i: ClassifyIngr
   return shared.length ? shared : SEASONS.filter((v) => seasonal[0].seasons.includes(v));
 }
 
-/** Whether a classified recipe is a dish of this season; unknown counts as yes. */
-export function inSeason(c: Pick<RecipeClassification, 'seasons'>, season: Season): boolean {
-  return !c.seasons || c.seasons.includes(season);
-}
-
-/** A seasonal dish, as opposed to one you can cook all year. */
-export function isSeasonal(c: Pick<RecipeClassification, 'seasons'>): boolean {
-  return !!c.seasons && c.seasons.length < SEASONS.length;
-}
-
 // ---------------------------------------------------------------------------
 // From a database row
 // ---------------------------------------------------------------------------
