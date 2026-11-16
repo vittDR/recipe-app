@@ -272,16 +272,25 @@ weekend dishes, which moves the time mix towards the targets.
 
 ## Status (November 2026)
 
-200 of the planned recipes are written and in the seed library
-(`supabase/seed/recipes.json`). They are the 127 kept and reworked dishes from
-the triage, plus 73 of the additions, chosen in proportion to each cuisine's gap.
+240 recipes are written and in the seed library (`supabase/seed/recipes.json`):
 
-- **Seasons:** 102 of the 200 are all year. Every month has at least 21
-  seasonal dishes in season, so the deck's 3-in-season rule always has enough
-  to choose from. April and May are the thinnest months (23 and 21); the
-  remaining additions should lean towards spring (asparagus, peas, radish,
-  broad beans).
-- **Exotic ingredients:** 7 recipes use one, and none uses more than one.
-- **Protein:** all but one have at least 25 g a serving. Several hearty
-  dishes run over 1,000 kcal, so trim them if the calorie fit matters.
-- **New ingredients:** 58 were added to the catalogue, with their seasons and allergens.
+- the 127 kept and reworked dishes from the triage
+- 102 of the named additions
+- 11 spring dishes added to fill the thinnest season
+- the plain pumpkin and sage risotto, which sits alongside the one with sausage
+
+**Figures**
+
+- **Seasons:** 93 of the 240 are all year. By season there are 32 seasonal
+  dishes in spring, 65 in summer, 46 in autumn and 45 in winter (35, 93, 62 and
+  50 across the whole library). Every deck can keep its 3 dishes of the season.
+  Spring is still under the 40 target, so the next additions should be spring
+  dishes.
+- **Calories:** 174 of the 240 are 500–900 kcal a serving, 46 are 900–1,000,
+  16 are over 1,000 and 4 under 500.
+- **Protein:** 11 are under 25 g a serving, written as their references make them.
+- **Exotic ingredients:** 76 recipes keep at least one ingredient most French
+  supermarkets don't sell, flagged in the catalogue. The "Everyday
+  ingredients" filter leaves them out.
+- **New ingredients:** 104 were added to the catalogue, with nutrition,
+  traits, seasons and allergens.
