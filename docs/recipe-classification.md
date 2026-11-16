@@ -62,7 +62,7 @@ for the deck and learning.
 | `heat_level` | 0 none, 1 mild, 2 medium, 3 hot, 4 very hot | grams per serving × `heat:*` of each chilli ingredient (spoons of spices weighed as dry); a `spicy` tag means at least 2 |
 | `heat_adjustable` | true/false | chilli on optional lines (it doesn't raise the level) |
 | `sauce_level` | 0 dry, 1 coated, 2 saucy, 3 brothy | grams of `liquid` ingredients per serving; soups are brothy, baked dishes at most saucy |
-| `season_months` | months 1–12 (all twelve = all year) | `ingredient_catalog.season_months` of the main ingredients (below) |
+| `seasons` | spring, summer, autumn, winter (all four = all year) | season tags (sourced), else `ingredient_catalog.seasons` of the main ingredients (below) |
 | `nutrition` | kcal, protein, fat, carbs, fibre per serving | `estimateMacros()`; a nutrient is null when ingredients without it carry over a tenth of the calories |
 | `nutrition_goals` | high_protein, lean, low_kcal, high_fibre | numbers only (below) |
 | `meal_intents` | comfort, indulgent, light, fuel, everyday, special_occasion | mood tags (sourced), then rules (below) |
@@ -115,25 +115,35 @@ make a dish fish, rice-based or spicy until someone adds them.
 
 ## Season
 
-`ingredient_catalog.season_months` holds the months an ingredient is in
-season in France (`{6,7,8,9}` for tomatoes); null means all year (pantry,
-frozen, stored crops like onions and potatoes, imports sold all year like
-lemons). The values are in the season block of `seed.sql`.
+Seasons, not months, to keep it flexible: a dish of the season is good any
+time in those three months (spring is March to May, summer June to August,
+autumn September to November, winter December to February).
 
-A recipe's `season_months` is worked out, never tagged:
+`ingredient_catalog.seasons` holds the seasons an ingredient is in season in
+France (`{summer}` for tomatoes, `{spring,autumn}` for spinach). It counts
+for a season when it's in season for most of it. Null means all year: pantry,
+frozen, stored crops like onions and potatoes, and imports sold all year like
+lemons. The values are in the season block of `seed.sql`.
 
-- Only required lines with at least `SEASON_MIN_G` (75 g) a serving count, about
-  a portion of vegetables. Half a pepper in a stew, a tomato in a sauce or a
-  handful of basil don't make a dish seasonal.
-- The recipe is in season in the months those ingredients share. Courgette,
-  aubergine and tomato give July to September.
-- When they share none (a pumpkin dish with asparagus), the heaviest decides.
-- No seasonal main ingredient: all twelve months. Nothing readable: null.
+A recipe's `seasons`:
 
-`inSeason(c, month)` and `isSeasonal(c)` read it. Season isn't a learning
-feature: when a dish is eaten says nothing about whether someone likes it.
-Editing a month changes the catalogue version, so every recipe is reseasoned
-on the next deal with no backfill.
+- **Season tags win.** When the recipe has `spring`, `summer`, `autumn` or
+  `winter` tags, those are its seasons (sourced). That's how someone marks a
+  dish seasonal by hand.
+- **Otherwise it's worked out from the main ingredients.** Only required
+  lines with at least `SEASON_MIN_G` (75 g) a serving count, about a portion
+  of vegetables. Half a pepper in a stew, a tomato in a sauce or a handful of
+  basil don't make a dish seasonal.
+- **Shared seasons.** The recipe is in the seasons those ingredients share:
+  courgette, aubergine and tomato give summer.
+- **Clashes.** When they share none (a pumpkin dish with asparagus), the
+  heaviest decides.
+- **Nothing seasonal:** all four seasons. **Nothing readable:** null.
+
+`inSeason(c, season)`, `isSeasonal(c)` and `seasonOfMonth(month)` read it.
+Season isn't a learning feature: when a dish is eaten says nothing about
+whether someone likes it. Editing a season changes the catalogue version, so
+every recipe is reseasoned on the next deal with no backfill.
 
 ## Conventions
 

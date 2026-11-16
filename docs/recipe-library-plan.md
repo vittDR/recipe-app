@@ -16,13 +16,16 @@ go up by about 25 each.
 - **Weekly cooking for two in France.** Most dishes are reliable weeknight
   food. Safe flavours are fine. A dish is distinctive because it's the real
   version of something, not because it uses rare ingredients.
-- **The supermarket first.** At least 80% of recipes use no `exotic`
-  ingredient (not sold in most French supermarkets), and no recipe uses more
-  than one. Everything else (cuts, seafood, grains) should be at a Carrefour
-  or Monoprix, fresh or frozen.
-- **The nutrition brief still applies:** at least 25 g of protein per
-  serving. Several kept entries (gnocchi, flatbread pizzas, pea pasta) only
-  pass if the chosen source recipe adds a protein.
+- **The supermarket first, but authentic.** Most recipes should use only
+  ingredients a Carrefour or Monoprix sells, fresh or frozen. When a dish
+  really needs something else (doubanjiang, gochugaru, curry leaves), the
+  recipe keeps it, and the catalogue flags it `exotic` so the app can say so
+  and the "Everyday ingredients" filter leaves the recipe out. Never swap it
+  for a supermarket stand-in.
+- **Protein is a guide, not a rule.** Most dishes land at 25 g or more, but
+  a dish is written as its references make it; protein isn't bolted on.
+- **Calories.** Hearty dishes over 1,000 kcal are fine, as long as most of
+  the library sits between 500 and 900 kcal a serving.
 
 ## Quotas
 
@@ -89,49 +92,39 @@ rest meat. Within meat and fish, include:
 
 ### Season
 
-Recipes are seasoned from their ingredients (see below). Each month should
-have at least **25 seasonal dishes in season**, on top of the all-year ones.
-Aim for about 55% all-year and 45% seasonal, spread across the year. The draft
-list leaned towards autumn and winter, so most of the additions below are
-summer and spring dishes.
+By season, not by month, to keep it flexible. Recipes are seasoned from their
+season tags, else their ingredients (see below). Each season should have at
+least **40 seasonal dishes** of its own, on top of the all-year ones. Aim for
+about half all-year and half seasonal. The draft list leaned towards autumn
+and winter, and spring was the thinnest, so the later additions lean towards
+spring and summer.
 
 ## Seasonality in the database
 
 Added in `migrations/20261125000001_ingredient_seasons.sql`:
 
-- `ingredient_catalog.season_months` holds the months each fresh ingredient is in
-  season in France. The values are in the season block of `seed.sql`, and 25
-  ingredients have one so far.
-- A recipe's season is part of its classification (`season_months`,
-  `logic/classify.ts`). It's worked out from main ingredients (75 g a
-  serving or more), never tagged by hand, and recomputed when the catalogue
+- **Ingredients.** `ingredient_catalog.seasons` holds the seasons each fresh
+  ingredient is in season in France (spring, summer, autumn, winter). The
+  values are in the season block of `seed.sql`.
+- **Recipes.** A recipe's seasons are part of its classification (`seasons`,
+  `logic/classify.ts`): its own season tags when it has any, else its main
+  ingredients (75 g a serving or more). They're recomputed when the catalogue
   changes. Details: [recipe-classification.md](recipe-classification.md#season).
-
-On the current seed library, 87 of 119 recipes come out all-year. Between 90
-and 117 recipes can be cooked in any given month, and July to September are
-the richest months.
-
-Not done yet:
-
-- **Deck: done.** `logic/deck.ts` gives a seasonal dish in season this month
-  (the household's time zone) a bonus (`SEASON_BONUS`) and one out of season
-  a penalty (`OFF_SEASON_PENALTY`), without excluding it (imports exist).
-  Every deck holds at least 3 of 12 in-season dishes (`SEASONAL_SHARE`) when
+- **Deck.** `logic/deck.ts` gives a seasonal dish of the evening's season a
+  bonus (`SEASON_BONUS`) and one out of season a penalty
+  (`OFF_SEASON_PENALTY`), without excluding it, since imports exist. Every
+  deck holds at least 3 of 12 dishes of the season (`SEASONAL_SHARE`) when
   the library has them. They replace the weakest close, then very close,
   cards, never a wildcard or the treat, and show an "In season now" badge.
-- **Filters.** Not done yet: an "In season" filter on the Recipes tab
+- **Not done yet:** an "In season" filter on the Recipes tab
   (`logic/facets.ts`).
-- **Missing produce.** The new recipes need catalogue entries that don't
-  exist yet: asparagus, fennel, beetroot, kale, celeriac, parsnip, endive,
-  squid, peach, fig, chestnut, artichoke, broad beans. Give each one its
-  `season_months` when it's added.
 
 ## Additions
 
 These dishes fill the "to add" column. Each one is the name of a real
 dish, so collection searches find a source page. Notes: **Q** quick,
 **S** slow and hands-off, **P** weekend project, a season where it matters, and
-**ex** where it takes the recipe's one exotic ingredient.
+**ex** where it needs an exotic ingredient.
 
 **French (7):**
 - Lapin à la moutarde (S)
@@ -274,7 +267,7 @@ weekend dishes, which moves the time mix towards the targets.
 2. **Collect by bucket.** Use the guidelines, and take the source's version
    of the dish, not a lighter rewrite.
 3. **Re-audit after each batch.** Count cuisines and bases, work out time
-   tiers from the stored times, and check months from `season_months`. Then
+   tiers from the stored times, and check seasons from `seasons`. Then
    pick the next batch from whatever is furthest below target.
 
 ## Status (November 2026)

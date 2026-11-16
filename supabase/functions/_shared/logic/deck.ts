@@ -3,9 +3,9 @@
 // mood, pantry overlap and household history. 12 cards in three tiers: 5 very
 // close to everyone's taste, 5 close (maybe more one person's), 2 wildcards
 // that fit the goals but take liberties; kept varied, with a treat for people
-// who mind their diet, and always a few dishes that are in season this month.
+// who mind their diet, and always a few dishes of the season.
 
-import type { MealIntent } from './classify.ts';
+import { SEASONS, type MealIntent, type Season } from './classify.ts';
 import { kindKeys, type TasteProfile } from './profile.ts';
 import {
   diversePick, fitWeight, similarity, TREAT_ADHERENCE, TREAT_MAX_FIT, TREAT_MIN_TASTE, tasteScore, uncertainty,
@@ -33,8 +33,8 @@ export interface CandidateRecipe {
   features?: string[];
   /** What the dish is for (classify.ts); moods match on these when given, else on tags. */
   intents?: MealIntent[];
-  /** Months it's in season (classify.ts season_months); all twelve, null or absent = all year. */
-  seasonMonths?: number[] | null;
+  /** Seasons it's a dish of (classify.ts seasons); all four, null or absent = all year. */
+  seasons?: Season[] | null;
 }
 
 export interface DeckMember extends EaterTargets {
@@ -83,8 +83,8 @@ export interface DeckOptions {
   recentKinds?: Set<string>;
   /** Features of what someone said yes to in those decks: the new deck leans towards them. */
   lean?: Set<string>;
-  /** This month (1 = January), in the household's time zone: seasonal dishes in season come first. */
-  month?: number;
+  /** The evening's season (classify.ts seasonOfMonth): dishes of the season come first. */
+  season?: Season;
   random?: () => number;
 }
 
@@ -109,18 +109,18 @@ export const MOOD_TAGS: Record<Exclude<Mood, 'any'>, string[]> = {
   fancy: ['fancy'],
 };
 
-/** A seasonal dish (not all year) in season this month: worth this much more. */
+/** A seasonal dish (not all year) of this season: worth this much more. */
 export const SEASON_BONUS = 0.5;
 /** A seasonal dish out of season: worth this much less, but never left out (there are imports). */
 export const OFF_SEASON_PENALTY = 0.8;
 /** At least this share of a deck is seasonal dishes in season, when the library has them (3 of 12). */
 export const SEASONAL_SHARE = 3 / 12;
 
-/** 1 for a seasonal dish in season, -1 out of season, 0 for an all-year dish or no month given. */
-export function seasonFit(recipe: Pick<CandidateRecipe, 'seasonMonths'>, month: number | undefined): -1 | 0 | 1 {
-  const months = recipe.seasonMonths;
-  if (!month || !months?.length || months.length >= 12) return 0;
-  return months.includes(month) ? 1 : -1;
+/** 1 for a seasonal dish of this season, -1 out of season, 0 for an all-year dish or no season given. */
+export function seasonFit(recipe: Pick<CandidateRecipe, 'seasons'>, season: Season | undefined): -1 | 0 | 1 {
+  const seasons = recipe.seasons;
+  if (!season || !seasons?.length || seasons.length >= SEASONS.length) return 0;
+  return seasons.includes(season) ? 1 : -1;
 }
 
 const usesProduct = (productIds: string[] | undefined, ids: string[]) =>
@@ -215,7 +215,7 @@ export function scoreRecipe(
   // After a no-match: closer to what someone liked in the deck that failed (counts in every tier).
   const lean = opts.lean?.size ? Math.min(1, features.filter((f) => opts.lean!.has(f)).length / 3) : 0;
 
-  const season = seasonFit(recipe, opts.month);
+  const season = seasonFit(recipe, opts.season);
   const seasonScore = season > 0 ? SEASON_BONUS : season < 0 ? -OFF_SEASON_PENALTY : 0;
 
   const base = fitW * fit + 1 * love + 1.2 * moodScore(recipe, opts.mood) + 1 * pantryScore + 0.8 * liked + 1.2 * lean
@@ -354,8 +354,8 @@ export function buildDeck(
   // Always some dishes of the season: when too few made it on taste, the best in-season ones
   // the deck doesn't have take the places of its weakest close (then very close) cards.
   // Wildcards and the treat keep their places.
-  const inSeason = (s: Scored) => seasonFit(s.r, opts.month) > 0;
-  const wanted = opts.month ? Math.round(size * SEASONAL_SHARE) : 0;
+  const inSeason = (s: Scored) => seasonFit(s.r, opts.season) > 0;
+  const wanted = opts.season ? Math.round(size * SEASONAL_SHARE) : 0;
   const have = [...close, ...near, ...wild].filter(inSeason).length;
   if (have < wanted) {
     const inDeck = [...close, ...near, ...wild];

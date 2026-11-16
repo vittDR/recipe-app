@@ -169,41 +169,48 @@ test('classifyRow reads a stored recipe, translations included', () => {
   assert.deepEqual(c.sauce_families, ['coconut']);
 });
 
-test('season: the months the main seasonal ingredients share', async () => {
-  const { inSeason, isSeasonal } = await import('../classify.ts');
+test('season: the seasons the main seasonal ingredients share, or the recipe\'s own season tags', async () => {
+  const { inSeason, isSeasonal, seasonOfMonth } = await import('../classify.ts');
   const seasonal = new Catalog([
-    e('tomato', { season_months: [6, 7, 8, 9] }),
-    e('zucchini', { season_months: [6, 7, 8, 9] }),
-    e('eggplant', { season_months: [7, 8, 9] }),
-    e('pumpkin', { season_months: [9, 10, 11, 12] }),
-    e('fresh basil', { season_months: [6, 7, 8, 9] }),
-    e('leek', { season_months: [9, 10, 11, 12, 1, 2, 3, 4] }),
-    e('asparagus', { season_months: [4, 5, 6] }),
+    e('tomato', { seasons: ['summer'] }),
+    e('zucchini', { seasons: ['summer'] }),
+    e('bell pepper', { seasons: ['summer', 'autumn'] }),
+    e('pumpkin', { seasons: ['autumn'] }),
+    e('fresh basil', { seasons: ['summer'] }),
+    e('leek', { seasons: ['spring', 'autumn', 'winter'] }),
+    e('asparagus', { seasons: ['spring'] }),
     e('potato'),
   ]);
-  const season = (lines: [string, number, string, boolean?][]) => classifyRecipe({
-    ...input({ lines: [] }),
+  const season = (lines: [string, number, string, boolean?][], tags: string[] = []) => classifyRecipe({
+    ...input({ lines: [], tags }),
     ingredients: lines.map(([name, quantity, unit, optional]) => ({ name, quantity, unit, optional, catalog: seasonal.find(name) })),
-  }).season_months;
+  }).seasons;
 
-  assert.deepEqual(season([['tomato', 300, 'g'], ['eggplant', 300, 'g'], ['zucchini', 200, 'g']]), [7, 8, 9]);
+  assert.deepEqual(season([['tomato', 300, 'g'], ['bell pepper', 300, 'g'], ['zucchini', 200, 'g']]), ['summer']);
+  assert.deepEqual(season([['bell pepper', 300, 'g'], ['pumpkin', 300, 'g']]), ['autumn']);
   // A garnish or an optional line doesn't make a winter dish summery.
-  assert.deepEqual(season([['leek', 400, 'g'], ['potato', 500, 'g'], ['fresh basil', 10, 'g']]), [1, 2, 3, 4, 9, 10, 11, 12]);
-  assert.deepEqual(season([['leek', 400, 'g'], ['tomato', 300, 'g', true]]), [1, 2, 3, 4, 9, 10, 11, 12]);
-  // Overlapping seasons narrow it; clashing ones leave the heaviest to decide.
-  assert.deepEqual(season([['pumpkin', 500, 'g'], ['tomato', 200, 'g']]), [9]);
-  assert.deepEqual(season([['pumpkin', 500, 'g'], ['tomato', 120, 'g']]), [9, 10, 11, 12]); // one tomato in the sauce
-  assert.deepEqual(season([['pumpkin', 500, 'g'], ['asparagus', 200, 'g']]), [9, 10, 11, 12]);
-  assert.deepEqual(season([['pumpkin', 100, 'g'], ['asparagus', 300, 'g']]), [4, 5, 6]);
+  assert.deepEqual(season([['leek', 400, 'g'], ['potato', 500, 'g'], ['fresh basil', 10, 'g']]), ['spring', 'autumn', 'winter']);
+  assert.deepEqual(season([['leek', 400, 'g'], ['tomato', 300, 'g', true]]), ['spring', 'autumn', 'winter']);
+  // One tomato in the sauce (60 g a serving) doesn't count.
+  assert.deepEqual(season([['pumpkin', 500, 'g'], ['tomato', 120, 'g']]), ['autumn']);
+  // Clashing main ingredients: the heaviest decides.
+  assert.deepEqual(season([['pumpkin', 500, 'g'], ['asparagus', 200, 'g']]), ['autumn']);
+  assert.deepEqual(season([['pumpkin', 100, 'g'], ['asparagus', 300, 'g']]), ['spring']);
+  // The recipe's own season tags win.
+  assert.deepEqual(season([['pumpkin', 500, 'g']], ['winter', 'comfort']), ['winter']);
+  assert.deepEqual(season([['potato', 400, 'g']], ['summer', 'spring']), ['spring', 'summer']);
   // Nothing seasonal: all year. Nothing readable: unknown.
   const allYear = classifyRecipe(input({ lines: [['potato', 400, 'g'], ['cod fillet', 300, 'g']] }));
-  assert.equal(allYear.season_months?.length, 12);
+  assert.equal(allYear.seasons?.length, 4);
   assert.equal(isSeasonal(allYear), false);
-  assert.equal(classifyRecipe(input({ lines: [['dragon fruit', 1, 'piece']] })).season_months, null);
+  assert.equal(classifyRecipe(input({ lines: [['dragon fruit', 1, 'piece']] })).seasons, null);
 
-  const ratatouille = { season_months: [7, 8, 9] };
-  assert.equal(inSeason(ratatouille, 8), true);
-  assert.equal(inSeason(ratatouille, 1), false);
-  assert.equal(inSeason({ season_months: null }, 1), true);
+  const ratatouille = { seasons: ['summer' as const] };
+  assert.equal(inSeason(ratatouille, 'summer'), true);
+  assert.equal(inSeason(ratatouille, 'winter'), false);
+  assert.equal(inSeason({ seasons: null }, 'winter'), true);
   assert.equal(isSeasonal(ratatouille), true);
+
+  assert.deepEqual([1, 2, 3, 5, 6, 8, 9, 11, 12].map(seasonOfMonth),
+    ['winter', 'winter', 'spring', 'spring', 'summer', 'summer', 'autumn', 'autumn', 'winter']);
 });

@@ -4,7 +4,7 @@
 
 import { corsHeaders, json, requireMember, serviceClient } from '../_shared/http.ts';
 import { buildDeck, OCCASIONAL_DAYS, type CandidateRecipe, type DeckMember, type Diet, type Mood, type RecipeHistory } from '../_shared/logic/deck.ts';
-import { classifyRow, CLASSIFY_COLUMNS, storedClassification, type ClassifiableRow } from '../_shared/logic/classify.ts';
+import { classifyRow, CLASSIFY_COLUMNS, seasonOfMonth, storedClassification, type ClassifiableRow } from '../_shared/logic/classify.ts';
 import { Catalog, type CatalogEntry } from '../_shared/logic/ingredients.ts';
 import { recipeFeatures } from '../_shared/logic/preferences.ts';
 import { splitPot } from '../_shared/logic/portions.ts';
@@ -121,7 +121,7 @@ Deno.serve(async (req) => {
       proteinGPerServing: r.protein_g_per_serving,
       features,
       intents: classification.meal_intents,
-      seasonMonths: classification.season_months,
+      seasons: classification.seasons,
     };
   });
 
@@ -205,8 +205,8 @@ Deno.serve(async (req) => {
     exclude,
     lean,
     recentKinds,
-    // The evening's month, in the household's time zone: seasonal dishes in season come first.
-    month: Number(forDate.slice(5, 7)),
+    // The evening's season (from its month, in the household's time zone): dishes of the season come first.
+    season: seasonOfMonth(Number(forDate.slice(5, 7))),
     // Recipe lines are named by catalogue ingredient ("chicken breast"); list
     // lines by their French product name, so compare on the product's ingredient.
     pantry: (pantry.data ?? []).map((p) => {

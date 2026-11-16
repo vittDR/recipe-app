@@ -82,7 +82,12 @@ export const HIGH_FIBRE_MIN_G = 8;
 export const EVERYDAY_MAX_MIN = 45;
 /** Grams per serving from which a seasonal ingredient sets the recipe's season: about a portion of vegetables, so half a pepper in a stew or one tomato in a sauce doesn't. */
 export const SEASON_MIN_G = 75;
-export const ALL_MONTHS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+export const SEASONS = ['spring', 'summer', 'autumn', 'winter'] as const;
+export type Season = (typeof SEASONS)[number];
+/** The season of a month (1 = January), northern hemisphere: March to May is spring. */
+export function seasonOfMonth(month: number): Season {
+  return SEASONS[Math.floor(((month + 9) % 12) / 3)];
+}
 
 // ---------------------------------------------------------------------------
 
@@ -136,10 +141,11 @@ export interface RecipeClassification {
   /** 0 dry, 1 coated, 2 saucy, 3 brothy. */
   sauce_level: number | null;
   /**
-   * Months (1 = January) when its main seasonal ingredients are all in season;
-   * all twelve when none is seasonal; null when no ingredient could be read.
+   * Seasons it's a dish of: its own season tags when it has any, else the
+   * seasons its main seasonal ingredients share; all four when none is
+   * seasonal; null when no ingredient could be read.
    */
-  season_months: number[] | null;
+  seasons: Season[] | null;
   /** Per serving. */
   nutrition: Nutrition;
   nutrition_goals: NutritionGoal[];
@@ -434,7 +440,9 @@ export function classifyRecipe(input: ClassifyInput): RecipeClassification {
     heat_level: heatLevel,
     heat_adjustable: optionalHeat >= HEAT_STEPS[0],
     sauce_level: sauceLevel,
-    season_months: readable ? seasonMonths(required, perServing) : null,
+    seasons: tags.some((t) => (SEASONS as readonly string[]).includes(t))
+      ? SEASONS.filter((x) => tags.includes(x))
+      : readable ? recipeSeasons(required, perServing) : null,
     nutrition,
     nutrition_goals: ordered(NUTRITION_GOALS, goals),
     meal_intents: ordered(MEAL_INTENTS, intents),
@@ -447,28 +455,28 @@ export function classifyRecipe(input: ClassifyInput): RecipeClassification {
 // ---------------------------------------------------------------------------
 
 /**
- * When a dish is in season: the months its seasonal main ingredients (from
+ * When a dish is in season: the seasons its seasonal main ingredients (from
  * SEASON_MIN_G a serving) share. Ingredients that clash (asparagus with
  * pumpkin) leave the heaviest one to decide. No seasonal ingredient: all year.
  */
-function seasonMonths(lines: ClassifyIngredient[], perServing: (i: ClassifyIngredient) => number | null): number[] {
+function recipeSeasons(lines: ClassifyIngredient[], perServing: (i: ClassifyIngredient) => number | null): Season[] {
   const seasonal = lines
-    .map((i) => ({ months: i.catalog?.season_months ?? [], g: perServing(i) ?? 0 }))
-    .filter((x) => x.months.length > 0 && x.g >= SEASON_MIN_G)
+    .map((i) => ({ seasons: (i.catalog?.seasons ?? []).filter((x): x is Season => (SEASONS as readonly string[]).includes(x)), g: perServing(i) ?? 0 }))
+    .filter((x) => x.seasons.length > 0 && x.g >= SEASON_MIN_G)
     .sort((a, b) => b.g - a.g);
-  if (!seasonal.length) return [...ALL_MONTHS];
-  const shared = seasonal.reduce((acc, x) => acc.filter((m) => x.months.includes(m)), ALL_MONTHS);
-  return shared.length ? shared : [...seasonal[0].months].sort((a, b) => a - b);
+  if (!seasonal.length) return [...SEASONS];
+  const shared = seasonal.reduce<Season[]>((acc, x) => acc.filter((v) => x.seasons.includes(v)), [...SEASONS]);
+  return shared.length ? shared : SEASONS.filter((v) => seasonal[0].seasons.includes(v));
 }
 
-/** Whether a classified recipe is in season in a month (1 = January); unknown counts as yes. */
-export function inSeason(c: Pick<RecipeClassification, 'season_months'>, month: number): boolean {
-  return !c.season_months || c.season_months.includes(month);
+/** Whether a classified recipe is a dish of this season; unknown counts as yes. */
+export function inSeason(c: Pick<RecipeClassification, 'seasons'>, season: Season): boolean {
+  return !c.seasons || c.seasons.includes(season);
 }
 
 /** A seasonal dish, as opposed to one you can cook all year. */
-export function isSeasonal(c: Pick<RecipeClassification, 'season_months'>): boolean {
-  return !!c.season_months && c.season_months.length < 12;
+export function isSeasonal(c: Pick<RecipeClassification, 'seasons'>): boolean {
+  return !!c.seasons && c.seasons.length < SEASONS.length;
 }
 
 // ---------------------------------------------------------------------------
