@@ -272,25 +272,21 @@ weekend dishes, which moves the time mix towards the targets.
 
 ## Status (November 2026)
 
-240 recipes are written and in the seed library (`supabase/seed/recipes.json`):
+Our own library is **300 recipes** (the 109 taken from recipe sites aren't
+counted): the 10 first AI recipes and 290 written from this plan.
 
-- the 127 kept and reworked dishes from the triage
-- 101 of the named additions
-- 11 spring dishes added to fill the thinnest season
-- the plain pumpkin and sage risotto, which sits alongside the one with sausage
-
-**Figures**
-
-- **Seasons:** 93 of the 240 are all year. By season there are 32 seasonal
-  dishes in spring, 65 in summer, 46 in autumn and 45 in winter (35, 93, 62 and
-  50 across the whole library). Every deck can keep its 3 dishes of the season.
-  Spring is still under the 40 target, so the next additions should be spring
-  dishes.
-- **Calories:** 174 of the 240 are 500–900 kcal a serving, 46 are 900–1,000,
-  16 are over 1,000 and 4 under 500.
-- **Protein:** 11 are under 25 g a serving, written as their references make them.
-- **Exotic ingredients:** 76 recipes keep at least one ingredient most French
-  supermarkets don't sell, flagged in the catalogue. The "Everyday
-  ingredients" filter leaves them out.
-- **New ingredients:** 104 were added to the catalogue, with nutrition,
-  traits, seasons and allergens.
+- **Weeknight plates: 232 of 300 (77%).** The target is at least 60%.
+  - 50 recipes were written as plates from the start (protein × base ×
+    sauce, 30 of them in the air fryer).
+  - About 90 were converted honestly: the side they're served with, normal
+    portions, a common quicker version.
+  - The remaining 68 are kept as weekend dishes (braises, pies, doughs) or
+    lighter meals.
+- **Deck:** keeps at least 7 of 12 cards as plates and 3 as dishes of the season.
+- **Seasons:** 98 of the 290 are all year. By season there are 39 seasonal
+  dishes in spring, 90 in summer, 59 in autumn and 53 in winter. Spring is
+  still the thinnest, so the next additions should be spring dishes.
+- **Calories:** 262 of the 290 are 500–900 kcal a serving.
+- **Protein:** 6 are under 25 g.
+- **Exotic ingredients:** 82 use at least one, flagged in the catalogue.
+- **Catalogue:** 106 ingredients were added.
