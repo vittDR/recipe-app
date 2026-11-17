@@ -1,6 +1,6 @@
 # Taste profiles (v2 spec)
 
-Status: proposal. Replaces how the taste quiz, `logic/profile.ts` and the
+Status: plate space, model, quiz picker and simulation built; deck, quiz screen and migration to do. Replaces how the taste quiz, `logic/profile.ts` and the
 deck's treat / adherence logic decide *what kind of dinners* someone wants.
 
 ## The problem
@@ -21,39 +21,55 @@ directly.
 
 ## 1. Plate space: what a dish is, as a plate
 
+Code: `logic/plate.ts`, tests in `logic/tests/plate.test.ts`.
+
 Every recipe gets a **plate vector** of four numbers in [0, 1]. They are
 worked out from the classification it already has (`classify.ts`), per
 serving, so nothing is tagged by hand. Portion size isn't an axis: portions
-are scaled to each eater (`portions.ts`).
+are scaled to each eater (`portions.ts`). Each axis runs from about the
+library's 5th percentile (0) to its 95th (1), so the space is used evenly.
 
 | Axis | Raw value | 0 at | 1 at | Notes |
 | --- | --- | --- | --- | --- |
-| `protein` | protein kcal share, `4·protein / kcal` | 0.10 | 0.40 | how protein-led the plate is |
-| `rich` | fat kcal share, `9·fat / kcal` | 0.20 | 0.55 | +0.25 for a cream / cheese / mayonnaise sauce, +0.3 deep-fried, +0.15 gratin / pie / pizza; clamped |
-| `veg` | `veg_g` | 0 g | 200 g | |
-| `carb` | carb kcal share, `4·carbs / kcal`, if there is a starch base | 0.15 | 0.60 | 0 without a base, unless pulses are the base |
+| `protein` | protein kcal share, `4·protein / kcal` | 0.12 | 0.38 | how protein-led the plate is |
+| `rich` | 0.6 × fat kcal share (`9·fat / kcal`, 0.20 → 0.55) + bonuses | | | cream / cheese +0.3, mayonnaise +0.2, coconut +0.1; gratin / pie / pizza +0.15; deep-fried +0.35; clamped |
+| `veg` | `veg_g` | 0 g | 300 g | |
+| `carb` | carb kcal share, `4·carbs / kcal` | 0.10 | 0.58 | by the numbers, not `starch_bases`: lasagne sheets have no starch trait yet |
 
-Examples (rough):
+Richness is how a plate eats, not only its fat. Olive oil on a Niçoise is as
+much fat as the cream in a gratin, but the Niçoise eats lighter, so fat counts
+for 60% of the axis and the cream, cheese and frying bonuses for the rest.
+
+From the library (`tests/fixtures/library.json`):
 
 | Dish | protein | rich | veg | carb |
 | --- | --- | --- | --- | --- |
-| Chicken, rice, broccoli | 0.8 | 0.1 | 0.6 | 0.6 |
-| Turkey chilli | 0.7 | 0.2 | 0.7 | 0.4 |
-| Creamy salmon pasta | 0.4 | 0.8 | 0.2 | 0.7 |
-| Tartiflette | 0.2 | 1.0 | 0.1 | 0.6 |
-| Niçoise salad | 0.6 | 0.4 | 1.0 | 0.2 |
-| Fish & chips | 0.4 | 1.0 | 0.1 | 0.7 |
+| Teriyaki chicken with rice | 0.37 | 0.00 | 0.14 | 0.98 |
+| Jerk chicken curry with beans | 0.50 | 0.11 | 0.92 | 0.69 |
+| Air-fryer teriyaki salmon, rice, broccoli | 0.38 | 0.16 | 0.43 | 0.77 |
+| Thai green curry with chicken | 0.07 | 0.55 | 0.66 | 0.66 |
+| Salade niçoise | 0.50 | 0.55 | 1.00 | 0.32 |
+| Fish and chips | 0.52 | 0.59 | 0.03 | 0.46 |
+| Lasagne verdi alla bolognese | 0.21 | 0.84 | 0.95 | 0.55 |
+| Tartiflette | 0.09 | 1.00 | 0.13 | 0.32 |
 
 The axes are continuous, so there are no fixed meal types. "Generous but high
-protein" (turkey chilli) and "generous and rich" (tartiflette) sit in
-different places, and someone can like one and not the other.
+protein" and "generous and rich" sit in different places, and someone can
+like one and not the other.
 
-Distance between plates is a weighted Euclidean distance, with `rich` counting
-most because that's where people differ most:
-`w = { protein: 1, rich: 1.5, veg: 1, carb: 0.8 }`.
+Distance between plates is a weighted Euclidean distance, normalised so that
+opposite corners are 1 apart. `rich` counts most, because that's where people
+differ most: `w = { protein: 1, rich: 1.5, veg: 1, carb: 0.8 }`.
 
-Recipes with unreadable nutrition have no plate vector. They're scored on
-taste only and never shown in the quiz.
+**Adjustable dishes.** When leaving out a recipe's optional lines changes its
+plate by at least 0.08, the recipe has a second plate (`platesOf`), and each
+eater is scored on whichever plate suits them better. Six library recipes
+qualify today, for example the chilli with avocado on top, or keema with
+optional potatoes. Optional lines aren't always the rich part: some are a
+side of rice.
+
+Every library recipe has readable nutrition. A recipe that didn't would be
+scored on taste only and never shown in the quiz.
 
 ## 2. Answers are frequencies
 
@@ -83,94 +99,159 @@ All of them fade with v1's half-life (180 days). That's how the style drifts:
 the quiz is the starting point, and what people actually pick takes over
 gradually.
 
-## 3. The model: style + taste, fitted together
+## 3. The model: one additive Gaussian process
+
+Code: `logic/style.ts` (`fitStyle`), tests in `logic/tests/style.test.ts`.
 
 A person's expected frequency for recipe `r` is
 
 ```
-F(r) = clamp( s(plate_r) + t(features_r), 0, 4 )
+F(r) = clamp( ȳ + s(plate_r) + t(features_r), 0, 4 )
 ```
 
+where `ȳ` is their weighted mean answer, and `s` and `t` are fitted
+**together**, as one Gaussian process with an additive kernel:
+
 - `s(p)`: **style**, how often they want a plate like `p`, whatever's in it.
-  A kernel smoother over plate space (Nadaraya–Watson):
-  `s(p) = (Σ wᵢ·k(p, pᵢ)·yᵢ + λ·ȳ) / (Σ wᵢ·k(p, pᵢ) + λ)`,
-  Gaussian kernel, bandwidth `h = 0.3`, prior strength `λ = 1`.
-  Where there's no evidence it falls back to the person's mean answer.
-- `t(f)`: **taste**, how much what's *in* the dish moves that up or down.
-  The v1 per-feature weights, grouped and averaged the same way
-  (`tasteScore`), scaled to ±1.5 frequency points. Plate-like features
-  (`goal:*`, `intent:*`, cream / cheese sauces, deep-fried) are left out so they
-  don't count twice.
+  The kernel is a linear trend (prior variance 4 per axis) plus a
+  squared-exponential (variance 1, lengthscale 0.15 in plate distance). A few
+  answers give a broad trend ("less rich is better"); more answers add detail
+  ("rich is fine if it's high protein").
+- `t(f)`: **taste**, a sum of one effect per feature, each with a prior
+  variance set by its kind (`TASTE_VARIANCE`): dish family and protein 1, heat
+  0.8, sauce 0.5, starch 0.4, cooking method 0.15, and a plain feature
+  (ingredient, tag, cuisine) 0.08. A dish family can matter a lot; one
+  ingredient among fifteen matters only a little. Plate-like features
+  (`goal:*`, `intent:*`, `texture:*`, cream / cheese / mayonnaise sauces,
+  deep-fried) are left out, because style already covers them.
+- Noise variance 1 per answer, divided by the signal's weight, so weaker and
+  older signals count less.
 
-**Fitting (backfitting).** A pass on a cod curry could be "no fish" (taste) or
-"too rich" (style). The two are separated by fitting each on what the other
-leaves unexplained, three rounds:
+Fitting both at once is what lets a pass on a cod curry be put down to "no
+fish" (taste) or "too rich" (style), depending on the other answers. A first
+version used a kernel smoother and backfitting. With 300 answers it still
+scored 0.2–0.3 below what was learnable, because averaging taste across
+kinds of feature diluted strong dislikes. The joint process fixed both
+problems.
 
-1. `t ← 0`
-2. `s ←` smoother on `yᵢ − t(fᵢ)`
-3. `t ←` feature means on `yᵢ − s(pᵢ)` (the v1 shrinkage, `PROFILE_PRIOR`)
-4. Repeat steps 2–3 two more times.
+It's exact and deterministic: one Cholesky solve over the answers. A
+quiz-sized fit is instant; the style tests, which include 26 refits picking
+cards from the whole library, run in under 3 s. Hundreds of deck signals are
+still fine. Past ~1,000 the cost grows with the cube of the count, so the plan
+is to drop the oldest and weakest signals before fitting.
 
-This stays deterministic, in pure TS, and with ~30–300 signals it runs in
-milliseconds. It replaces `buildProfile` as the source of the deck's scores.
-`buildProfile` stays for the "what we learned" highlights.
-
-**Contrast pairs** (quiz, below) are what tell the two apart most cleanly.
-Both dishes share their protein and cuisine, so a choice between them is about
-the plate. Each pair adds +0.75 to the chosen plate's residual and −0.75 to
-the other's, and it only feeds `s`.
+**Contrast pairs** are observations of the difference `s(a) − s(b)`: +1.5 for
+a, −1.5 for b, 0 for "either". "Neither" also adds a −1 observation on each
+plate at half weight. Pairs touch style only, because both dishes share their
+protein.
 
 **What comes out**, per person:
-- `F(r)` for every recipe.
-- A **style summary** for display and editing. The plate space is cut into
+- `F(r)` for every recipe, and its posterior variance (how sure the model is).
+- `s` and its variance at any plate, `t` for any set of features, and each
+  feature's learned effect (`tasteWeights`) for "what we learned" highlights.
+- A **style summary** for display and editing. Plate space is cut into
   regions ("lean & balanced", "light", "generous high-protein",
-  "rich & creamy", "fried / treat"). Each region gets the person's mean `s`,
-  read back in words: *Regularly: lean & balanced, light. Now and then: rich &
-  creamy. Rarely: fried.* The regions are labels only. Scores never use them.
+  "rich & creamy", "fried / treat"), and each region gets the person's mean
+  `s`, read back in words: *Regularly: lean & balanced, light. Now and then:
+  rich & creamy. Rarely: fried.* The regions are labels only; scores never use
+  them. *(Not built yet.)*
 
 **Editing.** On the summary screen people can move a region between Rarely,
 Now and then and Regularly. Each move is a stated signal: a pseudo-answer at
-the region's centre with weight 3, which fades like everything else. That way
-stating a style and drifting from it are the same mechanism.
+the region's centre with weight 3, which fades like everything else. That
+way, stating a style and drifting from it are the same mechanism.
 
 ## 4. The quiz
 
-About 32 decisions, around 4 minutes, with a progress bar. The person can stop
-after card 20 ("That's enough for now"). Diet and never rules filter the pool,
-as today. Cards with photos come first.
+Code: `nextQuizCard`, `nextQuizPair` in `logic/style.ts`.
 
-**Phase A: anchors (10 cards).** Farthest-point sampling on plate vectors: each
-next card is the plate farthest from those already shown. Ties are broken by
-v1's facet gain (`quizFacets`: protein, dish, sauce, heat, cuisine), so taste
-gets covered too. This maps the whole plate space quickly, from salad to
-tartiflette.
+**26 cards and 6 pairs, 32 decisions, around 4 minutes**, with a progress bar.
+The person can stop after 20 ("That's enough for now"). Diet and never rules
+filter the pool, as today. Only cards with photos are shown, while any are left.
 
-**Phase B: adaptive (16 cards).** After each answer the model is refitted, and
-the next card is the one with the highest
-`info(r) = 1.0·style_uncertainty(plate_r) + 0.6·taste_uncertainty(features_r) + 0.4·boundary(r)`:
-- `style_uncertainty`: `1 / (1 + Σ k(p, pᵢ))`. Few answers near this plate.
-- `taste_uncertainty`: v1's `uncertainty()` (little evidence on its dish,
-  protein, sauce…).
-- `boundary`: `F(r)` close to 0.5 or 2, the edges between not for me, now and
-  then and regularly, where an answer changes what the deck does.
+**Cards: integrated variance reduction.** After each answer the model is
+refitted. The next card is the one whose answer would most reduce what the
+model doesn't know about the rest of the library:
+`Σ over library dishes of cov(card, dish)² / (var(card) + noise)`, measured on
+a random sample of 150 dishes for speed. A card like many others, on a plate
+and with contents the person hasn't said much about yet, wins. An odd dish, or
+one like those already answered, doesn't. The first card needs no special
+case: it's simply the most typical dish.
 
-**Phase C: contrast pairs (6).** Two cards side by side: *"On a normal
-weeknight, which one?"*, with *This one / This one / Either / Neither*. A pair is
-two recipes that share a protein group (and a cuisine if possible), are far
-apart on one plate axis and close on the others, and sit where `s` is least
-certain. These pairs are what learn "chicken yes, but in a stir-fry rather
-than a cream sauce".
+Two simpler pickers were tried and dropped. Picking the card the model is
+least sure about favoured dishes with many ingredients. Spending the first 10
+cards spreading over plate space ("anchors") scored worse at every length (see
+Results).
+
+**Pairs (6).** Two cards side by side: *"On a normal weeknight, which one?"*,
+with *This one / This one / Either / Neither*. A pair is two dishes with the
+same protein (the same cuisine when possible), at least 0.2 apart in plate,
+where style is least sure and can't yet tell the two plates apart. In the
+simulation they're neutral against two more cards (Results). They stay in
+because a comparison is an easier judgement than an absolute answer, which the
+simulation can't measure. They're cheap to drop if real answers don't back
+that up.
 
 **Then:** the style summary (section 3) with its regions, editable, and the
 love / never items as today.
 
-**Retaking** keeps the earlier answers (they fade like everything else) and
-starts Phase A from what's least known, not from scratch.
+**Retaking** keeps the earlier answers, which fade like everything else. The
+picker then goes for what's least known: there's nothing to start from scratch.
 
 Storage: pairs are a new `taste_signals` kind, `pair`, with `value` = the
 chosen recipe id, `either` or `neither`, and the other recipe in a new
 `other_recipe_id` column. That's one migration. Region edits are kind `style`,
 with value = region and level.
+
+## Results: the simulation
+
+Code: `scripts/taste-sim.ts`. The library is exported by
+`scripts/export-plates.ts`.
+
+Simulated people have a true frequency for every library dish they can be
+offered (their diet), made of:
+- a true style over plates,
+- true tastes on features,
+- a random effect per dish (sd 0.5), which nothing can learn from other dishes.
+
+They answer each card from it, with noise (sd 0.4), on the four answers. The
+personas are mostly balanced (the main case), generous, lean fish lover
+(pescatarian), vegetarian comfort, and picky (no spice, no soup), plus one
+drawn at random per seed so the tuning doesn't fit the personas. The score is
+Spearman ρ between the fitted and the true frequency on every dish the person
+*wasn't* shown. "Learnable" compares against the truth without the per-dish
+effect.
+
+6 people per persona, learnable ρ (all personas · mostly balanced):
+
+| Picker | 20 decisions | 32 | 48 |
+| --- | --- | --- | --- |
+| random | 0.53 · 0.66 | 0.59 · 0.71 | 0.63 · 0.74 |
+| v1 (most varied facets) | 0.59 · 0.69 | 0.65 · 0.71 | 0.70 · 0.78 |
+| **variance reduction** | 0.59 · 0.69 | **0.66 · 0.74** | 0.70 · 0.76 |
+| anchors, then variance reduction | 0.58 · 0.70 | 0.62 · 0.73 | 0.67 · 0.78 |
+| variance reduction + pairs | 0.59 · 0.69 | 0.66 · 0.72 | |
+
+At 32 decisions, the variance-reduction picker has tier accuracy 0.79: the
+share of unshown dishes the model puts in the right tier of *not for me*, *now
+and then* and *regularly*. Its error on the deck's occasional share is ±0.06.
+
+What it says:
+- **The model mattered more than the picker.** Moving from the smoother to the
+  joint process gained more than any picker did. Its settings hardly matter
+  around the defaults (`--tune`: the best dozen of 81 settings are within 0.01
+  of each other and of the defaults).
+- **Length helps, slowly.** 20 → 32 → 48 decisions gives learnable ρ 0.59 →
+  0.66 → 0.70. 32 is a fair trade for about 4 minutes. Deck swipes and ratings
+  keep teaching the same model afterwards.
+- **The weak case is someone who wants almost everything regularly**
+  (generous, vegetarian comfort: 0.45–0.58). Their answers all land on
+  *regularly*, so four coarse levels can't rank those dishes, and the
+  vegetarian pool is small. Ranking questions (pairs) are the natural fix. In
+  the simulation, though, pairs come from the same noisy truth as the cards,
+  so they can't show that benefit.
+- The spec's target of ρ ≥ 0.7 at 32 decisions is met for the mostly-balanced
+  and lean personas, but not on average.
 
 ## 5. The deck
 
@@ -212,24 +293,22 @@ for goal fit, where it belongs.
 
 | Where | Change |
 | --- | --- |
-| `classify.ts` | `plateVector(c)`, `plateVectorWithoutOptional(c)` (pure, no stored data) |
-| `profile.ts` | frequency scale, `fitStyleTaste(signals)`: backfitting, kernel smoother, pair residuals, region summary; `pickStarterSet` → `nextQuizCard(state)` |
+| `plate.ts` | **done**: `plateVector`, `platesOf`, `plateDistance` |
+| `style.ts` | **done**: `fitStyle` (additive GP), `nextQuizCard`, `nextQuizPair`. To do: region summary, signals → observations (weights and fading, from `profile.ts`) |
 | `recommend.ts` | `expectedFrequency`, `softmin`, region definitions |
 | `deck.ts` | occasional share in place of the treat slot; joint score for households; adjustable variant |
 | `TasteQuiz.tsx` | new wording, the three phases, pair cards, early stop, summary screen |
 | migration | `taste_signals`: `pair` and `style` kinds, `other_recipe_id` |
-| tests | plate vectors for known dishes; the fit recovering a synthetic person (style + taste) from 30 answers; household softmin; deck mix shares |
-
-**Validation before shipping:** simulate personas (mostly balanced; generous;
-loves fish but only lean; vegetarian comfort lover), have each answer the quiz
-from a hidden true `F`, and check that the fitted `F` ranks the library close
-to the truth (Spearman ≥ 0.7 after 32 answers). The same harness tunes `h`,
-`λ`, the info weights and the quiz length.
+| tests | **done**: plate vectors for known dishes, style/taste separation, pairs, a synthetic person recovered from 26 quiz answers on the library. To do: household softmin, deck mix shares |
 
 ## Open points
 
-- Plate thresholds (`0 at` / `1 at`) are first guesses. Check them against the
-  library's spread once plate vectors exist.
-- Whether 20 cards before the early stop is enough. The persona simulation will
-  tell.
+- Lasagne sheets (and maybe other bases) lack a `starch:*` trait in the
+  catalogue. The carb axis doesn't depend on it, but `isHealthy` and the dish
+  features do.
+- 20 decisions before the early stop gives learnable ρ ≈ 0.59, against 0.66 at
+  32. That's acceptable for people in a hurry.
+- Check the simulated noise (answer sd 0.4, dish effect sd 0.5) against real
+  answers once there are some: retaking the quiz on the same cards measures
+  answer noise directly.
 - Region names and boundaries for the summary, and translations.

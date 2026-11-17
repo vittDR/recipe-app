@@ -159,7 +159,7 @@ export function profileHighlights(p: TasteProfile, opts: { limit?: number; minEv
 export const STARTER_SIZE = 20;
 
 /** What a quiz card should vary on: one value each of these makes the cards tell more apart. */
-function quizFacets(c: RecipeClassification): string[] {
+export function quizFacets(c: RecipeClassification): string[] {
   const heat = c.heat_level === null ? [] : [`heat:${c.heat_level === 0 ? 'none' : c.heat_level <= 2 ? 'some' : 'hot'}`];
   return [
     ...classificationFeatures(c).filter((f) => isClassFeature(f) && !f.startsWith('heat:') && !f.startsWith('method:boiled')),
