@@ -24,8 +24,8 @@ select pg_temp.check(not exists (select 1 from lib where kcal_per_serving is nul
 select pg_temp.check(not exists (select 1 from lib where source_name is null or cuisine is null or original_servings is null),
                      'source name, cuisine and original yield are set');
 select pg_temp.check((select count(*) = 109 from lib where image_path like '/recipe-photos/%.webp'), 'every recipe taken from a site has a photo served by the app');
-select pg_temp.check(not exists (select 1 from recipes where household_id is null and image_path not like '/recipe-photos/%.webp'),
-                     'every seed photo is served by the app');
+select pg_temp.check(not exists (select 1 from recipes where household_id is null and (image_path is null or image_path not like '/recipe-photos/%.webp')),
+                     'every seed recipe has a photo served by the app');
 select pg_temp.check(not exists (select 1 from lib where difficulty is null or equipment is null),
                      'every recipe has a difficulty and equipment');
 select pg_temp.check((select count(*) > 0 from ingredient_catalog where exotic)

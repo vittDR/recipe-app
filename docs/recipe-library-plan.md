@@ -111,4 +111,4 @@ this plan, 100 quick, healthy dishes added because decks for "healthy, under
   and a real portion of vegetables; 40 are healthy and 19 use the air fryer.
 - **Seasons:** 361 of the 445 are all year (81%). The others are the key
   seasonal dishes: 22 spring, 26 summer, 22 autumn and 30 winter.
-- **Illustrations:** 400 have one. The 45 chicken dinners don't yet.
+- **Illustrations:** all 445 have one.
