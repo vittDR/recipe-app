@@ -47,7 +47,7 @@ of vegetables), and otherwise it stays as one of the minority below.
    edamame or a second protein, not with pulses alone.
 4. **Everyday ingredients:** nothing the catalogue flags `exotic`.
 5. **A short list:** at most 10 ingredient lines that aren't staples (salt,
-   pepper, oil, dried spices), and aim for 8.
+   pepper, oil, dried spices) or optional garnishes, and aim for 8.
 6. **The weeknight shape:** a protein, a sauce or seasoning that carries the
    dish, a carb from the supermarket's everyday shelves and a vegetable. The
    carbs to spread across: rice (basmati, jasmine, long-grain), egg and rice
@@ -128,16 +128,21 @@ dishes** of its own, so the deck can always keep 3 of 12 cards for the season.
 
 ## Status (November 2026)
 
-Our own library is **400 recipes**: the 10 first AI recipes, 290 written from
-this plan, and 100 quick, healthy dishes added because decks for
-"healthy, under 40 min" kept showing the same dishes.
+Our own library is **460 recipes**: the 10 first AI recipes, 290 written from
+this plan, 100 quick, healthy dishes, and 60 weeknight plates written to the
+weeknight rules. [CATALOG-FIT-2026-11.md](CATALOG-FIT-2026-11.md) lists
+which recipes meet the rules and why the others don't.
 
-- **Healthy: 311 of 400 (78%).** Healthy and 40 min or less in total: 205 (it was 105).
-- **The 100 quick, healthy dishes** all take 30 min or less in total and are
-  healthy by the app's rule, which is about the plate's make-up, not its
-  numbers (a protein, a base, at least 75 g of vegetables a serving, nothing
-  fried, creamy or cheesy), at each dish's normal portions. 42 use the air
-  fryer.
-- **Seasons:** 316 of the 400 are all year (79%). The others are the key
-  seasonal dishes: 22 spring, 26 summer, 22 autumn and 30 winter.
-- **Illustrations:** all 400 have one.
+- **Meet all six weeknight rules: 201 of 460** (it was 51 of 400). 94
+  recipes that failed one rule were reworked (stand-ins for specialty
+  ingredients, more protein and less base, more vegetables, shorter
+  marinades), and the 60 new plates meet them all.
+- **Healthy: 379 of 460 (82%).** Healthy and 40 min or less in total: 286.
+- **High protein: 232 of 460** (it was 120).
+- **The 60 weeknight plates** take 17 to 36 min and spread across everyday
+  carbs: rice, noodles, pasta and gnocchi, potatoes and sweet potatoes,
+  couscous, bulgur and polenta, wraps, pitta and bread, and tinned beans.
+- **Seasons:** 373 of the 460 are all year (81%). The others are the key
+  seasonal dishes: 22 spring, 28 summer, 23 autumn and 30 winter.
+- **Illustrations:** the first 400 have one. The 60 weeknight plates don't
+  yet (the app shows an emoji).

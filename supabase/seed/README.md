@@ -1,14 +1,16 @@
 # Seed recipe library
 
-509 recipes:
+569 recipes:
 
 - **109 from recipe sites (hidden in the app** since November 2026: the library view and the deck leave out the `web` collection; they still open from past decks and meals): 25 Italian, 24 French, 25 Asian, 25 from other cuisines and 10 "treat" dishes.
 - **10 AI-generated recipes**, whose Poulet basquaise replaced the Chef Simon one.
 - **The original library, 290 recipes written for the app** (November 2026): 240 from the plan, plus 50 everyday plates (30 of them air-fryer). It follows the plan in [docs/recipe-library-plan.md](../../docs/recipe-library-plan.md): the draft list's kept and reworked dishes, plus named additions across 14 cuisine groups.
   - Each one was written for the app, informed by how the dish is commonly made (proportions, technique, times and temperatures), with quantities and steps in our own words. The recipes don't name or link any source.
-  - They keep the dish's real ingredients: anything most French supermarkets don't sell is flagged `exotic` in the catalogue rather than swapped.
+  - They kept the dish's real ingredients, with anything most French supermarkets don't sell flagged `exotic` in the catalogue. Since the [weeknight rules](../../docs/recipe-library-plan.md#weeknight-rules), a supermarket stand-in replaces it where the dish works with one (dry sherry for Shaoxing wine, paprika for Kashmiri chilli…).
   - They are `ai_generated_recipe: true` with no `source_url`, so they belong to the `original` collection. All of them have illustrations (supplied as 900×675 WebP, re-encoded to about 100 KB where larger).
-- **100 quick, healthy dishes** (November 2026), written the same way. All take 30 min or less in total and are healthy by the app's rule, which looks at what's on the plate rather than its numbers (see [recipe-classification.md](../../docs/recipe-classification.md)). Portions are each dish's normal ones, with no calorie or protein target. 42 use the air fryer.
+- **100 quick, healthy dishes** (November 2026), written the same way. All take 30 min or less in total and are healthy by the app's rule, which looks at what's on the plate rather than its numbers (see [recipe-classification.md](../../docs/recipe-classification.md)). Portions are each dish's normal ones. 42 use the air fryer.
+- **60 weeknight plates** (November 2026), written to the [weeknight rules](../../docs/recipe-library-plan.md#weeknight-rules): healthy, 40 min or less, at least 30 g of protein and 25 % of the calories from it, no exotic ingredients, at most 10 lines that aren't staples or garnishes, and a protein, sauce, everyday carb and vegetable. No illustrations yet.
+- **94 of the earlier recipes were reworked** at the same time because they failed just one of those rules (see [CATALOG-FIT-2026-11.md](../../docs/CATALOG-FIT-2026-11.md)).
 
 | File | What it is |
 | --- | --- |
@@ -34,7 +36,7 @@ The script runs each ingredient line through the app's parser and catalogue, the
 
 The photos are in `web/public/recipe-photos/` and ship with the app, so `image_url` is a path like `/recipe-photos/spaghetti-alle-vongole.webp`. `image_source_url` keeps where each photo came from.
 
-- Every recipe has a photo. The 11 site recipes whose source had none (or a dead link) have illustrations like the original library, so their `image_source_url` is the local path.
+- Every recipe has a photo except the 60 weeknight plates. The 11 site recipes whose source had none (or a dead link) have illustrations like the original library, so their `image_source_url` is the local path.
 - The 10 AI-generated recipes have AI-generated photos (4:3 PNGs converted with `to_webp` from `download_images.py`). Their `image_source_url` is left out, so it's stored as the local path.
 - 72 source photos were smaller than 1200×900 and were upscaled when downloaded (before the switch to 900×675), so some look soft.
 - A few carry the source blog's watermark (Arrosto di tacchino, Blanquette de veau légère, Frittata di zucchine, Saltimbocca).
@@ -47,10 +49,10 @@ To replace or add photos, run `scripts/download_images.py` (needs `pip install r
 - **Low protein:** eight of the healthy recipes estimate under 25 g per serving: Cozze alla tarantina, Frittata di zucchine e ricotta, Œufs pochés épinards et lentilles, Chicken tinga, Moules marinières, Spaghetti alle vongole, Poulet à l'estragon, Crispy scallion ginger salmon.
 - **Bone-in and in-shell weights overcount** protein and kcal, because the catalogue is per edible weight (satay drumsticks, Peruvian chicken, Moroccan tagine, mussels, clams).
 - **Long `total_min`** for marinated or soaked dishes (tandoori chicken 415 min, brandade 1,485 min), so the time filter treats them as slow. They're tagged `make ahead`. Their `prep_min` and `cook_min` stay short.
-- **AI-generated recipes:** 400 recipes (`ai_generated_recipe: true`) were written by Claude rather than taken from a site. None has a source link, and none has been tested in a kitchen. The first 10 have AI-generated photos; the other 390 have illustrations.
+- **AI-generated recipes:** 460 recipes (`ai_generated_recipe: true`) were written by Claude rather than taken from a site. None has a source link, and none has been tested in a kitchen. The first 10 have AI-generated photos, the next 390 have illustrations, and the 60 weeknight plates added last don't have one yet (the app shows an emoji).
 - **How the original library was checked:** many recipe sites refused automated reading, so quantities were often set from search summaries and the classic proportions of each dish. None has been cooked to test it.
-- **Ingredient mappings:** a few ingredients are mapped to the nearest catalogue entry rather than added (sour cream to crème fraîche, Comté to emmental, Napa cabbage to cabbage). Real exotic ingredients are kept and flagged, not swapped.
-- **Protein is a guide:** 6 of the 290 original recipes are under 25 g a serving, written the way the dish is really made (gołąbki, pumpkin and sage risotto, rajma, some vegetarian dishes).
+- **Ingredient mappings:** a few ingredients are mapped to the nearest catalogue entry rather than added (sour cream to crème fraîche, Comté to emmental, Napa cabbage to cabbage). Exotic ingredients the dish can't do without are kept and flagged.
+- **Protein:** the weeknight rules ask for 30 g a serving and 25 % of the calories. Recipes that miss it are mostly built on pulses, halloumi or cheese, or are long braises; they stay as written (gołąbki, pumpkin and sage risotto, rajma, chana masala, halloumi fajitas…).
 - **Optional lines** (garnishes, toppings) are judged per recipe; 74 lines in 54 recipes are marked so far.
 - **Estimated prep and cook times:** 42 source pages give no prep/cook split, so those times were estimated from the steps.
 - **Herb bunches** count as 1 g (`grams_per_unit = 1`), and `1 mazzetto rucola` is left out of the macros (arugula has no weight per bunch). Both are negligible.

@@ -24,8 +24,8 @@ select pg_temp.check(not exists (select 1 from lib where kcal_per_serving is nul
 select pg_temp.check(not exists (select 1 from lib where source_name is null or cuisine is null or original_servings is null),
                      'source name, cuisine and original yield are set');
 select pg_temp.check((select count(*) = 109 from lib where image_path like '/recipe-photos/%.webp'), 'every recipe taken from a site has a photo served by the app');
-select pg_temp.check(not exists (select 1 from recipes where household_id is null and (image_path is null or image_path not like '/recipe-photos/%.webp')),
-                     'every seed recipe has a photo served by the app');
+select pg_temp.check(not exists (select 1 from recipes where household_id is null and image_path not like '/recipe-photos/%.webp'),
+                     'every seed photo is served by the app');
 select pg_temp.check(not exists (select 1 from lib where difficulty is null or equipment is null),
                      'every recipe has a difficulty and equipment');
 select pg_temp.check((select count(*) > 0 from ingredient_catalog where exotic)
@@ -75,9 +75,9 @@ select pg_temp.check((select count(*) = 0 from (
                          = (select count(*) from before_lines),
                      'its lines are as in recipes.json again: changed, gone and extra lines put right');
 
-select pg_temp.check((select count(*) filter (where collection = 'original') = 400
+select pg_temp.check((select count(*) filter (where collection = 'original') = 460
                              and count(*) filter (where collection = 'web') = 109
-                      from recipes where household_id is null), 'seed collections: 400 originals, 109 web');
+                      from recipes where household_id is null), 'seed collections: 460 originals, 109 web');
 
 -- Every seed recipe is in English, French and Italian: its own language plus two translations, step for step.
 select pg_temp.check(not exists (
@@ -91,10 +91,10 @@ select pg_temp.check(not exists (select 1 from recipes where household_id is nul
 
 -- AI-generated seed recipes have no source link: they're known by language and title.
 create temp view ai as select * from recipes where household_id is null and ai_generated_recipe;
-select pg_temp.check((select count(*) = 400 and count(source_url) = 0 from ai), '400 AI-generated seed recipes, without a source link');
+select pg_temp.check((select count(*) = 460 and count(source_url) = 0 from ai), '460 AI-generated seed recipes, without a source link');
 select pg_temp.check(not exists (select 1 from lib where ai_generated_recipe), 'sourced recipes are not marked AI-generated');
 \i seed_library.sql
-select pg_temp.check((select count(*) = 400 from ai), 're-running seed_library.sql adds no duplicate AI recipes');
+select pg_temp.check((select count(*) = 460 from ai), 're-running seed_library.sql adds no duplicate AI recipes');
 select pg_temp.check(not exists (
   select 1 from recipe_ingredients i join ai r on r.id = i.recipe_id
   where not exists (select 1 from ingredient_catalog c where c.name = i.name)), 'AI recipe ingredients are in the catalogue');
@@ -118,8 +118,8 @@ insert into auth.users (id, email) values ('00000000-0000-0000-0000-0000000000d1
 select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-0000000000d1', false);
 set role authenticated;
 select create_household('Seed test', 'Europe/Paris');
-select pg_temp.check((select count(*) = 400 and bool_and(collection = 'original') from library_recipes where household_id is null),
-                     'household browses our 400 recipes; the ones taken from sites are hidden');
+select pg_temp.check((select count(*) = 460 and bool_and(collection = 'original') from library_recipes where household_id is null),
+                     'household browses our 460 recipes; the ones taken from sites are hidden');
 -- A recipe taken from a site still opens (past decks and meals point at it) and can still be copied.
 select id as src from recipes where household_id is null and title = 'Spaghetti alle vongole' \gset
 select pg_temp.check(exists (select 1 from recipes where id = :'src'), 'a hidden recipe still opens');
