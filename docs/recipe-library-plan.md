@@ -97,16 +97,18 @@ dishes** of its own, so the deck can always keep 3 of 12 cards for the season.
 
 ## Status (November 2026)
 
-Our own library is **400 recipes**: the 10 first AI recipes, 290 written from
-this plan, and 100 quick, healthy dishes added because decks for
-"healthy, under 40 min" kept showing the same dishes.
+Our own library is **445 recipes**: the 10 first AI recipes, 290 written from
+this plan, 100 quick, healthy dishes added because decks for "healthy, under
+40 min" kept showing the same dishes, and 45 weeknight chicken dinners.
 
-- **Healthy: 311 of 400 (78%).** Healthy and 40 min or less in total: 205 (it was 105).
+- **Healthy: 351 of 445 (79%).** Healthy and 40 min or less in total: 245.
 - **The 100 quick, healthy dishes** all take 30 min or less in total and are
   healthy by the app's rule, which is about the plate's make-up, not its
   numbers (a protein, a base, at least 75 g of vegetables a serving, nothing
   fried, creamy or cheesy), at each dish's normal portions. 42 use the air
   fryer.
-- **Seasons:** 316 of the 400 are all year (79%). The others are the key
+- **The 45 chicken dinners** take 30 min or less in total, each with a base
+  and a real portion of vegetables; 40 are healthy and 19 use the air fryer.
+- **Seasons:** 361 of the 445 are all year (81%). The others are the key
   seasonal dishes: 22 spring, 26 summer, 22 autumn and 30 winter.
-- **Illustrations:** all 400 have one.
+- **Illustrations:** 400 have one. The 45 chicken dinners don't yet.
