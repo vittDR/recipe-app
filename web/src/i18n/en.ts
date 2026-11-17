@@ -216,6 +216,7 @@ export const en = {
     leansYou: 'More your kind of dish',
     leansPartner: 'More {name}’s kind of dish',
     treat: 'A treat you’d probably love',
+    adjustable: 'Easy to adjust: some ingredients are optional',
     progress: '{n} of {total}',
     pass: 'Pass',
     yes: 'Yes',

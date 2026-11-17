@@ -148,10 +148,14 @@ export interface StyleModel {
   tasteVariance(features: string[]): number;
   /** Each feature's learned effect, with how many answers it rests on. */
   tasteWeights: Map<string, { t: number; n: number }>;
-  /** Expected frequency of a dish: its best plate (as written, or without optional lines). */
+  /** Expected frequency of a dish, 0..4: its best plate (as written, or without optional lines). */
   frequency(plates: Plate[], features: string[]): number;
+  /** The same before clamping to 0..4: still ranks dishes that are all "a favourite". */
+  rawFrequency(plates: Plate[], features: string[]): number;
   /** Posterior variance of a dish's frequency, before clamping. */
   variance(plate: Plate, features: string[]): number;
+  /** 0..1: how much of the prior uncertainty about a dish is left (1 = nothing said about anything like it). */
+  uncertainty(plate: Plate, features: string[]): number;
   /** A dish, prepared for posterior covariances between many dishes (dishCovariance). */
   dish(plate: Plate, features: string[]): ModelDish;
   /** Posterior covariance of two dishes' frequencies: how much an answer on one says about the other. */
@@ -237,6 +241,8 @@ export function fitStyle(obs: Observation[], pairs: PairObservation[] = [], opti
   const style = (p: Plate) => mean + dot(sVec(p), alpha);
   const tasteOf = (fs: Set<string>) => dot(tVec(fs), alpha);
   const taste = (features: string[]) => tasteOf(new Set(tasteFeatures(features)));
+  const raw = (plates: Plate[], features: string[]) =>
+    (plates.length ? Math.max(...plates.map(style)) : mean) + taste(features);
 
   const tasteWeights = new Map<string, { t: number; n: number }>();
   points.forEach((q, i) => {
@@ -258,15 +264,18 @@ export function fitStyle(obs: Observation[], pairs: PairObservation[] = [], opti
       return Math.max(0, priorTaste(fs) - explained(tVec(fs)));
     },
     tasteWeights,
-    frequency: (plates, features) => {
-      const t = taste(features);
-      if (plates.length === 0) return clampF(mean + t);
-      return clampF(Math.max(...plates.map(style)) + t);
-    },
+    frequency: (plates, features) => clampF(raw(plates, features)),
+    rawFrequency: (plates, features) => raw(plates, features),
     variance: (plate, features) => {
       const fs = new Set(tasteFeatures(features));
       const k = sVec(plate).map((v, i) => v + tCov(fs, points[i]));
       return Math.max(0, kPlate(plate, plate) + priorTaste(fs) - explained(k));
+    },
+    uncertainty: (plate, features) => {
+      const fs = new Set(tasteFeatures(features));
+      const prior = kPlate(plate, plate) + priorTaste(fs);
+      const k = sVec(plate).map((v, i) => v + tCov(fs, points[i]));
+      return prior > 0 ? Math.sqrt(Math.max(0, prior - explained(k)) / prior) : 0;
     },
     dish: (plate, features) => {
       const feats = new Set(tasteFeatures(features));

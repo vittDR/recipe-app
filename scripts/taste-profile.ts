@@ -4,15 +4,17 @@
 // signalsFor) and fitted on the plates of their household's and the seed
 // library's recipes. For checking what the model makes of someone.
 //   node scripts/taste-profile.ts <user id or email>
+//   node scripts/taste-profile.ts <user> --deck   # also deal them a deck, with and without the model
 // Reads the database in PGDATABASE (default dineamite_test, which
 // npm run test:sql leaves behind); any Postgres with the schema will do.
 
 import { execFileSync } from 'node:child_process';
-import { CLASSIFICATION_VERSION, classifyRow, type ClassifiableRow } from '../supabase/functions/_shared/logic/classify.ts';
+import { CLASSIFICATION_VERSION, classifyRow, type ClassifiableRow, type RecipeClassification } from '../supabase/functions/_shared/logic/classify.ts';
+import { buildDeck, type CandidateRecipe, type DeckMember } from '../supabase/functions/_shared/logic/deck.ts';
 import { Catalog, type CatalogEntry } from '../supabase/functions/_shared/logic/ingredients.ts';
 import { type Plate, rowPlates } from '../supabase/functions/_shared/logic/plate.ts';
 import { recipeFeatures } from '../supabase/functions/_shared/logic/preferences.ts';
-import { type MealRow, signalsFor, type SwipeRow, type TasteSignalRow } from '../supabase/functions/_shared/logic/profile.ts';
+import { buildProfile, type MealRow, signalsFor, type SwipeRow, type TasteSignalRow, weightsOf } from '../supabase/functions/_shared/logic/profile.ts';
 import { observationsFor, styleModelFor } from '../supabase/functions/_shared/logic/style.ts';
 
 const who = process.argv[2];
@@ -42,10 +44,12 @@ const meals = q(`select coalesce(json_agg(x), '[]') from (select m.id, m.recipe_
 const started = performance.now();
 const features = new Map<string, string[]>();
 const plates = new Map<string, Plate[]>();
+const classes = new Map<string, RecipeClassification>();
 for (const r of recipes) {
   const ings = r.recipe_ingredients ?? [];
   const row = { ...r, recipe_ingredients: ings };
   const c = classifyRow(row, catalog);
+  classes.set(r.id, c);
   features.set(r.id, recipeFeatures(r.tags ?? [], ings, c));
   plates.set(r.id, rowPlates(row, catalog, c));
   // As in deal-deck: what was said about the seed recipe counts for the household's copy.
@@ -92,4 +96,37 @@ console.log('\nTaste, clearest likes and dislikes:');
 for (const [f, e] of [...tastes.slice(0, 5), ...tastes.slice(-5)]) console.log(`  ${e.t >= 0 ? '+' : ''}${e.t.toFixed(2)}  ${f} (${e.n})`);
 for (const p of signals.filter((s) => s.kind === 'pair')) {
   console.log(`pair: ${title.get(p.recipeId)} / ${title.get(p.otherRecipeId)} → ${p.choice}`);
+}
+
+if (process.argv.includes('--deck')) {
+  const goals = q(`select row_to_json(g) from public.member_goals g where g.user_id = ${lit(user.id)}`) as
+    { dinner_kcal: number | null; dinner_protein_g: number | null } | null;
+  const candidates: CandidateRecipe[] = recipes.map((r) => {
+    const c = classes.get(r.id)!;
+    const proteins = c.protein_groups ?? [];
+    return {
+      id: r.id, title: r.title, tags: r.tags ?? [], ingredientNames: [], totalMin: r.total_min ?? null,
+      dietClass: proteins.some((g) => ['poultry', 'beef', 'pork', 'lamb', 'veal', 'game', 'offal'].includes(g)) ? 'meat'
+        : proteins.some((g) => g === 'fish' || g === 'shellfish') ? 'fish' : 'veg',
+      kcalPerServing: c.nutrition.kcal, proteinGPerServing: c.nutrition.protein_g,
+      features: features.get(r.id), plates: plates.get(r.id), intents: c.meal_intents,
+    };
+  });
+  const profile = buildProfile(signals);
+  const base: DeckMember = {
+    userId: user.id, dinnerKcal: goals?.dinner_kcal ?? 650, dinnerProteinG: goals?.dinner_protein_g ?? 40,
+    never: [], loves: [], diet: 'everything', weights: weightsOf(profile), profile,
+  };
+  let seed = 1;
+  const random = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  for (const [label, m] of [['v1 profile', base], ['style model', { ...base, style: model }]] as const) {
+    seed = 1;
+    const deck = buildDeck(candidates, [m], new Map(), { random });
+    console.log(`\nDeck with the ${label}:`);
+    for (const c of deck) {
+      const p = plates.get(c.recipeId)![0];
+      const f = model.rawFrequency(plates.get(c.recipeId)!, features.get(c.recipeId)!);
+      console.log(`  ${c.tier.padEnd(5)} F ${f.toFixed(1)}  rich ${p.rich.toFixed(2)}  ${(c.reason ?? '').padEnd(10)} ${title.get(c.recipeId)}`);
+    }
+  }
 }

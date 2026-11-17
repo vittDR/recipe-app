@@ -214,6 +214,7 @@ export const fr: Dictionary = {
     leansYou: 'Plutôt votre genre de plat',
     leansPartner: 'Plutôt le genre de plat de {name}',
     treat: 'Un petit plaisir qui devrait vous plaire',
+    adjustable: 'Facile à adapter : certains ingrédients sont facultatifs',
     progress: '{n} sur {total}',
     pass: 'Non',
     yes: 'Oui',

@@ -1,6 +1,6 @@
 # Taste profiles (v2 spec)
 
-Status: plate space, model, quiz picker, simulation and the signals → model path built; deck and quiz screen to do. Replaces how the taste quiz, `logic/profile.ts` and the
+Status: plate space, model, quiz picker, simulation, the signals → model path and the deck built; quiz screen and style summary to do. Replaces how the taste quiz, `logic/profile.ts` and the
 deck's treat / adherence logic decide *what kind of dinners* someone wants.
 
 ## The problem
@@ -285,39 +285,65 @@ What it says:
 
 ## 5. The deck
 
-**Per person:** `F_m(r)` as above, with goal fit, season, variety and
-exploration on top, as in v1.
+Code: `logic/deck.ts`, tests in `logic/tests/deck.test.ts`. `deal-deck` builds
+each eater's model (`styleModelFor`) and each recipe's plates (`rowPlates`).
 
-**Mix per deck.** A deck of `N` cards gets its share of occasional plates from
-the style itself, not from a fixed treat slot:
+The deck keeps its tiers: 5 very close, 5 close, 2 wildcards, the season
+minimum, rotation, pantry, mood and the "sometimes" spacing. What feeds them
+changes:
 
-- A dish is **regular** for a person when `F ≥ 2`, **occasional** when
-  `0.5 ≤ F < 2`, and **out** below 0.5 (exploration can still show one).
-- `occasional share = Σ_occasional F / Σ F` over the library, per person. For
-  a "mostly balanced" person that comes to about 1 card in 8. For a "generous"
-  person it's around 1 in 3.
-- The deck holds `round(N × share)` occasional dishes. The rest are regular,
-  and the occasional slots are picked for taste.
+- **Taste** for each eater is their model's frequency for the dish, on the
+  plate that suits them (as written, or without its optional lines). The
+  unclamped value goes through `tanh((F − 2) / 2)`, so dishes past "a
+  favourite" still rank: *now and then* is −0.46, *regularly* +0.46, *a
+  favourite* +0.76. Without that, every dish the model loves tied at 4.
+- **Exploration** is the model's remaining uncertainty about the dish (0..1,
+  against its prior), in place of v1's evidence count.
+- **Goal fit counts half** (`STYLE_FIT_FACTOR`) for an eater with a model.
+  Their style has already learned how often they want heavy plates, whatever
+  the reason, so full weight would count it twice. Adherence still sets the
+  rest of the weight.
 
-This replaces the treat slot (`TREAT_*`). The "sometimes" spacing (no
-occasional kind eaten in the last two weeks) stays. Adherence stays, but only
-for goal fit, where it belongs.
+**Mix per deck.** The share of "now and then" dishes comes from the style
+itself, not from a fixed treat slot:
 
-**Households: what works for both.** One deck, several people:
+- For a person, a dish is **regular** at `F ≥ 2`, **now and then** at
+  `0.5 ≤ F < 2`, and **out** below 0.5.
+- `nowAndThenShare` = the frequency mass of their now-and-then dishes over all
+  the dishes they'd eat (out of the hard filters). In the tests, someone who
+  wants rich plates at 1.2 and lean ones at 3.6 gets 1 card in 12. At 1.9 for
+  rich plates it's 2 in 12.
+- The deck holds `round(N × share)` of them, swapping with the weakest close
+  or very-close cards in either direction. Added ones carry the existing
+  "treat" badge ("A treat you'd probably love"), and wildcards count towards
+  the share. This replaces the treat slot (`TREAT_*`), which is still used
+  when some eater has no model.
 
-- Joint score: `J(r) = softmin_m F_m(r)`
-  (`−τ·log Σ exp(−F_m/τ)`, `τ = 0.5`). That's near the least keen person's
-  score, so a dish one person loves and the other merely tolerates loses to
-  one they both like.
-- **Adjustable dishes.** When a recipe's rich parts are on optional lines
-  (cheese to serve, cream to finish), it gets a second plate vector without
-  them. Each person is scored on the version that suits them better, and the
-  card says so ("parmesan on the side"). This is how a balanced base with a
-  richer topping wins in a mixed household. It works like `heat_adjustable`
-  and is computed the same way, from optional lines.
-- The occasional share is the household's *smallest*, so the person who wants
-  treats rarely isn't outvoted. Occasional slots go to dishes with `J ≥ 0.5`.
-- Each person's own profile still learns from their own swipes.
+**Households: what works for everyone.**
+- Very close cards still rank on the least keen eater's taste, now taken from
+  their models. A dish one person loves and the other merely tolerates loses
+  to one they both like (test: two people with opposite styles get the dishes
+  they both like as every very close card).
+- A dish counts as *now and then* for the household on the softmin of the
+  eaters' frequencies (`τ = 0.5`). The share is the *smallest* eater's, so the
+  person who wants treats rarely isn't outvoted.
+- **Adjustable dishes.** When some eater wants a dish clearly more without its
+  optional lines (+0.5 frequency or more), the card says so with a new badge:
+  "Easy to adjust: some ingredients are optional" / "Facile à adapter :
+  certains ingrédients sont facultatifs".
+
+Each person's own model still learns from their own swipes.
+
+`scripts/taste-profile.ts <user> --deck` deals one person a deck from the
+database's library, with the v1 profile and with the model. For the simulated
+mostly-balanced person, the model's deck opened with the dishes it put at F
+4.6 → 4.1, all lean. Its wildcard was something less certain (pork, F 2.2),
+and its one treat a blanquette (rich 0.69, F 2.0).
+
+Cost: `rowPlates` works out the dish without its optional lines on every deal
+(about 300 library recipes have optional lines). Plates of the whole library
+took ~150 ms locally, and each eater's fit a few ms. If that matters, the
+plate without optional lines can be stored next to the classification.
 
 ## 6. What changes in code
 
@@ -326,11 +352,10 @@ for goal fit, where it belongs.
 | `plate.ts` | **done**: `plateVector`, `platesOf`, `plateDistance` |
 | `style.ts` | **done**: `fitStyle` (additive GP), `nextQuizCard`, `nextQuizPair`, `observationsFor` / `styleModelFor` (signals → model). To do: region summary |
 | `profile.ts` | **done**: signals carry their recipe (and meal); `pair` signals read from `taste_signals`, ignored by the v1 profile |
-| `recommend.ts` | `expectedFrequency`, `softmin`, region definitions |
-| `deck.ts`, deal-deck | build each member's model (`styleModelFor`, plates from `rowPlates`); score on `F`; occasional share in place of the treat slot; joint score for households; adjustable variant; less weight on goal fit where style covers it |
-| `TasteQuiz.tsx` | new wording, the three phases, pair cards, early stop, summary screen |
+| `deck.ts`, deal-deck | **done**: each member's model and the recipes' plates; taste on `F`, exploration on its uncertainty, half the goal fit; the now-and-then share in place of the treat slot; softmin for households; the adjustable badge |
+| `TasteQuiz.tsx` | to do: new wording, `nextQuizCard` / `nextQuizPair`, pair cards, early stop, summary screen with regions |
 | migration | **done**: `pair` kind and `other_recipe_id`; deal-deck and the Us screen read it. To do: `style` kind |
-| tests | **done**: plate vectors for known dishes, style/taste separation, pairs, a synthetic person recovered from 26 quiz answers on the library. To do: household softmin, deck mix shares |
+| tests | **done**: plate vectors for known dishes, style/taste separation, pairs, a synthetic person recovered from 26 quiz answers on the library, deck: style decides, the now-and-then share, shared decks, adjustable dishes, half goal fit |
 
 ## Open points
 

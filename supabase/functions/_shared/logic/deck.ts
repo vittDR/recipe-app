@@ -1,9 +1,16 @@
 // Deck generation: hard filters from everyone's rules, then a score mixing
-// goal fit (weighted by how much each eater minds it), taste (recommend.ts),
-// mood, pantry overlap and household history. 12 cards in three tiers: 5 very
-// close to everyone's taste, 5 close (maybe more one person's), 2 wildcards
-// that fit the goals but take liberties; kept varied, with a treat for people
-// who mind their diet, and always a few dishes of the season.
+// goal fit (weighted by how much each eater minds it), taste, mood, pantry
+// overlap and household history. 12 cards in three tiers: 5 very close to
+// everyone's taste, 5 close (maybe more one person's), 2 wildcards that fit
+// the goals but take liberties; kept varied, and always a few dishes of the
+// season.
+//
+// Taste is each eater's style + taste model when they have one
+// (docs/taste-profiles.md, style.ts): how often they want the dish, on its
+// plate that suits them (as written or without its optional lines). Their
+// style decides how many "now and then" dishes a deck holds (NOW_AND_THEN):
+// the share of the most restrained eater. Without a model, the v1 profile
+// (recommend.ts) is used, with a treat slot for people who mind their diet.
 
 import { SEASONS, type MealIntent, type Season } from './classify.ts';
 import { type DeckFacets, type DeckFilters, filterCount, matchesDeckFilters } from './deckFilters.ts';
@@ -12,6 +19,8 @@ import {
   diversePick, fitWeight, similarity, TREAT_ADHERENCE, TREAT_MAX_FIT, TREAT_MIN_TASTE, tasteScore, uncertainty,
 } from './recommend.ts';
 import { type EaterTargets, type PotSplit, splitPot } from './portions.ts';
+import type { Plate } from './plate.ts';
+import type { StyleModel } from './style.ts';
 
 export type Diet = 'everything' | 'pescatarian' | 'vegetarian';
 export type Mood = 'any' | 'comfort' | 'light' | 'healthy' | 'quick' | 'fancy';
@@ -38,6 +47,8 @@ export interface CandidateRecipe {
   healthy?: boolean;
   /** What the dish is for (classify.ts); moods match on these when given, else on tags. */
   intents?: MealIntent[];
+  /** Its plates (plate.ts rowPlates): as written, then without its optional lines when that's a different plate. */
+  plates?: Plate[];
   /** Seasons it's a dish of (classify.ts seasons); all four, null or absent = all year. */
   seasons?: Season[] | null;
 }
@@ -57,14 +68,55 @@ export interface DeckMember extends EaterTargets {
   occasional?: Set<string>;
   /** Soft weights per feature (tags/ingredients), [-1, 1], incl. accepted patterns. Used when there's no profile. */
   weights: Map<string, number>;
-  /** Taste profile (profile.ts), accepted patterns included: scored with recommend.ts. */
+  /** Taste profile (profile.ts), accepted patterns included: scored with recommend.ts when there's no style model. */
   profile?: TasteProfile;
+  /** Style + taste model (style.ts styleModelFor): how often this eater wants each dish. Wins over the profile. */
+  style?: StyleModel;
   /** 0..1, how much this eater sticks to their goals (recommend.ts dietAdherence); 0.5 when unknown. */
   adherence?: number;
 }
 
 /** How much an unexplored kind of dish is worth, at full uncertainty. */
 export const EXPLORE_WEIGHT = 0.8;
+
+/**
+ * Goal fit counts this much for an eater with a style model: their style has
+ * already learned how often they want heavy or light plates, whatever the
+ * reason, so the full weight would count it twice.
+ */
+export const STYLE_FIT_FACTOR = 0.5;
+/** A dish is adjustable for an eater when its plate without optional lines is wanted this much more often. */
+export const ADJUSTABLE_GAIN = 0.5;
+
+/** Frequencies (style.ts, 0..4): below OUT not for them, below REGULAR now and then, else regularly. */
+export const FREQUENCY_OUT = 0.5;
+export const FREQUENCY_REGULAR = 2;
+/**
+ * Taste in -1..1 from a frequency (style.ts rawFrequency, unclamped, so dishes
+ * past "a favourite" still rank): now and then (1) −0.46, regularly (3) +0.46,
+ * a favourite (4) +0.76.
+ */
+export const tasteOfFrequency = (f: number) => Math.tanh((f - 2) / 2);
+
+/** Softmin temperature: a dish everyone likes beats one someone loves and someone merely puts up with. */
+export const SOFTMIN_TEMPERATURE = 0.5;
+/** Close to the lowest value, but the others still count a little. */
+export function softmin(values: number[], t = SOFTMIN_TEMPERATURE): number {
+  if (values.length === 0) return 0;
+  const lo = Math.min(...values);
+  return lo - t * Math.log(values.reduce((s, v) => s + Math.exp(-(v - lo) / t), 0));
+}
+
+/**
+ * An eater's share of "now and then" dishes, from their style: the frequency
+ * mass of the dishes they want now and then over all they'd eat. Someone who
+ * wants rich plates twice a month and lean ones twice a week gets about 1 in 8.
+ */
+export function nowAndThenShare(frequencies: number[]): number {
+  const total = frequencies.reduce((s, f) => s + (f >= FREQUENCY_OUT ? f : 0), 0);
+  const occasional = frequencies.reduce((s, f) => s + (f >= FREQUENCY_OUT && f < FREQUENCY_REGULAR ? f : 0), 0);
+  return total ? occasional / total : 0;
+}
 
 export interface RecipeHistory {
   /** Household yes/must count across past decks. */
@@ -196,6 +248,10 @@ export function scoreRecipe(
   score: number; split: PotSplit | null; reason: string | null; taste: number;
   /** Each eater's taste for it, in members' order (-1..1). */
   tastes: number[];
+  /** Each eater's expected frequency (style.ts), in members' order; null for an eater without a style model. */
+  frequencies: (number | null)[];
+  /** Someone wants it clearly more without its optional lines. */
+  adjustable: boolean;
   /** Everything but taste and exploration: fit, loves, mood, pantry, history, noise. */
   base: number;
   /** 0..1, how little is known about this kind of dish for the eaters. */
@@ -210,9 +266,20 @@ export function scoreRecipe(
   let explore = 0;
   let fitW = 0;
   const tastes: number[] = [];
+  const frequencies: (number | null)[] = [];
+  let adjustable = false;
   for (const m of members) {
     let taste: number;
-    if (m.profile) {
+    let fitFactor = 1;
+    let frequency: number | null = null;
+    if (m.style && recipe.plates?.length) {
+      const f = m.style.frequency(recipe.plates, features);
+      frequency = f;
+      taste = tasteOfFrequency(m.style.rawFrequency(recipe.plates, features));
+      explore += m.style.uncertainty(recipe.plates[0], features);
+      if (recipe.plates.length > 1 && f - m.style.frequency([recipe.plates[0]], features) >= ADJUSTABLE_GAIN) adjustable = true;
+      fitFactor = STYLE_FIT_FACTOR;
+    } else if (m.profile) {
       taste = tasteScore(features, m.profile);
       explore += uncertainty(features, m.profile);
     } else {
@@ -220,9 +287,10 @@ export function scoreRecipe(
       for (const f of features) w += m.weights.get(f) ?? 0;
       taste = Math.max(-1, Math.min(1, w / 3));
     }
+    frequencies.push(frequency);
     tastes.push(taste);
     pref += taste;
-    fitW += fitWeight(m.adherence ?? 0.5);
+    fitW += fitWeight(m.adherence ?? 0.5) * fitFactor;
     if (usesProduct(recipe.productIds, m.loves)) love += 1;
   }
   const count = members.length || 1;
@@ -250,7 +318,7 @@ export function scoreRecipe(
   const score = base + 1.5 * pref + EXPLORE_WEIGHT * explore;
 
   const reason = pantryHits.length > 0 ? `pantry:${pantryHits[0]}` : love > 0 ? 'love' : null;
-  return { score: Math.round(score * 1000) / 1000, split, reason, taste: pref, tastes, base, explore };
+  return { score: Math.round(score * 1000) / 1000, split, reason, taste: pref, tastes, frequencies, adjustable, base, explore };
 }
 
 /** A dish someone likes "but not often" waits this long after one of its kind was eaten. */
@@ -364,8 +432,33 @@ export function buildDeck(
     }
   }
 
-  // Someone who minds their diet rarely sees what they'd love but doesn't fit: one "close" place is kept for it.
-  if (members.some((m) => (m.adherence ?? 0.5) >= TREAT_ADHERENCE)) {
+  const styled = members.length > 0 && members.every((m) => m.style);
+  if (styled) {
+    // As many "now and then" dishes as the most restrained eater's style says, of those that work for everyone.
+    const joint = (s: Scored) => softmin(s.frequencies.map((f) => f ?? FREQUENCY_REGULAR));
+    const occasionalNow = (s: Scored) => joint(s) >= FREQUENCY_OUT && joint(s) < FREQUENCY_REGULAR;
+    const share = Math.min(...members.map((_, j) => nowAndThenShare(scored.map((s) => s.frequencies[j] ?? FREQUENCY_REGULAR))));
+    const wanted = Math.round(size * share);
+    const swap = (out: Scored, add: Scored, reason: string | null) => {
+      const list = near.includes(out) ? near : close;
+      list.splice(list.indexOf(out), 1, add);
+      add.tier = out.tier;
+      add.value = add.tier === 'close' ? closeValue(add) : nearValue(add);
+      if (reason) add.reason ??= reason;
+    };
+    const weakest = (fits: (s: Scored) => boolean) => [...near, ...close].filter(fits).sort((a, b) => a.value - b.value)[0];
+    for (let have = [...close, ...near, ...wild].filter(occasionalNow).length; have !== wanted; have += have < wanted ? 1 : -1) {
+      const inDeck = [...close, ...near, ...wild];
+      const fewer = have > wanted;
+      const fits = fewer ? (s: Scored) => joint(s) >= FREQUENCY_REGULAR : occasionalNow;
+      const [add] = diversePick(left(inDeck).filter(fits).sort((a, b) => nearValue(b) - nearValue(a)), 1, nearValue, featuresOf, inDeck);
+      const out = weakest(fewer ? occasionalNow : (s) => !occasionalNow(s));
+      if (!add || !out) break;
+      // A dish someone wants now and then says so, as the treat did.
+      swap(out, add, fewer ? null : 'treat');
+    }
+  } else if (members.some((m) => (m.adherence ?? 0.5) >= TREAT_ADHERENCE)) {
+    // Someone who minds their diet rarely sees what they'd love but doesn't fit: one "close" place is kept for it.
     const inDeck = [...close, ...near, ...wild];
     const isTreat = (s: Scored) => s.taste >= TREAT_MIN_TASTE && (s.split?.fitScore ?? 1) <= TREAT_MAX_FIT;
     const treat = inDeck.some(isTreat) ? undefined : left(inDeck).filter(isTreat).sort((a, b) => b.taste - a.taste)[0];
@@ -401,6 +494,9 @@ export function buildDeck(
     }
   };
   if (opts.season) ensure(Math.round(size * SEASONAL_SHARE), inSeason, 'season');
+
+  // A dish someone wants more without its optional lines says they're optional.
+  for (const c of [...close, ...near]) if (c.adjustable && !c.reason) c.reason = 'adjustable';
 
   // Order: very close and close alternate, best first (the first card both say yes to wins);
   // wildcards a third and three quarters of the way in.

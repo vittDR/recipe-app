@@ -250,3 +250,11 @@ test('from database rows to a model: the quiz, then what they picked, drift it',
   const other = styleModelFor(signalsFor('someone else', { swipes, tasteSignals, meals }, () => []), platesById, now);
   assert.equal(other.style(plate(0.9)), other.style(plate(0.1)));
 });
+
+test('uncertainty: 1 before anything is said, lower near what was', () => {
+  assert.equal(fitStyle([]).uncertainty(plate(0.3), ['protein:fish']), 1);
+  const m = fitStyle([0.2, 0.3, 0.4].map((rich) => ({ plate: plate(rich), features: ['protein:fish'], y: 3 })));
+  const near = m.uncertainty(plate(0.3), ['protein:fish']);
+  assert.ok(near < 0.8);
+  assert.ok(m.uncertainty({ protein: 1, rich: 1, veg: 0, carb: 0 }, ['protein:beef']) > near);
+});
