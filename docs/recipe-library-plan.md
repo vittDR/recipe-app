@@ -109,4 +109,4 @@ this plan, and 100 quick, healthy dishes added because decks for
   fryer.
 - **Seasons:** 316 of the 400 are all year (79%). The others are the key
   seasonal dishes: 22 spring, 26 summer, 22 autumn and 30 winter.
-- **Illustrations:** 300 have one. The 100 new dishes don't yet.
+- **Illustrations:** all 400 have one.

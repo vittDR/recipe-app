@@ -8,7 +8,7 @@
   - Each one was written for the app, informed by how the dish is commonly made (proportions, technique, times and temperatures), with quantities and steps in our own words. The recipes don't name or link any source.
   - They keep the dish's real ingredients: anything most French supermarkets don't sell is flagged `exotic` in the catalogue rather than swapped.
   - They are `ai_generated_recipe: true` with no `source_url`, so they belong to the `original` collection. All of them have illustrations (supplied as 900×675 WebP, re-encoded to about 100 KB where larger).
-- **100 quick, healthy dishes** (November 2026), written the same way. All take 30 min or less in total and are healthy by the app's rule, which looks at what's on the plate rather than its numbers (see [recipe-classification.md](../../docs/recipe-classification.md)). Portions are each dish's normal ones, with no calorie or protein target. 42 use the air fryer. No illustrations yet.
+- **100 quick, healthy dishes** (November 2026), written the same way. All take 30 min or less in total and are healthy by the app's rule, which looks at what's on the plate rather than its numbers (see [recipe-classification.md](../../docs/recipe-classification.md)). Portions are each dish's normal ones, with no calorie or protein target. 42 use the air fryer.
 
 | File | What it is |
 | --- | --- |
@@ -47,7 +47,7 @@ To replace or add photos, run `scripts/download_images.py` (needs `pip install r
 - **Low protein:** eight of the healthy recipes estimate under 25 g per serving: Cozze alla tarantina, Frittata di zucchine e ricotta, Œufs pochés épinards et lentilles, Chicken tinga, Moules marinières, Spaghetti alle vongole, Poulet à l'estragon, Crispy scallion ginger salmon.
 - **Bone-in and in-shell weights overcount** protein and kcal, because the catalogue is per edible weight (satay drumsticks, Peruvian chicken, Moroccan tagine, mussels, clams).
 - **Long `total_min`** for marinated or soaked dishes (tandoori chicken 415 min, brandade 1,485 min), so the time filter treats them as slow. They're tagged `make ahead`. Their `prep_min` and `cook_min` stay short.
-- **AI-generated recipes:** 400 recipes (`ai_generated_recipe: true`) were written by Claude rather than taken from a site. None has a source link, and none has been tested in a kitchen. The first 10 have AI-generated photos, 290 have illustrations, and the 100 quick, healthy dishes added last don't have one yet (the app shows an emoji).
+- **AI-generated recipes:** 400 recipes (`ai_generated_recipe: true`) were written by Claude rather than taken from a site. None has a source link, and none has been tested in a kitchen. The first 10 have AI-generated photos; the other 390 have illustrations.
 - **How the original library was checked:** many recipe sites refused automated reading, so quantities were often set from search summaries and the classic proportions of each dish. None has been cooked to test it.
 - **Ingredient mappings:** a few ingredients are mapped to the nearest catalogue entry rather than added (sour cream to crème fraîche, Comté to emmental, Napa cabbage to cabbage). Real exotic ingredients are kept and flagged, not swapped.
 - **Protein is a guide:** 6 of the 290 original recipes are under 25 g a serving, written the way the dish is really made (gołąbki, pumpkin and sage risotto, rajma, some vegetarian dishes).
