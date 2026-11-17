@@ -1,4 +1,5 @@
 // Row shapes used by the app (subset of columns it reads).
+import type { DeckFilters } from '@logic/deckFilters.ts';
 import type { Difficulty, Equipment } from '@logic/facets.ts';
 import type { Aisle } from '@logic/ingredients.ts';
 
@@ -113,6 +114,8 @@ export interface Deck {
   who_eating: string[];
   max_minutes: number | null;
   mood: Mood;
+  /** Advanced filters (logic/deckFilters.ts); {} when none. */
+  filters: DeckFilters;
   status: DeckStatus;
   matched_recipe_id: string | null;
   created_at: string;

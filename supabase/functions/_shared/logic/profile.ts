@@ -8,6 +8,7 @@
 //                a plain pass is mostly "not tonight", so it weighs far less than a yes:
 //                liking something is news, skipping it rarely is;
 //                a pass in a mood deck counts half again and says nothing about the dish's mood;
+//                likewise in a filtered deck (chicken, Japanese…): nothing about what was filtered on;
 //                passes from before the reason chips were removed keep their reason:
 //                not tonight / too long / had recently counts nothing, not for me in full
 //   taste quiz   "that looks good"          the same, × 0.75 (looking is not choosing)
@@ -27,6 +28,7 @@
 // Older signals fade (half-life PROFILE_HALF_LIFE_DAYS). Recipes that were never
 // shown say nothing: there are no negative signals for them.
 
+import { askedFor, type DeckFilters, filterCount } from './deckFilters.ts';
 import { classificationFeatures, isClassFeature, type RecipeClassification } from './classify.ts';
 import type { Mood } from './deck.ts';
 import type { Verdict } from './preferences.ts';
@@ -45,6 +47,8 @@ export const RATINGS: Rating[] = ['loved', 'fine', 'not_again'];
 export type Signal =
   | {
     kind: 'swipe'; verdict: Verdict; mood?: Mood | null; reason?: PassReason | null; features: string[]; at: string;
+    /** The deck's advanced filters (deckFilters.ts): what was asked for, not judged. */
+    filters?: DeckFilters | null;
     /** Whether the dish fit this person's goals when it was shown; null when unknown. */
     fits?: boolean | null;
   }
@@ -76,10 +80,12 @@ const VERDICT_WEIGHT: Record<StarterVerdict, number> = { yes: 1, must: 1.5, pass
 export function signalWeight(s: Signal): { weight: number; features: string[] } {
   switch (s.kind) {
     case 'swipe': {
-      const moody = !!s.mood && s.mood !== 'any';
+      const filtered = filterCount(s.filters) > 0;
+      const moody = (!!s.mood && s.mood !== 'any') || filtered;
+      const asked = askedFor(s.filters);
       // The deck was ranked on diet fit, so diet features say nothing here; in a mood
-      // deck the dish's own mood was asked for, not judged.
-      const features = tasteOnly(s.features).filter((f) => !(moody && f.startsWith('intent:')));
+      // or filtered deck what was asked for (the mood, the protein…) was not judged.
+      const features = tasteOnly(s.features).filter((f) => !(s.mood && s.mood !== 'any' && f.startsWith('intent:')) && !asked(f));
       if (s.verdict !== 'pass') return { weight: VERDICT_WEIGHT[s.verdict] * (s.fits === false ? OFF_DIET_YES_FACTOR : 1), features };
       if (s.reason && TEMPORARY_REASONS.has(s.reason)) return { weight: 0, features };
       if (s.reason === 'not_for_me') return { weight: -1, features: tasteOnly(s.features) };
@@ -198,7 +204,10 @@ export function pickStarterSet<T extends { id: string; classification: RecipeCla
 // From database rows
 // ---------------------------------------------------------------------------
 
-export interface SwipeRow { user_id: string; deck_id: string; recipe_id: string; verdict: Verdict; created_at: string; mood?: Mood | null }
+export interface SwipeRow {
+  user_id: string; deck_id: string; recipe_id: string; verdict: Verdict; created_at: string; mood?: Mood | null;
+  filters?: DeckFilters | null;
+}
 export interface TasteSignalRow {
   user_id: string; recipe_id: string; kind: 'starter' | 'reason' | 'rating'; value: string;
   deck_id: string | null; meal_id: string | null; created_at: string;
@@ -227,7 +236,7 @@ export function signalsFor(
   for (const s of rows.swipes) {
     if (s.user_id !== userId) continue;
     push(s.recipe_id, (features) => ({
-      kind: 'swipe', verdict: s.verdict, mood: s.mood ?? null, reason: reasons.get(`${s.deck_id}:${s.recipe_id}`) ?? null,
+      kind: 'swipe', verdict: s.verdict, mood: s.mood ?? null, filters: s.filters ?? null, reason: reasons.get(`${s.deck_id}:${s.recipe_id}`) ?? null,
       features, at: s.created_at, fits: fitAtDeal.get(`${s.deck_id}:${s.recipe_id}`) ?? null,
     }));
   }

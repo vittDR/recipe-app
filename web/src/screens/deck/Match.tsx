@@ -5,7 +5,8 @@ import { Icon } from '../../components/Icon.tsx';
 import { RecipeFacts } from '../../components/RecipeBody.tsx';
 import { AvatarPair, Button, imageStyle, recipeEmoji } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
-import { useLive, useSave } from '../../lib/hooks.ts';
+import { todayIn, useLive, useSave } from '../../lib/hooks.ts';
+import { eveningPath } from '../../lib/plan.ts';
 import { recipeTitle } from '../../lib/recipeText.ts';
 import { useSession } from '../../lib/session.tsx';
 import { INGREDIENT_SELECT } from '../../lib/products.ts';
@@ -42,17 +43,19 @@ export function MatchView({ data }: { data: DeckData }) {
   const { userId, household, memberName, memberColor } = useSession();
   const navigate = useNavigate();
   const recipeId = data.deck.matched_recipe_id!;
+  const home = eveningPath(data.deck.for_date, todayIn(household!.timezone));
   const card = data.cards.find((c) => c.recipe_id === recipeId);
   const save = useSave();
   const [sheet, setSheet] = useState(false);
   const { data: match } = useLive<{
-    recipe: Recipe; ingredients: RecipeIngredient[]; portion: Portion | null; matches: string[]; missing: number; mutual: boolean;
+    recipe: Recipe; ingredients: RecipeIngredient[]; portion: Portion | null; matches: string[]; missing: number; mutual: boolean; mealId: string | null;
   }>(`match:${data.deck.id}:${recipeId}`, async () => {
-    const [r, ings, p, m] = await Promise.all([
+    const [r, ings, p, m, meal] = await Promise.all([
       card ? Promise.resolve({ data: card.recipe, error: null }) : supabase.from('recipes').select('*').eq('id', recipeId).single(),
       supabase.from('recipe_ingredients').select(INGREDIENT_SELECT).eq('recipe_id', recipeId).order('position'),
       supabase.rpc('my_portion', { p_recipe: recipeId, p_eaters: data.deck.who_eating }),
       supabase.rpc('deck_matches', { p_deck: data.deck.id }),
+      supabase.from('meals').select('id').eq('deck_id', data.deck.id).maybeSingle(),
     ]);
     const ingredients = must(ings) as RecipeIngredient[];
     const proposals = await loadProposals(household!.id, ingredients);
@@ -63,13 +66,14 @@ export function MatchView({ data }: { data: DeckData }) {
       portion: ((p.data ?? []) as Portion[])[0] ?? null,
       matches,
       missing: proposals.filter((x) => x.add).length,
+      mealId: (meal.data as { id: string } | null)?.id ?? null,
       // A recipe everyone said yes to; otherwise it came out of the tie-break.
       mutual: data.deck.who_eating.length === 1 || matches.includes(recipeId),
     };
   });
   const recipe = match?.recipe ?? card?.recipe ?? null;
   const portion = match?.portion ?? null;
-  const listMeals = useMemo(() => (match ? [{ recipe: match.recipe, ingredients: match.ingredients, potServings: match.portion?.pot_servings }] : []), [match]);
+  const listMeals = useMemo(() => (match ? [{ recipe: match.recipe, ingredients: match.ingredients, potServings: match.portion?.pot_servings, mealId: match.mealId ?? undefined }] : []), [match]);
 
   const eaters = [userId!, ...data.deck.who_eating.filter((u) => u !== userId)];
   const otherMatch = match?.matches.find((id) => id !== recipeId);
@@ -86,7 +90,7 @@ export function MatchView({ data }: { data: DeckData }) {
           transform: c.r ? `rotate(${c.r}deg)` : undefined, borderRadius: c.round ? '50%' : 2,
         }} />
       ))}
-      <button type="button" className="icon-btn icon-btn--filled moment__close" aria-label={t('app.close')} onClick={() => navigate('/')}>
+      <button type="button" className="icon-btn icon-btn--filled moment__close" aria-label={t('app.close')} onClick={() => navigate(home)}>
         <Icon name="x" />
       </button>
 
@@ -121,7 +125,7 @@ export function MatchView({ data }: { data: DeckData }) {
       </div>
 
       {/* Once the groceries are sorted, the evening is decided: back to Ce soir. */}
-      <AddToListSheet open={sheet} onClose={() => setSheet(false)} onAdded={() => navigate('/')} meals={listMeals} />
+      <AddToListSheet open={sheet} onClose={() => setSheet(false)} onAdded={() => navigate(home)} meals={listMeals} />
     </main>
   );
 }

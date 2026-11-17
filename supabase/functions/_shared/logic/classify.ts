@@ -15,7 +15,7 @@
 import { type Difficulty, type Equipment } from './facets.ts';
 import { type CatalogEntry, type Catalog, estimateMacros, gramsOf, type NormalisedIngredient } from './ingredients.ts';
 
-export const CLASSIFICATION_VERSION = 6;
+export const CLASSIFICATION_VERSION = 7;
 
 export const PROTEIN_GROUPS = [
   'poultry', 'beef', 'pork', 'lamb', 'veal', 'game', 'offal', 'fish', 'shellfish', 'eggs', 'legumes', 'soy', 'dairy',
@@ -176,6 +176,8 @@ export interface RecipeClassification {
   version: number;
   cuisines: string[];
   protein_groups: ProteinGroup[] | null;
+  /** The catalogue ingredients those proteins come from ("chicken thigh", "prawns"), by the same rule; null when unreadable. */
+  protein_items: string[] | null;
   starch_bases: StarchBase[] | null;
   dish_families: DishFamily[];
   sauce_families: SauceFamily[] | null;
@@ -344,6 +346,7 @@ export function classifyRecipe(input: ClassifyInput): RecipeClassification {
 
   // What the dish is made of: required lines only (a garnish doesn't make it a dairy dish).
   const proteinBy = new Map<ProteinGroup, number>();
+  const proteinItems = new Map<string, number>();
   const starchKcal = new Map<StarchBase, number>();
   const sauceGrams = new Map<SauceFamily, { grams: number; min: number }>();
   let heat = 0;
@@ -369,6 +372,7 @@ export function classifyRecipe(input: ClassifyInput): RecipeClassification {
       if (t.kind === 'protein') {
         const p = t.value as ProteinGroup;
         proteinBy.set(p, (proteinBy.get(p) ?? 0) + protein);
+        proteinItems.set(i.catalog.name, (proteinItems.get(i.catalog.name) ?? 0) + protein);
       } else if (t.kind === 'starch') {
         const s = t.value as StarchBase;
         starchKcal.set(s, (starchKcal.get(s) ?? 0) + ((i.catalog.kcal_100g ?? 0) * g) / 100);
@@ -384,6 +388,9 @@ export function classifyRecipe(input: ClassifyInput): RecipeClassification {
   for (const [p, grams] of proteinBy) {
     if (grams >= PROTEIN_MIN_G || (totalProtein > 0 && grams / totalProtein >= PROTEIN_MIN_SHARE)) proteins.add(p);
   }
+  const items = [...proteinItems]
+    .filter(([, grams]) => grams >= PROTEIN_MIN_G || (totalProtein > 0 && grams / totalProtein >= PROTEIN_MIN_SHARE))
+    .sort((a, b) => b[1] - a[1]).map(([name]) => name);
   const starches = new Set<StarchBase>();
   for (const [s, kcal] of starchKcal) if (kcal >= STARCH_MIN_KCAL) starches.add(s);
   const sauces = new Set<SauceFamily>();
@@ -483,6 +490,7 @@ export function classifyRecipe(input: ClassifyInput): RecipeClassification {
     version: CLASSIFICATION_VERSION,
     cuisines: [...cuisines],
     protein_groups: readable ? ordered(PROTEIN_GROUPS, proteins) : null,
+    protein_items: readable ? items : null,
     starch_bases: readable ? ordered(STARCH_BASES, starches) : null,
     dish_families: ordered(DISH_FAMILIES, families),
     sauce_families: readable ? ordered(SAUCE_FAMILIES, sauces) : null,

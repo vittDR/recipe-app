@@ -1,15 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
-import { AT_HOME_DAYS, mergeTarget, proposeListItems, scaleQuantity, type ListProposal } from '@logic/groceries.ts';
+import { AT_HOME_DAYS, combineProposals, mergeTarget, proposeListItems, scaleQuantity, type ListProposal } from '@logic/groceries.ts';
 import { sectionOf } from '@logic/products.ts';
 import { useI18n } from '../i18n/index.tsx';
 import { listQueue, withQueue } from '../lib/listQueue.ts';
-import { recipeTitle } from '../lib/recipeText.ts';
 import { ingredientName, useGroceryCatalog } from '../lib/products.ts';
 import { useSession } from '../lib/session.tsx';
 import { useAmount } from '../lib/units.ts';
 import { must, supabase } from '../lib/supabase.ts';
 import type { GroceryRow, Recipe, RecipeIngredient } from '../lib/types.ts';
-import { Button, Checkbox, ListRow, Section, Sheet, SheetHeader, toast } from './ui.tsx';
+import { Button, Checkbox, ListRow, Sheet, SheetHeader, toast } from './ui.tsx';
 
 /** Missing ingredients for a recipe given the live list and staples. */
 export async function loadProposals(
@@ -42,14 +41,17 @@ export interface MealForList {
   ingredients: RecipeIngredient[];
   /** Servings in the pot, when the deck worked it out; else the recipe's. */
   potServings?: number | null;
-  /** A heading when there are several meals ("Jeudi 30 · Poke bowl"). */
-  label?: string;
+  /** The planned meal, marked as listed once its ingredients went to the list. */
+  mealId?: string;
+  /** Its evening, short, to say which meals need a line ("Wed, Thu"). */
+  day?: string;
 }
 
 /**
- * "What do you already have?": every ingredient of the meals, the ones
- * probably at home (staples, bought recently, already on the list) ticked.
- * Everything left unticked goes to the list.
+ * "What do you already have?": every ingredient of the meals, one line per
+ * product and unit however many meals need it, the ones probably at home
+ * (staples, bought recently, already on the list) ticked. Everything left
+ * unticked goes to the list, and the meals are remembered as listed.
  */
 export function AddToListSheet({ open, onClose, onAdded, meals }: {
   open: boolean;
@@ -64,21 +66,25 @@ export function AddToListSheet({ open, onClose, onAdded, meals }: {
   const hid = household!.id;
   const { data: catalog } = useGroceryCatalog(hid);
   const [proposals, setProposals] = useState<ListProposal<RecipeIngredient>[][] | null>(null);
-  /** Ingredient ids ticked as already at home. */
+  /** Lines (product + unit) ticked as already at home. */
   const [have, setHave] = useState<Set<string>>(new Set());
   const [busy, setBusy] = useState(false);
 
+  const linesOf = (all: ListProposal<RecipeIngredient>[][]) => combineProposals(all,
+    (k, i) => scaleQuantity(i.quantity, meals[k].recipe.servings, meals[k].potServings ?? meals[k].recipe.servings));
+
   useEffect(() => {
     if (!open) return;
-    void Promise.all(meals.map((m) => loadProposals(hid, m.ingredients))).then((all) => {
+    void loadProposalsMany(hid, meals.map((m) => m.ingredients)).then((all) => {
       setProposals(all);
-      setHave(new Set(all.flat().filter((x) => !x.add).map((x) => x.ingredient.id)));
+      setHave(new Set(linesOf(all).filter((l) => !l.add).map((l) => l.key)));
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, hid, meals]);
 
-  const scaled = (m: MealForList, i: RecipeIngredient) => scaleQuantity(i.quantity, m.recipe.servings, m.potServings ?? m.recipe.servings);
-  const toAdd = useMemo(() => (proposals ?? []).flatMap((ps, k) => ps.filter((p) => !have.has(p.ingredient.id)).map((p) => ({ p, meal: meals[k] }))),
-    [proposals, have, meals]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const lines = useMemo(() => (proposals ? linesOf(proposals) : []), [proposals, meals]);
+  const toAdd = useMemo(() => lines.filter((l) => !have.has(l.key)), [lines, have]);
 
   // Through the list's queue, like every other list change: shown at once,
   // saved in the background. A line already on the list (same item and
@@ -96,10 +102,9 @@ export function AddToListSheet({ open, onClose, onAdded, meals }: {
       return;
     }
     const at = new Date().toISOString();
-    for (const { p, meal } of toAdd) {
-      const i = p.ingredient;
-      const quantity = scaled(meal, i);
-      const unit = i.unit?.trim().toLowerCase() || null;
+    for (const line of toAdd) {
+      const i = line.ingredient;
+      const { quantity, unit } = line;
       const same = mergeTarget(rows, i.product_id, unit);
       if (same) {
         if (quantity !== null) {
@@ -113,49 +118,54 @@ export function AddToListSheet({ open, onClose, onAdded, meals }: {
       const place = product ? sectionOf(product, catalog?.prefs.get(product.id)) : { aisle: i.aisle, store_id: null };
       const op = {
         kind: 'add' as const, id: crypto.randomUUID(), product_id: product?.id ?? i.product_id, name: product?.name_fr ?? i.name,
-        quantity, unit, aisle: place.aisle, store_id: place.store_id, recipe_id: meal.recipe.id, added_by: userId!, at,
+        quantity, unit, aisle: place.aisle, store_id: place.store_id, recipe_id: meals[line.meals[0]].recipe.id, added_by: userId!, at,
       };
       queue.push(op);
       rows.push({ ...op, household_id: hid, checked_at: null, checked_by: null, cleared_at: null, sort_key: 0, created_at: at });
     }
-    // Usually a moment, so what the recipe still needs is right when the sheet closes.
-    await queue.settled(3000);
+    // These meals' groceries are done: Ce soir's card stops counting them.
+    const mealIds = meals.flatMap((m) => (m.mealId ? [m.mealId] : []));
+    const [, listed] = await Promise.all([
+      // Usually a moment, so what the recipe still needs is right when the sheet closes.
+      toAdd.length > 0 ? queue.settled(3000) : Promise.resolve(),
+      mealIds.length > 0 ? supabase.from('meals').update({ listed_at: at }).in('id', mealIds) : Promise.resolve({ error: null }),
+    ]);
     setBusy(false);
-    toast(t('addToList.added'));
+    if (listed.error && toAdd.length === 0) {
+      toast(t('app.error'));
+      return;
+    }
+    if (toAdd.length > 0) toast(t('addToList.added'));
     onClose();
     onAdded?.();
-  };
-
-  const row = (m: MealForList, p: ListProposal<RecipeIngredient>) => {
-    const i = p.ingredient;
-    const name = ingredientName(i, locale);
-    const owned = have.has(i.id);
-    return (
-      <ListRow key={i.id} className={owned ? 'list-row--owned' : undefined} title={name}
-        icon={(
-          <Checkbox checked={owned} label={name} onChange={(v) => {
-            const next = new Set(have);
-            if (v) next.add(i.id);
-            else next.delete(i.id);
-            setHave(next);
-          }} />
-        )}
-        value={recipeAmount(scaled(m, i), i.unit) || undefined} />
-    );
   };
 
   const several = meals.length > 1;
   return (
     <Sheet open={open} onClose={onClose} label={t('addToList.title')}>
       <SheetHeader title={t('addToList.title')} subtitle={t('addToList.subtitle')} />
-      {proposals && meals.map((m, k) => (
-        several ? (
-          <Section key={m.recipe.id} label={m.label ?? recipeTitle(m.recipe, locale)} flush={k === 0}>
-            <div className="list">{proposals[k].map((p) => row(m, p))}</div>
-          </Section>
-        ) : <div key={m.recipe.id} className="list">{proposals[k].map((p) => row(m, p))}</div>
-      ))}
-      <Button className="sheet__actions" block disabled={busy || !proposals || toAdd.length === 0} onClick={() => void add()}>
+      {proposals && (
+        <div className="list">
+          {lines.map((l) => {
+            const name = ingredientName(l.ingredient, locale);
+            const owned = have.has(l.key);
+            return (
+              <ListRow key={l.key} className={owned ? 'list-row--owned' : undefined} title={name}
+                meta={several ? l.meals.map((k) => meals[k].day).filter(Boolean).join(', ') || undefined : undefined}
+                icon={(
+                  <Checkbox checked={owned} label={name} onChange={(v) => {
+                    const next = new Set(have);
+                    if (v) next.add(l.key);
+                    else next.delete(l.key);
+                    setHave(next);
+                  }} />
+                )}
+                value={recipeAmount(l.quantity, l.ingredient.unit) || undefined} />
+            );
+          })}
+        </div>
+      )}
+      <Button className="sheet__actions" block disabled={busy || !proposals} onClick={() => void add()}>
         {toAdd.length === 0 && proposals ? t('addToList.nothing') : tn('addToList.add', toAdd.length)}
       </Button>
     </Sheet>

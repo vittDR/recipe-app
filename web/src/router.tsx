@@ -28,7 +28,6 @@ import { ProfileSettingsScreen } from './screens/ProfileSettings.tsx';
 import { SettingsScreen } from './screens/Settings.tsx';
 import { TonightScreen } from './screens/Tonight.tsx';
 import { UsScreen } from './screens/Us.tsx';
-import { WeekScreen } from './screens/Week.tsx';
 
 const PUBLIC = ['/welcome', '/signin', '/join'];
 
@@ -132,12 +131,11 @@ export const router = createBrowserRouter([
       { path: '/us/catalog', element: <CatalogScreen /> },
       { path: '/us/profile', element: <ProfileSettingsScreen /> },
       { path: '/us/invite', element: <InviteScreen editing /> },
-      { path: '/us/week', element: <WeekScreen /> },
       { path: '/us/plan', element: <PlanScreen /> },
       { path: '/us/household', element: <SettingsScreen /> },
       // Older addresses, from before these moved under Us.
       { path: '/invite', element: <Navigate to="/us/invite" replace /> },
-      { path: '/plan', element: <Navigate to="/us/week" replace /> },
+      { path: '/plan', element: <Navigate to="/" replace /> },
       { path: '/settings', element: <Navigate to="/us/household" replace /> },
       { path: '*', element: <Navigate to="/" replace /> },
     ],

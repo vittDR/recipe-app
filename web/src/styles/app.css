@@ -1769,8 +1769,24 @@ button.grocery-row__amount {
   margin: var(--space-1) 0 0;
 }
 
+.tab-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: none;
+}
+
+.tab-header__actions .icon-btn--filled {
+  margin: 0;
+  color: var(--ink);
+}
+
 .tab-header .avatars {
   margin-bottom: var(--space-1);
+}
+
+.tab-header__actions .avatars {
+  margin-bottom: 0;
 }
 
 .section-heading {
@@ -1844,8 +1860,6 @@ button.grocery-row__amount {
   display: flex;
   justify-content: space-between;
   padding: var(--space-4) var(--space-5);
-  text-decoration: none;
-  color: inherit;
 }
 
 .week-strip__day {
@@ -1853,6 +1867,13 @@ button.grocery-row__amount {
   flex-direction: column;
   align-items: center;
   gap: var(--space-2);
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .week-strip__letter {
@@ -1860,6 +1881,7 @@ button.grocery-row__amount {
   color: var(--muted);
 }
 
+/* Eating out: just the number. */
 .week-strip__circle {
   position: relative;
   width: 34px;
@@ -1873,42 +1895,54 @@ button.grocery-row__amount {
   color: var(--faint);
 }
 
-.week-strip__day--together .week-strip__circle {
+/* Trimmed to the digits' cap height so flex centring centres the ink, not
+   the font's ascender/descender box (which leaves digits ~1px high). */
+.week-strip__num {
+  display: block;
+  text-box: trim-both cap alphabetic;
+}
+
+/* Eating in, no dish yet: a dotted ring, no fill. */
+.week-strip__day--open .week-strip__circle {
+  color: var(--accent-strong);
+}
+
+.week-strip__ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-dasharray: 0 1;
+}
+
+/* Eating in, dish chosen. */
+.week-strip__day--chosen .week-strip__circle {
   background: var(--accent-soft);
   color: var(--accent-strong);
 }
 
-.week-strip__day--today .week-strip__letter {
+.week-strip__day--today .week-strip__letter,
+.week-strip__day--selected .week-strip__letter {
   color: var(--accent-text);
 }
 
-.week-strip__day--today .week-strip__circle {
+.week-strip__day--selected .week-strip__circle {
   background: var(--accent);
   color: var(--on-accent);
 }
 
-.week-strip__mark {
-  position: absolute;
-  right: -2px;
-  bottom: -2px;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  border: 2px solid var(--surface);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.week-strip__day:focus-visible {
+  outline: none;
 }
 
-.week-strip__mark--done {
-  background: var(--sage);
-  color: var(--on-accent);
-}
-
-.week-strip__mark--photo {
-  background: linear-gradient(170deg, var(--accent-soft), var(--person-1) 55%, var(--sage));
-  background-size: cover;
-  background-position: center;
+.week-strip__day:focus-visible .week-strip__circle {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 /* The deal card: terracotta, a fan of cards, the question and one white button. */
@@ -3021,4 +3055,35 @@ body:has(.moment) .tabbar {
 
 .quiz-sometimes svg {
   color: var(--accent);
+}
+
+/* Deck filters: calories and protein per serving, side by side, labelled like sections. */
+.amount-fields .field__label {
+  padding: 0 var(--space-1) var(--space-2);
+}
+
+.amount-fields {
+  margin-top: var(--space-8);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.amount-input {
+  position: relative;
+  display: block;
+}
+
+.amount-input .input {
+  padding-right: 110px;
+}
+
+.amount-input__unit {
+  position: absolute;
+  right: var(--space-5);
+  top: 50%;
+  transform: translateY(-50%);
+  font: var(--t-callout);
+  color: var(--muted);
+  pointer-events: none;
 }
