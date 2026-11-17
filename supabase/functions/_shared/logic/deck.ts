@@ -3,7 +3,7 @@
 // mood, pantry overlap and household history. 12 cards in three tiers: 5 very
 // close to everyone's taste, 5 close (maybe more one person's), 2 wildcards
 // that fit the goals but take liberties; kept varied, with a treat for people
-// who mind their diet, mostly weeknight plates and always a few dishes of the season.
+// who mind their diet, and always a few dishes of the season.
 
 import { SEASONS, type MealIntent, type Season } from './classify.ts';
 import { type DeckFacets, type DeckFilters, filterCount, matchesDeckFilters } from './deckFilters.ts';
@@ -40,8 +40,6 @@ export interface CandidateRecipe {
   intents?: MealIntent[];
   /** Seasons it's a dish of (classify.ts seasons); all four, null or absent = all year. */
   seasons?: Season[] | null;
-  /** A weeknight plate (classify.ts weeknight_plate): most of a deck is. */
-  weeknightPlate?: boolean;
 }
 
 export interface DeckMember extends EaterTargets {
@@ -92,6 +90,8 @@ export interface DeckOptions {
   recentKinds?: Set<string>;
   /** Features of what someone said yes to in those decks: the new deck leans towards them. */
   lean?: Set<string>;
+  /** How many recent decks dealt each recipe without it being chosen: it gives way to others (ROTATION_*). */
+  recentlyDealt?: Map<string, number>;
   /** The evening's season (classify.ts seasonOfMonth): dishes of the season come first. */
   season?: Season;
   random?: () => number;
@@ -119,14 +119,19 @@ export const MOOD_TAGS: Record<Exclude<Mood, 'any'>, string[]> = {
   fancy: ['fancy'],
 };
 
+/** Rotation: a recipe dealt lately without being chosen loses this much per deck it was in… */
+export const ROTATION_PENALTY = 0.35;
+/** …counting at most this many decks, so a favourite still comes back. */
+export const ROTATION_MAX_DECKS = 3;
+/** How far back dealt decks count, in days. */
+export const ROTATION_DAYS = 14;
+
 /** A seasonal dish (not all year) of this season: worth this much more. */
 export const SEASON_BONUS = 0.5;
 /** A seasonal dish out of season: worth this much less, but never left out (there are imports). */
 export const OFF_SEASON_PENALTY = 0.8;
 /** At least this share of a deck is seasonal dishes in season, when the library has them (3 of 12). */
 export const SEASONAL_SHARE = 3 / 12;
-/** At least this share of a deck is weeknight plates, when the library has them (7 of 12). */
-export const PLATE_SHARE = 7 / 12;
 
 /** 1 for a seasonal dish of this season, -1 out of season, 0 for an all-year dish or no season given. */
 export function seasonFit(recipe: Pick<CandidateRecipe, 'seasons'>, season: Season | undefined): -1 | 0 | 1 {
@@ -238,8 +243,10 @@ export function scoreRecipe(
   const season = seasonFit(recipe, opts.season);
   const seasonScore = season > 0 ? SEASON_BONUS : season < 0 ? -OFF_SEASON_PENALTY : 0;
 
+  const rotation = ROTATION_PENALTY * Math.min(ROTATION_MAX_DECKS, opts.recentlyDealt?.get(recipe.id) ?? 0);
+
   const base = fitW * fit + 1 * love + 1.2 * moodScore(recipe, opts.mood) + 1 * pantryScore + 0.8 * liked + 1.2 * lean
-    + seasonScore + novelty;
+    + seasonScore - rotation + novelty;
   const score = base + 1.5 * pref + EXPLORE_WEIGHT * explore;
 
   const reason = pantryHits.length > 0 ? `pantry:${pantryHits[0]}` : love > 0 ? 'love' : null;
@@ -371,20 +378,17 @@ export function buildDeck(
     }
   }
 
-  // Minimums: mostly weeknight plates, and always some dishes of the season. When too few
-  // made it on taste, the best ones the deck doesn't have take the places of its weakest
-  // close (then very close) cards. Wildcards and the treat keep their places, and filling
-  // the season never takes the deck below its plates.
-  const isPlate = (s: Scored) => !!s.r.weeknightPlate;
+  // Always some dishes of the season: when too few made it on taste, the best in-season ones
+  // the deck doesn't have take the places of its weakest close (then very close) cards.
+  // Wildcards and the treat keep their places. (Healthy is the deck's mood, not a minimum.)
   const inSeason = (s: Scored) => seasonFit(s.r, opts.season) > 0;
-  const plates = Math.round(size * PLATE_SHARE);
-  const ensure = (wanted: number, fits: (s: Scored) => boolean, reason: string | null, keep: (s: Scored, add: Scored) => boolean) => {
+  const ensure = (wanted: number, fits: (s: Scored) => boolean, reason: string) => {
     for (let have = [...close, ...near, ...wild].filter(fits).length; have < wanted; have++) {
       const inDeck = [...close, ...near, ...wild];
       const pool = left(inDeck).filter(fits).sort((a, b) => nearValue(b) - nearValue(a));
       const [add] = diversePick(pool, 1, nearValue, featuresOf, inDeck);
       if (!add) return;
-      const swappable = (list: Scored[]) => list.filter((s) => !fits(s) && s.reason !== 'treat' && !keep(s, add))
+      const swappable = (list: Scored[]) => list.filter((s) => !fits(s) && s.reason !== 'treat')
         .sort((a, b) => a.value - b.value)[0];
       const fromNear = swappable(near);
       const out = fromNear ?? swappable(close);
@@ -393,14 +397,10 @@ export function buildDeck(
       list.splice(list.indexOf(out), 1, add);
       add.tier = out.tier;
       add.value = add.tier === 'close' ? closeValue(add) : nearValue(add);
-      if (reason) add.reason ??= reason;
+      add.reason ??= reason;
     }
   };
-  ensure(plates, isPlate, null, () => false);
-  if (opts.season) {
-    const platesNow = () => [...close, ...near, ...wild].filter(isPlate).length;
-    ensure(Math.round(size * SEASONAL_SHARE), inSeason, 'season', (out, add) => isPlate(out) && !isPlate(add) && platesNow() <= plates);
-  }
+  if (opts.season) ensure(Math.round(size * SEASONAL_SHARE), inSeason, 'season');
 
   // Order: very close and close alternate, best first (the first card both say yes to wins);
   // wildcards a third and three quarters of the way in.

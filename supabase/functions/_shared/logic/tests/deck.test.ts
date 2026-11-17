@@ -212,20 +212,16 @@ test('season: at least 3 of 12 cards are dishes of the season, and out-of-season
   assert.ok(anySeason.every((c) => c.reason !== 'season'));
 });
 
-test('weeknight plates: at least 7 of 12 cards, and the season rule never takes the deck below that', () => {
-  // Non-plates fit the goals better, so on taste and fit alone no plate would make it.
-  const recipes = [
-    ...Array.from({ length: 20 }, (_, i) => recipe(`project ${i}`, { features: [`dish:p${i}`] })),
-    ...Array.from({ length: 10 }, (_, i) => recipe(`plate ${i}`, { weeknightPlate: true, proteinGPerServing: 25, features: [`sauce:s${i}`] })),
-    ...Array.from({ length: 5 }, (_, i) => recipe(`summer ${i}`, { seasons: ['summer'], proteinGPerServing: 20, features: [`starch:w${i}`] })),
-  ];
-  const deck = buildDeck(recipes, [member()], new Map(), { random: fixed, season: 'summer' });
-  const byId = new Map(recipes.map((r) => [r.id, r]));
-  assert.equal(deck.length, 12);
-  assert.ok(deck.filter((c) => byId.get(c.recipeId)!.weeknightPlate).length >= 7);
-  assert.ok(deck.filter((c) => c.recipeId.startsWith('summer')).length >= 3);
-  assert.equal(deck.filter((c) => c.tier === 'wild').length, 2);
-  // Without plates in the library, nothing changes.
-  const none = buildDeck(recipes.filter((r) => !r.weeknightPlate), [member()], new Map(), { random: fixed });
-  assert.equal(none.length, 12);
+test('rotation: recipes dealt lately without being chosen give way, up to a limit', () => {
+  const recipes = Array.from({ length: 30 }, (_, i) => recipe(`r${i}`, { proteinGPerServing: 40 - i * 0.1, features: [`dish:d${i}`] }));
+  const first = buildDeck(recipes, [member()], new Map(), { random: fixed });
+  const shown = new Map(first.map((c) => [c.recipeId, 1]));
+  const second = buildDeck(recipes, [member()], new Map(), { random: fixed, recentlyDealt: shown });
+  const again = second.filter((c) => shown.has(c.recipeId)).length;
+  assert.ok(again < first.length / 2, `${again} of ${first.length} cards came back`);
+  assert.notEqual(second[0].recipeId, first[0].recipeId);
+  // Dealt many times counts like ROTATION_MAX_DECKS: a strong favourite still comes back.
+  const favourite = recipes.map((r, i) => (i === 0 ? { ...r, proteinGPerServing: 40, features: ['dish:fav'] } : r));
+  const many = buildDeck(favourite, [member({ weights: new Map([['dish:fav', 3]]) })], new Map(), { random: fixed, recentlyDealt: new Map([['r0', 50]]) });
+  assert.ok(many.some((c) => c.recipeId === 'r0'));
 });

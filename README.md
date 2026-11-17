@@ -17,8 +17,8 @@ supabase/
   migrations/           schema, server rules (matching, no match, lists), RLS, cron
   seed.sql              ingredient catalogue (EN/FR/IT) and its grocery products
   personal/             one-off data for a household (a frequently-bought list, a head start for usuals)
-  seed_library.sql      409 seed recipes, generated from seed/recipes.json (don't edit); the app
-                        shows our 300 own ones, the 109 taken from recipe sites are hidden
+  seed_library.sql      509 seed recipes, generated from seed/recipes.json (don't edit); the app
+                        shows our 400 own ones, the 109 taken from recipe sites are hidden
   seed/                 the seed library source: recipes.json + review sheet
   functions/            edge functions (Deno)
     deal-deck/          scores the library and deals tonight's 12 cards
@@ -48,7 +48,7 @@ Key rules from the handover, and where they live:
 | After a match, "What do you already have?": probably-owned items ticked (staples, bought recently, already listed), the rest goes to the list | `components/AddToListSheet.tsx`, `proposeListItems()`; several meals fold into one line per product and unit (`combineProposals()`) |
 | Just-me deck skips matching | `on_swipe()` |
 | One pot; each plate is that person's servings (1 by default); fits = calories within 20% of target and protein at least 85% | `logic/portions.ts`, `my_portion()` |
-| 12 cards in three tiers, at least 7 of them weeknight plates (≤ 30 min cooking, ≤ 2 pans, a base, 25 g+ protein, 500–900 kcal: `classify.ts`) and at least 3 dishes of the season (spring, summer, autumn or winter, from their season tags or main ingredients; out-of-season ones rank lower): 5 very close to everyone's taste, 5 close (may lean to one person, labelled), 2 wildcards that fit everyone's calorie and protein goals but take liberties with taste; never/diet/time/recently-cooked filters | `logic/deck.ts` |
+| 12 cards in three tiers, at least 3 of them dishes of the season; a recipe dealt in the last 14 days without being chosen gives way to others (up to 3 decks' worth, `ROTATION_*` in `deck.ts`), so consecutive decks differ (spring, summer, autumn or winter, from their season tags or main ingredients; out-of-season ones rank lower): 5 very close to everyone's taste, 5 close (may lean to one person, labelled), 2 wildcards that fit everyone's calorie and protein goals but take liberties with taste; never/diet/time/recently-cooked filters | `logic/deck.ts` |
 | Recommendation: taste (profile averaged per kind of feature) and diet kept apart: passes on dishes that don't fit someone's goals barely count against them, and how strictly they stick to goals only sets how much fit weighs; an exploration bonus for unknown kinds of dish, varied decks, and a treat slot for people who mind their diet | `logic/recommend.ts`, `logic/deck.ts` |
 | Taste profile from every recorded choice: deck swipes (pass reasons: not tonight / too long / had recently count nothing, not for me in full), a 20-card taste quiz in onboarding (with undo, and "I like it, but not often": a like for taste, and that kind of dish becomes occasional: one per deck at most, none within 14 days of eating one), cooked meals and a rating after eating (loved +2 … not again −2); older choices fade (half-life 180 days); shown on the Us tab | `logic/profile.ts`, `taste_signals`, `screens/onboarding/TasteQuiz.tsx` |
 | Allergies are a person's but rule out a recipe for every deck they eat from, on any line (optional and staples too). People pick from the EU's 14 allergens, each linked to the catalogue ingredients and preparations that contain it (`allergen_ingredients`, in seed.sql), or any catalogue item | `member_allergies`, `passesHardFilters()`, `components/Allergies.tsx` |

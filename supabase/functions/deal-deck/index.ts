@@ -3,7 +3,7 @@
 // Body: { who_eating: uuid[], max_minutes?: number, mood?: Mood, filters?: DeckFilters, for_date?: 'YYYY-MM-DD' }
 
 import { corsHeaders, json, requireMember, serviceClient } from '../_shared/http.ts';
-import { buildDeck, OCCASIONAL_DAYS, type CandidateRecipe, type DeckMember, type Diet, type Mood, type RecipeHistory } from '../_shared/logic/deck.ts';
+import { buildDeck, OCCASIONAL_DAYS, ROTATION_DAYS, type CandidateRecipe, type DeckMember, type Diet, type Mood, type RecipeHistory } from '../_shared/logic/deck.ts';
 import { deckFacets, normaliseFilters } from '../_shared/logic/deckFilters.ts';
 import { classifyRow, CLASSIFY_COLUMNS, isHealthy, seasonOfMonth, storedClassification, type ClassifiableRow } from '../_shared/logic/classify.ts';
 import { Catalog, type CatalogEntry } from '../_shared/logic/ingredients.ts';
@@ -127,7 +127,6 @@ Deno.serve(async (req) => {
       facets: { ...deckFacets(classification), kcal: r.kcal_per_serving, proteinG: r.protein_g_per_serving },
       intents: classification.meal_intents,
       seasons: classification.seasons,
-      weeknightPlate: classification.weeknight_plate,
     };
   });
 
@@ -207,6 +206,18 @@ Deno.serve(async (req) => {
       && Math.abs(Date.parse(`${m.for_date}T12:00:00Z`) - Date.parse(`${forDate}T12:00:00Z`)) < OCCASIONAL_DAYS * dayMs)
     .flatMap((m) => kindKeys(m.recipe_id, featuresById.get(m.recipe_id))));
 
+  // Rotation: what recent decks dealt without it being chosen gives way to other recipes.
+  const rotationCutoff = new Date(Date.parse(`${forDate}T12:00:00Z`) - ROTATION_DAYS * 86_400_000).toISOString().slice(0, 10);
+  const dealt = await admin.from('deck_cards').select('recipe_id, decks!inner(household_id, for_date, matched_recipe_id)')
+    .eq('decks.household_id', householdId).gte('decks.for_date', rotationCutoff);
+  if (dealt.error) return json({ error: dealt.error.message }, 500);
+  const recentlyDealt = new Map<string, number>();
+  for (const c of dealt.data ?? []) {
+    const deck = (Array.isArray(c.decks) ? c.decks[0] : c.decks) as { matched_recipe_id: string | null } | null;
+    if (deck?.matched_recipe_id === c.recipe_id) continue;
+    recentlyDealt.set(c.recipe_id as string, (recentlyDealt.get(c.recipe_id as string) ?? 0) + 1);
+  }
+
   const cards = buildDeck(candidates, members, history, {
     mood,
     maxMinutes,
@@ -215,6 +226,7 @@ Deno.serve(async (req) => {
     exclude,
     lean,
     recentKinds,
+    recentlyDealt,
     // The evening's season (from its month, in the household's time zone): dishes of the season come first.
     season: seasonOfMonth(Number(forDate.slice(5, 7))),
     // Recipe lines are named by catalogue ingredient ("chicken breast"); list

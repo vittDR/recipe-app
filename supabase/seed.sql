@@ -479,18 +479,32 @@ update public.products
 set aliases = (select array(select distinct unnest(aliases || '{"cured ham","jambon de Bayonne"}'::text[])))
 where household_id is null and ingredient = 'prosciutto';
 
+-- For the quick, healthy dishes.
+insert into public.ingredient_catalog
+  (name, name_fr, name_it, aliases, default_aisle, is_staple, kcal_100g, protein_100g, grams_per_unit, diet_class)
+values
+  ('canned fava beans', 'fèves cuites en conserve', 'fave secche in scatola', '{"ful medames","foul medames","ful","foul","fava beans, canned"}', 'pantry', false, 71, 5.5, 250, 'veg'),
+  ('chilli oil', 'huile pimentée', 'olio al peperoncino', '{"chili oil","chilli crisp","chili crisp","hong you","red chilli oil"}', 'pantry', false, 820, 1, null, 'veg'),
+  ('chipotle paste', 'pâte de chipotle', 'pasta di chipotle', '{"chipotle in adobo","chipotles in adobo","chipotle chillies in adobo","chipotle"}', 'pantry', false, 90, 2, null, 'veg'),
+  ('dried mint', 'menthe séchée', 'menta secca', '{"dried mint leaves","nane"}', 'spices', true, 285, 20, null, 'veg'),
+  ('nigella seeds', 'graines de nigelle', 'semi di nigella', '{"kalonji","black onion seeds","nigelle"}', 'spices', true, 345, 16, null, 'veg'),
+  ('red pepper paste', 'pâte de poivron rouge', 'pasta di peperoni rossi', '{"biber salçası","biber salcasi","turkish pepper paste","pepper paste"}', 'pantry', false, 70, 3, null, 'veg'),
+  ('tempeh', 'tempeh', 'tempeh', '{"tempe"}', 'dairy_eggs', false, 192, 20.3, 200, 'veg')
+on conflict (name) do nothing;
+
 -- Exotic: not sold in most French supermarkets, so it needs an Asian or
 -- specialty shop (or online). Recipes keep the real ingredient; the flag
 -- drives the "Everyday ingredients" filter. Mirin is sold in supermarkets.
 update public.ingredient_catalog set exotic = (name in (
   'aji amarillo paste', 'ajwain', 'aleppo pepper', 'amba', 'andouille sausage', 'berbere', 'black vinegar',
-  'cassava', 'chaat masala', 'char siu', 'cheese curds', 'curry leaves', 'daikon', 'dark soy sauce', 'dashi',
-  'doenjang', 'doubanjiang', 'dried fenugreek leaves', 'dried mexican chillies', 'fermented black beans',
-  'galangal', 'glass noodles', 'gochugaru', 'gochujang', 'gravy mix', 'green papaya', 'injera', 'jerk seasoning',
-  'kaffir lime leaves', 'kashmiri chili powder', 'kecap manis', 'kefalotyri', 'kielbasa', 'kimchi',
-  'korean rice cakes', 'moong dal', 'msg', 'nasi goreng paste', 'perilla leaves', 'pomegranate molasses',
-  'queso fresco', 'rice syrup', 'rice wine', 'scotch bonnet', 'sev', 'sichuan pepper', 'ssamjang',
-  'tamarind paste', 'thai basil', 'water chestnuts', 'wood ear mushrooms'
+  'canned fava beans', 'cassava', 'chaat masala', 'char siu', 'cheese curds', 'chipotle paste', 'curry leaves',
+  'daikon', 'dark soy sauce', 'dashi', 'doenjang', 'doubanjiang', 'dried fenugreek leaves',
+  'dried mexican chillies', 'fermented black beans', 'galangal', 'glass noodles', 'gochugaru', 'gochujang',
+  'gravy mix', 'green papaya', 'injera', 'jerk seasoning', 'kaffir lime leaves', 'kashmiri chili powder',
+  'kecap manis', 'kefalotyri', 'kielbasa', 'kimchi', 'korean rice cakes', 'moong dal', 'msg', 'nasi goreng paste',
+  'nigella seeds', 'perilla leaves', 'pomegranate molasses', 'queso fresco', 'red pepper paste', 'rice syrup',
+  'rice wine', 'scotch bonnet', 'sev', 'sichuan pepper', 'ssamjang', 'tamarind paste', 'tempeh', 'thai basil',
+  'water chestnuts', 'wood ear mushrooms'
 ));
 
 -- Seasonal ingredients: only the produce people think of as seasonal, the
@@ -844,7 +858,14 @@ from (values
   ('water chestnuts', '14e882c5-439c-51d1-9f3c-b88b6bb35365'::uuid),
   ('white beans', '834148b5-6ba7-50e6-b6ab-2eece1c86951'::uuid),
   ('white pepper', '4d7ecda0-0066-5441-920a-5cd9be836d8b'::uuid),
-  ('wood ear mushrooms', '07889ea6-2acd-5bc2-b985-eaa4d0afddb9'::uuid)
+  ('wood ear mushrooms', '07889ea6-2acd-5bc2-b985-eaa4d0afddb9'::uuid),
+  ('canned fava beans', '3df27862-c411-5e97-a4ae-77e365b186f2'::uuid),
+  ('chilli oil', '8f502911-a953-5976-8a1d-b434b86cef6b'::uuid),
+  ('chipotle paste', '8e402c3c-5c56-5388-b540-91e7eeb30710'::uuid),
+  ('dried mint', '975ca1d6-3ab0-5958-b27a-d1e41fbd502b'::uuid),
+  ('nigella seeds', 'd14331e1-cd42-535b-a62b-0ee0cacdb615'::uuid),
+  ('red pepper paste', '81de54e5-5064-525d-9357-e6c8068def10'::uuid),
+  ('tempeh', 'd53a43ec-6c76-5e74-b8c8-91495895580a'::uuid)
 ) as v(name, id)
 where c.name = v.name and c.id <> v.id;
 
@@ -1299,7 +1320,14 @@ from (values
   ('water chestnuts', 0.1, 12, 2.5, '{}'),
   ('white beans', 0.5, 13.5, 6.3, '{protein:legumes}'),
   ('white pepper', 2.1, 68.6, 26, '{}'),
-  ('wood ear mushrooms', 0.7, 80, 70, '{}')
+  ('wood ear mushrooms', 0.7, 80, 70, '{}'),
+  ('canned fava beans', 0.2, 12.4, 3.7, '{protein:legumes}'),
+  ('chilli oil', 88, 4, 1, '{sauce:chilli_based,heat:0.3,liquid}'),
+  ('chipotle paste', 3, 13, 5, '{sauce:chilli_based,heat:0.2}'),
+  ('dried mint', 6, 52, 30, '{}'),
+  ('nigella seeds', 22, 44, 11, '{}'),
+  ('red pepper paste', 0.5, 13, 4, '{}'),
+  ('tempeh', 10.8, 7.6, 4.0, '{protein:soy}')
 ) as v(name, fat, carbs, fiber, traits)
 where c.name = v.name
   and (c.fat_100g, c.carbs_100g, c.fiber_100g, c.traits) is distinct from (v.fat::real, v.carbs::real, v.fiber::real, v.traits::text[]);
@@ -1347,7 +1375,8 @@ from (values
   ('milk', 'puff pastry'), ('milk', 'queso fresco'), ('sulphites', 'raisins'), ('fish', 'sardines'),
   ('fish', 'sea bass'), ('fish', 'smoked haddock'), ('fish', 'smoked mackerel'), ('fish', 'smoked salmon'),
   ('gluten', 'soba noodles'), ('fish', 'sole'), ('molluscs', 'squid'), ('sesame', 'tahini'),
-  ('fish', 'trout'), ('fish', 'tuna steak'), ('gluten', 'udon noodles'), ('nuts', 'walnuts')
+  ('fish', 'trout'), ('fish', 'tuna steak'), ('gluten', 'udon noodles'), ('nuts', 'walnuts'),
+  ('soy', 'tempeh')
 ) as v(allergen, ingredient)
 join public.ingredient_catalog c on c.name = v.ingredient
 on conflict do nothing;
