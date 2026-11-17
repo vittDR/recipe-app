@@ -11,6 +11,7 @@ import {
 } from '../components/ui.tsx';
 import { useI18n } from '../i18n/index.tsx';
 import { pickDeckArt } from '../lib/deckArt.ts';
+import { loadLastSettings, saveLastSettings, type LastSettings } from '../lib/deckSettings.ts';
 import { recipeTitle } from '../lib/recipeText.ts';
 import { isoWeekday, todayIn, useLive, useSave } from '../lib/hooks.ts';
 import { comingDays, cooksOn, eveningPath, useEveningName } from '../lib/plan.ts';
@@ -38,8 +39,10 @@ interface TonightData {
   dates: PlanDate[];
   /** A recent meal this person ate and hasn't said how it was. */
   toRate: RateMeal | null;
-  /** The mood this person says yes to most, as the deck's silent default. */
+  /** The mood this person says yes to most, as the deck's silent default when nothing was picked before. */
   favouriteMood: Mood;
+  /** The settings of the last deck this person dealt, on any device. */
+  lastDeck: LastSettings | null;
 }
 
 /** Meals from this many days back are offered for a rating. */
@@ -58,6 +61,7 @@ export function TonightScreen() {
   const shared = partners.length > 0;
 
   const [picked, setPicked] = useState<DeckSettings | null>(null);
+  const [remembered, setRemembered] = useState(() => loadLastSettings(userId!));
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [listOpen, setListOpen] = useState(false);
   const [weekOpen, setWeekOpen] = useState(false);
@@ -84,7 +88,7 @@ export function TonightScreen() {
   const { data, loading, set } = useLive<TonightData>(
     `tonight:${household!.id}:${today}:${selected}`,
     async () => {
-      const [decks, meals, plan, dates, recent, rated, liked] = await Promise.all([
+      const [decks, meals, plan, dates, recent, rated, liked, mine] = await Promise.all([
         supabase.from('decks').select('*').eq('household_id', household!.id).eq('for_date', selected)
           .neq('status', 'closed').order('created_at', { ascending: false }).limit(1),
         supabase.from('meals').select(`id, for_date, recipe_id, status, deck_id, listed_at, deck:decks(who_eating), recipe:recipes(${MEAL_RECIPE})`)
@@ -98,6 +102,8 @@ export function TonightScreen() {
           .gte('created_at', `${daysBefore(today, RATE_DAYS + 7)}T00:00:00Z`),
         supabase.from('swipes').select('deck:decks(mood)').eq('user_id', userId!).neq('verdict', 'pass')
           .order('created_at', { ascending: false }).limit(150),
+        supabase.from('decks').select('max_minutes, mood, filters, created_at').eq('household_id', household!.id)
+          .eq('started_by', userId!).order('created_at', { ascending: false }).limit(1),
       ]);
       const ratedMeals = new Set((must(rated) as { meal_id: string }[]).map((x) => x.meal_id));
       type RecentMeal = RateMeal & { for_date: string; status: string; deck: { who_eating: string[] } | null };
@@ -120,6 +126,7 @@ export function TonightScreen() {
         if (m && m !== 'any' && MOODS.includes(m)) counts.set(m, (counts.get(m) ?? 0) + 1);
       }
       const [top, second] = [...counts].sort((a, b) => b[1] - a[1]);
+      const last = (must(mine) as Pick<Deck, 'max_minutes' | 'mood' | 'filters' | 'created_at'>[])[0];
       return {
         forDate: selected,
         deck,
@@ -132,6 +139,7 @@ export function TonightScreen() {
         toRate: toRate && { id: toRate.id, recipe_id: toRate.recipe_id, recipe: toRate.recipe },
         // Only a clear preference: enough yeses, and well ahead of the next mood.
         favouriteMood: top && top[1] >= 8 && top[1] >= 2 * (second?.[1] ?? 0) ? top[0] : 'any',
+        lastDeck: last ? { maxMinutes: last.max_minutes, mood: last.mood ?? 'any', filters: last.filters ?? {}, at: last.created_at } : null,
       };
     },
     [
@@ -141,8 +149,18 @@ export function TonightScreen() {
     ],
   );
 
-  // Deck defaults are silent: both of us, under an hour, the favourite mood.
-  const settings: DeckSettings = picked ?? { who: 'both', maxMinutes: 60, mood: data?.favouriteMood ?? 'any', filters: {} };
+  // Deck defaults are silent: both of us, with the time, mood and filters this
+  // person last picked (here, or in the last deck they dealt anywhere, whichever
+  // is newer); the first time, under an hour and the favourite mood.
+
+  const last = [remembered, data?.lastDeck].filter((x): x is LastSettings => !!x).sort((a, b) => b.at.localeCompare(a.at))[0];
+  const settings: DeckSettings = picked ?? (last
+    ? { who: 'both', maxMinutes: last.maxMinutes, mood: last.mood, filters: last.filters }
+    : { who: 'both', maxMinutes: 60, mood: data?.favouriteMood ?? 'any', filters: {} });
+  const pick = (s: DeckSettings) => {
+    setPicked(s);
+    setRemembered(saveLastSettings(userId!, s));
+  };
 
   // Meals still to cook this week, tonight first: what the groceries card covers.
   const planned = useMemo(() => (data?.meals ?? [])
@@ -468,7 +486,7 @@ export function TonightScreen() {
         {rating}
         {main}
       </div>
-      <DeckSettingsSheet open={settingsOpen} onClose={() => setSettingsOpen(false)} settings={settings} onChange={setPicked}
+      <DeckSettingsSheet open={settingsOpen} onClose={() => setSettingsOpen(false)} settings={settings} onChange={pick}
         shared={shared} dealing={dealing} error={error} onDeal={() => void deal()} />
       <WeekSheet open={weekOpen} onClose={() => setWeekOpen(false)} days={stripDays} today={today}
         onToggle={(d, c) => void toggleDay(d, c)} back={eveningPath(selected, today)} />

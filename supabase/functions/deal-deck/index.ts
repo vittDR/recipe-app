@@ -124,7 +124,7 @@ Deno.serve(async (req) => {
       proteinGPerServing: r.protein_g_per_serving,
       features,
       healthy: isHealthy(r.tags ?? [], classification),
-      facets: deckFacets(classification),
+      facets: { ...deckFacets(classification), kcal: r.kcal_per_serving, proteinG: r.protein_g_per_serving },
       intents: classification.meal_intents,
       seasons: classification.seasons,
       weeknightPlate: classification.weeknight_plate,

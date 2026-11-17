@@ -1,9 +1,10 @@
 // Tonight's deck settings: who eats, time, mood, and "more filters" (protein,
-// cuisine, base, spice) in a second view of the same sheet. Secondary by
+// cuisine, base, spice, calories and protein per serving) in a second view of
+// the same sheet. Secondary by
 // design: a one-line summary on Ce soir opens them in a sheet.
 import { useState } from 'react';
 import {
-  type DeckFilters, FILTER_BASES, FILTER_CUISINES, FILTER_PROTEINS, FILTER_SPICES, filterCount,
+  type DeckFilters, FILTER_BASES, FILTER_CUISINES, FILTER_PROTEINS, FILTER_SPICES, filterCount, MAX_KCAL_LIMIT, MIN_PROTEIN_LIMIT,
 } from '@logic/deckFilters.ts';
 import type { Mood } from '../lib/types.ts';
 import { useI18n } from '../i18n/index.tsx';
@@ -34,6 +35,8 @@ export function useDeckLabels() {
     ...(f?.cuisines ?? []).map((c) => t(`tonight.filters.cuisines.${c}`)),
     ...(f?.bases ?? []).map((b) => t(`tonight.filters.bases.${b}`)),
     ...(f?.spice && f.spice !== 'any' ? [t(`tonight.filters.spices.${f.spice}`)] : []),
+    ...(f?.maxKcal ? [t('tonight.filters.kcalShort', { n: f.maxKcal })] : []),
+    ...(f?.minProteinG ? [t('tonight.filters.proteinShort', { n: f.minProteinG })] : []),
   ];
   const filters = (f: DeckFilters | null | undefined) => {
     const names = filterNames(f);
@@ -69,6 +72,30 @@ function toggle<T extends string>(list: T[] | undefined, v: T): T[] | undefined 
   return next.length ? next : undefined;
 }
 
+/** A whole number typed in a box with its unit after it; emptied, it is no filter. */
+function AmountInput({ label, unit, value, max, onChange }: {
+  label: string;
+  unit: string;
+  value: number | undefined;
+  max: number;
+  onChange: (v: number | undefined) => void;
+}) {
+  return (
+    <label className="field amount-field">
+      <span className="field__label">{label}</span>
+      <span className="amount-input">
+        <input className="input tabular" type="text" inputMode="numeric" pattern="[0-9]*" placeholder="—"
+          value={value ?? ''}
+          onChange={(e) => {
+            const n = Number.parseInt(e.target.value.replace(/\D/g, ''), 10);
+            onChange(Number.isFinite(n) && n > 0 ? Math.min(n, max) : undefined);
+          }} />
+        <span className="amount-input__unit" aria-hidden>{unit}</span>
+      </span>
+    </label>
+  );
+}
+
 export function DeckSettingsSheet({ open, onClose, settings, onChange, shared, onDeal, dealing, error }: {
   open: boolean;
   onClose: () => void;
@@ -101,20 +128,12 @@ export function DeckSettingsSheet({ open, onClose, settings, onChange, shared, o
   );
 
   if (view === 'filters') {
+    // A list that only selects: "OK" in the title row takes you back to the deck.
     return (
-      <Sheet open={open} onClose={close} label={t('tonight.filters.title')}>
-        <SheetHeader
-          title={(
-            <span className="row">
-              <button type="button" className="icon-btn" aria-label={t('app.back')} onClick={() => setView('main')}>
-                <Icon name="back" />
-              </button>
-              {t('tonight.filters.title')}
-            </span>
-          )}
-          action={count > 0 ? <Button small variant="text" onClick={() => setFilters({})}>{t('tonight.filters.clear')}</Button> : undefined}
-        />
-        <Section label={t('tonight.filters.protein')} hint={t('tonight.filters.anyHint')} flush>
+      <Sheet open={open} onClose={close} label={t('tonight.filters.heading')}>
+        <SheetHeader title={t('tonight.filters.heading')}
+          action={<Button small variant="text" onClick={() => setView('main')}>{t('app.done')}</Button>} />
+        <Section label={t('tonight.filters.protein')} flush>
           <div className="chips">
             {FILTER_PROTEINS.map((p) => (
               <Chip key={p} pressed={!!f.proteins?.includes(p)} onClick={() => setFilters({ ...f, proteins: toggle(f.proteins, p) })}>
@@ -123,6 +142,14 @@ export function DeckSettingsSheet({ open, onClose, settings, onChange, shared, o
             ))}
           </div>
         </Section>
+        <section className="section">
+          <div className="amount-fields">
+            <AmountInput label={t('tonight.filters.maxKcal')} unit={t('tonight.filters.kcalPerServing')} value={f.maxKcal} max={MAX_KCAL_LIMIT}
+              onChange={(v) => setFilters({ ...f, maxKcal: v })} />
+            <AmountInput label={t('tonight.filters.minProtein')} unit={t('tonight.filters.gPerServing')} value={f.minProteinG} max={MIN_PROTEIN_LIMIT}
+              onChange={(v) => setFilters({ ...f, minProteinG: v })} />
+          </div>
+        </section>
         <Section label={t('tonight.filters.cuisine')}>
           <div className="chips">
             {FILTER_CUISINES.map((c) => (
@@ -151,7 +178,9 @@ export function DeckSettingsSheet({ open, onClose, settings, onChange, shared, o
             ))}
           </div>
         </Section>
-        {deal}
+        {count > 0 && (
+          <Button className="mt-4" variant="text" onClick={() => setFilters({})}>{t('tonight.filters.clearAll')}</Button>
+        )}
       </Sheet>
     );
   }

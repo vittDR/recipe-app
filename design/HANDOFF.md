@@ -86,7 +86,7 @@ These came out of review rounds and are easy to get wrong. They matter more than
 1. **One deck per household per evening.** While a deck is running nobody can start another. A new deck is only possible after a no-match.
 2. **No veto, no tie-break.** If no recipe gets everyone's yes, show "Pas de match" and offer a new deck. The next deck should learn from what each person liked.
 3. **Matching**: a recipe matches when every eater said yes (indispensable counts as a yes and boosts ranking). First match wins.
-4. **Deck defaults are silent.** Nous deux · Moins d'1 h · the user's favourite category (from their swipe history), falling back to "Tout". Never label them as "based on your habits".
+4. **Deck defaults are silent.** Nous deux, then the time, mood and filters the user last picked. The first time: Moins d'1 h · their favourite category (from their swipe history), falling back to "Tout". Never label them as "based on your habits".
 5. **Deck settings are secondary.** They live in a sheet behind a one-line summary; the home screen is about dealing the deck.
 6. **Swiping for future days exists** (a planned evening can be decided ahead). That is why Ce soir has a "decided + upcoming meals" state and the groceries card covers every planned meal, not only tonight.
 7. **After a match at 2 pm the user must be able to leave.** The match screen has a × that lands on the decided home. Nothing forces cooking now.
@@ -126,7 +126,7 @@ These came out of review rounds and are easy to get wrong. They matter more than
 | --- | --- |
 | Deck lifecycle per household per date: none / open / each member's progress / matched / no match | `decks` with status and `deck_members(progress, finished_at)`; enforce one open deck per household per date |
 | Planned meals per date (tonight and future) | `meals(household_id, date, recipe_id, decided_at)` |
-| Default deck settings | Favourite category = most-liked category over recent swipes; fallback "Tout" |
+| Default deck settings | The user's last pick (this device, or their last dealt deck, whichever is newer); first time: favourite category = most-liked category over recent swipes, fallback "Tout" |
 | "Probably at home" | Recent purchases (cleared cart items) + household staples list |
 | Allergies | `member_allergies(member_id, allergen_group_id or ingredient_id)`; deck filter is the union across eaters |
 | Linked ingredients | Catalog links: `ingredient_links(parent_id, child_id)` or allergen groups; preparations link to their components |

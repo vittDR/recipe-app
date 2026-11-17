@@ -49,3 +49,18 @@ test('what was asked for is not learnt from', () => {
   assert.ok(!asked('dish:curry'));
   assert.ok(!askedFor({})('protein:poultry'));
 });
+
+test('calories and protein per serving', () => {
+  const dish = { proteins: [], cuisines: [], bases: [], heat: null, kcal: 550, proteinG: 32 };
+  assert.ok(matchesDeckFilters(dish, { maxKcal: 600, minProteinG: 30 }));
+  assert.ok(matchesDeckFilters(dish, { maxKcal: 550, minProteinG: 32 }));
+  assert.ok(!matchesDeckFilters(dish, { maxKcal: 500 }));
+  assert.ok(!matchesDeckFilters(dish, { minProteinG: 35 }));
+  // Unknown numbers never pass a number asked for.
+  assert.ok(!matchesDeckFilters({ ...dish, kcal: null }, { maxKcal: 600 }));
+  assert.ok(!matchesDeckFilters({ ...dish, proteinG: undefined }, { minProteinG: 10 }));
+  assert.ok(matchesDeckFilters({ ...dish, kcal: null, proteinG: null }, {}));
+  assert.deepEqual(normaliseFilters({ maxKcal: '612.4', minProteinG: 0 }), { maxKcal: 612 });
+  assert.deepEqual(normaliseFilters({ maxKcal: -5, minProteinG: 999 }), { minProteinG: 200 });
+  assert.equal(filterCount({ maxKcal: 600, minProteinG: 30, proteins: ['chicken'] }), 3);
+});
