@@ -8,31 +8,62 @@ recipes taken from recipe sites are not counted or changed by this plan.
 
 ## What the library is for
 
-- **Healthy first.** DINEAMITE is a weeknight-dinner app, so most of the
-  library is healthy by the app's rule: a protein, a base, a real portion of
-  vegetables, nothing fried, creamy or cheesy
-  ([recipe-classification.md](recipe-classification.md)); "healthy" is a mood
-  you can pick for the deck. Richer dishes and weekend projects stay, in the
-  minority.
+Recipes you actually cook on a weeknight: more or less healthy, quick, high in
+protein and made from what the supermarket sells. Think chicken in a sauce
+over rice with vegetables, or noodles with a protein. Cuisines give the
+library its variety, but they come second to that.
+
 - **Weekly cooking for two in France.** Safe flavours are fine. A dish is
   distinctive because it's the real version of something, not because it
   uses rare ingredients.
-- **The supermarket first, but authentic.** Most recipes use what a Carrefour
-  or Monoprix sells, its world-food aisle included (soy sauce, mirin, curry
-  paste). When a dish really needs something else (doubanjiang, gochugaru,
-  curry leaves), the recipe keeps it and the catalogue flags it `exotic`, so
-  the "Everyday ingredients" filter leaves the recipe out. Never swap it for a
-  supermarket stand-in.
-- **Protein is a guide, not a rule.** Most dishes land at 25 g or more, but a
-  dish is written the way it's really made; protein isn't bolted on.
-- **Calories.** Hearty dishes over 1,000 kcal are fine, as long as most of the
-  library sits between 500 and 900 kcal a serving.
+- **The supermarket first.** Recipes use what a Carrefour or Monoprix sells,
+  its world-food aisle included (soy sauce, oyster sauce, mirin, curry paste,
+  harissa). When a dish needs something else and a supermarket ingredient
+  does the same job, use the supermarket one: dry sherry for Shaoxing wine,
+  soy sauce with a little sugar for dark soy, chilli flakes or paprika for
+  Korean or Kashmiri chilli, lime for tamarind. Keep a specialty ingredient
+  only when the dish isn't itself without it, and then the catalogue flags it
+  `exotic` and the "Everyday ingredients" filter leaves the recipe out.
+- **Calories.** Most of the library sits between 500 and 900 kcal a serving.
+  Portions are each dish's normal ones; the app scales them to each eater.
 - **Air fryer.** Many quick dishes use it.
+
+## Weeknight rules
+
+A new recipe meets all six. Recipes already in the library are checked
+against them too: one that fails a single rule is reworked when that can be
+done honestly (a stand-in, more of the protein and less of the base, a side
+of vegetables), and otherwise it stays as one of the minority below.
+
+1. **Healthy** by the app's rule: a protein, a base, at least 75 g of
+   vegetables a serving, nothing fried, creamy or cheesy
+   ([recipe-classification.md](recipe-classification.md)).
+2. **Quick:** 40 min or less from start to plate (aim for 30), and not
+   `hard`. Marinating counts.
+3. **High protein** by the app's rule: at least 30 g a serving **and** at
+   least 25 % of the calories from protein. It's about what's on the plate,
+   not its size: more chicken and a little less rice, not a bigger plate.
+   Vegetarian dishes get there with eggs, tofu, Greek yogurt, cottage cheese,
+   edamame or a second protein, not with pulses alone.
+4. **Everyday ingredients:** nothing the catalogue flags `exotic`.
+5. **A short list:** at most 10 ingredient lines that aren't staples (salt,
+   pepper, oil, dried spices), and aim for 8.
+6. **The weeknight shape:** a protein, a sauce or seasoning that carries the
+   dish, a carb from the supermarket's everyday shelves and a vegetable. The
+   carbs to spread across: rice (basmati, jasmine, long-grain), egg and rice
+   noodles, udon, pasta (short and long), orzo, fresh gnocchi, potatoes and
+   sweet potatoes, couscous, bulgur, quinoa, tortillas and wraps, pitta,
+   naan, bread, and tinned beans or lentils as a side.
+
+Richer dishes, weekend projects and dishes that need a specialty ingredient
+stay in the library, in the minority. The deck learns from swipes and taste
+ratings which of them a household wants, so they aren't removed for failing
+these rules.
 
 ## Quotas
 
-The library is checked against these. None is a hard rule on a single recipe;
-they decide what the next recipe should be.
+The library is checked against these after the weeknight rules. None is a
+hard rule on a single recipe; they decide what the next recipe should be.
 
 ### Cuisines: depth over breadth
 
@@ -64,7 +95,7 @@ buckwheat, gnocchi, noodles and pulses should together be at least **20%**.
 
 ### Protein
 
-Roughly a third vegetarian (eggs, legumes, dairy and tofu, with no more than a
+Most dishes are high protein (rule 3 above). Roughly a third vegetarian (eggs, legumes, dairy and tofu, with no more than a
 third of those relying on cheese), a quarter fish and seafood, and the rest
 meat. Within meat and fish, include:
 
@@ -85,8 +116,8 @@ dishes** of its own, so the deck can always keep 3 of 12 cards for the season.
 
 ## How to add recipes
 
-1. **Pick from whatever is furthest below target:** healthy first, then
-   cuisine, base, protein and season.
+1. **Pick from whatever is furthest below target:** the weeknight rules first,
+   then cuisine, base, protein and season.
 2. **Write** with the guidelines: the dish as it's commonly made (looking at
    published versions for inspiration is fine), with quantities and steps in
    our own words. Don't name or link a source in the recipe.
