@@ -15,7 +15,7 @@
 import { type Difficulty, type Equipment } from './facets.ts';
 import { type CatalogEntry, type Catalog, estimateMacros, gramsOf, type NormalisedIngredient } from './ingredients.ts';
 
-export const CLASSIFICATION_VERSION = 7;
+export const CLASSIFICATION_VERSION = 8;
 
 export const PROTEIN_GROUPS = [
   'poultry', 'beef', 'pork', 'lamb', 'veal', 'game', 'offal', 'fish', 'shellfish', 'eggs', 'legumes', 'soy', 'dairy',
@@ -260,6 +260,7 @@ const DISH_WORDS: [DishFamily, RegExp][] = ([
   ['egg_dish', ['omelet*', 'omelette*', 'frittata', 'shakshuka', 'oeufs', 'eggs', 'uova', 'tortilla espanola', 'menemen']],
   ['dumplings', ['dumpling*', 'gyoza', 'wonton*', 'dim sum', 'momo*', 'mandu', 'pierogi', 'bao']],
 ] as [DishFamily, string[]][]).map(([f, w]) => [f, matcher(w)]);
+const PASTA_TITLE = DISH_WORDS.find(([f]) => f === 'pasta_dish')![1];
 
 // Cooking methods from steps. Specific ones first: "stir-fry" and "deep-fry" are not pan-frying.
 const METHOD_WORDS: [CookingMethod, RegExp][] = ([
@@ -393,6 +394,17 @@ export function classifyRecipe(input: ClassifyInput): RecipeClassification {
     .sort((a, b) => b[1] - a[1]).map(([name]) => name);
   const starches = new Set<StarchBase>();
   for (const [s, kcal] of starchKcal) if (kcal >= STARCH_MIN_KCAL) starches.add(s);
+  // Fresh pasta: a pasta dish by its title with no starch on the list is made
+  // from flour (lasagne verdi, tagliatelle from scratch); enough of it is the
+  // dough. Flour elsewhere thickens or coats and isn't a base.
+  if (starchKcal.size === 0 && readable && has(textKey(input.titles.join(' . ')), PASTA_TITLE)) {
+    let flourKcal = 0;
+    for (const i of required) {
+      const g = perServing(i);
+      if (g !== null && i.catalog?.name === 'flour') flourKcal += ((i.catalog.kcal_100g ?? 0) * g) / 100;
+    }
+    if (flourKcal >= STARCH_MIN_KCAL) starches.add('pasta');
+  }
   const sauces = new Set<SauceFamily>();
   for (const [f, { grams, min }] of sauceGrams) if (grams >= min) sauces.add(f);
 
