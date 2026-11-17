@@ -30,6 +30,7 @@ insert into auth.users (id, email, raw_user_meta_data) values
   ('00000000-0000-0000-0000-00000000a5f2', 'dmitri@example.com', '{"first_name":"Dmitri"}');
 
 select id as seed_recipe from recipes where household_id is null order by title limit 1 \gset
+select id as seed_other from recipes where household_id is null order by title offset 1 limit 1 \gset
 
 select pg_temp.act_as('00000000-0000-0000-0000-00000000a5f1');
 select create_household('Chez Carla', 'Europe/Paris') as hc \gset
@@ -52,6 +53,23 @@ select pg_temp.refused(format('insert into taste_signals (recipe_id, kind, value
 select pg_temp.refused(format('insert into taste_signals (recipe_id, kind, value) values (%L, %L, %L)', :'seed_recipe', 'starter', 'meh'),
                        'only known values');
 
+-- Quiz pairs: one answer per pair of dishes, answering again replaces it.
+insert into taste_signals (recipe_id, other_recipe_id, kind, value) values (:'seed_recipe', :'seed_other', 'pair', 'a');
+insert into taste_signals (recipe_id, other_recipe_id, kind, value) values (:'seed_recipe', :'seed_other', 'pair', 'either')
+  on conflict (user_id, key) do update set value = excluded.value;
+select pg_temp.check((select count(*) = 1 and min(value) = 'either' from taste_signals where kind = 'pair'), 'answering a pair again replaces it');
+-- The same dish in another pair, and as a quiz card, are other answers.
+insert into taste_signals (recipe_id, other_recipe_id, kind, value) values (:'seed_recipe', :'recipe_c', 'pair', 'neither');
+select pg_temp.check((select count(*) = 4 from taste_signals), 'a dish can be in several pairs');
+select pg_temp.refused(format('insert into taste_signals (recipe_id, kind, value) values (%L, %L, %L)', :'seed_recipe', 'pair', 'a'),
+                       'a pair needs its other dish');
+select pg_temp.refused(format('insert into taste_signals (recipe_id, other_recipe_id, kind, value) values (%L, %L, %L, %L)',
+                       :'seed_recipe', :'seed_recipe', 'pair', 'a'), 'a pair is two different dishes');
+select pg_temp.refused(format('insert into taste_signals (recipe_id, other_recipe_id, kind, value) values (%L, %L, %L, %L)',
+                       :'seed_recipe', :'seed_other', 'pair', 'yes'), 'a pair answer is a, b, either or neither');
+select pg_temp.refused(format('insert into taste_signals (recipe_id, other_recipe_id, kind, value) values (%L, %L, %L, %L)',
+                       :'seed_recipe', :'seed_other', 'starter', 'yes'), 'only pairs have another dish');
+
 select pg_temp.act_as('00000000-0000-0000-0000-00000000a5f2');
 select create_household('Chez Dmitri', 'Europe/Paris') as hd \gset
 select pg_temp.check((select count(*) = 0 from taste_signals), 'someone else''s signals are private');
@@ -59,6 +77,8 @@ select pg_temp.refused(format('insert into taste_signals (recipe_id, kind, value
                        'no signal on another household''s recipe');
 select pg_temp.refused(format('insert into taste_signals (recipe_id, kind, value, meal_id) values (%L, %L, %L, %L)', :'seed_recipe', 'rating', 'loved', :'meal_c'),
                        'no rating on another household''s meal');
+select pg_temp.refused(format('insert into taste_signals (recipe_id, other_recipe_id, kind, value) values (%L, %L, %L, %L)', :'seed_recipe', :'recipe_c', 'pair', 'a'),
+                       'no pair with another household''s recipe');
 select pg_temp.refused(format('insert into taste_signals (user_id, recipe_id, kind, value) values (%L, %L, %L, %L)',
                        '00000000-0000-0000-0000-00000000a5f1', :'seed_recipe', 'starter', 'yes'), 'no signals for someone else');
 select pg_temp.refused('delete from taste_signals', 'cannot delete someone else''s signals');

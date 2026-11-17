@@ -3,8 +3,10 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { type Plate, plateDistance, platesOf } from '../plate.ts';
 import {
-  FREQUENCY, fitStyle, nextQuizCard, nextQuizPair, type Observation, PAIR_MIN_DISTANCE, type QuizCandidate, tasteFeatures,
+  COOKED_FREQUENCY, FREQUENCY, fitStyle, nextQuizCard, nextQuizPair, type Observation, observationsFor, PAIR_MIN_DISTANCE,
+  type QuizCandidate, RATING_FREQUENCY, SIGNAL_WEIGHT, STYLE_HALF_LIFE_DAYS, styleModelFor, SWIPE_FREQUENCY, tasteFeatures,
 } from '../style.ts';
+import { type MealRow, type Signal, signalsFor, type SwipeRow, type TasteSignalRow } from '../profile.ts';
 import type { RecipeClassification } from '../classify.ts';
 
 const plate = (rich: number, protein = 0.5, veg = 0.5, carb = 0.6): Plate => ({ protein, rich, veg, carb });
@@ -167,3 +169,84 @@ function spearman(a: number[], b: number[]) {
   }
   return num / Math.sqrt(da * db);
 }
+
+// ---------------------------------------------------------------------------
+// From recorded signals
+// ---------------------------------------------------------------------------
+
+const now = Date.UTC(2026, 10, 1);
+const daysAgo = (d: number) => new Date(now - d * 86_400_000).toISOString();
+const plates: Record<string, Plate[]> = {
+  light: [plate(0.1)], rich: [plate(0.9)], mid: [plate(0.5)], other: [plate(0.3, 0.8)],
+};
+const platesById = (id: string) => plates[id];
+
+test('signals become frequencies, weighted by what they say', () => {
+  const signals: Signal[] = [
+    { kind: 'starter', verdict: 'sometimes', recipeId: 'rich', features: [], at: daysAgo(0) },
+    { kind: 'swipe', verdict: 'must', recipeId: 'light', features: [], at: daysAgo(0) },
+    { kind: 'swipe', verdict: 'pass', reason: 'not_for_me', recipeId: 'mid', features: [], at: daysAgo(0) },
+    // A plain pass, or one for tonight's reasons, says nothing about how often.
+    { kind: 'swipe', verdict: 'pass', recipeId: 'mid', features: [], at: daysAgo(0) },
+    { kind: 'swipe', verdict: 'pass', reason: 'too_long', recipeId: 'mid', features: [], at: daysAgo(0) },
+    { kind: 'rating', rating: 'not_again', recipeId: 'other', mealId: 'm1', features: [], at: daysAgo(0) },
+    { kind: 'rating', rating: 'not_eaten', recipeId: 'other', mealId: 'm2', features: [], at: daysAgo(0) },
+    // Cooked and rated: the rating says it; cooked alone counts a little.
+    { kind: 'cooked', recipeId: 'other', mealId: 'm1', features: [], at: daysAgo(0) },
+    { kind: 'cooked', recipeId: 'light', mealId: 'm3', features: [], at: daysAgo(0) },
+    // A dish without a plate says nothing here.
+    { kind: 'starter', verdict: 'yes', recipeId: 'unknown', features: [], at: daysAgo(0) },
+  ];
+  const { observations, pairs } = observationsFor(signals, platesById, now);
+  assert.deepEqual(observations.map((o) => [o.y, o.weight]), [
+    [FREQUENCY.sometimes, SIGNAL_WEIGHT.starter],
+    [SWIPE_FREQUENCY.must, SIGNAL_WEIGHT.swipe],
+    [0, SIGNAL_WEIGHT.swipe],
+    [RATING_FREQUENCY.not_again, SIGNAL_WEIGHT.rating],
+    [COOKED_FREQUENCY, SIGNAL_WEIGHT.cooked],
+  ]);
+  assert.equal(pairs.length, 0);
+});
+
+test('older signals fade', () => {
+  const { observations } = observationsFor([
+    { kind: 'starter', verdict: 'yes', recipeId: 'light', features: [], at: daysAgo(STYLE_HALF_LIFE_DAYS) },
+    { kind: 'starter', verdict: 'yes', recipeId: 'light', features: [], at: daysAgo(2 * STYLE_HALF_LIFE_DAYS) },
+  ], platesById, now);
+  assert.deepEqual(observations.map((o) => o.weight), [0.5, 0.25]);
+});
+
+test('a quiz pair between two dishes with plates', () => {
+  const { pairs } = observationsFor([
+    { kind: 'pair', choice: 'a', recipeId: 'light', otherRecipeId: 'rich', features: [], at: daysAgo(0) },
+    { kind: 'pair', choice: 'b', recipeId: 'light', otherRecipeId: 'unknown', features: [], at: daysAgo(0) },
+  ], platesById, now);
+  assert.deepEqual(pairs, [{ a: plates.light[0], b: plates.rich[0], choice: 'a', weight: 1 }]);
+});
+
+test('from database rows to a model: the quiz, then what they picked, drift it', () => {
+  const ids = ['light', 'mid', 'rich'];
+  const tasteSignals: TasteSignalRow[] = [
+    // The quiz said rich plates are a favourite…
+    ...ids.map((id, i) => ({
+      user_id: 'u', recipe_id: id, kind: 'starter' as const, value: ['pass', 'yes', 'must'][i], deck_id: null, meal_id: null,
+      created_at: daysAgo(300),
+    })),
+    { user_id: 'u', recipe_id: 'light', other_recipe_id: 'rich', kind: 'pair', value: 'b', deck_id: null, meal_id: null, created_at: daysAgo(300) },
+  ];
+  const before = styleModelFor(signalsFor('u', { swipes: [], tasteSignals, meals: [] }, () => []), platesById, now);
+  assert.ok(before.style(plate(0.9)) > before.style(plate(0.1)) + 1);
+  // …since then they keep choosing light ones and rating rich ones "not again".
+  const swipes: SwipeRow[] = Array.from({ length: 12 }, (_, i) => ({
+    user_id: 'u', deck_id: `d${i}`, recipe_id: 'light', verdict: 'must' as const, created_at: daysAgo(i * 5),
+  }));
+  const meals: MealRow[] = Array.from({ length: 4 }, (_, i) => ({ id: `m${i}`, recipe_id: 'rich', for_date: daysAgo(i * 7).slice(0, 10), status: 'cooked' }));
+  const ratings: TasteSignalRow[] = meals.map((m) => ({
+    user_id: 'u', recipe_id: 'rich', kind: 'rating', value: 'not_again', deck_id: null, meal_id: m.id, created_at: daysAgo(1),
+  }));
+  const after = styleModelFor(signalsFor('u', { swipes, tasteSignals: [...tasteSignals, ...ratings], meals }, () => []), platesById, now);
+  assert.ok(after.style(plate(0.1)) > after.style(plate(0.9)) + 1);
+  // Someone else's signals don't count.
+  const other = styleModelFor(signalsFor('someone else', { swipes, tasteSignals, meals }, () => []), platesById, now);
+  assert.equal(other.style(plate(0.9)), other.style(plate(0.1)));
+});

@@ -24,6 +24,7 @@
 // Pure and deterministic, apart from the injected random of the quiz.
 
 import { PLATE_AXES, type Plate, plateDistance } from './plate.ts';
+import { PROFILE_HALF_LIFE_DAYS, type Signal } from './profile.ts';
 
 /** A quiz answer's frequency: not for me, now and then, regularly, a favourite. */
 export const FREQUENCY = { pass: 0, sometimes: 1, yes: 3, must: 4 } as const;
@@ -401,4 +402,96 @@ export function nextQuizPair(
     }
   }
   return best;
+}
+
+// ---------------------------------------------------------------------------
+// From recorded signals (profile.ts signalsFor)
+// ---------------------------------------------------------------------------
+
+/**
+ * What each signal says on the frequency scale, and how much it weighs
+ * against a quiz answer (docs/taste-profiles.md §2). Signals not listed say
+ * nothing about how often: a plain deck pass is mostly "not tonight", a pass
+ * for tonight's reasons and "not eaten" say nothing at all.
+ */
+export const SIGNAL_WEIGHT = {
+  starter: 1,
+  swipe: 0.5,
+  rating: 1,
+  /** Cooked without a rating: they made it, so they want it about regularly. */
+  cooked: 0.25,
+  pair: 1,
+} as const;
+export const SWIPE_FREQUENCY = { yes: 3, must: 4, not_for_me: 0 } as const;
+export const RATING_FREQUENCY = { loved: 4, fine: 2.5, not_again: 0 } as const;
+export const COOKED_FREQUENCY = 3;
+/** Older signals fade, as in the taste profile. */
+export const STYLE_HALF_LIFE_DAYS = PROFILE_HALF_LIFE_DAYS;
+/** The model's cost grows with the cube of its observations: past this, the weakest go. */
+export const MAX_OBSERVATIONS = 600;
+
+/**
+ * A person's signals as style observations and pairs. `platesOf` gives a
+ * recipe's plates (plate.ts platesOf); a dish without one says nothing here.
+ * A dish is judged as written, on its first plate.
+ */
+export function observationsFor(
+  signals: Signal[],
+  platesOf: (recipeId: string) => Plate[] | undefined,
+  now: number = Date.now(),
+): { observations: Observation[]; pairs: PairObservation[] } {
+  const fade = (at: string) => 0.5 ** (Math.max(0, (now - Date.parse(at)) / 86_400_000) / STYLE_HALF_LIFE_DAYS);
+  const plate = (id: string | undefined) => (id ? platesOf(id)?.[0] : undefined);
+  // A rating says more than having cooked it.
+  const rated = new Set(signals.flatMap((s) => (s.kind === 'rating' && s.mealId ? [s.mealId] : [])));
+  const observations: Observation[] = [];
+  const pairs: PairObservation[] = [];
+  for (const s of signals) {
+    if (s.kind === 'pair') {
+      const a = plate(s.recipeId);
+      const b = plate(s.otherRecipeId);
+      if (a && b) pairs.push({ a, b, choice: s.choice, weight: SIGNAL_WEIGHT.pair * fade(s.at) });
+      continue;
+    }
+    const p = plate(s.recipeId);
+    if (!p) continue;
+    let y: number | null = null;
+    let w = 0;
+    switch (s.kind) {
+      case 'starter':
+        y = FREQUENCY[s.verdict];
+        w = SIGNAL_WEIGHT.starter;
+        break;
+      case 'swipe':
+        if (s.verdict !== 'pass') y = SWIPE_FREQUENCY[s.verdict];
+        else if (s.reason === 'not_for_me') y = SWIPE_FREQUENCY.not_for_me;
+        w = SIGNAL_WEIGHT.swipe;
+        break;
+      case 'rating':
+        if (s.rating !== 'not_eaten') y = RATING_FREQUENCY[s.rating];
+        w = SIGNAL_WEIGHT.rating;
+        break;
+      case 'cooked':
+        if (!s.mealId || !rated.has(s.mealId)) y = COOKED_FREQUENCY;
+        w = SIGNAL_WEIGHT.cooked;
+        break;
+    }
+    if (y !== null) observations.push({ plate: p, features: s.features, y, weight: w * fade(s.at) });
+  }
+  if (observations.length > MAX_OBSERVATIONS) {
+    observations.sort((a, b) => (b.weight ?? 1) - (a.weight ?? 1));
+    observations.length = MAX_OBSERVATIONS;
+  }
+  return { observations, pairs };
+}
+
+/** A person's style + taste model, from everything they chose. */
+export function styleModelFor(
+  signals: Signal[],
+  platesOf: (recipeId: string) => Plate[] | undefined,
+  now: number = Date.now(),
+  options: StyleOptions = {},
+): StyleModel {
+  const { observations, pairs } = observationsFor(signals, platesOf, now);
+  return fitStyle(observations, pairs, options);
 }

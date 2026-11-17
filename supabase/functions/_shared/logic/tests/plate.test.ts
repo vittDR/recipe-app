@@ -1,8 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { type Plate, plateDistance, platesOf, plateVector } from '../plate.ts';
-import type { RecipeClassification } from '../classify.ts';
+import { type Plate, plateDistance, platesOf, plateVector, rowPlates } from '../plate.ts';
+import type { ClassifiableRow, RecipeClassification } from '../classify.ts';
+import { Catalog, type CatalogEntry } from '../ingredients.ts';
 
 interface Row { title: string; classification: RecipeClassification; withoutOptional: RecipeClassification | null }
 const library = JSON.parse(readFileSync(new URL('./fixtures/library.json', import.meta.url), 'utf8')) as Row[];
@@ -62,4 +63,29 @@ test('a dish is a second plate without its optional lines only when that changes
   const teriyaki = library.find((x) => x.title === 'Teriyaki chicken with rice')!;
   assert.equal(platesOf(teriyaki.classification, teriyaki.withoutOptional).length, 1);
   assert.deepEqual(platesOf(null), []);
+});
+
+test('a stored recipe row: its plates as written and without its optional lines', () => {
+  const e = (name: string, over: Partial<CatalogEntry>): CatalogEntry => ({
+    name, default_aisle: 'other', is_staple: false, kcal_100g: 100, protein_100g: 0, fat_100g: 0, carbs_100g: 0, fiber_100g: 0,
+    traits: [], ...over,
+  });
+  const catalog = new Catalog([
+    e('chicken breast', { kcal_100g: 120, protein_100g: 23, fat_100g: 1.5, traits: ['protein:poultry'], diet_class: 'meat' }),
+    e('rice', { kcal_100g: 360, protein_100g: 7, fat_100g: 0.6, carbs_100g: 79, traits: ['starch:rice'] }),
+    e('broccoli', { kcal_100g: 34, protein_100g: 2.8, fat_100g: 0.4, carbs_100g: 7, default_aisle: 'produce' }),
+    e('cream', { kcal_100g: 340, protein_100g: 2, fat_100g: 36, traits: ['sauce:cream', 'liquid'] }),
+  ]);
+  const row = (optionalCream: boolean): ClassifiableRow => ({
+    title: 'Chicken, rice and broccoli', servings: 2, tags: [], steps: ['Cook the rice.', 'Pan-fry the chicken.'],
+    recipe_ingredients: [
+      { name: 'chicken breast', quantity: 300, unit: 'g' }, { name: 'rice', quantity: 150, unit: 'g' },
+      { name: 'broccoli', quantity: 300, unit: 'g' }, { name: 'cream', quantity: 100, unit: 'ml', optional: optionalCream },
+    ],
+  });
+  // Optional lines count in the dish's nutrition but don't make its sauce (classify.ts): the cream shows as fat.
+  const [full, lean] = rowPlates(row(true), catalog);
+  assert.ok(full.rich > lean.rich + 0.1, JSON.stringify({ full, lean }));
+  assert.ok(lean.protein > full.protein);
+  assert.equal(rowPlates(row(false), catalog).length, 1);
 });

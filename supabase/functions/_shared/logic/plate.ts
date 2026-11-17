@@ -7,7 +7,8 @@
 // Each axis runs from about the library's 5th percentile (0) to its 95th (1),
 // so the space is used evenly; values outside are clamped.
 
-import type { DishFamily, RecipeClassification, SauceFamily } from './classify.ts';
+import { type ClassifiableRow, classifyRow, type DishFamily, type RecipeClassification, type SauceFamily } from './classify.ts';
+import type { Catalog } from './ingredients.ts';
 
 export const PLATE_AXES = ['protein', 'rich', 'veg', 'carb'] as const;
 export type PlateAxis = (typeof PLATE_AXES)[number];
@@ -93,4 +94,19 @@ export function platesOf(
   if (!full) return [];
   const lean = plateVector(withoutOptional);
   return lean && plateDistance(full, lean) >= ADJUSTABLE_MIN_DISTANCE ? [full, lean] : [full];
+}
+
+/**
+ * A stored recipe's plates (platesOf), classified against the catalogue: its
+ * classification as written (the stored one when fresh, or `classification`
+ * when the caller already has it), and, when it has optional lines, the dish
+ * without them, worked out here (that one is never stored).
+ */
+export function rowPlates(row: ClassifiableRow, catalog: Catalog, classification?: RecipeClassification): Plate[] {
+  const full = classification ?? classifyRow(row, catalog);
+  const required = row.recipe_ingredients.filter((i) => !i.optional);
+  const without = required.length < row.recipe_ingredients.length && required.length > 0
+    ? classifyRow({ ...row, recipe_ingredients: required, classification: null, classified_with: null }, catalog)
+    : null;
+  return platesOf(full, without);
 }

@@ -44,7 +44,7 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
       supabase.from('taste_rules').select('*').eq('user_id', userId!),
       supabase.from('swipes').select('user_id, deck_id, recipe_id, verdict, created_at, deck:decks(mood, filters)')
         .eq('user_id', userId!).order('created_at', { ascending: false }).limit(300),
-      supabase.from('taste_signals').select('user_id, recipe_id, kind, value, deck_id, meal_id, created_at')
+      supabase.from('taste_signals').select('user_id, recipe_id, other_recipe_id, kind, value, deck_id, meal_id, created_at')
         .eq('user_id', userId!).order('created_at', { ascending: false }).limit(1000),
       supabase.from('meals').select('id, recipe_id, for_date, status, deck:decks(who_eating)')
         .eq('household_id', household!.id).eq('status', 'cooked').order('for_date', { ascending: false }).limit(200),

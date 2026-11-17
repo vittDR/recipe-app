@@ -44,6 +44,10 @@ export type StarterVerdict = Verdict | 'sometimes';
 export type Rating = 'loved' | 'fine' | 'not_again' | 'not_eaten';
 export const RATINGS: Rating[] = ['loved', 'fine', 'not_again'];
 
+/** A quiz pair answer (style.ts PairChoice): the first dish, the second, either, neither. */
+export type PairValue = 'a' | 'b' | 'either' | 'neither';
+
+/** recipeId: the dish it's about, so style.ts can read its plate. */
 export type Signal =
   | {
     kind: 'swipe'; verdict: Verdict; mood?: Mood | null; reason?: PassReason | null; features: string[]; at: string;
@@ -51,10 +55,13 @@ export type Signal =
     filters?: DeckFilters | null;
     /** Whether the dish fit this person's goals when it was shown; null when unknown. */
     fits?: boolean | null;
+    recipeId?: string;
   }
   | { kind: 'starter'; verdict: StarterVerdict; features: string[]; at: string; fits?: boolean | null; recipeId?: string }
-  | { kind: 'cooked'; features: string[]; at: string }
-  | { kind: 'rating'; rating: Rating; features: string[]; at: string };
+  | { kind: 'cooked'; features: string[]; at: string; recipeId?: string; mealId?: string }
+  | { kind: 'rating'; rating: Rating; features: string[]; at: string; recipeId?: string; mealId?: string }
+  /** "On a normal weeknight, which one?": only style learns from it (style.ts), not this profile. */
+  | { kind: 'pair'; choice: PairValue; recipeId: string; otherRecipeId: string; features: string[]; at: string };
 
 export const STARTER_FACTOR = 0.75;
 /** A plain deck pass, against a yes's 1: not feeling like it tonight is not a dislike. */
@@ -104,6 +111,8 @@ export function signalWeight(s: Signal): { weight: number; features: string[] } 
       return { weight: COOKED_WEIGHT, features: tasteOnly(s.features) };
     case 'rating':
       return { weight: RATING_WEIGHT[s.rating], features: s.features };
+    case 'pair':
+      return { weight: 0, features: [] };
   }
 }
 
@@ -209,8 +218,10 @@ export interface SwipeRow {
   filters?: DeckFilters | null;
 }
 export interface TasteSignalRow {
-  user_id: string; recipe_id: string; kind: 'starter' | 'reason' | 'rating'; value: string;
+  user_id: string; recipe_id: string; kind: 'starter' | 'reason' | 'rating' | 'pair'; value: string;
   deck_id: string | null; meal_id: string | null; created_at: string;
+  /** A pair's second dish. */
+  other_recipe_id?: string | null;
 }
 export interface MealRow { id: string; recipe_id: string; for_date: string; status: string; who_eating?: string[] | null }
 /** member_portions: whether a deck card fit a person's goals when it was dealt. */
@@ -237,7 +248,7 @@ export function signalsFor(
     if (s.user_id !== userId) continue;
     push(s.recipe_id, (features) => ({
       kind: 'swipe', verdict: s.verdict, mood: s.mood ?? null, filters: s.filters ?? null, reason: reasons.get(`${s.deck_id}:${s.recipe_id}`) ?? null,
-      features, at: s.created_at, fits: fitAtDeal.get(`${s.deck_id}:${s.recipe_id}`) ?? null,
+      features, at: s.created_at, fits: fitAtDeal.get(`${s.deck_id}:${s.recipe_id}`) ?? null, recipeId: s.recipe_id,
     }));
   }
   for (const t of mine) {
@@ -247,13 +258,23 @@ export function signalsFor(
         recipeId: t.recipe_id,
       }));
     }
-    if (t.kind === 'rating') push(t.recipe_id, (features) => ({ kind: 'rating', rating: t.value as Rating, features, at: t.created_at }));
+    if (t.kind === 'rating') {
+      push(t.recipe_id, (features) => ({
+        kind: 'rating', rating: t.value as Rating, features, at: t.created_at, recipeId: t.recipe_id, mealId: t.meal_id ?? undefined,
+      }));
+    }
+    if (t.kind === 'pair' && t.other_recipe_id) {
+      const other = t.other_recipe_id;
+      push(t.recipe_id, (features) => ({
+        kind: 'pair', choice: t.value as PairValue, recipeId: t.recipe_id, otherRecipeId: other, features, at: t.created_at,
+      }));
+    }
   }
   const notEaten = new Set(mine.filter((t) => t.kind === 'rating' && t.value === 'not_eaten').map((t) => t.meal_id));
   for (const m of rows.meals) {
     if (m.status !== 'cooked' || notEaten.has(m.id)) continue;
     if (m.who_eating && !m.who_eating.includes(userId)) continue;
-    push(m.recipe_id, (features) => ({ kind: 'cooked', features, at: `${m.for_date}T20:00:00Z` }));
+    push(m.recipe_id, (features) => ({ kind: 'cooked', features, at: `${m.for_date}T20:00:00Z`, recipeId: m.recipe_id, mealId: m.id }));
   }
   return out;
 }

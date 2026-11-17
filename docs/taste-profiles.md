@@ -1,6 +1,6 @@
 # Taste profiles (v2 spec)
 
-Status: plate space, model, quiz picker and simulation built; deck, quiz screen and migration to do. Replaces how the taste quiz, `logic/profile.ts` and the
+Status: plate space, model, quiz picker, simulation and the signals → model path built; deck and quiz screen to do. Replaces how the taste quiz, `logic/profile.ts` and the
 deck's treat / adherence logic decide *what kind of dinners* someone wants.
 
 ## The problem
@@ -97,7 +97,35 @@ Other signals keep feeding the same scale as the person uses the app:
 
 All of them fade with v1's half-life (180 days). That's how the style drifts:
 the quiz is the starting point, and what people actually pick takes over
-gradually.
+gradually. Unrated cooked meals count too: they're `y` 3 at weight 0.25, and a
+rating of the same meal replaces them. Quiz pairs fade the same way.
+
+Code: `observationsFor` / `styleModelFor` in `logic/style.ts`. They read
+`profile.ts` `signalsFor`, the same signals the v1 profile reads. A dish is
+judged on its plate as written. A recipe's plates come from `plate.ts`
+`rowPlates`: the stored classification, plus the dish worked out without its
+optional lines. With the most observations past 600 (`MAX_OBSERVATIONS`), the
+weakest go first.
+
+Unlike v1, the diet isn't explained away. A pass on a heavy dish says how
+often the person wants heavy plates, whatever the reason. The deck therefore
+has to count goal fit less where style has already learned it (see §5).
+
+`scripts/taste-profile.ts <user>` shows one person's model from a database's
+real rows: their most and least wanted dishes, style along each axis, and
+their clearest tastes. For a simulated mostly-balanced person (26 quiz answers
+and 6 pairs) in the local database, it gave:
+
+```
+Style along each axis (0 → 1, others in the middle):
+  protein  2.73  2.76  2.95  3.18  3.26
+  rich     3.41  2.97  2.39  1.96  1.67
+  veg      2.52  2.62  2.80  3.12  3.43
+Taste: +0.34 protein:poultry … −0.60 dish:soup
+```
+
+Preparing the plates of 509 recipes took 150 ms; reading the signals and
+fitting the model took 5 ms.
 
 ## 3. The model: one additive Gaussian process
 
@@ -198,10 +226,12 @@ love / never items as today.
 **Retaking** keeps the earlier answers, which fade like everything else. The
 picker then goes for what's least known: there's nothing to start from scratch.
 
-Storage: pairs are a new `taste_signals` kind, `pair`, with `value` = the
-chosen recipe id, `either` or `neither`, and the other recipe in a new
-`other_recipe_id` column. That's one migration. Region edits are kind `style`,
-with value = region and level.
+Storage (migration `20261201000001_taste_pairs.sql`, done): a pair is a
+`taste_signals` row of kind `pair`. `recipe_id` holds the first dish and the
+new `other_recipe_id` the second. `value` is `a` (the first), `b` (the second),
+`either` or `neither`. Answering again replaces it, and a dish can be in
+several pairs. Region edits will be kind `style`, with value = region and
+level (to do, with the summary screen).
 
 ## Results: the simulation
 
@@ -230,7 +260,7 @@ effect.
 | v1 (most varied facets) | 0.59 · 0.69 | 0.65 · 0.71 | 0.70 · 0.78 |
 | **variance reduction** | 0.59 · 0.69 | **0.66 · 0.74** | 0.70 · 0.76 |
 | anchors, then variance reduction | 0.58 · 0.70 | 0.62 · 0.73 | 0.67 · 0.78 |
-| variance reduction + pairs | 0.59 · 0.69 | 0.66 · 0.72 | |
+| variance reduction + pairs | 0.59 · 0.69 | 0.66 · 0.72 | 0.70 · 0.76 |
 
 At 32 decisions, the variance-reduction picker has tier accuracy 0.79: the
 share of unshown dishes the model puts in the right tier of *not for me*, *now
@@ -294,11 +324,12 @@ for goal fit, where it belongs.
 | Where | Change |
 | --- | --- |
 | `plate.ts` | **done**: `plateVector`, `platesOf`, `plateDistance` |
-| `style.ts` | **done**: `fitStyle` (additive GP), `nextQuizCard`, `nextQuizPair`. To do: region summary, signals → observations (weights and fading, from `profile.ts`) |
+| `style.ts` | **done**: `fitStyle` (additive GP), `nextQuizCard`, `nextQuizPair`, `observationsFor` / `styleModelFor` (signals → model). To do: region summary |
+| `profile.ts` | **done**: signals carry their recipe (and meal); `pair` signals read from `taste_signals`, ignored by the v1 profile |
 | `recommend.ts` | `expectedFrequency`, `softmin`, region definitions |
-| `deck.ts` | occasional share in place of the treat slot; joint score for households; adjustable variant |
+| `deck.ts`, deal-deck | build each member's model (`styleModelFor`, plates from `rowPlates`); score on `F`; occasional share in place of the treat slot; joint score for households; adjustable variant; less weight on goal fit where style covers it |
 | `TasteQuiz.tsx` | new wording, the three phases, pair cards, early stop, summary screen |
-| migration | `taste_signals`: `pair` and `style` kinds, `other_recipe_id` |
+| migration | **done**: `pair` kind and `other_recipe_id`; deal-deck and the Us screen read it. To do: `style` kind |
 | tests | **done**: plate vectors for known dishes, style/taste separation, pairs, a synthetic person recovered from 26 quiz answers on the library. To do: household softmin, deck mix shares |
 
 ## Open points

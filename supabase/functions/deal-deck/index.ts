@@ -67,8 +67,8 @@ Deno.serve(async (req) => {
     admin.from('grocery_items').select('name, product:products(ingredient)').eq('household_id', householdId)
       .gte('checked_at', since(PANTRY_DAYS)),
     admin.from('ingredient_catalog').select('*'),
-    // Quiz answers, pass reasons and ratings (logic/profile.ts).
-    admin.from('taste_signals').select('user_id, recipe_id, kind, value, deck_id, meal_id, created_at')
+    // Quiz answers and pairs, pass reasons and ratings (logic/profile.ts).
+    admin.from('taste_signals').select('user_id, recipe_id, other_recipe_id, kind, value, deck_id, meal_id, created_at')
       .in('user_id', eaters).order('created_at', { ascending: false }).limit(2000),
     admin.from('member_allergies').select('user_id, allergen, ingredient').in('user_id', eaters),
     admin.from('allergen_ingredients').select('allergen, ingredient'),
