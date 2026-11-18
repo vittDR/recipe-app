@@ -61,7 +61,13 @@ export type Signal =
   | { kind: 'cooked'; features: string[]; at: string; recipeId?: string; mealId?: string }
   | { kind: 'rating'; rating: Rating; features: string[]; at: string; recipeId?: string; mealId?: string }
   /** "On a normal weeknight, which one?": only style learns from it (style.ts), not this profile. */
-  | { kind: 'pair'; choice: PairValue; recipeId: string; otherRecipeId: string; features: string[]; at: string };
+  | { kind: 'pair'; choice: PairValue; recipeId: string; otherRecipeId: string; features: string[]; at: string }
+  /** On the taste summary, how often they want a kind of plate (style.ts STYLE_REGIONS). No recipe. */
+  | { kind: 'style'; region: string; level: StyleLevel; features: string[]; at: string };
+
+/** How often, said of a kind of plate on the taste summary. */
+export type StyleLevel = 'regularly' | 'sometimes' | 'rarely';
+export const STYLE_LEVELS: StyleLevel[] = ['regularly', 'sometimes', 'rarely'];
 
 export const STARTER_FACTOR = 0.75;
 /** A plain deck pass, against a yes's 1: not feeling like it tonight is not a dislike. */
@@ -112,6 +118,7 @@ export function signalWeight(s: Signal): { weight: number; features: string[] } 
     case 'rating':
       return { weight: RATING_WEIGHT[s.rating], features: s.features };
     case 'pair':
+    case 'style':
       return { weight: 0, features: [] };
   }
 }
@@ -218,7 +225,8 @@ export interface SwipeRow {
   filters?: DeckFilters | null;
 }
 export interface TasteSignalRow {
-  user_id: string; recipe_id: string; kind: 'starter' | 'reason' | 'rating' | 'pair'; value: string;
+  /** Null for a style edit, which is about a kind of plate. */
+  user_id: string; recipe_id: string | null; kind: 'starter' | 'reason' | 'rating' | 'pair' | 'style'; value: string;
   deck_id: string | null; meal_id: string | null; created_at: string;
   /** A pair's second dish. */
   other_recipe_id?: string | null;
@@ -252,21 +260,29 @@ export function signalsFor(
     }));
   }
   for (const t of mine) {
+    if (t.kind === 'style') {
+      const [region, level] = t.value.split(':');
+      if (STYLE_LEVELS.includes(level as StyleLevel)) {
+        out.push({ kind: 'style', region, level: level as StyleLevel, features: [], at: t.created_at });
+      }
+      continue;
+    }
+    const recipeId = t.recipe_id;
+    if (!recipeId) continue;
     if (t.kind === 'starter') {
-      push(t.recipe_id, (features) => ({
-        kind: 'starter', verdict: t.value as StarterVerdict, features, at: t.created_at, fits: fitsNow?.(t.recipe_id) ?? null,
-        recipeId: t.recipe_id,
+      push(recipeId, (features) => ({
+        kind: 'starter', verdict: t.value as StarterVerdict, features, at: t.created_at, fits: fitsNow?.(recipeId) ?? null, recipeId,
       }));
     }
     if (t.kind === 'rating') {
-      push(t.recipe_id, (features) => ({
-        kind: 'rating', rating: t.value as Rating, features, at: t.created_at, recipeId: t.recipe_id, mealId: t.meal_id ?? undefined,
+      push(recipeId, (features) => ({
+        kind: 'rating', rating: t.value as Rating, features, at: t.created_at, recipeId, mealId: t.meal_id ?? undefined,
       }));
     }
     if (t.kind === 'pair' && t.other_recipe_id) {
       const other = t.other_recipe_id;
-      push(t.recipe_id, (features) => ({
-        kind: 'pair', choice: t.value as PairValue, recipeId: t.recipe_id, otherRecipeId: other, features, at: t.created_at,
+      push(recipeId, (features) => ({
+        kind: 'pair', choice: t.value as PairValue, recipeId, otherRecipeId: other, features, at: t.created_at,
       }));
     }
   }

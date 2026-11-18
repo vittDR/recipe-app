@@ -1,6 +1,6 @@
 # Taste profiles (v2 spec)
 
-Status: plate space, model, quiz picker, simulation, the signals → model path and the deck built; quiz screen and style summary to do. Replaces how the taste quiz, `logic/profile.ts` and the
+Status: built (plate space, model, quiz screen and summary, signals → model, deck). Next: check against real answers. Replaces how the taste quiz, `logic/profile.ts` and the
 deck's treat / adherence logic decide *what kind of dinners* someone wants.
 
 ## The problem
@@ -134,11 +134,20 @@ Code: `logic/style.ts` (`fitStyle`), tests in `logic/tests/style.test.ts`.
 A person's expected frequency for recipe `r` is
 
 ```
-F(r) = clamp( ȳ + s(plate_r) + t(features_r), 0, 4 )
+F(r) = clamp( level + s(plate_r) + t(features_r), 0, 4 )
 ```
 
-where `ȳ` is their weighted mean answer, and `s` and `t` are fitted
-**together**, as one Gaussian process with an additive kernel:
+`s` and `t` are fitted **together** with the level, as one Gaussian process
+with an additive kernel:
+
+- **level**: how often they want an average dinner. It starts from a prior of
+  2, between *now and then* and *regularly*, with variance 1, and is learned
+  with the rest. An answer about one kind of plate then moves that plate most
+  and the level only a little. A first version used the mean answer as a fixed
+  level instead. That made a summary edit on one kind of plate move every plate
+  by the same amount, so the summary couldn't be corrected. The learned level
+  also scored a little better in the simulation (learnable ρ 0.66 → 0.68 at 32
+  decisions).
 
 - `s(p)`: **style**, how often they want a plate like `p`, whatever's in it.
   The kernel is a linear trend (prior variance 4 per axis) plus a
@@ -182,16 +191,38 @@ protein.
   "rich & creamy", "fried / treat"), and each region gets the person's mean
   `s`, read back in words: *Regularly: lean & balanced, light. Now and then:
   rich & creamy. Rarely: fried.* The regions are labels only; scores never use
-  them. *(Not built yet.)*
+  them.
 
-**Editing.** On the summary screen people can move a region between Rarely,
-Now and then and Regularly. Each move is a stated signal: a pseudo-answer at
-the region's centre with weight 3, which fades like everything else. That
-way, stating a style and drifting from it are the same mechanism.
+**Editing (built).** On the summary screen people can move a region between
+Rarely, Now and then and Regularly. Each move is a style edit: a
+`taste_signals` row of kind `style`, with no recipe and value
+`<region>:<level>`, one per region (migration `20261202000001_taste_style.sql`).
+It's read as an answer at the region's plate (`STYLE_REGIONS`): regularly 3,
+now and then 1, rarely 0. Its weight is 20, so it outweighs the quiz answers
+around it, since the person said it themselves. It fades like everything
+else, so stating a style and drifting from it are the same mechanism.
+
+The regions and their plates are balanced (protein, a carb base, vegetables),
+light (salads, soups), hearty (generous, protein-led), carb (carb-led), rich
+(rich and creamy) and fried (fried and indulgent). `styleSummary` reads the
+model's style at each, as *regularly* (≥ 2), *now and then* (≥ 0.5) or
+*rarely*.
 
 ## 4. The quiz
 
-Code: `nextQuizCard`, `nextQuizPair` in `logic/style.ts`.
+Code: `nextQuizCard`, `nextQuizPair` in `logic/style.ts`; the screen is
+`web/src/screens/onboarding/TasteQuiz.tsx`.
+
+**The screen (built).** Each card has a photo, a title and up to 3
+classification tags. Below it are the question and four answers, two by two:
+*Not for me*, *Now and then*, *Regularly*, *A favourite*. Swiping still works
+as a shortcut: left is not for me, right is regularly, up is a favourite. A
+pair shows two dishes side by side; tapping one picks it, and *Either* and
+*Neither* sit below. Undo takes back the last card or pair and restores
+whatever it replaced. Before 20 decisions the footer offers *Skip for now*;
+from 20 on, *That's enough for now* goes to the summary. In the browser, each
+next pick took 100–300 ms on a phone-sized test. Picks are seeded per visit, so
+undoing and answering again shows the same next card.
 
 **26 cards and 6 pairs, 32 decisions, around 4 minutes**, with a progress bar.
 The person can stop after 20 ("That's enough for now"). Diet and never rules
@@ -224,14 +255,16 @@ that up.
 love / never items as today.
 
 **Retaking** keeps the earlier answers, which fade like everything else. The
-picker then goes for what's least known: there's nothing to start from scratch.
+picker starts from them and only asks dishes not answered before. When every
+dish has been answered, it re-asks earlier ones. In a test with 26 earlier
+answers, none of the next 20 cards repeated one. Earlier summary edits show
+as set.
 
 Storage (migration `20261201000001_taste_pairs.sql`, done): a pair is a
 `taste_signals` row of kind `pair`. `recipe_id` holds the first dish and the
 new `other_recipe_id` the second. `value` is `a` (the first), `b` (the second),
 `either` or `neither`. Answering again replaces it, and a dish can be in
-several pairs. Region edits will be kind `style`, with value = region and
-level (to do, with the summary screen).
+several pairs. Region edits are kind `style` (above).
 
 ## Results: the simulation
 
@@ -350,11 +383,11 @@ plate without optional lines can be stored next to the classification.
 | Where | Change |
 | --- | --- |
 | `plate.ts` | **done**: `plateVector`, `platesOf`, `plateDistance` |
-| `style.ts` | **done**: `fitStyle` (additive GP), `nextQuizCard`, `nextQuizPair`, `observationsFor` / `styleModelFor` (signals → model). To do: region summary |
+| `style.ts` | **done**: `fitStyle` (additive GP with a learned level), `nextQuizCard`, `nextQuizPair`, `observationsFor` / `styleModelFor` (signals → model), `STYLE_REGIONS` / `styleSummary` |
 | `profile.ts` | **done**: signals carry their recipe (and meal); `pair` signals read from `taste_signals`, ignored by the v1 profile |
 | `deck.ts`, deal-deck | **done**: each member's model and the recipes' plates; taste on `F`, exploration on its uncertainty, half the goal fit; the now-and-then share in place of the treat slot; softmin for households; the adjustable badge |
-| `TasteQuiz.tsx` | to do: new wording, `nextQuizCard` / `nextQuizPair`, pair cards, early stop, summary screen with regions |
-| migration | **done**: `pair` kind and `other_recipe_id`; deal-deck and the Us screen read it. To do: `style` kind |
+| `TasteQuiz.tsx` | **done**: four answers, adaptive cards, pairs, undo, early stop after 20, retaking, the editable summary |
+| migrations | **done**: `pair` kind and `other_recipe_id` (`20261201000001`); `style` kind with no recipe (`20261202000001`) |
 | tests | **done**: plate vectors for known dishes, style/taste separation, pairs, a synthetic person recovered from 26 quiz answers on the library, deck: style decides, the now-and-then share, shared decks, adjustable dishes, half goal fit |
 
 ## Open points
@@ -367,4 +400,8 @@ plate without optional lines can be stored next to the classification.
 - Check the simulated noise (answer sd 0.4, dish effect sd 0.5) against real
   answers once there are some: retaking the quiz on the same cards measures
   answer noise directly.
-- Region names and boundaries for the summary, and translations.
+- The summary is only reachable at the end of the quiz, so changing a region
+  means retaking it or stopping after 20. It could also live on the Us screen,
+  next to the taste highlights.
+- Check the regions' example dishes ("Burgers, kebabs, hearty stews") against
+  where library dishes actually land.

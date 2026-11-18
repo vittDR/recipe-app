@@ -70,6 +70,20 @@ select pg_temp.refused(format('insert into taste_signals (recipe_id, other_recip
 select pg_temp.refused(format('insert into taste_signals (recipe_id, other_recipe_id, kind, value) values (%L, %L, %L, %L)',
                        :'seed_recipe', :'seed_other', 'starter', 'yes'), 'only pairs have another dish');
 
+-- Style edits on the quiz summary: no recipe, one per kind of plate, saving again replaces it.
+insert into taste_signals (kind, value) values ('style', 'rich:sometimes');
+insert into taste_signals (kind, value) values ('style', 'fried:rarely');
+insert into taste_signals (kind, value) values ('style', 'rich:rarely')
+  on conflict (user_id, key) do update set value = excluded.value;
+select pg_temp.check((select count(*) = 2 and bool_or(value = 'rich:rarely') and not bool_or(value = 'rich:sometimes')
+                      from taste_signals where kind = 'style'), 'one style edit per kind of plate');
+select pg_temp.refused('insert into taste_signals (kind, value) values (''style'', ''rich:often'')', 'a style edit is one of three levels');
+select pg_temp.refused('insert into taste_signals (kind, value) values (''style'', ''spicy:rarely'')', 'a style edit is on a known kind of plate');
+select pg_temp.refused(format('insert into taste_signals (recipe_id, kind, value) values (%L, %L, %L)', :'seed_recipe', 'style', 'rich:rarely'),
+                       'a style edit has no recipe');
+select pg_temp.refused('insert into taste_signals (kind, value) values (''starter'', ''yes'')', 'other signals need a recipe');
+delete from taste_signals where kind = 'style';
+
 select pg_temp.act_as('00000000-0000-0000-0000-00000000a5f2');
 select create_household('Chez Dmitri', 'Europe/Paris') as hd \gset
 select pg_temp.check((select count(*) = 0 from taste_signals), 'someone else''s signals are private');

@@ -3,9 +3,12 @@
 // (FREQUENCY: not for me 0 … a favourite 4), and a dish's expected frequency
 // is
 //
-//   F(r) = clamp( mean + s(plate_r) + t(features_r), 0, 4 )
+//   F(r) = clamp( level + s(plate_r) + t(features_r), 0, 4 )
 //
 // fitted as one additive Gaussian process:
+// - level: how often they want dinners in general, from a prior of 2 (between
+//   now and then and regularly). Learned with the rest, so an answer about one
+//   kind of plate moves that plate most and the level only a little.
 // - s, style: how often they want a plate like this (plate.ts), whatever is
 //   in it. A smooth function over plate space: a linear trend plus a
 //   squared-exponential kernel, so a few answers give a broad trend and more
@@ -24,7 +27,7 @@
 // Pure and deterministic, apart from the injected random of the quiz.
 
 import { PLATE_AXES, type Plate, plateDistance } from './plate.ts';
-import { PROFILE_HALF_LIFE_DAYS, type Signal } from './profile.ts';
+import { PROFILE_HALF_LIFE_DAYS, type Signal, type StyleLevel } from './profile.ts';
 
 /** A quiz answer's frequency: not for me, now and then, regularly, a favourite. */
 export const FREQUENCY = { pass: 0, sometimes: 1, yes: 3, must: 4 } as const;
@@ -50,7 +53,12 @@ export interface PairObservation {
   weight?: number;
 }
 
+/** Where the level starts before anything is said: between now and then (1) and regularly (3). */
+export const PRIOR_LEVEL = 2;
+
 export interface StyleOptions {
+  /** Prior variance of the level. */
+  levelVariance?: number;
   /** Width of the style kernel, in plate distance (plate.ts: far corners are 1 apart). */
   lengthscale?: number;
   /** Prior variance of the style's smooth part. */
@@ -65,7 +73,7 @@ export interface StyleOptions {
   pairStep?: number;
 }
 export const STYLE_DEFAULTS: Required<StyleOptions> = {
-  lengthscale: 0.15, styleVariance: 1, trendVariance: 4, tasteScale: 1, noise: 1, pairStep: 1.5,
+  levelVariance: 1, lengthscale: 0.15, styleVariance: 1, trendVariance: 4, tasteScale: 1, noise: 1, pairStep: 1.5,
 };
 
 /**
@@ -160,7 +168,7 @@ export interface StyleModel {
   dish(plate: Plate, features: string[]): ModelDish;
   /** Posterior covariance of two dishes' frequencies: how much an answer on one says about the other. */
   dishCovariance(a: ModelDish, b: ModelDish): number;
-  /** The mean answer: the level style and taste are measured from. */
+  /** The learned level: how often they want an average dinner, what style and taste are measured from. */
   mean: number;
 }
 
@@ -174,14 +182,13 @@ type Point = { kind: 'dish'; plate: Plate; features: string[] } | { kind: 'pair'
 export function fitStyle(obs: Observation[], pairs: PairObservation[] = [], options: StyleOptions = {}): StyleModel {
   const o = { ...STYLE_DEFAULTS, ...options };
   const wOf = (x: { weight?: number }) => x.weight ?? 1;
-  const totalW = obs.reduce((s, x) => s + wOf(x), 0);
-  const mean = totalW ? obs.reduce((s, x) => s + wOf(x) * x.y, 0) / totalW : 2;
 
+  // The level is part of the style kernel (a constant), so pairs, which compare two plates, leave it alone.
   const kPlate = (a: Plate, b: Plate) => {
     const d = plateDistance(a, b);
     let lin = 0;
     for (const axis of PLATE_AXES) lin += (a[axis] - MIDDLE[axis]) * (b[axis] - MIDDLE[axis]);
-    return o.trendVariance * lin + o.styleVariance * Math.exp(-(d * d) / (2 * o.lengthscale * o.lengthscale));
+    return o.levelVariance + o.trendVariance * lin + o.styleVariance * Math.exp(-(d * d) / (2 * o.lengthscale * o.lengthscale));
   };
   const fv = (f: string) => o.tasteScale * TASTE_VARIANCE[groupOf(f)];
   const kTaste = (a: Set<string>, b: Set<string>) => {
@@ -193,17 +200,18 @@ export function fitStyle(obs: Observation[], pairs: PairObservation[] = [], opti
   const points: (Point & { y: number; noise: number; feats?: Set<string> })[] = [
     ...obs.map((x) => ({
       kind: 'dish' as const, plate: x.plate, features: x.features, feats: new Set(tasteFeatures(x.features)),
-      y: x.y - mean, noise: o.noise / wOf(x),
+      y: x.y - PRIOR_LEVEL, noise: o.noise / wOf(x),
     })),
     ...pairs.flatMap((pr) => {
       const step = pr.choice === 'a' ? o.pairStep : pr.choice === 'b' ? -o.pairStep : 0;
       const out: (Point & { y: number; noise: number; feats?: Set<string> })[] = [
         { kind: 'pair', a: pr.a, b: pr.b, y: step, noise: o.noise / wOf(pr) },
       ];
-      // "Neither" also says both are below the usual: style only, as the dishes' contents were matched.
+      // "Neither" also says both are now and then at most: style only, as the dishes' contents were matched.
       if (pr.choice === 'neither') {
-        out.push({ kind: 'dish', plate: pr.a, features: [], feats: new Set(), y: -1, noise: (2 * o.noise) / wOf(pr) },
-          { kind: 'dish', plate: pr.b, features: [], feats: new Set(), y: -1, noise: (2 * o.noise) / wOf(pr) });
+        const y = FREQUENCY.sometimes - PRIOR_LEVEL;
+        out.push({ kind: 'dish', plate: pr.a, features: [], feats: new Set(), y, noise: (2 * o.noise) / wOf(pr) },
+          { kind: 'dish', plate: pr.b, features: [], feats: new Set(), y, noise: (2 * o.noise) / wOf(pr) });
       }
       return out;
     }),
@@ -238,7 +246,8 @@ export function fitStyle(obs: Observation[], pairs: PairObservation[] = [], opti
   };
   const priorTaste = (fs: Set<string>) => [...fs].reduce((s, f) => s + fv(f), 0);
 
-  const style = (p: Plate) => mean + dot(sVec(p), alpha);
+  const style = (p: Plate) => PRIOR_LEVEL + dot(sVec(p), alpha);
+  const mean = PRIOR_LEVEL + points.reduce((sum, q, i) => sum + (q.kind === 'dish' ? o.levelVariance * alpha[i] : 0), 0);
   const tasteOf = (fs: Set<string>) => dot(tVec(fs), alpha);
   const taste = (features: string[]) => tasteOf(new Set(tasteFeatures(features)));
   const raw = (plates: Plate[], features: string[]) =>
@@ -434,6 +443,10 @@ export const SIGNAL_WEIGHT = {
 export const SWIPE_FREQUENCY = { yes: 3, must: 4, not_for_me: 0 } as const;
 export const RATING_FREQUENCY = { loved: 4, fine: 2.5, not_again: 0 } as const;
 export const COOKED_FREQUENCY = 3;
+/** A style edit on the summary: an answer at its region's plate… */
+export const STYLE_LEVEL_FREQUENCY: Record<StyleLevel, number> = { regularly: 3, sometimes: 1, rarely: 0 };
+/** …that outweighs the quiz answers around it: they said it themselves. */
+export const STYLE_EDIT_WEIGHT = 20;
 /** Older signals fade, as in the taste profile. */
 export const STYLE_HALF_LIFE_DAYS = PROFILE_HALF_LIFE_DAYS;
 /** The model's cost grows with the cube of its observations: past this, the weakest go. */
@@ -456,6 +469,13 @@ export function observationsFor(
   const observations: Observation[] = [];
   const pairs: PairObservation[] = [];
   for (const s of signals) {
+    if (s.kind === 'style') {
+      const region = STYLE_REGIONS.find((r) => r.id === s.region);
+      if (region) {
+        observations.push({ plate: region.plate, features: [], y: STYLE_LEVEL_FREQUENCY[s.level], weight: STYLE_EDIT_WEIGHT * fade(s.at) });
+      }
+      continue;
+    }
     if (s.kind === 'pair') {
       const a = plate(s.recipeId);
       const b = plate(s.otherRecipeId);
@@ -492,6 +512,36 @@ export function observationsFor(
     observations.length = MAX_OBSERVATIONS;
   }
   return { observations, pairs };
+}
+
+// ---------------------------------------------------------------------------
+// The style summary: kinds of plate, in words
+// ---------------------------------------------------------------------------
+
+/**
+ * Kinds of plate the summary reads the style at, by their typical plate. Labels
+ * only: scores never use them. Ids are stored in style edits (taste_signals
+ * kind 'style'), so they don't change; the database checks them.
+ */
+export const STYLE_REGIONS = [
+  { id: 'balanced', plate: { protein: 0.65, rich: 0.1, veg: 0.6, carb: 0.65 } },
+  { id: 'light', plate: { protein: 0.5, rich: 0.15, veg: 0.95, carb: 0.25 } },
+  { id: 'hearty', plate: { protein: 0.7, rich: 0.45, veg: 0.35, carb: 0.6 } },
+  { id: 'carb', plate: { protein: 0.2, rich: 0.3, veg: 0.3, carb: 0.95 } },
+  { id: 'rich', plate: { protein: 0.25, rich: 0.85, veg: 0.3, carb: 0.55 } },
+  { id: 'fried', plate: { protein: 0.45, rich: 1, veg: 0.05, carb: 0.55 } },
+] as const satisfies readonly { id: string; plate: Plate }[];
+export type StyleRegion = (typeof STYLE_REGIONS)[number]['id'];
+
+/** How often a style (0..4) reads in words. */
+export const levelOf = (f: number): StyleLevel => (f >= 2 ? 'regularly' : f >= 0.5 ? 'sometimes' : 'rarely');
+
+/** The model's style at each kind of plate, in words. */
+export function styleSummary(model: StyleModel): { region: StyleRegion; level: StyleLevel; value: number }[] {
+  return STYLE_REGIONS.map((r) => {
+    const value = model.style(r.plate);
+    return { region: r.id, level: levelOf(value), value };
+  });
 }
 
 /** A person's style + taste model, from everything they chose. */

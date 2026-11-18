@@ -4,7 +4,8 @@ import { readFileSync } from 'node:fs';
 import { type Plate, plateDistance, platesOf } from '../plate.ts';
 import {
   COOKED_FREQUENCY, FREQUENCY, fitStyle, nextQuizCard, nextQuizPair, type Observation, observationsFor, PAIR_MIN_DISTANCE,
-  type QuizCandidate, RATING_FREQUENCY, SIGNAL_WEIGHT, STYLE_HALF_LIFE_DAYS, styleModelFor, SWIPE_FREQUENCY, tasteFeatures,
+  type QuizCandidate, RATING_FREQUENCY, SIGNAL_WEIGHT, STYLE_HALF_LIFE_DAYS, STYLE_REGIONS, styleModelFor, styleSummary, SWIPE_FREQUENCY,
+  tasteFeatures,
 } from '../style.ts';
 import { type MealRow, type Signal, signalsFor, type SwipeRow, type TasteSignalRow } from '../profile.ts';
 import type { RecipeClassification } from '../classify.ts';
@@ -74,9 +75,10 @@ test('pairs teach style', () => {
 });
 
 test('older or weaker signals weigh less', () => {
-  const strong = fitStyle([{ plate: plate(0.5), features: [], y: 4 }, { plate: plate(0.5), features: [], y: 0, weight: 0.1 }]);
-  assert.ok(strong.mean > 3.5);
-  assert.ok(strong.style(plate(0.5)) > 3);
+  const said = (weight: number) =>
+    fitStyle([{ plate: plate(0.5), features: [], y: 4 }, { plate: plate(0.5), features: [], y: 0, weight }]).style(plate(0.5));
+  assert.ok(said(0.1) > 3);
+  assert.ok(said(0.1) > said(1) + 1);
 });
 
 test('no answers yet: everything is middling and unsure', () => {
@@ -246,8 +248,8 @@ test('from database rows to a model: the quiz, then what they picked, drift it',
   }));
   const after = styleModelFor(signalsFor('u', { swipes, tasteSignals: [...tasteSignals, ...ratings], meals }, () => []), platesById, now);
   assert.ok(after.style(plate(0.1)) > after.style(plate(0.9)) + 1);
-  // Someone else's signals don't count.
-  const other = styleModelFor(signalsFor('someone else', { swipes, tasteSignals, meals }, () => []), platesById, now);
+  // Someone else's swipes and answers don't count (household meals do, for whoever ate them).
+  const other = styleModelFor(signalsFor('someone else', { swipes, tasteSignals: [...tasteSignals, ...ratings], meals: [] }, () => []), platesById, now);
   assert.equal(other.style(plate(0.9)), other.style(plate(0.1)));
 });
 
@@ -257,4 +259,31 @@ test('uncertainty: 1 before anything is said, lower near what was', () => {
   const near = m.uncertainty(plate(0.3), ['protein:fish']);
   assert.ok(near < 0.8);
   assert.ok(m.uncertainty({ protein: 1, rich: 1, veg: 0, carb: 0 }, ['protein:beef']) > near);
+});
+
+test('style edits on the summary move the style at their kind of plate', () => {
+  const region = (id: string) => STYLE_REGIONS.find((r) => r.id === id)!.plate;
+  // The quiz said fried plates are fine regularly…
+  const quiz: Signal[] = [0, 1, 2].map((i) => ({
+    kind: 'starter', verdict: 'yes', recipeId: `f${i}`, features: [], at: daysAgo(0),
+  }));
+  const friedPlates = (id: string) => (id.startsWith('f') ? [region('fried')] : undefined);
+  const before = styleSummary(styleModelFor(quiz, friedPlates, now));
+  assert.equal(before.find((r) => r.region === 'fried')!.level, 'regularly');
+  // …then they said "rarely" on the summary.
+  const edit: Signal = { kind: 'style', region: 'fried', level: 'rarely', features: [], at: daysAgo(0) };
+  const after = styleSummary(styleModelFor([...quiz, edit], friedPlates, now));
+  assert.equal(after.find((r) => r.region === 'fried')!.level, 'rarely');
+  // Other kinds of plate move much less.
+  const diff = (id: string) => Math.abs(after.find((r) => r.region === id)!.value - before.find((r) => r.region === id)!.value);
+  assert.ok(diff('light') < diff('fried') / 2);
+});
+
+test('style edits are read from the database', () => {
+  const rows: TasteSignalRow[] = [
+    { user_id: 'u', recipe_id: null, kind: 'style', value: 'rich:sometimes', deck_id: null, meal_id: null, created_at: daysAgo(0) },
+    { user_id: 'u', recipe_id: null, kind: 'style', value: 'rich:often', deck_id: null, meal_id: null, created_at: daysAgo(0) },
+  ];
+  assert.deepEqual(signalsFor('u', { swipes: [], tasteSignals: rows, meals: [] }, () => []),
+    [{ kind: 'style', region: 'rich', level: 'sometimes', features: [], at: daysAgo(0) }]);
 });
