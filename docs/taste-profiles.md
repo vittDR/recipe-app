@@ -34,7 +34,7 @@ library's 5th percentile (0) to its 95th (1), so the space is used evenly.
 | `protein` | protein kcal share, `4·protein / kcal` | 0.12 | 0.38 | how protein-led the plate is |
 | `rich` | 0.6 × fat kcal share (`9·fat / kcal`, 0.20 → 0.55) + bonuses | | | cream / cheese +0.3, mayonnaise +0.2, coconut +0.1; gratin / pie / pizza +0.15; deep-fried +0.35; clamped |
 | `veg` | `veg_g` | 0 g | 300 g | |
-| `carb` | carb kcal share, `4·carbs / kcal` | 0.10 | 0.58 | by the numbers, not `starch_bases`: lasagne sheets have no starch trait yet |
+| `carb` | carb kcal share, `4·carbs / kcal` | 0.10 | 0.58 | by the numbers, not `starch_bases`, so a base no rule names still counts (fresh pasta dough made from flour; classified as pasta since #56) |
 
 Richness is how a plate eats, not only its fat. Olive oil on a Niçoise is as
 much fat as the cream in a gratin, but the Niçoise eats lighter, so fat counts
@@ -405,9 +405,10 @@ plate without optional lines can be stored next to the classification.
 
 ## Open points
 
-- Lasagne sheets (and maybe other bases) lack a `starch:*` trait in the
-  catalogue. The carb axis doesn't depend on it, but `isHealthy` and the dish
-  features do.
+- The library fixture (`logic/tests/fixtures/library.json`) is a snapshot.
+  Refresh it with `node scripts/export-plates.ts` after classification or
+  library changes, for example after main's fresh-pasta rule (#56) and its 45
+  chicken dinners (#55).
 - 20 decisions before the early stop gives learnable ρ ≈ 0.59, against 0.66 at
   32. That's acceptable for people in a hurry.
 - Check the simulated noise (answer sd 0.4, dish effect sd 0.5) against real

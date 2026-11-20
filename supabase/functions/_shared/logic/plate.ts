@@ -57,8 +57,9 @@ export function plateVector(c: Pick<RecipeClassification, PlateFields> | null | 
   const bonus = Math.max(0, ...(c.sauce_families ?? []).map((f) => RICH_SAUCE_BONUS[f] ?? 0))
     + Math.max(0, ...c.dish_families.map((d) => RICH_DISH_BONUS[d] ?? 0))
     + (c.cooking_methods.includes('deep_fried') ? DEEP_FRIED_BONUS : 0);
-  // Carbs by the numbers, not the starch_bases list: a base the catalogue doesn't
-  // name (lasagne sheets) still counts, and vegetables add few calories of carbs.
+  // Carbs by the numbers, not the starch_bases list: a base no rule names still
+  // counts (dough made from flour, before classify.ts learnt fresh pasta), and
+  // vegetables add few calories of carbs.
   return {
     protein: round(scale('protein', (4 * protein_g) / kcal)),
     rich: round(Math.min(1, RICH_FAT_SHARE * scale('rich', (9 * fat_g) / kcal) + bonus)),
