@@ -12,6 +12,8 @@ import { splitPot } from '../_shared/logic/portions.ts';
 import {
   buildProfile, signalsFor, weightsOf, type MealRow, type PortionRow, type SwipeRow, type TasteSignalRow, kindKeys, occasionalKinds } from '../_shared/logic/profile.ts';
 import { dietAdherence } from '../_shared/logic/recommend.ts';
+import { type Plate, rowPlates } from '../_shared/logic/plate.ts';
+import { styleModelFor } from '../_shared/logic/style.ts';
 
 const MOODS: Mood[] = ['any', 'comfort', 'light', 'healthy', 'quick', 'fancy'];
 const RECENT_COOK_DAYS = 10;
@@ -67,8 +69,8 @@ Deno.serve(async (req) => {
     admin.from('grocery_items').select('name, product:products(ingredient)').eq('household_id', householdId)
       .gte('checked_at', since(PANTRY_DAYS)),
     admin.from('ingredient_catalog').select('*'),
-    // Quiz answers, pass reasons and ratings (logic/profile.ts).
-    admin.from('taste_signals').select('user_id, recipe_id, kind, value, deck_id, meal_id, created_at')
+    // Quiz answers and pairs, pass reasons and ratings (logic/profile.ts).
+    admin.from('taste_signals').select('user_id, recipe_id, other_recipe_id, kind, value, deck_id, meal_id, created_at')
       .in('user_id', eaters).order('created_at', { ascending: false }).limit(2000),
     admin.from('member_allergies').select('user_id, allergen, ingredient').in('user_id', eaters),
     admin.from('allergen_ingredients').select('allergen, ingredient'),
@@ -94,6 +96,8 @@ Deno.serve(async (req) => {
   const library = (recipes.data ?? []).filter((r) => !(r.household_id === null && copied.has(r.id)));
 
   const featuresById = new Map<string, string[]>();
+  // Plates (logic/plate.ts): what each eater's style model scores, and reads their signals on.
+  const platesById = new Map<string, Plate[]>();
   const candidates: CandidateRecipe[] = library.map((r) => {
     const ings = (r.recipe_ingredients ?? []) as { name: string; is_staple: boolean; product_id: string | null; optional: boolean }[];
     const names = ings.filter((i) => !i.is_staple).map((i) => i.name.toLowerCase());
@@ -107,8 +111,13 @@ Deno.serve(async (req) => {
     }
     const features = recipeFeatures(r.tags ?? [], ings, classification);
     featuresById.set(r.id, features);
+    const plates = rowPlates(row, ingredientCatalog, classification);
+    platesById.set(r.id, plates);
     // Swipes and ratings made on the seed recipe before the household copied it count for the copy.
-    if (r.copied_from) featuresById.set(r.copied_from as string, features);
+    if (r.copied_from) {
+      featuresById.set(r.copied_from as string, features);
+      platesById.set(r.copied_from as string, plates);
+    }
     const classes = ings.map((i) => dietOf.get(i.name));
     return {
       allIngredients: ings.map((i) => i.name.toLowerCase()),
@@ -127,6 +136,7 @@ Deno.serve(async (req) => {
       facets: { ...deckFacets(classification), kcal: r.kcal_per_serving, proteinG: r.protein_g_per_serving },
       intents: classification.meal_intents,
       seasons: classification.seasons,
+      plates,
     };
   });
 
@@ -172,6 +182,8 @@ Deno.serve(async (req) => {
         : (allergenLinks.data ?? []).filter((l) => l.allergen === a.allergen).map((l) => l.ingredient as string))),
       weights,
       profile,
+      // How often they want each dish (logic/style.ts): what the deck scores on.
+      style: styleModelFor(memberSignals, (id) => platesById.get(id)),
       adherence: dietAdherence(memberSignals),
       occasional: occasionalKinds(memberSignals),
     };
