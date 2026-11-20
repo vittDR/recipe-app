@@ -144,5 +144,4 @@ which recipes meet the rules and why the others don't.
   couscous, bulgur and polenta, wraps, pitta and bread, and tinned beans.
 - **Seasons:** 373 of the 460 are all year (81%). The others are the key
   seasonal dishes: 22 spring, 28 summer, 23 autumn and 30 winter.
-- **Illustrations:** the first 400 have one. The 60 weeknight plates don't
-  yet (the app shows an emoji).
+- **Illustrations:** all 460 have one.

@@ -21,7 +21,7 @@ Nothing is removed for failing: the deck learns from taste tests which of these 
 | Short list | 381 | 441 |
 
 - **94 recipes reworked** that failed a single rule: supermarket stand-ins for specialty ingredients (dry sherry for Shaoxing wine, paprika for Kashmiri chilli, lime for tamarind…), more of the protein and a little less of the base, a side of vegetables, a lighter sauce, or a shorter marinade. Long braises, dishes built on pulses or halloumi alone, and bakes were left as they are.
-- **60 new weeknight plates**, all meeting the six rules, spread across everyday carbs: 13 rice, 12 wraps, pitta, naan and bread, 10 potatoes and sweet potatoes, 9 couscous, bulgur, quinoa and polenta, 7 noodles, 6 pasta, orzo and gnocchi, 3 beans and lentils. They don't have illustrations yet (the app shows an emoji).
+- **60 new weeknight plates**, all meeting the six rules, spread across everyday carbs: 13 rice, 12 wraps, pitta, naan and bread, 10 potatoes and sweet potatoes, 9 couscous, bulgur, quinoa and polenta, 7 noodles, 6 pasta, orzo and gnocchi, 3 beans and lentils.
 
 ## Fit all six rules (201)
 
