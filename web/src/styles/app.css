@@ -3110,6 +3110,19 @@ body:has(.moment) .tabbar {
   padding: var(--space-4);
 }
 
+/* How often, by kind of plate: three levels on one line each, the longest label ("De temps en temps") widest. */
+.style-rows .segmented button {
+  flex: 1 1 auto;
+  padding: 0 var(--space-3);
+  white-space: nowrap;
+}
+
+@media (max-width: 360px) {
+  .style-rows .segmented button {
+    padding: 0 var(--space-1);
+  }
+}
+
 .quiz-footer {
   display: flex;
   align-items: center;

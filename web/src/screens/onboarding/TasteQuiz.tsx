@@ -15,10 +15,11 @@ import { recipeFeatures } from '@logic/preferences.ts';
 import { quizFacets, STYLE_LEVELS, type PairValue, type StarterVerdict, type StyleLevel } from '@logic/profile.ts';
 import {
   fitStyle, FREQUENCY, nextQuizCard, nextQuizPair, type PairObservation, QUIZ_CARDS, QUIZ_MIN, QUIZ_PAIRS, type QuizCandidate,
-  STYLE_EDIT_WEIGHT, STYLE_LEVEL_FREQUENCY, STYLE_REGIONS, styleSummary, type StyleRegion,
+  styleSummary, type StyleRegion, withStyleEdits,
 } from '@logic/style.ts';
 import { Icon } from '../../components/Icon.tsx';
-import { Button, ModeBar, ProgressBar, Screen, Section, Segmented, Spinner, Tag, imageStyle, recipeEmoji } from '../../components/ui.tsx';
+import { StyleRows } from '../../components/StyleSummary.tsx';
+import { Button, ModeBar, ProgressBar, Screen, Spinner, Tag, imageStyle, recipeEmoji } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { classificationChips } from '../../lib/classes.ts';
 import { useCatalog, useLive, useSave } from '../../lib/hooks.ts';
@@ -204,10 +205,7 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
 
   const setLevel = (region: StyleRegion, level: StyleLevel) => {
     setEdits((e) => new Map(e).set(region, level));
-    void save(supabase.from('taste_signals').upsert(
-      { user_id: userId, kind: 'style', value: `${region}:${level}` },
-      { onConflict: 'user_id,key' },
-    ));
+    void save(supabase.from('taste_signals').upsert({ user_id: userId, kind: 'style', value: `${region}:${level}` }, { onConflict: 'user_id,key' }));
   };
 
   const answered = answers.shown.length > 0;
@@ -344,25 +342,14 @@ function StyleSummary({ answers, stated, onChange, onDone, editing }: {
   editing?: boolean;
 }) {
   const { t } = useI18n();
-  // The model of the quiz answers, with what they set here as the strong answers they are (style.ts).
-  const model = useMemo(() => fitStyle([
-    ...answers.shown.map((s) => ({ plate: s.candidate.plate, features: s.candidate.features, y: s.y })),
-    ...[...stated].map(([region, level]) => ({
-      plate: STYLE_REGIONS.find((r) => r.id === region)!.plate, features: [], y: STYLE_LEVEL_FREQUENCY[level], weight: STYLE_EDIT_WEIGHT,
-    })),
-  ], answers.pairObs), [answers, stated]);
-  const rows = styleSummary(model);
+  // The model of the quiz answers, with what they set here on top (style.ts withStyleEdits).
+  const model = useMemo(() => withStyleEdits(
+    fitStyle(answers.shown.map((s) => ({ plate: s.candidate.plate, features: s.candidate.features, y: s.y })), answers.pairObs),
+    [...stated].map(([region, level]) => ({ region, level })),
+  ), [answers, stated]);
   return (
     <Screen title={t('quiz.summaryTitle')} subtitle={t('quiz.summaryText')} plain>
-      <div className="stack stack--lg">
-        {rows.map(({ region, level }) => (
-          <Section key={region} label={t(`quiz.region.${region}`)} hint={t(`quiz.region.${region}Hint`)} flush>
-            <Segmented<StyleLevel> label={t(`quiz.region.${region}`)} value={stated.get(region) ?? level}
-              onChange={(l) => onChange(region, l)}
-              options={STYLE_LEVELS.map((l) => ({ value: l, label: t(`quiz.level.${l}`) }))} />
-          </Section>
-        ))}
-      </div>
+      <StyleRows summary={styleSummary(model)} stated={stated} onChange={onChange} />
       <div className="spacer spacer--gap" />
       <Button block onClick={onDone}>{editing ? t('app.done') : t('app.continue')}</Button>
     </Screen>

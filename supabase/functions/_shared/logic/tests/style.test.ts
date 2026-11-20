@@ -5,7 +5,7 @@ import { type Plate, plateDistance, platesOf } from '../plate.ts';
 import {
   COOKED_FREQUENCY, FREQUENCY, fitStyle, nextQuizCard, nextQuizPair, type Observation, observationsFor, PAIR_MIN_DISTANCE,
   type QuizCandidate, RATING_FREQUENCY, SIGNAL_WEIGHT, STYLE_HALF_LIFE_DAYS, STYLE_REGIONS, styleModelFor, styleSummary, SWIPE_FREQUENCY,
-  tasteFeatures,
+  tasteFeatures, withStyleEdits,
 } from '../style.ts';
 import { type MealRow, type Signal, signalsFor, type SwipeRow, type TasteSignalRow } from '../profile.ts';
 import type { RecipeClassification } from '../classify.ts';
@@ -286,4 +286,22 @@ test('style edits are read from the database', () => {
   ];
   assert.deepEqual(signalsFor('u', { swipes: [], tasteSignals: rows, meals: [] }, () => []),
     [{ kind: 'style', region: 'rich', level: 'sometimes', features: [], at: daysAgo(0) }]);
+});
+
+test('a summary edit corrects its kind of plate, not its neighbours', () => {
+  const at = (id: string) => STYLE_REGIONS.find((r) => r.id === id)!.plate;
+  // Someone who wants balanced and light plates regularly.
+  const m = fitStyle([...Array(4).fill(at('balanced')), ...Array(4).fill(at('light'))].map((p) => ({ plate: p, features: [], y: 3.5 })));
+  const edited = withStyleEdits(m, [{ region: 'light', level: 'rarely' }]);
+  const level = (model: typeof m, id: string) => styleSummary(model).find((r) => r.region === id)!.level;
+  assert.equal(level(m, 'light'), 'regularly');
+  assert.equal(level(edited, 'light'), 'rarely');
+  assert.equal(level(edited, 'balanced'), 'regularly');
+  assert.ok(m.style(at('balanced')) - edited.style(at('balanced')) < 0.5);
+  // A dish of that kind follows the edit.
+  assert.ok(edited.frequency([at('light')], []) < 0.5);
+  // Saying what the model already reads changes nothing; an old edit counts less.
+  assert.equal(withStyleEdits(m, [{ region: 'balanced', level: 'regularly' }]), m);
+  const old = withStyleEdits(m, [{ region: 'light', level: 'rarely', weight: 0.5 }]);
+  assert.ok(old.style(at('light')) > edited.style(at('light')));
 });

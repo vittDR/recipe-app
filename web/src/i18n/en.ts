@@ -767,6 +767,7 @@ export const en = {
     dislikes: 'Less keen on',
     profileEmpty: 'Swipe, cook and rate a few meals and your tastes show up here.',
     quiz: 'Take the taste quiz',
+    styleHint: 'From your quiz, swipes and meals. Change anything that’s off: your decks follow it.',
     quizAgain: 'Retake the taste quiz',
     quizMeta: 'About 30 dishes, 4 minutes',
     title: 'Us',

@@ -719,7 +719,7 @@ export const fr: Dictionary = {
     doneText: 'Vos decks partent de ces réponses et apprennent de chaque swipe et de chaque repas.',
     summaryTitle: 'Votre façon de manger',
     summaryText: 'D’après vos réponses. Corrigez ce qui ne va pas : vos decks suivront, et apprendront de chaque swipe et de chaque repas.',
-    level: { regularly: 'Régulièrement', sometimes: 'De temps en temps', rarely: 'Rarement' },
+    level: { regularly: 'Régulièrement', sometimes: 'Parfois', rarely: 'Rarement' },
     region: {
       balanced: 'Équilibré',
       balancedHint: 'Protéines, féculents et légumes',
@@ -765,6 +765,7 @@ export const fr: Dictionary = {
     dislikes: 'Moins fan de',
     profileEmpty: 'Swipez, cuisinez et notez quelques repas : vos goûts apparaîtront ici.',
     quiz: 'Faire le quiz des goûts',
+    styleHint: 'D’après votre quiz, vos swipes et vos repas. Corrigez ce qui ne va pas : vos decks suivront.',
     quizAgain: 'Refaire le quiz des goûts',
     quizMeta: 'Une trentaine de plats, 4 minutes',
     title: 'Nous',

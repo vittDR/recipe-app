@@ -443,10 +443,6 @@ export const SIGNAL_WEIGHT = {
 export const SWIPE_FREQUENCY = { yes: 3, must: 4, not_for_me: 0 } as const;
 export const RATING_FREQUENCY = { loved: 4, fine: 2.5, not_again: 0 } as const;
 export const COOKED_FREQUENCY = 3;
-/** A style edit on the summary: an answer at its region's plate… */
-export const STYLE_LEVEL_FREQUENCY: Record<StyleLevel, number> = { regularly: 3, sometimes: 1, rarely: 0 };
-/** …that outweighs the quiz answers around it: they said it themselves. */
-export const STYLE_EDIT_WEIGHT = 20;
 /** Older signals fade, as in the taste profile. */
 export const STYLE_HALF_LIFE_DAYS = PROFILE_HALF_LIFE_DAYS;
 /** The model's cost grows with the cube of its observations: past this, the weakest go. */
@@ -461,18 +457,22 @@ export function observationsFor(
   signals: Signal[],
   platesOf: (recipeId: string) => Plate[] | undefined,
   now: number = Date.now(),
-): { observations: Observation[]; pairs: PairObservation[] } {
+): { observations: Observation[]; pairs: PairObservation[]; edits: StyleEdit[] } {
   const fade = (at: string) => 0.5 ** (Math.max(0, (now - Date.parse(at)) / 86_400_000) / STYLE_HALF_LIFE_DAYS);
   const plate = (id: string | undefined) => (id ? platesOf(id)?.[0] : undefined);
   // A rating says more than having cooked it.
   const rated = new Set(signals.flatMap((s) => (s.kind === 'rating' && s.mealId ? [s.mealId] : [])));
   const observations: Observation[] = [];
   const pairs: PairObservation[] = [];
+  const edits: StyleEdit[] = [];
   for (const s of signals) {
     if (s.kind === 'style') {
+      // Not an answer: a correction on top of the model (withStyleEdits). One per region, the newest.
       const region = STYLE_REGIONS.find((r) => r.id === s.region);
-      if (region) {
-        observations.push({ plate: region.plate, features: [], y: STYLE_LEVEL_FREQUENCY[s.level], weight: STYLE_EDIT_WEIGHT * fade(s.at) });
+      const newer = edits.find((e) => e.region === s.region);
+      if (region && (!newer || Date.parse(s.at) > Date.parse(newer.at!))) {
+        if (newer) edits.splice(edits.indexOf(newer), 1);
+        edits.push({ region: region.id, level: s.level, weight: fade(s.at), at: s.at });
       }
       continue;
     }
@@ -511,7 +511,7 @@ export function observationsFor(
     observations.sort((a, b) => (b.weight ?? 1) - (a.weight ?? 1));
     observations.length = MAX_OBSERVATIONS;
   }
-  return { observations, pairs };
+  return { observations, pairs, edits };
 }
 
 // ---------------------------------------------------------------------------
@@ -533,6 +533,54 @@ export const STYLE_REGIONS = [
 ] as const satisfies readonly { id: string; plate: Plate }[];
 export type StyleRegion = (typeof STYLE_REGIONS)[number]['id'];
 
+/** What someone set on the summary: how often they want this kind of plate. */
+export interface StyleEdit {
+  region: StyleRegion;
+  level: StyleLevel;
+  /** 1 when just set; fades like every signal. */
+  weight?: number;
+  at?: string;
+}
+/** Where a stated level puts its kind of plate: inside its band (levelOf), not at its edge. */
+export const LEVEL_TARGET: Record<StyleLevel, number> = { regularly: 3, sometimes: 1.25, rarely: 0.25 };
+/**
+ * How far over plate space an edit reaches: dishes of that kind follow it,
+ * other kinds barely (balanced and light, the closest regions, get about a
+ * tenth of an edit on the other).
+ */
+export const EDIT_LENGTHSCALE = 0.12;
+
+/**
+ * The model with the person's summary edits on top. An edit isn't an answer:
+ * answered like one, strong enough to win, it bent the whole smooth style
+ * around it ("light: rarely" took "lean & balanced" from regularly to now and
+ * then). It's a local correction instead. Where the model already reads the
+ * region as stated, nothing changes; otherwise the region is moved to its
+ * level's target, and plates nearby by less the farther they are.
+ */
+export function withStyleEdits(model: StyleModel, edits: StyleEdit[]): StyleModel {
+  const shifts = edits.flatMap((e) => {
+    const centre = STYLE_REGIONS.find((r) => r.id === e.region)?.plate;
+    if (!centre) return [];
+    const now = model.style(centre);
+    if (levelOf(now) === e.level) return [];
+    return [{ centre, delta: (LEVEL_TARGET[e.level] - now) * (e.weight ?? 1) }];
+  });
+  if (shifts.length === 0) return model;
+  const style = (p: Plate) => model.style(p) + shifts.reduce((sum, x) => {
+    const d = plateDistance(p, x.centre);
+    return sum + x.delta * Math.exp(-(d * d) / (2 * EDIT_LENGTHSCALE * EDIT_LENGTHSCALE));
+  }, 0);
+  const raw = (plates: Plate[], features: string[]) =>
+    (plates.length ? Math.max(...plates.map(style)) : model.mean) + model.taste(features);
+  return {
+    ...model,
+    style,
+    frequency: (plates, features) => clampF(raw(plates, features)),
+    rawFrequency: raw,
+  };
+}
+
 /** How often a style (0..4) reads in words. */
 export const levelOf = (f: number): StyleLevel => (f >= 2 ? 'regularly' : f >= 0.5 ? 'sometimes' : 'rarely');
 
@@ -551,6 +599,6 @@ export function styleModelFor(
   now: number = Date.now(),
   options: StyleOptions = {},
 ): StyleModel {
-  const { observations, pairs } = observationsFor(signals, platesOf, now);
-  return fitStyle(observations, pairs, options);
+  const { observations, pairs, edits } = observationsFor(signals, platesOf, now);
+  return withStyleEdits(fitStyle(observations, pairs, options), edits);
 }

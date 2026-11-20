@@ -193,14 +193,27 @@ protein.
   rich & creamy. Rarely: fried.* The regions are labels only; scores never use
   them.
 
-**Editing (built).** On the summary screen people can move a region between
-Rarely, Now and then and Regularly. Each move is a style edit: a
-`taste_signals` row of kind `style`, with no recipe and value
-`<region>:<level>`, one per region (migration `20261202000001_taste_style.sql`).
-It's read as an answer at the region's plate (`STYLE_REGIONS`): regularly 3,
-now and then 1, rarely 0. Its weight is 20, so it outweighs the quiz answers
-around it, since the person said it themselves. It fades like everything
-else, so stating a style and drifting from it are the same mechanism.
+**Editing (built).** People can move a region between Rarely, Now and then
+and Regularly, at the end of the quiz and on the Us screen (Preferences, "How
+you like to eat"). Each move is a style edit: a `taste_signals` row of kind
+`style`, with no recipe and value `<region>:<level>`, one per region
+(migration `20261202000001_taste_style.sql`).
+
+An edit isn't an answer to the model. It's a local correction on top of it
+(`withStyleEdits`):
+- If the model already reads the region at the stated level, nothing changes.
+- Otherwise the region's plate moves to its level's target (regularly 3, now
+  and then 1.25, rarely 0.25), and nearby plates move by less, with a narrow
+  kernel (`EDIT_LENGTHSCALE` 0.12).
+- Dishes of that kind follow the edit; other kinds barely move.
+- It fades like every signal, so stating a style and drifting from it are the
+  same mechanism.
+
+A first version fed edits in as answers weighing 20 quiz answers. That bent
+the whole smooth style around them: for a mostly-balanced person, "light:
+rarely" took "lean & balanced" from 2.65 (regularly) to 1.64 (now and then).
+As a correction, the same edit moves it from 2.94 to 2.65. It stays regularly,
+and the other regions don't move.
 
 The regions and their plates are balanced (protein, a carb base, vegetables),
 light (salads, soups), hearty (generous, protein-led), carb (carb-led), rich
@@ -400,8 +413,9 @@ plate without optional lines can be stored next to the classification.
 - Check the simulated noise (answer sd 0.4, dish effect sd 0.5) against real
   answers once there are some: retaking the quiz on the same cards measures
   answer noise directly.
-- The summary is only reachable at the end of the quiz, so changing a region
-  means retaking it or stopping after 20. It could also live on the Us screen,
-  next to the taste highlights.
+- The Us screen's summary reads the same model as the deck: quiz answers,
+  swipes, ratings and meals, with the edits on top. It's shown from 5
+  observations, or once any edit exists. The quiz's own summary reads only the
+  quiz answers and edits, so right after a retake the two can differ a little.
 - Check the regions' example dishes ("Burgers, kebabs, hearty stews") against
   where library dishes actually land.
