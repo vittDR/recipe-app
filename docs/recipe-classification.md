@@ -55,7 +55,7 @@ for the deck and learning.
 | --- | --- | --- |
 | `cuisines` | the recipe's cuisine and cuisine tags, plus broader ones (`goan` → `indian` → `asian`) | `cuisine`, tags, `CUISINE_PARENTS` (sourced) |
 | `protein_groups` | poultry, beef, pork, lamb, veal, game, offal, fish, shellfish, eggs, legumes, soy, dairy | `protein:*` traits, a group counting from 6 g protein per serving or a quarter of the dish's protein |
-| `starch_bases` | rice, pasta, noodles, potato, sweet_potato, bread, flatbread, tortilla, grain, rice_cakes | `starch:*` traits, from 80 kcal per serving |
+| `starch_bases` | rice, pasta, noodles, potato, sweet_potato, bread, flatbread, tortilla, grain, rice_cakes | `starch:*` traits, from 80 kcal per serving; a pasta dish by its title with no starch line is fresh pasta when its flour reaches that (lasagne verdi) |
 | `dish_families` | curry, stew, soup, salad, grain_bowl, rice_dish, pasta_dish, noodle_dish, stir_fry, wrap, sandwich, tacos, pizza, pie, gratin, oven_bake, roast, savory_pancake, egg_dish, dumplings, plated, other | tags, then title words (EN/FR/IT), then what's on the plate |
 | `sauce_families` | tomato, cream, cheese, coconut, broth, soy_based, chilli_based, peanut, yogurt, mustard, gravy, herb_oil, citrus, mayonnaise | `sauce:*` traits above a per-family amount per serving (`SAUCE_MIN_G`; `@n` on a trait overrides it) |
 | `cooking_methods` | pan_fried, stir_fried, deep_fried, baked, roasted, grilled, braised, simmered, poached, steamed, boiled, no_cook | words in the steps (EN/FR/IT), tags, the oven flag, `cook_min = 0` |

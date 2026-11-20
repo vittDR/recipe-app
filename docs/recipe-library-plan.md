@@ -128,20 +128,25 @@ dishes** of its own, so the deck can always keep 3 of 12 cards for the season.
 
 ## Status (November 2026)
 
-Our own library is **460 recipes**: the 10 first AI recipes, 290 written from
-this plan, 100 quick, healthy dishes, and 60 weeknight plates written to the
-weeknight rules. [CATALOG-FIT-2026-11.md](CATALOG-FIT-2026-11.md) lists
-which recipes meet the rules and why the others don't.
+Our own library is **504 recipes**: the 10 first AI recipes, 290 written from
+this plan, 100 quick, healthy dishes, 45 weeknight chicken dinners, and 59
+weeknight plates written to the weeknight rules.
+[CATALOG-FIT-2026-11.md](CATALOG-FIT-2026-11.md) lists which recipes meet
+the rules and why the others don't.
 
-- **Meet all six weeknight rules: 201 of 460** (it was 51 of 400). 94
+- **Meet all six weeknight rules: 209 of 504** (it was 51 of 400). 95
   recipes that failed one rule were reworked (stand-ins for specialty
   ingredients, more protein and less base, more vegetables, shorter
-  marinades), and the 60 new plates meet them all.
-- **Healthy: 379 of 460 (82%).** Healthy and 40 min or less in total: 286.
-- **High protein: 232 of 460** (it was 120).
-- **The 60 weeknight plates** take 17 to 36 min and spread across everyday
+  marinades), and the 59 weeknight plates meet them all.
+- **The 45 chicken dinners** were written before the rules: 30 min or less,
+  each with a base and a real portion of vegetables, 19 with the air fryer.
+  9 meet all six rules; 19 miss just one (mostly protein share), so they're
+  the next to rework.
+- **Healthy: 419 of 504 (83%).** Healthy and 40 min or less in total: 325.
+- **High protein: 247 of 504** (it was 120 of 400).
+- **The 59 weeknight plates** take 17 to 36 min and spread across everyday
   carbs: rice, noodles, pasta and gnocchi, potatoes and sweet potatoes,
   couscous, bulgur and polenta, wraps, pitta and bread, and tinned beans.
-- **Seasons:** 373 of the 460 are all year (81%). The others are the key
+- **Seasons:** 417 of the 504 are all year (83%). The others are the key
   seasonal dishes: 22 spring, 28 summer, 23 autumn and 30 winter.
-- **Illustrations:** all 460 have one.
+- **Illustrations:** all 504 have one.

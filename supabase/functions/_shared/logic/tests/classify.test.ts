@@ -153,6 +153,22 @@ test('healthy is a balanced plate: a protein, vegetables and a base, nothing fri
   assert.ok(!plate(chickenRiceBroccoli, { tags: ['treat'] }));
 });
 
+test('fresh pasta: a pasta dish made from flour has pasta as its base; flour elsewhere is not a base', () => {
+  const starchOf = (titles: string[], lines: [string, number | null, string | null][]) =>
+    classifyRecipe(input({ titles, steps: ['Make the dough.', 'Bake in the oven.'], lines })).starch_bases;
+  // Lasagne verdi: the sheets are rolled from 130 g of flour for two, plus 40 g in the béchamel.
+  const verdi: [string, number | null, string | null][] = [
+    ['flour', 130, 'g'], ['flour', 40, 'g'], ['passata', 500, 'ml'], ['parmesan', 50, 'g'],
+  ];
+  assert.deepEqual(starchOf(['Lasagne verdi alla bolognese'], verdi), ['pasta']);
+  assert.deepEqual(starchOf(['Tagliatelle fatte in casa'], [['flour', 200, 'g']]), ['pasta']);
+  // Dried sheets: the béchamel's flour adds nothing.
+  assert.deepEqual(starchOf(['Spinach and mushroom lasagne'], [['pasta', 120, 'g'], ['flour', 20, 'g']]), ['pasta']);
+  // Not a pasta dish, or too little flour to be the dough.
+  assert.deepEqual(starchOf(['Fish pie'], [['cod fillet', 300, 'g'], ['flour', 130, 'g']]), []);
+  assert.deepEqual(starchOf(['Lasagne'], [['flour', 30, 'g'], ['parmesan', 50, 'g']]), []);
+});
+
 test('protein items: the catalogue ingredients the proteins come from, by the same rule', () => {
   const c = classifyRecipe(input({ lines: [['chicken breast', 360, 'g'], ['parmesan', 4, 'g'], ['rice', 160, 'g']] }));
   assert.deepEqual(c.protein_groups, ['poultry']);
