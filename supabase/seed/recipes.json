@@ -61944,7 +61944,8 @@
     "tags": [
       "french",
       "quick",
-      "comfort"
+      "comfort",
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -61995,7 +61996,7 @@
       },
       {
         "id": "77e3189a-2a9e-5a87-9ee2-c6c0e28a5df2",
-        "text": "100 g crème fraîche"
+        "text": "100 g greek yogurt"
       },
       {
         "id": "7dcb071a-5938-5a12-94ce-0c699a4566f6",
@@ -62020,7 +62021,7 @@
       "Season the chicken and brown it in the oil and butter over medium-high heat for 4-5 min until golden all over, then lift it out.",
       "Soften the shallots in the same pan for 2 min, pour in the wine and let it bubble until reduced by half, about 2 min.",
       "Add the stock, thyme and chicken and simmer for 5 min until the chicken is cooked through.",
-      "Stir in both mustards and the crème fraîche and simmer gently for 2 min until the sauce coats a spoon; do not let it boil hard.",
+      "Take the pan off the heat and stir in both mustards and the Greek yogurt until the sauce is smooth and coats the chicken; do not let it boil again or the yogurt will split.",
       "Serve the chicken and sauce with the potatoes and beans, scattered with parsley."
     ],
     "translations": {
@@ -62031,7 +62032,7 @@
           "Saler et poivrer le poulet et le dorer dans l'huile et le beurre à feu moyen-vif 4 à 5 min, puis le réserver.",
           "Faire revenir les échalotes 2 min dans la même poêle, verser le vin et laisser réduire de moitié, environ 2 min.",
           "Ajouter le bouillon, le thym et le poulet et laisser mijoter 5 min jusqu'à ce que le poulet soit cuit à cœur.",
-          "Incorporer les deux moutardes et la crème fraîche et mijoter doucement 2 min jusqu'à ce que la sauce nappe la cuillère, sans faire bouillir fort.",
+          "Retirer la poêle du feu et incorporer les deux moutardes et le yaourt grec jusqu'à ce que la sauce soit lisse et nappe le poulet ; ne plus faire bouillir pour que le yaourt ne tranche pas.",
           "Servir le poulet et sa sauce avec les pommes de terre et les haricots, parsemé de persil."
         ]
       },
@@ -62042,7 +62043,7 @@
           "Salare e pepare il pollo e rosolarlo nell'olio e nel burro a fuoco medio-alto per 4-5 min, poi metterlo da parte.",
           "Appassire gli scalogni nella stessa padella per 2 min, versare il vino e lasciarlo ridurre della metà, circa 2 min.",
           "Aggiungere il brodo, il timo e il pollo e sobbollire 5 min finché il pollo è cotto.",
-          "Unire le due senapi e la crème fraîche e sobbollire piano 2 min finché la salsa vela il cucchiaio, senza farla bollire forte.",
+          "Togliere la padella dal fuoco e unire le due senapi e lo yogurt greco finché la salsa è liscia e vela il pollo; non farla più bollire perché lo yogurt non impazzisca.",
           "Servire il pollo con la salsa, le patate e i fagiolini, con prezzemolo."
         ]
       }
@@ -62321,7 +62322,8 @@
       "british",
       "comfort",
       "kid-friendly",
-      "fakeaway"
+      "fakeaway",
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -62346,7 +62348,8 @@
       },
       {
         "id": "f2bc1cb9-74a0-50ed-b5ae-0388b6aa0265",
-        "text": "50 g cheddar, grated"
+        "text": "20 g cheddar, grated",
+        "optional": true
       },
       {
         "id": "eb724137-f2f6-5a60-879b-8fae47179a7e",
@@ -62378,31 +62381,31 @@
       "Toss the potato wedges with the oil, paprika and salt and air-fry at 200°C for 20-22 min, shaking twice, until crisp and golden.",
       "Season the chicken breasts, wrap each in bacon rashers and lay them seam-side down on a lined tray.",
       "Bake the chicken for 18 min until the bacon is crisp and the chicken is nearly cooked through.",
-      "Spoon the barbecue sauce over the chicken, top with the cheddar and bake 5 min more until bubbling and cooked through (75°C inside).",
+      "Spoon the barbecue sauce over the chicken, scatter over the cheddar if using and bake 5 min more until bubbling and cooked through (75°C inside).",
       "Simmer the peas in salted water for 3 min and drain.",
       "Serve the chicken with the wedges and peas."
     ],
     "translations": {
       "fr": {
-        "title": "Poulet hunter's (lard, sauce barbecue et cheddar), potatoes au air fryer et petits pois",
+        "title": "Poulet hunter's (lard et sauce barbecue), quartiers de pommes de terre au air fryer et petits pois",
         "steps": [
           "Préchauffer le four à 200 °C.",
           "Mélanger les quartiers de pommes de terre avec l'huile, le paprika et du sel et les cuire au air fryer à 200 °C pendant 20 à 22 min en secouant deux fois, jusqu'à ce qu'ils soient dorés et croustillants.",
           "Assaisonner les blancs de poulet, les enrouler de tranches de lard et les poser jointure dessous sur une plaque recouverte de papier.",
           "Cuire le poulet 18 min au four jusqu'à ce que le lard soit croustillant et le poulet presque cuit.",
-          "Napper le poulet de sauce barbecue, couvrir de cheddar et cuire encore 5 min jusqu'à ce que ça bouillonne et que le poulet soit cuit (75 °C à cœur).",
+          "Napper le poulet de sauce barbecue, parsemer de cheddar si on en utilise et cuire encore 5 min jusqu'à ce que ça bouillonne et que le poulet soit cuit (75 °C à cœur).",
           "Cuire les petits pois 3 min dans l'eau salée et les égoutter.",
           "Servir le poulet avec les potatoes et les petits pois."
         ]
       },
       "it": {
-        "title": "Pollo hunter's (pancetta, salsa barbecue e cheddar) con spicchi di patate in friggitrice ad aria e piselli",
+        "title": "Pollo hunter's (pancetta e salsa barbecue) con spicchi di patate in friggitrice ad aria e piselli",
         "steps": [
           "Scaldare il forno a 200 °C.",
           "Condire gli spicchi di patate con olio, paprika e sale e cuocerli in friggitrice ad aria a 200 °C per 20-22 min, scuotendo due volte, finché sono dorati e croccanti.",
           "Condire i petti di pollo, avvolgerli nelle fette di pancetta e disporli con la chiusura verso il basso su una teglia foderata.",
           "Cuocere il pollo in forno per 18 min finché la pancetta è croccante e il pollo quasi cotto.",
-          "Coprire il pollo con la salsa barbecue e il cheddar e cuocere altri 5 min finché bolle e il pollo è cotto (75 °C al cuore).",
+          "Coprire il pollo con la salsa barbecue, cospargere con il cheddar se si usa e cuocere altri 5 min finché bolle e il pollo è cotto (75 °C al cuore).",
           "Lessare i piselli in acqua salata per 3 min e scolarli.",
           "Servire il pollo con gli spicchi di patate e i piselli."
         ]
@@ -62543,7 +62546,8 @@
       "portuguese",
       "spicy",
       "healthy",
-      "quick"
+      "quick",
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -62556,7 +62560,7 @@
     "ingredients": [
       {
         "id": "00697ee8-5ec6-546f-894a-da2f23a702e4",
-        "text": "360 g chicken thigh, boneless, skinless"
+        "text": "400 g chicken thigh, boneless, skinless"
       },
       {
         "id": "74129fb9-70ac-509f-848e-095ccdf82ea5",
@@ -62584,7 +62588,7 @@
       },
       {
         "id": "0ac23cd7-65d5-5946-9bde-5ad77a3313ba",
-        "text": "2 tbsp olive oil"
+        "text": "2 tsp olive oil"
       },
       {
         "id": "edb5dfce-b370-566f-96a1-b10c468fbf25",
@@ -62592,7 +62596,7 @@
       },
       {
         "id": "2991d619-f445-5b2a-9c54-51f83aec28a7",
-        "text": "150 g rice"
+        "text": "110 g rice"
       },
       {
         "id": "07bb63e2-d43f-5676-b7da-59adbfa203da",
@@ -62605,37 +62609,33 @@
       {
         "id": "336c3237-eef0-5a02-bd48-b3bb94116d74",
         "text": "60 g lettuce"
-      },
-      {
-        "id": "d25f0d47-869f-55b7-bf3e-b9f8d202042e",
-        "text": "1 tsp olive oil, for the salad"
       }
     ],
     "steps": [
-      "Mash or blitz the chillies, garlic, paprika, oregano, lemon juice, vinegar, 2 tbsp oil and a good pinch of salt into a loose piri-piri sauce.",
+      "Mash or blitz the chillies, garlic, paprika, oregano, lemon juice, vinegar, 2 tsp oil and a good pinch of salt into a loose piri-piri sauce.",
       "Toss the chicken with half the sauce and air-fry at 200°C for 16-18 min, turning halfway and brushing with a little more sauce, until charred and cooked through.",
-      "Meanwhile rinse the rice and simmer it covered in 300 ml salted water for 12 min, then rest 5 min off the heat.",
-      "Toss the tomatoes, onion and lettuce with the oil, a splash of vinegar and salt.",
+      "Meanwhile rinse the rice and simmer it covered in 220 ml salted water for 12 min, then rest 5 min off the heat.",
+      "Toss the tomatoes, onion and lettuce with a splash of vinegar, a squeeze of lemon and salt.",
       "Serve the chicken on the rice with the salad, with the remaining sauce for spooning over."
     ],
     "translations": {
       "fr": {
         "title": "Hauts de cuisse de poulet piri-piri au air fryer, riz et salade mixte",
         "steps": [
-          "Écraser ou mixer les piments, l'ail, le paprika, l'origan, le jus de citron, le vinaigre, 2 c. à soupe d'huile et une bonne pincée de sel en une sauce piri-piri fluide.",
+          "Écraser ou mixer les piments, l'ail, le paprika, l'origan, le jus de citron, le vinaigre, 2 c. à café d'huile et une bonne pincée de sel en une sauce piri-piri fluide.",
           "Enrober le poulet de la moitié de la sauce et le cuire au air fryer à 200 °C pendant 16 à 18 min en le retournant à mi-cuisson et en le badigeonnant d'un peu de sauce, jusqu'à ce qu'il soit grillé et cuit.",
-          "Pendant ce temps, rincer le riz et le cuire à couvert dans 300 ml d'eau salée 12 min, puis le laisser reposer 5 min hors du feu.",
-          "Mélanger les tomates, l'oignon et la salade avec l'huile, un trait de vinaigre et du sel.",
+          "Pendant ce temps, rincer le riz et le cuire à couvert dans 220 ml d'eau salée 12 min, puis le laisser reposer 5 min hors du feu.",
+          "Mélanger les tomates, l'oignon et la salade avec un trait de vinaigre, un filet de citron et du sel.",
           "Servir le poulet sur le riz avec la salade et le reste de sauce à côté."
         ]
       },
       "it": {
         "title": "Sovracosce di pollo piri-piri in friggitrice ad aria con riso e insalata mista",
         "steps": [
-          "Pestare o frullare peperoncini, aglio, paprika, origano, succo di limone, aceto, 2 cucchiai d'olio e un bel pizzico di sale in una salsa piri-piri fluida.",
+          "Pestare o frullare peperoncini, aglio, paprika, origano, succo di limone, aceto, 2 cucchiaini d'olio e un bel pizzico di sale in una salsa piri-piri fluida.",
           "Condire il pollo con metà della salsa e cuocerlo in friggitrice ad aria a 200 °C per 16-18 min, girandolo a metà e spennellandolo con altra salsa, finché è abbrustolito e cotto.",
-          "Nel frattempo sciacquare il riso e cuocerlo coperto in 300 ml d'acqua salata per 12 min, poi lasciarlo riposare 5 min fuori dal fuoco.",
-          "Condire pomodori, cipolla e lattuga con l'olio, un goccio d'aceto e sale.",
+          "Nel frattempo sciacquare il riso e cuocerlo coperto in 220 ml d'acqua salata per 12 min, poi lasciarlo riposare 5 min fuori dal fuoco.",
+          "Condire pomodori, cipolla e lattuga con un goccio d'aceto, un po' di limone e sale.",
           "Servire il pollo sul riso con l'insalata e la salsa rimasta a parte."
         ]
       }
@@ -62657,7 +62657,8 @@
       "spanish",
       "stew",
       "healthy",
-      "one-pot"
+      "one-pot",
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -62668,11 +62669,11 @@
     "ingredients": [
       {
         "id": "c31a355a-f96c-55c9-a3fb-7bb0a05d6662",
-        "text": "360 g chicken thigh, boneless, skinless, in large chunks"
+        "text": "400 g chicken thigh, boneless, skinless, in large chunks"
       },
       {
         "id": "2a4c3fbb-1b70-59a9-81d5-7d379301729a",
-        "text": "1 tbsp olive oil"
+        "text": "2 tsp olive oil"
       },
       {
         "id": "a7081bb8-a59a-511a-9634-cc67ee0efe70",
@@ -62720,7 +62721,7 @@
       },
       {
         "id": "3c0f65a5-2a5c-51da-b956-afb5d62e906d",
-        "text": "160 g bread, crusty"
+        "text": "120 g bread, crusty"
       },
       {
         "id": "f9ef9763-21b4-52c7-9171-9ea3cb91b3f3",
@@ -62773,7 +62774,8 @@
     "tags": [
       "middle eastern",
       "wrap",
-      "street food"
+      "street food",
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -62786,7 +62788,7 @@
     "ingredients": [
       {
         "id": "44e62afc-3d29-5e82-8fff-3a2ede26b04b",
-        "text": "340 g chicken thigh, boneless, skinless, in thin strips"
+        "text": "400 g chicken breast, in thin strips"
       },
       {
         "id": "546ec890-2863-5feb-a7f4-fd966bd1b54f",
@@ -62794,7 +62796,7 @@
       },
       {
         "id": "da6c9c46-7a77-50f3-b852-55b92f034160",
-        "text": "2.5 tbsp olive oil"
+        "text": "4 tsp olive oil"
       },
       {
         "id": "bbcaa1d7-5903-54ed-9c70-6df9fdf05b00",
@@ -62851,7 +62853,7 @@
       }
     ],
     "steps": [
-      "Cook the onions in 2 tbsp of the oil with a pinch of salt over medium heat for 10-12 min, stirring often, until soft and sweet but not crisp.",
+      "Cook the onions in 1 tbsp of the oil with a pinch of salt over medium heat for 10-12 min, stirring often, until soft and sweet but not crisp.",
       "Toast the pine nuts in a dry pan for 2 min until golden and set aside.",
       "Add the chicken to the onions with the allspice, cinnamon, cardamom and pepper and cook for 6-7 min until cooked through.",
       "Stir in the sumac and pine nuts and check the salt.",
@@ -62863,7 +62865,7 @@
       "fr": {
         "title": "Rouleaux musakhan au air fryer (poulet au sumac et oignons), yaourt et salade",
         "steps": [
-          "Cuire les oignons dans 2 c. à soupe d'huile avec une pincée de sel à feu moyen 10 à 12 min en remuant souvent, jusqu'à ce qu'ils soient fondants et doux sans croustiller.",
+          "Cuire les oignons dans 1 c. à soupe d'huile avec une pincée de sel à feu moyen 10 à 12 min en remuant souvent, jusqu'à ce qu'ils soient fondants et doux sans croustiller.",
           "Faire griller les pignons à sec 2 min et les réserver.",
           "Ajouter le poulet aux oignons avec le piment de la Jamaïque, la cannelle, la cardamome et le poivre et cuire 6 à 7 min jusqu'à cuisson complète.",
           "Incorporer le sumac et les pignons et rectifier le sel.",
@@ -62875,7 +62877,7 @@
       "it": {
         "title": "Rotoli musakhan in friggitrice ad aria (pollo al sommacco e cipolle) con yogurt e insalata",
         "steps": [
-          "Cuocere le cipolle in 2 cucchiai d'olio con un pizzico di sale a fuoco medio per 10-12 min, mescolando spesso, finché sono morbide e dolci ma non croccanti.",
+          "Cuocere le cipolle in 1 cucchiaio d'olio con un pizzico di sale a fuoco medio per 10-12 min, mescolando spesso, finché sono morbide e dolci ma non croccanti.",
           "Tostare i pinoli in padella asciutta per 2 min e metterli da parte.",
           "Unire il pollo alle cipolle con pimento, cannella, cardamomo e pepe e cuocere 6-7 min finché è cotto.",
           "Aggiungere il sommacco e i pinoli e regolare di sale.",
@@ -62902,7 +62904,8 @@
       "north african",
       "spicy",
       "healthy",
-      "one-pot"
+      "one-pot",
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -62913,11 +62916,11 @@
     "ingredients": [
       {
         "id": "b0e33410-89e2-5065-89b7-740528c36c33",
-        "text": "340 g chicken thigh, boneless, skinless, in 4 cm pieces"
+        "text": "400 g chicken thigh, boneless, skinless, in 4 cm pieces"
       },
       {
         "id": "4b713e3f-32d4-58e1-812b-c1699bd42ff5",
-        "text": "1 tbsp olive oil"
+        "text": "2 tsp olive oil"
       },
       {
         "id": "b881ab93-ac8f-5ca5-b73a-d3f833afe889",
@@ -62965,11 +62968,7 @@
       },
       {
         "id": "394aae1d-4896-5905-8f3d-16af6210025b",
-        "text": "150 g couscous"
-      },
-      {
-        "id": "424e109f-38ce-5f46-b128-4fe8931805bd",
-        "text": "1 tsp olive oil, for the couscous"
+        "text": "120 g couscous"
       },
       {
         "id": "7de65d18-42c0-5ee2-a5c1-411adf7b6ed5",
@@ -62986,7 +62985,7 @@
       "Stir in the garlic, tomato paste, harissa, paprika, caraway and coriander and fry for 1 min until the paste darkens.",
       "Add the carrots and stock, cover and simmer for 8 min.",
       "Add the courgette and chickpeas and simmer, uncovered, for 8 min until the vegetables are tender and the chicken cooked through.",
-      "Put the couscous in a bowl with the oil and a pinch of salt, pour over 200 ml of the hot red broth from the pan, cover for 5 min, then fluff with a fork.",
+      "Put the couscous in a bowl with a pinch of salt, pour over 160 ml of the hot red broth from the pan, cover for 5 min, then fluff with a fork.",
       "Serve the couscous in bowls topped with the chicken, vegetables and more of the broth, with parsley."
     ],
     "translations": {
@@ -62997,7 +62996,7 @@
           "Ajouter l'ail, le concentré de tomate, la harissa, le paprika, le carvi et la coriandre et faire revenir 1 min jusqu'à ce que le concentré fonce.",
           "Ajouter les carottes et le bouillon, couvrir et mijoter 8 min.",
           "Ajouter la courgette et les pois chiches et mijoter à découvert 8 min jusqu'à ce que les légumes soient tendres et le poulet cuit.",
-          "Mettre la semoule dans un saladier avec l'huile et une pincée de sel, verser 200 ml du bouillon rouge chaud de la sauteuse, couvrir 5 min puis égrainer à la fourchette.",
+          "Mettre la semoule dans un saladier avec une pincée de sel, verser 160 ml du bouillon rouge chaud de la sauteuse, couvrir 5 min puis égrainer à la fourchette.",
           "Servir la semoule en bols, garnie du poulet, des légumes et d'un peu plus de bouillon, avec du persil."
         ]
       },
@@ -63008,7 +63007,7 @@
           "Unire aglio, concentrato di pomodoro, harissa, paprika, carvi e coriandolo e soffriggere 1 min finché il concentrato scurisce.",
           "Aggiungere le carote e il brodo, coprire e sobbollire 8 min.",
           "Aggiungere la zucchina e i ceci e sobbollire scoperto 8 min finché le verdure sono tenere e il pollo cotto.",
-          "Mettere il cuscus in una ciotola con l'olio e un pizzico di sale, versarvi 200 ml del brodo rosso caldo della padella, coprire 5 min e sgranare con una forchetta.",
+          "Mettere il cuscus in una ciotola con un pizzico di sale, versarvi 160 ml del brodo rosso caldo della padella, coprire 5 min e sgranare con una forchetta.",
           "Servire il cuscus nelle ciotole con pollo, verdure e altro brodo, con prezzemolo."
         ]
       }
@@ -63158,7 +63157,8 @@
     "tags": [
       "greek",
       "mediterranean",
-      "healthy"
+      "healthy",
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -63171,7 +63171,7 @@
     "ingredients": [
       {
         "id": "e907eea5-4dfa-568c-b9e2-5f0e8639ba18",
-        "text": "360 g chicken thigh, boneless, skinless"
+        "text": "400 g chicken breast, halved horizontally"
       },
       {
         "id": "811a88ac-c590-5182-92b6-7f44435636a1",
@@ -63179,7 +63179,7 @@
       },
       {
         "id": "a2f9ac1f-ca01-52e2-8b8e-42f4b49b6045",
-        "text": "2 tbsp olive oil"
+        "text": "4 tsp olive oil"
       },
       {
         "id": "9569119e-1932-5e6b-8a11-c48ded26e45e",
@@ -63235,9 +63235,9 @@
       }
     ],
     "steps": [
-      "Toss the potatoes with 1 tbsp oil, half the lemon juice, 1 tsp oregano and salt, and air-fry at 200°C for 22 min, shaking twice, until golden and tender.",
+      "Toss the potatoes with 2 tsp oil, half the lemon juice, 1 tsp oregano and salt, and air-fry at 200°C for 22 min, shaking twice, until golden and tender.",
       "Rub the chicken with the garlic, zest, mustard, remaining oregano, salt and pepper.",
-      "Fry the chicken in 2 tsp oil over medium heat for 5-6 min a side until golden and cooked through.",
+      "Fry the chicken in 1 tsp oil over medium heat for 4-5 min a side until golden and cooked through.",
       "Pour in the stock and remaining lemon juice and let it bubble for 2 min, turning the chicken, until the sauce is glossy.",
       "Arrange the tomato, cucumber, onion and olives in a bowl, set the feta on top, sprinkle with oregano and dress with the vinegar and remaining oil.",
       "Serve the chicken and its lemon sauce with the potatoes and the salad."
@@ -63246,9 +63246,9 @@
       "fr": {
         "title": "Kotopoulo lemonato (poulet au citron), pommes de terre au citron au air fryer et salade grecque",
         "steps": [
-          "Mélanger les pommes de terre avec 1 c. à soupe d'huile, la moitié du jus de citron, 1 c. à café d'origan et du sel, et les cuire au air fryer à 200 °C pendant 22 min en secouant deux fois, jusqu'à ce qu'elles soient dorées et tendres.",
+          "Mélanger les pommes de terre avec 2 c. à café d'huile, la moitié du jus de citron, 1 c. à café d'origan et du sel, et les cuire au air fryer à 200 °C pendant 22 min en secouant deux fois, jusqu'à ce qu'elles soient dorées et tendres.",
           "Frotter le poulet avec l'ail, le zeste, la moutarde, le reste d'origan, du sel et du poivre.",
-          "Cuire le poulet dans 2 c. à café d'huile à feu moyen 5 à 6 min de chaque côté jusqu'à ce qu'il soit doré et cuit.",
+          "Cuire le poulet dans 1 c. à café d'huile à feu moyen 4 à 5 min de chaque côté jusqu'à ce qu'il soit doré et cuit.",
           "Verser le bouillon et le reste du jus de citron et laisser bouillonner 2 min en retournant le poulet, jusqu'à une sauce brillante.",
           "Disposer la tomate, le concombre, l'oignon et les olives dans un saladier, poser la feta dessus, saupoudrer d'origan et arroser du vinaigre et du reste d'huile.",
           "Servir le poulet et sa sauce au citron avec les pommes de terre et la salade."
@@ -63257,9 +63257,9 @@
       "it": {
         "title": "Kotopoulo lemonato (pollo al limone) con patate al limone in friggitrice ad aria e insalata greca",
         "steps": [
-          "Condire le patate con 1 cucchiaio d'olio, metà del succo di limone, 1 cucchiaino di origano e sale e cuocerle in friggitrice ad aria a 200 °C per 22 min, scuotendo due volte, finché sono dorate e tenere.",
+          "Condire le patate con 2 cucchiaini d'olio, metà del succo di limone, 1 cucchiaino di origano e sale e cuocerle in friggitrice ad aria a 200 °C per 22 min, scuotendo due volte, finché sono dorate e tenere.",
           "Massaggiare il pollo con aglio, scorza, senape, il resto dell'origano, sale e pepe.",
-          "Cuocere il pollo in 2 cucchiaini d'olio a fuoco medio 5-6 min per lato finché è dorato e cotto.",
+          "Cuocere il pollo in 1 cucchiaino d'olio a fuoco medio 4-5 min per lato finché è dorato e cotto.",
           "Versare il brodo e il resto del succo di limone e lasciar bollire 2 min girando il pollo, finché il sugo è lucido.",
           "Disporre pomodoro, cetriolo, cipolla e olive in una ciotola, adagiarvi sopra la feta, cospargere di origano e condire con l'aceto e l'olio rimasto.",
           "Servire il pollo con il sugo al limone, le patate e l'insalata."
@@ -63281,7 +63281,8 @@
     "cuisine": "italian",
     "tags": [
       "italian",
-      "healthy"
+      "healthy",
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -63292,7 +63293,7 @@
     "ingredients": [
       {
         "id": "343e99a4-5ca1-50ae-b772-1b07ec9c29df",
-        "text": "320 g ground chicken"
+        "text": "400 g ground chicken"
       },
       {
         "id": "b7787457-c2e3-5989-84ee-f3c77fc001fe",
@@ -63332,7 +63333,7 @@
       },
       {
         "id": "8bbe5351-7609-573e-abba-537d298828f8",
-        "text": "160 g pasta, rigatoni"
+        "text": "130 g pasta, rigatoni"
       },
       {
         "id": "f7cd472f-a754-57f3-a052-212bcbf91848",
@@ -63794,7 +63795,8 @@
       "soup",
       "healthy",
       "light",
-      "dairy-free"
+      "dairy-free",
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -63858,7 +63860,7 @@
       },
       {
         "id": "db039de7-680c-47d2-8676-8417d544ff5b",
-        "text": "5 g thai basil, leaves",
+        "text": "5 g fresh basil, leaves",
         "optional": true
       },
       {
@@ -63879,7 +63881,7 @@
       "Season the broth with the fish sauce and sugar, simmer 2 min more, then strain out the aromatics and bring it back to a rolling boil.",
       "Slice the chicken thinly across the grain.",
       "Divide the noodles between deep bowls, top with the chicken and half the bean sprouts, and ladle over the boiling broth.",
-      "Scatter with spring onion and serve with the coriander, Thai basil, chilli, lime wedges and remaining bean sprouts to add at the table."
+      "Scatter with spring onion and serve with the coriander, basil, chilli, lime wedges and remaining bean sprouts to add at the table."
     ],
     "translations": {
       "fr": {
@@ -63892,7 +63894,7 @@
           "Assaisonner le bouillon avec la sauce de poisson et le sucre, frémir encore 2 min, puis le filtrer et le remettre à gros bouillons.",
           "Trancher finement le poulet dans le sens contraire des fibres.",
           "Répartir les nouilles dans des bols creux, ajouter le poulet et la moitié des germes de soja, puis verser le bouillon bouillant.",
-          "Parsemer d'oignon nouveau et servir avec la coriandre, le basilic thaï, le piment, les quartiers de citron vert et le reste des germes de soja à ajouter à table."
+          "Parsemer d'oignon nouveau et servir avec la coriandre, le basilic, le piment, les quartiers de citron vert et le reste des germes de soja à ajouter à table."
         ]
       },
       "it": {
@@ -63905,7 +63907,7 @@
           "Insaporire il brodo con salsa di pesce e zucchero, sobbollire altri 2 min, poi filtrarlo e riportarlo a bollore vivace.",
           "Tagliare il pollo a fettine sottili contro fibra.",
           "Dividere i noodles in ciotole fonde, aggiungere il pollo e metà dei germogli di soia e versare sopra il brodo bollente.",
-          "Completare con il cipollotto e servire con coriandolo, basilico thai, peperoncino, spicchi di lime e i germogli rimasti da aggiungere a tavola."
+          "Completare con il cipollotto e servire con coriandolo, basilico, peperoncino, spicchi di lime e i germogli rimasti da aggiungere a tavola."
         ]
       }
     }
@@ -63927,7 +63929,8 @@
       "asian",
       "curry",
       "spicy",
-      "dairy-free"
+      "dairy-free",
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -63942,7 +63945,7 @@
       },
       {
         "id": "93469cfd-ee36-4af2-85bc-fd4486a624bf",
-        "text": "320 g chicken breast, thinly sliced"
+        "text": "360 g chicken breast, thinly sliced"
       },
       {
         "id": "5a6864f2-23a8-4938-ba72-a303883867d2",
@@ -63950,7 +63953,11 @@
       },
       {
         "id": "a7421292-0ac5-4330-916e-ce79b42b9c4b",
-        "text": "200 ml coconut milk"
+        "text": "100 ml coconut milk"
+      },
+      {
+        "id": "3cddbe1d-cbd2-47b3-a444-facc80d48fd8",
+        "text": "100 ml chicken stock"
       },
       {
         "id": "cb584e1e-9cc3-4362-aa53-2012e950ee64",
@@ -63966,7 +63973,7 @@
       },
       {
         "id": "e1643aa1-dbe7-4dd8-8191-b6533bde1f65",
-        "text": "4 kaffir lime leaves, very finely shredded"
+        "text": "1 lime, zested"
       },
       {
         "id": "013071e0-e068-4b84-90c5-2f203e283e0a",
@@ -63982,7 +63989,7 @@
       },
       {
         "id": "a9fda865-7843-4e42-a2e9-d5d50ebfa147",
-        "text": "5 g thai basil, leaves",
+        "text": "5 g fresh basil, leaves",
         "optional": true
       },
       {
@@ -63996,9 +64003,9 @@
       "Heat the oil and 4 tbsp of the thickest coconut milk in a wok over medium heat for about 2 min, until it bubbles and the fat starts to separate.",
       "Fry the curry paste in it for 1-2 min, stirring, until fragrant and a shade darker.",
       "Add the chicken and stir-fry 3 min until it is no longer pink on the outside.",
-      "Pour in the rest of the coconut milk, add the green beans, fish sauce, sugar and half the lime leaves, and simmer 5 min.",
+      "Pour in the rest of the coconut milk and the stock, add the green beans, fish sauce, sugar and half the lime zest, and simmer 5 min.",
       "Add the pepper and simmer 3 min more, until the chicken is cooked through and the sauce is thick enough to coat a spoon.",
-      "Serve over the rice, topped with the remaining lime leaves, the peanuts, Thai basil and chilli."
+      "Serve over the rice, topped with the remaining lime zest, the peanuts, basil and chilli."
     ],
     "translations": {
       "fr": {
@@ -64008,9 +64015,9 @@
           "Chauffer l'huile et 4 c. à soupe de la partie la plus épaisse du lait de coco dans un wok à feu moyen environ 2 min, jusqu'à ce qu'il bouillonne et que le gras commence à se séparer.",
           "Y faire revenir la pâte de curry 1 à 2 min en remuant, jusqu'à ce qu'elle embaume et fonce légèrement.",
           "Ajouter le poulet et le faire sauter 3 min jusqu'à ce qu'il ne soit plus rose à l'extérieur.",
-          "Verser le reste du lait de coco, ajouter les haricots verts, la sauce de poisson, le sucre et la moitié des feuilles de combava, puis mijoter 5 min.",
+          "Verser le reste du lait de coco et le bouillon, ajouter les haricots verts, la sauce de poisson, le sucre et la moitié du zeste de citron vert, puis mijoter 5 min.",
           "Ajouter le poivron et mijoter encore 3 min, jusqu'à ce que le poulet soit cuit et que la sauce nappe la cuillère.",
-          "Servir sur le riz, garni du reste des feuilles de combava, des cacahuètes, du basilic thaï et du piment."
+          "Servir sur le riz, garni du reste du zeste de citron vert, des cacahuètes, du basilic et du piment."
         ]
       },
       "it": {
@@ -64020,9 +64027,9 @@
           "Scaldare l'olio e 4 cucchiai della parte più densa del latte di cocco in un wok a fuoco medio per circa 2 min, finché sobbolle e il grasso comincia a separarsi.",
           "Soffriggervi la pasta di curry 1-2 min mescolando, finché è profumata e leggermente più scura.",
           "Aggiungere il pollo e saltarlo 3 min finché non è più rosa all'esterno.",
-          "Versare il resto del latte di cocco, aggiungere fagiolini, salsa di pesce, zucchero e metà delle foglie di lime e sobbollire 5 min.",
+          "Versare il resto del latte di cocco e il brodo, aggiungere fagiolini, salsa di pesce, zucchero e metà della scorza di lime e sobbollire 5 min.",
           "Aggiungere il peperone e sobbollire altri 3 min, finché il pollo è cotto e la salsa vela il cucchiaio.",
-          "Servire sul riso con le foglie di lime rimaste, le arachidi, il basilico thai e il peperoncino."
+          "Servire sul riso con la scorza di lime rimasta, le arachidi, il basilico e il peperoncino."
         ]
       }
     }
@@ -64044,7 +64051,8 @@
       "asian",
       "fakeaway",
       "kid-friendly",
-      "dairy-free"
+      "dairy-free",
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -64061,7 +64069,7 @@
       },
       {
         "id": "2522c491-0355-4f01-b8da-5c4e1eab4466",
-        "text": "320 g chicken breast, in 3 cm cubes"
+        "text": "380 g chicken breast, in 3 cm cubes"
       },
       {
         "id": "51dce0d8-f920-48cc-84e0-505a628e9236",
@@ -64298,7 +64306,8 @@
       "soup",
       "comfort",
       "healthy",
-      "dairy-free"
+      "dairy-free",
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -64341,7 +64350,7 @@
       },
       {
         "id": "5f31db57-e4b2-475b-8b90-e2444d63b0a5",
-        "text": "1 tsp gochugaru"
+        "text": "0.5 tsp chilli flakes"
       },
       {
         "id": "9551c883-3fb6-4a63-b5ea-b9518e716543",
@@ -64358,7 +64367,7 @@
     ],
     "steps": [
       "Bring the stock to the boil with the onion and the 2 crushed garlic cloves, add the chicken, cover and simmer gently for 12-14 min until cooked through.",
-      "Meanwhile mix the soy sauce, gochugaru, grated garlic, half the spring onion, the sesame oil and sesame seeds into a dipping sauce.",
+      "Meanwhile mix the soy sauce, chilli flakes, grated garlic, half the spring onion, the sesame oil and sesame seeds into a dipping sauce.",
       "Lift out the chicken and shred it with two forks.",
       "Add the potato to the broth and simmer 5 min.",
       "Shake the excess flour off the noodles, add them with the courgette and simmer 3-4 min, until the noodles are tender and the potato is soft.",
@@ -64370,7 +64379,7 @@
         "title": "Dak kalguksu (soupe coréenne de nouilles au poulet)",
         "steps": [
           "Porter le bouillon à ébullition avec l'oignon et les 2 gousses d'ail écrasées, ajouter le poulet, couvrir et frémir doucement 12 à 14 min jusqu'à cuisson complète.",
-          "Pendant ce temps, mélanger la sauce soja, le gochugaru, l'ail râpé, la moitié de l'oignon nouveau, l'huile et les graines de sésame pour la sauce.",
+          "Pendant ce temps, mélanger la sauce soja, le piment en flocons, l'ail râpé, la moitié de l'oignon nouveau, l'huile et les graines de sésame pour la sauce.",
           "Sortir le poulet et l'effilocher avec deux fourchettes.",
           "Ajouter la pomme de terre au bouillon et frémir 5 min.",
           "Secouer les nouilles pour ôter l'excès de farine, les ajouter avec la courgette et frémir 3 à 4 min, jusqu'à ce que les nouilles soient tendres et la pomme de terre fondante.",
@@ -64382,7 +64391,7 @@
         "title": "Dak kalguksu (zuppa coreana di noodles al pollo)",
         "steps": [
           "Portare a bollore il brodo con la cipolla e i 2 spicchi d'aglio schiacciati, aggiungere il pollo, coprire e sobbollire dolcemente 12-14 min finché cotto.",
-          "Nel frattempo mescolare salsa di soia, gochugaru, aglio grattugiato, metà del cipollotto, olio e semi di sesamo per la salsa.",
+          "Nel frattempo mescolare salsa di soia, peperoncino in fiocchi, aglio grattugiato, metà del cipollotto, olio e semi di sesamo per la salsa.",
           "Togliere il pollo e sfilacciarlo con due forchette.",
           "Aggiungere la patata al brodo e sobbollire 5 min.",
           "Scuotere i noodles per togliere la farina in eccesso, unirli con la zucchina e sobbollire 3-4 min, finché i noodles sono teneri e la patata morbida.",
@@ -64426,7 +64435,7 @@
       },
       {
         "id": "0f8505c6-af1f-4732-a51f-aff96fc8c83d",
-        "text": "2 tbsp plain yogurt, for the marinade"
+        "text": "180 g plain yogurt, 2 tbsp for the marinade, the rest for the raita"
       },
       {
         "id": "ddca332f-2259-4d42-957d-5b61600c4ef7",
@@ -64438,11 +64447,15 @@
       },
       {
         "id": "ef9fff2f-e584-451e-ba9a-f41cf900f6ec",
-        "text": "1.5 tsp kashmiri chili powder"
+        "text": "1.5 tsp paprika"
+      },
+      {
+        "id": "2d5b523c-483c-4469-8ba9-a9c394bb1c08",
+        "text": "1 pinch chili powder"
       },
       {
         "id": "e3f21f7a-5ced-42b5-bb9d-1c9d97d4c21c",
-        "text": "0.5 tsp turmeric, for the chicken"
+        "text": "0.75 tsp turmeric, 0.5 tsp for the chicken, 0.25 tsp for the rice"
       },
       {
         "id": "6fc294c6-dc11-45e2-8240-d0708ddc5875",
@@ -64461,10 +64474,6 @@
         "text": "150 g rice, basmati"
       },
       {
-        "id": "4d926cbc-0cb5-4f74-862a-0c4ceae0d141",
-        "text": "0.25 tsp turmeric, for the rice"
-      },
-      {
         "id": "fb1c1b14-353f-47be-9214-2683c2327492",
         "text": "1 tsp mustard seeds"
       },
@@ -64473,20 +64482,12 @@
         "text": "20 g peanuts"
       },
       {
-        "id": "4ca86aef-bb86-4cfa-9391-02a406563779",
-        "text": "20 curry leaves"
-      },
-      {
         "id": "fcb33418-beaa-40d2-9c18-4061d57f2f75",
         "text": "1 fresh chilli, green, slit"
       },
       {
         "id": "bcf4f0e9-2739-4e8b-aba8-815fc4f9305f",
         "text": "1 lemon, juiced"
-      },
-      {
-        "id": "54b47f0b-22c1-44c0-b4f1-b3984076345e",
-        "text": "150 g plain yogurt, for the raita"
       },
       {
         "id": "6eacae11-e555-4bd4-bf2d-986ce32352da",
@@ -64507,10 +64508,10 @@
     ],
     "steps": [
       "Rinse the rice and simmer it covered in 225 ml salted water with 0.25 tsp turmeric on low heat for 12 min, then leave it covered off the heat for 5 min.",
-      "Mix the chicken with the yogurt, ginger, garlic, chilli powder, turmeric, garam masala and a good pinch of salt, then with the cornstarch and half the oil until it clings.",
+      "Mix the chicken with 2 tbsp of the yogurt, ginger, garlic, paprika, chilli powder, 0.5 tsp turmeric, garam masala and a good pinch of salt, then with the cornstarch and half the oil until it clings.",
       "Air-fry at 200°C for 12-14 min in a single layer, shaking halfway, until the edges are crisp and the chicken is cooked through.",
-      "Meanwhile stir the cucumber into the yogurt with a pinch of salt and cumin, and toss the tomato and red onion with a squeeze of the lemon.",
-      "Heat the remaining oil in a frying pan and fry the mustard seeds until they pop, then add the peanuts, curry leaves and green chilli for 1 min.",
+      "Meanwhile stir the cucumber into the rest of the yogurt with a pinch of salt and cumin, and toss the tomato and red onion with a squeeze of the lemon.",
+      "Heat the remaining oil in a frying pan and fry the mustard seeds until they pop, then add the peanuts and green chilli for 1 min.",
       "Fork half the tempering and the rest of the lemon juice through the rice.",
       "Toss the chicken in the pan with the remaining tempering for 1 min and serve with the lemon rice, raita and tomato salad."
     ],
@@ -64519,10 +64520,10 @@
         "title": "Chicken 65 au air fryer, riz au citron et raïta au concombre",
         "steps": [
           "Rincer le riz et le cuire à couvert dans 225 ml d'eau salée avec 0,25 c. à café de curcuma à feu doux pendant 12 min, puis le laisser reposer 5 min à couvert hors du feu.",
-          "Mélanger le poulet avec le yaourt, le gingembre, l'ail, le piment, le curcuma, le garam masala et une bonne pincée de sel, puis avec la fécule et la moitié de l'huile pour qu'il soit bien enrobé.",
+          "Mélanger le poulet avec 2 c. à soupe du yaourt, le gingembre, l'ail, le paprika, le piment en poudre, 0,5 c. à café de curcuma, le garam masala et une bonne pincée de sel, puis avec la fécule et la moitié de l'huile pour qu'il soit bien enrobé.",
           "Cuire au air fryer à 200 °C pendant 12 à 14 min en une seule couche, en secouant à mi-cuisson, jusqu'à ce que les bords soient croustillants et le poulet cuit.",
-          "Pendant ce temps, mélanger le concombre au yaourt avec une pincée de sel et de cumin, et assaisonner la tomate et l'oignon rouge d'un filet de citron.",
-          "Chauffer le reste d'huile dans une poêle et y faire éclater les graines de moutarde, puis ajouter les cacahuètes, les feuilles de curry et le piment vert 1 min.",
+          "Pendant ce temps, mélanger le concombre au reste du yaourt avec une pincée de sel et de cumin, et assaisonner la tomate et l'oignon rouge d'un filet de citron.",
+          "Chauffer le reste d'huile dans une poêle et y faire éclater les graines de moutarde, puis ajouter les cacahuètes et le piment vert 1 min.",
           "Mélanger à la fourchette la moitié de ce mélange et le reste du jus de citron au riz.",
           "Faire sauter le poulet 1 min dans la poêle avec le reste du mélange et servir avec le riz au citron, la raïta et la salade de tomate."
         ]
@@ -64531,10 +64532,10 @@
         "title": "Chicken 65 in friggitrice ad aria con riso al limone e raita di cetriolo",
         "steps": [
           "Sciacquare il riso e cuocerlo coperto in 225 ml d'acqua salata con 0,25 cucchiaino di curcuma a fuoco basso per 12 min, poi lasciarlo riposare coperto fuori dal fuoco per 5 min.",
-          "Mescolare il pollo con yogurt, zenzero, aglio, peperoncino, curcuma, garam masala e un bel pizzico di sale, poi con l'amido e metà dell'olio finché ben ricoperto.",
+          "Mescolare il pollo con 2 cucchiai dello yogurt, zenzero, aglio, paprika, chili in polvere, 0,5 cucchiaino di curcuma, garam masala e un bel pizzico di sale, poi con l'amido e metà dell'olio finché ben ricoperto.",
           "Cuocere in friggitrice ad aria a 200 °C per 12-14 min in un solo strato, scuotendo a metà, finché i bordi sono croccanti e il pollo è cotto.",
-          "Nel frattempo unire il cetriolo allo yogurt con un pizzico di sale e cumino e condire pomodoro e cipolla rossa con un po' di limone.",
-          "Scaldare l'olio rimasto in una padella e farvi scoppiettare i semi di senape, poi aggiungere arachidi, foglie di curry e peperoncino verde per 1 min.",
+          "Nel frattempo unire il cetriolo allo yogurt rimasto con un pizzico di sale e cumino e condire pomodoro e cipolla rossa con un po' di limone.",
+          "Scaldare l'olio rimasto in una padella e farvi scoppiettare i semi di senape, poi aggiungere arachidi e peperoncino verde per 1 min.",
           "Mescolare con una forchetta metà del soffritto e il resto del succo di limone nel riso.",
           "Saltare il pollo 1 min in padella con il soffritto rimasto e servire con il riso al limone, la raita e l'insalata di pomodoro."
         ]
@@ -64543,7 +64544,7 @@
   },
   {
     "id": "b09ea84f-1679-4fbd-8a54-1faf5a24c7b1",
-    "title": "Air-fryer lemongrass chicken bánh mì with pickled carrot and daikon",
+    "title": "Air-fryer lemongrass chicken bánh mì with pickled carrot and radish",
     "language": "en",
     "servings": 2,
     "prep_min": 15,
@@ -64559,7 +64560,8 @@
       "sandwich",
       "street food",
       "healthy",
-      "dairy-free"
+      "dairy-free",
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -64572,7 +64574,7 @@
     "ingredients": [
       {
         "id": "647d1b58-4e1e-4c18-baf3-b0e6fe6aa4cf",
-        "text": "340 g chicken thigh, boneless, skinless"
+        "text": "360 g chicken breast, sliced in half horizontally"
       },
       {
         "id": "99660954-caee-4100-ac6a-6d2cddb9f09e",
@@ -64596,7 +64598,7 @@
       },
       {
         "id": "85c7a61e-b585-41c2-b32c-34df20d261bf",
-        "text": "1 tbsp vegetable oil"
+        "text": "2 tsp vegetable oil"
       },
       {
         "id": "201819ad-d1df-48a7-8b76-5fa3ee7fff4d",
@@ -64604,7 +64606,7 @@
       },
       {
         "id": "fccc0104-7550-49bd-b6dd-6226ce07a9b5",
-        "text": "150 g daikon, in matchsticks"
+        "text": "150 g radish, in matchsticks"
       },
       {
         "id": "fc367929-d55a-40f5-8ac2-4c2eb5071a85",
@@ -64638,31 +64640,31 @@
       }
     ],
     "steps": [
-      "Dissolve the pickle sugar and a pinch of salt in the vinegar and 3 tbsp warm water, add the carrot and daikon and leave to pickle while you cook.",
-      "Mix the lemongrass, garlic, fish sauce, soy sauce, sugar and oil, and coat the chicken thighs in it.",
-      "Air-fry the thighs flat at 200°C for 14 min, turning halfway, until charred at the edges and cooked through (75°C inside).",
+      "Dissolve the pickle sugar and a pinch of salt in the vinegar and 3 tbsp warm water, add the carrot and radish and leave to pickle while you cook.",
+      "Mix the lemongrass, garlic, fish sauce, soy sauce, sugar and oil, and coat the chicken in it.",
+      "Air-fry the chicken flat at 200°C for 12-14 min, turning halfway, until charred at the edges and cooked through (75°C inside).",
       "Rest the chicken 2 min, then slice it.",
       "Warm the baguettes in the air fryer at 180°C for 2 min until crusty, then split them lengthways.",
       "Fill with the chicken, the drained pickles, cucumber, coriander, chilli and a little sriracha."
     ],
     "translations": {
       "fr": {
-        "title": "Bánh mì au poulet citronnelle au air fryer, carotte et daikon marinés",
+        "title": "Bánh mì au poulet citronnelle au air fryer, carotte et radis marinés",
         "steps": [
-          "Dissoudre le sucre du pickle et une pincée de sel dans le vinaigre et 3 c. à soupe d'eau tiède, ajouter la carotte et le daikon et laisser mariner pendant la cuisson.",
-          "Mélanger la citronnelle, l'ail, la sauce de poisson, la sauce soja, le sucre et l'huile, et en enrober les hauts de cuisse.",
-          "Cuire les hauts de cuisse à plat au air fryer à 200 °C pendant 14 min en les retournant à mi-cuisson, jusqu'à ce qu'ils soient grillés sur les bords et cuits (75 °C à cœur).",
+          "Dissoudre le sucre du pickle et une pincée de sel dans le vinaigre et 3 c. à soupe d'eau tiède, ajouter la carotte et les radis et laisser mariner pendant la cuisson.",
+          "Mélanger la citronnelle, l'ail, la sauce de poisson, la sauce soja, le sucre et l'huile, et en enrober le poulet.",
+          "Cuire le poulet à plat au air fryer à 200 °C pendant 12 à 14 min en le retournant à mi-cuisson, jusqu'à ce qu'il soit grillé sur les bords et cuit (75 °C à cœur).",
           "Laisser reposer le poulet 2 min, puis le trancher.",
           "Réchauffer les baguettes au air fryer à 180 °C pendant 2 min pour qu'elles soient croustillantes, puis les ouvrir dans la longueur.",
           "Garnir de poulet, des pickles égouttés, de concombre, de coriandre, de piment et d'un peu de sriracha."
         ]
       },
       "it": {
-        "title": "Bánh mì al pollo alla citronella in friggitrice ad aria con carota e daikon in agrodolce",
+        "title": "Bánh mì al pollo alla citronella in friggitrice ad aria con carota e ravanelli in agrodolce",
         "steps": [
-          "Sciogliere lo zucchero per il sottaceto e un pizzico di sale nell'aceto con 3 cucchiai d'acqua tiepida, aggiungere carota e daikon e lasciarli marinare durante la cottura.",
-          "Mescolare citronella, aglio, salsa di pesce, salsa di soia, zucchero e olio e ricoprirvi le cosce di pollo.",
-          "Cuocere le cosce distese in friggitrice ad aria a 200 °C per 14 min, girandole a metà, finché abbrustolite ai bordi e cotte (75 °C al cuore).",
+          "Sciogliere lo zucchero per il sottaceto e un pizzico di sale nell'aceto con 3 cucchiai d'acqua tiepida, aggiungere carota e ravanelli e lasciarli marinare durante la cottura.",
+          "Mescolare citronella, aglio, salsa di pesce, salsa di soia, zucchero e olio e ricoprirvi il pollo.",
+          "Cuocere il pollo disteso in friggitrice ad aria a 200 °C per 12-14 min, girandolo a metà, finché abbrustolito ai bordi e cotto (75 °C al cuore).",
           "Far riposare il pollo 2 min, poi affettarlo.",
           "Scaldare le baguette in friggitrice ad aria a 180 °C per 2 min finché croccanti, poi aprirle per il lungo.",
           "Farcire con pollo, sottaceti scolati, cetriolo, coriandolo, peperoncino e un po' di sriracha."
@@ -64688,7 +64690,8 @@
       "stir-fry",
       "fakeaway",
       "quick",
-      "dairy-free"
+      "dairy-free",
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -64699,19 +64702,15 @@
     "ingredients": [
       {
         "id": "67562c98-9b49-4857-a6eb-d2d36d761e41",
-        "text": "150 g noodles, wide flat rice noodles"
+        "text": "120 g noodles, wide flat rice noodles"
       },
       {
         "id": "9275bf51-72ce-48d3-a9d3-4d3e6efc1922",
-        "text": "300 g chicken thigh, boneless, skinless, thinly sliced"
-      },
-      {
-        "id": "3d381383-d696-43b1-8110-518a38b35adc",
-        "text": "1 tbsp dark soy sauce"
+        "text": "380 g chicken thigh, boneless, skinless, thinly sliced"
       },
       {
         "id": "ce042d4d-8356-4f3b-a12c-e1923a747646",
-        "text": "1 tbsp soy sauce"
+        "text": "2 tbsp soy sauce"
       },
       {
         "id": "2870d7eb-d406-4420-bffb-cc85ed090c70",
@@ -64719,7 +64718,7 @@
       },
       {
         "id": "9edae29f-8fba-4038-b467-0cb0fd9c1c3a",
-        "text": "1 tsp sugar"
+        "text": "2 tsp sugar"
       },
       {
         "id": "990ffdc0-0416-4048-87be-92cb7e61b5f9",
@@ -64727,7 +64726,7 @@
       },
       {
         "id": "64d8164b-b107-49fc-9a32-4cab2b6437c8",
-        "text": "1.5 tbsp vegetable oil"
+        "text": "1 tbsp vegetable oil"
       },
       {
         "id": "ac3bdfab-9bb9-4fda-8a03-eeda5e7ce85a",
@@ -64752,9 +64751,9 @@
       }
     ],
     "steps": [
-      "Soak the noodles in very hot water as the packet says (about 8-10 min) until pliable but still firm, drain and toss with 1 tsp of the dark soy sauce.",
-      "Mix the remaining dark soy sauce, the soy sauce, oyster sauce, sugar, vinegar and 2 tbsp water.",
-      "Heat 1 tbsp oil in a wok over high heat, fry the garlic 10 s, then stir-fry the chicken 3-4 min until cooked through.",
+      "Soak the noodles in very hot water as the packet says (about 8-10 min) until pliable but still firm, drain and toss with 1 tsp of the soy sauce.",
+      "Mix the remaining soy sauce, the oyster sauce, sugar, vinegar and 2 tbsp water.",
+      "Heat 2 tsp oil in a wok over high heat, fry the garlic 10 s, then stir-fry the chicken 3-4 min until cooked through.",
       "Add the broccoli stems, then the florets and leaves with a splash of water, and stir-fry 2 min until bright green.",
       "Push everything to one side, add the remaining oil, crack in the eggs and scramble until just set.",
       "Add the noodles and sauce and toss for 2-3 min, letting them sit against the hot wok now and then so they char in places.",
@@ -64764,9 +64763,9 @@
       "fr": {
         "title": "Pad see ew au poulet et brocoli",
         "steps": [
-          "Faire tremper les nouilles dans de l'eau très chaude selon le paquet (environ 8 à 10 min) jusqu'à ce qu'elles soient souples mais encore fermes, égoutter et mélanger avec 1 c. à café de sauce soja foncée.",
-          "Mélanger le reste de sauce soja foncée, la sauce soja, la sauce d'huître, le sucre, le vinaigre et 2 c. à soupe d'eau.",
-          "Chauffer 1 c. à soupe d'huile dans un wok à feu vif, faire revenir l'ail 10 s, puis faire sauter le poulet 3 à 4 min jusqu'à cuisson complète.",
+          "Faire tremper les nouilles dans de l'eau très chaude selon le paquet (environ 8 à 10 min) jusqu'à ce qu'elles soient souples mais encore fermes, égoutter et mélanger avec 1 c. à café de sauce soja.",
+          "Mélanger le reste de sauce soja, la sauce d'huître, le sucre, le vinaigre et 2 c. à soupe d'eau.",
+          "Chauffer 2 c. à café d'huile dans un wok à feu vif, faire revenir l'ail 10 s, puis faire sauter le poulet 3 à 4 min jusqu'à cuisson complète.",
           "Ajouter les tiges de brocoli, puis les fleurettes et les feuilles avec un trait d'eau, et faire sauter 2 min jusqu'à ce qu'ils soient bien verts.",
           "Pousser le tout sur le côté, ajouter le reste d'huile, casser les œufs et les brouiller jusqu'à ce qu'ils soient juste pris.",
           "Ajouter les nouilles et la sauce et mélanger 2 à 3 min en les laissant de temps en temps contre le wok brûlant pour qu'elles grillent par endroits.",
@@ -64776,9 +64775,9 @@
       "it": {
         "title": "Pad see ew con pollo e broccoli",
         "steps": [
-          "Ammollare i noodles in acqua molto calda come indicato sulla confezione (circa 8-10 min) finché morbidi ma ancora sodi, scolarli e condirli con 1 cucchiaino di salsa di soia scura.",
-          "Mescolare il resto della salsa di soia scura, la salsa di soia, la salsa d'ostrica, lo zucchero, l'aceto e 2 cucchiai d'acqua.",
-          "Scaldare 1 cucchiaio d'olio in un wok a fuoco vivo, soffriggere l'aglio 10 s, poi saltare il pollo 3-4 min finché cotto.",
+          "Ammollare i noodles in acqua molto calda come indicato sulla confezione (circa 8-10 min) finché morbidi ma ancora sodi, scolarli e condirli con 1 cucchiaino di salsa di soia.",
+          "Mescolare il resto della salsa di soia, la salsa d'ostrica, lo zucchero, l'aceto e 2 cucchiai d'acqua.",
+          "Scaldare 2 cucchiaini d'olio in un wok a fuoco vivo, soffriggere l'aglio 10 s, poi saltare il pollo 3-4 min finché cotto.",
           "Aggiungere i gambi di broccolo, poi le cimette e le foglie con un goccio d'acqua e saltare 2 min finché verde brillante.",
           "Spostare tutto su un lato, aggiungere l'olio rimasto, rompere le uova e strapazzarle finché appena rapprese.",
           "Unire noodles e salsa e saltare 2-3 min, lasciandoli ogni tanto a contatto con il wok rovente perché si abbrustoliscano qua e là.",
@@ -64804,7 +64803,8 @@
       "spicy",
       "stir-fry",
       "fakeaway",
-      "dairy-free"
+      "dairy-free",
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -64821,7 +64821,7 @@
       },
       {
         "id": "af79be3f-e892-4359-b0ac-8b9fb9a4755b",
-        "text": "340 g chicken thigh, boneless, skinless, in 3 cm pieces"
+        "text": "340 g chicken breast, in 3 cm pieces"
       },
       {
         "id": "c58f687b-7e25-4a2a-a2bf-a70716bc249f",
@@ -64933,7 +64933,8 @@
       "asian",
       "spicy",
       "grill",
-      "dairy-free"
+      "dairy-free",
+      "high protein"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -64946,7 +64947,7 @@
     "ingredients": [
       {
         "id": "4f6eae35-d05f-4e98-83ad-f54fe220ea43",
-        "text": "360 g chicken thigh, boneless, skinless"
+        "text": "360 g chicken breast"
       },
       {
         "id": "78a844ba-8de3-47ae-9d8d-a459a04a0e4b",
@@ -64974,19 +64975,23 @@
       },
       {
         "id": "fcfe5dd8-dc4d-4dcc-b355-4c2929034cc1",
-        "text": "1 tbsp vegetable oil"
+        "text": "2 tsp vegetable oil"
       },
       {
         "id": "e8c17a58-385d-4434-aaff-677c17005a7d",
-        "text": "200 ml coconut milk"
+        "text": "100 ml coconut milk"
       },
       {
-        "id": "e0398d22-8591-4061-8184-5869f34f2b54",
-        "text": "1 tsp tamarind paste"
+        "id": "21bade02-6a6a-4768-b2ed-66ffdcc99396",
+        "text": "100 ml chicken stock"
       },
       {
         "id": "0a0a506a-49bb-41c9-824f-9fb94d5d9532",
-        "text": "1 tsp sugar"
+        "text": "1.5 tsp sugar, brown"
+      },
+      {
+        "id": "6102dd70-63e8-440e-9dd8-904f07489671",
+        "text": "0.5 lime, juiced"
       },
       {
         "id": "39a0fc89-66f7-49cb-996b-b93c7bc5e789",
@@ -65007,7 +65012,7 @@
       "Rub the chicken with the turmeric and a pinch of salt.",
       "Chop the shallots, garlic, lemongrass, ginger and chillies very finely together (or blitz with 2 tbsp water) into a coarse paste.",
       "Fry the paste in the oil in a small pan over medium heat for 4 min, stirring, until soft and fragrant.",
-      "Add the coconut milk, tamarind, sugar and a pinch of salt and simmer 8 min, stirring often, until reduced to a thick sauce.",
+      "Add the coconut milk, stock, lime juice, brown sugar and a pinch of salt and simmer 8 min, stirring often, until reduced to a thick sauce.",
       "Meanwhile air-fry the chicken flat at 200°C for 10 min.",
       "Brush the chicken thickly with about half the sauce and air-fry 4-5 min more, until the sauce blisters and chars in spots and the chicken is cooked through (75°C inside).",
       "Slice and serve with the rice, cucumber, lime and the remaining sauce."
@@ -65020,7 +65025,7 @@
           "Frotter le poulet avec le curcuma et une pincée de sel.",
           "Hacher très finement ensemble les échalotes, l'ail, la citronnelle, le gingembre et les piments (ou les mixer avec 2 c. à soupe d'eau) pour obtenir une pâte grossière.",
           "Faire revenir la pâte dans l'huile dans une petite casserole à feu moyen 4 min en remuant, jusqu'à ce qu'elle soit fondante et parfumée.",
-          "Ajouter le lait de coco, le tamarin, le sucre et une pincée de sel et mijoter 8 min en remuant souvent, jusqu'à obtenir une sauce épaisse.",
+          "Ajouter le lait de coco, le bouillon, le jus de citron vert, le sucre roux et une pincée de sel et mijoter 8 min en remuant souvent, jusqu'à obtenir une sauce épaisse.",
           "Pendant ce temps, cuire le poulet à plat au air fryer à 200 °C pendant 10 min.",
           "Badigeonner généreusement le poulet d'environ la moitié de la sauce et poursuivre 4 à 5 min au air fryer, jusqu'à ce que la sauce cloque et grille par endroits et que le poulet soit cuit (75 °C à cœur).",
           "Trancher et servir avec le riz, le concombre, le citron vert et le reste de sauce."
@@ -65033,7 +65038,7 @@
           "Strofinare il pollo con la curcuma e un pizzico di sale.",
           "Tritare molto finemente insieme scalogni, aglio, citronella, zenzero e peperoncini (o frullarli con 2 cucchiai d'acqua) fino a una pasta grossolana.",
           "Soffriggere la pasta nell'olio in un pentolino a fuoco medio per 4 min mescolando, finché morbida e profumata.",
-          "Aggiungere latte di cocco, tamarindo, zucchero e un pizzico di sale e sobbollire 8 min mescolando spesso, finché si riduce a una salsa densa.",
+          "Aggiungere latte di cocco, brodo, succo di lime, zucchero di canna e un pizzico di sale e sobbollire 8 min mescolando spesso, finché si riduce a una salsa densa.",
           "Nel frattempo cuocere il pollo disteso in friggitrice ad aria a 200 °C per 10 min.",
           "Spennellare il pollo abbondantemente con circa metà della salsa e cuocere altri 4-5 min, finché la salsa fa le bolle e si abbrustolisce a chiazze e il pollo è cotto (75 °C al cuore).",
           "Affettare e servire con riso, cetriolo, lime e la salsa rimasta."
@@ -65058,7 +65063,8 @@
       "asian",
       "soup",
       "healthy",
-      "dairy-free"
+      "dairy-free",
+      "high protein"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -65100,10 +65106,6 @@
         "text": "1 lemongrass, bruised"
       },
       {
-        "id": "4ad0e6e2-e989-43ba-9aa6-fa7b778e13ca",
-        "text": "3 kaffir lime leaves"
-      },
-      {
         "id": "02740c44-6c5f-4200-884a-aad7348386ac",
         "text": "900 ml chicken stock"
       },
@@ -65125,11 +65127,12 @@
       },
       {
         "id": "0574c630-982b-4faf-906e-cd39664078f6",
-        "text": "2 spring onion, sliced"
+        "text": "2 spring onion, sliced",
+        "optional": true
       },
       {
         "id": "9300b5af-e674-4b40-a37d-17e3382d4a83",
-        "text": "1 lime, in wedges"
+        "text": "1 lime, zest finely grated, then in wedges"
       },
       {
         "id": "1bcee41f-f42f-4d7b-b7b5-1dec7d8e9f70",
@@ -65139,7 +65142,7 @@
     ],
     "steps": [
       "Chop the shallots, garlic and ginger very finely together, then mix in the turmeric and ground coriander.",
-      "Fry the paste in the oil in a soup pot over medium heat with the lemongrass and lime leaves for 3 min, until fragrant.",
+      "Fry the paste in the oil in a soup pot over medium heat with the lemongrass and lime zest for 3 min, until fragrant.",
       "Add the stock and chicken thighs, bring to the boil, cover and simmer 15 min until the chicken is cooked through.",
       "Meanwhile boil the eggs for 8 min in a small pan, cool them in cold water, peel and halve; then pour boiling water over the vermicelli and leave 3-5 min until soft, and drain.",
       "Lift out the chicken, shred it and return it to the pot; season the broth with salt and a squeeze of lime.",
@@ -65151,7 +65154,7 @@
         "title": "Soto ayam (soupe indonésienne au poulet et au curcuma) aux vermicelles",
         "steps": [
           "Hacher très finement ensemble les échalotes, l'ail et le gingembre, puis y mélanger le curcuma et la coriandre moulue.",
-          "Faire revenir la pâte dans l'huile dans une marmite à feu moyen avec la citronnelle et les feuilles de combava pendant 3 min, jusqu'à ce qu'elle embaume.",
+          "Faire revenir la pâte dans l'huile dans une marmite à feu moyen avec la citronnelle et le zeste de citron vert pendant 3 min, jusqu'à ce qu'elle embaume.",
           "Ajouter le bouillon et les hauts de cuisse, porter à ébullition, couvrir et frémir 15 min jusqu'à ce que le poulet soit cuit.",
           "Pendant ce temps, cuire les œufs 8 min dans une petite casserole, les refroidir à l'eau froide, les écaler et les couper en deux ; verser de l'eau bouillante sur les vermicelles, laisser 3 à 5 min jusqu'à ce qu'ils soient tendres et égoutter.",
           "Sortir le poulet, l'effilocher et le remettre dans la marmite ; saler le bouillon et ajouter un filet de citron vert.",
@@ -65163,7 +65166,7 @@
         "title": "Soto ayam (zuppa indonesiana di pollo alla curcuma) con vermicelli",
         "steps": [
           "Tritare molto finemente insieme scalogni, aglio e zenzero, poi unire curcuma e coriandolo in polvere.",
-          "Soffriggere la pasta nell'olio in una pentola a fuoco medio con citronella e foglie di lime per 3 min, finché profumata.",
+          "Soffriggere la pasta nell'olio in una pentola a fuoco medio con citronella e scorza di lime per 3 min, finché profumata.",
           "Aggiungere il brodo e le cosce di pollo, portare a bollore, coprire e sobbollire 15 min finché il pollo è cotto.",
           "Nel frattempo cuocere le uova 8 min in un pentolino, raffreddarle in acqua fredda, sgusciarle e tagliarle a metà; versare acqua bollente sui vermicelli, lasciarli 3-5 min finché morbidi e scolarli.",
           "Togliere il pollo, sfilacciarlo e rimetterlo nella pentola; regolare il brodo di sale e un po' di lime.",
@@ -65190,7 +65193,8 @@
       "asian",
       "stir-fry",
       "healthy",
-      "dairy-free"
+      "dairy-free",
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -65201,15 +65205,15 @@
     "ingredients": [
       {
         "id": "5900be1e-e8ad-4c5d-87b8-e29f3c7522c5",
-        "text": "150 g noodles, bihon (thin rice vermicelli)"
+        "text": "120 g noodles, bihon (thin rice vermicelli)"
       },
       {
         "id": "aed0cc66-9dec-421f-89e0-2f4f2385f2da",
-        "text": "300 g chicken thigh, boneless, skinless, in thin strips"
+        "text": "400 g chicken thigh, boneless, skinless, in thin strips"
       },
       {
         "id": "5a11295b-44fa-45d1-a3b4-889ce54559a7",
-        "text": "1 tbsp vegetable oil"
+        "text": "2 tsp vegetable oil"
       },
       {
         "id": "c18ba88d-014e-47fa-b1bd-1413041ed813",
@@ -65286,7 +65290,7 @@
   },
   {
     "id": "6c5bdac0-bd42-458f-b0a0-1afc9a981ced",
-    "title": "Gaeng jued woon sen (Thai glass noodle soup with chicken meatballs)",
+    "title": "Gaeng jued (Thai rice vermicelli soup with chicken meatballs)",
     "language": "en",
     "servings": 2,
     "prep_min": 12,
@@ -65302,7 +65306,8 @@
       "soup",
       "healthy",
       "light",
-      "dairy-free"
+      "dairy-free",
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -65313,7 +65318,7 @@
     "ingredients": [
       {
         "id": "5a4256f8-6464-4d95-bdf6-8bd4f7fd7b8f",
-        "text": "100 g glass noodles, mung bean vermicelli"
+        "text": "100 g noodles, rice vermicelli"
       },
       {
         "id": "77d3d581-b8ee-4f0d-82b7-97a1b5ade6b6",
@@ -65369,36 +65374,36 @@
       }
     ],
     "steps": [
-      "Soak the glass noodles in warm water for 10 min, drain and cut them into shorter lengths with scissors.",
+      "Soak the rice vermicelli in hot water for 5 min, drain and cut them into shorter lengths with scissors.",
       "Mix the chicken with the soy sauce, grated garlic, coriander stalks, cornstarch and a good pinch of white pepper.",
       "Bring the stock to the boil with the smashed garlic and carrot.",
       "Drop in heaped teaspoons of the chicken mixture and simmer 5 min, until the meatballs float and are cooked through.",
       "Add the cabbage and mushrooms and simmer 4 min until the cabbage is tender.",
-      "Add the glass noodles and simmer 2 min until they turn clear, then season with the fish sauce, soy sauce and white pepper.",
+      "Add the vermicelli and simmer 1 min until soft, then season with the fish sauce, soy sauce and white pepper.",
       "Ladle into bowls and scatter with spring onion and coriander leaves."
     ],
     "translations": {
       "fr": {
-        "title": "Gaeng jued woon sen (soupe thaïe aux vermicelles de soja et boulettes de poulet)",
+        "title": "Gaeng jued (soupe thaïe aux vermicelles de riz et boulettes de poulet)",
         "steps": [
-          "Faire tremper les vermicelles de soja 10 min dans l'eau tiède, égoutter et les couper plus courts aux ciseaux.",
+          "Faire tremper les vermicelles de riz 5 min dans l'eau chaude, égoutter et les couper plus courts aux ciseaux.",
           "Mélanger le poulet avec la sauce soja, l'ail râpé, les tiges de coriandre, la fécule et une bonne pincée de poivre blanc.",
           "Porter le bouillon à ébullition avec l'ail écrasé et la carotte.",
           "Y déposer des cuillerées à café bombées de farce et frémir 5 min, jusqu'à ce que les boulettes remontent et soient cuites.",
           "Ajouter le chou et les champignons et frémir 4 min jusqu'à ce que le chou soit tendre.",
-          "Ajouter les vermicelles et frémir 2 min jusqu'à ce qu'ils deviennent translucides, puis assaisonner avec la sauce de poisson, la sauce soja et le poivre blanc.",
+          "Ajouter les vermicelles et frémir 1 min jusqu'à ce qu'ils soient tendres, puis assaisonner avec la sauce de poisson, la sauce soja et le poivre blanc.",
           "Servir dans des bols et parsemer d'oignon nouveau et de feuilles de coriandre."
         ]
       },
       "it": {
-        "title": "Gaeng jued woon sen (zuppa thai di spaghetti di soia con polpettine di pollo)",
+        "title": "Gaeng jued (zuppa thai di vermicelli di riso con polpettine di pollo)",
         "steps": [
-          "Ammollare gli spaghetti di soia in acqua tiepida per 10 min, scolarli e accorciarli con le forbici.",
+          "Ammollare i vermicelli di riso in acqua calda per 5 min, scolarli e accorciarli con le forbici.",
           "Mescolare il pollo con salsa di soia, aglio grattugiato, gambi di coriandolo, amido e un bel pizzico di pepe bianco.",
           "Portare a bollore il brodo con l'aglio schiacciato e la carota.",
           "Versarvi cucchiaini colmi di impasto e sobbollire 5 min, finché le polpettine salgono a galla e sono cotte.",
           "Aggiungere cavolo e funghi e sobbollire 4 min finché il cavolo è tenero.",
-          "Unire gli spaghetti di soia e sobbollire 2 min finché diventano trasparenti, poi insaporire con salsa di pesce, salsa di soia e pepe bianco.",
+          "Unire i vermicelli e sobbollire 1 min finché sono morbidi, poi insaporire con salsa di pesce, salsa di soia e pepe bianco.",
           "Servire nelle ciotole con cipollotto e foglie di coriandolo."
         ]
       }
@@ -65421,7 +65426,8 @@
       "asian",
       "healthy",
       "comfort",
-      "dairy-free"
+      "dairy-free",
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -65432,11 +65438,11 @@
     "ingredients": [
       {
         "id": "06c36e7a-df15-46d1-b879-4f0363ffb9f7",
-        "text": "300 g ground chicken"
+        "text": "400 g ground chicken"
       },
       {
         "id": "ad288c0c-8603-4772-91a2-0340bf3d53d0",
-        "text": "1 tbsp vegetable oil"
+        "text": "2 tsp vegetable oil"
       },
       {
         "id": "fc546af0-089d-4237-9265-a6a5196b8067",
@@ -65455,12 +65461,12 @@
         "text": "150 g mushrooms, sliced"
       },
       {
-        "id": "dbd6914c-91fd-4b8b-9427-cac47bae9bec",
-        "text": "2 tbsp kecap manis"
+        "id": "7b96a3cc-3f2d-4402-9873-5317ad9db708",
+        "text": "2 tbsp soy sauce, for the chicken"
       },
       {
-        "id": "7b96a3cc-3f2d-4402-9873-5317ad9db708",
-        "text": "1 tbsp soy sauce, for the chicken"
+        "id": "83faac57-2f56-4652-866d-e486522c4f8d",
+        "text": "2 tsp honey"
       },
       {
         "id": "33dd15b3-6070-44a4-84c7-0e64faa59340",
@@ -65476,7 +65482,7 @@
       },
       {
         "id": "c12e0d58-ef6d-4123-95fd-348c521e5037",
-        "text": "150 g noodles, egg noodles"
+        "text": "120 g noodles, egg noodles"
       },
       {
         "id": "7dd0cf97-a1a9-499e-94c7-b831b39aa38c",
@@ -65484,7 +65490,7 @@
       },
       {
         "id": "62e8d76e-f2ee-4aef-bc67-e5aa205e082c",
-        "text": "2 tsp sesame oil"
+        "text": "1 tsp sesame oil"
       },
       {
         "id": "d8a3dda4-9ee5-4bf6-9b5b-5e70da96ec82",
@@ -65503,7 +65509,7 @@
     "steps": [
       "Fry the shallots in the oil in a frying pan over medium heat for 2 min, then add the garlic and ginger for 1 min.",
       "Add the chicken and cook 5 min, breaking it up, until it is no longer pink.",
-      "Add the mushrooms for 2 min, then the kecap manis, soy sauce, oyster sauce, a pinch of white pepper and 100 ml water, and simmer 4 min until glossy and thick.",
+      "Add the mushrooms for 2 min, then the soy sauce, honey, oyster sauce, a pinch of white pepper and 100 ml water, and simmer 4 min until glossy and thick.",
       "Meanwhile heat the stock in a small pan with half the spring onion and keep it at a simmer.",
       "Cook the noodles in a pan of boiling water as the packet says (usually 3-4 min), adding the pak choi for the last 2 min, then drain.",
       "Toss the noodles in the serving bowls with the sesame oil and soy sauce.",
@@ -65515,7 +65521,7 @@
         "steps": [
           "Faire revenir les échalotes dans l'huile dans une poêle à feu moyen 2 min, puis ajouter l'ail et le gingembre 1 min.",
           "Ajouter le poulet et le cuire 5 min en l'émiettant, jusqu'à ce qu'il ne soit plus rose.",
-          "Ajouter les champignons 2 min, puis le kecap manis, la sauce soja, la sauce d'huître, une pincée de poivre blanc et 100 ml d'eau, et mijoter 4 min jusqu'à ce que ce soit brillant et épais.",
+          "Ajouter les champignons 2 min, puis la sauce soja, le miel, la sauce d'huître, une pincée de poivre blanc et 100 ml d'eau, et mijoter 4 min jusqu'à ce que ce soit brillant et épais.",
           "Pendant ce temps, chauffer le bouillon dans une petite casserole avec la moitié de l'oignon nouveau et le maintenir frémissant.",
           "Cuire les nouilles dans une casserole d'eau bouillante selon le paquet (en général 3 à 4 min), en ajoutant le pak-choï les 2 dernières minutes, puis égoutter.",
           "Mélanger les nouilles dans les bols avec l'huile de sésame et la sauce soja.",
@@ -65527,7 +65533,7 @@
         "steps": [
           "Soffriggere gli scalogni nell'olio in una padella a fuoco medio per 2 min, poi aggiungere aglio e zenzero per 1 min.",
           "Aggiungere il pollo e cuocerlo 5 min sgranandolo, finché non è più rosa.",
-          "Aggiungere i funghi per 2 min, poi kecap manis, salsa di soia, salsa d'ostrica, un pizzico di pepe bianco e 100 ml d'acqua, e sobbollire 4 min finché lucido e denso.",
+          "Aggiungere i funghi per 2 min, poi salsa di soia, miele, salsa d'ostrica, un pizzico di pepe bianco e 100 ml d'acqua, e sobbollire 4 min finché lucido e denso.",
           "Nel frattempo scaldare il brodo in un pentolino con metà del cipollotto e tenerlo a sobbollire.",
           "Cuocere i noodles in una pentola d'acqua bollente come indicato sulla confezione (di solito 3-4 min), aggiungendo il pak choi negli ultimi 2 min, poi scolare.",
           "Condire i noodles nelle ciotole con olio di sesamo e salsa di soia.",
@@ -65658,7 +65664,7 @@
     "title": "Air-fryer chicken al pastor tacos with pineapple",
     "language": "en",
     "servings": 2,
-    "prep_min": 12,
+    "prep_min": 10,
     "cook_min": 15,
     "source_type": "seed",
     "ai_generated_recipe": true,
@@ -65670,7 +65676,8 @@
       "street food",
       "spicy",
       "quick",
-      "healthy"
+      "healthy",
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -65684,11 +65691,7 @@
     "ingredients": [
       {
         "id": "185fa6b7-d273-492b-977d-401182774e70",
-        "text": "340 g chicken thigh, boneless and skinless, in thin strips"
-      },
-      {
-        "id": "efe7af3d-9a1b-4107-811d-4037646e5e7c",
-        "text": "3 guajillo chillies, stemmed and seeded"
+        "text": "360 g chicken breast, in thin strips"
       },
       {
         "id": "454bdccf-e986-4af2-aa87-c747d864b7a1",
@@ -65712,7 +65715,11 @@
       },
       {
         "id": "7d32c454-0608-40ca-b647-92a9b35701a0",
-        "text": "1 tsp paprika"
+        "text": "2 tsp paprika, smoked"
+      },
+      {
+        "id": "781b9a43-d04c-450b-8620-f0877e5fe381",
+        "text": "0.5 tsp chili powder"
       },
       {
         "id": "84d471de-3a75-4ec0-b910-090e151d6dbf",
@@ -65720,7 +65727,7 @@
       },
       {
         "id": "713210d4-6bb1-423a-afc9-5f49a9fe0498",
-        "text": "1 tbsp vegetable oil"
+        "text": "2 tsp vegetable oil"
       },
       {
         "id": "41c628fb-f267-4a96-9538-94407fb3e2c4",
@@ -65728,7 +65735,7 @@
       },
       {
         "id": "46607176-5de5-4fe0-8274-66cd10f88376",
-        "text": "250 g tortillas, small corn tortillas (about 8)"
+        "text": "200 g tortillas, small corn tortillas (about 6)"
       },
       {
         "id": "a8611f4d-facd-41f0-966e-222620550004",
@@ -65745,8 +65752,7 @@
       }
     ],
     "steps": [
-      "Cover the chillies with boiling water and soak for 10 min until soft.",
-      "Blend the drained chillies with 50 g of the pineapple, the garlic, vinegar, cumin, oregano, paprika, 1 tsp salt and 3 tbsp of the soaking water to a smooth paste.",
+      "Blend 50 g of the pineapple with the garlic, vinegar, cumin, oregano, smoked paprika, chilli powder, 1 tsp salt and 3 tbsp water to a smooth paste.",
       "Toss the chicken strips with the paste and the oil. Cut the rest of the pineapple into 1.5 cm chunks.",
       "Air-fry the chicken and onion wedges in one layer at 200 °C for 8 min.",
       "Add the pineapple, shake the basket and cook 6-7 min more, until the chicken is charred at the edges and cooked through (74 °C inside).",
@@ -65757,8 +65763,7 @@
       "fr": {
         "title": "Tacos al pastor au poulet et à l'ananas à l'air fryer",
         "steps": [
-          "Couvrir les piments d'eau bouillante et les laisser tremper 10 min jusqu'à ce qu'ils ramollissent.",
-          "Mixer les piments égouttés avec 50 g d'ananas, l'ail, le vinaigre, le cumin, l'origan, le paprika, 1 c. à café de sel et 3 c. à soupe d'eau de trempage jusqu'à obtenir une pâte lisse.",
+          "Mixer 50 g d'ananas avec l'ail, le vinaigre, le cumin, l'origan, le paprika fumé, le piment en poudre, 1 c. à café de sel et 3 c. à soupe d'eau jusqu'à obtenir une pâte lisse.",
           "Enrober les lanières de poulet de cette pâte et de l'huile. Couper le reste de l'ananas en morceaux de 1,5 cm.",
           "Cuire le poulet et les quartiers d'oignon en une seule couche à l'air fryer à 200 °C pendant 8 min.",
           "Ajouter l'ananas, secouer le panier et cuire encore 6 à 7 min, jusqu'à ce que le poulet soit grillé sur les bords et cuit à cœur (74 °C).",
@@ -65769,8 +65774,7 @@
       "it": {
         "title": "Tacos al pastor di pollo con ananas in friggitrice ad aria",
         "steps": [
-          "Coprire i peperoncini con acqua bollente e lasciarli in ammollo 10 min finché sono morbidi.",
-          "Frullare i peperoncini scolati con 50 g di ananas, l'aglio, l'aceto, il cumino, l'origano, la paprica, 1 cucchiaino di sale e 3 cucchiai dell'acqua di ammollo fino a una pasta liscia.",
+          "Frullare 50 g di ananas con l'aglio, l'aceto, il cumino, l'origano, la paprica affumicata, il peperoncino in polvere, 1 cucchiaino di sale e 3 cucchiai d'acqua fino a una pasta liscia.",
           "Condire le strisce di pollo con la pasta e l'olio. Tagliare il resto dell'ananas a pezzi di 1,5 cm.",
           "Cuocere il pollo e gli spicchi di cipolla in un solo strato in friggitrice ad aria a 200 °C per 8 min.",
           "Aggiungere l'ananas, scuotere il cestello e cuocere altri 6-7 min, finché il pollo è abbrustolito ai bordi e cotto al cuore (74 °C).",
@@ -66068,7 +66072,8 @@
       "one-pot",
       "quick",
       "healthy",
-      "kid-friendly"
+      "kid-friendly",
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -66079,7 +66084,7 @@
     "ingredients": [
       {
         "id": "98a2652f-1bfe-4951-a4a5-f41707b8a492",
-        "text": "340 g chicken thigh, boneless and skinless, in 2-3 cm pieces"
+        "text": "400 g chicken thigh, boneless and skinless, in 2-3 cm pieces"
       },
       {
         "id": "6fe1df8d-a0dd-43a5-9f70-4706cae6e688",
@@ -66099,7 +66104,7 @@
       },
       {
         "id": "4bb9c342-7e57-4007-ae53-36738a10b066",
-        "text": "1 tbsp vegetable oil"
+        "text": "2 tsp vegetable oil"
       },
       {
         "id": "c88eff39-6ed8-4480-98a1-fb5cc190450b",
@@ -66119,11 +66124,11 @@
       },
       {
         "id": "db8b1dda-d6bc-48a0-abfb-d0d4dec6421b",
-        "text": "150 g rice, long-grain, rinsed"
+        "text": "120 g rice, long-grain, rinsed"
       },
       {
         "id": "445c281a-9975-405a-b2b0-3db81384d939",
-        "text": "400 ml chicken stock, hot"
+        "text": "330 ml chicken stock, hot"
       },
       {
         "id": "18ba7280-47ae-4a36-ac80-dc9cd8d8c6e7",
@@ -66187,7 +66192,8 @@
       "brazilian",
       "comfort",
       "quick",
-      "kid-friendly"
+      "kid-friendly",
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -66249,8 +66255,8 @@
         "text": "80 ml chicken stock"
       },
       {
-        "id": "0c8ea28d-347c-49e7-b576-c304fe421999",
-        "text": "100 ml cream"
+        "id": "c35d7d3b-92e4-416e-a7e4-7ffc284a2d4f",
+        "text": "150 g greek yogurt"
       },
       {
         "id": "44bd201b-da8c-46ea-b8de-fa4cd0326832",
@@ -66263,29 +66269,29 @@
       "Season the chicken with salt and pepper and brown it in the oil in a large frying pan over high heat for 4-5 min. Lift out onto a plate.",
       "Lower the heat, add the butter and onion and cook 3 min, then the garlic and mushrooms for 5 min until the mushrooms have given off their liquid and it has evaporated.",
       "Return the chicken with the tomato paste, ketchup, mustard and stock and simmer 3 min until the chicken is cooked through.",
-      "Stir in the cream and warm 1-2 min without boiling. Season to taste.",
+      "Take the pan off the heat and stir in the Greek yogurt until creamy (it would split if boiled). Season to taste.",
       "Serve the strogonoff over the rice with the parsley on top."
     ],
     "translations": {
       "fr": {
-        "title": "Strogonoff de frango (émincé de poulet à la crème) et riz",
+        "title": "Strogonoff de frango (émincé de poulet au yaourt) et riz",
         "steps": [
           "Mettre le riz dans une casserole avec 300 ml d'eau et une pincée de sel, couvrir et cuire à feu doux 12 min, puis laisser reposer hors du feu.",
           "Saler et poivrer le poulet et le faire dorer dans l'huile dans une grande poêle à feu vif 4 à 5 min. Le réserver sur une assiette.",
           "Baisser le feu, ajouter le beurre et l'oignon et cuire 3 min, puis l'ail et les champignons pendant 5 min jusqu'à ce que leur eau se soit évaporée.",
           "Remettre le poulet avec le concentré de tomate, le ketchup, la moutarde et le bouillon et laisser mijoter 3 min jusqu'à ce que le poulet soit cuit.",
-          "Incorporer la crème et chauffer 1 à 2 min sans faire bouillir. Rectifier l'assaisonnement.",
+          "Retirer la poêle du feu et incorporer le yaourt grec jusqu'à ce que la sauce soit onctueuse (il tournerait s'il bouillait). Rectifier l'assaisonnement.",
           "Servir le strogonoff sur le riz, parsemé de persil."
         ]
       },
       "it": {
-        "title": "Strogonoff de frango (straccetti di pollo alla panna) con riso",
+        "title": "Strogonoff de frango (straccetti di pollo allo yogurt) con riso",
         "steps": [
           "Mettere il riso in una pentola con 300 ml d'acqua e un pizzico di sale, coprire e cuocere a fuoco basso 12 min, poi lasciar riposare fuori dal fuoco.",
           "Salare e pepare il pollo e rosolarlo nell'olio in una padella grande a fuoco vivo per 4-5 min. Metterlo da parte su un piatto.",
           "Abbassare il fuoco, aggiungere il burro e la cipolla e cuocere 3 min, poi l'aglio e i funghi per 5 min finché la loro acqua è evaporata.",
           "Rimettere il pollo con concentrato di pomodoro, ketchup, senape e brodo e cuocere 3 min finché il pollo è cotto.",
-          "Unire la panna e scaldare 1-2 min senza far bollire. Regolare di sale e pepe.",
+          "Togliere la padella dal fuoco e incorporare lo yogurt greco finché la salsa è cremosa (impazzirebbe se bollisse). Regolare di sale e pepe.",
           "Servire lo strogonoff sul riso con il prezzemolo."
         ]
       }
@@ -66418,7 +66424,8 @@
       "curry",
       "spicy",
       "quick",
-      "healthy"
+      "healthy",
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -66429,7 +66436,7 @@
     "ingredients": [
       {
         "id": "228d6c5f-df52-4906-b844-eda820ba5df6",
-        "text": "340 g chicken thigh, boneless and skinless, in 3 cm pieces"
+        "text": "420 g chicken thigh, boneless and skinless, in 3 cm pieces"
       },
       {
         "id": "3642401a-1d3c-47d7-a65c-79618c7965dd",
@@ -66461,7 +66468,7 @@
       },
       {
         "id": "a1a95d3e-cca9-4353-a170-f7a1ae0cb96d",
-        "text": "1 tbsp vegetable oil"
+        "text": "1 tsp vegetable oil"
       },
       {
         "id": "928ce587-2572-4b08-9025-162a9b80c9ca",
@@ -66473,32 +66480,32 @@
       },
       {
         "id": "18a02014-69d2-4211-acaf-f66b779554cd",
-        "text": "250 g potato, in 2 cm cubes"
+        "text": "200 g potato, in 2 cm cubes"
       },
       {
         "id": "4d4f709a-1514-4f98-a5e4-6d417b10475f",
-        "text": "0.5 scotch bonnet, left whole",
+        "text": "1 fresh chilli, left whole",
         "optional": true
       },
       {
         "id": "dd2f67f7-2a7c-4389-87e7-8504ddba1795",
-        "text": "150 g rice"
+        "text": "100 g rice"
       }
     ],
     "steps": [
       "Mix the spring onions, coriander, thyme and garlic (green seasoning). Toss the chicken with half of it, 1 tsp of the curry powder and ½ tsp salt.",
-      "Put the rice in a pan with 300 ml water and a pinch of salt, cover and cook on low heat for 12 min, then rest off the heat.",
+      "Put the rice in a pan with 200 ml water and a pinch of salt, cover and cook on low heat for 12 min, then rest off the heat.",
       "Mix the rest of the curry powder and the cumin with 3 tbsp water. Heat the oil in a pot, add the paste and cook 1-2 min, stirring, until darker and almost dry.",
       "Add the onion and the rest of the green seasoning and cook 2 min, then the chicken, stirring to coat it, for 3 min.",
-      "Add the potatoes, tomato, scotch bonnet and 300 ml water, bring to the boil and simmer partly covered for 15 min, until the potatoes are tender and starting to break down into a thick gravy.",
-      "Remove the scotch bonnet, season to taste and serve the curry with the rice."
+      "Add the potatoes, tomato, whole chilli (if using) and 300 ml water, bring to the boil and simmer partly covered for 15 min, until the potatoes are tender and starting to break down into a thick gravy.",
+      "Remove the chilli, season to taste and serve the curry with the rice."
     ],
     "translations": {
       "fr": {
         "title": "Curry de poulet et pommes de terre de Trinidad, riz",
         "steps": [
           "Mélanger les oignons nouveaux, la coriandre, le thym et l'ail (green seasoning). Enrober le poulet de la moitié de ce mélange, d'1 c. à café de curry et de ½ c. à café de sel.",
-          "Mettre le riz dans une casserole avec 300 ml d'eau et une pincée de sel, couvrir et cuire à feu doux 12 min, puis laisser reposer hors du feu.",
+          "Mettre le riz dans une casserole avec 200 ml d'eau et une pincée de sel, couvrir et cuire à feu doux 12 min, puis laisser reposer hors du feu.",
           "Délayer le reste du curry et le cumin dans 3 c. à soupe d'eau. Chauffer l'huile dans une cocotte, ajouter la pâte et cuire 1 à 2 min en remuant, jusqu'à ce qu'elle fonce et soit presque sèche.",
           "Ajouter l'oignon et le reste du green seasoning et cuire 2 min, puis le poulet en remuant pour bien l'enrober, pendant 3 min.",
           "Ajouter les pommes de terre, la tomate, le piment et 300 ml d'eau, porter à ébullition et laisser mijoter à moitié couvert 15 min, jusqu'à ce que les pommes de terre soient tendres et commencent à épaissir la sauce.",
@@ -66509,7 +66516,7 @@
         "title": "Curry di pollo e patate di Trinidad con riso",
         "steps": [
           "Mescolare cipollotti, coriandolo, timo e aglio (green seasoning). Condire il pollo con metà del composto, 1 cucchiaino di curry e ½ cucchiaino di sale.",
-          "Mettere il riso in una pentola con 300 ml d'acqua e un pizzico di sale, coprire e cuocere a fuoco basso 12 min, poi lasciar riposare fuori dal fuoco.",
+          "Mettere il riso in una pentola con 200 ml d'acqua e un pizzico di sale, coprire e cuocere a fuoco basso 12 min, poi lasciar riposare fuori dal fuoco.",
           "Stemperare il resto del curry e il cumino in 3 cucchiai d'acqua. Scaldare l'olio in una pentola, aggiungere la pasta e cuocere 1-2 min mescolando, finché scurisce ed è quasi asciutta.",
           "Aggiungere la cipolla e il resto del green seasoning e cuocere 2 min, poi il pollo, mescolando per insaporirlo, per 3 min.",
           "Aggiungere patate, pomodoro, peperoncino e 300 ml d'acqua, portare a bollore e cuocere semicoperto 15 min, finché le patate sono tenere e iniziano a disfarsi addensando il sugo.",
@@ -66535,7 +66542,8 @@
       "american",
       "spicy",
       "comfort",
-      "healthy"
+      "healthy",
+      "high protein"
     ],
     "difficulty": "medium",
     "equipment": {
@@ -66546,11 +66554,11 @@
     "ingredients": [
       {
         "id": "6d04ea07-b247-4fa9-8ef3-bdcd2bafc1f1",
-        "text": "150 g rice"
+        "text": "130 g rice"
       },
       {
         "id": "14cb4098-6b43-413e-99fd-ccf94be7cd85",
-        "text": "320 g chicken breast, in 2 cm pieces"
+        "text": "360 g chicken breast, in 2 cm pieces"
       },
       {
         "id": "cfea03ac-d56a-4ee3-a494-17cacceb3ccc",
@@ -66611,7 +66619,7 @@
       }
     ],
     "steps": [
-      "Put the rice in a pan with 300 ml water and a pinch of salt, cover and cook on low heat for 12 min, then rest off the heat.",
+      "Put the rice in a pan with 260 ml water and a pinch of salt, cover and cook on low heat for 12 min, then rest off the heat.",
       "Toss the chicken with half the cajun seasoning and brown it in the oil in a heavy pan over high heat for 4 min. Lift out.",
       "Add the butter and flour to the pan and stir over medium heat for 5-6 min until the roux is the colour of peanut butter.",
       "Add the onion, pepper and celery and cook 5 min, stirring, until soft. Stir in the garlic, tomato paste and the rest of the cajun seasoning for 1 min.",
@@ -66623,7 +66631,7 @@
       "fr": {
         "title": "Étouffée de poulet sur riz",
         "steps": [
-          "Mettre le riz dans une casserole avec 300 ml d'eau et une pincée de sel, couvrir et cuire à feu doux 12 min, puis laisser reposer hors du feu.",
+          "Mettre le riz dans une casserole avec 260 ml d'eau et une pincée de sel, couvrir et cuire à feu doux 12 min, puis laisser reposer hors du feu.",
           "Enrober le poulet de la moitié de l'assaisonnement cajun et le faire dorer dans l'huile dans une sauteuse à fond épais à feu vif 4 min. Le réserver.",
           "Mettre le beurre et la farine dans la sauteuse et remuer à feu moyen 5 à 6 min jusqu'à ce que le roux prenne la couleur du beurre de cacahuète.",
           "Ajouter l'oignon, le poivron et le céleri et cuire 5 min en remuant jusqu'à ce qu'ils soient tendres. Incorporer l'ail, le concentré de tomate et le reste de l'assaisonnement cajun 1 min.",
@@ -66635,7 +66643,7 @@
       "it": {
         "title": "Étouffée di pollo con riso",
         "steps": [
-          "Mettere il riso in una pentola con 300 ml d'acqua e un pizzico di sale, coprire e cuocere a fuoco basso 12 min, poi lasciar riposare fuori dal fuoco.",
+          "Mettere il riso in una pentola con 260 ml d'acqua e un pizzico di sale, coprire e cuocere a fuoco basso 12 min, poi lasciar riposare fuori dal fuoco.",
           "Condire il pollo con metà delle spezie cajun e rosolarlo nell'olio in una casseruola dal fondo spesso a fuoco vivo per 4 min. Toglierlo.",
           "Mettere nella casseruola burro e farina e mescolare a fuoco medio 5-6 min finché il roux ha il colore del burro di arachidi.",
           "Aggiungere cipolla, peperone e sedano e cuocere 5 min mescolando, finché sono morbidi. Unire aglio, concentrato di pomodoro e il resto delle spezie per 1 min.",
@@ -66922,7 +66930,8 @@
       "grill",
       "spicy",
       "quick",
-      "healthy"
+      "healthy",
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -66956,7 +66965,7 @@
       },
       {
         "id": "d2471dbc-2ae8-47fb-97f2-739179ea94ed",
-        "text": "340 g chicken thigh, boneless and skinless, in strips"
+        "text": "400 g chicken thigh, boneless and skinless, in strips"
       },
       {
         "id": "c84a8a39-018b-4d84-a856-6c8537f7c6f8",
@@ -66964,7 +66973,7 @@
       },
       {
         "id": "3d7cd38b-feeb-4b75-91bd-710353e09cfc",
-        "text": "1 tbsp vegetable oil"
+        "text": "2 tsp vegetable oil"
       },
       {
         "id": "c5086643-73a6-44de-87e2-3215a349fff0",
@@ -67037,7 +67046,8 @@
       "georgian",
       "stew",
       "quick",
-      "healthy"
+      "healthy",
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -67048,7 +67058,7 @@
     "ingredients": [
       {
         "id": "6dde6d19-52fc-46a8-9c6d-681913dac4a0",
-        "text": "360 g chicken thigh, boneless and skinless, halved"
+        "text": "400 g chicken thigh, boneless and skinless, halved"
       },
       {
         "id": "4102c358-7d52-438a-ab88-1d530b666ab3",
@@ -67072,7 +67082,11 @@
       },
       {
         "id": "c317c8d7-5c07-443c-8173-6c2236d7a541",
-        "text": "1.5 tsp khmeli suneli"
+        "text": "1 tsp ground coriander"
+      },
+      {
+        "id": "06e7df8e-1eb1-466e-b9f7-4d60ac03031e",
+        "text": "0.5 tsp thyme, dried"
       },
       {
         "id": "0bac7046-f471-4480-92e7-22d5927d0a98",
@@ -67096,13 +67110,13 @@
       },
       {
         "id": "a1628f86-4e5f-4c70-a31c-1d1999357ddb",
-        "text": "180 g bread, crusty country loaf"
+        "text": "150 g bread, crusty country loaf"
       }
     ],
     "steps": [
       "Season the chicken and brown it in the butter in a wide pan over medium-high heat for 5 min, turning once. Lift out.",
       "Add the onions to the pan and cook over medium heat for 6 min until soft and lightly golden.",
-      "Stir in the garlic, khmeli suneli and chilli for 1 min, then add the tomatoes and a pinch of salt.",
+      "Stir in the garlic, ground coriander, thyme and chilli for 1 min, then add the tomatoes and a pinch of salt.",
       "Return the chicken, cover partly and simmer 10-12 min, until the sauce is thick and the chicken is tender and cooked through.",
       "Stir in half the herbs, take off the heat and rest 2 min, then scatter over the rest.",
       "Slice the bread and serve it with the stew to mop up the sauce."
@@ -67113,7 +67127,7 @@
         "steps": [
           "Assaisonner le poulet et le faire dorer dans le beurre dans une sauteuse à feu moyen-vif 5 min en le retournant une fois. Le réserver.",
           "Mettre les oignons dans la sauteuse et cuire à feu moyen 6 min jusqu'à ce qu'ils soient tendres et légèrement dorés.",
-          "Incorporer l'ail, le khmeli suneli et le piment 1 min, puis ajouter les tomates et une pincée de sel.",
+          "Incorporer l'ail, la coriandre moulue, le thym et le piment 1 min, puis ajouter les tomates et une pincée de sel.",
           "Remettre le poulet, couvrir à moitié et laisser mijoter 10 à 12 min, jusqu'à ce que la sauce soit épaisse et le poulet tendre et cuit.",
           "Incorporer la moitié des herbes, retirer du feu et laisser reposer 2 min, puis parsemer du reste.",
           "Trancher le pain et le servir avec le ragoût pour saucer."
@@ -67124,7 +67138,7 @@
         "steps": [
           "Condire il pollo e rosolarlo nel burro in una padella larga a fuoco medio-alto per 5 min, girandolo una volta. Toglierlo.",
           "Mettere le cipolle in padella e cuocerle a fuoco medio per 6 min finché sono morbide e leggermente dorate.",
-          "Unire aglio, khmeli suneli e peperoncino per 1 min, poi aggiungere i pomodori e un pizzico di sale.",
+          "Unire aglio, coriandolo in polvere, timo e peperoncino per 1 min, poi aggiungere i pomodori e un pizzico di sale.",
           "Rimettere il pollo, coprire parzialmente e cuocere 10-12 min, finché il sugo è denso e il pollo tenero e cotto.",
           "Incorporare metà delle erbe, togliere dal fuoco e lasciar riposare 2 min, poi cospargere con il resto.",
           "Affettare il pane e servirlo con lo spezzatino per raccogliere il sugo."
@@ -67149,7 +67163,8 @@
       "middle eastern",
       "quick",
       "kid-friendly",
-      "healthy"
+      "healthy",
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -67170,7 +67185,7 @@
       },
       {
         "id": "b89fb572-5b2a-43d8-bdad-19db75fa4445",
-        "text": "340 g ground chicken"
+        "text": "400 g ground chicken"
       },
       {
         "id": "56585e95-ff00-4358-b4ff-89c3d56fb3d3",
@@ -67183,10 +67198,6 @@
       {
         "id": "c7b7dc4f-33b3-4c66-8262-251c80560aa2",
         "text": "10 g fresh coriander, finely chopped"
-      },
-      {
-        "id": "03392059-8cfd-4fa1-bc37-9a400d0447a0",
-        "text": "2 tbsp breadcrumbs"
       },
       {
         "id": "b3b768b1-11f0-4add-a4ca-3faf21f143b7",
@@ -67202,7 +67213,7 @@
       },
       {
         "id": "5c2725df-0b26-4f8a-8bbf-78b1d1894778",
-        "text": "1 tbsp vegetable oil"
+        "text": "2 tsp vegetable oil"
       },
       {
         "id": "9fa59472-7ddd-48a5-ab4f-8144009de91d",
@@ -67218,7 +67229,8 @@
       },
       {
         "id": "ea49c794-dba4-4646-9458-d68016c054e6",
-        "text": "6 radish, halved"
+        "text": "6 radish, halved",
+        "optional": true
       },
       {
         "id": "2aef6c4c-4703-4f78-ab80-4b217d9f3d3a",
@@ -67226,7 +67238,8 @@
       },
       {
         "id": "54572979-1aa3-41c3-b4b4-9a823ae172ac",
-        "text": "5 g fresh mint"
+        "text": "5 g fresh mint",
+        "optional": true
       },
       {
         "id": "5e08f524-8506-4618-985d-daf37a998268",
@@ -67241,7 +67254,7 @@
     ],
     "steps": [
       "Coarsely grate the potato and onion, put them in a clean tea towel and squeeze out as much liquid as you can.",
-      "Mix them with the chicken, egg, parsley, coriander, breadcrumbs, turmeric, 1 tsp salt and ½ tsp pepper until evenly combined.",
+      "Mix them with the chicken, egg, parsley, coriander, turmeric, 1 tsp salt and ½ tsp pepper until evenly combined.",
       "With wet hands shape 6 oval patties about 1.5 cm thick and brush them with the oil.",
       "Air-fry at 200 °C for 12-14 min, turning halfway, until deep golden and cooked through (74 °C inside).",
       "Meanwhile arrange the tomatoes, cucumber, radishes, lettuce and mint on a plate, with the gherkins and lemon if using.",
@@ -67252,7 +67265,7 @@
         "title": "Kotlet persans au poulet et aux herbes à l'air fryer, pain plat et crudités",
         "steps": [
           "Râper grossièrement la pomme de terre et l'oignon, les mettre dans un torchon propre et les presser pour en extraire le plus de liquide possible.",
-          "Les mélanger avec le poulet, l'œuf, le persil, la coriandre, la chapelure, le curcuma, 1 c. à café de sel et ½ c. à café de poivre jusqu'à obtenir un mélange homogène.",
+          "Les mélanger avec le poulet, l'œuf, le persil, la coriandre, le curcuma, 1 c. à café de sel et ½ c. à café de poivre jusqu'à obtenir un mélange homogène.",
           "Les mains mouillées, former 6 galettes ovales d'environ 1,5 cm d'épaisseur et les badigeonner d'huile.",
           "Cuire à l'air fryer à 200 °C pendant 12 à 14 min en retournant à mi-cuisson, jusqu'à ce qu'elles soient bien dorées et cuites à cœur (74 °C).",
           "Pendant ce temps, disposer les tomates, le concombre, les radis, la laitue et la menthe sur une assiette, avec les cornichons et le citron si on en met.",
@@ -67263,7 +67276,7 @@
         "title": "Kotlet persiani di pollo alle erbe in friggitrice ad aria con pane piatto e insalata",
         "steps": [
           "Grattugiare grossolanamente la patata e la cipolla, metterle in un canovaccio pulito e strizzarle per eliminare quanto più liquido possibile.",
-          "Mescolarle con pollo, uovo, prezzemolo, coriandolo, pangrattato, curcuma, 1 cucchiaino di sale e ½ cucchiaino di pepe fino a un composto omogeneo.",
+          "Mescolarle con pollo, uovo, prezzemolo, coriandolo, curcuma, 1 cucchiaino di sale e ½ cucchiaino di pepe fino a un composto omogeneo.",
           "Con le mani bagnate formare 6 polpette ovali spesse circa 1,5 cm e spennellarle d'olio.",
           "Cuocere in friggitrice ad aria a 200 °C per 12-14 min, girando a metà, finché sono ben dorate e cotte al cuore (74 °C).",
           "Nel frattempo disporre pomodori, cetriolo, ravanelli, lattuga e menta su un piatto, con cetriolini e limone se si usano.",
@@ -67288,7 +67301,8 @@
       "polish",
       "quick",
       "kid-friendly",
-      "healthy"
+      "healthy",
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -67299,7 +67313,7 @@
     "ingredients": [
       {
         "id": "9f31ca7a-9a54-429e-9c21-832193171b75",
-        "text": "400 g potato, halved"
+        "text": "350 g potato, halved"
       },
       {
         "id": "c52af2b6-1b0b-4a37-bee3-30ca0488cfee",
@@ -67335,7 +67349,7 @@
       },
       {
         "id": "8b29d496-3f59-4955-a3d3-da64c4d37260",
-        "text": "340 g ground chicken"
+        "text": "400 g ground chicken"
       },
       {
         "id": "78ee7955-1df8-4ceb-adff-9b0a2fbb94c9",
@@ -67355,11 +67369,11 @@
       },
       {
         "id": "940708b7-8cd1-411a-84d5-474cc4597a62",
-        "text": "3 tbsp breadcrumbs"
+        "text": "2 tbsp breadcrumbs"
       },
       {
         "id": "07cf4153-86b1-4434-bd2d-630bc89abab6",
-        "text": "2 tbsp vegetable oil"
+        "text": "1 tbsp vegetable oil"
       },
       {
         "id": "1f879ee9-53c8-4e15-bbcd-033f06a2263b",
@@ -67401,7 +67415,7 @@
   },
   {
     "id": "7be6c3d7-5a6e-4703-93fc-0a652a74598e",
-    "title": "Albóndigas de pollo in chipotle-tomato sauce with rice",
+    "title": "Albóndigas de pollo in smoky tomato sauce with rice",
     "language": "en",
     "servings": 2,
     "prep_min": 12,
@@ -67416,7 +67430,8 @@
       "spicy",
       "comfort",
       "quick",
-      "healthy"
+      "healthy",
+      "high protein"
     ],
     "difficulty": "easy",
     "equipment": {
@@ -67429,7 +67444,7 @@
     "ingredients": [
       {
         "id": "6d26ee35-5bb2-447d-b16e-e8a215208ec5",
-        "text": "150 g rice"
+        "text": "120 g rice"
       },
       {
         "id": "b1796277-c548-4df7-b057-cbd87f87cb57",
@@ -67437,7 +67452,15 @@
       },
       {
         "id": "6ee769aa-2562-402a-ba5a-1d8ed8e5a0db",
-        "text": "1 tbsp chipotle paste"
+        "text": "1.5 tsp paprika, smoked"
+      },
+      {
+        "id": "2e09e4b8-245e-4ebc-817a-f708207473b7",
+        "text": "0.5 tsp chili flakes"
+      },
+      {
+        "id": "b7c03984-2be3-4ecc-9f07-a223563ebc38",
+        "text": "1 tbsp tomato paste"
       },
       {
         "id": "c04a8536-7c28-4b7b-ac6e-021757057c2b",
@@ -67453,7 +67476,7 @@
       },
       {
         "id": "958a1e76-4712-4b9d-a556-0e708e2f0059",
-        "text": "340 g ground chicken"
+        "text": "400 g ground chicken"
       },
       {
         "id": "f4e8466f-d306-485f-a2e3-ac1f054455e0",
@@ -67461,7 +67484,7 @@
       },
       {
         "id": "8122c95d-ab96-43d2-a766-1792abae2f0f",
-        "text": "3 tbsp breadcrumbs"
+        "text": "2 tbsp breadcrumbs"
       },
       {
         "id": "5a44970d-2693-464e-bb3f-3bab5930eefe",
@@ -67477,7 +67500,7 @@
       },
       {
         "id": "1ac95f4c-7e5e-42af-8078-627c7798a51e",
-        "text": "1 tbsp vegetable oil"
+        "text": "2 tsp vegetable oil"
       },
       {
         "id": "0f02fb3c-a87f-4ca9-b34f-7ba6d0bacc0f",
@@ -67498,8 +67521,8 @@
       }
     ],
     "steps": [
-      "Put the rice in a pan with 300 ml water and a pinch of salt, cover and cook on low heat for 12 min, then rest off the heat.",
-      "Blend the tomatoes, chipotle paste, onion, 1 clove of garlic and the oregano until smooth.",
+      "Put the rice in a pan with 240 ml water and a pinch of salt, cover and cook on low heat for 12 min, then rest off the heat.",
+      "Blend the tomatoes, smoked paprika, chilli flakes, tomato paste, onion, 1 clove of garlic and the oregano until smooth.",
       "Mix the chicken with the egg, breadcrumbs, mint, cumin, the other clove of garlic (crushed) and ¾ tsp salt, and roll into 14-16 walnut-sized balls with wet hands.",
       "Heat the oil in a wide pan, pour in the tomato sauce and fry it for 3 min, stirring, until it darkens. Add the stock and carrot and bring to a simmer.",
       "Drop in the meatballs, cover and simmer gently for 8 min.",
@@ -67508,10 +67531,10 @@
     ],
     "translations": {
       "fr": {
-        "title": "Albóndigas de pollo (boulettes de poulet) sauce tomate-chipotle et riz",
+        "title": "Albóndigas de pollo (boulettes de poulet) sauce tomate fumée et riz",
         "steps": [
-          "Mettre le riz dans une casserole avec 300 ml d'eau et une pincée de sel, couvrir et cuire à feu doux 12 min, puis laisser reposer hors du feu.",
-          "Mixer les tomates, la pâte de chipotle, l'oignon, 1 gousse d'ail et l'origan jusqu'à obtenir une sauce lisse.",
+          "Mettre le riz dans une casserole avec 240 ml d'eau et une pincée de sel, couvrir et cuire à feu doux 12 min, puis laisser reposer hors du feu.",
+          "Mixer les tomates, le paprika fumé, le piment en flocons, le concentré de tomate, l'oignon, 1 gousse d'ail et l'origan jusqu'à obtenir une sauce lisse.",
           "Mélanger le poulet avec l'œuf, la chapelure, la menthe, le cumin, l'autre gousse d'ail écrasée et ¾ c. à café de sel, et façonner 14 à 16 boulettes de la taille d'une noix avec les mains mouillées.",
           "Chauffer l'huile dans une sauteuse, verser la sauce tomate et la faire revenir 3 min en remuant jusqu'à ce qu'elle fonce. Ajouter le bouillon et la carotte et porter à frémissement.",
           "Ajouter les boulettes, couvrir et laisser mijoter doucement 8 min.",
@@ -67520,10 +67543,10 @@
         ]
       },
       "it": {
-        "title": "Albóndigas de pollo (polpette di pollo) in salsa di pomodoro e chipotle con riso",
+        "title": "Albóndigas de pollo (polpette di pollo) in salsa di pomodoro affumicata con riso",
         "steps": [
-          "Mettere il riso in una pentola con 300 ml d'acqua e un pizzico di sale, coprire e cuocere a fuoco basso 12 min, poi lasciar riposare fuori dal fuoco.",
-          "Frullare pomodori, pasta di chipotle, cipolla, 1 spicchio d'aglio e origano fino a una salsa liscia.",
+          "Mettere il riso in una pentola con 240 ml d'acqua e un pizzico di sale, coprire e cuocere a fuoco basso 12 min, poi lasciar riposare fuori dal fuoco.",
+          "Frullare pomodori, paprica affumicata, peperoncino in fiocchi, concentrato di pomodoro, cipolla, 1 spicchio d'aglio e origano fino a una salsa liscia.",
           "Mescolare il pollo con uovo, pangrattato, menta, cumino, l'altro spicchio d'aglio schiacciato e ¾ di cucchiaino di sale e formare 14-16 polpette grandi come una noce con le mani bagnate.",
           "Scaldare l'olio in una padella larga, versare la salsa e farla soffriggere 3 min mescolando, finché scurisce. Aggiungere il brodo e la carota e portare a sobbollore.",
           "Unire le polpette, coprire e cuocere dolcemente 8 min.",

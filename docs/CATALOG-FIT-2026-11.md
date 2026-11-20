@@ -15,23 +15,25 @@ Nothing is removed for failing: the deck learns from taste tests which of these 
 | | Before | Now |
 | --- | ---: | ---: |
 | Recipes | 400 | 504 |
-| **Meet all six rules** | 51 | 209 |
-| Healthy | 311 | 419 |
+| **Meet all six rules** | 51 | 240 |
+| Healthy | 311 | 422 |
 | 40 min or less, not hard | 242 | 359 |
-| High protein | 120 | 247 |
-| Everyday ingredients | 274 | 381 |
-| Short list | 381 | 480 |
+| High protein | 120 | 271 |
+| Everyday ingredients | 274 | 395 |
+| Short list | 381 | 483 |
 
-- **95 recipes reworked** (✎) that failed a single rule: supermarket stand-ins for specialty ingredients (dry sherry for Shaoxing wine, paprika for Kashmiri chilli, lime for tamarind…), more of the protein and a little less of the base, a side of vegetables, a lighter sauce, or a shorter marinade. Long braises, dishes built on pulses or halloumi alone, and bakes were left as they are.
+- **126 recipes reworked** (✎) that failed a single rule: supermarket stand-ins for specialty ingredients (dry sherry for Shaoxing wine, paprika for Kashmiri chilli, lime for tamarind…), more of the protein and a little less of the base, a side of vegetables, a lighter sauce, or a shorter marinade. Long braises, dishes built on pulses or halloumi alone, and bakes were left as they are.
 - **59 weeknight plates** (★), all meeting the six rules, spread across everyday carbs: 13 rice, 12 wraps, pitta, naan and bread, 10 potatoes and sweet potatoes, 9 couscous, bulgur, quinoa and polenta, 6 noodles, 6 pasta, orzo and gnocchi, 3 beans and lentils.
-- **45 weeknight chicken dinners** (◆), written before the rules: 9 meet all six; most of the others miss on protein share or a specialty ingredient.
+- **45 weeknight chicken dinners** (◆), written before the rules and then lightly reworked to them (the same kinds of change; reworked ones are marked ✎): 40 meet all six.
 
-## Fit all six rules (209)
+## Fit all six rules (240)
 
-### Rice (51)
+### Rice (62)
 
 | Recipe | Min | Protein | kcal |
 | --- | ---: | ---: | ---: |
+| Air-fryer ayam percik with rice and cucumber ✎ | 30 | 51 g (27 %) | 748 |
+| Air-fryer chicken 65 with lemon rice and cucumber raita ✎ | 30 | 51 g (27 %) | 767 |
 | Air-fryer chicken fajita rice bowls with salsa and lime yogurt ★ | 28 | 56 g (31 %) | 721 |
 | Air-fryer chicken yakitori rice bowls with green beans ✎ | 30 | 46 g (29 %) | 634 |
 | Air-fryer honey sriracha prawns with rice and cucumber ✎ | 25 | 52 g (33 %) | 624 |
@@ -39,12 +41,16 @@ Nothing is removed for failing: the deck learns from taste tests which of these 
 | Air-fryer miso-ginger cod with rice and pak choi ✎ | 35 | 40 g (28 %) | 578 |
 | Air-fryer mojo chicken with rice and black beans ✎ | 30 | 60 g (30 %) | 800 |
 | Air-fryer mojo pork tenderloin with black beans and rice ✎ | 30 | 62 g (26 %) | 953 |
+| Air-fryer piri-piri chicken thighs with rice and mixed salad ✎ | 28 | 43 g (26 %) | 678 |
 | Air-fryer piri-piri turkey with spicy rice | 30 | 51 g (31 %) | 674 |
 | Air-fryer sea bass with nam jim, jasmine rice and cucumber salad | 30 | 40 g (28 %) | 575 |
+| Air-fryer Sri Lankan devilled chicken with rice ✎ | 28 | 48 g (28 %) | 688 |
+| Air-fryer sweet and sour chicken with peppers, pineapple and rice ✎ | 28 | 52 g (27 %) | 770 |
 | Air-fryer sweet chilli salmon with rice, green beans and edamame ★ | 25 | 48 g (26 %) | 736 |
 | Air-fryer tandoori salmon with jeera rice and kachumber ✎ | 30 | 47 g (25 %) | 747 |
 | Air-fryer teriyaki beef meatballs with rice and green beans ✎ | 33 | 53 g (26 %) | 816 |
 | Air-fryer tofu satay with rice, cucumber and green beans ✎ | 27 | 47 g (25 %) | 737 |
+| Albóndigas de pollo in smoky tomato sauce with rice ✎ | 30 | 52 g (26 %) | 801 |
 | Ayam masak merah with peas and rice ✎ | 30 | 55 g (28 %) | 786 |
 | Beef & broccoli stir-fry | 25 | 50 g (29 %) | 692 |
 | Beef and black bean burrito bowls ✎ | 35 | 62 g (26 %) | 967 |
@@ -52,7 +58,9 @@ Nothing is removed for failing: the deck learns from taste tests which of these 
 | Black pepper tofu with rice and green beans ✎ | 40 | 49 g (25 %) | 774 |
 | Calamars à la provençale ✎ | 25 | 47 g (26 %) | 711 |
 | Chicken jalfrezi ✎ | 25 | 44 g (31 %) | 565 |
+| Chicken étouffée over rice ✎ | 30 | 53 g (26 %) | 802 |
 | Chinese lemon chicken with rice and pak choi ★ | 25 | 49 g (30 %) | 656 |
+| Galinhada (Brazilian chicken and turmeric rice) ✎ | 30 | 48 g (25 %) | 762 |
 | Gà kho gừng (Vietnamese ginger chicken) with rice and pak choi ✎ | 30 | 45 g (25 %) | 711 |
 | Halal-cart chicken over rice ✎ | 40 | 55 g (26 %) | 839 |
 | Hashweh (Lebanese spiced lamb rice) with tomato-cucumber salad ✎ | 30 | 58 g (28 %) | 835 |
@@ -62,6 +70,7 @@ Nothing is removed for failing: the deck learns from taste tests which of these 
 | Lemon prawn and pea risotto ✎ | 40 | 54 g (27 %) | 787 |
 | One-pan Greek lemon chicken and rice with spinach and peas ★ | 33 | 52 g (25 %) | 819 |
 | Pad prik khing with chicken, green beans and jasmine rice ✎ | 25 | 45 g (29 %) | 610 |
+| Panang chicken curry with jasmine rice and green beans ✎ | 28 | 53 g (28 %) | 752 |
 | Pescado sudado (Peruvian steamed cod in tomato and chilli) with rice ✎ | 30 | 40 g (26 %) | 614 |
 | Picadillo with rice ✎ | 30 | 56 g (26 %) | 868 |
 | Pollo en pepitoria with saffron rice and green beans ◆ | 30 | 55 g (27 %) | 813 |
@@ -75,16 +84,18 @@ Nothing is removed for failing: the deck learns from taste tests which of these 
 | Sesame-ginger tofu with egg fried rice and broccoli ★ | 30 | 53 g (26 %) | 809 |
 | Sinigang na isda (Filipino sour hake soup) with rice ✎ | 30 | 46 g (30 %) | 620 |
 | Smoky paprika pork with tomato rice and courgette ★ | 36 | 49 g (28 %) | 691 |
+| Strogonoff de frango with rice ✎ | 28 | 54 g (29 %) | 727 |
 | Sweet and sour pork with peppers and rice ★ | 25 | 50 g (26 %) | 785 |
 | Teriyaki tofu with broccoli and rice ✎ | 30 | 50 g (26 %) | 781 |
 | Thai beef larb with jasmine rice and green beans | 25 | 54 g (26 %) | 826 |
 | Thai red curry prawns with peppers and jasmine rice ★ | 25 | 56 g (29 %) | 765 |
 | Tofu tikka masala with peas and basmati rice ★ | 30 | 52 g (25 %) | 840 |
+| Trinidad curry chicken and potatoes with rice ✎ | 30 | 48 g (25 %) | 768 |
 | Turkey soboro don with egg and green beans ✎ | 30 | 41 g (26 %) | 635 |
 | Turkey taco rice with black beans and tomato salsa ★ | 25 | 59 g (28 %) | 847 |
 | Vietnamese caramelised pork rice bowls with quick-pickled vegetables ✎ | 30 | 46 g (26 %) | 701 |
 
-### Noodles (26)
+### Noodles (33)
 
 | Recipe | Min | Protein | kcal |
 | --- | ---: | ---: | ---: |
@@ -98,14 +109,20 @@ Nothing is removed for failing: the deck learns from taste tests which of these 
 | Chicken curry udon with spinach ★ | 25 | 55 g (31 %) | 711 |
 | Chicken pad see ew with broccoli ★ | 25 | 56 g (32 %) | 708 |
 | Chả cá Lã Vọng (turmeric hake with dill and rice noodles) ✎ | 30 | 47 g (26 %) | 730 |
+| Dak kalguksu (Korean chicken noodle soup) ✎ | 30 | 52 g (32 %) | 655 |
+| Gaeng jued (Thai rice vermicelli soup with chicken meatballs) ✎ | 27 | 40 g (30 %) | 528 |
 | Hoisin pork and broccoli noodles ✎ | 30 | 49 g (26 %) | 756 |
 | Kung pao tofu with egg noodles and peppers ★ | 25 | 48 g (26 %) | 735 |
 | Lemongrass beef with rice noodles and herbs (bún bò xào) ★ | 25 | 51 g (26 %) | 780 |
+| Mie ayam (Indonesian chicken noodles with pak choi and mushrooms) ✎ | 28 | 49 g (27 %) | 711 |
 | Mie goreng with prawns ✎ | 22 | 55 g (31 %) | 702 |
 | Miso mushroom udon soup with tofu and egg ✎ | 30 | 44 g (26 %) | 670 |
 | Miso-ginger chicken with soba and broccoli | 25 | 53 g (32 %) | 670 |
+| Pad see ew with chicken and broccoli ✎ | 24 | 50 g (25 %) | 785 |
 | Pad Thai with prawns ✎ | 25 | 55 g (28 %) | 793 |
+| Pancit bihon with chicken, cabbage and green beans ✎ | 27 | 47 g (25 %) | 747 |
 | Peanut-lime chicken noodles with carrot and pepper | 27 | 52 g (25 %) | 815 |
+| Phở gà (Vietnamese chicken noodle soup) ✎ | 30 | 52 g (33 %) | 620 |
 | Pork bulgogi udon with peppers and cabbage ★ | 22 | 53 g (28 %) | 763 |
 | Prawn yaki udon with cabbage and mushrooms | 20 | 49 g (32 %) | 617 |
 | Red curry prawn noodle soup with green beans ★ | 25 | 60 g (32 %) | 739 |
@@ -113,9 +130,10 @@ Nothing is removed for failing: the deck learns from taste tests which of these 
 | Satay prawn noodles with pak choi | 22 | 51 g (28 %) | 732 |
 | Seared tuna with cold soba, edamame and cucumber | 22 | 60 g (36 %) | 662 |
 | Singapore noodles ✎ | 25 | 53 g (29 %) | 723 |
+| Soto ayam (Indonesian turmeric chicken soup) with vermicelli ✎ | 30 | 50 g (25 %) | 777 |
 | Yakisoba with pork ✎ | 25 | 39 g (25 %) | 619 |
 
-### Pasta, orzo and gnocchi (16)
+### Pasta, orzo and gnocchi (17)
 
 | Recipe | Min | Protein | kcal |
 | --- | ---: | ---: | ---: |
@@ -133,10 +151,11 @@ Nothing is removed for failing: the deck learns from taste tests which of these 
 | Pesto salmon pasta with peas and spinach ✎ | 25 | 49 g (25 %) | 769 |
 | Pork medallions in mustard sauce with tagliatelle and green beans ★ | 30 | 59 g (32 %) | 729 |
 | Prawn, courgette and lemon linguine | 22 | 44 g (25 %) | 697 |
+| Ragù bianco di pollo with rigatoni ✎ | 30 | 50 g (27 %) | 743 |
 | Salmon and broccoli penne with lemon-yogurt sauce ★ | 20 | 52 g (28 %) | 750 |
 | Spaghetti puttanesca with cod ★ | 25 | 51 g (34 %) | 610 |
 
-### Potatoes and sweet potatoes (41)
+### Potatoes and sweet potatoes (45)
 
 | Recipe | Min | Protein | kcal |
 | --- | ---: | ---: | ---: |
@@ -163,7 +182,10 @@ Nothing is removed for failing: the deck learns from taste tests which of these 
 | Hake with salsa verde, new potatoes and asparagus | 35 | 40 g (29 %) | 556 |
 | Harissa prawn gnocchi with tomatoes and spinach ★ | 20 | 57 g (34 %) | 677 |
 | Huevos a la flamenca with potatoes and peas ✎ | 30 | 46 g (25 %) | 728 |
+| Hunter's chicken with air-fryer wedges and peas ✎ | 30 | 52 g (27 %) | 761 |
 | Keema aloo | 40 | 49 g (25 %) | 775 |
+| Kotlety z kurczaka (Polish chicken patties) with dill potatoes and mizeria ✎ | 30 | 49 g (26 %) | 748 |
+| Kotopoulo lemonato with air-fryer lemon potatoes and horiatiki ✎ | 30 | 59 g (32 %) | 726 |
 | Kotopoulo me araka ✎ | 40 | 62 g (26 %) | 956 |
 | Lemon salmon, potato and green bean traybake ✎ | 40 | 41 g (26 %) | 629 |
 | Moroccan chicken tagine with potatoes and peas ◆ | 30 | 52 g (33 %) | 626 |
@@ -171,6 +193,7 @@ Nothing is removed for failing: the deck learns from taste tests which of these 
 | Pan-fried hake with pea and mint mash | 30 | 39 g (28 %) | 553 |
 | Pollo a la provenzal with air-fryer potatoes and mixed salad ◆ | 30 | 46 g (29 %) | 640 |
 | Pork chops charcutière with new potatoes and green beans ★ | 35 | 47 g (26 %) | 713 |
+| Poulet à la moutarde with steamed potatoes and green beans ✎ | 30 | 53 g (31 %) | 676 |
 | Salade niçoise with tuna and green beans ✎ | 30 | 40 g (28 %) | 565 |
 | Sea bass with fennel and orange salad ✎ | 35 | 44 g (28 %) | 635 |
 | Smoked haddock and sweetcorn chowder ✎ | 40 | 50 g (34 %) | 599 |
@@ -182,7 +205,7 @@ Nothing is removed for failing: the deck learns from taste tests which of these 
 | Turkey steaks with chimichurri, air-fryer wedges and tomato salad | 37 | 48 g (26 %) | 727 |
 | Turkey steaks with mustard mushroom sauce, yogurt mash and broccoli ★ | 30 | 60 g (39 %) | 612 |
 
-### Couscous, bulgur, quinoa and polenta (25)
+### Couscous, bulgur, quinoa and polenta (26)
 
 | Recipe | Min | Protein | kcal |
 | --- | ---: | ---: | ---: |
@@ -211,16 +234,22 @@ Nothing is removed for failing: the deck learns from taste tests which of these 
 | Ras el hanout turkey with apricots, carrots and couscous ★ | 25 | 57 g (34 %) | 677 |
 | Sumac chicken and onions with bulgur and tomato-cucumber salad ★ | 30 | 57 g (35 %) | 652 |
 | Tavuk sote with bulgur pilavı and cacık ✎ | 30 | 55 g (31 %) | 712 |
+| Tunisian chicken couscous with chickpeas, carrots and courgette ✎ | 30 | 58 g (26 %) | 903 |
 
-### Wraps, pitta, naan and bread (42)
+### Wraps, pitta, naan and bread (49)
 
 | Recipe | Min | Protein | kcal |
 | --- | ---: | ---: | ---: |
 | Air-fryer achari chicken with naan and kachumber ✎ | 29 | 46 g (27 %) | 687 |
 | Air-fryer balık ekmek (Istanbul mackerel sandwich) with sumac onions ✎ | 22 | 44 g (26 %) | 688 |
 | Air-fryer buffalo chicken wraps with celery-carrot slaw ◆ | 24 | 54 g (26 %) | 844 |
+| Air-fryer chicken al pastor tacos with pineapple ✎ | 25 | 52 g (29 %) | 715 |
+| Air-fryer chicken suya with flatbread, tomato and onion ✎ | 24 | 50 g (26 %) | 771 |
+| Air-fryer lemongrass chicken bánh mì with pickled carrot and radish ✎ | 30 | 54 g (31 %) | 694 |
+| Air-fryer musakhan rolls with yogurt and chopped salad ✎ | 30 | 65 g (29 %) | 897 |
 | Air-fryer orange and cumin pork tacos with red cabbage slaw ★ | 22 | 53 g (27 %) | 795 |
 | Air-fryer peri-peri chicken wraps with sweetcorn and lemon yogurt ★ | 24 | 61 g (28 %) | 869 |
+| Air-fryer Persian chicken and herb kotlet with flatbread and salad ✎ | 26 | 52 g (27 %) | 768 |
 | Air-fryer pinchos morunos with flatbread and pepper salad | 27 | 43 g (29 %) | 591 |
 | Air-fryer prawn tikka wraps with mint yogurt | 40 | 56 g (31 %) | 713 |
 | Air-fryer salmon pittas with tzatziki ✎ | 25 | 53 g (25 %) | 834 |
@@ -230,6 +259,7 @@ Nothing is removed for failing: the deck learns from taste tests which of these 
 | Air-fryer turkey shawarma flatbreads with tahini sauce ✎ | 35 | 60 g (30 %) | 806 |
 | Bulgogi beef wraps with quick-pickled cucumber ★ | 20 | 53 g (26 %) | 830 |
 | Cajun chicken wraps with sweetcorn salsa ✎ | 27 | 57 g (28 %) | 814 |
+| Chakhokhbili (Georgian chicken and tomato stew) with bread ✎ | 30 | 48 g (26 %) | 735 |
 | Chicken and mushrooms on sourdough with mustard yogurt sauce ★ | 23 | 57 g (40 %) | 569 |
 | Chicken and pepper fajitas ✎ | 35 | 57 g (26 %) | 880 |
 | Chicken bhuna with naan and cucumber raita ★ | 30 | 60 g (33 %) | 715 |
@@ -246,6 +276,7 @@ Nothing is removed for failing: the deck learns from taste tests which of these 
 | Mushroom and spinach frittata with bread | 35 | 39 g (26 %) | 612 |
 | Pan bagnat (Niçoise tuna, egg and tomato sandwich) | 25 | 43 g (25 %) | 678 |
 | Piperade with soft scrambled eggs and country bread ✎ | 30 | 40 g (25 %) | 641 |
+| Pollo al chilindrón with crusty bread ✎ | 30 | 53 g (27 %) | 799 |
 | Pork chops with mustard white beans ✎ | 30 | 52 g (26 %) | 800 |
 | Pork souvlaki pitas ✎ | 40 | 58 g (31 %) | 756 |
 | Satay tofu wraps with crunchy slaw and edamame ★ | 22 | 53 g (26 %) | 822 |
@@ -272,20 +303,15 @@ Nothing is removed for failing: the deck learns from taste tests which of these 
 | Turkey taco lettuce wraps ✎ | 22 | 59 g (37 %) | 647 |
 | White beans and kale with baked eggs and sourdough ★ | 25 | 41 g (26 %) | 623 |
 
-## Don't fit (295)
+## Don't fit (264)
 
-### Miss one rule (54)
+### Miss one rule (36)
 
-The ones written before the chicken dinners were left as they are because a fix would make a different dish (or, for a long list, the dish needs them). The chicken dinners (◆) haven't been reworked yet.
+Left as they are because a fix would make a different dish (or, for a long list, the dish needs them).
 
 | Recipe | Misses |
 | --- | --- |
-| Dak kalguksu (Korean chicken noodle soup) ◆ | exotic: gochugaru |
-| Gaeng jued woon sen (Thai glass noodle soup with chicken meatballs) ◆ | exotic: glass noodles |
-| Phở gà (Vietnamese chicken noodle soup) ◆ | exotic: thai basil |
 | Beef meatball subs with mozzarella | not healthy (cream, cheese or mayo sauce) |
-| Hunter's chicken with air-fryer wedges and peas ◆ | not healthy (cream, cheese or mayo sauce) |
-| Poulet à la moutarde with steamed potatoes and green beans ◆ | not healthy (cream, cheese or mayo sauce) |
 | Tuna, tomato and spinach pasta bake | not healthy (cream, cheese or mayo sauce) |
 | Air-fryer Amritsari fish with flatbreads, mint yogurt and onion salad ✎ | long list 12 lines |
 | Air-fryer bún thịt nướng (lemongrass pork noodle bowls) ✎ | long list 12 lines |
@@ -296,46 +322,33 @@ The ones written before the chicken dinners were left as they are because a fix 
 | Tajine de poisson with cod ✎ | long list 11 lines |
 | Turkey kofta pitta platter | long list 11 lines |
 | Air-fryer black bean tostadas with avocado and pickled onion | protein 17% of kcal |
-| Air-fryer chicken suya with flatbread, tomato and onion ◆ | protein 24% of kcal |
 | Air-fryer halloumi fajitas with pico de gallo | protein 20% of kcal |
 | Air-fryer halloumi with chickpea couscous and tahini-lemon | protein 19% of kcal |
-| Air-fryer musakhan rolls with yogurt and chopped salad ◆ | protein 19% of kcal |
-| Air-fryer piri-piri chicken thighs with rice and mixed salad ◆ | protein 20% of kcal |
-| Air-fryer Sri Lankan devilled chicken with rice ◆ | protein 20% of kcal |
-| Air-fryer sweet and sour chicken with peppers, pineapple and rice ◆ | protein 25% of kcal |
 | Black bean and egg burritos with tomato salsa | protein 19% of kcal |
 | Black bean and quinoa bowls with corn salsa and avocado | protein 17% of kcal |
 | Chana masala | 20.1 g protein; protein 14% of kcal |
 | Chana saag with rice | 29.1 g protein; protein 15% of kcal |
-| Chicken étouffée over rice ◆ | protein 24% of kcal |
 | Egg pulao with peas and cucumber raita | 29.8 g protein; protein 17% of kcal |
 | Espinacas con garbanzos | protein 18% of kcal |
-| Galinhada (Brazilian chicken and turmeric rice) ◆ | protein 22% of kcal |
 | Halloumi and peach couscous salad | protein 20% of kcal |
 | Halloumi souvlaki with air-fryer lemon potatoes and tzatziki | protein 20% of kcal |
-| Kotlety z kurczaka (Polish chicken patties) with dill potatoes and mizeria ◆ | protein 22% of kcal |
-| Kotopoulo lemonato with air-fryer lemon potatoes and horiatiki ◆ | protein 22% of kcal |
 | Lemon orzo with spinach, chickpeas and feta | 29.6 g protein; protein 17% of kcal |
 | Musabaha with warm pitta and chopped salad | 28.6 g protein; protein 15% of kcal |
 | Orecchiette with broccoli and sausage | protein 15% of kcal |
-| Pancit bihon with chicken, cabbage and green beans ◆ | protein 21% of kcal |
 | Pasta e ceci | 26.6 g protein; protein 19% of kcal |
 | Pasta e fagioli | protein 18% of kcal |
 | Pea and asparagus lemon risotto | 21.9 g protein; protein 13% of kcal |
-| Pollo al chilindrón with crusty bread ◆ | protein 24% of kcal |
 | Poulet au vinaigre with rice and glazed carrots ◆ | protein 19% of kcal |
-| Ragù bianco di pollo with rigatoni ◆ | protein 24% of kcal |
 | Red lentil coconut dal with rice | protein 16% of kcal |
 | Sweet potato and feta hash with eggs | 26 g protein; protein 16% of kcal |
 | Sweet potato and peanut stew | 28.9 g protein; protein 13% of kcal |
-| Tunisian chicken couscous with chickpeas, carrots and courgette ◆ | protein 23% of kcal |
 | Warm lentil salad with beetroot and goat cheese | protein 17% of kcal |
 | Beef stifado | 175 min |
 | Gulyás | 125 min |
 | Pot-au-feu | 235 min |
 | Ropa vieja | 160 min |
 
-### Miss two or more (241)
+### Miss two or more (228)
 
 | Recipe | Misses |
 | --- | --- |
@@ -422,16 +435,11 @@ The ones written before the chicken dinners were left as they are because a fix 
 | Waterzooi | not healthy (cream, cheese or mayo sauce); 50 min; protein 23% of kcal |
 | Youvetsi (beef and orzo bake) | not healthy (gratin or pizza); 160 min; exotic: kefalotyri |
 | Air-fryer anticuchos de pollo with potatoes and corn ◆ | exotic: aji panca paste, aji amarillo paste; protein 24% of kcal |
-| Air-fryer ayam percik with rice and cucumber ◆ | exotic: tamarind paste; protein 18% of kcal |
 | Air-fryer Cajun cod tacos with lime slaw | not healthy (cream, cheese or mayo sauce); protein 23% of kcal |
-| Air-fryer chicken 65 with lemon rice and cucumber raita ◆ | exotic: kashmiri chili powder, curry leaves; long list 11 lines |
-| Air-fryer chicken al pastor tacos with pineapple ◆ | exotic: dried mexican chillies; protein 20% of kcal |
 | Air-fryer chilli paneer with Hakka noodles | exotic: kashmiri chili powder; 28.8 g protein; protein 14% of kcal |
 | Air-fryer honey gochujang chicken thighs with rice and cucumber | exotic: gochujang; protein 22% of kcal |
 | Air-fryer kadai paneer with rice | exotic: kashmiri chili powder, dried fenugreek leaves; protein 15% of kcal |
-| Air-fryer lemongrass chicken bánh mì with pickled carrot and daikon ◆ | exotic: daikon; protein 22% of kcal |
 | Air-fryer paneer kathi rolls | 45 min; protein 16% of kcal |
-| Air-fryer Persian chicken and herb kotlet with flatbread and salad ◆ | protein 24% of kcal; long list 13 lines |
 | Air-fryer pork satay with rice and quick cucumber pickle | 55 min; protein 24% of kcal |
 | Air-fryer salt and pepper squid with garlic noodles and pak choi | exotic: sichuan pepper; protein 22% of kcal |
 | Air-fryer salt and pepper tofu with rice and pak choi | exotic: sichuan pepper; protein 21% of kcal |
@@ -440,7 +448,6 @@ The ones written before the chicken dinners were left as they are because a fix 
 | Air-fryer teriyaki salmon with rice and broccoli | 45 min; protein 22% of kcal |
 | Air-fryer tofu katsu curry with rice | 45 min; protein 21% of kcal |
 | Air-fryer turkey tikka with spinach pilau rice | 53 min; exotic: dried fenugreek leaves |
-| Albóndigas de pollo in chipotle-tomato sauce with rice ◆ | exotic: chipotle paste; protein 23% of kcal |
 | Arni me melitzanes (lamb and aubergine stew) | 160 min; protein 23% of kcal |
 | Arroz con gambas | 50 min; protein 24% of kcal |
 | Arroz con pollo y chorizo | 50 min; protein 21% of kcal |
@@ -463,7 +470,6 @@ The ones written before the chicken dinners were left as they are because a fix 
 | Carnitas tacos | 155 min; protein 19% of kcal |
 | Cauliflower and chickpea shawarma platter | 45 min; protein 19% of kcal |
 | Cauliflower and pea biryani | 55 min; 29.3 g protein; protein 18% of kcal |
-| Chakhokhbili (Georgian chicken and tomato stew) with bread ◆ | exotic: khmeli suneli; protein 25% of kcal |
 | Char siu pork with greens | 295 min; exotic: rice wine |
 | Chicken and roasted pepper enchiladas | not healthy (cream, cheese or mayo sauce); 45 min |
 | Chicken biryani | 105 min; protein 18% of kcal |
@@ -525,15 +531,12 @@ The ones written before the chicken dinners were left as they are because a fix 
 | Menemen | exotic: aleppo pepper; protein 22% of kcal |
 | Mercimek çorbası (Turkish lentil soup) | exotic: aleppo pepper; protein 19% of kcal |
 | Merguez and roast vegetable couscous | 45 min; protein 18% of kcal |
-| Mie ayam (Indonesian chicken noodles with pak choi and mushrooms) ◆ | exotic: kecap manis; protein 21% of kcal |
 | Mie goreng with tempeh and egg | exotic: tempeh, kecap manis; protein 19% of kcal |
 | Mujadara with halloumi | 50 min; protein 21% of kcal |
 | Mushroom, lentil and walnut ragù | 45 min; protein 16% of kcal |
 | Ojingeo bokkeum (Korean spicy squid) with rice | exotic: gochugaru, gochujang; protein 22% of kcal |
 | Pad kra pao with pork, jasmine rice and a fried egg | exotic: thai basil; protein 20% of kcal |
 | Pad kra pao with tempeh and a fried egg | exotic: tempeh, dark soy sauce, thai basil; protein 19% of kcal |
-| Pad see ew with chicken and broccoli ◆ | exotic: dark soy sauce; protein 22% of kcal |
-| Panang chicken curry with jasmine rice and green beans ◆ | exotic: kaffir lime leaves, thai basil; protein 24% of kcal |
 | Paneer tikka skewers with cucumber rice | 70 min; protein 19% of kcal |
 | Paprika hake with peppers and potatoes | 45 min; protein 22% of kcal |
 | Pea and mint omelette with potatoes | not healthy (fried, fatty or a treat); protein 21% of kcal |
@@ -560,10 +563,8 @@ The ones written before the chicken dinners were left as they are because a fix 
 | Smoked mackerel, beetroot and potato salad | not healthy (cream, cheese or mayo sauce); protein 19% of kcal |
 | Smoked salmon and pea spaghetti | not healthy (cream, cheese or mayo sauce); protein 22% of kcal |
 | Sopa de tortilla with chicken | 55 min; exotic: dried mexican chillies, dried mexican chillies, queso fresco |
-| Soto ayam (Indonesian turmeric chicken soup) with vermicelli ◆ | exotic: kaffir lime leaves; long list 11 lines |
 | Steak with chimichurri and potatoes | 60 min; protein 22% of kcal |
 | Steak with romesco, air-fryer potatoes and broccoli | 50 min; protein 23% of kcal |
-| Strogonoff de frango with rice ◆ | not healthy (cream, cheese or mayo sauce); protein 24% of kcal |
 | Tahini-lemon tofu with roast squash and quinoa | 43 min; protein 22% of kcal |
 | Thai green curry salmon with jasmine rice and green beans | exotic: kaffir lime leaves, thai basil; protein 18% of kcal |
 | Thai red curry with butternut and chicken | exotic: thai basil; protein 18% of kcal |
@@ -573,7 +574,6 @@ The ones written before the chicken dinners were left as they are because a fix 
 | Tomato and egg stir-fry | exotic: rice wine; 28.8 g protein; protein 15% of kcal |
 | Tomato and mozzarella flatbread pizzas | not healthy (cream, cheese or mayo sauce); protein 22% of kcal |
 | Tortilla de patatas with tomato salad | 45 min; 27.8 g protein; protein 21% of kcal |
-| Trinidad curry chicken and potatoes with rice ◆ | exotic: scotch bonnet; protein 20% of kcal |
 | Tsukune donburi | exotic: rice wine; protein 23% of kcal |
 | Tuna bibimbap with spinach, courgette, carrot and fried egg | exotic: gochujang, kimchi; protein 23% of kcal |
 | Turkey bolognese tagliatelle | 45 min; protein 24% of kcal |

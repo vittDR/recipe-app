@@ -134,16 +134,18 @@ weeknight plates written to the weeknight rules.
 [CATALOG-FIT-2026-11.md](CATALOG-FIT-2026-11.md) lists which recipes meet
 the rules and why the others don't.
 
-- **Meet all six weeknight rules: 209 of 504** (it was 51 of 400). 95
+- **Meet all six weeknight rules: 240 of 504** (it was 51 of 400). 95
   recipes that failed one rule were reworked (stand-ins for specialty
   ingredients, more protein and less base, more vegetables, shorter
-  marinades), and the 59 weeknight plates meet them all.
+  marinades), 31 of the chicken dinners were lightly reworked the same way,
+  and the 59 weeknight plates meet them all.
 - **The 45 chicken dinners** were written before the rules: 30 min or less,
   each with a base and a real portion of vegetables, 19 with the air fryer.
-  9 meet all six rules; 19 miss just one (mostly protein share), so they're
-  the next to rework.
-- **Healthy: 419 of 504 (83%).** Healthy and 40 min or less in total: 325.
-- **High protein: 247 of 504** (it was 120 of 400).
+  After a light rework, 40 meet all six rules. The other 5 would become
+  different dishes (pide, ají de gallina, yu xiang aubergine, anticuchos,
+  poulet au vinaigre).
+- **Healthy: 422 of 504 (84%).** Healthy and 40 min or less in total: 328.
+- **High protein: 271 of 504** (it was 120 of 400).
 - **The 59 weeknight plates** take 17 to 36 min and spread across everyday
   carbs: rice, noodles, pasta and gnocchi, potatoes and sweet potatoes,
   couscous, bulgur and polenta, wraps, pitta and bread, and tinned beans.
