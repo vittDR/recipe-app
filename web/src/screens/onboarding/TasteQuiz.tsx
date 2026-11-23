@@ -21,7 +21,7 @@ import pasta from '../../assets/deck/pasta.webp';
 import pokeBowl from '../../assets/deck/poke-bowl.webp';
 import tacos from '../../assets/deck/tacos.webp';
 import { RecipeFacts } from '../../components/RecipeBody.tsx';
-import { Button, Screen, Spinner, TabHeader, imageStyle, recipeEmoji } from '../../components/ui.tsx';
+import { Button, Screen, Spinner, imageStyle, recipeEmoji } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { useCatalog, useLive, useSave } from '../../lib/hooks.ts';
 import { recipeTitle } from '../../lib/recipeText.ts';
@@ -180,12 +180,12 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
   }
 
   const step = history.length;
-  // The deck's header: where it is in the test, and the way out (the deck's avatars' place).
+  // One line where the deck has its header: where it is in the test, and the way out.
   const header = (
-    <TabHeader overline={t('quiz.progress', { n: Math.min(step + 1, TOTAL), total: TOTAL })} title={t('tastes.title')}
-      right={step >= QUIZ_MIN
-        ? <button type="button" className="ob__skip" onClick={() => finish}>{t('quiz.finish')}</button>
-        : <button type="button" className="ob__skip" onClick={finish}>{t('ob.skip')}</button>} />
+    <div className="quiz-top">
+      <span className="quiz-top__count">{t('quiz.progress', { n: Math.min(step + 1, TOTAL), total: TOTAL })}</span>
+      <button type="button" className="ob__skip" onClick={finish}>{t(step >= QUIZ_MIN ? 'quiz.finish' : 'ob.skip')}</button>
+    </div>
   );
 
   if (!started && step === 0) {
@@ -225,11 +225,13 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
     else setDrag(null);
   };
   const motion = leaving?.id === card.id ? leaving : drag;
-  const choices: { value: StarterVerdict; icon: 'x' | 'clock' | 'heart' | 'star'; cls: string }[] = [
-    { value: 'pass', icon: 'x', cls: '' },
-    { value: 'sometimes', icon: 'clock', cls: ' swipe-btn--sometimes' },
-    { value: 'yes', icon: 'heart', cls: ' swipe-btn--like' },
-    { value: 'must', icon: 'star', cls: ' swipe-btn--star' },
+  // The deck's row, sizes and all (big, small, big, small): Pas pour moi, De temps en temps,
+  // Souvent, Un favori, each named under it.
+  const choices: { value: StarterVerdict; icon: 'x' | 'clock' | 'heart' | 'star'; cls: string; size: number }[] = [
+    { value: 'pass', icon: 'x', cls: 'swipe-btn', size: 26 },
+    { value: 'sometimes', icon: 'clock', cls: 'swipe-btn swipe-btn--small swipe-btn--sometimes', size: 20 },
+    { value: 'yes', icon: 'heart', cls: 'swipe-btn swipe-btn--like', size: 28 },
+    { value: 'must', icon: 'star', cls: 'swipe-btn swipe-btn--small swipe-btn--star', size: 20 },
   ];
   return (
     <main className="screen swipe-screen quiz">
@@ -258,15 +260,16 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
         </article>
       </div>
       <div className="swipe-actions quiz-actions">
-          {choices.map((x) => (
-            <button key={x.value} type="button" className="quiz-answer" onClick={() => answer(x.value)}>
-              <span className={`swipe-btn${x.cls}`} aria-hidden>
-                <Icon name={x.icon} size={x.value === 'yes' ? 26 : 22} filled={x.value === 'yes' || x.value === 'must'}
-                  strokeWidth={x.value === 'pass' ? 2.4 : 2} />
+        {choices.map((x) => (
+          <button key={x.value} type="button" className="quiz-answer" onClick={() => answer(x.value)}>
+            <span className="quiz-answer__slot">
+              <span className={x.cls} aria-hidden>
+                <Icon name={x.icon} size={x.size} filled={x.value === 'yes' || x.value === 'must'} strokeWidth={x.value === 'pass' ? 2.4 : 2} />
               </span>
-              <span className="quiz-answer__label">{t(`quiz.answers.${x.value}`)}</span>
-            </button>
-          ))}
+            </span>
+            <span className="quiz-answer__label">{t(`quiz.answers.${x.value}`)}</span>
+          </button>
+        ))}
       </div>
     </main>
   );
