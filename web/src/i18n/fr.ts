@@ -283,8 +283,8 @@ export const fr: Dictionary = {
     notTonight: 'Finalement, pas ce soir',
   },
   addToList: {
-    title: 'Qu’avez-vous déjà ?',
-    subtitle: 'Le reste ira dans la liste de courses.',
+    title: 'Que faut-il acheter ?',
+    subtitle: 'Les articles cochés iront dans la liste de courses.',
     nothing: 'Vous avez tout',
     add_one: 'Ajouter {count} article',
     add_other: 'Ajouter {count} articles',

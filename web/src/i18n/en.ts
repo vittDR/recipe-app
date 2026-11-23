@@ -285,8 +285,8 @@ export const en = {
     notTonight: 'Not tonight after all',
   },
   addToList: {
-    title: 'What do you already have?',
-    subtitle: 'The rest goes on the shopping list.',
+    title: 'What do you need to buy?',
+    subtitle: 'Ticked items go on the shopping list.',
     nothing: 'You have everything',
     add_one: 'Add {count} item',
     add_other: 'Add {count} items',
