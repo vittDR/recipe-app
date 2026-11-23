@@ -3552,46 +3552,16 @@ body:has(.moment) .tabbar {
   font: var(--t-caption);
 }
 
-/* Fanned illustration cards (account, done). */
-.account__art,
-.done__art {
+/* The deal deck's three cards (Ce soir), centred in the room above the title. */
+.ob-fan {
   position: relative;
-  height: 220px;
-  margin: var(--space-8) 0 var(--space-6);
+  height: 250px;
+  margin: var(--space-6) 0 var(--space-4);
 }
 
-.account__card,
-.done__card {
-  position: absolute;
-  left: 50%;
-  top: 10px;
-  width: 150px;
-  height: 135px;
-  margin-left: -75px;
-  border-radius: 24px;
-  overflow: hidden;
-  box-shadow: var(--shadow-raised);
-}
-
-.account__card img,
-.done__card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  /* The top of the illustration only: its placeholder bars stay out. */
-  object-position: top;
-}
-
-.account__card--left,
-.done__card--left {
-  transform: translateX(-90px) rotate(-12deg);
-  top: 26px;
-}
-
-.account__card--right,
-.done__card--right {
-  transform: translateX(90px) rotate(10deg);
-  top: 26px;
+.ob-fan .fan {
+  top: 50%;
+  margin-top: -95px;
 }
 
 .account__title,
@@ -3726,117 +3696,46 @@ body:has(.moment) .tabbar {
   border: 5px solid transparent;
 }
 
-.install__pointer--s26,
-.install__pointer--s18 {
-  bottom: calc(100% + 8px);
+/* Pinned to the page's edge, next to the browser's own button: Safari's bar
+   is under the page, Chrome's address bar above it. */
+.install__pointer--safari26,
+.install__pointer--safari18 {
+  position: fixed;
+  bottom: calc(env(safe-area-inset-bottom) + 10px);
+  translate: -50% 0;
 }
 
-.install__pointer--s26::after,
-.install__pointer--s18::after {
+.install__pointer--safari26 {
+  /* The page menu, at the start of Safari 26's address field. */
+  left: 100px;
+}
+
+.install__pointer--safari18 {
+  /* The share button, in the middle of the bottom toolbar. */
+  left: 50%;
+}
+
+.install__pointer--safari26::after,
+.install__pointer--safari18::after {
   top: 100%;
   border-top-color: var(--accent);
 }
 
-.install__pointer--top {
-  top: calc(100% + 6px);
-  right: 2px;
+.install__pointer--chrome {
+  /* The share button, at the right end of Chrome's address bar. */
+  position: fixed;
+  top: 10px;
+  left: calc(100% - 33px);
+  translate: -50% 0;
 }
 
-.install__pointer--top::after {
+.install__pointer--chrome::after {
   bottom: 100%;
   border-bottom-color: var(--accent);
 }
 
 @keyframes install-bob {
-  50% { translate: 0 -5px; }
-}
-
-.install__safari-bar {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  width: 100%;
-}
-
-.install__safari-bar .install__pointer--s26 {
-  left: 56px;
-}
-
-.install__round {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: var(--surface);
-  box-shadow: var(--shadow-control);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.install__address {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  min-width: 0;
-  flex: 1;
-  padding: 10px 14px;
-  border-radius: 22px;
-  background: var(--surface);
-  box-shadow: var(--shadow-control);
-  font: var(--t-callout);
-}
-
-.install__ring {
-  display: inline-flex;
-  padding: 3px;
-  border-radius: 8px;
-  box-shadow: 0 0 0 2px var(--accent);
-}
-
-.install__toolbar {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  width: calc(100% + 2 * var(--space-7));
-  margin: 0 calc(-1 * var(--space-7)) calc(-1 * var(--space-6));
-  padding: var(--space-4) 0;
-  border-top: 1px solid var(--line);
-  color: var(--iris);
-}
-
-.install__toolbar-share {
-  position: relative;
-  display: inline-flex;
-  justify-content: center;
-}
-
-.install__toolbar-share .install__pointer--s18 {
-  left: 50%;
-  translate: -50% 0;
-}
-
-.install__chrome-bar {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  width: calc(100% + 2 * var(--space-7));
-  margin: calc(-1 * var(--space-4)) calc(-1 * var(--space-7)) 0;
-  padding: var(--space-3) var(--space-4);
-  background: var(--sunken);
-  border-bottom: 1px solid var(--line);
-}
-
-.install__chrome-share {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 0 2px var(--accent);
+  50% { transform: translateY(-5px); }
 }
 
 .install__icons {

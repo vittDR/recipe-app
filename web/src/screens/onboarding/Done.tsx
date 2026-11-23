@@ -41,10 +41,10 @@ export function DoneScreen() {
           <span key={i} style={{ left: `${c.l}%`, top: `${c.t}%`, width: c.w, height: c.h, background: c.c, transform: `rotate(${c.r}deg)` }} />
         ))}
       </div>
-      <div className="done__art" aria-hidden>
-        <span className="done__card done__card--left" style={{ background: '#cde2ef' }}><img src={scallops} alt="" /></span>
-        <span className="done__card done__card--right" style={{ background: '#fae7b4' }}><img src={herbOmelette} alt="" /></span>
-        <span className="done__card done__card--mid" style={{ background: '#fae1ce' }}><img src={roastChicken} alt="" /></span>
+      <div className="ob-fan" aria-hidden>
+        <img className="fan fan--left fan--art" src={scallops} alt="" />
+        <img className="fan fan--right fan--art" src={herbOmelette} alt="" />
+        <img className="fan fan--mid fan--art" src={roastChicken} alt="" />
       </div>
       <h1 className="done__title">{t('ob.done.title')}</h1>
       <p className="done__subtitle">{t('ob.done.subtitle')}</p>

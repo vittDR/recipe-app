@@ -136,10 +136,10 @@ export function AccountScreen() {
 
   return (
     <main className="screen screen--plain account">
-      <div className="account__art" aria-hidden>
-        <span className="account__card account__card--left" style={{ background: '#e7d9f7' }}><img src={pokeBowl} alt="" /></span>
-        <span className="account__card account__card--right" style={{ background: '#fae1ce' }}><img src={roastChicken} alt="" /></span>
-        <span className="account__card account__card--mid" style={{ background: '#d9aebb' }}><img src={mushroomRisotto} alt="" /></span>
+      <div className="ob-fan" aria-hidden>
+        <img className="fan fan--left fan--art" src={pokeBowl} alt="" />
+        <img className="fan fan--right fan--art" src={roastChicken} alt="" />
+        <img className="fan fan--mid fan--art" src={mushroomRisotto} alt="" />
       </div>
       <h1 className="account__title">{t('ob.account.title')}</h1>
       <div className="stack stack--sm">
