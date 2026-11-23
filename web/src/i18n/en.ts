@@ -249,6 +249,8 @@ export const en = {
     protein: 'protein',
     pantry: 'Uses the {item} you bought',
     loved: 'Something you love',
+    partnerWants: '{name} wants this',
+    partnersWant: '{names} want this',
   },
   waiting: {
     title: 'You’re done!',

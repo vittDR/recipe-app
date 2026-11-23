@@ -247,6 +247,8 @@ export const fr: Dictionary = {
     protein: 'protéines',
     pantry: 'Utilise {item} déjà acheté',
     loved: 'Un de vos favoris',
+    partnerWants: '{name} en a envie',
+    partnersWant: '{names} en ont envie',
   },
   waiting: {
     title: 'Terminé !',

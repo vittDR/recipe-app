@@ -145,6 +145,13 @@ select pg_temp.check(undo_swipe('10000000-0000-0000-0000-000000000001') is null,
 insert into swipes (deck_id, recipe_id, user_id, verdict) values
   ('10000000-0000-0000-0000-000000000001', :'r1', auth.uid(), 'yes');
 select pg_temp.check((select count(*) = 1 from swipes), 'B mid-deck sees only own swipes');
+select pg_temp.check((select array_agg(recipe_id) = array[:'r3'::uuid]
+                      from partner_musts('10000000-0000-0000-0000-000000000001')),
+                     'B mid-deck sees A''s must-have, and only that');
+select pg_temp.act_as('00000000-0000-0000-0000-00000000000c');
+select pg_temp.check((select count(*) = 0 from partner_musts('10000000-0000-0000-0000-000000000001')),
+                     'outsider sees no must-haves');
+select pg_temp.act_as('00000000-0000-0000-0000-00000000000b');
 select pg_temp.check((select status = 'open' from decks), 'deck still open');
 insert into swipes (deck_id, recipe_id, user_id, verdict) values
   ('10000000-0000-0000-0000-000000000001', :'r2', auth.uid(), 'pass'),
