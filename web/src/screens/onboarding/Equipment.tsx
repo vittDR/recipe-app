@@ -1,7 +1,9 @@
-// Kitchen equipment (creator, before the taste test): the appliances our
-// recipes call for. Saved on the household (households.equipment); the deck
-// never deals a recipe needing one it lacks (logic/facets.ts missingAppliances).
+// Kitchen equipment (creator, before the taste test; also Us > Préférences,
+// `editing`): the appliances our recipes call for. Saved on the household
+// (households.equipment); the deck never deals a recipe needing one it lacks
+// (logic/facets.ts missingAppliances).
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 import { APPLIANCES, type Appliance } from '@logic/facets.ts';
 import { Icon } from '../../components/Icon.tsx';
 import { useI18n } from '../../i18n/index.tsx';
@@ -20,8 +22,9 @@ const PATHS: Record<Appliance, string> = {
 /** Most kitchens have an oven, and many an air fryer: those start ticked. */
 const DEFAULTS: Appliance[] = ['oven', 'air fryer'];
 
-export function EquipmentScreen() {
+export function EquipmentScreen({ editing }: { editing?: boolean }) {
   const { t } = useI18n();
+  const navigate = useNavigate();
   const { household, refresh } = useSession();
   const setup = useSetup('equipment');
   const saved = household?.equipment as Appliance[] | null | undefined;
@@ -40,12 +43,13 @@ export function EquipmentScreen() {
     await supabase.from('households').update({ equipment: APPLIANCES.filter((a) => have.has(a)) }).eq('id', household!.id);
     await refresh();
     setBusy(false);
-    setup.next();
+    if (editing) navigate(-1);
+    else setup.next();
   };
 
   return (
-    <Step back progress={setup} title={t('ob.equipment.title')} subtitle={t('ob.equipment.subtitle')}
-      action={{ onClick: () => void next(), disabled: busy }}>
+    <Step back progress={editing ? undefined : setup} title={t('ob.equipment.title')} subtitle={t('ob.equipment.subtitle')}
+      action={{ label: editing ? t('app.save') : undefined, onClick: () => void next(), disabled: busy }}>
       <div className="appliances">
         {APPLIANCES.map((a) => (
           <button key={a} type="button" className="appliance" aria-pressed={have.has(a)} onClick={() => toggle(a)}>

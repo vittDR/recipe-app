@@ -6,6 +6,7 @@ import { classifyRow, CLASSIFY_COLUMNS, type ClassifiableRow } from '@logic/clas
 import type { Mood } from '@logic/deck.ts';
 import { normaliseFilters } from '@logic/deckFilters.ts';
 import { recipeFeatures } from '@logic/preferences.ts';
+import { APPLIANCES } from '@logic/facets.ts';
 import { macrosOf, splitPot, targetsOf } from '@logic/portions.ts';
 import {
   buildProfile, DIET_FEATURE, profileHighlights, signalsFor, type MealRow, type PortionRow, type StyleLevel, type SwipeRow,
@@ -197,6 +198,13 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
               goals.dinner_protein_g != null && `${goals.dinner_protein_g} ${t('goals.gramsUnit')} ${t('goals.proteinShort')}`,
               tn('recipe.servings', goals.servings),
             ].filter(Boolean).join(' · ') : t('goals.none')} />
+          <ListRow to="/us/equipment" tile="plain" icon={<Icon name="pot" size={18} />} title={t('us.equipment')}
+            meta={household?.equipment
+              ? (household.equipment.length
+                ? APPLIANCES.filter((a) => household.equipment!.includes(a))
+                  .map((a) => t(`ob.equipment.items.${a === 'air fryer' ? 'airFryer' : a}`)).join(', ')
+                : t('us.equipmentNone'))
+              : t('us.equipmentAll')} />
           </div>
         </div>
       </Screen>

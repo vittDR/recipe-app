@@ -798,6 +798,9 @@ export const fr: Dictionary = {
     notificationsOn: 'Notifications activées',
     notificationsUnsupported: 'Ajoutez {app} à l’écran d’accueil pour recevoir des notifications.',
     notificationsDenied: 'Les notifications sont bloquées dans vos réglages.',
+    equipment: 'Équipement de cuisine',
+    equipmentAll: 'Tout',
+    equipmentNone: 'Aucun de ceux-ci',
   },
   profile: {
     title: 'Réglages du profil',

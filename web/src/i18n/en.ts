@@ -800,6 +800,9 @@ export const en = {
     notificationsOn: 'Notifications are on',
     notificationsUnsupported: 'Add {app} to your Home Screen to get notifications.',
     notificationsDenied: 'Notifications are blocked in your settings.',
+    equipment: 'Kitchen equipment',
+    equipmentAll: 'Everything',
+    equipmentNone: 'None of these',
   },
   profile: {
     title: 'Profile settings',
