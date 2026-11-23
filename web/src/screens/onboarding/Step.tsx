@@ -7,6 +7,40 @@ import { Icon } from '../../components/Icon.tsx';
 import { Button } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 
+/**
+ * Back, the progress segments and an action on the right ("Passer"). `fill`
+ * fills the current segment part way (the taste quiz, card by card).
+ */
+export function StepBar({ back = true, progress, right }: {
+  back?: boolean | string;
+  progress?: { index: number; count: number; fill?: number };
+  right?: ReactNode;
+}) {
+  const { t } = useI18n();
+  const navigate = useNavigate();
+  return (
+    <div className="ob__bar">
+      {back ? (
+        <button type="button" className="icon-btn icon-btn--filled" aria-label={t('app.back')}
+          onClick={() => (typeof back === 'string' ? navigate(back) : navigate(-1))}>
+          <Icon name="back" />
+        </button>
+      ) : <span className="ob__bar-gap" />}
+      {progress && (
+        <div className="ob__progress" role="progressbar" aria-valuemin={1} aria-valuemax={progress.count}
+          aria-valuenow={progress.index + 1} aria-label={t('ob.progress', { n: progress.index + 1, total: progress.count })}>
+          {Array.from({ length: progress.count }, (_, i) => (
+            <span key={i} className={i < progress.index || (i === progress.index && progress.fill == null) ? 'on' : undefined}>
+              {i === progress.index && progress.fill != null && <i style={{ width: `${Math.round(progress.fill * 100)}%` }} />}
+            </span>
+          ))}
+        </div>
+      )}
+      {right ?? (progress ? <span className="ob__bar-gap" /> : null)}
+    </div>
+  );
+}
+
 export function Step({
   title,
   subtitle,
@@ -36,25 +70,10 @@ export function Step({
   className?: string;
 }) {
   const { t } = useI18n();
-  const navigate = useNavigate();
   return (
     <main className={`screen screen--plain ob ${className}`}>
-      <div className="ob__bar">
-        {back ? (
-          <button type="button" className="icon-btn icon-btn--filled" aria-label={t('app.back')}
-            onClick={() => (typeof back === 'string' ? navigate(back) : navigate(-1))}>
-            <Icon name="back" />
-          </button>
-        ) : <span className="ob__bar-gap" />}
-        {progress && (
-          <div className="ob__progress" role="progressbar" aria-valuemin={1} aria-valuemax={progress.count}
-            aria-valuenow={progress.index + 1} aria-label={t('ob.progress', { n: progress.index + 1, total: progress.count })}>
-            {Array.from({ length: progress.count }, (_, i) => <span key={i} className={i <= progress.index ? 'on' : undefined} />)}
-          </div>
-        )}
-        {onSkip ? <button type="button" className="ob__skip" onClick={onSkip}>{t('ob.skip')}</button>
-          : progress ? <span className="ob__bar-gap" /> : null}
-      </div>
+      <StepBar back={back} progress={progress}
+        right={onSkip && <button type="button" className="ob__skip" onClick={onSkip}>{t('ob.skip')}</button>} />
       {overline && <span className="ob__overline">{overline}</span>}
       <h1 className="ob__title">{title}</h1>
       {subtitle && <p className="ob__subtitle">{subtitle}</p>}

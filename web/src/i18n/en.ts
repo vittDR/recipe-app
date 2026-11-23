@@ -753,6 +753,12 @@ export const en = {
       fried: 'Fried & indulgent',
       friedHint: 'Fish and chips, fried chicken',
     },
+    introTitle: 'Let’s learn your tastes',
+    introText: 'We’ll show you a few dishes: tell us how often you’d like each one for dinner. Your decks start from your answers, then keep learning from every swipe.',
+    start: 'Start',
+    finish: 'Finish',
+    prompt: 'For dinner, this dish…',
+    answers: { pass: 'Not for me', sometimes: 'Now and then', yes: 'Often', must: 'A favourite' },
   },
   rating: {
     title: 'How was it?',

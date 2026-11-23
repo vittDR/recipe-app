@@ -751,6 +751,12 @@ export const fr: Dictionary = {
       fried: 'Frit et gourmand',
       friedHint: 'Fish and chips, poulet frit',
     },
+    introTitle: 'Faisons connaissance avec vos goûts',
+    introText: 'Quelques plats vont défiler : dites-nous à quelle fréquence vous aimeriez les manger au dîner. Vos decks partiront de vos réponses, puis apprendront de chaque swipe.',
+    start: 'Commencer',
+    finish: 'Terminer',
+    prompt: 'Au dîner, ce plat…',
+    answers: { pass: 'Pas pour moi', sometimes: 'De temps en temps', yes: 'Souvent', must: 'Un favori' },
   },
   rating: {
     title: 'C’était comment ?',

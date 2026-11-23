@@ -19,12 +19,17 @@ import {
 } from '@logic/style.ts';
 import { Icon } from '../../components/Icon.tsx';
 import { StyleRows } from '../../components/StyleSummary.tsx';
-import { Button, ModeBar, ProgressBar, Screen, Spinner, Tag, imageStyle, recipeEmoji } from '../../components/ui.tsx';
+import pasta from '../../assets/deck/pasta.webp';
+import pokeBowl from '../../assets/deck/poke-bowl.webp';
+import tacos from '../../assets/deck/tacos.webp';
+import { RecipeFacts } from '../../components/RecipeBody.tsx';
+import { Button, Screen, Spinner, imageStyle, recipeEmoji } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
-import { classificationChips } from '../../lib/classes.ts';
 import { useCatalog, useLive, useSave } from '../../lib/hooks.ts';
 import { recipeTitle } from '../../lib/recipeText.ts';
+import { useSetup } from '../../lib/onboarding.ts';
 import { useSession } from '../../lib/session.tsx';
+import { StepBar } from './Step.tsx';
 import { must, supabase } from '../../lib/supabase.ts';
 import type { Recipe, TasteRule } from '../../lib/types.ts';
 
@@ -62,11 +67,12 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
   const catalog = useCatalog();
   const navigate = useNavigate();
   const save = useSave();
+  const setup = useSetup('quiz');
   const finish = () => (editing ? navigate(-1) : navigate('/onboarding/done'));
 
   const { data } = useLive<{ recipes: Row[]; rules: TasteRule[]; signals: SignalRow[] }>(`quiz:${userId}`, async () => {
     const [r, rules, signals] = await Promise.all([
-      supabase.from('library_recipes').select(`id, image_path, language, ${CLASSIFY_COLUMNS.replace('recipe_ingredients(', 'recipe_ingredients(product_id, ')}`),
+      supabase.from('library_recipes').select(`id, image_path, language, kcal_per_serving, protein_g_per_serving, ${CLASSIFY_COLUMNS.replace('recipe_ingredients(', 'recipe_ingredients(product_id, ')}`),
       supabase.from('taste_rules').select('*').eq('user_id', userId!),
       supabase.from('taste_signals').select('recipe_id, other_recipe_id, kind, value').eq('user_id', userId!).in('kind', ['starter', 'pair', 'style']),
     ]);
@@ -97,6 +103,10 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
   const byId = useMemo(() => new Map((pool ?? []).map((d) => [d.id, d])), [pool]);
 
   const [seed] = useState(() => Math.floor(Math.random() * 1e9));
+  // The intro shows first; once started, undoing back to the first card doesn't bring it back.
+  const [started, setStarted] = useState(false);
+  // The card flying out after a choice, as on a deck.
+  const [leaving, setLeaving] = useState<{ id: string; dx: number; dy: number } | null>(null);
   const [history, setHistory] = useState<Decision[]>([]);
   const [summary, setSummary] = useState(false);
   const [edits, setEdits] = useState<Map<StyleRegion, StyleLevel>>(new Map());
@@ -229,60 +239,95 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
   }
 
   const step = history.length;
-  const footer = (
-    <div className="quiz-footer">
-      <button type="button" className="swipe-btn swipe-btn--small" aria-label={t('swipe.undo')} disabled={step === 0 || busy}
-        onClick={() => void undo()}>
-        <Icon name="undo" size={20} />
-      </button>
-      {step >= QUIZ_MIN
-        ? <Button variant="text" onClick={() => setSummary(true)}>{t('quiz.enough')}</Button>
-        : <Button variant="text" onClick={finish}>{t('quiz.skip')}</Button>}
-    </div>
+  // Onboarding: its last segment fills card by card. Settings: one bar for the quiz.
+  const fill = Math.min(1, step / TOTAL);
+  const progress = editing ? { index: 0, count: 1, fill } : { index: setup.index, count: setup.count, fill };
+  const right = step >= QUIZ_MIN
+    ? <button type="button" className="ob__skip" onClick={() => setSummary(true)}>{t('quiz.finish')}</button>
+    : !editing && <button type="button" className="ob__skip" onClick={finish}>{t('ob.skip')}</button>;
+  const bar = <StepBar progress={progress} right={right || undefined} />;
+
+  if (!started && step === 0) {
+    return (
+      <main className="screen screen--plain ob quiz-intro">
+        <StepBar progress={editing ? undefined : { index: setup.index, count: setup.count, fill: 0 }}
+          right={!editing ? <button type="button" className="ob__skip" onClick={finish}>{t('ob.skip')}</button> : undefined} />
+        <div className="ob-fan" aria-hidden>
+          <img className="fan fan--left fan--art" src={pokeBowl} alt="" />
+          <img className="fan fan--right fan--art" src={tacos} alt="" />
+          <img className="fan fan--mid fan--art" src={pasta} alt="" />
+        </div>
+        <h1 className="ob__title quiz-intro__title">{t('quiz.introTitle')}</h1>
+        <p className="quiz-intro__text">{t('quiz.introText')}</p>
+        <div className="spacer spacer--gap" />
+        <Button block onClick={() => setStarted(true)}>{t('quiz.start')}</Button>
+      </main>
+    );
+  }
+
+  const undoButton = (
+    <button type="button" className="swipe-btn swipe-btn--small" aria-label={t('swipe.undo')} disabled={step === 0 || busy}
+      onClick={() => void undo()}>
+      <Icon name="undo" size={20} />
+    </button>
   );
 
   if (next.kind === 'pair') {
     const { a, b } = next;
     return (
-      <main className="screen swipe-screen">
-        <ModeBar title={t('quiz.progress', { n: step + 1, total: TOTAL })} onClose={finish} />
-        <ProgressBar value={step} max={TOTAL} />
+      <main className="screen swipe-screen quiz">
+        {bar}
         <h2 className="t-title-s m-0 quiz-question">{t('quiz.pairQuestion')}</h2>
         <div className="quiz-pair">
           {[a, b].map((d, i) => (
             <PairCard key={d.id} dish={d} onPick={() => decidePair(a, b, i === 0 ? 'a' : 'b')} />
           ))}
         </div>
-        <div className="quiz-answers">
+        <div className="quiz-pair-actions">
+          {undoButton}
           <Button variant="secondary" onClick={() => decidePair(a, b, 'either')}>{t('quiz.either')}</Button>
           <Button variant="secondary" onClick={() => decidePair(a, b, 'neither')}>{t('quiz.neither')}</Button>
         </div>
-        {footer}
       </main>
     );
   }
 
   const card = next.dish;
+  // As on a deck: the card flies off the way it was sent, then the answer is kept.
+  const answer = (value: StarterVerdict, dx = value === 'pass' ? -500 : value === 'must' ? 0 : 500, dy = value === 'must' ? -700 : 40) => {
+    if (leaving) return;
+    setLeaving({ id: card.id, dx, dy });
+    window.setTimeout(() => {
+      setLeaving(null);
+      decideCard(card, value);
+    }, 200);
+  };
   const onPointerUp = () => {
     start.current = null;
     if (!drag) return;
-    if (drag.dy < -SWIPE_UP && Math.abs(drag.dx) < 60) decideCard(card, 'must');
-    else if (drag.dx > SWIPE_X) decideCard(card, 'yes');
-    else if (drag.dx < -SWIPE_X) decideCard(card, 'pass');
+    if (drag.dy < -SWIPE_UP && Math.abs(drag.dx) < 60) answer('must', drag.dx, -700);
+    else if (drag.dx > SWIPE_X) answer('yes', 500, drag.dy);
+    else if (drag.dx < -SWIPE_X) answer('pass', -500, drag.dy);
     else setDrag(null);
   };
+  const motion = leaving?.id === card.id ? leaving : drag;
+  const choices: { value: StarterVerdict; icon: 'x' | 'clock' | 'heart' | 'star'; cls: string }[] = [
+    { value: 'pass', icon: 'x', cls: '' },
+    { value: 'sometimes', icon: 'clock', cls: ' swipe-btn--sometimes' },
+    { value: 'yes', icon: 'heart', cls: ' swipe-btn--like' },
+    { value: 'must', icon: 'star', cls: ' swipe-btn--star' },
+  ];
   return (
-    <main className="screen swipe-screen">
-      <ModeBar title={t('quiz.progress', { n: step + 1, total: TOTAL })} onClose={finish} />
-      <ProgressBar value={step} max={TOTAL} />
-      {step === 0 && <p className="muted small m-0">{t('quiz.intro')}</p>}
+    <main className="screen swipe-screen quiz">
+      {bar}
       <div className="deck">
+        <article className="swipe-card swipe-card--peek" aria-hidden />
         <article
           key={card.id}
           className="swipe-card"
           style={{
-            transform: drag ? `translate(${drag.dx}px, ${drag.dy}px) rotate(${drag.dx / 20}deg)` : undefined,
-            transition: drag ? 'none' : 'transform 0.25s ease',
+            transform: motion ? `translate(${motion.dx}px, ${motion.dy}px) rotate(${motion.dx / 20}deg)` : undefined,
+            transition: drag && !leaving ? 'none' : 'transform 0.2s ease',
           }}
           onPointerDown={(e: ReactPointerEvent) => {
             start.current = { x: e.clientX, y: e.clientY };
@@ -292,24 +337,33 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
           onPointerUp={onPointerUp}
           onPointerCancel={() => { start.current = null; setDrag(null); }}
         >
-          <DishFace dish={card} />
+          <DishFace dish={card} drag={drag ?? undefined} />
         </article>
       </div>
-      <h2 className="t-headline m-0 quiz-question">{t('quiz.question')}</h2>
-      <div className="quiz-answers">
-        <Button variant="secondary" onClick={() => decideCard(card, 'pass')}><Icon name="x" size={18} /> {t('quiz.pass')}</Button>
-        <Button variant="secondary" onClick={() => decideCard(card, 'sometimes')}><Icon name="clock" size={18} /> {t('quiz.sometimes')}</Button>
-        <Button variant="secondary" onClick={() => decideCard(card, 'yes')}><Icon name="heart" size={18} /> {t('quiz.yes')}</Button>
-        <Button variant="secondary" onClick={() => decideCard(card, 'must')}><Icon name="star" size={18} /> {t('quiz.must')}</Button>
+      <div className="quiz-actions">
+        <p className="quiz-actions__prompt">{t('quiz.prompt')}</p>
+        <div className="quiz-actions__row">
+          <span className="quiz-actions__undo">{undoButton}</span>
+          {choices.map((x) => (
+            <button key={x.value} type="button" className="quiz-answer" onClick={() => answer(x.value)}>
+              <span className={`swipe-btn${x.cls}`} aria-hidden>
+                <Icon name={x.icon} size={x.value === 'yes' ? 26 : 22} filled={x.value === 'yes' || x.value === 'must'}
+                  strokeWidth={x.value === 'pass' ? 2.4 : 2} />
+              </span>
+              <span className="quiz-answer__label">{t(`quiz.answers.${x.value}`)}</span>
+            </button>
+          ))}
+        </div>
       </div>
-      {footer}
     </main>
   );
 }
 
-function DishFace({ dish, compact }: { dish: Dish; compact?: boolean }) {
+function DishFace({ dish, compact, drag }: { dish: Dish; compact?: boolean; drag?: { dx: number; dy: number } }) {
   const { t, locale } = useI18n();
-  const chips = classificationChips(dish.classification, t).slice(0, compact ? 2 : 3);
+  const yes = drag ? Math.max(0, Math.min(1, drag.dx / SWIPE_X)) : 0;
+  const pass = drag ? Math.max(0, Math.min(1, -drag.dx / SWIPE_X)) : 0;
+  const must = drag ? Math.max(0, Math.min(1, -drag.dy / SWIPE_UP)) * (Math.abs(drag.dx) < 60 ? 1 : 0) : 0;
   return (
     <>
       <div className="swipe-card__photo" style={imageStyle(dish.row.image_path)}>
@@ -317,8 +371,15 @@ function DishFace({ dish, compact }: { dish: Dish; compact?: boolean }) {
       </div>
       <div className="swipe-card__body">
         <h3 className={`${compact ? 't-callout' : 't-title-s'} m-0`}>{recipeTitle(dish.row, locale)}</h3>
-        <div className="row row--wrap">{chips.map((c) => <Tag key={c}>{c}</Tag>)}</div>
+        <RecipeFacts recipe={dish.row as unknown as Recipe} max={compact ? 2 : 3} />
       </div>
+      {!compact && (
+        <>
+          <span className="swipe-card__stamp swipe-card__stamp--yes" style={{ opacity: yes }}>{t('quiz.answers.yes')}</span>
+          <span className="swipe-card__stamp swipe-card__stamp--pass" style={{ opacity: pass }}>{t('quiz.answers.pass')}</span>
+          <span className="swipe-card__stamp swipe-card__stamp--must" style={{ opacity: must }}>{t('quiz.answers.must')}</span>
+        </>
+      )}
     </>
   );
 }

@@ -3045,24 +3045,6 @@ body:has(.moment) .tabbar {
   text-align: center;
 }
 
-/* Taste quiz: four "how often" answers, two by two. */
-.quiz-answers {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-3);
-}
-
-.quiz-answers .btn {
-  min-height: 48px;
-  padding: 0 var(--space-4);
-  font-weight: 600;
-}
-
-.quiz-answers .btn svg {
-  flex: none;
-  color: var(--accent);
-}
-
 /* "Which one?": two dishes side by side, each the button. */
 .quiz-pair {
   display: grid;
@@ -3116,12 +3098,6 @@ body:has(.moment) .tabbar {
   .style-rows .segmented button {
     padding: 0 var(--space-1);
   }
-}
-
-.quiz-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
 /* Deck filters: calories and protein per serving, side by side, labelled like sections. */
@@ -3188,6 +3164,18 @@ body:has(.moment) .tabbar {
 
 .ob__progress span.on {
   background: var(--accent);
+}
+
+/* The segment in progress, filled part way. */
+.ob__progress span {
+  overflow: hidden;
+}
+
+.ob__progress span i {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.25s ease;
 }
 
 .ob__skip {
@@ -4095,4 +4083,107 @@ body:has(.moment) .tabbar {
   .landing__match {
     transform: translate(-50%, 0) scale(1);
   }
+}
+
+/* Taste quiz, as close to a deck as it gets: the onboarding bar, the deck's
+   card taking all the room, and the answers on one row under it. */
+.swipe-screen.quiz {
+  gap: var(--space-4);
+  padding-bottom: calc(env(safe-area-inset-bottom) + var(--space-5));
+}
+
+.quiz .ob__bar {
+  margin-bottom: 0;
+}
+
+.quiz-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.quiz-actions__prompt {
+  margin: 0;
+  text-align: center;
+  font: var(--t-callout);
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.quiz-actions__row {
+  display: grid;
+  grid-template-columns: 44px repeat(4, minmax(0, 1fr));
+  align-items: start;
+  gap: var(--space-2);
+}
+
+/* Undo sits level with the answer buttons, not their labels. */
+.quiz-actions__undo {
+  display: flex;
+  justify-content: center;
+  padding-top: 6px;
+}
+
+.quiz-answer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink-2);
+  font: inherit;
+}
+
+.quiz-answer .swipe-btn {
+  width: 56px;
+  height: 56px;
+}
+
+.quiz-answer:active .swipe-btn {
+  transform: scale(0.92);
+}
+
+.quiz-answer__label {
+  font: var(--t-caption);
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.swipe-btn--sometimes {
+  background: var(--sage-soft);
+  color: var(--sage-strong);
+}
+
+.quiz-pair-actions {
+  display: grid;
+  grid-template-columns: 44px 1fr 1fr;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.quiz-pair-actions .btn {
+  min-height: 48px;
+  padding: 0 var(--space-3);
+}
+
+.quiz .quiz-pair {
+  flex: 1;
+  align-content: center;
+}
+
+.quiz-intro__title {
+  text-align: center;
+  margin-bottom: var(--space-3);
+}
+
+.quiz-intro__text {
+  margin: 0 auto;
+  max-width: 320px;
+  text-align: center;
+  font: var(--t-body);
+  color: var(--ink-2);
 }
