@@ -1,6 +1,6 @@
 # Seed recipe library
 
-613 recipes:
+813 recipes:
 
 - **109 from recipe sites (hidden in the app** since November 2026: the library view and the deck leave out the `web` collection; they still open from past decks and meals): 25 Italian, 24 French, 25 Asian, 25 from other cuisines and 10 "treat" dishes.
 - **10 AI-generated recipes**, whose Poulet basquaise replaced the Chef Simon one.
@@ -10,6 +10,7 @@
   - They are `ai_generated_recipe: true` with no `source_url`, so they belong to the `original` collection. All of them have illustrations (supplied as 900×675 WebP, re-encoded to about 100 KB where larger).
 - **100 quick, healthy dishes** (November 2026), written the same way. All take 30 min or less in total and are healthy by the app's rule, which looks at what's on the plate rather than its numbers (see [recipe-classification.md](../../docs/recipe-classification.md)). Portions are each dish's normal ones. 42 use the air fryer.
 - **45 weeknight chicken dinners** (November 2026), written the same way: 30 min or less in total, each with a base and a real portion of vegetables, from 15 cuisines across Europe, Asia, the Americas and beyond. 40 are healthy; the rest are comfort dishes. 19 use the air fryer. 31 of them were lightly reworked to the weeknight rules (more chicken and a little less base, supermarket stand-ins, yogurt for cream), so 40 now meet all six.
+- **200 vegetarian weeknight dinners** (November 2026), for the vegetarian and vegan diets, written to the [weeknight rules](../../docs/recipe-library-plan.md#weeknight-rules): all six met, 10 to 40 min, at least 30 g of protein a serving from eggs, tofu, smoked tofu, soy mince, seitan, paneer, halloumi, skyr, cottage cheese or edamame, and 480 to 810 kcal. 86 are vegan, 82 use the air fryer, and they span 8 groups of cuisines. They are waiting for their illustrations.
 - **59 weeknight plates** (November 2026), written to the [weeknight rules](../../docs/recipe-library-plan.md#weeknight-rules): healthy, 40 min or less, at least 30 g of protein and 25 % of the calories from it, no exotic ingredients, at most 10 lines that aren't staples or garnishes, and a protein, sauce, everyday carb and vegetable.
 - **95 of the earlier recipes were reworked** (94, plus the chicken chow mein) at the same time because they failed just one of those rules (see [CATALOG-FIT-2026-11.md](../../docs/CATALOG-FIT-2026-11.md)).
 
@@ -50,7 +51,7 @@ To replace or add photos, run `scripts/download_images.py` (needs `pip install r
 - **Low protein:** eight of the healthy recipes estimate under 25 g per serving: Cozze alla tarantina, Frittata di zucchine e ricotta, Œufs pochés épinards et lentilles, Chicken tinga, Moules marinières, Spaghetti alle vongole, Poulet à l'estragon, Crispy scallion ginger salmon.
 - **Bone-in and in-shell weights overcount** protein and kcal, because the catalogue is per edible weight (satay drumsticks, Peruvian chicken, Moroccan tagine, mussels, clams).
 - **Long `total_min`** for marinated or soaked dishes (tandoori chicken 415 min, brandade 1,485 min), so the time filter treats them as slow. They're tagged `make ahead`. Their `prep_min` and `cook_min` stay short.
-- **AI-generated recipes:** 504 recipes (`ai_generated_recipe: true`) were written by Claude rather than taken from a site. None has a source link, and none has been tested in a kitchen. The first 10 have AI-generated photos; the other 494 have illustrations.
+- **AI-generated recipes:** 704 recipes (`ai_generated_recipe: true`) were written by Claude rather than taken from a site. None has a source link, and none has been tested in a kitchen. The first 10 have AI-generated photos; 494 others have illustrations, and the 200 vegetarian dinners are waiting for theirs.
 - **How the original library was checked:** many recipe sites refused automated reading, so quantities were often set from search summaries and the classic proportions of each dish. None has been cooked to test it.
 - **Ingredient mappings:** a few ingredients are mapped to the nearest catalogue entry rather than added (sour cream to crème fraîche, Comté to emmental, Napa cabbage to cabbage). Exotic ingredients the dish can't do without are kept and flagged.
 - **Protein:** the weeknight rules ask for 30 g a serving and 25 % of the calories. Recipes that miss it are mostly built on pulses, halloumi or cheese, or are long braises; they stay as written (gołąbki, pumpkin and sage risotto, rajma, chana masala, halloumi fajitas…).
