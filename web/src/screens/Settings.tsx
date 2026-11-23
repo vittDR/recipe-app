@@ -173,6 +173,9 @@ export function SettingsScreen() {
         <SheetHeader title={t('settings.staplesRow')} subtitle={t('settings.staplesHint')}
           action={<Button small variant="text" onClick={() => setOpen(null)}>{t('app.done')}</Button>} />
         <div className="stack">
+          <div className="list">
+            <ListRow to="/us/pantry" title={t('settings.staplesByGroup')} chevron />
+          </div>
           <SearchField value={stapleQuery} onChange={setStapleQuery} placeholder={t('tastes.addPlaceholder')} label={t('settings.staples')}
             onEnter={() => stapleResults[0] && void addStaple(stapleResults[0])} />
           {stapleQuery.trim() && stapleResults.length > 0 && (

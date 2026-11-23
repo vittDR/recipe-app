@@ -908,6 +908,7 @@ export const en = {
     removeStoreConfirm: 'Remove {name}? Its items go back to their aisle.',
     staples: 'Staples',
     staplesHint: 'Start unchecked when adding a recipe to the list. Something you leave out 3 times in a row is added here.',
+    staplesByGroup: 'Choose by category',
     leave: 'Leave household',
     leaveConfirm: 'Leave this household? Your account and tastes are kept.',
     moveUp: 'Move up',
@@ -1005,6 +1006,11 @@ export const en = {
       title: 'What’s in your kitchen?',
       subtitle: 'So we only suggest recipes you can make at home.',
       items: { oven: 'Oven', airFryer: 'Air fryer', microwave: 'Microwave', multicooker: 'Multicooker', blender: 'Blender', handBlender: 'Hand blender', standMixer: 'Stand mixer', steamer: 'Steamer', pressureCooker: 'Pressure cooker', slowCooker: 'Slow cooker', riceCooker: 'Rice cooker', barbecue: 'Barbecue' },
+    },
+    pantry: {
+      title: 'What’s always at home?',
+      subtitle: 'We won’t add these to your groceries. The rest we learn as you go.',
+      groups: { basics: 'The basics', spices: 'Spices', herbs: 'Dried herbs', oils: 'Oils and vinegars', stocks: 'Stock cubes', asian: 'Asian sauces', condiments: 'Condiments', baking: 'Baking', fresh: 'Garlic, onions, butter' },
     },
   },
   eaters: {

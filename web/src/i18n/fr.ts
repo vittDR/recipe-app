@@ -906,6 +906,7 @@ export const fr: Dictionary = {
     removeStoreConfirm: 'Supprimer {name} ? Ses articles retournent dans leur rayon.',
     staples: 'Basiques',
     staplesHint: 'Décochés par défaut quand on ajoute une recette aux courses. Ce que vous laissez de côté 3 fois de suite s’ajoute ici.',
+    staplesByGroup: 'Choisir par catégorie',
     leave: 'Quitter le foyer',
     leaveConfirm: 'Quitter ce foyer ? Votre compte et vos goûts sont conservés.',
     moveUp: 'Monter',
@@ -1003,6 +1004,11 @@ export const fr: Dictionary = {
       title: 'Qu’avez-vous en cuisine ?',
       subtitle: 'Pour ne vous proposer que des recettes faisables chez vous.',
       items: { oven: 'Four', airFryer: 'Air fryer', microwave: 'Micro-ondes', multicooker: 'Robot cuiseur', blender: 'Blender', handBlender: 'Mixeur plongeant', standMixer: 'Robot pâtissier', steamer: 'Cuit-vapeur', pressureCooker: 'Autocuiseur', slowCooker: 'Mijoteuse', riceCooker: 'Cuiseur à riz', barbecue: 'Barbecue' },
+    },
+    pantry: {
+      title: 'Qu’avez-vous toujours à la maison ?',
+      subtitle: 'On ne les ajoutera pas à vos courses. Le reste, on l’apprend au fil des recettes.',
+      groups: { basics: 'Les bases', spices: 'Épices', herbs: 'Herbes séchées', oils: 'Huiles et vinaigres', stocks: 'Bouillons', asian: 'Sauces asiatiques', condiments: 'Condiments', baking: 'Pâtisserie', fresh: 'Ail, oignons, beurre' },
     },
   },
   eaters: {

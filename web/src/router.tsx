@@ -11,6 +11,7 @@ import { DietScreen } from './screens/onboarding/Diet.tsx';
 import { DoneScreen } from './screens/onboarding/Done.tsx';
 import { EatersScreen } from './screens/onboarding/Eaters.tsx';
 import { EquipmentScreen } from './screens/onboarding/Equipment.tsx';
+import { PantryScreen } from './screens/onboarding/Pantry.tsx';
 import { GoalsScreen } from './screens/onboarding/Goals.tsx';
 import { HouseholdScreen } from './screens/onboarding/Household.tsx';
 import { HouseholdNameScreen } from './screens/onboarding/HouseholdName.tsx';
@@ -130,6 +131,7 @@ export const router = createBrowserRouter([
       { path: '/onboarding/week', element: <WeekScreen /> },
       { path: '/onboarding/notifications', element: <NotifyScreen /> },
       { path: '/onboarding/equipment', element: <EquipmentScreen /> },
+      { path: '/onboarding/pantry', element: <PantryScreen /> },
       { path: '/onboarding/quiz', element: <TasteQuizScreen /> },
       { path: '/onboarding/done', element: <DoneScreen /> },
       { path: '/onboarding/tastes', element: <Navigate to="/onboarding/diet" replace /> },
@@ -150,6 +152,7 @@ export const router = createBrowserRouter([
       { path: '/us/preferences', element: <UsScreen view="preferences" /> },
       { path: '/us/goals', element: <GoalsScreen editing /> },
       { path: '/us/equipment', element: <EquipmentScreen editing /> },
+      { path: '/us/pantry', element: <PantryScreen editing /> },
       { path: '/us/tastes', element: <TastesScreen editing /> },
       { path: '/us/quiz', element: <TasteQuizScreen editing /> },
       { path: '/us/notifications', element: <NotificationsScreen /> },
