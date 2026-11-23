@@ -1012,8 +1012,6 @@ export const fr: Dictionary = {
     invited: 'Invitation envoyée',
     invitedMeta: 'Choisira avec vous une fois arrivé·e',
     recipesFor: 'Recettes calculées pour {portions}',
-    justUsTwo: 'Juste nous deux',
-    noOneElse: 'Personne d’autre',
     add: 'Ajouter une personne',
     edit: 'Modifier',
     addButton: 'Ajouter',

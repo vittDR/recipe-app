@@ -5,7 +5,7 @@
 import { useNavigate } from 'react-router';
 import { EaterList } from '../../components/EaterList.tsx';
 import { Icon } from '../../components/Icon.tsx';
-import { Avatar, Button, ListRow } from '../../components/ui.tsx';
+import { Avatar, ListRow } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { useEaters, usePortionTotal } from '../../lib/eaters.ts';
 import { useSession } from '../../lib/session.tsx';
@@ -22,16 +22,10 @@ export function EatersScreen() {
   // Someone was just invited: they'll choose too, so they count before they join.
   const pending = members.length < 2;
   const total = members.length + (pending ? 1 : 0) + (eaters ?? []).reduce((s, e) => s + e.portion, 0);
-  const none = (eaters ?? []).length === 0;
 
   return (
     <Step back="/onboarding/invite" overline={household?.name} title={t('eaters.title')} subtitle={t('eaters.subtitle')}
-      action={{ onClick: next }}
-      footer={none && (
-        <Button block variant="text" onClick={next}>
-          {members.length + (pending ? 1 : 0) === 2 ? t('eaters.justUsTwo') : t('eaters.noOneElse')}
-        </Button>
-      )}>
+      action={{ onClick: next }}>
       <div className="stack">
         <section className="ob-group">
           <h2 className="ob-group__label">{t('eaters.choose')}</h2>

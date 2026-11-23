@@ -1014,8 +1014,6 @@ export const en = {
     invited: 'Invitation sent',
     invitedMeta: 'Chooses with you once they join',
     recipesFor: 'Recipes worked out for {portions}',
-    justUsTwo: 'Just the two of us',
-    noOneElse: 'No one else',
     add: 'Add a person',
     edit: 'Edit',
     addButton: 'Add',
