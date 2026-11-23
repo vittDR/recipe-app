@@ -310,3 +310,20 @@ test('a dish someone wants more without its optional lines says so', () => {
   assert.ok(card);
   assert.equal(card.reason, 'adjustable');
 });
+
+test('vegetarian keeps only veg dishes; flexitarian keeps meat but ranks it lower', async () => {
+  const { passesHardFilters, scoreRecipe } = await import('../deck.ts');
+  const base = { id: 'r', title: 'r', tags: [], ingredientNames: [], totalMin: 30, kcalPerServing: null, proteinGPerServing: null };
+  const meat = { ...base, dietClass: 'meat' as const };
+  const veg = { ...base, id: 'v', dietClass: 'veg' as const };
+  const eater = (diet: 'vegetarian' | 'flexitarian' | 'everything') => ({
+    userId: 'a', dinnerKcal: null, dinnerProteinG: null, servings: 1, never: [], loves: [], diet, weights: new Map(),
+  });
+  assert.equal(passesHardFilters(meat, [eater('vegetarian')], {}), false);
+  assert.equal(passesHardFilters(veg, [eater('vegetarian')], {}), true);
+  assert.equal(passesHardFilters(meat, [eater('flexitarian')], {}), true);
+  const opts = { random: () => 0 };
+  const flexi = scoreRecipe(meat, [eater('flexitarian')], undefined, opts).score;
+  const omni = scoreRecipe(meat, [eater('everything')], undefined, opts).score;
+  assert.ok(flexi < omni);
+});

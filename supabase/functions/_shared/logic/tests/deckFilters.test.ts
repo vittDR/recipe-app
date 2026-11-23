@@ -64,3 +64,14 @@ test('calories and protein per serving', () => {
   assert.deepEqual(normaliseFilters({ maxKcal: -5, minProteinG: 999 }), { minProteinG: 200 });
   assert.equal(filterCount({ maxKcal: 600, minProteinG: 30, proteins: ['chicken'] }), 3);
 });
+
+test('effort: the minimum keeps easy dishes, some leaves out hard ones, unknown passes', () => {
+  const f = { proteins: [], cuisines: [], bases: [], heat: 0 };
+  assert.equal(matchesDeckFilters({ ...f, difficulty: 'medium' }, { effort: 'minimum' }), false);
+  assert.equal(matchesDeckFilters({ ...f, difficulty: 'easy' }, { effort: 'minimum' }), true);
+  assert.equal(matchesDeckFilters({ ...f, difficulty: 'hard' }, { effort: 'some' }), false);
+  assert.equal(matchesDeckFilters({ ...f, difficulty: 'medium' }, { effort: 'some' }), true);
+  assert.equal(matchesDeckFilters({ ...f, difficulty: null }, { effort: 'minimum' }), true);
+  assert.deepEqual(normaliseFilters({ effort: 'some' }), { effort: 'some' });
+  assert.deepEqual(normaliseFilters({ effort: 'lots' }), {});
+});

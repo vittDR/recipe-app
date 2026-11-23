@@ -62,7 +62,7 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
   const catalog = useCatalog();
   const navigate = useNavigate();
   const save = useSave();
-  const finish = () => (editing ? navigate(-1) : navigate('/', { replace: true }));
+  const finish = () => (editing ? navigate(-1) : navigate('/onboarding/done'));
 
   const { data } = useLive<{ recipes: Row[]; rules: TasteRule[]; signals: SignalRow[] }>(`quiz:${userId}`, async () => {
     const [r, rules, signals] = await Promise.all([

@@ -44,6 +44,13 @@ const PATHS = {
   pan: 'M3 11h13v1a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5v-1zM16 12h5',
   sparkle: 'M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z',
   chart: 'M4 20h16M7 16v-4M12 16V8M17 16v-7',
+  // Install instructions draw the browser's own buttons.
+  share: 'M12 3v12M8 7l4-4 4 4M6 11H5v10h14V11h-1',
+  lines: 'M5 7h14M5 12h10M5 17h7',
+  more: 'M6 12h.01M12 12h.01M18 12h.01',
+  lock: 'M6 11h12v10H6zM8.5 11V8a3.5 3.5 0 0 1 7 0v3',
+  mail: 'M3.5 6h17v12h-17zM4 6.5l8 6.5 8-6.5',
+  compass: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15.5 8.5l-2 5-5 2 2-5z',
 } as const;
 
 // Filled artwork (the app's bowl): its own viewBox, no stroke.

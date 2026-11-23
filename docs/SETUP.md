@@ -174,6 +174,7 @@ DINEAMITE signs people in with an email and a password. Supabase never sends any
    - **Confirm email**: **off**. This is the important one: with it on, Supabase would try to send a confirmation email and sign-up would stall.
    - **Minimum password length**: `8`, if the field is there.
 4. Click **Save**.
+5. *Optional: Apple and Google.* The account screen of onboarding also offers "Continuer avec Apple" and "Continuer avec Google". They only show once you set them up: turn on the **Apple** and/or **Google** provider here (each needs credentials from Apple's or Google's developer console, as the provider page explains), add your site's address (`https://<your-project>.pages.dev`) under **Authentication → URL Configuration → Redirect URLs**, then add the line `VITE_AUTH_PROVIDERS=apple,google` (or just one of them) to `web/.env` and redeploy. People who sign in this way and whose name doesn't come with the account are asked for a first name.
 
 **Test it locally:**
 
@@ -530,6 +531,19 @@ each time a deck is dealt.
 - **Realtime** is enabled for `grocery_items`, `household_products`, `household_stores`, `products`, `tag_catalog`, `decks`, `deck_members`, `tiebreak_picks` and `meals`, so both phones update live.
 - **Photos** ship with the app (`web/public/recipe-photos/`); there is no storage bucket.
 - **pg_cron jobs**: `dineamite-prompts` (every 5 minutes, queues the evening prompt and reminder), `dineamite-grocery-pushes` (every minute, "<name> added N items"), `dineamite-push-dispatch` (every minute, only does anything when `push_outbox` has unsent rows), `dineamite-purge-invites` (nightly), `dineamite-purge-list-history` (weekly).
+
+### Test accounts (going through onboarding again)
+
+An account listed in `public.test_accounts` starts over every time it signs in: the households it made (if only test accounts are in them) are deleted with everything in them, it leaves any real household it joined, its goals, tastes and notifications go, and it lands on onboarding again with its first name kept. Nobody else's data is touched. A token refresh isn't a sign-in, so a session in progress is never reset. Sign out and sign in again ("J'ai déjà un compte") to start over.
+
+Make an account a test account in **SQL Editor** (create it first by signing up in the app):
+
+```sql
+insert into public.test_accounts (user_id)
+select id from auth.users where email = 'the-account@example.com';
+```
+
+Delete its row from `public.test_accounts` to make it an ordinary account again.
 
 ### Changing the schema
 

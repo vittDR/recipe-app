@@ -65,7 +65,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       return;
     }
     const [p, m, g, a] = await Promise.all([
-      supabase.from('profiles').select('id, first_name, color, locale').eq('id', uid).maybeSingle(),
+      supabase.from('profiles').select('id, first_name, color, locale, onboarded_at').eq('id', uid).maybeSingle(),
       supabase.from('household_members').select('household_id').eq('user_id', uid).maybeSingle(),
       supabase.from('member_goals').select('*').eq('user_id', uid).maybeSingle(),
       supabase.rpc('is_catalog_admin'),
@@ -81,7 +81,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       return;
     }
     const [h, ms] = await Promise.all([
-      supabase.from('households').select('id, name, owner_id, timezone, prompt_time, reminder_time')
+      supabase.from('households').select('id, name, owner_id, timezone, prompt_time, reminder_time, deck_defaults')
         .eq('id', householdId).single(),
       supabase.from('household_members').select('user_id, joined_at, profile:profiles(id, first_name, color, locale)')
         .eq('household_id', householdId).order('joined_at'),

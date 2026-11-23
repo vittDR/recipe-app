@@ -4,7 +4,7 @@
 // design: a one-line summary on Ce soir opens them in a sheet.
 import { useState } from 'react';
 import {
-  type DeckFilters, FILTER_BASES, FILTER_CUISINES, FILTER_PROTEINS, FILTER_SPICES, filterCount, MAX_KCAL_LIMIT, MIN_PROTEIN_LIMIT,
+  type DeckFilters, FILTER_BASES, FILTER_EFFORTS, FILTER_CUISINES, FILTER_PROTEINS, FILTER_SPICES, filterCount, MAX_KCAL_LIMIT, MIN_PROTEIN_LIMIT,
 } from '@logic/deckFilters.ts';
 import type { Mood } from '../lib/types.ts';
 import { useI18n } from '../i18n/index.tsx';
@@ -20,6 +20,8 @@ export interface DeckSettings {
 
 export const TIMES = [20, 30, 40, 60, null] as const;
 export const MOODS: Mood[] = ['any', 'comfort', 'light', 'healthy', 'quick', 'fancy'];
+/** How much work: the minimum (easy only), some (nothing hard), anything. Kept in the filters. */
+export const EFFORTS = [...FILTER_EFFORTS, 'any'] as const;
 
 /** Up to this many choices are named in the summary; more read as "3 filters". */
 const NAMED_FILTERS = 2;
@@ -50,7 +52,8 @@ export function useDeckLabels() {
     filters,
     /** "Nous deux · Moins d'1 h · Réconfort · Poulet"; who only when there is someone to eat with. */
     summary: (s: DeckSettings, shared: boolean) =>
-      [shared && who(s.who), time(s.maxMinutes), mood(s.mood), filters(s.filters)].filter(Boolean).join(' · '),
+      [shared && who(s.who), time(s.maxMinutes), s.filters.effort && t(`tonight.efforts.${s.filters.effort}`), mood(s.mood), filters(s.filters)]
+        .filter(Boolean).join(' · '),
   };
 }
 
@@ -204,6 +207,16 @@ export function DeckSettingsSheet({ open, onClose, settings, onChange, shared, o
           {TIMES.map((m) => (
             <Chip key={m ?? 'any'} pressed={settings.maxMinutes === m} onClick={() => onChange({ ...settings, maxMinutes: m })}>
               {labels.time(m)}
+            </Chip>
+          ))}
+        </div>
+      </Section>
+      <Section label={t('tonight.effortLabel')}>
+        <div className="chips">
+          {EFFORTS.map((e) => (
+            <Chip key={e} pressed={(f.effort ?? 'any') === e}
+              onClick={() => onChange({ ...settings, filters: { ...f, effort: e === 'any' ? undefined : e } })}>
+              {t(`tonight.efforts.${e}`)}
             </Chip>
           ))}
         </div>

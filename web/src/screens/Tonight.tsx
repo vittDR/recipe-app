@@ -11,7 +11,7 @@ import {
 } from '../components/ui.tsx';
 import { useI18n } from '../i18n/index.tsx';
 import { pickDeckArt } from '../lib/deckArt.ts';
-import { loadLastSettings, saveLastSettings, type LastSettings } from '../lib/deckSettings.ts';
+import { householdDefaults, loadLastSettings, saveLastSettings, type LastSettings } from '../lib/deckSettings.ts';
 import { recipeTitle } from '../lib/recipeText.ts';
 import { isoWeekday, todayIn, useLive, useSave } from '../lib/hooks.ts';
 import { comingDays, cooksOn, eveningPath, useEveningName } from '../lib/plan.ts';
@@ -52,7 +52,7 @@ const MEAL_RECIPE = 'id, title, language, translations, image_path, tags, total_
 
 export function TonightScreen() {
   const { t, list, locale } = useI18n();
-  const { userId, household, partners, members, memberName, memberColor } = useSession();
+  const { userId, profile, household, partners, members, memberName, memberColor } = useSession();
   const navigate = useNavigate();
   const save = useSave();
   const labels = useDeckLabels();
@@ -151,12 +151,16 @@ export function TonightScreen() {
 
   // Deck defaults are silent: both of us, with the time, mood and filters this
   // person last picked (here, or in the last deck they dealt anywhere, whichever
-  // is newer); the first time, under an hour and the favourite mood.
+  // is newer); the first time, the household's weeknight defaults (onboarding),
+  // with the favourite mood when they didn't pick one.
 
-  const last = [remembered, data?.lastDeck].filter((x): x is LastSettings => !!x).sort((a, b) => b.at.localeCompare(a.at))[0];
+  // Picks from before onboarding was (last) finished don't count: the weeknight defaults chosen then win.
+  const since = profile?.onboarded_at ? Date.parse(profile.onboarded_at) : 0;
+  const last = [remembered, data?.lastDeck].filter((x): x is LastSettings => !!x && Date.parse(x.at) >= since)
+    .sort((a, b) => b.at.localeCompare(a.at))[0];
   const settings: DeckSettings = picked ?? (last
     ? { who: 'both', maxMinutes: last.maxMinutes, mood: last.mood, filters: last.filters }
-    : { who: 'both', maxMinutes: 60, mood: data?.favouriteMood ?? 'any', filters: {} });
+    : { who: 'both', ...householdDefaults(household), ...(household?.deck_defaults?.mood ? {} : { mood: data?.favouriteMood ?? 'any' }) });
   const pick = (s: DeckSettings) => {
     setPicked(s);
     setRemembered(saveLastSettings(userId!, s));

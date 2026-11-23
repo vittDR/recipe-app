@@ -8,7 +8,7 @@ import { deckFacets, normaliseFilters } from '../_shared/logic/deckFilters.ts';
 import { classifyRow, CLASSIFY_COLUMNS, isHealthy, seasonOfMonth, storedClassification, type ClassifiableRow } from '../_shared/logic/classify.ts';
 import { Catalog, type CatalogEntry } from '../_shared/logic/ingredients.ts';
 import { recipeFeatures } from '../_shared/logic/preferences.ts';
-import { splitPot } from '../_shared/logic/portions.ts';
+import { macrosOf, type RecipeMacros, splitPot, targetsOf } from '../_shared/logic/portions.ts';
 import {
   buildProfile, signalsFor, weightsOf, type MealRow, type PortionRow, type SwipeRow, type TasteSignalRow, kindKeys, occasionalKinds } from '../_shared/logic/profile.ts';
 import { dietAdherence } from '../_shared/logic/recommend.ts';
@@ -129,11 +129,13 @@ Deno.serve(async (req) => {
       optionalProductIds: optional.flatMap((i) => (i.product_id && !required.some((x) => x.product_id === i.product_id) ? [i.product_id] : [])),
       dietClass: classes.includes('meat') ? 'meat' : classes.includes('fish') ? 'fish' : 'veg',
       totalMin: r.total_min,
-      kcalPerServing: r.kcal_per_serving,
-      proteinGPerServing: r.protein_g_per_serving,
+      ...macrosOf(r, classification.nutrition),
       features,
       healthy: isHealthy(r.tags ?? [], classification),
-      facets: { ...deckFacets(classification), kcal: r.kcal_per_serving, proteinG: r.protein_g_per_serving },
+      facets: {
+        ...deckFacets(classification), kcal: r.kcal_per_serving, proteinG: r.protein_g_per_serving,
+        difficulty: (r as { difficulty?: 'easy' | 'medium' | 'hard' | null }).difficulty ?? null,
+      },
       intents: classification.meal_intents,
       seasons: classification.seasons,
       plates,
@@ -150,18 +152,20 @@ Deno.serve(async (req) => {
     meals: (meals.data ?? []).map((m) => ({ ...m, who_eating: one(m.deck as { who_eating: string[] } | null)?.who_eating ?? null })) as MealRow[],
     portions: (portions.data ?? []) as PortionRow[],
   };
-  const macrosById = new Map((recipes.data ?? []).map((r) => [r.id as string, {
-    kcalPerServing: r.kcal_per_serving as number | null, proteinGPerServing: r.protein_g_per_serving as number | null,
-  }]));
+  // Per-serving macros, carbs, fat and fibre from each recipe's classification (worked out above).
+  const macrosById = new Map<string, RecipeMacros>(candidates.map((c) => [c.id, c]));
   for (const r of recipes.data ?? []) if (r.copied_from) macrosById.set(r.copied_from as string, macrosById.get(r.id)!);
 
   const members: DeckMember[] = eaters.map((uid) => {
     const g = (goals.data ?? []).find((x) => x.user_id === uid);
     const mine = (rules.data ?? []).filter((x) => x.user_id === uid);
+    const diet = (mine.find((x) => x.kind === 'diet')?.value ?? 'everything') as Diet;
+    const linkedTo = (allergen: string) =>
+      (allergenLinks.data ?? []).filter((l) => l.allergen === allergen).map((l) => l.ingredient as string);
     // Quiz answers have no deck: whether the dish fits this person's goals now.
     const fitsNow = (id: string) => {
       const macros = macrosById.get(id);
-      const plate = macros && splitPot(macros, [{ userId: uid, dinnerKcal: g?.dinner_kcal ?? null, dinnerProteinG: g?.dinner_protein_g ?? null, servings: g?.servings ?? null }]);
+      const plate = macros && splitPot(macros, [targetsOf(uid, g)]);
       return plate ? plate.plates[0].fits : null;
     };
     // Everything this person chose, weighed by what it says, with the diet explained away (logic/profile.ts).
@@ -169,17 +173,14 @@ Deno.serve(async (req) => {
     const profile = buildProfile(memberSignals);
     const weights = weightsOf(profile);
     return {
-      userId: uid,
-      dinnerKcal: g?.dinner_kcal ?? null,
-      dinnerProteinG: g?.dinner_protein_g ?? null,
-      servings: g?.servings ?? null,
+      ...targetsOf(uid, g),
       never: mine.filter((x) => x.kind === 'never').map((x) => x.product_id as string),
       loves: mine.filter((x) => x.kind === 'love').map((x) => x.product_id as string),
-      diet: (mine.find((x) => x.kind === 'diet')?.value ?? 'everything') as Diet,
+      diet,
       // An allergen stands for every ingredient and preparation linked to it.
       allergies: (allergies.data ?? []).filter((a) => a.user_id === uid).flatMap((a) => (a.ingredient
         ? [a.ingredient as string]
-        : (allergenLinks.data ?? []).filter((l) => l.allergen === a.allergen).map((l) => l.ingredient as string))),
+        : linkedTo(a.allergen as string))),
       weights,
       profile,
       // How often they want each dish (logic/style.ts): what the deck scores on.
