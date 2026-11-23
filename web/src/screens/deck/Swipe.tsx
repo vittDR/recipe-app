@@ -21,7 +21,7 @@ const TAP = 8;
 const SAVE_TIMEOUT_MS = 15_000;
 /** How long a card takes to leave (matches .swipe-card--leaving / --fav in app.css). */
 const LEAVE_MS = 300;
-const FAV_MS = 480;
+const FAV_MS = 780;
 const SAVE_RETRIES = 2;
 
 /** Aborts a request that hangs, so a stalled connection fails fast and is retried. */
