@@ -3046,15 +3046,87 @@ body:has(.moment) .tabbar {
   margin-top: 2px;
 }
 
-.quiz-sometimes {
-  min-height: 40px;
-  padding: 0 var(--space-6);
-  font: var(--t-callout);
+.quiz-question {
+  text-align: center;
+}
+
+/* Taste quiz: four "how often" answers, two by two. */
+.quiz-answers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.quiz-answers .btn {
+  min-height: 48px;
+  padding: 0 var(--space-4);
   font-weight: 600;
 }
 
-.quiz-sometimes svg {
+.quiz-answers .btn svg {
+  flex: none;
   color: var(--accent);
+}
+
+/* "Which one?": two dishes side by side, each the button. */
+.quiz-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.quiz-pair__card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: var(--radius-2xl);
+  background: var(--surface);
+  box-shadow: var(--shadow-raised);
+  overflow: hidden;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.quiz-pair__card:active {
+  border-color: var(--accent);
+}
+
+.quiz-pair__card .swipe-card__photo {
+  flex: none;
+  aspect-ratio: 4 / 5;
+  font-size: 48px;
+}
+
+.quiz-pair__card .swipe-card__body {
+  flex: 1;
+}
+
+.quiz-pair__card .swipe-card__body {
+  gap: var(--space-3);
+  padding: var(--space-4);
+}
+
+/* How often, by kind of plate: three levels on one line each, the longest label ("De temps en temps") widest. */
+.style-rows .segmented button {
+  flex: 1 1 auto;
+  padding: 0 var(--space-3);
+  white-space: nowrap;
+}
+
+@media (max-width: 360px) {
+  .style-rows .segmented button {
+    padding: 0 var(--space-1);
+  }
+}
+
+.quiz-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 /* Deck filters: calories and protein per serving, side by side, labelled like sections. */

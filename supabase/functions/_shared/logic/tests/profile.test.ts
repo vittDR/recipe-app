@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildProfile, occasionalKinds, pickStarterSet, profileHighlights, signalWeight, type Signal } from '../profile.ts';
+import { buildProfile, signalsFor, occasionalKinds, pickStarterSet, profileHighlights, signalWeight, type Signal } from '../profile.ts';
 import type { RecipeClassification } from '../classify.ts';
 
 const now = Date.UTC(2026, 5, 1);
@@ -94,4 +94,16 @@ test('"I like it, but not often" is a like, and makes the kind of dish occasiona
   ];
   assert.ok(buildProfile(signals).get('dish:pizza')!.weight > 0);
   assert.deepEqual([...occasionalKinds(signals)].sort(), ['dish:pizza', 'recipe:r1']);
+});
+
+test('quiz pairs are read with both dishes, and only style learns from them', () => {
+  const signals = signalsFor('u', {
+    swipes: [], meals: [],
+    tasteSignals: [{
+      user_id: 'u', recipe_id: 'a', other_recipe_id: 'b', kind: 'pair', value: 'either', deck_id: null, meal_id: null, created_at: at(),
+    }],
+  }, () => ['dish:curry']);
+  assert.deepEqual(signals, [{ kind: 'pair', choice: 'either', recipeId: 'a', otherRecipeId: 'b', features: ['dish:curry'], at: at() }]);
+  assert.equal(signalWeight(signals[0]).weight, 0);
+  assert.equal(buildProfile(signals).size, 0);
 });

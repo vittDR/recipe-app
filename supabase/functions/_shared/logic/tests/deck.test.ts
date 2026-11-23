@@ -1,6 +1,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildDeck, type CandidateRecipe, type DeckMember, type RecipeHistory } from '../deck.ts';
+import {
+  buildDeck, type CandidateRecipe, type DeckMember, FREQUENCY_OUT, FREQUENCY_REGULAR, nowAndThenShare, type RecipeHistory,
+  scoreRecipe, softmin, STYLE_FIT_FACTOR,
+} from '../deck.ts';
+import type { Plate } from '../plate.ts';
+import { fitStyle } from '../style.ts';
 
 const recipe = (id: string, over: Partial<CandidateRecipe> = {}): CandidateRecipe => ({
   id, title: id, tags: [], ingredientNames: [], dietClass: 'veg', totalMin: 30,
@@ -224,4 +229,84 @@ test('rotation: recipes dealt lately without being chosen give way, up to a limi
   const favourite = recipes.map((r, i) => (i === 0 ? { ...r, proteinGPerServing: 40, features: ['dish:fav'] } : r));
   const many = buildDeck(favourite, [member({ weights: new Map([['dish:fav', 3]]) })], new Map(), { random: fixed, recentlyDealt: new Map([['r0', 50]]) });
   assert.ok(many.some((c) => c.recipeId === 'r0'));
+});
+
+// ---------------------------------------------------------------------------
+// With style models (style.ts)
+// ---------------------------------------------------------------------------
+
+const plateOf = (rich: number, protein = 0.5): Plate => ({ protein, rich, veg: 0.6, carb: 0.6 });
+/** A model that has heard, several times each, how often this person wants each of these plates. */
+const styleOf = (said: [Plate, number][]) =>
+  fitStyle(said.flatMap(([plate, y]) => Array.from({ length: 4 }, () => ({ plate, features: [], y }))));
+const lean = plateOf(0.1);
+const rich = plateOf(0.9);
+const mid = plateOf(0.5, 0.9);
+/** Mostly lean, rich now and then. */
+const balanced = () => styleOf([[lean, 3.6], [rich, 1.2]]);
+
+test('with a style model, how often they want a dish decides; goal fit counts half', () => {
+  const recipes = [
+    ...Array.from({ length: 10 }, (_, i) => recipe(`lean${i}`, { plates: [lean], kcalPerServing: 900 })),
+    ...Array.from({ length: 10 }, (_, i) => recipe(`rich${i}`, { plates: [rich] })),
+  ];
+  const deck = buildDeck(recipes, [member({ style: balanced() })], new Map(), { size: 6, random: fixed });
+  // Lean dishes win although only the rich ones fit the calorie goal.
+  assert.ok(deck.filter((c) => c.recipeId.startsWith('lean')).length >= 4);
+  const fitting = recipe('fits', { plates: [lean] });
+  const heavy = recipe('heavy', { plates: [lean], kcalPerServing: 1200 });
+  const gap = (m: DeckMember) => scoreRecipe(fitting, [m], undefined, { random: fixed }).base
+    - scoreRecipe(heavy, [m], undefined, { random: fixed }).base;
+  assert.ok(Math.abs(gap(member({ style: balanced() })) - STYLE_FIT_FACTOR * gap(member())) < 1e-9);
+});
+
+test('"now and then" dishes: as many as the style says, badged as treats', () => {
+  const recipes = [
+    ...Array.from({ length: 30 }, (_, i) => recipe(`lean${i}`, { plates: [plateOf(0.1, 0.3 + i / 100)] })),
+    ...Array.from({ length: 10 }, (_, i) => recipe(`rich${i}`, { plates: [plateOf(0.9, 0.3 + i / 100)] })),
+  ];
+  const count = (m: DeckMember) => {
+    const deck = buildDeck(recipes, [m], new Map(), { random: fixed });
+    const f = recipes.map((r) => m.style!.frequency(r.plates!, []));
+    const wanted = Math.round(12 * nowAndThenShare(f));
+    const occasional = deck.filter((c) => {
+      const v = m.style!.frequency(recipes.find((r) => r.id === c.recipeId)!.plates!, []);
+      return v >= FREQUENCY_OUT && v < FREQUENCY_REGULAR;
+    });
+    return { wanted, occasional };
+  };
+  const mostlyLean = count(member({ style: balanced() }));
+  assert.ok(mostlyLean.wanted >= 1);
+  assert.equal(mostlyLean.occasional.length, mostlyLean.wanted);
+  assert.ok(mostlyLean.occasional.every((c) => c.reason === 'treat' || c.reason === 'wildcard'));
+  // Someone who wants rich plates more often (still not regularly) gets more of them.
+  const generous = count(member({ style: styleOf([[lean, 3.6], [rich, 1.9]]) }));
+  assert.ok(generous.wanted > mostlyLean.wanted);
+  assert.equal(generous.occasional.length, generous.wanted);
+});
+
+test('shared decks: what works for everyone comes first', () => {
+  const recipes = [
+    ...Array.from({ length: 6 }, (_, i) => recipe(`rich${i}`, { plates: [plateOf(0.9, 0.3 + i / 50)] })),
+    ...Array.from({ length: 6 }, (_, i) => recipe(`lean${i}`, { plates: [plateOf(0.1, 0.3 + i / 50)] })),
+    ...Array.from({ length: 6 }, (_, i) => recipe(`both${i}`, { plates: [plateOf(0.5, 0.9 - i / 50)] })),
+  ];
+  const a = member({ userId: 'a', style: styleOf([[rich, 3.8], [lean, 0.8], [mid, 3.2]]) });
+  const b = member({ userId: 'b', style: styleOf([[rich, 0.8], [lean, 3.8], [mid, 3.2]]) });
+  const deck = buildDeck(recipes, [a, b], new Map(), { size: 12, random: fixed });
+  const close = deck.filter((c) => c.tier === 'close');
+  assert.ok(close.length >= 4);
+  assert.ok(close.every((c) => c.recipeId.startsWith('both')), close.map((c) => c.recipeId).join());
+  assert.ok(softmin([3.8, 0.8]) < 1 && Math.abs(softmin([3, 3]) - (3 - 0.5 * Math.log(2))) < 1e-9);
+});
+
+test('a dish someone wants more without its optional lines says so', () => {
+  const recipes = [
+    recipe('pasta, parmesan on the side', { plates: [rich, lean] }),
+    ...Array.from({ length: 5 }, (_, i) => recipe(`other${i}`, { plates: [mid] })),
+  ];
+  const deck = buildDeck(recipes, [member({ style: balanced() })], new Map(), { size: 4, random: fixed });
+  const card = deck.find((c) => c.recipeId === 'pasta, parmesan on the side');
+  assert.ok(card);
+  assert.equal(card.reason, 'adjustable');
 });
