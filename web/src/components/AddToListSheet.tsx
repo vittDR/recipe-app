@@ -150,7 +150,7 @@ export function AddToListSheet({ open, onClose, onAdded, meals }: {
             const name = ingredientName(l.ingredient, locale);
             const on = picked.has(l.key);
             return (
-              <ListRow key={l.key} className={on ? undefined : 'list-row--owned'} title={name}
+              <ListRow key={l.key} title={name}
                 meta={several ? l.meals.map((k) => meals[k].day).filter(Boolean).join(', ') || undefined : undefined}
                 icon={(
                   <Checkbox checked={on} label={name} onChange={(v) => {
