@@ -401,7 +401,8 @@ a {
   white-space: nowrap;
 }
 
-.chip[aria-pressed='true'] {
+.chip[aria-pressed='true'],
+.chip--on {
   background: var(--accent-soft);
   color: var(--accent-strong);
   box-shadow: inset 0 0 0 1.5px var(--accent);
@@ -3152,4 +3153,1003 @@ body:has(.moment) .tabbar {
   font: var(--t-callout);
   color: var(--muted);
   pointer-events: none;
+}
+
+/* ===========================================================================
+   Onboarding v2 (design/onboarding/HANDOFF.md)
+   ======================================================================== */
+
+/* Setup step frame: back, progress, Passer; a question as the title. */
+.ob__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: var(--touch);
+  margin-bottom: var(--space-6);
+}
+
+.ob__bar-gap {
+  width: var(--touch);
+  flex-shrink: 0;
+}
+
+.ob__progress {
+  flex: 1;
+  display: flex;
+  gap: var(--space-1);
+}
+
+.ob__progress span {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--line-strong);
+}
+
+.ob__progress span.on {
+  background: var(--accent);
+}
+
+.ob__skip {
+  border: 0;
+  background: none;
+  padding: var(--space-2) 0 var(--space-2) var(--space-2);
+  min-width: var(--touch);
+  text-align: right;
+  font: var(--t-callout);
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.ob__overline {
+  font: var(--t-footnote);
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: var(--space-1);
+}
+
+.ob__title {
+  font: var(--t-title-l);
+  letter-spacing: var(--t-title-l-tracking);
+  margin: 0 0 var(--space-6);
+  text-wrap: balance;
+}
+
+.ob__subtitle {
+  font: var(--t-callout);
+  color: var(--muted);
+  margin: calc(-1 * var(--space-4)) 0 var(--space-6);
+}
+
+.ob__lock {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.ob-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.ob-group__label {
+  margin: 0;
+  padding: 0 var(--space-1);
+  font: var(--t-footnote);
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.ob-choice {
+  padding: var(--space-5);
+}
+
+.link-btn {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-weight: 600;
+  color: var(--accent-text);
+}
+
+.input--large {
+  font: var(--t-headline);
+  min-height: 56px;
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+/* Radio cards with a recipe plate (diet). */
+.option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  width: 100%;
+  padding: var(--space-3) var(--space-5) var(--space-3) var(--space-3);
+  border: 0;
+  text-align: left;
+  color: var(--ink);
+}
+
+.option[aria-checked='true'] {
+  box-shadow: 0 0 0 2px var(--accent), var(--shadow-card);
+}
+
+.option__plate {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.option__plate img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  object-position: top;
+}
+
+.option__text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.option__title {
+  font: var(--t-headline);
+}
+
+.option__meta {
+  font: var(--t-callout);
+  color: var(--muted);
+}
+
+.option__radio {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--line-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--on-accent);
+}
+
+.option[aria-checked='true'] .option__radio {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+/* Code boxes: the invite shows them, the join screen types into them. */
+.code-boxes {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.code-box {
+  width: 42px;
+  height: 52px;
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: var(--t-title-m);
+  font-weight: 700;
+}
+
+.code-box--current {
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+.code-box--error {
+  box-shadow: inset 0 0 0 2px var(--danger);
+}
+
+.invite-code {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-6) var(--space-4);
+  border-radius: var(--radius-xl);
+  background: var(--accent-soft);
+}
+
+.invite-code__rule {
+  font: var(--t-footnote);
+  font-weight: 600;
+  color: var(--accent-text);
+}
+
+.code-entry {
+  position: relative;
+  display: block;
+}
+
+/* The real input sits invisibly over the boxes, so taps and paste reach it. */
+.code-entry__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  opacity: 0;
+  font-size: 16px;
+  border: 0;
+  caret-color: transparent;
+}
+
+.code-entry:focus-within .code-box--current {
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+.code-entry:not(:focus-within) .code-box--current:not(.code-box--error) {
+  box-shadow: var(--shadow-card);
+}
+
+/* Goals: a switch per macro, a slider once it's on. */
+.macro {
+  padding: var(--space-5) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.macro__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.macro__label {
+  flex: 1;
+  font: var(--t-headline);
+  color: var(--muted);
+}
+
+.macro--on .macro__label {
+  color: var(--ink);
+}
+
+.macro__value {
+  font: var(--t-callout);
+  color: var(--muted);
+}
+
+.macro__value b {
+  font: var(--t-title-m);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.macro__range {
+  display: flex;
+  justify-content: space-between;
+  font: var(--t-footnote);
+  color: var(--muted);
+  margin-top: calc(-1 * var(--space-2));
+}
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 28px;
+  margin: 0;
+  background: transparent;
+}
+
+.slider::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, var(--accent) var(--fill, 0%), var(--line) var(--fill, 0%));
+}
+
+.slider::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, var(--accent) var(--fill, 0%), var(--line) var(--fill, 0%));
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 28px;
+  height: 28px;
+  margin-top: -11px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: var(--shadow-knob);
+}
+
+.slider::-moz-range-thumb {
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: var(--shadow-knob);
+}
+
+/* Notifications preview: two banners on a warm gradient. */
+.notif-preview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-7) var(--space-4);
+  border-radius: var(--radius-2xl);
+  background: linear-gradient(160deg, var(--star-soft), color-mix(in srgb, var(--accent) 55%, var(--star-soft)));
+}
+
+.notif-banner {
+  display: flex;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  box-shadow: var(--shadow-raised);
+  font: var(--t-callout);
+  color: var(--ink);
+}
+
+.notif-banner--back {
+  margin: 0 var(--space-3);
+  opacity: 0.85;
+  font: var(--t-footnote);
+}
+
+.notif-banner__icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--accent);
+  color: var(--on-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.notif-banner__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.notif-banner__head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.notif-banner__head span {
+  color: var(--muted);
+  font: var(--t-caption);
+}
+
+/* Fanned illustration cards (account, done). */
+.account__art,
+.done__art {
+  position: relative;
+  height: 220px;
+  margin: var(--space-8) 0 var(--space-6);
+}
+
+.account__card,
+.done__card {
+  position: absolute;
+  left: 50%;
+  top: 10px;
+  width: 150px;
+  height: 135px;
+  margin-left: -75px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: var(--shadow-raised);
+}
+
+.account__card img,
+.done__card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* The top of the illustration only: its placeholder bars stay out. */
+  object-position: top;
+}
+
+.account__card--left,
+.done__card--left {
+  transform: translateX(-90px) rotate(-12deg);
+  top: 26px;
+}
+
+.account__card--right,
+.done__card--right {
+  transform: translateX(90px) rotate(10deg);
+  top: 26px;
+}
+
+.account__title,
+.done__title {
+  font: var(--t-title-l);
+  letter-spacing: var(--t-title-l-tracking);
+  text-align: center;
+  margin: 0 0 var(--space-6);
+}
+
+.account__signin {
+  text-align: center;
+  font: var(--t-callout);
+  color: var(--muted);
+  margin: var(--space-6) 0 0;
+}
+
+.done__subtitle {
+  text-align: center;
+  font: var(--t-body);
+  color: var(--ink-2);
+  margin: calc(-1 * var(--space-3)) auto 0;
+  max-width: 300px;
+}
+
+.done__confetti {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 50%;
+  pointer-events: none;
+}
+
+.done__confetti span {
+  position: absolute;
+  border-radius: 3px;
+}
+
+.done {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Install: the app icon, the steps, and a sketch of the browser's own bar. */
+.install {
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+.install__icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  margin: var(--space-8) 0 var(--space-6);
+  box-shadow: var(--shadow-raised);
+}
+
+.install__title {
+  font: var(--t-title-l);
+  letter-spacing: var(--t-title-l-tracking);
+  margin: 0 0 var(--space-3);
+  text-wrap: balance;
+}
+
+.install__subtitle {
+  font: var(--t-callout);
+  color: var(--muted);
+  margin: 0 0 var(--space-6);
+  max-width: 320px;
+}
+
+.install__steps {
+  list-style: none;
+  margin: 0 0 var(--space-4);
+  padding: var(--space-5);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  text-align: left;
+}
+
+.install__step {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+  font: var(--t-callout);
+}
+
+.install__num {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--paper);
+  font: var(--t-footnote);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.install__key {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 4px 8px;
+  border-radius: 8px;
+  background: var(--sunken);
+  font: var(--t-footnote);
+}
+
+.install__pointer {
+  position: absolute;
+  padding: 4px 8px;
+  border-radius: 10px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font: var(--t-caption);
+  font-weight: 700;
+  animation: install-bob 1.2s ease-in-out infinite;
+  white-space: nowrap;
+}
+
+.install__pointer::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  margin-left: -5px;
+  border: 5px solid transparent;
+}
+
+.install__pointer--s26,
+.install__pointer--s18 {
+  bottom: calc(100% + 8px);
+}
+
+.install__pointer--s26::after,
+.install__pointer--s18::after {
+  top: 100%;
+  border-top-color: var(--accent);
+}
+
+.install__pointer--top {
+  top: calc(100% + 6px);
+  right: 2px;
+}
+
+.install__pointer--top::after {
+  bottom: 100%;
+  border-bottom-color: var(--accent);
+}
+
+@keyframes install-bob {
+  50% { translate: 0 -5px; }
+}
+
+.install__safari-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.install__safari-bar .install__pointer--s26 {
+  left: 56px;
+}
+
+.install__round {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: var(--shadow-control);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.install__address {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 22px;
+  background: var(--surface);
+  box-shadow: var(--shadow-control);
+  font: var(--t-callout);
+}
+
+.install__ring {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 8px;
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.install__toolbar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: calc(100% + 2 * var(--space-7));
+  margin: 0 calc(-1 * var(--space-7)) calc(-1 * var(--space-6));
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--line);
+  color: var(--iris);
+}
+
+.install__toolbar-share {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+}
+
+.install__toolbar-share .install__pointer--s18 {
+  left: 50%;
+  translate: -50% 0;
+}
+
+.install__chrome-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: calc(100% + 2 * var(--space-7));
+  margin: calc(-1 * var(--space-4)) calc(-1 * var(--space-7)) 0;
+  padding: var(--space-3) var(--space-4);
+  background: var(--sunken);
+  border-bottom: 1px solid var(--line);
+}
+
+.install__chrome-share {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.install__icons {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin: var(--space-8) 0 var(--space-6);
+  color: var(--muted);
+}
+
+.install__icons .install__icon {
+  margin: 0;
+}
+
+.install__safari {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #3fa9f5, #1a73e8);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-raised);
+}
+
+.install__link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3) var(--space-3) var(--space-3) var(--space-5);
+  color: var(--muted);
+}
+
+.install__url {
+  flex: 1;
+  text-align: left;
+  color: var(--ink);
+  font: var(--t-callout);
+}
+
+.install__hint {
+  font: var(--t-footnote);
+  color: var(--muted);
+  margin: var(--space-4) 0 0;
+  max-width: 300px;
+}
+
+/* Landing: a deck that swipes itself, 12 s on a loop. */
+.landing {
+  padding-left: var(--space-6);
+  padding-right: var(--space-6);
+  overflow: hidden;
+}
+
+.landing__stage {
+  position: relative;
+  height: 470px;
+  margin: var(--space-6) calc(-1 * var(--space-6)) 0;
+  overflow-x: clip;
+  animation: landing-stage 12s infinite;
+}
+
+.landing__deck {
+  position: absolute;
+  inset: 0;
+}
+
+.landing__card {
+  position: absolute;
+  left: 50%;
+  top: 24px;
+  width: 286px;
+  margin-left: -143px;
+  border-radius: 26px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(60, 40, 20, 0.08), 0 16px 36px rgba(60, 40, 20, 0.16);
+  transform: rotate(var(--tilt));
+}
+
+/* The top 70% of the illustration: its own pastel, without the placeholder bars. */
+.landing__card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 360 / 314;
+  object-fit: cover;
+  object-position: top;
+}
+
+.landing__card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 2px 16px 16px;
+}
+
+.landing__card-text b {
+  font-size: 19px;
+  letter-spacing: -0.01em;
+  color: #1c1b1a;
+}
+
+.landing__card-text span {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(28, 27, 26, 0.62);
+}
+
+.landing__stamp {
+  position: absolute;
+  top: 22px;
+  padding: 6px 12px;
+  border-radius: 10px;
+  border: 3px solid;
+  background: rgba(255, 255, 255, 0.75);
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  opacity: 0;
+}
+
+.landing__stamp--yes {
+  left: 18px;
+  color: var(--sage-strong);
+  transform: rotate(-12deg);
+}
+
+.landing__stamp--no {
+  right: 18px;
+  color: var(--accent-text);
+  transform: rotate(12deg);
+}
+
+.landing__card--0 { animation: landing-sw0 12s infinite; }
+.landing__card--0 .landing__stamp { animation: landing-st0 12s infinite; }
+.landing__card--1 { animation: landing-sw1 12s infinite; }
+.landing__card--1 .landing__stamp { animation: landing-st1 12s infinite; }
+.landing__card--2 { animation: landing-sw2 12s infinite; }
+.landing__card--2 .landing__stamp { animation: landing-st2 12s infinite; }
+.landing__card--3 { animation: landing-sw3 12s infinite; }
+.landing__card--3 .landing__stamp { animation: landing-st3 12s infinite; }
+.landing__card--match { animation: landing-last 12s infinite; }
+
+.landing__match {
+  position: absolute;
+  left: 50%;
+  top: -6px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 8px 14px 8px 8px;
+  border-radius: 22px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 16px;
+  font-weight: 800;
+  white-space: nowrap;
+  box-shadow: var(--shadow-accent);
+  opacity: 0;
+  transform: translate(-50%, 0) scale(0.6);
+  animation: landing-badge 12s infinite;
+}
+
+.landing__avatars {
+  display: inline-flex;
+}
+
+.landing__avatars .avatar + .avatar {
+  margin-left: -8px;
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.landing__confetti {
+  position: absolute;
+  border-radius: 3px;
+  opacity: 0;
+  animation: landing-confetti 12s infinite;
+}
+
+.landing__text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: auto;
+  text-align: center;
+}
+
+.landing__title {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.landing__subtitle {
+  margin: 0 0 var(--space-4);
+  max-width: 320px;
+  font: var(--t-body);
+  color: var(--ink-2);
+}
+
+@keyframes landing-stage {
+  0%, 92% { opacity: 1; }
+  95%, 96% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes landing-sw0 {
+  0%, 6% { transform: translate(0, 0) rotate(-3deg); }
+  14%, 95% { transform: translate(calc(-460px / var(--deck-scale, 1)), 40px) rotate(-24deg); }
+  95.5%, 100% { transform: translate(0, 0) rotate(-3deg); }
+}
+
+@keyframes landing-st0 {
+  0%, 3% { opacity: 0; }
+  8%, 14% { opacity: 1; }
+  15%, 100% { opacity: 0; }
+}
+
+@keyframes landing-sw1 {
+  0%, 20% { transform: translate(0, 0) rotate(2deg); }
+  28%, 95% { transform: translate(calc(460px / var(--deck-scale, 1)), 40px) rotate(24deg); }
+  95.5%, 100% { transform: translate(0, 0) rotate(2deg); }
+}
+
+@keyframes landing-st1 {
+  0%, 17% { opacity: 0; }
+  22%, 28% { opacity: 1; }
+  29%, 100% { opacity: 0; }
+}
+
+@keyframes landing-sw2 {
+  0%, 34% { transform: translate(0, 0) rotate(-1.5deg); }
+  42%, 95% { transform: translate(calc(-460px / var(--deck-scale, 1)), 40px) rotate(-24deg); }
+  95.5%, 100% { transform: translate(0, 0) rotate(-1.5deg); }
+}
+
+@keyframes landing-st2 {
+  0%, 31% { opacity: 0; }
+  36%, 42% { opacity: 1; }
+  43%, 100% { opacity: 0; }
+}
+
+@keyframes landing-sw3 {
+  0%, 48% { transform: translate(0, 0) rotate(2.5deg); }
+  56%, 95% { transform: translate(calc(460px / var(--deck-scale, 1)), 40px) rotate(24deg); }
+  95.5%, 100% { transform: translate(0, 0) rotate(2.5deg); }
+}
+
+@keyframes landing-st3 {
+  0%, 45% { opacity: 0; }
+  50%, 56% { opacity: 1; }
+  57%, 100% { opacity: 0; }
+}
+
+@keyframes landing-last {
+  0%, 64% { transform: scale(1); }
+  68%, 92% { transform: scale(1.04); }
+  95%, 100% { transform: scale(1); }
+}
+
+@keyframes landing-badge {
+  0%, 66% { opacity: 0; transform: translate(-50%, 0) scale(0.6); }
+  70% { opacity: 1; transform: translate(-50%, 0) scale(1.08); }
+  73%, 92% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  95%, 100% { opacity: 0; }
+}
+
+@keyframes landing-confetti {
+  0%, 66% { opacity: 0; transform: translateY(10px) rotate(0); }
+  70% { opacity: 1; }
+  90% { opacity: 1; transform: translateY(-30px) rotate(160deg); }
+  94%, 100% { opacity: 0; }
+}
+
+/* Shorter phones: a smaller deck, so the buttons stay on screen. */
+@media (max-height: 800px) {
+  .landing__stage {
+    height: 400px;
+    margin-top: 0;
+  }
+
+  .landing__deck {
+    --deck-scale: 0.85;
+    transform: scale(var(--deck-scale));
+    transform-origin: 50% 0;
+  }
+}
+
+@media (max-height: 700px) {
+  .landing__stage {
+    height: 330px;
+  }
+
+  .landing__deck {
+    --deck-scale: 0.7;
+  }
+
+  .landing__title {
+    font-size: 28px;
+  }
+}
+
+/* Reduced motion: the final match, still; no bobbing pointer. */
+@media (prefers-reduced-motion: reduce) {
+  .landing__stage,
+  .landing__card,
+  .landing__stamp,
+  .landing__match,
+  .landing__confetti,
+  .install__pointer {
+    animation: none !important;
+  }
+
+  .landing__card--swipe {
+    display: none;
+  }
+
+  .landing__match,
+  .landing__confetti {
+    opacity: 1;
+  }
+
+  .landing__match {
+    transform: translate(-50%, 0) scale(1);
+  }
 }

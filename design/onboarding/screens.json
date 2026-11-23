@@ -1,0 +1,258 @@
+{
+ "feature": "Onboarding",
+ "language": "fr",
+ "frame": "390pt wide, iPhone",
+ "screens": [
+  {
+   "id": "01-landing",
+   "flow": "Landing",
+   "canvasBoard": "ob2-Landing",
+   "html": "screens/html/01-landing.html",
+   "png": "screens/png/01-landing.png",
+   "linksTo": [
+    "02a-install-safari26",
+    "03-account"
+   ],
+   "illustrations": [
+    "01-festif-steak.png",
+    "02-festif-mushroom-risotto.png",
+    "05-leger-greek-salad.png",
+    "07-leger-spring-rolls.png",
+    "09-rapide-croque-monsieur.png"
+   ],
+   "notes": "Animated deck: 4 swipes then a match. Loops every 12 s."
+  },
+  {
+   "id": "02a-install-safari26",
+   "flow": "Install",
+   "canvasBoard": "ob3-Install",
+   "html": "screens/html/02a-install-safari26.html",
+   "png": "screens/png/02a-install-safari26.png",
+   "linksTo": [
+    "03-account"
+   ],
+   "illustrations": [],
+   "notes": "Safari 26+ (≡ in the address bar → Partager → Plus → Sur l’écran d’accueil)."
+  },
+  {
+   "id": "02b-install-safari18",
+   "flow": "Install",
+   "canvasBoard": "ob4-InstallSafari18",
+   "html": "screens/html/02b-install-safari18.html",
+   "png": "screens/png/02b-install-safari18.png",
+   "linksTo": [
+    "03-account"
+   ],
+   "illustrations": [],
+   "notes": "Safari 18 and older (share in the bottom toolbar)."
+  },
+  {
+   "id": "02c-install-chrome",
+   "flow": "Install",
+   "canvasBoard": "ob4-InstallChrome",
+   "html": "screens/html/02c-install-chrome.html",
+   "png": "screens/png/02c-install-chrome.png",
+   "linksTo": [
+    "03-account"
+   ],
+   "illustrations": [],
+   "notes": "Chrome on iOS (share at the top right of the address bar)."
+  },
+  {
+   "id": "02d-open-in-safari",
+   "flow": "Install",
+   "canvasBoard": "ob4-OpenInSafari",
+   "html": "screens/html/02d-open-in-safari.html",
+   "png": "screens/png/02d-open-in-safari.png",
+   "linksTo": [
+    "02a-install-safari26"
+   ],
+   "illustrations": [],
+   "notes": "Any other browser, incl. in-app browsers: send to Safari."
+  },
+  {
+   "id": "03-account",
+   "flow": "Account",
+   "canvasBoard": "ob2-Account",
+   "html": "screens/html/03-account.html",
+   "png": "screens/png/03-account.png",
+   "linksTo": [
+    "04a-household"
+   ],
+   "illustrations": [
+    "02-festif-mushroom-risotto.png",
+    "04-festif-roast-chicken.png",
+    "06-leger-poke-bowl.png"
+   ],
+   "notes": "Apple / Google / e-mail, or log in."
+  },
+  {
+   "id": "04a-household",
+   "flow": "Household",
+   "canvasBoard": "ob2-Household",
+   "html": "screens/html/04a-household.html",
+   "png": "screens/png/04a-household.png",
+   "linksTo": [
+    "03-account",
+    "04c-invite",
+    "04d-join"
+   ],
+   "illustrations": [],
+   "notes": "Create or join."
+  },
+  {
+   "id": "04b-household-name",
+   "flow": "Household",
+   "canvasBoard": "ob3-HouseholdName",
+   "html": "screens/html/04b-household-name.html",
+   "png": "screens/png/04b-household-name.png",
+   "linksTo": [
+    "04a-household",
+    "04c-invite"
+   ],
+   "illustrations": [],
+   "notes": "Creator only: name the household."
+  },
+  {
+   "id": "04c-invite",
+   "flow": "Household",
+   "canvasBoard": "ob3-Invite",
+   "html": "screens/html/04c-invite.html",
+   "png": "screens/png/04c-invite.png",
+   "linksTo": [
+    "04b-household-name",
+    "04c-invite",
+    "05-diet"
+   ],
+   "illustrations": [],
+   "notes": "Creator only: 6-character code, 48 h, single use."
+  },
+  {
+   "id": "04d-join",
+   "flow": "Household",
+   "canvasBoard": "ob2-Join",
+   "html": "screens/html/04d-join.html",
+   "png": "screens/png/04d-join.png",
+   "linksTo": [
+    "04a-household",
+    "05-diet"
+   ],
+   "illustrations": [],
+   "notes": "Joiner only: enter the code."
+  },
+  {
+   "id": "05-diet",
+   "flow": "Setup 1",
+   "canvasBoard": "ob2-Diet",
+   "html": "screens/html/05-diet.html",
+   "png": "screens/png/05-diet.png",
+   "linksTo": [
+    "04c-invite",
+    "06-no-eat"
+   ],
+   "illustrations": [
+    "01-festif-steak.png",
+    "02-festif-mushroom-risotto.png",
+    "04-festif-roast-chicken.png",
+    "06-leger-poke-bowl.png",
+    "07-leger-spring-rolls.png"
+   ],
+   "notes": "Single choice."
+  },
+  {
+   "id": "06-no-eat",
+   "flow": "Setup 2",
+   "canvasBoard": "ob4-NoEat",
+   "html": "screens/html/06-no-eat.html",
+   "png": "screens/png/06-no-eat.png",
+   "linksTo": [
+    "05-diet",
+    "07-weeknight"
+   ],
+   "illustrations": [],
+   "notes": "Allergies (quick picks) + any catalog ingredient. Skippable."
+  },
+  {
+   "id": "07-weeknight",
+   "flow": "Setup 3",
+   "canvasBoard": "ob3-Weeknight",
+   "html": "screens/html/07-weeknight.html",
+   "png": "screens/png/07-weeknight.png",
+   "linksTo": [
+    "(existing app: rn4-Categories)",
+    "06-no-eat",
+    "08-goals"
+   ],
+   "illustrations": [],
+   "notes": "Household defaults for every deck. Creator only."
+  },
+  {
+   "id": "08-goals",
+   "flow": "Setup 4",
+   "canvasBoard": "ob3-Goals",
+   "html": "screens/html/08-goals.html",
+   "png": "screens/png/08-goals.png",
+   "linksTo": [
+    "07-weeknight",
+    "09-week"
+   ],
+   "illustrations": [],
+   "notes": "Private macros with on/off. Skippable."
+  },
+  {
+   "id": "09-week",
+   "flow": "Setup 5",
+   "canvasBoard": "ob3-Week",
+   "html": "screens/html/09-week.html",
+   "png": "screens/png/09-week.png",
+   "linksTo": [
+    "08-goals",
+    "10-notifications"
+   ],
+   "illustrations": [],
+   "notes": "Evenings eaten together this week. Creator only."
+  },
+  {
+   "id": "10-notifications",
+   "flow": "Setup 6",
+   "canvasBoard": "ob3-Notifications",
+   "html": "screens/html/10-notifications.html",
+   "png": "screens/png/10-notifications.png",
+   "linksTo": [
+    "09-week",
+    "11-taste-test"
+   ],
+   "illustrations": [],
+   "notes": "Push permission (works only when opened from the Home Screen)."
+  },
+  {
+   "id": "11-taste-test",
+   "flow": "Setup 7",
+   "canvasBoard": "ob2-TasteTest",
+   "html": "screens/html/11-taste-test.html",
+   "png": "screens/png/11-taste-test.png",
+   "linksTo": [
+    "10-notifications",
+    "12-done"
+   ],
+   "illustrations": [],
+   "notes": "PLACEHOLDER: plug in the existing taste test screen."
+  },
+  {
+   "id": "12-done",
+   "flow": "Done",
+   "canvasBoard": "ob2-Done",
+   "html": "screens/html/12-done.html",
+   "png": "screens/png/12-done.png",
+   "linksTo": [
+    "(existing app: rn4-Tonight)"
+   ],
+   "illustrations": [
+    "03-festif-scallops.png",
+    "04-festif-roast-chicken.png",
+    "08-rapide-herb-omelette.png"
+   ],
+   "notes": "Ends on Ce soir, ready to deal the first deck."
+  }
+ ]
+}

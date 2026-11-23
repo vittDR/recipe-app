@@ -1,65 +1,113 @@
+// 08 Goals: per dinner, private. Calories and protein on by default; carbs,
+// fat and fibre off, their slider shows once switched on. Off = no target
+// (null); a target of 0 would read as off too, so no slider goes down to 0.
+// Carbs and fat are ceilings, fibre a floor (logic/portions.ts).
+// Also Us > Goals (`editing`), with servings.
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Button, Screen, Segmented, Stepper } from '../../components/ui.tsx';
-import { useI18n } from '../../i18n/index.tsx';
+import { Icon } from '../../components/Icon.tsx';
+import { Stepper, Switch } from '../../components/ui.tsx';
+import { useI18n, type MessageKey } from '../../i18n/index.tsx';
+import { useSetup } from '../../lib/onboarding.ts';
 import { useSession } from '../../lib/session.tsx';
 import { supabase } from '../../lib/supabase.ts';
-import type { Goal } from '../../lib/types.ts';
+import type { MemberGoals } from '../../lib/types.ts';
+import { Step } from './Step.tsx';
 
-const DEFAULTS: Record<Goal, { kcal: number; protein: number }> = {
-  lean: { kcal: 550, protein: 40 },
-  maintain: { kcal: 700, protein: 40 },
-  build: { kcal: 850, protein: 55 },
-};
+type Macro = 'kcal' | 'protein' | 'carbs' | 'fat' | 'fibre';
+const COLUMN = {
+  kcal: 'dinner_kcal', protein: 'dinner_protein_g', carbs: 'dinner_carbs_g', fat: 'dinner_fat_g', fibre: 'dinner_fibre_g',
+} as const satisfies Record<Macro, keyof MemberGoals>;
+
+const MACROS: { key: Macro; label: MessageKey; unit: MessageKey; min: number; max: number; step: number; value: number; on: boolean }[] = [
+  { key: 'kcal', label: 'goals.kcal', unit: 'goals.kcalUnit', min: 300, max: 2000, step: 25, value: 750, on: true },
+  { key: 'protein', label: 'goals.protein', unit: 'goals.gramsUnit', min: 10, max: 150, step: 5, value: 45, on: true },
+  { key: 'carbs', label: 'goals.carbs', unit: 'goals.gramsUnit', min: 5, max: 250, step: 5, value: 80, on: false },
+  { key: 'fat', label: 'goals.fat', unit: 'goals.gramsUnit', min: 5, max: 120, step: 5, value: 30, on: false },
+  { key: 'fibre', label: 'goals.fibre', unit: 'goals.gramsUnit', min: 1, max: 50, step: 1, value: 10, on: false },
+];
+
+type State = Record<Macro, { on: boolean; value: number }>;
+
+function initial(goals: MemberGoals | null): State {
+  return Object.fromEntries(MACROS.map((m) => {
+    if (!goals) return [m.key, { on: m.on, value: m.value }];
+    const saved = goals[COLUMN[m.key]];
+    return [m.key, { on: saved != null, value: saved ?? m.value }];
+  })) as State;
+}
+
+function MacroCard({ macro, on, value, onToggle, onValue }: {
+  macro: (typeof MACROS)[number]; on: boolean; value: number; onToggle: (v: boolean) => void; onValue: (v: number) => void;
+}) {
+  const { t, locale } = useI18n();
+  const formatNumber = (n: number) => n.toLocaleString(locale);
+  const label = t(macro.label);
+  const pct = ((value - macro.min) / (macro.max - macro.min)) * 100;
+  return (
+    <div className={`card macro${on ? ' macro--on' : ''}`}>
+      <div className="macro__head">
+        <span className="macro__label">{label}</span>
+        {on && <span className="macro__value"><b className="tabular">{formatNumber(value)}</b> {t(macro.unit)}</span>}
+        <Switch checked={on} onChange={onToggle} label={label} />
+      </div>
+      {on && (
+        <>
+          <input type="range" className="slider" min={macro.min} max={macro.max} step={macro.step} value={value}
+            aria-label={label} aria-valuetext={`${value} ${t(macro.unit)}`}
+            style={{ '--fill': `${pct}%` } as React.CSSProperties}
+            onChange={(e) => onValue(Number(e.target.value))} />
+          <div className="macro__range"><span>{formatNumber(macro.min)}</span><span>{formatNumber(macro.max)}</span></div>
+        </>
+      )}
+    </div>
+  );
+}
 
 export function GoalsScreen({ editing }: { editing?: boolean }) {
   const { t } = useI18n();
   const { userId, goals, refresh } = useSession();
   const navigate = useNavigate();
-  const [goal, setGoal] = useState<Goal>(goals?.goal ?? 'maintain');
-  const [kcal, setKcal] = useState(goals?.dinner_kcal ?? DEFAULTS.maintain.kcal);
-  const [protein, setProtein] = useState(goals?.dinner_protein_g ?? DEFAULTS.maintain.protein);
+  const setup = useSetup('goals');
+  const [state, setState] = useState<State>(() => initial(goals));
   const [servings, setServings] = useState(goals?.servings ?? 1);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const pickGoal = (g: Goal) => {
-    setGoal(g);
-    setKcal(DEFAULTS[g].kcal);
-    setProtein(DEFAULTS[g].protein);
-  };
-
   const save = async () => {
     setBusy(true);
+    const row = Object.fromEntries(MACROS.map((m) => [COLUMN[m.key], state[m.key].on ? state[m.key].value : null]));
     const { error: err } = await supabase.from('member_goals').upsert({
-      user_id: userId, goal, dinner_kcal: kcal, dinner_protein_g: protein, servings, updated_at: new Date().toISOString(),
+      user_id: userId, ...row, servings, updated_at: new Date().toISOString(),
     });
     if (err) {
-      setError(err.message);
+      setError(t('app.error'));
       setBusy(false);
       return;
     }
     await refresh();
     if (editing) navigate(-1);
-    else navigate('/onboarding/tastes', { replace: true });
+    else setup.next();
   };
 
   return (
-    <Screen back={editing} title={t('goals.title')} subtitle={t('goals.subtitle')} plain>
-      <div className="stack stack--lg">
-        <Segmented<Goal> label={t('goals.title')} value={goal} onChange={pickGoal} options={[
-          { value: 'lean', label: t('goals.lean') },
-          { value: 'maintain', label: t('goals.maintain') },
-          { value: 'build', label: t('goals.build') },
-        ]} />
-        <Stepper label={t('goals.servings')} unit={t('goals.servingsUnit')} value={servings} onChange={setServings} step={0.25} min={0.25} max={4} />
-        <Stepper label={t('goals.kcal')} unit={t('goals.kcalUnit')} value={kcal} onChange={setKcal} step={25} min={250} max={2000} />
-        <Stepper label={t('goals.protein')} unit={t('goals.gramsUnit')} value={protein} onChange={setProtein} step={5} min={0} max={200} />
-        <p className="notice notice--info small">🔒 {t('goals.privacy')}</p>
+    <Step back progress={editing ? undefined : setup} onSkip={editing ? undefined : setup.next}
+      title={t('goals.title')}
+      subtitle={<span className="ob__lock"><Icon name="lock" size={16} /> {t('goals.privacy')}</span>}
+      action={{ label: editing ? t('app.save') : undefined, onClick: () => void save(), disabled: busy }}>
+      <div className="stack stack--sm">
+        {MACROS.map((m) => (
+          <MacroCard key={m.key} macro={m} on={state[m.key].on} value={state[m.key].value}
+            onToggle={(on) => setState({ ...state, [m.key]: { ...state[m.key], on } })}
+            onValue={(value) => setState({ ...state, [m.key]: { ...state[m.key], value } })} />
+        ))}
+        {editing && (
+          <div className="card macro">
+            <Stepper label={t('goals.servings')} unit={t('goals.servingsUnit')} value={servings} onChange={setServings} step={0.25} min={0.25} max={4} />
+          </div>
+        )}
         {error && <p className="error">{error}</p>}
       </div>
-      <div className="spacer" />
-      <Button block disabled={busy} onClick={() => void save()}>{editing ? t('app.save') : t('app.continue')}</Button>
-    </Screen>
+    </Step>
   );
 }

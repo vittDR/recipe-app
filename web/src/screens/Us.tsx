@@ -6,7 +6,7 @@ import { classifyRow, CLASSIFY_COLUMNS, type ClassifiableRow } from '@logic/clas
 import type { Mood } from '@logic/deck.ts';
 import { normaliseFilters } from '@logic/deckFilters.ts';
 import { recipeFeatures } from '@logic/preferences.ts';
-import { splitPot } from '@logic/portions.ts';
+import { macrosOf, splitPot, targetsOf } from '@logic/portions.ts';
 import {
   buildProfile, DIET_FEATURE, profileHighlights, signalsFor, type MealRow, type PortionRow, type StyleLevel, type SwipeRow,
   type TasteSignalRow,
@@ -101,8 +101,7 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
         const byId = new Map(recipes.map((x) => [x.id, x]));
         const fitsNow = (id: string) => {
           const x = byId.get(id);
-          const split = x && splitPot({ kcalPerServing: x.kcal_per_serving, proteinGPerServing: x.protein_g_per_serving },
-            [{ userId: userId!, dinnerKcal: goals?.dinner_kcal ?? null, dinnerProteinG: goals?.dinner_protein_g ?? null, servings: goals?.servings ?? null }]);
+          const split = x && splitPot(macrosOf(x, classes.get(id)?.nutrition), [targetsOf(userId!, goals)]);
           return split ? split.plates[0].fits : null;
         };
         const mySignals = signalsFor(userId!, rows, (id) => features.get(id), fitsNow);
@@ -193,7 +192,11 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
         )}
           <div className="list">
           <ListRow to="/us/goals" tile="plain" icon={<Icon name="star" size={18} />} title={t('us.yourGoals')}
-            meta={goals && `${t(`goals.${goals.goal}`)} · ${goals.dinner_kcal} kcal · ${goals.dinner_protein_g} g · ${tn('recipe.servings', goals.servings)}`} />
+            meta={goals ? [
+              goals.dinner_kcal != null && `${goals.dinner_kcal} ${t('goals.kcalUnit')}`,
+              goals.dinner_protein_g != null && `${goals.dinner_protein_g} ${t('goals.gramsUnit')} ${t('goals.proteinShort')}`,
+              tn('recipe.servings', goals.servings),
+            ].filter(Boolean).join(' · ') : t('goals.none')} />
           </div>
         </div>
       </Screen>

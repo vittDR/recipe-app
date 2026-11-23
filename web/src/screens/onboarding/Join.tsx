@@ -1,97 +1,70 @@
-import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router';
-import { Button, Field, Screen } from '../../components/ui.tsx';
+// 04d Join (joiner): six boxes, typing moves on by itself; "Rejoindre" once
+// all six are in. A link /join/CODE fills them. Signed out, the code is kept
+// for after the account (lib/invite.ts).
+import { useEffect, useRef, useState } from 'react';
+import { Navigate, useNavigate, useParams } from 'react-router';
+import { Button } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { clearPendingInvite, rememberInvite } from '../../lib/invite.ts';
 import { useSession } from '../../lib/session.tsx';
 import { supabase } from '../../lib/supabase.ts';
+import { Step } from './Step.tsx';
 
-interface Preview {
-  household_name: string;
-  inviter_name: string;
-  inviter_color: string;
-  member_count: number;
-}
-
-const CODE_RE = /^[A-HJ-NP-Z2-9]{6}$/;
+const ALLOWED = /[A-HJ-NP-Z2-9]/g;
+const LENGTH = 6;
 
 export function JoinScreen() {
-  const { t, tn } = useI18n();
+  const { t } = useI18n();
   const params = useParams();
   const navigate = useNavigate();
-  const { session, profile, household, refresh } = useSession();
-  const [code, setCode] = useState((params.code ?? '').toUpperCase());
-  const [preview, setPreview] = useState<Preview | null>(null);
+  const { session, household, refresh } = useSession();
+  const clean = (s: string) => (s.toUpperCase().match(ALLOWED) ?? []).join('').slice(0, LENGTH);
+  const [code, setCode] = useState(clean(params.code ?? ''));
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const input = useRef<HTMLInputElement>(null);
 
-  // Signed-out visitors keep the code while they create an account.
   useEffect(() => {
-    if (!session && CODE_RE.test(code)) {
-      rememberInvite(code);
-    }
+    if (!session && code.length === LENGTH) rememberInvite(code);
   }, [session, code]);
 
-  const lookUp = async (c = code) => {
-    if (!session || !profile?.first_name) {
-      rememberInvite(c);
-      navigate('/signin');
-      return;
-    }
-    setBusy(true);
-    setError(null);
-    const { data } = await supabase.rpc('preview_invite', { p_code: c });
-    setBusy(false);
-    const p = (data as Preview[] | null)?.[0];
-    if (!p) setError(t('join.invalid'));
-    setPreview(p ?? null);
-  };
-
-  useEffect(() => {
-    if (params.code && CODE_RE.test(params.code.toUpperCase()) && session && profile?.first_name) {
-      void lookUp(params.code.toUpperCase());
-    }
-  }, [params.code, session, profile?.first_name]);
+  if (!session) return <Navigate to="/welcome" replace />;
+  if (household) return <Navigate to="/" replace />;
 
   const join = async () => {
     setBusy(true);
+    setError(null);
     const { error: err } = await supabase.rpc('redeem_invite', { p_code: code });
     setBusy(false);
     if (err) {
+      // Expired, already used or mistyped all read the same to the server.
       setError(err.message.includes('already_in_household') ? t('join.alreadyIn') : t('join.invalid'));
       return;
     }
     clearPendingInvite();
     await refresh();
-    navigate('/onboarding/goals', { replace: true });
+    navigate('/onboarding/diet', { replace: true });
   };
 
-  if (household) {
-    return (
-      <Screen back="/" title={t('join.title')}>
-        <p className="notice">{t('join.alreadyIn')}</p>
-      </Screen>
-    );
-  }
-
+  // One real input under the six boxes: paste, autofill and the keyboard all just work.
   return (
-    <Screen back title={t('join.title')} subtitle={t('join.subtitle')} plain>
-      <form className="stack" onSubmit={(e) => { e.preventDefault(); void (preview ? join() : lookUp()); }}>
-        <Field label={t('join.code')}>
-          <input className="input input--code" maxLength={6} autoCapitalize="characters" autoComplete="off" value={code}
-            onChange={(e) => { setCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '')); setPreview(null); }} />
-        </Field>
-        {preview && (
-          <div className="card stack center">
-            <span className="title3">{t('join.preview', { name: preview.inviter_name, household: preview.household_name })}</span>
-            <span className="small muted">{tn('join.members', preview.member_count)}</span>
-          </div>
-        )}
+    <Step back="/onboarding/household" title={t('join.title')} subtitle={t('join.subtitle')}>
+      <form className="stack" onSubmit={(e) => { e.preventDefault(); if (code.length === LENGTH) void join(); }}>
+        <label className="code-entry" onClick={() => input.current?.focus()}>
+          <input ref={input} className="code-entry__input" value={code} autoFocus autoComplete="one-time-code"
+            autoCapitalize="characters" autoCorrect="off" spellCheck={false} maxLength={LENGTH} aria-label={t('join.code')}
+            onChange={(e) => { setCode(clean(e.target.value)); setError(null); }} />
+          <span className="code-boxes" aria-hidden>
+            {Array.from({ length: LENGTH }, (_, i) => (
+              <span key={i} className={`code-box${i === Math.min(code.length, LENGTH - 1) ? ' code-box--current' : ''}${error ? ' code-box--error' : ''}`}>
+                {code[i] ?? ''}
+              </span>
+            ))}
+          </span>
+        </label>
         {error && <p className="error">{error}</p>}
-        <Button block type="submit" disabled={busy || !CODE_RE.test(code)}>
-          {preview ? t('join.confirm', { household: preview.household_name }) : t('join.lookUp')}
-        </Button>
+        <Button block type="submit" disabled={busy || code.length < LENGTH}>{t('join.confirmShort')}</Button>
       </form>
-    </Screen>
+    </Step>
   );
 }

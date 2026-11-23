@@ -7,14 +7,22 @@ import { enableNavMotion, useNavDirection } from './lib/navMotion.ts';
 import { useScrollMemory } from './lib/scrollMemory.ts';
 import { useSession } from './lib/session.tsx';
 import { AccountScreen } from './screens/onboarding/Account.tsx';
+import { DietScreen } from './screens/onboarding/Diet.tsx';
+import { DoneScreen } from './screens/onboarding/Done.tsx';
 import { GoalsScreen } from './screens/onboarding/Goals.tsx';
 import { HouseholdScreen } from './screens/onboarding/Household.tsx';
+import { HouseholdNameScreen } from './screens/onboarding/HouseholdName.tsx';
+import { InstallScreen } from './screens/onboarding/Install.tsx';
 import { InviteScreen } from './screens/onboarding/Invite.tsx';
 import { JoinScreen } from './screens/onboarding/Join.tsx';
+import { LandingScreen } from './screens/onboarding/Landing.tsx';
+import { NoEatScreen } from './screens/onboarding/NoEat.tsx';
+import { NotifyScreen } from './screens/onboarding/Notify.tsx';
 import { ProfileScreen } from './screens/onboarding/Profile.tsx';
 import { TasteQuizScreen } from './screens/onboarding/TasteQuiz.tsx';
 import { TastesScreen } from './screens/onboarding/Tastes.tsx';
-import { WelcomeScreen } from './screens/onboarding/Welcome.tsx';
+import { WeekScreen } from './screens/onboarding/Week.tsx';
+import { WeeknightScreen } from './screens/onboarding/Weeknight.tsx';
 import { DeckScreen } from './screens/deck/Deck.tsx';
 import { GroceriesScreen } from './screens/Groceries.tsx';
 import { ImportScreen } from './screens/recipes/Import.tsx';
@@ -29,17 +37,20 @@ import { SettingsScreen } from './screens/Settings.tsx';
 import { TonightScreen } from './screens/Tonight.tsx';
 import { UsScreen } from './screens/Us.tsx';
 
-const PUBLIC = ['/welcome', '/signin', '/join'];
+const PUBLIC = ['/welcome', '/install', '/signin', '/join'];
 
 const startsWithAny = (path: string, list: string[]) => list.some((p) => path === p || path.startsWith(`${p}/`));
 
 /**
- * Sends people to the first onboarding step they haven't finished. Each state
- * allows the screens around it, so a step can save, refresh and move on
- * without the gate bouncing it somewhere else mid-way.
+ * Sends people to the first onboarding step they haven't finished
+ * (design/onboarding/HANDOFF.md): landing and install signed out, then a
+ * first name if the account came without one, a household, and the setup
+ * steps until Done stamps profiles.onboarded_at. Each state allows the screens
+ * around it, so a step can save, refresh and move on (or go back) without the
+ * gate bouncing it somewhere else mid-way.
  */
 function Gate() {
-  const { loading, session, profile, household, goals } = useSession();
+  const { loading, session, profile, household } = useSession();
   const { pathname } = useLocation();
   const scroller = useRef<HTMLDivElement>(null);
   useNavDirection();
@@ -53,9 +64,10 @@ function Gate() {
       if (pathname !== '/onboarding/profile') target = '/onboarding/profile';
     } else if (!household) {
       if (!startsWithAny(pathname, ['/onboarding/profile', '/onboarding/household', '/join'])) target = '/onboarding/household';
-    } else if (!goals) {
-      if (!startsWithAny(pathname, ['/onboarding', '/join'])) target = '/onboarding/goals';
-    } else if (startsWithAny(pathname, ['/welcome', '/signin', '/onboarding/profile', '/onboarding/household'])) {
+    } else if (!profile.onboarded_at) {
+      // A returning user with a household skips to Ce soir; anyone else finishes setting up.
+      if (!startsWithAny(pathname, ['/onboarding', '/join'])) target = '/onboarding/diet';
+    } else if (startsWithAny(pathname, ['/welcome', '/install', '/signin', '/onboarding', '/join'])) {
       target = '/';
     }
   }
@@ -100,15 +112,23 @@ export const router = createBrowserRouter([
   {
     element: <Gate />,
     children: [
-      { path: '/welcome', element: <WelcomeScreen /> },
+      { path: '/welcome', element: <LandingScreen /> },
+      { path: '/install', element: <InstallScreen /> },
       { path: '/signin', element: <AccountScreen /> },
       { path: '/join/:code?', element: <JoinScreen /> },
       { path: '/onboarding/profile', element: <ProfileScreen /> },
       { path: '/onboarding/household', element: <HouseholdScreen /> },
+      { path: '/onboarding/household/name', element: <HouseholdNameScreen /> },
       { path: '/onboarding/invite', element: <InviteScreen /> },
+      { path: '/onboarding/diet', element: <DietScreen /> },
+      { path: '/onboarding/no-eat', element: <NoEatScreen /> },
+      { path: '/onboarding/weeknight', element: <WeeknightScreen /> },
       { path: '/onboarding/goals', element: <GoalsScreen /> },
-      { path: '/onboarding/tastes', element: <TastesScreen /> },
+      { path: '/onboarding/week', element: <WeekScreen /> },
+      { path: '/onboarding/notifications', element: <NotifyScreen /> },
       { path: '/onboarding/quiz', element: <TasteQuizScreen /> },
+      { path: '/onboarding/done', element: <DoneScreen /> },
+      { path: '/onboarding/tastes', element: <Navigate to="/onboarding/diet" replace /> },
       {
         element: <Tabs />,
         children: [

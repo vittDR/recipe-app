@@ -18,6 +18,9 @@ export type FilterProtein = (typeof FILTER_PROTEINS)[number];
 export type FilterCuisine = (typeof FILTER_CUISINES)[number];
 export type FilterBase = (typeof FILTER_BASES)[number];
 export type FilterSpice = (typeof FILTER_SPICES)[number];
+/** How much work tonight: the minimum = easy dishes only, some = nothing hard. No effort = anything. */
+export const FILTER_EFFORTS = ['minimum', 'some'] as const;
+export type FilterEffort = (typeof FILTER_EFFORTS)[number];
 
 /** Stored on the deck (decks.filters); an empty or missing row means no filter on it. */
 export interface DeckFilters {
@@ -29,6 +32,7 @@ export interface DeckFilters {
   maxKcal?: number;
   /** At least this many grams of protein per serving. */
   minProteinG?: number;
+  effort?: FilterEffort;
 }
 
 /** Bounds for the two numbers, so a typo can't store something absurd. */
@@ -75,6 +79,8 @@ export interface DeckFacets {
   /** Per serving, from the recipe; null when unknown. */
   kcal?: number | null;
   proteinG?: number | null;
+  /** The recipe's difficulty; null or absent when unknown (passes any effort). */
+  difficulty?: 'easy' | 'medium' | 'hard' | null;
 }
 
 type FacetFields = 'protein_groups' | 'protein_items' | 'cuisines' | 'starch_bases' | 'heat_level';
@@ -107,6 +113,8 @@ export function matchesDeckFilters(f: DeckFacets, filters: DeckFilters | null | 
   if (filters.spice === 'spicy' && (f.heat ?? 0) <= MILD_MAX_HEAT) return false;
   if (filters.maxKcal && !(f.kcal != null && f.kcal <= filters.maxKcal)) return false;
   if (filters.minProteinG && !(f.proteinG != null && f.proteinG >= filters.minProteinG)) return false;
+  if (filters.effort === 'minimum' && f.difficulty && f.difficulty !== 'easy') return false;
+  if (filters.effort === 'some' && f.difficulty === 'hard') return false;
   return true;
 }
 
@@ -137,10 +145,11 @@ export function normaliseFilters(raw: unknown): DeckFilters {
   const minProteinG = amount(r.minProteinG, MIN_PROTEIN_LIMIT);
   if (maxKcal) out.maxKcal = maxKcal;
   if (minProteinG) out.minProteinG = minProteinG;
+  if (r.effort === 'minimum' || r.effort === 'some') out.effort = r.effort;
   return out;
 }
 
-/** How many choices are made: the badge on "More filters". */
+/** How many choices are made: the badge on "More filters". Effort has its own row, so it isn't one. */
 export function filterCount(filters: DeckFilters | null | undefined): number {
   if (!filters) return 0;
   return (filters.proteins?.length ?? 0) + (filters.cuisines?.length ?? 0) + (filters.bases?.length ?? 0)
