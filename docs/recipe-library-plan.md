@@ -155,5 +155,4 @@ the rules and why the others don't.
 - **Vegetarian: 305 of 704, 97 of them vegan.** The 200 vegetarian dinners
   take 10 to 40 min and meet all six rules, with eggs, tofu, soy mince, seitan,
   paneer, halloumi, skyr, cottage cheese or edamame for the protein.
-- **Illustrations:** 504 have one; the 200 vegetarian dinners are waiting
-  for theirs.
+- **Illustrations:** all 704 have one.
