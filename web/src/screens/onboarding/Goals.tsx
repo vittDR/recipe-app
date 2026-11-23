@@ -19,8 +19,8 @@ const COLUMN = {
   kcal: 'dinner_kcal', protein: 'dinner_protein_g', carbs: 'dinner_carbs_g', fat: 'dinner_fat_g', fibre: 'dinner_fibre_g',
 } as const satisfies Record<Macro, keyof MemberGoals>;
 
-/** Each macro's icon: protein is a muscle, not meat, so it fits every diet. */
-const ICONS: Record<Macro, IconName> = { kcal: 'flame', protein: 'muscle', carbs: 'wheat', fat: 'drop', fibre: 'leaf' };
+/** Each macro's icon: protein is a dumbbell, not meat, so it fits every diet. */
+const ICONS: Record<Macro, IconName> = { kcal: 'flame', protein: 'dumbbell', carbs: 'wheat', fat: 'drop', fibre: 'leaf' };
 
 const MACROS: { key: Macro; label: MessageKey; unit: MessageKey; min: number; max: number; step: number; value: number; on: boolean }[] = [
   { key: 'kcal', label: 'goals.kcal', unit: 'goals.kcalUnit', min: 300, max: 2000, step: 25, value: 750, on: true },
