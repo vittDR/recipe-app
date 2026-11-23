@@ -147,7 +147,7 @@ export function proposeListItems<T extends RecipeIngredientLike>(
     const n = ingredient.name.toLowerCase();
     const has = (set: Set<string>) => set.has(n) || (!!ingredient.product_id && set.has(ingredient.product_id));
     if (has(onList)) return { ingredient, add: false, why: 'on_list' as const };
-    if (ingredient.is_staple || (!!ingredient.product_id && stapleSet.has(ingredient.product_id))) return { ingredient, add: false, why: 'staple' as const };
+    if (!!ingredient.product_id && stapleSet.has(ingredient.product_id)) return { ingredient, add: false, why: 'staple' as const };
     if (has(bought)) return { ingredient, add: false, why: 'bought_recently' as const };
     return { ingredient, add: true, why: 'to_buy' as const };
   });

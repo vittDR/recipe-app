@@ -77017,3 +77017,6 @@ where (recipe_ingredients.position, recipe_ingredients.name, recipe_ingredients.
   excluded.is_staple, excluded.guessed, excluded.raw_text, excluded.original_text, excluded.optional);
 
 commit;
+
+-- Staples are strict (migrations/20261210000001_learned_staples.sql).
+select public.narrow_staples();

@@ -1516,3 +1516,6 @@ from (values
 ) as v(group_key, ingredient)
 join public.ingredient_catalog c on c.name = v.ingredient
 on conflict do nothing;
+
+-- Staples are strict (migrations/20261210000001_learned_staples.sql).
+select public.narrow_staples();

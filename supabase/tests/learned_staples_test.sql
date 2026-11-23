@@ -19,9 +19,9 @@ insert into auth.users (id, email, raw_user_meta_data) values
 select pg_temp.act_as('00000000-0000-0000-0000-00000000ee01');
 select create_household('Cuisine', 'Europe/Paris') as hid \gset
 select pg_temp.check((select count(*) between 3 and 10 from household_staples where household_id = :'hid'), 'a new household starts with a few basics');
-select pg_temp.check((select bool_and(p.ingredient in ('salt', 'black pepper', 'olive oil', 'vegetable oil', 'sugar', 'flour'))
-  from household_staples s join products p on p.id = s.product_id where s.household_id = :'hid'), 'salt, pepper, oils, sugar, flour');
-select pg_temp.check((select count(*) = 6 from household_staples where household_id = :'hid'), 'all six are in the catalogue');
+select pg_temp.check((select bool_and(p.ingredient in ('salt', 'black pepper', 'white pepper', 'olive oil', 'vegetable oil', 'sugar', 'flour', 'vinegar'))
+  from household_staples s join products p on p.id = s.product_id where s.household_id = :'hid'), 'salt, pepper, oils, sugar, flour, vinegar');
+select pg_temp.check((select count(*) = 8 from household_staples where household_id = :'hid'), 'all eight are in the catalogue');
 
 select p.id as cumin from products p where p.ingredient = 'cumin' and p.household_id is null limit 1 \gset
 select p.id as onion from products p where p.ingredient = 'onion' and p.household_id is null limit 1 \gset
@@ -44,3 +44,7 @@ end $$;
 select pg_temp.act_as(null);
 delete from households where name = 'Cuisine';
 delete from auth.users where id = '00000000-0000-0000-0000-00000000ee01';
+
+select pg_temp.check((select count(*) = 8 from ingredient_catalog where is_staple), 'the catalogue has 8 strict staples');
+select pg_temp.check(not exists (select 1 from recipe_ingredients where is_staple and lower(name) = 'garlic'), 'garlic is no staple on recipe lines');
+select pg_temp.check(exists (select 1 from recipe_ingredients where is_staple), 'salt still is');

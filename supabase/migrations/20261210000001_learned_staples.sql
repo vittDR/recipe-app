@@ -1,20 +1,44 @@
 -- "Toujours à la maison" starts small and learns.
 --
--- * New households start with a few basics (salt, pepper, oils, sugar,
---   flour) instead of every catalogue staple (about 95 spices, sauces and
---   stocks). Households that have none get the same basics.
+-- * A staple is strict now: a shelf-stable basic nearly every kitchen has
+--   (salt, pepper, oils, sugar, flour, vinegar). It used to be ~95
+--   catalogue items, garlic, butter, stocks, sauces and spices included.
+--   narrow_staples() sets the catalogue flag and the recipe lines' copy of it;
+--   the seed files call it again after loading.
+-- * New households start with those basics; households with none get them.
+--   The grocery sheet's "probably at home" is now only the household's own
+--   staples, what's on the list and what was bought recently.
 -- * The rest is deduced: when recipe ingredients go to the list, an item
 --   the household leaves out (not on the list, not bought recently) counts
 --   once; adding it resets the count. Left out 3 times in a row, it becomes
 --   a staple. record_list_choices() does both and returns what it promoted.
+
+create or replace function public.narrow_staples()
+returns void
+language sql set search_path = ''
+as $$
+  update public.ingredient_catalog set is_staple = (name in
+    ('salt', 'black pepper', 'white pepper', 'olive oil', 'vegetable oil', 'sugar', 'flour', 'vinegar'))
+  where is_staple is distinct from (name in
+    ('salt', 'black pepper', 'white pepper', 'olive oil', 'vegetable oil', 'sugar', 'flour', 'vinegar'));
+  -- Recipe lines carry a copy (deal-deck skips staples when matching "never" rules).
+  update public.recipe_ingredients ri set is_staple = false
+  where ri.is_staple and not exists (
+    select 1 from public.ingredient_catalog c
+    left join public.products p on p.ingredient = c.name and p.household_id is null
+    where c.is_staple and (c.name = lower(ri.name) or p.id = ri.product_id));
+$$;
+revoke all on function public.narrow_staples() from public, anon, authenticated;
+
+select public.narrow_staples();
 
 create or replace function public.starter_staples()
 returns setof uuid
 language sql stable set search_path = ''
 as $$
   select p.id from public.products p
-  where p.household_id is null
-    and p.ingredient in ('salt', 'black pepper', 'olive oil', 'vegetable oil', 'sugar', 'flour');
+  join public.ingredient_catalog c on c.name = p.ingredient
+  where c.is_staple and p.household_id is null;
 $$;
 
 create or replace function public.create_household(p_name text, p_timezone text default 'Europe/Paris')
