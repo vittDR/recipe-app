@@ -8,13 +8,16 @@ export type Verdict = 'pass' | 'yes' | 'must';
 export type Mood = 'any' | 'comfort' | 'light' | 'healthy' | 'quick' | 'fancy';
 export type DeckStatus = 'open' | 'matched' | 'no_match' | 'closed';
 export type Goal = 'lean' | 'maintain' | 'build';
-export type Diet = 'everything' | 'pescatarian' | 'vegetarian';
+export const DIETS = ['everything', 'flexitarian', 'pescatarian', 'vegetarian', 'vegan'] as const;
+export type Diet = (typeof DIETS)[number];
 
 export interface Profile {
   id: string;
   first_name: string;
   color: string;
   locale: 'en' | 'fr';
+  /** When onboarding was finished; null while still in it. */
+  onboarded_at: string | null;
 }
 
 export interface Household {
@@ -24,6 +27,8 @@ export interface Household {
   timezone: string;
   prompt_time: string;
   reminder_time: string;
+  /** Weeknight deck defaults from onboarding ({maxMinutes, mood, filters}); {} when never set. */
+  deck_defaults: Record<string, unknown>;
 }
 
 export interface Member {
@@ -35,8 +40,12 @@ export interface Member {
 export interface MemberGoals {
   user_id: string;
   goal: Goal;
-  dinner_kcal: number;
-  dinner_protein_g: number;
+  /** Null = no target (switched off). */
+  dinner_kcal: number | null;
+  dinner_protein_g: number | null;
+  dinner_carbs_g: number | null;
+  dinner_fat_g: number | null;
+  dinner_fibre_g: number | null;
   /** Servings on this person's plate. */
   servings: number;
 }

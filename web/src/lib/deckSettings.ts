@@ -36,3 +36,18 @@ export function saveLastSettings(userId: string, s: DeckSettings): LastSettings 
   }
   return last;
 }
+
+/** The household's weeknight defaults (onboarding step 07, households.deck_defaults). */
+export type HouseholdDefaults = Pick<DeckSettings, 'maxMinutes' | 'mood' | 'filters'>;
+
+/** Read from the household row; under an hour, a little effort, any mood when not set. */
+export function householdDefaults(household: { deck_defaults?: unknown } | null | undefined): HouseholdDefaults {
+  const raw = (household?.deck_defaults ?? {}) as Partial<Record<keyof HouseholdDefaults, unknown>>;
+  const set = Object.keys(raw).length > 0;
+  return {
+    maxMinutes: 'maxMinutes' in raw && (TIMES as readonly (number | null)[]).includes(raw.maxMinutes as number | null)
+      ? raw.maxMinutes as number | null : 60,
+    mood: MOODS.includes(raw.mood as Mood) ? raw.mood as Mood : 'any',
+    filters: set ? normaliseFilters(raw.filters) : { effort: 'some' },
+  };
+}

@@ -3,13 +3,14 @@ import { useNavigate } from 'react-router';
 import { productName, type Product } from '@logic/products.ts';
 import { CreateItemSheet } from '../../components/GrocerySheets.tsx';
 import { Icon } from '../../components/Icon.tsx';
-import { Button, Chip, CreateRow, ListRow, Screen, SearchField, Section, Segmented, toast } from '../../components/ui.tsx';
+import { Button, Chip, CreateRow, ListRow, Screen, SearchField, Section, toast } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { useLive, useSave } from '../../lib/hooks.ts';
 import { searchProducts, useGroceryCatalog, type GroceryCatalog } from '../../lib/products.ts';
 import { useSession } from '../../lib/session.tsx';
 import { must, supabase } from '../../lib/supabase.ts';
 import type { Diet, TasteRule } from '../../lib/types.ts';
+import { DietOptions, saveDiet } from './Diet.tsx';
 
 // Offered as one-tap chips: catalogue items people often feel strongly about.
 const SUGGESTED = {
@@ -108,8 +109,7 @@ export function TastesScreen({ editing }: { editing?: boolean }) {
 
   const diet = (rules.find((r) => r.kind === 'diet')?.value ?? 'everything') as Diet;
   const setDiet = async (d: Diet) => {
-    await save(supabase.from('taste_rules').delete().eq('user_id', userId!).eq('kind', 'diet'));
-    if (d !== 'everything') await save(supabase.from('taste_rules').insert({ user_id: userId, kind: 'diet', value: d }));
+    await saveDiet(userId!, d);
     await reload();
   };
   const addRule = async (kind: 'never' | 'love', value: string, productId: string) => {
@@ -139,11 +139,7 @@ export function TastesScreen({ editing }: { editing?: boolean }) {
     <Screen back={editing} title={t('tastes.title')} subtitle={t('tastes.subtitle')} plain>
       <div className="stack stack--lg">
         <Section label={t('tastes.diet')} flush>
-          <Segmented<Diet> label={t('tastes.diet')} value={diet} onChange={(d) => void setDiet(d)} options={[
-            { value: 'everything', label: t('tastes.everything') },
-            { value: 'pescatarian', label: t('tastes.pescatarian') },
-            { value: 'vegetarian', label: t('tastes.vegetarian') },
-          ]} />
+          <DietOptions value={diet} onChange={(d) => void setDiet(d)} />
         </Section>
         <RuleList kind="never" rules={rules} catalog={catalog}
           onAdd={(p) => void add('never', p)} onCreate={(name) => setCreating({ kind: 'never', name })} onRemove={(r) => void remove(r)} />

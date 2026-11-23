@@ -23,6 +23,8 @@ type Leaves<T, P extends string = ''> = {
 }[keyof T & string];
 
 export type MessageKey = Leaves<typeof en>;
+/** Keys whose value is a list of strings. */
+export type ListKey = 'plan.days' | 'plan.daysLong' | 'household.suggestions';
 type PluralBase<K extends string> = K extends `${infer B}_one` ? B : never;
 export type PluralKey = PluralBase<MessageKey>;
 
@@ -53,7 +55,7 @@ interface I18n {
   setLocale: (l: Locale) => void;
   t: (key: MessageKey, vars?: Vars) => string;
   tn: (key: PluralKey, count: number, vars?: Vars) => string;
-  list: (key: 'plan.days' | 'plan.daysLong') => readonly string[];
+  list: (key: ListKey) => readonly string[];
   formatTime: (d: Date | string) => string;
   formatRelative: (d: Date | string) => string;
 }
@@ -84,7 +86,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
       const form = plural.select(count) === 'one' ? 'one' : 'other';
       return t(`${key}_${form}` as MessageKey, { count, ...vars });
     };
-    const list = (key: 'plan.days' | 'plan.daysLong') => lookup(dict, key) as readonly string[];
+    const list = (key: ListKey) => lookup(dict, key) as readonly string[];
     const timeFmt = new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' });
     const rel = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
     const formatTime = (d: Date | string) => timeFmt.format(new Date(d));

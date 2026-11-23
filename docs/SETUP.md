@@ -174,6 +174,7 @@ DINEAMITE signs people in with an email and a password. Supabase never sends any
    - **Confirm email**: **off**. This is the important one: with it on, Supabase would try to send a confirmation email and sign-up would stall.
    - **Minimum password length**: `8`, if the field is there.
 4. Click **Save**.
+5. *Optional: Apple and Google.* The account screen of onboarding also offers "Continuer avec Apple" and "Continuer avec Google". They only show once you set them up: turn on the **Apple** and/or **Google** provider here (each needs credentials from Apple's or Google's developer console, as the provider page explains), add your site's address (`https://<your-project>.pages.dev`) under **Authentication → URL Configuration → Redirect URLs**, then add the line `VITE_AUTH_PROVIDERS=apple,google` (or just one of them) to `web/.env` and redeploy. People who sign in this way and whose name doesn't come with the account are asked for a first name.
 
 **Test it locally:**
 

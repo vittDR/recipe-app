@@ -18,6 +18,8 @@ import { styleModelFor } from '../_shared/logic/style.ts';
 const MOODS: Mood[] = ['any', 'comfort', 'light', 'healthy', 'quick', 'fancy'];
 const RECENT_COOK_DAYS = 10;
 const PANTRY_DAYS = 7;
+/** A vegan eats neither: these allergens' ingredients are ruled out like an allergy. */
+const VEGAN_ALLERGENS = ['milk', 'eggs'];
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
@@ -133,7 +135,10 @@ Deno.serve(async (req) => {
       proteinGPerServing: r.protein_g_per_serving,
       features,
       healthy: isHealthy(r.tags ?? [], classification),
-      facets: { ...deckFacets(classification), kcal: r.kcal_per_serving, proteinG: r.protein_g_per_serving },
+      facets: {
+        ...deckFacets(classification), kcal: r.kcal_per_serving, proteinG: r.protein_g_per_serving,
+        difficulty: (r as { difficulty?: 'easy' | 'medium' | 'hard' | null }).difficulty ?? null,
+      },
       intents: classification.meal_intents,
       seasons: classification.seasons,
       plates,
@@ -158,6 +163,9 @@ Deno.serve(async (req) => {
   const members: DeckMember[] = eaters.map((uid) => {
     const g = (goals.data ?? []).find((x) => x.user_id === uid);
     const mine = (rules.data ?? []).filter((x) => x.user_id === uid);
+    const diet = (mine.find((x) => x.kind === 'diet')?.value ?? 'everything') as Diet;
+    const linkedTo = (allergen: string) =>
+      (allergenLinks.data ?? []).filter((l) => l.allergen === allergen).map((l) => l.ingredient as string);
     // Quiz answers have no deck: whether the dish fits this person's goals now.
     const fitsNow = (id: string) => {
       const macros = macrosById.get(id);
@@ -175,11 +183,14 @@ Deno.serve(async (req) => {
       servings: g?.servings ?? null,
       never: mine.filter((x) => x.kind === 'never').map((x) => x.product_id as string),
       loves: mine.filter((x) => x.kind === 'love').map((x) => x.product_id as string),
-      diet: (mine.find((x) => x.kind === 'diet')?.value ?? 'everything') as Diet,
-      // An allergen stands for every ingredient and preparation linked to it.
-      allergies: (allergies.data ?? []).filter((a) => a.user_id === uid).flatMap((a) => (a.ingredient
-        ? [a.ingredient as string]
-        : (allergenLinks.data ?? []).filter((l) => l.allergen === a.allergen).map((l) => l.ingredient as string))),
+      diet,
+      // An allergen stands for every ingredient and preparation linked to it. Vegan rules out milk and eggs the same way.
+      allergies: [
+        ...(allergies.data ?? []).filter((a) => a.user_id === uid).flatMap((a) => (a.ingredient
+          ? [a.ingredient as string]
+          : linkedTo(a.allergen as string))),
+        ...(diet === 'vegan' ? VEGAN_ALLERGENS.flatMap(linkedTo) : []),
+      ],
       weights,
       profile,
       // How often they want each dish (logic/style.ts): what the deck scores on.

@@ -50,7 +50,7 @@ export function Chip({
   if (variant === 'fact') return <span className={cls}>{children}</span>;
   if (onRemove) {
     return (
-      <span className={cls}>
+      <span className={pressed ? `${cls} chip--on` : cls}>
         {children}
         <button type="button" className="chip__remove" onClick={onRemove} aria-label={removeLabel}>
           <Icon name="x" size={16} />

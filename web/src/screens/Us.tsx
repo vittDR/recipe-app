@@ -193,7 +193,11 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
         )}
           <div className="list">
           <ListRow to="/us/goals" tile="plain" icon={<Icon name="star" size={18} />} title={t('us.yourGoals')}
-            meta={goals && `${t(`goals.${goals.goal}`)} · ${goals.dinner_kcal} kcal · ${goals.dinner_protein_g} g · ${tn('recipe.servings', goals.servings)}`} />
+            meta={goals ? [
+              goals.dinner_kcal != null && `${goals.dinner_kcal} ${t('goals.kcalUnit')}`,
+              goals.dinner_protein_g != null && `${goals.dinner_protein_g} ${t('goals.gramsUnit')} ${t('goals.proteinShort')}`,
+              tn('recipe.servings', goals.servings),
+            ].filter(Boolean).join(' · ') : t('goals.none')} />
           </div>
         </div>
       </Screen>

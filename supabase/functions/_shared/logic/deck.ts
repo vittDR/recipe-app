@@ -22,7 +22,12 @@ import { type EaterTargets, type PotSplit, splitPot } from './portions.ts';
 import type { Plate } from './plate.ts';
 import type { StyleModel } from './style.ts';
 
-export type Diet = 'everything' | 'pescatarian' | 'vegetarian';
+/**
+ * Flexitarian filters nothing but leans away from meat; vegan is vegetarian
+ * plus no milk or eggs (deal-deck adds those allergens' ingredients to the
+ * eater's allergies).
+ */
+export type Diet = 'everything' | 'flexitarian' | 'pescatarian' | 'vegetarian' | 'vegan';
 export type Mood = 'any' | 'comfort' | 'light' | 'healthy' | 'quick' | 'fancy';
 
 export interface CandidateRecipe {
@@ -184,6 +189,8 @@ export const SEASON_BONUS = 0.5;
 export const OFF_SEASON_PENALTY = 0.8;
 /** At least this share of a deck is seasonal dishes in season, when the library has them (3 of 12). */
 export const SEASONAL_SHARE = 3 / 12;
+/** A meat dish loses this much for each flexitarian at the table (shared by the eaters). */
+export const FLEXITARIAN_MEAT_PENALTY = 0.6;
 
 /** 1 for a seasonal dish of this season, -1 out of season, 0 for an all-year dish or no season given. */
 export function seasonFit(recipe: Pick<CandidateRecipe, 'seasons'>, season: Season | undefined): -1 | 0 | 1 {
@@ -203,7 +210,7 @@ export function passesHardFilters(recipe: CandidateRecipe, members: DeckMember[]
   // The recipe as it's still made when every optional line is left out.
   const essential = recipe.productIds?.filter((id) => !recipe.optionalProductIds?.includes(id));
   for (const m of members) {
-    if (m.diet === 'vegetarian' && recipe.dietClass !== 'veg') return false;
+    if ((m.diet === 'vegetarian' || m.diet === 'vegan') && recipe.dietClass !== 'veg') return false;
     if (m.diet === 'pescatarian' && recipe.dietClass === 'meat') return false;
     if (usesProduct(essential, m.never)) return false;
     if (m.allergies?.length) {
@@ -311,10 +318,13 @@ export function scoreRecipe(
   const season = seasonFit(recipe, opts.season);
   const seasonScore = season > 0 ? SEASON_BONUS : season < 0 ? -OFF_SEASON_PENALTY : 0;
 
+  const flexitarians = members.filter((m) => m.diet === 'flexitarian').length;
+  const flexi = recipe.dietClass === 'meat' && flexitarians ? FLEXITARIAN_MEAT_PENALTY * flexitarians / count : 0;
+
   const rotation = ROTATION_PENALTY * Math.min(ROTATION_MAX_DECKS, opts.recentlyDealt?.get(recipe.id) ?? 0);
 
   const base = fitW * fit + 1 * love + 1.2 * moodScore(recipe, opts.mood) + 1 * pantryScore + 0.8 * liked + 1.2 * lean
-    + seasonScore - rotation + novelty;
+    + seasonScore - rotation - flexi + novelty;
   const score = base + 1.5 * pref + EXPLORE_WEIGHT * explore;
 
   const reason = pantryHits.length > 0 ? `pantry:${pantryHits[0]}` : love > 0 ? 'love' : null;
