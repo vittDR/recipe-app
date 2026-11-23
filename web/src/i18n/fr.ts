@@ -1007,8 +1007,8 @@ export const fr: Dictionary = {
     pantry: {
       title: 'Qu’avez-vous toujours à la maison ?',
       subtitle: 'On ne les ajoutera pas à vos courses. Le reste, on l’apprend au fil des recettes.',
-      groups: { basics: 'Sel, poivre, huile', spices: 'Épices', herbs: 'Herbes séchées', oils: 'Autres huiles et vinaigres', stocks: 'Bouillons cubes', asian: 'Sauces asiatiques', condiments: 'Moutarde, ketchup et cie', baking: 'Levure et maïzena', fresh: 'Ail, oignons, beurre' },
-      examples: { basics: 'sucre, farine, vinaigre', spices: 'cumin, paprika, curry', herbs: 'thym, laurier, origan', oils: 'sésame, coco, balsamique', stocks: 'volaille, légumes, poisson', asian: 'soja, nuoc-mâm, mirin', condiments: 'sauce piquante, miel, concentré de tomate', baking: 'levure boulangère, bicarbonate', fresh: 'échalotes' },
+      groups: { basics: 'Les bases', spices: 'Épices', herbs: 'Herbes séchées', oils: 'Huiles et vinaigres', stocks: 'Bouillons', asian: 'Sauces asiatiques', condiments: 'Condiments', baking: 'Pâtisserie', fresh: 'Frais' },
+      examples: { basics: 'sel, poivre, huile', spices: 'cumin, paprika, curry', herbs: 'thym, laurier', oils: 'sésame, balsamique', stocks: 'volaille, légumes', asian: 'soja, nuoc-mâm', condiments: 'moutarde, ketchup', baking: 'levure, maïzena', fresh: 'ail, oignons, beurre' },
     },
   },
   eaters: {

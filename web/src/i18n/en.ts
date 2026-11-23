@@ -1009,8 +1009,8 @@ export const en = {
     pantry: {
       title: 'What’s always at home?',
       subtitle: 'We won’t add these to your groceries. The rest we learn as you go.',
-      groups: { basics: 'Salt, pepper, oil', spices: 'Spices', herbs: 'Dried herbs', oils: 'Other oils and vinegars', stocks: 'Stock cubes', asian: 'Asian sauces', condiments: 'Mustard, ketchup and co.', baking: 'Baking powder and cornflour', fresh: 'Garlic, onions, butter' },
-      examples: { basics: 'sugar, flour, vinegar', spices: 'cumin, paprika, curry', herbs: 'thyme, bay leaf, oregano', oils: 'sesame, coconut, balsamic', stocks: 'chicken, vegetable, fish', asian: 'soy, fish sauce, mirin', condiments: 'hot sauce, honey, tomato paste', baking: 'yeast, baking soda', fresh: 'shallots' },
+      groups: { basics: 'The basics', spices: 'Spices', herbs: 'Dried herbs', oils: 'Oils and vinegars', stocks: 'Stock', asian: 'Asian sauces', condiments: 'Condiments', baking: 'Baking', fresh: 'Fresh' },
+      examples: { basics: 'salt, pepper, oil', spices: 'cumin, paprika, curry', herbs: 'thyme, bay leaf', oils: 'sesame, balsamic', stocks: 'chicken, vegetable', asian: 'soy, fish sauce', condiments: 'mustard, ketchup', baking: 'yeast, cornflour', fresh: 'garlic, onions, butter' },
     },
   },
   eaters: {

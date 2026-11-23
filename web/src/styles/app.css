@@ -4553,7 +4553,7 @@ body:has(.moment) .tabbar {
 /* "Toujours à la maison" tiles carry examples under the name. */
 .appliance--pantry {
   height: auto;
-  min-height: 124px;
+  min-height: 108px;
   gap: var(--space-2);
   padding: var(--space-3) var(--space-2);
 }
