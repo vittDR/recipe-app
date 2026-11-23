@@ -3441,10 +3441,24 @@ body:has(.moment) .tabbar {
   color: var(--muted);
 }
 
-.macro__value b {
+/* The number is a field: it looks like text until tapped, then it's typed into. */
+.macro__input {
+  min-width: 2ch;
+  padding: 0 2px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink);
   font: var(--t-title-m);
   font-weight: 700;
-  color: var(--ink);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.macro__input:focus {
+  outline: none;
+  background: var(--accent-soft);
+  box-shadow: inset 0 -2px 0 var(--accent);
 }
 
 .macro__range {
