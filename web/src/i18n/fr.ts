@@ -68,8 +68,8 @@ export const fr: Dictionary = {
     suggestions: ['Chez nous', 'La coloc', 'Maison'],
   },
   invite: {
-    title: 'Invitez votre moitié',
-    subtitle: 'Elle entre ce code à l’ouverture de l’app.',
+    title: 'Invitez les autres membres du foyer',
+    subtitle: 'Ils entrent ce code à l’ouverture de l’app.',
     expires: 'Expire {time}',
     share: 'Partager l’invitation',
     shareText: 'Rejoins notre foyer sur {app} : {link} (code {code})',

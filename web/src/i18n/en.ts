@@ -70,7 +70,7 @@ export const en = {
     suggestions: ['Our place', 'The flatshare', 'Home'],
   },
   invite: {
-    title: 'Invite your other half',
+    title: 'Invite the rest of your household',
     subtitle: 'They enter this code when they open the app.',
     expires: 'Expires {time}',
     share: 'Share the invitation',
