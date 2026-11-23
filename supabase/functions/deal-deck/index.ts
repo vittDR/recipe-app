@@ -15,6 +15,7 @@ import {
 import { dietAdherence } from '../_shared/logic/recommend.ts';
 import { type Plate, rowPlates } from '../_shared/logic/plate.ts';
 import { styleModelFor } from '../_shared/logic/style.ts';
+import { groupsFrom, ruleProductIds } from '../_shared/logic/products.ts';
 
 const MOODS: Mood[] = ['any', 'comfort', 'light', 'healthy', 'quick', 'fancy'];
 const RECENT_COOK_DAYS = 10;
@@ -57,9 +58,9 @@ Deno.serve(async (req) => {
     .filter((x) => x.verdict !== 'pass').map((x) => x.recipe_id)));
 
   const since = (days: number) => new Date(Date.now() - days * 86_400_000).toISOString();
-  const [goals, rules, swipes, recipes, meals, pantry, catalog, signals, allergies, allergenLinks] = await Promise.all([
+  const [goals, rules, swipes, recipes, meals, pantry, catalog, signals, allergies, allergenLinks, groupRows, groupLinks, groupProducts] = await Promise.all([
     admin.from('member_goals').select('*').in('user_id', eaters),
-    admin.from('taste_rules').select('user_id, kind, value, product_id').in('user_id', eaters),
+    admin.from('taste_rules').select('user_id, kind, value, product_id, group_key').in('user_id', eaters),
     admin.from('swipes').select('user_id, deck_id, recipe_id, verdict, created_at, decks!inner(household_id, mood, filters)')
       .eq('decks.household_id', householdId).order('created_at', { ascending: false }).limit(1000),
     admin.from('recipes')
@@ -75,8 +76,12 @@ Deno.serve(async (req) => {
       .in('user_id', eaters).order('created_at', { ascending: false }).limit(2000),
     admin.from('member_allergies').select('user_id, allergen, ingredient').in('user_id', eaters),
     admin.from('allergen_ingredients').select('allergen, ingredient'),
+    // Rules on a group ("Pork (all)") stand for the shared products of its ingredients.
+    admin.from('ingredient_groups').select('key, name_fr, name_en, aliases, position'),
+    admin.from('ingredient_group_members').select('group_key, ingredient'),
+    admin.from('products').select('id, ingredient').is('household_id', null).not('ingredient', 'is', null),
   ]);
-  for (const r of [goals, rules, swipes, recipes, meals, pantry, catalog, signals, allergies, allergenLinks]) {
+  for (const r of [goals, rules, swipes, recipes, meals, pantry, catalog, signals, allergies, allergenLinks, groupRows, groupLinks, groupProducts]) {
     if (r.error) return json({ error: r.error.message }, 500);
   }
   // Whether each swiped card fit each eater when it was dealt: what lets the diet explain a pass away.
@@ -85,6 +90,11 @@ Deno.serve(async (req) => {
     ? await admin.from('member_portions').select('deck_id, recipe_id, user_id, fits').in('deck_id', swipedDecks).in('user_id', eaters)
     : { data: [], error: null };
   if (portions.error) return json({ error: portions.error.message }, 500);
+
+  const groups = groupsFrom(groupRows.data ?? [], groupLinks.data ?? []);
+  const productOfIngredient = new Map((groupProducts.data ?? []).map((p) => [p.ingredient as string, p.id as string]));
+  const productIdsOf = (rs: { product_id: string | null; group_key: string | null }[]) =>
+    ruleProductIds(rs, groups, (i) => productOfIngredient.get(i));
 
   const dietOf = new Map((catalog.data ?? []).map((c) => [c.name as string, c.diet_class as 'veg' | 'fish' | 'meat']));
   const { data: versions } = await admin.rpc('catalog_version');
@@ -176,8 +186,8 @@ Deno.serve(async (req) => {
     const weights = weightsOf(profile);
     return {
       ...targetsOf(uid, g),
-      never: mine.filter((x) => x.kind === 'never').map((x) => x.product_id as string),
-      loves: mine.filter((x) => x.kind === 'love').map((x) => x.product_id as string),
+      never: productIdsOf(mine.filter((x) => x.kind === 'never')),
+      loves: productIdsOf(mine.filter((x) => x.kind === 'love')),
       diet,
       // An allergen stands for every ingredient and preparation linked to it.
       allergies: (allergies.data ?? []).filter((a) => a.user_id === uid).flatMap((a) => (a.ingredient

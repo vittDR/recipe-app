@@ -22,7 +22,7 @@ import { AvatarPair, Button, ListRow, Screen, TabHeader, Tag } from '../componen
 import { LOCALE_NAMES, useI18n } from '../i18n/index.tsx';
 import { classLabel } from '../lib/classes.ts';
 import { useCatalog, useLive, useSave } from '../lib/hooks.ts';
-import { useGroceryCatalog } from '../lib/products.ts';
+import { groupName, useGroceryCatalog, useIngredientGroups } from '../lib/products.ts';
 import { pushState, type PushState } from '../lib/push.ts';
 import { useSession } from '../lib/session.tsx';
 import { must, supabase } from '../lib/supabase.ts';
@@ -52,6 +52,7 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
   const { userId, members, goals, household, signOut, isCatalogAdmin, memberColor } = useSession();
   const [push, setPush] = useState<PushState>('unsupported');
   const { data: catalog } = useGroceryCatalog(household!.id);
+  const { data: groups } = useIngredientGroups();
   const { tags } = useTags(household!.id);
   const ingredientCatalog = useCatalog();
   const save = useSave();
@@ -142,6 +143,8 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
     return p ? productName(p, locale) : value;
   };
   const nameOf = (r: TasteRule) => {
+    const g = r.group_key ? groups?.find((x) => x.key === r.group_key) : undefined;
+    if (g) return groupName(g, locale);
     const p = r.product_id ? catalog?.index.get(r.product_id) : undefined;
     return p ? productName(p, locale) : r.value;
   };

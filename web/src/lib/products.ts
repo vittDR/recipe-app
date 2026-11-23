@@ -1,7 +1,7 @@
 // The household's grocery products, stores and section order, live on both phones.
 
 import { storeKey } from '@logic/groceries.ts';
-import { ProductIndex, productName, type HouseholdProduct, type Product } from '@logic/products.ts';
+import { groupsFrom, ProductIndex, productName, type HouseholdProduct, type IngredientGroup, type Product } from '@logic/products.ts';
 import { cachedCatalogue, forgetCatalogueVersions, peekCatalogue, readCache, writeCache } from './cache.ts';
 import { useLive } from './hooks.ts';
 import { must, supabase } from './supabase.ts';
@@ -139,4 +139,29 @@ export function useGroceryCatalog(hid: string) {
     { table: 'household_products', filter: `household_id=eq.${hid}` },
     { table: 'household_stores', filter: `household_id=eq.${hid}` },
   ], () => storedGroceryCatalog(hid));
+}
+
+/** Ingredient groups ("Pork (all)", "Cow's milk and dairy"), for never rules. */
+export function useIngredientGroups() {
+  return useLive<IngredientGroup[]>('ingredient-groups', async () => {
+    const [rows, members] = await Promise.all([
+      supabase.from('ingredient_groups').select('key, name_fr, name_en, aliases, position'),
+      supabase.from('ingredient_group_members').select('group_key, ingredient'),
+    ]);
+    return groupsFrom(must(rows) as Omit<IngredientGroup, 'ingredients'>[], must(members) as { group_key: string; ingredient: string }[]);
+  });
+}
+
+/**
+ * Whether these never rules leave out garlic (its group or the item itself):
+ * most recipes hold some, so the screens say what that costs.
+ */
+export function avoidsGarlic(rules: { kind: string; product_id: string | null; group_key: string | null }[], catalog: GroceryCatalog | null): boolean {
+  return rules.some((r) => r.kind === 'never'
+    && (r.group_key === 'garlic' || (!!r.product_id && catalog?.index.get(r.product_id)?.ingredient === 'garlic')));
+}
+
+/** A group's name in the app's language. */
+export function groupName(g: Pick<IngredientGroup, 'name_fr' | 'name_en'>, locale: string): string {
+  return locale === 'en' ? g.name_en : g.name_fr;
 }

@@ -124,6 +124,8 @@ export const fr: Dictionary = {
     love: 'J’adore',
     addPlaceholder: 'Chercher un ingrédient',
     add: 'Ajouter',
+    groupMeta: 'Les {n} produits',
+    garlicWarning: 'À savoir : environ 7 recettes sur 10 contiennent de l’ail, vos decks auront donc beaucoup moins de plats.',
     createAndNever: 'Créer et ne jamais proposer',
     createAndLove: 'Créer et ajouter à ce que j’adore',
     diets: { everything: 'Je mange de tout', flexitarian: 'Flexitarien', pescatarian: 'Pescétarien', vegetarian: 'Végétarien' },
@@ -245,6 +247,8 @@ export const fr: Dictionary = {
     protein: 'protéines',
     pantry: 'Utilise {item} déjà acheté',
     loved: 'Un de vos favoris',
+    partnerWants: '{name} en a envie',
+    partnersWant: '{names} en ont envie',
   },
   waiting: {
     title: 'Terminé !',

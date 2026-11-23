@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router';
 import { classifyRow, CLASSIFY_COLUMNS, type ClassifiableRow, type RecipeClassification } from '@logic/classify.ts';
 import { dietClassOf } from '@logic/ingredients.ts';
 import { rowPlates } from '@logic/plate.ts';
+import { ruleProductIds } from '@logic/products.ts';
 import { recipeFeatures } from '@logic/preferences.ts';
 import { quizFacets, type PairValue, type StarterVerdict } from '@logic/profile.ts';
 import {
@@ -28,6 +29,7 @@ import { recipeTitle } from '../../lib/recipeText.ts';
 import { missingAppliances, normaliseEquipment } from '@logic/facets.ts';
 import { useSetup } from '../../lib/onboarding.ts';
 import { useSession } from '../../lib/session.tsx';
+import { useGroceryCatalog, useIngredientGroups } from '../../lib/products.ts';
 import { StepBar } from './Step.tsx';
 import { must, supabase } from '../../lib/supabase.ts';
 import type { Recipe, TasteRule } from '../../lib/types.ts';
@@ -62,6 +64,8 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
   const { t } = useI18n();
   const { userId, household } = useSession();
   const catalog = useCatalog();
+  const { data: grocery } = useGroceryCatalog(household!.id);
+  const { data: groups } = useIngredientGroups();
   const navigate = useNavigate();
   const save = useSave();
   const setup = useSetup('quiz');
@@ -80,7 +84,9 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
   const pool = useMemo(() => {
     if (!data || !catalog) return null;
     const diet = data.rules.find((x) => x.kind === 'diet')?.value ?? 'everything';
-    const never = new Set(data.rules.filter((x) => x.kind === 'never').map((x) => x.product_id));
+    // A rule on a group ("Pork (all)") rules out every item of it.
+    const never = new Set(ruleProductIds(data.rules.filter((x) => x.kind === 'never'), groups ?? [],
+      (i) => grocery?.index.ofIngredient(i)?.id));
     const dishes: Dish[] = [];
     for (const r of data.recipes) {
       const cls = dietClassOf(r.recipe_ingredients.map((i) => catalog.find(i.name)));
@@ -98,7 +104,7 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
       });
     }
     return dishes;
-  }, [data, catalog, household?.equipment]);
+  }, [data, catalog, groups, grocery, household?.equipment]);
   const byId = useMemo(() => new Map((pool ?? []).map((d) => [d.id, d])), [pool]);
 
   const [seed] = useState(() => Math.floor(Math.random() * 1e9));

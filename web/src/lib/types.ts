@@ -57,8 +57,10 @@ export interface TasteRule {
   user_id: string;
   kind: 'never' | 'love' | 'diet';
   value: string;
-  /** The catalogue item a never / love rule is about; null only for 'diet'. */
+  /** The catalogue item a never / love rule is about; null for 'diet' and group rules. */
   product_id: string | null;
+  /** Or the ingredient group it is about ("pork": every pork item). */
+  group_key: string | null;
   source: 'manual' | 'learned';
 }
 
