@@ -998,7 +998,7 @@ export const fr: Dictionary = {
     equipment: {
       title: 'Qu’avez-vous en cuisine ?',
       subtitle: 'Pour ne vous proposer que des recettes faisables chez vous.',
-      items: { oven: 'Four', airFryer: 'Air fryer', blender: 'Blender' },
+      items: { oven: 'Four', airFryer: 'Air fryer', microwave: 'Micro-ondes', multicooker: 'Robot cuiseur', blender: 'Blender', handBlender: 'Mixeur plongeant', standMixer: 'Robot pâtissier', steamer: 'Cuit-vapeur', pressureCooker: 'Autocuiseur', slowCooker: 'Mijoteuse', riceCooker: 'Cuiseur à riz', barbecue: 'Barbecue' },
     },
   },
 };

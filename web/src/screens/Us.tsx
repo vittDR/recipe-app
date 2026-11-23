@@ -7,6 +7,7 @@ import type { Mood } from '@logic/deck.ts';
 import { normaliseFilters } from '@logic/deckFilters.ts';
 import { recipeFeatures } from '@logic/preferences.ts';
 import { APPLIANCES } from '@logic/facets.ts';
+import { APPLIANCE_LABEL } from './onboarding/Equipment.tsx';
 import { macrosOf, splitPot, targetsOf } from '@logic/portions.ts';
 import {
   buildProfile, DIET_FEATURE, profileHighlights, signalsFor, type MealRow, type PortionRow, type StyleLevel, type SwipeRow,
@@ -205,7 +206,7 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
             meta={household?.equipment
               ? (household.equipment.length
                 ? APPLIANCES.filter((a) => household.equipment!.includes(a))
-                  .map((a) => t(`ob.equipment.items.${a === 'air fryer' ? 'airFryer' : a}`)).join(', ')
+                  .map((a) => t(`ob.equipment.items.${APPLIANCE_LABEL[a]}`)).join(', ')
                 : t('us.equipmentNone'))
               : t('us.equipmentAll')} />
           </div>

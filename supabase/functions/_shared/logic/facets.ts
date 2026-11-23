@@ -113,12 +113,20 @@ export function matchesFilters(r: FacetRecipe, filters: Iterable<RecipeFilter>):
 }
 
 /**
- * Appliances a household says it has (onboarding, households.equipment): only
- * the ones our recipes call for. A recipe needing one the household lacks is
- * never dealt. No answer (null) means everything is there.
+ * Appliances a household says it has (onboarding, households.equipment), in
+ * the order the screen shows them. Any a recipe needs (its oven, or one of its
+ * special equipment) and the household lacks keeps it out of decks; today the
+ * recipes only call for the oven, the air fryer and the blender. No answer
+ * (null) means everything is there.
  */
-export const APPLIANCES = ['oven', 'air fryer', 'blender'] as const;
+export const APPLIANCES = [
+  'oven', 'air fryer', 'microwave', 'multicooker', 'blender', 'hand blender',
+  'stand mixer', 'steamer', 'pressure cooker', 'slow cooker', 'rice cooker', 'barbecue',
+] as const;
 export type Appliance = (typeof APPLIANCES)[number];
+
+/** Owning one of these does the job of the key: a hand blender blends a soup. */
+const STANDS_IN: Partial<Record<Appliance, Appliance[]>> = { blender: ['hand blender'] };
 
 /** What a recipe needs that the household doesn't have; empty when it can be made. */
 export function missingAppliances(equipment: Equipment | null | undefined, owned: readonly string[] | null | undefined): Appliance[] {
@@ -126,5 +134,5 @@ export function missingAppliances(equipment: Equipment | null | undefined, owned
   const needs: Appliance[] = [];
   if (equipment.oven) needs.push('oven');
   for (const a of APPLIANCES) if (a !== 'oven' && equipment.special.includes(a)) needs.push(a);
-  return needs.filter((a) => !owned.includes(a));
+  return needs.filter((a) => !owned.includes(a) && !(STANDS_IN[a] ?? []).some((x) => owned.includes(x)));
 }

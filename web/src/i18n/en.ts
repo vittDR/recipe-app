@@ -1000,7 +1000,7 @@ export const en = {
     equipment: {
       title: 'What’s in your kitchen?',
       subtitle: 'So we only suggest recipes you can make at home.',
-      items: { oven: 'Oven', airFryer: 'Air fryer', blender: 'Blender' },
+      items: { oven: 'Oven', airFryer: 'Air fryer', microwave: 'Microwave', multicooker: 'Multicooker', blender: 'Blender', handBlender: 'Hand blender', standMixer: 'Stand mixer', steamer: 'Steamer', pressureCooker: 'Pressure cooker', slowCooker: 'Slow cooker', riceCooker: 'Rice cooker', barbecue: 'Barbecue' },
     },
   },
 } as const;
