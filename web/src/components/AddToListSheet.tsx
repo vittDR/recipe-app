@@ -48,10 +48,10 @@ export interface MealForList {
 }
 
 /**
- * "What do you already have?": every ingredient of the meals, one line per
- * product and unit however many meals need it, the ones probably at home
- * (staples, bought recently, already on the list) ticked. Everything left
- * unticked goes to the list, and the meals are remembered as listed.
+ * "What do you need to buy?": every ingredient of the meals, one line per
+ * product and unit however many meals need it, the ones probably missing
+ * ticked (not a staple, not bought recently, not already on the list). Every
+ * ticked line goes to the list, and the meals are remembered as listed.
  */
 export function AddToListSheet({ open, onClose, onAdded, meals }: {
   open: boolean;
@@ -66,8 +66,8 @@ export function AddToListSheet({ open, onClose, onAdded, meals }: {
   const hid = household!.id;
   const { data: catalog } = useGroceryCatalog(hid);
   const [proposals, setProposals] = useState<ListProposal<RecipeIngredient>[][] | null>(null);
-  /** Lines (product + unit) ticked as already at home. */
-  const [have, setHave] = useState<Set<string>>(new Set());
+  /** Lines (product + unit) ticked to go on the list. */
+  const [picked, setPicked] = useState<Set<string>>(new Set());
   const [busy, setBusy] = useState(false);
 
   const linesOf = (all: ListProposal<RecipeIngredient>[][]) => combineProposals(all,
@@ -77,18 +77,18 @@ export function AddToListSheet({ open, onClose, onAdded, meals }: {
     if (!open) return;
     void loadProposalsMany(hid, meals.map((m) => m.ingredients)).then((all) => {
       setProposals(all);
-      setHave(new Set(linesOf(all).filter((l) => !l.add).map((l) => l.key)));
+      setPicked(new Set(linesOf(all).filter((l) => l.add).map((l) => l.key)));
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, hid, meals]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const lines = useMemo(() => (proposals ? linesOf(proposals) : []), [proposals, meals]);
-  const toAdd = useMemo(() => lines.filter((l) => !have.has(l.key)), [lines, have]);
+  const toAdd = useMemo(() => lines.filter((l) => picked.has(l.key)), [lines, picked]);
 
   // Through the list's queue, like every other list change: shown at once,
   // saved in the background. A line already on the list (same item and
-  // unit, not ticked) gets the amount added to it instead of a second line.
+  // unit, not checked off) gets the amount added to it instead of a second line.
   const add = async () => {
     setBusy(true);
     const queue = listQueue(hid);
@@ -148,16 +148,16 @@ export function AddToListSheet({ open, onClose, onAdded, meals }: {
         <div className="list">
           {lines.map((l) => {
             const name = ingredientName(l.ingredient, locale);
-            const owned = have.has(l.key);
+            const on = picked.has(l.key);
             return (
-              <ListRow key={l.key} className={owned ? 'list-row--owned' : undefined} title={name}
+              <ListRow key={l.key} title={name}
                 meta={several ? l.meals.map((k) => meals[k].day).filter(Boolean).join(', ') || undefined : undefined}
                 icon={(
-                  <Checkbox checked={owned} label={name} onChange={(v) => {
-                    const next = new Set(have);
+                  <Checkbox checked={on} label={name} onChange={(v) => {
+                    const next = new Set(picked);
                     if (v) next.add(l.key);
                     else next.delete(l.key);
-                    setHave(next);
+                    setPicked(next);
                   }} />
                 )}
                 value={recipeAmount(l.quantity, l.ingredient.unit) || undefined} />
