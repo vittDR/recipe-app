@@ -53,7 +53,7 @@ export function MatchView({ data }: { data: DeckData }) {
     const [r, ings, p, m, meal] = await Promise.all([
       card ? Promise.resolve({ data: card.recipe, error: null }) : supabase.from('recipes').select('*').eq('id', recipeId).single(),
       supabase.from('recipe_ingredients').select(INGREDIENT_SELECT).eq('recipe_id', recipeId).order('position'),
-      supabase.rpc('my_portion', { p_recipe: recipeId, p_eaters: data.deck.who_eating }),
+      supabase.rpc('my_portion', { p_recipe: recipeId, p_eaters: data.deck.who_eating, p_extra: data.deck.extra_eaters ?? [] }),
       supabase.rpc('deck_matches', { p_deck: data.deck.id }),
       supabase.from('meals').select('id').eq('deck_id', data.deck.id).maybeSingle(),
     ]);

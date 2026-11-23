@@ -43,7 +43,7 @@ export function InviteScreen({ editing }: { editing?: boolean }) {
 
   return (
     <Step back={editing ? true : false} overline={household?.name} title={t('invite.title')} subtitle={t('invite.subtitle')}
-      action={{ label: editing ? t('app.done') : undefined, onClick: () => (editing ? navigate(-1) : navigate('/onboarding/diet')) }}>
+      action={{ label: editing ? t('app.done') : undefined, onClick: () => (editing ? navigate(-1) : navigate('/onboarding/eaters')) }}>
       <div className="stack">
         <div className="invite-code" aria-live="polite" aria-label={code}>
           <div className="code-boxes" aria-hidden>

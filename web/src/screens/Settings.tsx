@@ -3,6 +3,7 @@ import { storeKey } from '@logic/groceries.ts';
 import { productName, type Product } from '@logic/products.ts';
 import { useNavigate } from 'react-router';
 import { Icon } from '../components/Icon.tsx';
+import { EaterList } from '../components/EaterList.tsx';
 import { MemberList } from '../components/Members.tsx';
 import { Button, Chip, confirmSheet, Field, ListRow, Screen, SearchField, Section, Sheet, SheetHeader, Spinner } from '../components/ui.tsx';
 import { useI18n } from '../i18n/index.tsx';
@@ -130,6 +131,10 @@ export function SettingsScreen() {
 
       <Section label={t('settings.members')} flush>
         <MemberList onRemove={(id, name) => void removeMember(id, name)} />
+      </Section>
+
+      <Section label={t('eaters.alsoEat')}>
+        <EaterList />
       </Section>
 
       <Section label={t('settings.groceries')}>

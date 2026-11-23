@@ -13,7 +13,7 @@ const TABS = ['/', '/recipes', '/groceries', '/us'];
 /** Onboarding goes step by step: a later step is "forward" though it's no deeper. */
 const ONBOARDING = [
   '/welcome', '/install', '/signin', '/onboarding/profile', '/onboarding/household', '/join',
-  '/onboarding/invite', '/onboarding/diet', '/onboarding/no-eat', '/onboarding/weeknight', '/onboarding/goals',
+  '/onboarding/invite', '/onboarding/eaters', '/onboarding/diet', '/onboarding/no-eat', '/onboarding/weeknight', '/onboarding/goals',
   '/onboarding/week', '/onboarding/notifications', '/onboarding/equipment', '/onboarding/quiz', '/onboarding/done',
 ];
 

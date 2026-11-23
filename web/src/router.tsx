@@ -9,6 +9,7 @@ import { useSession } from './lib/session.tsx';
 import { AccountScreen } from './screens/onboarding/Account.tsx';
 import { DietScreen } from './screens/onboarding/Diet.tsx';
 import { DoneScreen } from './screens/onboarding/Done.tsx';
+import { EatersScreen } from './screens/onboarding/Eaters.tsx';
 import { EquipmentScreen } from './screens/onboarding/Equipment.tsx';
 import { GoalsScreen } from './screens/onboarding/Goals.tsx';
 import { HouseholdScreen } from './screens/onboarding/Household.tsx';
@@ -121,6 +122,7 @@ export const router = createBrowserRouter([
       { path: '/onboarding/household', element: <HouseholdScreen /> },
       { path: '/onboarding/household/name', element: <HouseholdNameScreen /> },
       { path: '/onboarding/invite', element: <InviteScreen /> },
+      { path: '/onboarding/eaters', element: <EatersScreen /> },
       { path: '/onboarding/diet', element: <DietScreen /> },
       { path: '/onboarding/no-eat', element: <NoEatScreen /> },
       { path: '/onboarding/weeknight', element: <WeeknightScreen /> },
