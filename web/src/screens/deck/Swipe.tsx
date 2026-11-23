@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react';
 import type { ListProposal } from '@logic/groceries.ts';
 import { loadProposalsMany } from '../../components/AddToListSheet.tsx';
 import { Icon } from '../../components/Icon.tsx';
@@ -19,6 +19,9 @@ const SWIPE_UP = 120;
 /** Moved less than this (px) between press and release: a tap, which opens the card. */
 const TAP = 8;
 const SAVE_TIMEOUT_MS = 15_000;
+/** How long a card takes to leave (matches .swipe-card--leaving / --fav in app.css). */
+const LEAVE_MS = 300;
+const FAV_MS = 480;
 const SAVE_RETRIES = 2;
 
 /** Aborts a request that hangs, so a stalled connection fails fast and is retried. */
@@ -50,10 +53,24 @@ function useCardDetails(data: DeckData) {
   }).data;
 }
 
+/** Partners who made this card a must-have, said as "{name} wants this". */
+function useWantedBy(card: DeckCard, data: DeckData): string | null {
+  const { t } = useI18n();
+  const { memberName } = useSession();
+  const who = data.partnerMusts.get(card.recipe_id);
+  if (!who?.length) return null;
+  return who.length === 1
+    ? t('swipe.partnerWants', { name: memberName(who[0]) })
+    : t('swipe.partnersWant', { names: who.map(memberName).join(' & ') });
+}
+
 /** The one glass badge a card may carry. */
 function useBadge(card: DeckCard, data: DeckData) {
   const { t } = useI18n();
   const { userId, memberName } = useSession();
+  const wanted = useWantedBy(card, data);
+  // A partner's must-have says it loudest.
+  if (wanted) return wanted;
   // The deck's tier says it best when it has something to say (logic/deck.ts).
   if (card.reason === 'treat') return t('swipe.treat');
   if (card.reason === 'wildcard') return t('swipe.wildcard');
@@ -69,6 +86,15 @@ function useBadge(card: DeckCard, data: DeckData) {
   return fitsMe ? t('swipe.perfectYou') : null;
 }
 
+/** The badge: a partner's must-have gets the star. */
+function Badge({ card, data, className = '' }: { card: DeckCard; data: DeckData; className?: string }) {
+  const badge = useBadge(card, data);
+  if (!badge) return null;
+  return data.partnerMusts.has(card.recipe_id)
+    ? <span className={`glass-badge glass-badge--star ${className}`}><Icon name="star" filled size={14} />{badge}</span>
+    : <span className={`glass-badge ${className}`}><span className="dot" />{badge}</span>;
+}
+
 function CardFace({ card, data, details, drag }: {
   card: DeckCard; data: DeckData; details: CardDetails | null; drag?: { dx: number; dy: number };
 }) {
@@ -76,7 +102,6 @@ function CardFace({ card, data, details, drag }: {
   const r = card.recipe;
   const portion = data.portions.get(card.recipe_id);
   const plate = portion?.kcal != null ? { kcal: portion.kcal, protein_g: portion.protein_g ?? 0 } : null;
-  const badge = useBadge(card, data);
   const lines = details ? groupIngredients(details.ingredients.get(card.recipe_id) ?? []) : [];
   const home = details?.atHome.get(card.recipe_id);
   const homeCount = home ? lines.filter((g) => g.some((l) => home.has(l.id))).length : 0;
@@ -89,7 +114,7 @@ function CardFace({ card, data, details, drag }: {
     <>
       <div className="swipe-card__photo" style={imageStyle(r.image_path)}>
         {!imageStyle(r.image_path) && <span aria-hidden>{recipeEmoji(r.title, r.tags)}</span>}
-        {badge && <span className="glass-badge"><span className="dot" />{badge}</span>}
+        <Badge card={card} data={data} />
       </div>
       <div className="swipe-card__body">
         <h2 className="t-title-s m-0">{recipeTitle(r, locale)}</h2>
@@ -128,6 +153,26 @@ function Actions({ onDecide, onUndo, canUndo }: { onDecide: (v: Verdict) => void
   );
 }
 
+/** Where a card ends up when it leaves for a verdict: the way it was dragged, or straight out. */
+function offFor(verdict: Verdict, drag: { dx: number; dy: number } | null) {
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  if (verdict === 'must') return { x: drag?.dx ?? 0, y: -h * 1.15, r: 0 };
+  const sign = verdict === 'yes' ? 1 : -1;
+  const x = sign * (w * 1.15 + 120);
+  // Keep the angle of the throw, a little upward when there was none.
+  const y = drag && Math.abs(drag.dx) > 1 ? Math.max(-h / 2, Math.min(h / 2, (drag.dy * x) / drag.dx)) : -40;
+  return { x, y, r: sign * 22 };
+}
+
+const without = (s: Set<string>, id: string) => {
+  const next = new Set(s);
+  next.delete(id);
+  return next;
+};
+
+type Role = 'top' | 'peek' | 'leaving';
+
 export function SwipeView({ data, onDone }: { data: DeckData; onDone: () => Promise<void> }) {
   const { t, locale } = useI18n();
   const { userId, household, partners, memberName, memberColor } = useSession();
@@ -138,14 +183,17 @@ export function SwipeView({ data, onDone }: { data: DeckData; onDone: () => Prom
   };
   const details = useCardDetails(data) ?? null;
   const [swiped, setSwiped] = useState<Set<string>>(() => new Set(data.mySwipes.map((s) => s.recipe_id)));
-  // Choices made on this screen, newest last: what undo takes back.
-  const [history, setHistory] = useState<string[]>([]);
+  // Choices made on this screen, newest last: what undo takes back (and which way it comes back from).
+  const [history, setHistory] = useState<{ id: string; verdict: Verdict }[]>([]);
   const [drag, setDrag] = useState<{ dx: number; dy: number } | null>(null);
-  const [leaving, setLeaving] = useState<{ id: string; dx: number; dy: number } | null>(null);
+  const [leaving, setLeaving] = useState<{ id: string; verdict: Verdict; x: number; y: number; r: number; from: { dx: number; dy: number } } | null>(null);
+  // A card undo is bringing back, flying in from where it left.
+  const [returning, setReturning] = useState<{ id: string; x: number; y: number; r: number } | null>(null);
   const [expanded, setExpanded] = useState(false);
   const [undoing, setUndoing] = useState(false);
-  // The card just passed on, to say why if the person wants to (optional, never blocks swiping).
   const start = useRef<{ x: number; y: number } | null>(null);
+  // Saves that failed: their card is already back, so undo must not take back another.
+  const failed = useRef(new Set<string>());
 
   // Fetch every card's photo up front, so each card shows at once when it comes to the top.
   useEffect(() => {
@@ -155,13 +203,23 @@ export function SwipeView({ data, onDone }: { data: DeckData; onDone: () => Prom
     }
   }, [data.cards]);
 
-  const remaining = data.cards.filter((c) => !swiped.has(c.recipe_id));
+  // A partner's must-haves come first, in deck order.
+  const ordered = useMemo(() => {
+    const wanted = (c: DeckCard) => data.partnerMusts.has(c.recipe_id);
+    return [...data.cards.filter(wanted), ...data.cards.filter((c) => !wanted(c))];
+  }, [data.cards, data.partnerMusts]);
+  // The card on top stays on top when a partner's must-have arrives mid-deck.
+  const [pinned, setPinned] = useState<string | null>(null);
+  let remaining = ordered.filter((c) => !swiped.has(c.recipe_id));
+  const at = remaining.findIndex((c) => c.recipe_id === pinned);
+  if (at > 0) remaining = [remaining[at], ...remaining.slice(0, at), ...remaining.slice(at + 1)];
+  if ((remaining[0]?.recipe_id ?? null) !== pinned) setPinned(remaining[0]?.recipe_id ?? null);
   const top = remaining[0];
   const total = data.cards.length;
   const done = total - remaining.length;
 
-  // Saves run one at a time, in order: the server counts each member's swipes
-  // to tell when they are done, and parallel inserts could each miss the other.
+  // Saves (and undos) run one at a time, in order: the server counts each member's
+  // swipes to tell when they are done, and parallel inserts could each miss the other.
   const queue = useRef<Promise<void>>(Promise.resolve());
 
   /** Saves a verdict in the background; on failure the card comes back. */
@@ -177,12 +235,9 @@ export function SwipeView({ data, onDone }: { data: DeckData; onDone: () => Prom
         await new Promise((r) => window.setTimeout(r, 1000 * 2 ** attempt));
       }
     }).catch(() => {
-      setSwiped((s) => {
-        const next = new Set(s);
-        next.delete(recipeId);
-        return next;
-      });
-      setHistory((h) => h.filter((id) => id !== recipeId));
+      failed.current.add(recipeId);
+      setSwiped((s) => without(s, recipeId));
+      setHistory((h) => h.filter((x) => x.id !== recipeId));
       toast(t('app.error'));
     });
     queue.current = run;
@@ -191,40 +246,60 @@ export function SwipeView({ data, onDone }: { data: DeckData; onDone: () => Prom
 
   const decide = (verdict: Verdict) => {
     if (!top || leaving) return;
-    const off = verdict === 'yes' ? { dx: 600, dy: 0 } : verdict === 'pass' ? { dx: -600, dy: 0 } : { dx: 0, dy: -800 };
+    const from = drag ?? { dx: 0, dy: 0 };
     setExpanded(false);
-    setLeaving({ id: top.recipe_id, ...off });
+    setReturning(null);
+    setLeaving({ id: top.recipe_id, verdict, from, ...offFor(verdict, drag) });
     setDrag(null);
-    navigator.vibrate?.(10);
+    navigator.vibrate?.(verdict === 'must' ? [8, 40, 14] : 10);
+    failed.current.delete(top.recipe_id);
     const saved = save(top.recipe_id, verdict);
     const last = remaining.length === 1;
     window.setTimeout(() => {
       setSwiped((s) => new Set(s).add(top.recipe_id));
-      setHistory((h) => [...h, top.recipe_id]);
+      setHistory((h) => [...h, { id: top.recipe_id, verdict }]);
       setLeaving(null);
       if (last) void saved.then(onDone);
-    }, 220);
+    }, verdict === 'must' ? FAV_MS : LEAVE_MS);
   };
 
   const undo = async () => {
-    if (!history.length || undoing) return;
+    const last = history.at(-1);
+    if (!last || undoing || leaving) return;
     setUndoing(true);
-    await queue.current;
-    const { data: back, error } = await supabase.rpc('undo_swipe', { p_deck: data.deck.id });
+    // Bring it back at once; the server catches up behind.
+    setPinned(last.id);
+    setHistory((h) => h.slice(0, -1));
+    setSwiped((s) => without(s, last.id));
+    setReturning({ id: last.id, ...offFor(last.verdict, null) });
+    navigator.vibrate?.(8);
+    const run = queue.current.then(async (): Promise<{ back: unknown; error: unknown }> => {
+      if (failed.current.has(last.id)) return { back: last.id, error: null };
+      const { data: back, error } = await supabase.rpc('undo_swipe', { p_deck: data.deck.id });
+      return { back, error };
+    }).catch((error: unknown) => ({ back: null, error }));
+    queue.current = run.then(() => undefined);
+    const { back, error } = await run;
     setUndoing(false);
     if (error || !back) {
+      setSwiped((s) => new Set(s).add(last.id));
+      setHistory((h) => [...h, last]);
+      setReturning(null);
       toast(t('app.error'));
       return;
     }
-    setHistory((h) => h.filter((id) => id !== back));
-    setSwiped((s) => {
-      const next = new Set(s);
-      next.delete(back as string);
-      return next;
-    });
+    if (back !== last.id) {
+      // The server took back a different choice (made on another device): show that one instead.
+      setSwiped((s) => without(new Set(s).add(last.id), back as string));
+      setHistory((h) => [...h.filter((x) => x.id !== back), last]);
+      setReturning(null);
+      setPinned(back as string);
+    }
   };
 
   const onPointerDown = (e: ReactPointerEvent) => {
+    if (leaving) return;
+    setReturning(null);
     start.current = { x: e.clientX, y: e.clientY };
     (e.target as Element).setPointerCapture?.(e.pointerId);
   };
@@ -233,6 +308,7 @@ export function SwipeView({ data, onDone }: { data: DeckData; onDone: () => Prom
     setDrag({ dx: e.clientX - start.current.x, dy: e.clientY - start.current.y });
   };
   const onPointerUp = () => {
+    if (!start.current) return;
     start.current = null;
     if (!drag || (Math.abs(drag.dx) < TAP && Math.abs(drag.dy) < TAP)) {
       setDrag(null);
@@ -245,15 +321,38 @@ export function SwipeView({ data, onDone }: { data: DeckData; onDone: () => Prom
     else setDrag(null);
   };
 
-  const transformFor = (id: string) => {
-    if (leaving?.id === id) return `translate(${leaving.dx}px, ${leaving.dy}px) rotate(${leaving.dx / 20}deg)`;
-    if (drag && top?.recipe_id === id) return `translate(${drag.dx}px, ${drag.dy}px) rotate(${drag.dx / 20}deg)`;
+  // How far the top card is towards a verdict, 0..1: the card behind rises with it.
+  const pull = drag ? Math.min(1, Math.max(Math.abs(drag.dx) / SWIPE_X, -drag.dy / SWIPE_UP, 0)) : 0;
+
+  const cardStyle = (id: string, role: Role): CSSProperties | undefined => {
+    if (role === 'leaving' && leaving) {
+      if (leaving.verdict === 'must') {
+        return { '--fx': `${leaving.from.dx}px`, '--fy': `${leaving.from.dy}px`, '--fr': `${leaving.from.dx / 20}deg` } as CSSProperties;
+      }
+      return { transform: `translate(${leaving.x}px, ${leaving.y}px) rotate(${leaving.r}deg)` };
+    }
+    if (role === 'top' && drag && id === top?.recipe_id) {
+      return { transform: `translate(${drag.dx}px, ${drag.dy}px) rotate(${drag.dx / 20}deg)` };
+    }
+    if (role === 'top' && returning?.id === id) {
+      return { '--fx': `${returning.x}px`, '--fy': `${returning.y}px`, '--fr': `${returning.r}deg` } as CSSProperties;
+    }
+    if (role === 'peek' && pull > 0) {
+      return { transform: `translateY(${10 - 6 * pull}px) scale(${0.95 + 0.03 * pull})` };
+    }
     return undefined;
   };
 
   const people = [userId!, ...partners.map((p) => p.user_id)].filter((id) => data.deck.who_eating.includes(id))
     .map((id) => ({ id, name: memberName(id), color: memberColor(id) }));
-  const canUndo = history.length > 0 && !undoing;
+  const canUndo = history.length > 0 && !undoing && !leaving;
+
+  // While a card leaves, the next one is already rising into its place and a new one slides in behind.
+  const stack = remaining.slice(0, leaving ? 3 : 2).map((card, k): [DeckCard, Role] =>
+    [card, k === 0 ? (leaving ? 'leaving' : 'top') : k === 1 && leaving ? 'top' : 'peek']);
+  // The stamp a card leaves with, even when a button sent it.
+  const leaveTilt = leaving && (leaving.verdict === 'must' ? { dx: 0, dy: -SWIPE_UP }
+    : { dx: leaving.verdict === 'yes' ? SWIPE_X : -SWIPE_X, dy: 0 });
 
   return (
     <main className="screen swipe-screen">
@@ -264,23 +363,31 @@ export function SwipeView({ data, onDone }: { data: DeckData; onDone: () => Prom
       </div>
 
       <div className="deck">
-        {remaining.slice(0, 2).reverse().map((card, i, arr) => {
-          const isTop = i === arr.length - 1;
+        {stack.slice().reverse().map(([card, role]) => {
+          const interactive = role === 'top' && !leaving;
+          const classes = ['swipe-card'];
+          if (role === 'peek') classes.push('swipe-card--peek');
+          if (data.partnerMusts.has(card.recipe_id)) classes.push('swipe-card--wanted');
+          if (role === 'top' && drag) classes.push('swipe-card--dragging');
+          if (role === 'top' && returning?.id === card.recipe_id) classes.push('swipe-card--return');
+          if (role === 'leaving') classes.push(leaving?.verdict === 'must' ? 'swipe-card--fav' : 'swipe-card--leaving');
           return (
             <article
               key={card.recipe_id}
-              className={`swipe-card${isTop ? '' : ' swipe-card--peek'}`}
-              style={{
-                transform: transformFor(card.recipe_id),
-                transition: drag && isTop ? 'none' : 'transform 0.25s ease, opacity 0.25s ease',
+              className={classes.join(' ')}
+              style={cardStyle(card.recipe_id, role)}
+              aria-hidden={!interactive}
+              onPointerDown={interactive ? onPointerDown : undefined}
+              onPointerMove={interactive ? onPointerMove : undefined}
+              onPointerUp={interactive ? onPointerUp : undefined}
+              onPointerCancel={interactive ? () => { start.current = null; setDrag(null); } : undefined}
+              onAnimationEnd={(e) => {
+                if (e.target === e.currentTarget && e.animationName === 'card-return') setReturning(null);
               }}
-              aria-hidden={!isTop}
-              onPointerDown={isTop ? onPointerDown : undefined}
-              onPointerMove={isTop ? onPointerMove : undefined}
-              onPointerUp={isTop ? onPointerUp : undefined}
-              onPointerCancel={isTop ? () => { start.current = null; setDrag(null); } : undefined}
             >
-              {isTop && <CardFace card={card} data={data} details={details} drag={drag ?? undefined} />}
+              <CardFace card={card} data={data} details={details}
+                drag={role === 'leaving' ? leaveTilt || undefined : role === 'top' ? drag ?? undefined : undefined} />
+              {role === 'leaving' && leaving?.verdict === 'must' && <span className="swipe-card__shimmer" aria-hidden />}
             </article>
           );
         })}
@@ -313,6 +420,5 @@ export function SwipeView({ data, onDone }: { data: DeckData; onDone: () => Prom
 }
 
 function ExpandedBadge({ card, data }: { card: DeckCard; data: DeckData }) {
-  const badge = useBadge(card, data);
-  return badge ? <span className="glass-badge recipe-photo__badge"><span className="dot" />{badge}</span> : null;
+  return <Badge card={card} data={data} className="recipe-photo__badge" />;
 }
