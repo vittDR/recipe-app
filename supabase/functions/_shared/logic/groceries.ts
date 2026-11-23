@@ -147,7 +147,7 @@ export function proposeListItems<T extends RecipeIngredientLike>(
     const n = ingredient.name.toLowerCase();
     const has = (set: Set<string>) => set.has(n) || (!!ingredient.product_id && set.has(ingredient.product_id));
     if (has(onList)) return { ingredient, add: false, why: 'on_list' as const };
-    if (ingredient.is_staple || (!!ingredient.product_id && stapleSet.has(ingredient.product_id))) return { ingredient, add: false, why: 'staple' as const };
+    if (!!ingredient.product_id && stapleSet.has(ingredient.product_id)) return { ingredient, add: false, why: 'staple' as const };
     if (has(bought)) return { ingredient, add: false, why: 'bought_recently' as const };
     return { ingredient, add: true, why: 'to_buy' as const };
   });
@@ -166,7 +166,11 @@ export interface CombinedProposal<T extends RecipeIngredientLike> {
   meals: number[];
   /** Proposed to buy when any meal's ingredient is. */
   add: boolean;
+  /** Already on the list or bought recently for some meal: leaving it out says nothing about the pantry. */
+  covered: boolean;
 }
+
+const isCovered = (p: ListProposal<RecipeIngredientLike>) => p.why === 'on_list' || p.why === 'bought_recently';
 
 /**
  * Folds several meals' proposals into one line per product and unit, so
@@ -187,12 +191,13 @@ export function combineProposals<T extends RecipeIngredientLike>(
       const q = quantityOf(meal, i);
       const line = lines.get(key);
       if (!line) {
-        lines.set(key, { key, ingredient: i, quantity: q, unit, meals: [meal], add: p.add });
+        lines.set(key, { key, ingredient: i, quantity: q, unit, meals: [meal], add: p.add, covered: isCovered(p) });
         continue;
       }
       if (q !== null) line.quantity = (line.quantity ?? 0) + q;
       if (!line.meals.includes(meal)) line.meals.push(meal);
       line.add ||= p.add;
+      line.covered ||= isCovered(p);
     }
   });
   return [...lines.values()];

@@ -1,6 +1,7 @@
 // Deals tonight's deck for the household: filters on everyone's hard rules,
 // scores the library and stores 12 cards plus each eater's private plate.
-// Body: { who_eating: uuid[], max_minutes?: number, mood?: Mood, filters?: DeckFilters, for_date?: 'YYYY-MM-DD' }
+// Body: { who_eating: uuid[], extra_eaters?: uuid[], max_minutes?: number, mood?: Mood, filters?: DeckFilters, for_date?: 'YYYY-MM-DD' }
+// extra_eaters: household_eaters at the table (absent: all of them).
 
 import { corsHeaders, json, requireMember, serviceClient } from '../_shared/http.ts';
 import { buildDeck, OCCASIONAL_DAYS, ROTATION_DAYS, type CandidateRecipe, type DeckMember, type Diet, type Mood, type RecipeHistory } from '../_shared/logic/deck.ts';
@@ -48,6 +49,9 @@ Deno.serve(async (req) => {
   const householdUsers = (memberRows ?? []).map((m) => m.user_id as string);
   const requested: string[] = Array.isArray(body.who_eating) ? body.who_eating : householdUsers;
   const eaters = [...new Set([userId, ...requested])].filter((u) => householdUsers.includes(u));
+  // People who eat but don't choose: only this household's, and all of them when not said.
+  const { data: eaterRows } = await admin.from('household_eaters').select('id, allergens, never_products').eq('household_id', householdId);
+  const extraEaters = (eaterRows ?? []).filter((e) => !Array.isArray(body.extra_eaters) || body.extra_eaters.includes(e.id));
 
   // Tonight's decks that ended without a match: the new deck leaves their cards
   // out and leans towards what anyone said yes to in them.
@@ -256,6 +260,12 @@ Deno.serve(async (req) => {
     season: seasonOfMonth(Number(forDate.slice(5, 7))),
     // Recipes needing an appliance the household lacks are never dealt (null: never asked).
     appliances: (household?.equipment as string[] | null | undefined) ?? null,
+    // What the extra eaters at the table don't eat rules recipes out, like a member's.
+    extraEaters: extraEaters.map((e) => ({
+      never: (e.never_products ?? []) as string[],
+      allergies: ((e.allergens ?? []) as string[]).flatMap((a) =>
+        (allergenLinks.data ?? []).filter((l) => l.allergen === a).map((l) => l.ingredient as string)),
+    })),
     // Recipe lines are named by catalogue ingredient ("chicken breast"); list
     // lines by their French product name, so compare on the product's ingredient.
     pantry: (pantry.data ?? []).map((p) => {
@@ -267,6 +277,7 @@ Deno.serve(async (req) => {
 
   const { data: deck, error: deckErr } = await admin.from('decks').insert({
     household_id: householdId, for_date: forDate, started_by: userId, who_eating: eaters,
+    extra_eaters: extraEaters.map((e) => e.id),
     max_minutes: maxMinutes, mood, filters,
   }).select('id').single();
   if (deckErr) return json({ error: deckErr.message }, 500);

@@ -35,15 +35,15 @@ export function installVariant(ua = navigator.userAgent, touchPoints = navigator
   return 'safari26';
 }
 
-export type SetupStep = 'diet' | 'no-eat' | 'weeknight' | 'goals' | 'week' | 'notifications' | 'equipment' | 'quiz';
+export type SetupStep = 'diet' | 'no-eat' | 'weeknight' | 'goals' | 'week' | 'notifications' | 'equipment' | 'pantry' | 'quiz';
 
 /**
  * The setup steps in order. Joiners skip the household settings the creator
- * already chose (weeknight, week, equipment); notifications need the installed app.
+ * already chose (weeknight, week, equipment, pantry); notifications need the installed app.
  */
 export function setupSteps(creator: boolean, canPush = pushSupported()): SetupStep[] {
-  const all: SetupStep[] = ['diet', 'no-eat', 'weeknight', 'goals', 'week', 'notifications', 'equipment', 'quiz'];
-  const household: SetupStep[] = ['weeknight', 'week', 'equipment'];
+  const all: SetupStep[] = ['diet', 'no-eat', 'weeknight', 'goals', 'week', 'notifications', 'equipment', 'pantry', 'quiz'];
+  const household: SetupStep[] = ['weeknight', 'week', 'equipment', 'pantry'];
   return all.filter((s) => (creator || !household.includes(s)) && (canPush || s !== 'notifications'));
 }
 

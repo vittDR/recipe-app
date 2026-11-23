@@ -337,3 +337,15 @@ test('no air fryer: air-fryer dishes are never dealt', async () => {
   assert.equal(passesHardFilters(r, [eater], { appliances: ['oven', 'air fryer'] }), true);
   assert.equal(passesHardFilters(r, [eater], {}), true);
 });
+
+test("an extra eater's never items and allergies rule recipes out; no extra eater, no effect", async () => {
+  const { passesHardFilters } = await import('../deck.ts');
+  const r = { id: 'r', title: 'r', tags: [], ingredientNames: ['mushrooms', 'pine nuts'], allIngredients: ['mushrooms', 'pine nuts', 'olive oil'],
+    productIds: ['p-mushroom', 'p-pine'], optionalProductIds: ['p-pine'], totalMin: 20, kcalPerServing: null, proteinGPerServing: null,
+    dietClass: 'veg' as const };
+  const eater = { userId: 'a', dinnerKcal: null, dinnerProteinG: null, never: [], loves: [], diet: 'everything' as const, weights: new Map() };
+  assert.equal(passesHardFilters(r, [eater], {}), true);
+  assert.equal(passesHardFilters(r, [eater], { extraEaters: [{ never: ['p-mushroom'], allergies: [] }] }), false);
+  assert.equal(passesHardFilters(r, [eater], { extraEaters: [{ never: ['p-pine'], allergies: [] }] }), true, 'an optional line can be left out');
+  assert.equal(passesHardFilters(r, [eater], { extraEaters: [{ never: [], allergies: ['pine nuts'] }] }), false, 'allergies count optional lines too');
+});

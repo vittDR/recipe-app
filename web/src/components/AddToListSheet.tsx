@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { AT_HOME_DAYS, combineProposals, mergeTarget, proposeListItems, scaleQuantity, type ListProposal } from '@logic/groceries.ts';
-import { sectionOf } from '@logic/products.ts';
+import { productName, sectionOf } from '@logic/products.ts';
 import { useI18n } from '../i18n/index.tsx';
 import { listQueue, withQueue } from '../lib/listQueue.ts';
 import { ingredientName, useGroceryCatalog } from '../lib/products.ts';
@@ -131,6 +131,7 @@ export function AddToListSheet({ open, onClose, onAdded, meals }: {
       mealIds.length > 0 ? supabase.from('meals').update({ listed_at: at }).in('id', mealIds) : Promise.resolve({ error: null }),
     ]);
     setBusy(false);
+    void learnStaples();
     if (listed.error && toAdd.length === 0) {
       toast(t('app.error'));
       return;
@@ -138,6 +139,22 @@ export function AddToListSheet({ open, onClose, onAdded, meals }: {
     if (toAdd.length > 0) toast(t('addToList.added'));
     onClose();
     onAdded?.();
+  };
+
+  // "Toujours à la maison" learns: an item left out (not on the list, not
+  // bought recently) counts once; left out 3 times in a row, it becomes a
+  // staple. Adding it resets its count.
+  const learnStaples = async () => {
+    const ids = (ls: typeof lines) => [...new Set(ls.flatMap((l) => (l.ingredient.product_id ? [l.ingredient.product_id] : [])))];
+    const added = ids(toAdd);
+    const skipped = ids(lines.filter((l) => !picked.has(l.key) && !l.covered)).filter((id) => !added.includes(id));
+    if (added.length === 0 && skipped.length === 0) return;
+    const { data } = await supabase.rpc('record_list_choices', { p_added: added, p_skipped: skipped });
+    const names = ((data ?? []) as string[]).flatMap((id) => {
+      const p = catalog?.index.get(id);
+      return p ? [productName(p, locale)] : [];
+    });
+    if (names.length > 0) toast(t('addToList.learned', { items: new Intl.ListFormat(locale).format(names) }));
   };
 
   const several = meals.length > 1;

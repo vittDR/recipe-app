@@ -29,7 +29,9 @@ test('proposes what to buy', () => {
   const now = new Date('2026-01-10T12:00:00Z');
   const ings = [
     { name: 'spinach', quantity: 150, unit: 'g', aisle: 'produce' as const, is_staple: false },
-    { name: 'olive oil', quantity: 1, unit: 'tbsp', aisle: 'pantry' as const, is_staple: true },
+    { name: 'olive oil', product_id: 'p-oil', quantity: 1, unit: 'tbsp', aisle: 'pantry' as const, is_staple: true },
+    // The recipe's own flag no longer counts: only the household's staples do.
+    { name: 'cumin', quantity: 1, unit: 'tsp', aisle: 'pantry' as const, is_staple: true },
     { name: 'lemon', quantity: 1, unit: 'piece', aisle: 'produce' as const, is_staple: false },
     { name: 'rice', quantity: 150, unit: 'g', aisle: 'pantry' as const, is_staple: false },
     { name: 'eggs', quantity: 2, unit: 'piece', aisle: 'dairy_eggs' as const, is_staple: false },
@@ -39,10 +41,11 @@ test('proposes what to buy', () => {
     item('rice', { checked_at: '2025-12-01T00:00:00Z' }),
     item('eggs'),
   ];
-  const p = proposeListItems(ings, list, [], now);
+  const p = proposeListItems(ings, list, ['p-oil'], now);
   assert.deepEqual(p.map((x) => [x.ingredient.name, x.add, x.why]), [
     ['spinach', true, 'to_buy'],
     ['olive oil', false, 'staple'],
+    ['cumin', true, 'to_buy'],
     ['lemon', false, 'bought_recently'],
     ['rice', true, 'to_buy'],
     ['eggs', false, 'on_list'],
@@ -146,4 +149,6 @@ test('several meals: one line per product and unit, amounts added up', () => {
     ['p-onion|g', 400, [1], true],
   ]);
   assert.equal(lines[0].ingredient.name, 'onion');
+  // Bought recently for one meal: leaving basil out says nothing about the pantry. Salt does.
+  assert.deepEqual(lines.map((l) => l.covered), [false, true, false, false]);
 });

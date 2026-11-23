@@ -17,7 +17,7 @@ import type { TasteRule } from '../../lib/types.ts';
 import { Step } from './Step.tsx';
 
 /** The allergens offered, in this order (the EU's 14 minus the rare ones). */
-const ALLERGENS = ['nuts', 'peanuts', 'milk', 'gluten', 'eggs', 'fish', 'crustaceans', 'soy', 'sesame'];
+export const ALLERGENS = ['nuts', 'peanuts', 'milk', 'gluten', 'eggs', 'fish', 'crustaceans', 'soy', 'sesame'];
 /** Groups offered as one-tap suggestions, before the items. */
 const SUGGESTED_GROUPS = ['pork', 'red_meat', 'cheese', 'cow_milk', 'fish', 'seafood', 'mushrooms', 'chilli'];
 /** One-tap suggestions; only those in the catalogue show. */

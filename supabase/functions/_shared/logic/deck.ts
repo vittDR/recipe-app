@@ -150,6 +150,12 @@ export interface DeckOptions {
   season?: Season;
   /** Appliances the household has (facets.ts APPLIANCES); null or absent: all of them. */
   appliances?: string[] | null;
+  /**
+   * People at the table who don't choose (household_eaters): what they don't
+   * eat rules recipes out like a member's never items and allergies. They
+   * don't swipe, so they have no taste or goals in the scoring.
+   */
+  extraEaters?: { never: string[]; allergies: string[] }[];
   random?: () => number;
 }
 
@@ -209,14 +215,16 @@ export function passesHardFilters(recipe: CandidateRecipe, members: DeckMember[]
   if (opts.filters && !(recipe.facets ? matchesDeckFilters(recipe.facets, opts.filters) : filterCount(opts.filters) === 0)) return false;
   // The recipe as it's still made when every optional line is left out.
   const essential = recipe.productIds?.filter((id) => !recipe.optionalProductIds?.includes(id));
+  const names = recipe.allIngredients ?? recipe.ingredientNames;
   for (const m of members) {
     if (m.diet === 'vegetarian' && recipe.dietClass !== 'veg') return false;
     if (m.diet === 'pescatarian' && recipe.dietClass === 'meat') return false;
     if (usesProduct(essential, m.never)) return false;
-    if (m.allergies?.length) {
-      const names = recipe.allIngredients ?? recipe.ingredientNames;
-      if (names.some((n) => m.allergies!.includes(n.toLowerCase()))) return false;
-    }
+    if (m.allergies?.length && names.some((n) => m.allergies!.includes(n.toLowerCase()))) return false;
+  }
+  for (const e of opts.extraEaters ?? []) {
+    if (usesProduct(essential, e.never)) return false;
+    if (e.allergies.length && names.some((n) => e.allergies.includes(n.toLowerCase()))) return false;
   }
   return true;
 }

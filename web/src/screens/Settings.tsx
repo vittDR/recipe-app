@@ -3,6 +3,7 @@ import { storeKey } from '@logic/groceries.ts';
 import { productName, type Product } from '@logic/products.ts';
 import { useNavigate } from 'react-router';
 import { Icon } from '../components/Icon.tsx';
+import { EaterList } from '../components/EaterList.tsx';
 import { MemberList } from '../components/Members.tsx';
 import { Button, Chip, confirmSheet, Field, ListRow, Screen, SearchField, Section, Sheet, SheetHeader, Spinner } from '../components/ui.tsx';
 import { useI18n } from '../i18n/index.tsx';
@@ -132,6 +133,10 @@ export function SettingsScreen() {
         <MemberList onRemove={(id, name) => void removeMember(id, name)} />
       </Section>
 
+      <Section label={t('eaters.alsoEat')}>
+        <EaterList />
+      </Section>
+
       <Section label={t('settings.groceries')}>
         <div className="list">
           <ListRow tile="sage" icon={<Icon name="home" size={18} />} title={t('settings.staplesRow')}
@@ -168,6 +173,9 @@ export function SettingsScreen() {
         <SheetHeader title={t('settings.staplesRow')} subtitle={t('settings.staplesHint')}
           action={<Button small variant="text" onClick={() => setOpen(null)}>{t('app.done')}</Button>} />
         <div className="stack">
+          <div className="list">
+            <ListRow to="/us/pantry" title={t('settings.staplesByGroup')} chevron />
+          </div>
           <SearchField value={stapleQuery} onChange={setStapleQuery} placeholder={t('tastes.addPlaceholder')} label={t('settings.staples')}
             onEnter={() => stapleResults[0] && void addStaple(stapleResults[0])} />
           {stapleQuery.trim() && stapleResults.length > 0 && (

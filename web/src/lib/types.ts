@@ -125,6 +125,8 @@ export interface Deck {
   for_date: string;
   started_by: string;
   who_eating: string[];
+  /** Extra eaters at the table (household_eaters ids). */
+  extra_eaters: string[];
   max_minutes: number | null;
   mood: Mood;
   /** Advanced filters (logic/deckFilters.ts); {} when none. */
