@@ -128,13 +128,14 @@ dishes** of its own, so the deck can always keep 3 of 12 cards for the season.
 
 ## Status (November 2026)
 
-Our own library is **504 recipes**: the 10 first AI recipes, 290 written from
-this plan, 100 quick, healthy dishes, 45 weeknight chicken dinners, and 59
-weeknight plates written to the weeknight rules.
+Our own library is **704 recipes**: the 10 first AI recipes, 290 written from
+this plan, 100 quick, healthy dishes, 45 weeknight chicken dinners, 59
+weeknight plates written to the weeknight rules, and 200 vegetarian weeknight
+dinners (86 of them vegan).
 [CATALOG-FIT-2026-11.md](CATALOG-FIT-2026-11.md) lists which recipes meet
 the rules and why the others don't.
 
-- **Meet all six weeknight rules: 240 of 504** (it was 51 of 400). 95
+- **Meet all six weeknight rules: 440 of 704** (it was 51 of 400). 95
   recipes that failed one rule were reworked (stand-ins for specialty
   ingredients, more protein and less base, more vegetables, shorter
   marinades), 31 of the chicken dinners were lightly reworked the same way,
@@ -144,11 +145,14 @@ the rules and why the others don't.
   After a light rework, 40 meet all six rules. The other 5 would become
   different dishes (pide, ají de gallina, yu xiang aubergine, anticuchos,
   poulet au vinaigre).
-- **Healthy: 422 of 504 (84%).** Healthy and 40 min or less in total: 328.
-- **High protein: 271 of 504** (it was 120 of 400).
+- **Healthy: 622 of 704 (88%).** Healthy and 40 min or less in total: 528.
+- **High protein: 471 of 704** (it was 120 of 400).
 - **The 59 weeknight plates** take 17 to 36 min and spread across everyday
   carbs: rice, noodles, pasta and gnocchi, potatoes and sweet potatoes,
   couscous, bulgur and polenta, wraps, pitta and bread, and tinned beans.
-- **Seasons:** 417 of the 504 are all year (83%). The others are the key
-  seasonal dishes: 22 spring, 28 summer, 23 autumn and 30 winter.
-- **Illustrations:** all 504 have one.
+- **Seasons:** 611 of the 704 are all year (87%). The others are the key
+  seasonal dishes: 23 spring, 30 summer, 25 autumn and 33 winter.
+- **Vegetarian: 305 of 704, 97 of them vegan.** The 200 vegetarian dinners
+  take 10 to 40 min and meet all six rules, with eggs, tofu, soy mince, seitan,
+  paneer, halloumi, skyr, cottage cheese or edamame for the protein.
+- **Illustrations:** all 704 have one.

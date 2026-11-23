@@ -505,6 +505,21 @@ values
   ('pizza dough', 'pâte à pizza', 'pasta per pizza', '{"ready-made pizza dough","pizza base dough"}', 'dairy_eggs', false, 265, 7.5, 260, 'veg')
 on conflict (name) do nothing;
 
+-- For the quick, healthy weeknight plates.
+insert into public.ingredient_catalog
+  (name, name_fr, name_it, aliases, default_aisle, is_staple, kcal_100g, protein_100g, grams_per_unit, diet_class)
+values
+  ('black-eyed beans', 'haricots cornille', 'fagioli dall''occhio', '{"black-eyed peas","cowpeas","niébé"}', 'pantry', false, 110, 7.3, 240, 'veg'),
+  ('cottage cheese', 'cottage cheese', 'fiocchi di latte', '{"fromage cottage","lor"}', 'dairy_eggs', false, 98, 11, 200, 'veg'),
+  ('light coconut milk', 'lait de coco allégé', 'latte di cocco light', '{"reduced-fat coconut milk","lait de coco léger"}', 'pantry', false, 75, 0.7, 400, 'veg'),
+  ('seitan', 'seitan', 'seitan', '{"wheat gluten","seitan nature"}', 'dairy_eggs', false, 130, 24, 250, 'veg'),
+  ('skyr', 'skyr', 'skyr', '{"plain skyr","icelandic yogurt"}', 'dairy_eggs', false, 63, 11, 150, 'veg'),
+  ('smoked tofu', 'tofu fumé', 'tofu affumicato', '{"tofu fumé"}', 'dairy_eggs', false, 165, 17, 200, 'veg'),
+  ('soy milk', 'boisson au soja', 'latte di soia', '{"soya milk","lait de soja","unsweetened soy milk"}', 'pantry', false, 39, 3.6, null, 'veg'),
+  ('soy mince', 'haché végétal', 'macinato di soia', '{"haché végétal","vegetarian mince","plant-based mince"}', 'dairy_eggs', false, 180, 18, null, 'veg'),
+  ('za''atar', 'zaatar', 'za''atar', '{"zaatar","zahtar"}', 'spices', true, 330, 10, null, 'veg')
+on conflict (name) do nothing;
+
 -- Exotic: not sold in most French supermarkets, so it needs an Asian or
 -- specialty shop (or online). Recipes keep the real ingredient; the flag
 -- drives the "Everyday ingredients" filter. Mirin is sold in supermarkets.
@@ -885,7 +900,16 @@ from (values
   ('khmeli suneli', 'b3496264-4e58-5e75-aadd-07d932d6e838'::uuid),
   ('marsala', 'ebd84e02-2a9d-5689-b883-907e04231082'::uuid),
   ('pineapple', '249755a1-9945-51c6-a427-3a3d437d66a4'::uuid),
-  ('pizza dough', 'dfcecdd7-c5cd-5bb9-b3b1-e99929307755'::uuid)
+  ('pizza dough', 'dfcecdd7-c5cd-5bb9-b3b1-e99929307755'::uuid),
+  ('black-eyed beans', '60027ca5-54a2-5e47-a485-2f0e343e8e5a'::uuid),
+  ('cottage cheese', '370004b8-977c-5ccb-8dec-cf7410f50f67'::uuid),
+  ('light coconut milk', '549dde19-0e30-5937-9829-5b0e56d0e1e6'::uuid),
+  ('seitan', 'ded78a10-a9a6-5084-9a36-3b256273f052'::uuid),
+  ('skyr', 'b083c1d4-b48c-5a30-a9d8-9ff5074c5c3e'::uuid),
+  ('smoked tofu', 'ac3f7186-70a3-5f41-9d48-4294d451686f'::uuid),
+  ('soy milk', 'd9135824-d114-538f-8220-17d3972b3371'::uuid),
+  ('soy mince', 'ca3472f1-98ea-5cbf-9d79-1d89728ce565'::uuid),
+  ('za''atar', '8e34cc00-b189-5544-877e-d41a2b84659c'::uuid)
 ) as v(name, id)
 where c.name = v.name and c.id <> v.id;
 
@@ -1354,7 +1378,16 @@ from (values
   ('khmeli suneli', 8, 50, 25, '{}'),
   ('marsala', 0, 12, 0, '{liquid}'),
   ('pineapple', 0.1, 13.1, 1.4, '{}'),
-  ('pizza dough', 4.5, 48, 2.2, '{starch:bread}')
+  ('pizza dough', 4.5, 48, 2.2, '{starch:bread}'),
+  ('black-eyed beans', 0.6, 19, 5, '{protein:legumes}'),
+  ('cottage cheese', 4.3, 3.4, 0, '{protein:dairy}'),
+  ('light coconut milk', 7, 2.2, 0, '{sauce:coconut,liquid}'),
+  ('seitan', 2, 5, 0.5, '{protein:soy}'),
+  ('skyr', 0.2, 4, 0, '{protein:dairy,sauce:yogurt}'),
+  ('smoked tofu', 10, 2, 1, '{protein:soy}'),
+  ('soy milk', 2, 1, 0.6, '{liquid}'),
+  ('soy mince', 9, 5, 4, '{protein:soy}'),
+  ('za''atar', 18, 35, 15, '{}')
 ) as v(name, fat, carbs, fiber, traits)
 where c.name = v.name
   and (c.fat_100g, c.carbs_100g, c.fiber_100g, c.traits) is distinct from (v.fat::real, v.carbs::real, v.fiber::real, v.traits::text[]);
@@ -1404,7 +1437,9 @@ from (values
   ('gluten', 'soba noodles'), ('fish', 'sole'), ('molluscs', 'squid'), ('sesame', 'tahini'),
   ('fish', 'trout'), ('fish', 'tuna steak'), ('gluten', 'udon noodles'), ('nuts', 'walnuts'),
   ('soy', 'tempeh'),
-  ('sulphites', 'marsala'), ('gluten', 'pizza dough')
+  ('sulphites', 'marsala'), ('gluten', 'pizza dough'),
+  ('milk', 'cottage cheese'), ('gluten', 'seitan'), ('milk', 'skyr'), ('soy', 'smoked tofu'),
+  ('soy', 'soy milk'), ('soy', 'soy mince'), ('sesame', 'za''atar')
 ) as v(allergen, ingredient)
 join public.ingredient_catalog c on c.name = v.ingredient
 on conflict do nothing;
