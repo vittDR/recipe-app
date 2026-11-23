@@ -54,3 +54,23 @@ test('several filters must all match', () => {
   assert.ok(!matchesFilters(r, ['veggie', 'high_protein']));
   assert.ok(matchesFilters(r, []));
 });
+
+test('a recipe needing an appliance the household lacks is missing it; no answer means all are there', async () => {
+  const { missingAppliances } = await import('../facets.ts');
+  const airFryer = { pots: 1, oven: false, special: ['air fryer'] };
+  const gratin = { pots: 2, oven: true, special: [] };
+  assert.deepEqual(missingAppliances(airFryer, ['oven']), ['air fryer']);
+  assert.deepEqual(missingAppliances(airFryer, ['air fryer']), []);
+  assert.deepEqual(missingAppliances(gratin, ['air fryer', 'blender']), ['oven']);
+  assert.deepEqual(missingAppliances(gratin, null), []);
+  assert.deepEqual(missingAppliances({ pots: 1, oven: false, special: ['rolling pin'] }, []), []);
+});
+
+test('a hand blender does for a blender; appliances no recipe needs filter nothing', async () => {
+  const { missingAppliances } = await import('../facets.ts');
+  const soup = { pots: 1, oven: false, special: ['blender'] };
+  assert.deepEqual(missingAppliances(soup, ['hand blender']), []);
+  assert.deepEqual(missingAppliances(soup, ['microwave']), ['blender']);
+  assert.deepEqual(missingAppliances({ pots: 1, oven: false, special: ['rice cooker'] }, ['oven']), ['rice cooker']);
+  assert.deepEqual(missingAppliances({ pots: 1, oven: false, special: [] }, []), []);
+});

@@ -5,6 +5,7 @@
 import { corsHeaders, json, requireMember, serviceClient } from '../_shared/http.ts';
 import { buildDeck, OCCASIONAL_DAYS, ROTATION_DAYS, type CandidateRecipe, type DeckMember, type Diet, type Mood, type RecipeHistory } from '../_shared/logic/deck.ts';
 import { deckFacets, normaliseFilters } from '../_shared/logic/deckFilters.ts';
+import { normaliseEquipment } from '../_shared/logic/facets.ts';
 import { classifyRow, CLASSIFY_COLUMNS, isHealthy, seasonOfMonth, storedClassification, type ClassifiableRow } from '../_shared/logic/classify.ts';
 import { Catalog, type CatalogEntry } from '../_shared/logic/ingredients.ts';
 import { recipeFeatures } from '../_shared/logic/preferences.ts';
@@ -32,7 +33,7 @@ Deno.serve(async (req) => {
   const maxMinutes = Number.isFinite(body.max_minutes) && body.max_minutes > 0 ? Math.round(body.max_minutes) : null;
   const filters = normaliseFilters(body.filters);
 
-  const { data: household } = await admin.from('households').select('timezone').eq('id', householdId).single();
+  const { data: household } = await admin.from('households').select('timezone, equipment').eq('id', householdId).single();
   const forDate: string = /^\d{4}-\d{2}-\d{2}$/.test(body.for_date ?? '')
     ? body.for_date
     : new Intl.DateTimeFormat('en-CA', { timeZone: household?.timezone ?? 'Europe/Paris' }).format(new Date());
@@ -139,6 +140,7 @@ Deno.serve(async (req) => {
       optionalProductIds: optional.flatMap((i) => (i.product_id && !required.some((x) => x.product_id === i.product_id) ? [i.product_id] : [])),
       dietClass: classes.includes('meat') ? 'meat' : classes.includes('fish') ? 'fish' : 'veg',
       totalMin: r.total_min,
+      equipment: normaliseEquipment(r.equipment),
       ...macrosOf(r, classification.nutrition),
       features,
       healthy: isHealthy(r.tags ?? [], classification),
@@ -252,6 +254,8 @@ Deno.serve(async (req) => {
     recentlyDealt,
     // The evening's season (from its month, in the household's time zone): dishes of the season come first.
     season: seasonOfMonth(Number(forDate.slice(5, 7))),
+    // Recipes needing an appliance the household lacks are never dealt (null: never asked).
+    appliances: (household?.equipment as string[] | null | undefined) ?? null,
     // Recipe lines are named by catalogue ingredient ("chicken breast"); list
     // lines by their French product name, so compare on the product's ingredient.
     pantry: (pantry.data ?? []).map((p) => {

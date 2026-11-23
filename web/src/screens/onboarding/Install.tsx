@@ -1,7 +1,8 @@
 // 02 Install: add the app to the Home Screen before creating the account (on
 // iOS the Home Screen app doesn't share Safari's storage, so a session made in
 // Safari would be lost). One variant per browser (lib/onboarding.ts); a pointer
-// "Ici" bobs on the button to tap. "Continuer dans le navigateur" skips it.
+// "Ici" bobs at the edge of the page, next to the browser's own button to
+// tap. "Continuer dans le navigateur" skips it.
 import type { ReactNode } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { Icon, type IconName } from '../../components/Icon.tsx';
@@ -93,13 +94,6 @@ export function InstallScreen() {
 
   return (
     <main className={`screen screen--plain install install--${variant}`}>
-      {variant === 'chrome' && (
-        <div className="install__chrome-bar" aria-hidden>
-          <span className="install__address"><Icon name="lock" size={14} /> {APP_HOST}</span>
-          <span className="install__chrome-share"><Icon name="share" size={18} /></span>
-          <Pointer className="install__pointer--top" />
-        </div>
-      )}
       <AppIcon />
       <h1 className="install__title">{t('ob.install.title')}</h1>
       <p className="install__subtitle">{t('ob.install.subtitle')}</p>
@@ -110,25 +104,9 @@ export function InstallScreen() {
       </ol>
       {browser}
       <div className="spacer" />
-      {variant === 'safari26' && (
-        <div className="install__safari-bar" aria-hidden>
-          <span className="install__round"><Icon name="back" size={18} /></span>
-          <span className="install__address install__address--bottom">
-            <span className="install__ring"><Icon name="lines" size={18} /></span>{APP_HOST}
-          </span>
-          <span className="install__round"><Icon name="copy" size={18} /></span>
-          <Pointer className="install__pointer--s26" />
-        </div>
-      )}
-      {variant === 'safari18' && (
-        <div className="install__toolbar" aria-hidden>
-          <Icon name="back" size={20} />
-          <Icon name="chevron" size={20} />
-          <span className="install__toolbar-share"><Icon name="share" size={20} /><Pointer className="install__pointer--s18" /></span>
-          <Icon name="book" size={20} />
-          <Icon name="copy" size={20} />
-        </div>
-      )}
+      {/* Points at the browser's own button, just outside the page: the share button at the
+          top right in Chrome, at the bottom in Safari 18, the page menu in Safari 26's bar. */}
+      <Pointer className={`install__pointer--${variant}`} />
     </main>
   );
 }

@@ -46,8 +46,14 @@ export function detectLocale(): Locale {
   } catch {
     // storage unavailable
   }
-  // French first: English only for people who chose it.
-  return 'fr';
+  // Otherwise the browser's language: the first of its preferred languages we
+  // have, and English when it prefers none of them.
+  const preferred = typeof navigator === 'undefined' ? [] : navigator.languages?.length ? navigator.languages : [navigator.language];
+  for (const tag of preferred) {
+    const base = tag?.slice(0, 2).toLowerCase();
+    if (base === 'fr' || base === 'en') return base;
+  }
+  return 'en';
 }
 
 interface I18n {
@@ -63,7 +69,12 @@ interface I18n {
 const I18nContext = createContext<I18n | null>(null);
 
 export function I18nProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>(detectLocale);
+  const [locale, setLocaleState] = useState<Locale>(() => {
+    const l = detectLocale();
+    // The page's language from the first render, for screen readers and hyphenation.
+    if (typeof document !== 'undefined') document.documentElement.lang = l;
+    return l;
+  });
 
   const setLocale = useCallback((l: Locale) => {
     setLocaleState(l);

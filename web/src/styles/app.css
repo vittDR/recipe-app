@@ -3222,70 +3222,6 @@ body:has(.moment) .tabbar {
   margin-top: 2px;
 }
 
-.quiz-question {
-  text-align: center;
-}
-
-/* Taste quiz: four "how often" answers, two by two. */
-.quiz-answers {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-3);
-}
-
-.quiz-answers .btn {
-  min-height: 48px;
-  padding: 0 var(--space-4);
-  font-weight: 600;
-}
-
-.quiz-answers .btn svg {
-  flex: none;
-  color: var(--accent);
-}
-
-/* "Which one?": two dishes side by side, each the button. */
-.quiz-pair {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-4);
-}
-
-.quiz-pair__card {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  padding: 0;
-  border: 2px solid transparent;
-  border-radius: var(--radius-2xl);
-  background: var(--surface);
-  box-shadow: var(--shadow-raised);
-  overflow: hidden;
-  text-align: left;
-  color: inherit;
-  font: inherit;
-  cursor: pointer;
-}
-
-.quiz-pair__card:active {
-  border-color: var(--accent);
-}
-
-.quiz-pair__card .swipe-card__photo {
-  flex: none;
-  aspect-ratio: 4 / 5;
-  font-size: 48px;
-}
-
-.quiz-pair__card .swipe-card__body {
-  flex: 1;
-}
-
-.quiz-pair__card .swipe-card__body {
-  gap: var(--space-3);
-  padding: var(--space-4);
-}
-
 /* How often, by kind of plate: three levels on one line each, the longest label ("De temps en temps") widest. */
 .style-rows .segmented button {
   flex: 1 1 auto;
@@ -3297,12 +3233,6 @@ body:has(.moment) .tabbar {
   .style-rows .segmented button {
     padding: 0 var(--space-1);
   }
-}
-
-.quiz-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
 /* Deck filters: calories and protein per serving, side by side, labelled like sections. */
@@ -3371,6 +3301,18 @@ body:has(.moment) .tabbar {
   background: var(--accent);
 }
 
+/* The segment in progress, filled part way. */
+.ob__progress span {
+  overflow: hidden;
+}
+
+.ob__progress span i {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.25s ease;
+}
+
 .ob__skip {
   border: 0;
   background: none;
@@ -3422,8 +3364,35 @@ body:has(.moment) .tabbar {
   color: var(--muted);
 }
 
+/* Cards on the onboarding screens get a hairline edge in dark mode, where
+   the card and the page are close in colour and shadows don't show. */
+:root {
+  --ob-edge: transparent;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ob-edge: var(--line-strong);
+  }
+}
+
+:root[data-theme="dark"] {
+  --ob-edge: var(--line-strong);
+}
+
+.ob .card,
+.ob .list,
+.ob .code-box {
+  box-shadow: var(--shadow-card), inset 0 0 0 1px var(--ob-edge);
+}
+
 .ob-choice {
   padding: var(--space-5);
+}
+
+/* Two choice cards in a row are separate cards, not rows of one list. */
+.ob-choice.list-row + .ob-choice.list-row {
+  box-shadow: var(--shadow-card), inset 0 0 0 1px var(--ob-edge);
 }
 
 .link-btn {
@@ -3453,26 +3422,15 @@ body:has(.moment) .tabbar {
   color: var(--ink);
 }
 
-.option[aria-checked='true'] {
+.ob .option[aria-checked='true'] {
   box-shadow: 0 0 0 2px var(--accent), var(--shadow-card);
 }
 
-.option__plate {
-  width: 52px;
-  height: 52px;
-  border-radius: 14px;
-  overflow: hidden;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.option__plate img {
-  width: 64px;
-  height: 64px;
-  object-fit: cover;
-  object-position: top;
+/* The diet's icon, in a tinted tile. */
+.option .icon-tile {
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
 }
 
 .option__text {
@@ -3529,11 +3487,11 @@ body:has(.moment) .tabbar {
   font-weight: 700;
 }
 
-.code-box--current {
+.ob .code-box--current {
   box-shadow: inset 0 0 0 2px var(--accent);
 }
 
-.code-box--error {
+.ob .code-box--error {
   box-shadow: inset 0 0 0 2px var(--danger);
 }
 
@@ -3573,8 +3531,8 @@ body:has(.moment) .tabbar {
   box-shadow: inset 0 0 0 2px var(--accent);
 }
 
-.code-entry:not(:focus-within) .code-box--current:not(.code-box--error) {
-  box-shadow: var(--shadow-card);
+.ob .code-entry:not(:focus-within) .code-box--current:not(.code-box--error) {
+  box-shadow: var(--shadow-card), inset 0 0 0 1px var(--ob-edge);
 }
 
 /* Goals: a switch per macro, a slider once it's on. */
@@ -3606,10 +3564,24 @@ body:has(.moment) .tabbar {
   color: var(--muted);
 }
 
-.macro__value b {
+/* The number is a field: it looks like text until tapped, then it's typed into. */
+.macro__input {
+  min-width: 2ch;
+  padding: 0 2px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink);
   font: var(--t-title-m);
   font-weight: 700;
-  color: var(--ink);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.macro__input:focus {
+  outline: none;
+  background: var(--accent-soft);
+  box-shadow: inset 0 -2px 0 var(--accent);
 }
 
 .macro__range {
@@ -3717,46 +3689,16 @@ body:has(.moment) .tabbar {
   font: var(--t-caption);
 }
 
-/* Fanned illustration cards (account, done). */
-.account__art,
-.done__art {
+/* The deal deck's three cards (Ce soir), centred in the room above the title. */
+.ob-fan {
   position: relative;
-  height: 220px;
-  margin: var(--space-8) 0 var(--space-6);
+  height: 250px;
+  margin: var(--space-6) 0 var(--space-4);
 }
 
-.account__card,
-.done__card {
-  position: absolute;
-  left: 50%;
-  top: 10px;
-  width: 150px;
-  height: 135px;
-  margin-left: -75px;
-  border-radius: 24px;
-  overflow: hidden;
-  box-shadow: var(--shadow-raised);
-}
-
-.account__card img,
-.done__card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  /* The top of the illustration only: its placeholder bars stay out. */
-  object-position: top;
-}
-
-.account__card--left,
-.done__card--left {
-  transform: translateX(-90px) rotate(-12deg);
-  top: 26px;
-}
-
-.account__card--right,
-.done__card--right {
-  transform: translateX(90px) rotate(10deg);
-  top: 26px;
+.ob-fan .fan {
+  top: 50%;
+  margin-top: -95px;
 }
 
 .account__title,
@@ -3891,117 +3833,46 @@ body:has(.moment) .tabbar {
   border: 5px solid transparent;
 }
 
-.install__pointer--s26,
-.install__pointer--s18 {
-  bottom: calc(100% + 8px);
+/* Pinned to the page's edge, next to the browser's own button: Safari's bar
+   is under the page, Chrome's address bar above it. */
+.install__pointer--safari26,
+.install__pointer--safari18 {
+  position: fixed;
+  bottom: calc(env(safe-area-inset-bottom) + 10px);
+  translate: -50% 0;
 }
 
-.install__pointer--s26::after,
-.install__pointer--s18::after {
+.install__pointer--safari26 {
+  /* The page menu, at the start of Safari 26's address field. */
+  left: 100px;
+}
+
+.install__pointer--safari18 {
+  /* The share button, in the middle of the bottom toolbar. */
+  left: 50%;
+}
+
+.install__pointer--safari26::after,
+.install__pointer--safari18::after {
   top: 100%;
   border-top-color: var(--accent);
 }
 
-.install__pointer--top {
-  top: calc(100% + 6px);
-  right: 2px;
+.install__pointer--chrome {
+  /* The share button, at the right end of Chrome's address bar. */
+  position: fixed;
+  top: 10px;
+  left: calc(100% - 33px);
+  translate: -50% 0;
 }
 
-.install__pointer--top::after {
+.install__pointer--chrome::after {
   bottom: 100%;
   border-bottom-color: var(--accent);
 }
 
 @keyframes install-bob {
-  50% { translate: 0 -5px; }
-}
-
-.install__safari-bar {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  width: 100%;
-}
-
-.install__safari-bar .install__pointer--s26 {
-  left: 56px;
-}
-
-.install__round {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: var(--surface);
-  box-shadow: var(--shadow-control);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.install__address {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  min-width: 0;
-  flex: 1;
-  padding: 10px 14px;
-  border-radius: 22px;
-  background: var(--surface);
-  box-shadow: var(--shadow-control);
-  font: var(--t-callout);
-}
-
-.install__ring {
-  display: inline-flex;
-  padding: 3px;
-  border-radius: 8px;
-  box-shadow: 0 0 0 2px var(--accent);
-}
-
-.install__toolbar {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  width: calc(100% + 2 * var(--space-7));
-  margin: 0 calc(-1 * var(--space-7)) calc(-1 * var(--space-6));
-  padding: var(--space-4) 0;
-  border-top: 1px solid var(--line);
-  color: var(--iris);
-}
-
-.install__toolbar-share {
-  position: relative;
-  display: inline-flex;
-  justify-content: center;
-}
-
-.install__toolbar-share .install__pointer--s18 {
-  left: 50%;
-  translate: -50% 0;
-}
-
-.install__chrome-bar {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  width: calc(100% + 2 * var(--space-7));
-  margin: calc(-1 * var(--space-4)) calc(-1 * var(--space-7)) 0;
-  padding: var(--space-3) var(--space-4);
-  background: var(--sunken);
-  border-bottom: 1px solid var(--line);
-}
-
-.install__chrome-share {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 0 2px var(--accent);
+  50% { transform: translateY(-5px); }
 }
 
 .install__icons {
@@ -4192,6 +4063,20 @@ body:has(.moment) .tabbar {
   text-align: center;
 }
 
+.landing__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font: var(--t-title-s);
+  font-weight: 700;
+}
+
+.landing__brand img {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+}
+
 .landing__title {
   margin: 0;
   font-size: 32px;
@@ -4333,4 +4218,126 @@ body:has(.moment) .tabbar {
   .landing__match {
     transform: translate(-50%, 0) scale(1);
   }
+}
+
+/* Taste quiz: the deck's screen, with one line in place of its header (the
+   room goes to the answers' labels) and the deck's buttons, each named. */
+.quiz-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--touch);
+  margin-top: var(--space-4);
+}
+
+.quiz-top__count {
+  font: var(--t-callout);
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.quiz-actions {
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.quiz-answer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  width: 76px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink-2);
+  font: inherit;
+}
+
+/* One height for every button, so they and their labels line up. */
+.quiz-answer__slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 62px;
+}
+
+.quiz-answer:active .swipe-btn {
+  transform: scale(0.92);
+}
+
+.quiz-answer__label {
+  font: var(--t-caption);
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.swipe-btn--sometimes {
+  background: var(--sage-soft);
+  color: var(--sage-strong);
+}
+
+.quiz-intro__title {
+  text-align: center;
+  margin-bottom: var(--space-3);
+}
+
+.quiz-intro__text {
+  margin: 0 auto;
+  max-width: 320px;
+  text-align: center;
+  font: var(--t-body);
+  color: var(--ink-2);
+}
+
+/* Kitchen equipment: tiles three to a row; a ticked one is accent, with a check. */
+.appliances {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.appliance {
+  position: relative;
+  height: 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: 0 var(--space-2);
+  border: 0;
+  border-radius: 18px;
+  background: var(--surface);
+  box-shadow: var(--shadow-card), inset 0 0 0 1px var(--ob-edge);
+  color: var(--ink-2);
+  font: inherit;
+}
+
+.appliance[aria-pressed='true'] {
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  box-shadow: inset 0 0 0 1.5px var(--accent);
+}
+
+.appliance__check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--on-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.appliance__name {
+  font: var(--t-footnote);
+  font-weight: 600;
+  text-align: center;
+  line-height: 16px;
 }

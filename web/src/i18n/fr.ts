@@ -723,15 +723,10 @@ export const fr: Dictionary = {
     },
   },
   quiz: {
-    question: 'À quelle fréquence aimeriez-vous ce plat au dîner ?',
     pass: 'Pas pour moi',
     sometimes: 'De temps en temps',
     yes: 'Régulièrement',
     must: 'Un de mes préférés',
-    pairQuestion: 'Un soir de semaine ordinaire, lequel ?',
-    pick: 'Celui-ci : {title}',
-    either: 'L’un ou l’autre',
-    neither: 'Aucun des deux',
     progress: '{n} sur {total}',
     intro: 'Dites-nous à quelle fréquence vous aimeriez chaque plat. Vos premiers decks partiront de là.',
     skip: 'Plus tard',
@@ -739,7 +734,6 @@ export const fr: Dictionary = {
     doneTitle: 'Merci !',
     doneText: 'Vos decks partent de ces réponses et apprennent de chaque swipe et de chaque repas.',
     summaryTitle: 'Votre façon de manger',
-    summaryText: 'D’après vos réponses. Corrigez ce qui ne va pas : vos decks suivront, et apprendront de chaque swipe et de chaque repas.',
     level: { regularly: 'Régulièrement', sometimes: 'Parfois', rarely: 'Rarement' },
     region: {
       balanced: 'Équilibré',
@@ -755,6 +749,11 @@ export const fr: Dictionary = {
       fried: 'Frit et gourmand',
       friedHint: 'Fish and chips, poulet frit',
     },
+    introTitle: 'Faisons connaissance avec vos goûts',
+    introText: 'Quelques plats vont défiler : dites-nous à quelle fréquence vous aimeriez les manger au dîner. Vos decks partiront de vos réponses, puis apprendront de chaque swipe.',
+    start: 'Commencer',
+    finish: 'Terminer',
+    answers: { pass: 'Pas pour moi', sometimes: 'De temps en temps', yes: 'Souvent', must: 'Un favori' },
   },
   rating: {
     title: 'C’était comment ?',
@@ -803,6 +802,9 @@ export const fr: Dictionary = {
     notificationsOn: 'Notifications activées',
     notificationsUnsupported: 'Ajoutez {app} à l’écran d’accueil pour recevoir des notifications.',
     notificationsDenied: 'Les notifications sont bloquées dans vos réglages.',
+    equipment: 'Équipement de cuisine',
+    equipmentAll: 'Tout',
+    equipmentNone: 'Aucun de ceux-ci',
   },
   profile: {
     title: 'Réglages du profil',
@@ -992,6 +994,11 @@ export const fr: Dictionary = {
       title: 'C’est prêt !',
       subtitle: 'Votre premier deck est servi. On mange quoi ce soir ?',
       start: 'Lancer mon premier deck',
+    },
+    equipment: {
+      title: 'Qu’avez-vous en cuisine ?',
+      subtitle: 'Pour ne vous proposer que des recettes faisables chez vous.',
+      items: { oven: 'Four', airFryer: 'Air fryer', microwave: 'Micro-ondes', multicooker: 'Robot cuiseur', blender: 'Blender', handBlender: 'Mixeur plongeant', standMixer: 'Robot pâtissier', steamer: 'Cuit-vapeur', pressureCooker: 'Autocuiseur', slowCooker: 'Mijoteuse', riceCooker: 'Cuiseur à riz', barbecue: 'Barbecue' },
     },
   },
 };

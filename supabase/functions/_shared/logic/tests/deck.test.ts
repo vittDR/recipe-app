@@ -327,3 +327,13 @@ test('vegetarian keeps only veg dishes; flexitarian keeps meat but ranks it lowe
   const omni = scoreRecipe(meat, [eater('everything')], undefined, opts).score;
   assert.ok(flexi < omni);
 });
+
+test('no air fryer: air-fryer dishes are never dealt', async () => {
+  const { passesHardFilters } = await import('../deck.ts');
+  const r = { id: 'r', title: 'r', tags: [], ingredientNames: [], totalMin: 20, kcalPerServing: null, proteinGPerServing: null,
+    dietClass: 'veg' as const, equipment: { pots: 1, oven: false, special: ['air fryer'] } };
+  const eater = { userId: 'a', dinnerKcal: null, dinnerProteinG: null, never: [], loves: [], diet: 'everything' as const, weights: new Map() };
+  assert.equal(passesHardFilters(r, [eater], { appliances: ['oven'] }), false);
+  assert.equal(passesHardFilters(r, [eater], { appliances: ['oven', 'air fryer'] }), true);
+  assert.equal(passesHardFilters(r, [eater], {}), true);
+});

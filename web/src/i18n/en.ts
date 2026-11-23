@@ -725,15 +725,10 @@ export const en = {
     },
   },
   quiz: {
-    question: 'How often would you want this for dinner?',
     pass: 'Not for me',
     sometimes: 'Now and then',
     yes: 'Regularly',
     must: 'A favourite',
-    pairQuestion: 'On a normal weeknight, which one?',
-    pick: 'This one: {title}',
-    either: 'Either',
-    neither: 'Neither',
     progress: '{n} of {total}',
     intro: 'Tell us how often you’d want each dish. Your first decks start from it.',
     skip: 'Skip for now',
@@ -741,7 +736,6 @@ export const en = {
     doneTitle: 'Thanks!',
     doneText: 'Your decks start from these answers and keep learning from every swipe and meal.',
     summaryTitle: 'How you like to eat',
-    summaryText: 'From your answers. Change anything that’s off: your decks follow it, and keep learning from every swipe and meal.',
     level: { regularly: 'Regularly', sometimes: 'Now and then', rarely: 'Rarely' },
     region: {
       balanced: 'Lean & balanced',
@@ -757,6 +751,11 @@ export const en = {
       fried: 'Fried & indulgent',
       friedHint: 'Fish and chips, fried chicken',
     },
+    introTitle: 'Let’s learn your tastes',
+    introText: 'We’ll show you a few dishes: tell us how often you’d like each one for dinner. Your decks start from your answers, then keep learning from every swipe.',
+    start: 'Start',
+    finish: 'Finish',
+    answers: { pass: 'Not for me', sometimes: 'Now and then', yes: 'Often', must: 'A favourite' },
   },
   rating: {
     title: 'How was it?',
@@ -805,6 +804,9 @@ export const en = {
     notificationsOn: 'Notifications are on',
     notificationsUnsupported: 'Add {app} to your Home Screen to get notifications.',
     notificationsDenied: 'Notifications are blocked in your settings.',
+    equipment: 'Kitchen equipment',
+    equipmentAll: 'Everything',
+    equipmentNone: 'None of these',
   },
   profile: {
     title: 'Profile settings',
@@ -994,6 +996,11 @@ export const en = {
       title: 'All set!',
       subtitle: 'Your first deck is served. What’s for dinner tonight?',
       start: 'Deal my first deck',
+    },
+    equipment: {
+      title: 'What’s in your kitchen?',
+      subtitle: 'So we only suggest recipes you can make at home.',
+      items: { oven: 'Oven', airFryer: 'Air fryer', microwave: 'Microwave', multicooker: 'Multicooker', blender: 'Blender', handBlender: 'Hand blender', standMixer: 'Stand mixer', steamer: 'Steamer', pressureCooker: 'Pressure cooker', slowCooker: 'Slow cooker', riceCooker: 'Rice cooker', barbecue: 'Barbecue' },
     },
   },
 } as const;

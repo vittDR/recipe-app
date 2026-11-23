@@ -3,7 +3,7 @@
 // (null); a target of 0 would read as off too, so no slider goes down to 0.
 // Carbs and fat are ceilings, fibre a floor (logic/portions.ts).
 // Also Us > Goals (`editing`), with servings.
-import { useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Icon } from '../../components/Icon.tsx';
 import { Stepper, Switch } from '../../components/ui.tsx';
@@ -37,6 +37,45 @@ function initial(goals: MemberGoals | null): State {
   })) as State;
 }
 
+/**
+ * The target, typed: tap the number to edit it. Saved when you leave the
+ * field or press Enter; kept within the slider's range, and an empty or
+ * unreadable entry puts the previous value back.
+ */
+function MacroValue({ value, min, max, unit, label, onValue }: {
+  value: number; min: number; max: number; unit: string; label: string; onValue: (v: number) => void;
+}) {
+  const { locale } = useI18n();
+  const [draft, setDraft] = useState<string | null>(null);
+  const field = useRef<HTMLInputElement>(null);
+  const selectAll = useRef(false);
+  // Right after editing starts ("2 000" becomes "2000"), select it all, so typing replaces it.
+  useLayoutEffect(() => {
+    if (selectAll.current && draft !== null) {
+      field.current?.select();
+      selectAll.current = false;
+    }
+  }, [draft]);
+  const shown = draft ?? value.toLocaleString(locale);
+  const commit = () => {
+    if (draft === null) return;
+    const n = Number.parseInt(draft.replace(/\D/g, ''), 10);
+    if (Number.isFinite(n)) onValue(Math.min(max, Math.max(min, n)));
+    setDraft(null);
+  };
+  return (
+    <span className="macro__value">
+      <input ref={field} className="macro__input tabular" type="text" inputMode="numeric" enterKeyHint="done" aria-label={`${label} (${unit})`}
+        value={shown} style={{ width: `${Math.max(2, shown.length) + 0.4}ch` }}
+        onFocus={(e) => { selectAll.current = true; setDraft(String(value)); e.target.select(); }}
+        onChange={(e) => setDraft(e.target.value.replace(/\D/g, '').slice(0, 4))}
+        onBlur={commit}
+        onKeyDown={(e) => { if (e.key === 'Enter') e.currentTarget.blur(); }} />
+      {' '}{unit}
+    </span>
+  );
+}
+
 function MacroCard({ macro, on, value, onToggle, onValue }: {
   macro: (typeof MACROS)[number]; on: boolean; value: number; onToggle: (v: boolean) => void; onValue: (v: number) => void;
 }) {
@@ -48,7 +87,7 @@ function MacroCard({ macro, on, value, onToggle, onValue }: {
     <div className={`card macro${on ? ' macro--on' : ''}`}>
       <div className="macro__head">
         <span className="macro__label">{label}</span>
-        {on && <span className="macro__value"><b className="tabular">{formatNumber(value)}</b> {t(macro.unit)}</span>}
+        {on && <MacroValue value={value} min={macro.min} max={macro.max} unit={t(macro.unit)} label={label} onValue={onValue} />}
         <Switch checked={on} onChange={onToggle} label={label} />
       </div>
       {on && (
