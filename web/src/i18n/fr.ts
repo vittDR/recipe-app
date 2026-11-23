@@ -126,8 +126,8 @@ export const fr: Dictionary = {
     add: 'Ajouter',
     createAndNever: 'Créer et ne jamais proposer',
     createAndLove: 'Créer et ajouter à ce que j’adore',
-    diets: { everything: 'Je mange de tout', flexitarian: 'Flexitarien', pescatarian: 'Pescétarien', vegetarian: 'Végétarien', vegan: 'Vegan' },
-    dietMeta: { everything: 'Viande, poisson, tout', flexitarian: 'Un peu de viande, souvent végétal', pescatarian: 'Poisson, pas de viande', vegetarian: 'Ni viande ni poisson', vegan: 'Rien d’origine animale' },
+    diets: { everything: 'Je mange de tout', flexitarian: 'Flexitarien', pescatarian: 'Pescétarien', vegetarian: 'Végétarien' },
+    dietMeta: { everything: 'Viande, poisson, tout', flexitarian: 'Un peu de viande, souvent végétal', pescatarian: 'Poisson, pas de viande', vegetarian: 'Ni viande ni poisson' },
   },
   tonight: {
     ask: 'On mange quoi ce soir ?',

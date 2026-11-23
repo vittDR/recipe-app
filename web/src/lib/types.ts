@@ -8,7 +8,7 @@ export type Verdict = 'pass' | 'yes' | 'must';
 export type Mood = 'any' | 'comfort' | 'light' | 'healthy' | 'quick' | 'fancy';
 export type DeckStatus = 'open' | 'matched' | 'no_match' | 'closed';
 export type Goal = 'lean' | 'maintain' | 'build';
-export const DIETS = ['everything', 'flexitarian', 'pescatarian', 'vegetarian', 'vegan'] as const;
+export const DIETS = ['everything', 'flexitarian', 'pescatarian', 'vegetarian'] as const;
 export type Diet = (typeof DIETS)[number];
 
 export interface Profile {

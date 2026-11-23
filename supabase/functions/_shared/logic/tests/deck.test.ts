@@ -311,16 +311,16 @@ test('a dish someone wants more without its optional lines says so', () => {
   assert.equal(card.reason, 'adjustable');
 });
 
-test('vegan and vegetarian keep only veg dishes; flexitarian keeps meat but ranks it lower', async () => {
+test('vegetarian keeps only veg dishes; flexitarian keeps meat but ranks it lower', async () => {
   const { passesHardFilters, scoreRecipe } = await import('../deck.ts');
   const base = { id: 'r', title: 'r', tags: [], ingredientNames: [], totalMin: 30, kcalPerServing: null, proteinGPerServing: null };
   const meat = { ...base, dietClass: 'meat' as const };
   const veg = { ...base, id: 'v', dietClass: 'veg' as const };
-  const eater = (diet: 'vegan' | 'flexitarian' | 'everything') => ({
+  const eater = (diet: 'vegetarian' | 'flexitarian' | 'everything') => ({
     userId: 'a', dinnerKcal: null, dinnerProteinG: null, servings: 1, never: [], loves: [], diet, weights: new Map(),
   });
-  assert.equal(passesHardFilters(meat, [eater('vegan')], {}), false);
-  assert.equal(passesHardFilters(veg, [eater('vegan')], {}), true);
+  assert.equal(passesHardFilters(meat, [eater('vegetarian')], {}), false);
+  assert.equal(passesHardFilters(veg, [eater('vegetarian')], {}), true);
   assert.equal(passesHardFilters(meat, [eater('flexitarian')], {}), true);
   const opts = { random: () => 0 };
   const flexi = scoreRecipe(meat, [eater('flexitarian')], undefined, opts).score;

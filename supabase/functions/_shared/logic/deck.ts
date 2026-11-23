@@ -22,12 +22,8 @@ import { type EaterTargets, type PotSplit, splitPot } from './portions.ts';
 import type { Plate } from './plate.ts';
 import type { StyleModel } from './style.ts';
 
-/**
- * Flexitarian filters nothing but leans away from meat; vegan is vegetarian
- * plus no milk or eggs (deal-deck adds those allergens' ingredients to the
- * eater's allergies).
- */
-export type Diet = 'everything' | 'flexitarian' | 'pescatarian' | 'vegetarian' | 'vegan';
+/** Flexitarian filters nothing but leans away from meat. */
+export type Diet = 'everything' | 'flexitarian' | 'pescatarian' | 'vegetarian';
 export type Mood = 'any' | 'comfort' | 'light' | 'healthy' | 'quick' | 'fancy';
 
 export interface CandidateRecipe {
@@ -210,7 +206,7 @@ export function passesHardFilters(recipe: CandidateRecipe, members: DeckMember[]
   // The recipe as it's still made when every optional line is left out.
   const essential = recipe.productIds?.filter((id) => !recipe.optionalProductIds?.includes(id));
   for (const m of members) {
-    if ((m.diet === 'vegetarian' || m.diet === 'vegan') && recipe.dietClass !== 'veg') return false;
+    if (m.diet === 'vegetarian' && recipe.dietClass !== 'veg') return false;
     if (m.diet === 'pescatarian' && recipe.dietClass === 'meat') return false;
     if (usesProduct(essential, m.never)) return false;
     if (m.allergies?.length) {

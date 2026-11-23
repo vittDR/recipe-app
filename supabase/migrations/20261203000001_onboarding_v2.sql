@@ -8,8 +8,8 @@
 --   and my_portion() already read null as "no target".
 -- * households.deck_defaults: the weeknight defaults the creator picks
 --   (time, effort, mood, filters); they prefill Ce soir's deck settings.
--- * Diets: 'flexitarian' and 'vegan' join everything / pescatarian /
---   vegetarian (taste_rules.value for kind 'diet'; free text, no constraint).
+-- * Diets: 'flexitarian' joins everything / pescatarian / vegetarian
+--   (taste_rules.value for kind 'diet'; free text, no constraint).
 
 alter table public.profiles add column if not exists onboarded_at timestamptz;
 

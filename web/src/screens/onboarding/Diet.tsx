@@ -1,10 +1,9 @@
-// 05 Diet: one of five, each with a plate. Saved as the taste rule 'diet'
+// 05 Diet: one of four, each with a plate. Saved as the taste rule 'diet'
 // (no rule = eats everything); filters every deck this person eats from.
 import { useEffect, useState } from 'react';
 import mushroomRisotto from '../../assets/deck/mushroom-risotto.webp';
 import pokeBowl from '../../assets/deck/poke-bowl.webp';
 import roastChicken from '../../assets/deck/roast-chicken.webp';
-import springRolls from '../../assets/deck/spring-rolls.webp';
 import steak from '../../assets/deck/steak.webp';
 import { Icon } from '../../components/Icon.tsx';
 import { useI18n } from '../../i18n/index.tsx';
@@ -19,10 +18,9 @@ export const DIET_PLATES: Record<Diet, { img: string; bg: string }> = {
   flexitarian: { img: roastChicken, bg: '#fae1ce' },
   pescatarian: { img: pokeBowl, bg: '#e7d9f7' },
   vegetarian: { img: mushroomRisotto, bg: '#d9aebb' },
-  vegan: { img: springRolls, bg: '#ceece9' },
 };
 
-/** The five diets as radio cards; shared with Us > Tastes. */
+/** The four diets as radio cards; shared with Us > Tastes. */
 export function DietOptions({ value, onChange }: { value: Diet; onChange: (d: Diet) => void }) {
   const { t } = useI18n();
   return (

@@ -18,8 +18,6 @@ import { styleModelFor } from '../_shared/logic/style.ts';
 const MOODS: Mood[] = ['any', 'comfort', 'light', 'healthy', 'quick', 'fancy'];
 const RECENT_COOK_DAYS = 10;
 const PANTRY_DAYS = 7;
-/** A vegan eats neither: these allergens' ingredients are ruled out like an allergy. */
-const VEGAN_ALLERGENS = ['milk', 'eggs'];
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
@@ -184,13 +182,10 @@ Deno.serve(async (req) => {
       never: mine.filter((x) => x.kind === 'never').map((x) => x.product_id as string),
       loves: mine.filter((x) => x.kind === 'love').map((x) => x.product_id as string),
       diet,
-      // An allergen stands for every ingredient and preparation linked to it. Vegan rules out milk and eggs the same way.
-      allergies: [
-        ...(allergies.data ?? []).filter((a) => a.user_id === uid).flatMap((a) => (a.ingredient
-          ? [a.ingredient as string]
-          : linkedTo(a.allergen as string))),
-        ...(diet === 'vegan' ? VEGAN_ALLERGENS.flatMap(linkedTo) : []),
-      ],
+      // An allergen stands for every ingredient and preparation linked to it.
+      allergies: (allergies.data ?? []).filter((a) => a.user_id === uid).flatMap((a) => (a.ingredient
+        ? [a.ingredient as string]
+        : linkedTo(a.allergen as string))),
       weights,
       profile,
       // How often they want each dish (logic/style.ts): what the deck scores on.

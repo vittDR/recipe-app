@@ -128,8 +128,8 @@ export const en = {
     add: 'Add',
     createAndNever: 'Create and never show me',
     createAndLove: 'Create and add to what I love',
-    diets: { everything: 'I eat everything', flexitarian: 'Flexitarian', pescatarian: 'Pescatarian', vegetarian: 'Vegetarian', vegan: 'Vegan' },
-    dietMeta: { everything: 'Meat, fish, everything', flexitarian: 'A little meat, mostly plants', pescatarian: 'Fish, no meat', vegetarian: 'No meat or fish', vegan: 'Nothing from animals' },
+    diets: { everything: 'I eat everything', flexitarian: 'Flexitarian', pescatarian: 'Pescatarian', vegetarian: 'Vegetarian' },
+    dietMeta: { everything: 'Meat, fish, everything', flexitarian: 'A little meat, mostly plants', pescatarian: 'Fish, no meat', vegetarian: 'No meat or fish' },
   },
   tonight: {
     ask: 'What’s for dinner tonight?',
