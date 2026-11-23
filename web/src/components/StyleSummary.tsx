@@ -1,7 +1,7 @@
 // A person's style by kind of plate, in words, each one settable
-// (docs/taste-profiles.md §3): at the end of the taste quiz and on the Us
-// screen. The caller saves what's set as a style edit: taste_signals kind
-// 'style', value '<region>:<level>', one per kind of plate.
+// (docs/taste-profiles.md §3), on Us > Préférences. The caller saves what's
+// set as a style edit: taste_signals kind 'style', value '<region>:<level>',
+// one per kind of plate.
 import { STYLE_LEVELS, type StyleLevel } from '@logic/profile.ts';
 import type { StyleRegion } from '@logic/style.ts';
 import { useI18n } from '../i18n/index.tsx';

@@ -732,7 +732,6 @@ export const en = {
     doneTitle: 'Thanks!',
     doneText: 'Your decks start from these answers and keep learning from every swipe and meal.',
     summaryTitle: 'How you like to eat',
-    summaryText: 'From your answers. Change anything that’s off: your decks follow it, and keep learning from every swipe and meal.',
     level: { regularly: 'Regularly', sometimes: 'Now and then', rarely: 'Rarely' },
     region: {
       balanced: 'Lean & balanced',

@@ -730,7 +730,6 @@ export const fr: Dictionary = {
     doneTitle: 'Merci !',
     doneText: 'Vos decks partent de ces réponses et apprennent de chaque swipe et de chaque repas.',
     summaryTitle: 'Votre façon de manger',
-    summaryText: 'D’après vos réponses. Corrigez ce qui ne va pas : vos decks suivront, et apprendront de chaque swipe et de chaque repas.',
     level: { regularly: 'Régulièrement', sometimes: 'Parfois', rarely: 'Rarement' },
     region: {
       balanced: 'Équilibré',

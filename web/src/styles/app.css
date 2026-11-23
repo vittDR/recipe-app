@@ -4039,28 +4039,11 @@ body:has(.moment) .tabbar {
   }
 }
 
-/* Taste quiz, as close to a deck as it gets: the onboarding bar, the deck's
-   card taking all the room, and the four answers on one row under it. */
-.swipe-screen.quiz {
-  gap: var(--space-4);
-  padding-bottom: calc(env(safe-area-inset-bottom) + var(--space-5));
-}
-
-.quiz .ob__bar {
-  margin-bottom: 0;
-}
-
+/* Taste quiz: the deck's screen as it is (header, dashes, card, room for the
+   tab bar), with four answers in the deck's button row, each named under it. */
 .quiz-actions {
-  display: flex;
-  flex-direction: column;
+  align-items: flex-start;
   gap: var(--space-3);
-}
-
-.quiz-actions__row {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  align-items: start;
-  gap: var(--space-2);
 }
 
 .quiz-answer {
@@ -4068,17 +4051,12 @@ body:has(.moment) .tabbar {
   flex-direction: column;
   align-items: center;
   gap: var(--space-2);
-  min-width: 0;
+  width: 76px;
   padding: 0;
   border: 0;
   background: none;
   color: var(--ink-2);
   font: inherit;
-}
-
-.quiz-answer .swipe-btn {
-  width: 56px;
-  height: 56px;
 }
 
 .quiz-answer:active .swipe-btn {

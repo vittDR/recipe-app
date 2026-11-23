@@ -2,27 +2,26 @@
 // dinner?" on 26 dishes, laid out like a deck. Each next dish is the one whose
 // answer teaches the model most about the rest of the library (logic/style.ts
 // nextQuizCard), starting from earlier answers when the quiz is retaken. After
-// 20 answers people may stop. The end is a summary of their style by kind of
-// plate, which they can correct (style edits). Answers are taste_signals:
-// starter and style (pair answers from the earlier version still count).
-import { useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
+// 20 answers people may stop ("Terminer"). It ends on the next onboarding
+// step (or back, from the profile): the style it reads, by kind of plate, is
+// shown and corrected on Us > Préférences. Answers are taste_signals of kind
+// starter (pair answers from the earlier version still count).
+import { useEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { useNavigate } from 'react-router';
 import { classifyRow, CLASSIFY_COLUMNS, type ClassifiableRow, type RecipeClassification } from '@logic/classify.ts';
 import { dietClassOf } from '@logic/ingredients.ts';
 import { rowPlates } from '@logic/plate.ts';
 import { recipeFeatures } from '@logic/preferences.ts';
-import { quizFacets, STYLE_LEVELS, type PairValue, type StarterVerdict, type StyleLevel } from '@logic/profile.ts';
+import { quizFacets, type PairValue, type StarterVerdict } from '@logic/profile.ts';
 import {
-  fitStyle, FREQUENCY, nextQuizCard, type PairObservation, QUIZ_CARDS, QUIZ_MIN, type QuizCandidate,
-  styleSummary, type StyleRegion, withStyleEdits,
+  FREQUENCY, nextQuizCard, type PairObservation, QUIZ_CARDS, QUIZ_MIN, type QuizCandidate,
 } from '@logic/style.ts';
 import { Icon } from '../../components/Icon.tsx';
-import { StyleRows } from '../../components/StyleSummary.tsx';
 import pasta from '../../assets/deck/pasta.webp';
 import pokeBowl from '../../assets/deck/poke-bowl.webp';
 import tacos from '../../assets/deck/tacos.webp';
 import { RecipeFacts } from '../../components/RecipeBody.tsx';
-import { Button, Screen, Spinner, imageStyle, recipeEmoji } from '../../components/ui.tsx';
+import { Button, Screen, Spinner, TabHeader, imageStyle, recipeEmoji } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { useCatalog, useLive, useSave } from '../../lib/hooks.ts';
 import { recipeTitle } from '../../lib/recipeText.ts';
@@ -105,8 +104,6 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
   // The card flying out after a choice, as on a deck.
   const [leaving, setLeaving] = useState<{ id: string; dx: number; dy: number } | null>(null);
   const [history, setHistory] = useState<Decision[]>([]);
-  const [summary, setSummary] = useState(false);
-  const [edits, setEdits] = useState<Map<StyleRegion, StyleLevel>>(new Map());
   const [drag, setDrag] = useState<{ dx: number; dy: number } | null>(null);
   const start = useRef<{ x: number; y: number } | null>(null);
 
@@ -114,16 +111,11 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
   const earlier = useMemo(() => {
     const cards = new Map<string, string>();
     const pairs = new Map<string, { a: string; b: string; value: string }>();
-    const styles = new Map<StyleRegion, StyleLevel>();
     for (const s of data?.signals ?? []) {
       if (s.kind === 'starter' && s.recipe_id) cards.set(s.recipe_id, s.value);
       if (s.kind === 'pair' && s.recipe_id && s.other_recipe_id) pairs.set(`${s.recipe_id}:${s.other_recipe_id}`, { a: s.recipe_id, b: s.other_recipe_id, value: s.value });
-      if (s.kind === 'style') {
-        const [region, level] = s.value.split(':');
-        if (STYLE_LEVELS.includes(level as StyleLevel)) styles.set(region as StyleRegion, level as StyleLevel);
-      }
     }
-    return { cards, pairs, styles };
+    return { cards, pairs };
   }, [data]);
 
   /** Every quiz answer so far, earlier ones and this visit's, as the model reads them. */
@@ -147,7 +139,7 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
 
   // What to ask next: a dish, or nothing left.
   const next = useMemo((): { kind: 'card'; dish: Dish } | null => {
-    if (!pool || summary) return null;
+    if (!pool) return null;
     const random = seeded(seed + history.length);
     if (cardsDone < QUIZ_CARDS) {
       // Dishes not answered before first; on a quiz retaken many times, earlier ones again.
@@ -158,9 +150,16 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
       if (again) return { kind: 'card', dish: again as Dish };
     }
     return null;
-  }, [pool, summary, seed, history, cardsDone, answers]);
+  }, [pool, seed, history, cardsDone, answers]);
 
-  if (!pool) return <Screen back={editing}><Spinner /></Screen>;
+  // The last card answered: on to the next step (or back to the profile).
+  const ended = !!pool && !next && history.length > 0;
+  useEffect(() => {
+    if (ended) finish();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ended]);
+
+  if (!pool || ended) return <Screen back={editing}><Spinner /></Screen>;
 
   const decideCard = (dish: Dish, value: StarterVerdict) => {
     setDrag(null);
@@ -172,23 +171,6 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
       { onConflict: 'user_id,key' },
     ));
   };
-  const setLevel = (region: StyleRegion, level: StyleLevel) => {
-    setEdits((e) => new Map(e).set(region, level));
-    void save(supabase.from('taste_signals').upsert({ user_id: userId, kind: 'style', value: `${region}:${level}` }, { onConflict: 'user_id,key' }));
-  };
-
-  const answered = answers.shown.length > 0;
-  if (summary || (!next && history.length > 0)) {
-    if (!answered) {
-      return (
-        <Screen title={t('quiz.doneTitle')} subtitle={t('quiz.doneText')} plain>
-          <Button block onClick={finish}>{editing ? t('app.done') : t('app.continue')}</Button>
-        </Screen>
-      );
-    }
-    return <StyleSummary answers={answers} stated={new Map([...earlier.styles, ...edits])} onChange={setLevel}
-      onDone={finish} editing={editing} />;
-  }
   if (!next) {
     return (
       <Screen title={t('quiz.doneTitle')} subtitle={t('quiz.doneText')} plain>
@@ -198,13 +180,13 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
   }
 
   const step = history.length;
-  // Onboarding: its last segment fills card by card. Settings: one bar for the quiz.
-  const fill = Math.min(1, step / TOTAL);
-  const progress = editing ? { index: 0, count: 1, fill } : { index: setup.index, count: setup.count, fill };
-  const right = step >= QUIZ_MIN
-    ? <button type="button" className="ob__skip" onClick={() => setSummary(true)}>{t('quiz.finish')}</button>
-    : !editing && <button type="button" className="ob__skip" onClick={finish}>{t('ob.skip')}</button>;
-  const bar = <StepBar progress={progress} right={right || undefined} />;
+  // The deck's header: where it is in the test, and the way out (the deck's avatars' place).
+  const header = (
+    <TabHeader overline={t('quiz.progress', { n: Math.min(step + 1, TOTAL), total: TOTAL })} title={t('tastes.title')}
+      right={step >= QUIZ_MIN
+        ? <button type="button" className="ob__skip" onClick={() => finish}>{t('quiz.finish')}</button>
+        : <button type="button" className="ob__skip" onClick={finish}>{t('ob.skip')}</button>} />
+  );
 
   if (!started && step === 0) {
     return (
@@ -251,7 +233,10 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
   ];
   return (
     <main className="screen swipe-screen quiz">
-      {bar}
+      {header}
+      <div className="segments" aria-hidden>
+        {Array.from({ length: TOTAL }, (_, k) => <span key={k} className={k < step ? 'segments__on' : undefined} />)}
+      </div>
       <div className="deck">
         <article className="swipe-card swipe-card--peek" aria-hidden />
         <article
@@ -272,8 +257,7 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
           <DishFace dish={card} drag={drag ?? undefined} />
         </article>
       </div>
-      <div className="quiz-actions">
-        <div className="quiz-actions__row">
+      <div className="swipe-actions quiz-actions">
           {choices.map((x) => (
             <button key={x.value} type="button" className="quiz-answer" onClick={() => answer(x.value)}>
               <span className={`swipe-btn${x.cls}`} aria-hidden>
@@ -283,7 +267,6 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
               <span className="quiz-answer__label">{t(`quiz.answers.${x.value}`)}</span>
             </button>
           ))}
-        </div>
       </div>
     </main>
   );
@@ -307,28 +290,5 @@ function DishFace({ dish, drag }: { dish: Dish; drag?: { dx: number; dy: number 
       <span className="swipe-card__stamp swipe-card__stamp--pass" style={{ opacity: pass }}>{t('quiz.answers.pass')}</span>
       <span className="swipe-card__stamp swipe-card__stamp--must" style={{ opacity: must }}>{t('quiz.answers.must')}</span>
     </>
-  );
-}
-
-/** The person's style by kind of plate, in words; each one can be set. */
-function StyleSummary({ answers, stated, onChange, onDone, editing }: {
-  answers: { shown: { candidate: QuizCandidate; y: number }[]; pairObs: PairObservation[] };
-  stated: Map<StyleRegion, StyleLevel>;
-  onChange: (region: StyleRegion, level: StyleLevel) => void;
-  onDone: () => void;
-  editing?: boolean;
-}) {
-  const { t } = useI18n();
-  // The model of the quiz answers, with what they set here on top (style.ts withStyleEdits).
-  const model = useMemo(() => withStyleEdits(
-    fitStyle(answers.shown.map((s) => ({ plate: s.candidate.plate, features: s.candidate.features, y: s.y })), answers.pairObs),
-    [...stated].map(([region, level]) => ({ region, level })),
-  ), [answers, stated]);
-  return (
-    <Screen title={t('quiz.summaryTitle')} subtitle={t('quiz.summaryText')} plain>
-      <StyleRows summary={styleSummary(model)} stated={stated} onChange={onChange} />
-      <div className="spacer spacer--gap" />
-      <Button block onClick={onDone}>{editing ? t('app.done') : t('app.continue')}</Button>
-    </Screen>
   );
 }
