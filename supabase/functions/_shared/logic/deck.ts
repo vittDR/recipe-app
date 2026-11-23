@@ -18,7 +18,7 @@ import { kindKeys, type TasteProfile } from './profile.ts';
 import {
   diversePick, fitWeight, similarity, TREAT_ADHERENCE, TREAT_MAX_FIT, TREAT_MIN_TASTE, tasteScore, uncertainty,
 } from './recommend.ts';
-import { type EaterTargets, type PotSplit, splitPot } from './portions.ts';
+import { type EaterTargets, type PotSplit, type RecipeMacros, splitPot } from './portions.ts';
 import type { Plate } from './plate.ts';
 import type { StyleModel } from './style.ts';
 
@@ -26,7 +26,7 @@ import type { StyleModel } from './style.ts';
 export type Diet = 'everything' | 'flexitarian' | 'pescatarian' | 'vegetarian';
 export type Mood = 'any' | 'comfort' | 'light' | 'healthy' | 'quick' | 'fancy';
 
-export interface CandidateRecipe {
+export interface CandidateRecipe extends RecipeMacros {
   id: string;
   title: string;
   tags: string[];
@@ -38,8 +38,6 @@ export interface CandidateRecipe {
   optionalProductIds?: string[];
   dietClass: 'veg' | 'fish' | 'meat';
   totalMin: number | null;
-  kcalPerServing: number | null;
-  proteinGPerServing: number | null;
   /** Learning features (preferences.ts recipeFeatures); defaults to tags plus ingredient names. */
   features?: string[];
   /** What the advanced filters look at (deckFilters.ts); without it, filters leave the recipe out. */

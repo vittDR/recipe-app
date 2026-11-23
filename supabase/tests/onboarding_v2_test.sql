@@ -44,3 +44,30 @@ select pg_temp.act_as('00000000-0000-0000-0000-00000000aa03');
 update households set deck_defaults = '{}' where id = :'hid';
 select pg_temp.act_as(null);
 select pg_temp.check((select deck_defaults ->> 'mood' = 'comfort' from households where id = :'hid'), 'an outsider cannot change them');
+
+-- Carbs, fat and fibre in "fits" (migrations/20261204000001_goal_macros_fit.sql).
+select pg_temp.act_as('00000000-0000-0000-0000-00000000aa01');
+insert into recipes (household_id, title, source_type) values (:'hid', 'Dal', 'typed') returning id as rid \gset
+select pg_temp.act_as(null);
+-- As deal-deck stores it: per-serving nutrition in the classification.
+update recipes set kcal_per_serving = 700, protein_g_per_serving = 40,
+  classification = '{"nutrition": {"carbs_g": 90, "fat_g": 25, "fiber_g": 6}}' where id = :'rid';
+select pg_temp.act_as('00000000-0000-0000-0000-00000000aa01');
+update member_goals set dinner_kcal = 700, dinner_protein_g = 40, dinner_carbs_g = null, dinner_fat_g = null, dinner_fibre_g = null
+where user_id = auth.uid();
+select pg_temp.check((select fits from my_portion(:'rid')), 'fits with no carbs, fat or fibre target');
+update member_goals set dinner_carbs_g = 80 where user_id = auth.uid();
+select pg_temp.check((select fits from my_portion(:'rid')), '90 g carbs is within 20% over 80');
+update member_goals set dinner_carbs_g = 70 where user_id = auth.uid();
+select pg_temp.check((select not fits from my_portion(:'rid')), '90 g carbs is too far over 70');
+update member_goals set dinner_carbs_g = null, dinner_fat_g = 20 where user_id = auth.uid();
+select pg_temp.check((select not fits from my_portion(:'rid')), '25 g fat is too far over 20');
+update member_goals set dinner_fat_g = null, dinner_fibre_g = 10 where user_id = auth.uid();
+select pg_temp.check((select not fits from my_portion(:'rid')), '6 g fibre is short of 10');
+update member_goals set dinner_fibre_g = 7 where user_id = auth.uid();
+select pg_temp.check((select fits from my_portion(:'rid')), '6 g fibre is within 15% of 7');
+select pg_temp.act_as(null);
+update recipes set classification = null where id = :'rid';
+select pg_temp.act_as('00000000-0000-0000-0000-00000000aa01');
+update member_goals set dinner_fibre_g = 30 where user_id = auth.uid();
+select pg_temp.check((select fits from my_portion(:'rid')), 'an unclassified recipe is not held to fibre');

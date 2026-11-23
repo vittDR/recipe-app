@@ -1,6 +1,8 @@
 // 08 Goals: per dinner, private. Calories and protein on by default; carbs,
 // fat and fibre off, their slider shows once switched on. Off = no target
-// (null). Also Us > Goals (`editing`), with servings.
+// (null); a target of 0 would read as off too, so no slider goes down to 0.
+// Carbs and fat are ceilings, fibre a floor (logic/portions.ts).
+// Also Us > Goals (`editing`), with servings.
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Icon } from '../../components/Icon.tsx';
@@ -20,9 +22,9 @@ const COLUMN = {
 const MACROS: { key: Macro; label: MessageKey; unit: MessageKey; min: number; max: number; step: number; value: number; on: boolean }[] = [
   { key: 'kcal', label: 'goals.kcal', unit: 'goals.kcalUnit', min: 300, max: 2000, step: 25, value: 750, on: true },
   { key: 'protein', label: 'goals.protein', unit: 'goals.gramsUnit', min: 10, max: 150, step: 5, value: 45, on: true },
-  { key: 'carbs', label: 'goals.carbs', unit: 'goals.gramsUnit', min: 0, max: 250, step: 5, value: 80, on: false },
-  { key: 'fat', label: 'goals.fat', unit: 'goals.gramsUnit', min: 0, max: 120, step: 5, value: 30, on: false },
-  { key: 'fibre', label: 'goals.fibre', unit: 'goals.gramsUnit', min: 0, max: 50, step: 1, value: 10, on: false },
+  { key: 'carbs', label: 'goals.carbs', unit: 'goals.gramsUnit', min: 5, max: 250, step: 5, value: 80, on: false },
+  { key: 'fat', label: 'goals.fat', unit: 'goals.gramsUnit', min: 5, max: 120, step: 5, value: 30, on: false },
+  { key: 'fibre', label: 'goals.fibre', unit: 'goals.gramsUnit', min: 1, max: 50, step: 1, value: 10, on: false },
 ];
 
 type State = Record<Macro, { on: boolean; value: number }>;
