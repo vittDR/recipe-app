@@ -228,13 +228,13 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
     else setDrag(null);
   };
   const motion = leaving?.id === card.id ? leaving : drag;
-  // The deck's row, sizes and all (big, small, big, small): Pas pour moi, De temps en temps,
+  // The deck's button row, all four at the deck's big size: Pas pour moi, De temps en temps,
   // Souvent, Un favori, each named under it.
   const choices: { value: StarterVerdict; icon: 'x' | 'clock' | 'heart' | 'star'; cls: string; size: number }[] = [
     { value: 'pass', icon: 'x', cls: 'swipe-btn', size: 26 },
-    { value: 'sometimes', icon: 'clock', cls: 'swipe-btn swipe-btn--small swipe-btn--sometimes', size: 20 },
+    { value: 'sometimes', icon: 'clock', cls: 'swipe-btn swipe-btn--sometimes', size: 26 },
     { value: 'yes', icon: 'heart', cls: 'swipe-btn swipe-btn--like', size: 28 },
-    { value: 'must', icon: 'star', cls: 'swipe-btn swipe-btn--small swipe-btn--star', size: 20 },
+    { value: 'must', icon: 'star', cls: 'swipe-btn swipe-btn--star', size: 26 },
   ];
   return (
     <main className="screen swipe-screen quiz">

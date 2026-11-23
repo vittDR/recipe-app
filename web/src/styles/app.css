@@ -4073,7 +4073,7 @@ body:has(.moment) .tabbar {
   font: inherit;
 }
 
-/* Big and small buttons share one height, so they and their labels line up. */
+/* One height for every button, so they and their labels line up. */
 .quiz-answer__slot {
   display: flex;
   align-items: center;
