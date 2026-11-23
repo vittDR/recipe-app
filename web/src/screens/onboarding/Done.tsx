@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import herbOmelette from '../../assets/deck/herb-omelette.webp';
 import roastChicken from '../../assets/deck/roast-chicken.webp';
-import scallops from '../../assets/deck/scallops.webp';
+import salmon from '../../assets/deck/salmon.webp';
 import { Button } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { finishOnboarding } from '../../lib/onboarding.ts';
@@ -42,7 +42,7 @@ export function DoneScreen() {
         ))}
       </div>
       <div className="ob-fan" aria-hidden>
-        <img className="fan fan--left fan--art" src={scallops} alt="" />
+        <img className="fan fan--left fan--art" src={salmon} alt="" />
         <img className="fan fan--right fan--art" src={herbOmelette} alt="" />
         <img className="fan fan--mid fan--art" src={roastChicken} alt="" />
       </div>

@@ -7,6 +7,7 @@ import greekSalad from '../../assets/deck/greek-salad.webp';
 import mushroomRisotto from '../../assets/deck/mushroom-risotto.webp';
 import springRolls from '../../assets/deck/spring-rolls.webp';
 import steak from '../../assets/deck/steak.webp';
+import { APP_WORDMARK } from '../../brand.ts';
 import { Button } from '../../components/ui.tsx';
 import { useI18n, type MessageKey } from '../../i18n/index.tsx';
 import { installVariant } from '../../lib/onboarding.ts';
@@ -75,6 +76,10 @@ export function LandingScreen() {
     <main className="screen screen--plain landing">
       <LandingDeck you="V" partner="P" />
       <div className="landing__text">
+        <div className="landing__brand">
+          <img src="/favicon.svg" alt="" aria-hidden />
+          <span>{APP_WORDMARK}</span>
+        </div>
         <h1 className="landing__title">{t('ob.landing.title')}</h1>
         <p className="landing__subtitle">{t('ob.landing.subtitle')}</p>
         <Button block onClick={start}>{t('ob.landing.start')}</Button>

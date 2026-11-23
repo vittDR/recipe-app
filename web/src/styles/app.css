@@ -3926,6 +3926,20 @@ body:has(.moment) .tabbar {
   text-align: center;
 }
 
+.landing__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font: var(--t-title-s);
+  font-weight: 700;
+}
+
+.landing__brand img {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+}
+
 .landing__title {
   margin: 0;
   font-size: 32px;
