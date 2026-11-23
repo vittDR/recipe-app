@@ -13,10 +13,15 @@
 --   once; adding it resets the count. Left out 3 times in a row, it becomes
 --   a staple. record_list_choices() does both and returns what it promoted.
 
+-- What used to be a staple is still a seasoning: used without an amount, it
+-- leaves a recipe's macros as they are rather than unknown.
+alter table public.ingredient_catalog add column if not exists seasoning boolean not null default false;
+
 create or replace function public.narrow_staples()
 returns void
 language sql set search_path = ''
 as $$
+  update public.ingredient_catalog set seasoning = true where is_staple and not seasoning;
   update public.ingredient_catalog set is_staple = (name in
     ('salt', 'black pepper', 'white pepper', 'olive oil', 'vegetable oil', 'sugar', 'flour', 'vinegar'))
   where is_staple is distinct from (name in

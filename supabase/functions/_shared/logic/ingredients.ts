@@ -12,7 +12,10 @@ export interface CatalogEntry {
   name_it?: string | null;
   aliases?: string[] | null;
   default_aisle: Aisle;
+  /** Nearly every kitchen has it (salt, pepper, oils...): never proposed for the list unless the household says otherwise. */
   is_staple: boolean;
+  /** Used without an amount (spices, herbs, sauces, stock...): leaves macros unchanged rather than unknown. */
+  seasoning?: boolean;
   kcal_100g?: number | null;
   protein_100g?: number | null;
   fat_100g?: number | null;
@@ -277,7 +280,7 @@ export function estimateMacros(
     const grams = gramsOf(ing, entry);
     if (!entry || entry.kcal_100g == null || grams === null) {
       // Seasoning without an amount does not move the totals.
-      if (!(entry?.is_staple && grams === null)) {
+      if (!((entry?.seasoning || entry?.is_staple) && grams === null)) {
         unknown.push(ing.name);
         estimated = true;
       }

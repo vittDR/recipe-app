@@ -313,6 +313,7 @@ for (let g = 0; g < recipes.length; g += LINE_GROUP) {
     '  is distinct from (excluded.position, excluded.name, excluded.quantity, excluded.unit, excluded.aisle,',
     '  excluded.is_staple, excluded.guessed, excluded.raw_text, excluded.original_text, excluded.optional);');
 }
+out.push('', '-- Staples are strict (migrations/20261210000001_learned_staples.sql).', 'select public.narrow_staples();');
 out.push('', 'commit;', '');
 
 console.log(`${recipes.length} recipes, ${recipes.reduce((n, r) => n + r.ingredients.length, 0)} ingredient lines\n`);
