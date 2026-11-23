@@ -1821,7 +1821,7 @@ button.grocery-row__amount {
 .text-iris { color: var(--iris-strong); }
 .text-ink2 { color: var(--ink-2); }
 
-/* Ticked as already at home: the row steps back. */
+/* Not going on the list (probably at home): the row steps back. */
 .list-row--owned .list-row__title,
 .list-row--owned .list-row__value {
   color: var(--muted);

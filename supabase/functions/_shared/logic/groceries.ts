@@ -153,7 +153,7 @@ export function proposeListItems<T extends RecipeIngredientLike>(
   });
 }
 
-/** One line of the "What do you already have?" sheet, across several meals. */
+/** One line of the "What do you need to buy?" sheet, across several meals. */
 export interface CombinedProposal<T extends RecipeIngredientLike> {
   /** Product (or name) + unit: the same thing bought the same way. */
   key: string;
