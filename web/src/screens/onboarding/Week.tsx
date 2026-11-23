@@ -1,5 +1,5 @@
-// 09 Week (creator): the evenings eaten at home this week, the same day list
-// as This week. "Pareil chaque semaine" also makes it the usual week.
+// 09 Week (creator): the evenings eaten at home this week, the same rows
+// as the This week sheet. "Pareil chaque semaine" also makes it the usual week.
 import { useEffect, useState } from 'react';
 import { Checkbox, ListRow, Switch } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
@@ -21,6 +21,7 @@ export function WeekScreen() {
   const [routine, setRoutine] = useState(true);
   const [busy, setBusy] = useState(false);
   const names = list('plan.daysLong');
+  const short = list('plan.days');
 
   // Prefilled from the usual week (and any day already set).
   useEffect(() => {
@@ -49,12 +50,18 @@ export function WeekScreen() {
     <Step back progress={setup} title={t('ob.week.title')} action={{ onClick: () => void next(), disabled: busy }}>
       <div className="stack">
         <div className="list">
-          {days.map((day) => {
+          {days.map((day, i) => {
             const on = cook[day] ?? true;
-            const name = `${names[isoWeekday(day) - 1]} ${Number(day.slice(8, 10))}`;
+            const name = names[isoWeekday(day) - 1];
+            // As in the "Cette semaine" sheet: day and date as the icon, the day spelt out.
             return (
-              <ListRow key={day} title={<span className={on ? 'headline' : 'muted'}>{name}</span>}
-                trailing={<Checkbox checked={on} label={name} onChange={(v) => setCook({ ...cook, [day]: v })} color="var(--accent)" />} />
+              <ListRow key={day} title={<span className={on ? undefined : 'muted'}>{name}</span>}
+                icon={<span className={`week__day${i === 0 ? ' week__day--today' : ''}`} aria-hidden>
+                  <span>{short[isoWeekday(day) - 1]}</span>
+                  <span className="headline">{Number(day.slice(8, 10))}</span>
+                </span>}
+                meta={i === 0 ? t('week.today') : i === 1 ? t('week.tomorrow') : undefined}
+                trailing={<Checkbox checked={on} label={`${name} ${Number(day.slice(8, 10))}`} onChange={(v) => setCook({ ...cook, [day]: v })} color="var(--accent)" />} />
             );
           })}
         </div>

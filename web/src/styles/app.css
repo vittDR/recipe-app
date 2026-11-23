@@ -3344,11 +3344,6 @@ body:has(.moment) .tabbar {
   margin: calc(-1 * var(--space-4)) 0 var(--space-6);
 }
 
-.ob__lock {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-}
 
 .ob-group {
   display: flex;
@@ -3554,8 +3549,28 @@ body:has(.moment) .tabbar {
 
 .macro__label {
   flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font: var(--t-headline);
   color: var(--muted);
+}
+
+.macro__icon {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: var(--paper);
+  color: var(--muted);
+}
+
+.macro--on .macro__icon {
+  background: var(--accent-soft);
+  color: var(--accent);
 }
 
 .macro--on .macro__label {
@@ -4345,6 +4360,19 @@ body:has(.moment) .tabbar {
   line-height: 16px;
 }
 
+.appliance__hint {
+  margin-top: -2px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.appliance[aria-pressed='true'] .appliance__hint {
+  color: var(--accent);
+  opacity: 0.8;
+}
+
 /* ---------- Extra eaters (handoff v2 §4) ---------- */
 
 .avatar--pending {
@@ -4521,3 +4549,11 @@ body:has(.moment) .tabbar {
   font-weight: 600;
 }
 
+
+/* "Toujours à la maison" tiles carry examples under the name. */
+.appliance--pantry {
+  height: auto;
+  min-height: 108px;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-2);
+}

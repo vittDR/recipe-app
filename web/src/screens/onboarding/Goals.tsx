@@ -5,7 +5,7 @@
 // Also Us > Goals (`editing`), with servings.
 import { useLayoutEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Icon } from '../../components/Icon.tsx';
+import { Icon, type IconName } from '../../components/Icon.tsx';
 import { Stepper, Switch } from '../../components/ui.tsx';
 import { useI18n, type MessageKey } from '../../i18n/index.tsx';
 import { useSetup } from '../../lib/onboarding.ts';
@@ -18,6 +18,9 @@ type Macro = 'kcal' | 'protein' | 'carbs' | 'fat' | 'fibre';
 const COLUMN = {
   kcal: 'dinner_kcal', protein: 'dinner_protein_g', carbs: 'dinner_carbs_g', fat: 'dinner_fat_g', fibre: 'dinner_fibre_g',
 } as const satisfies Record<Macro, keyof MemberGoals>;
+
+/** Each macro's icon: protein is a dumbbell, not meat, so it fits every diet. */
+const ICONS: Record<Macro, IconName> = { kcal: 'flame', protein: 'dumbbell', carbs: 'wheat', fat: 'drop', fibre: 'leaf' };
 
 const MACROS: { key: Macro; label: MessageKey; unit: MessageKey; min: number; max: number; step: number; value: number; on: boolean }[] = [
   { key: 'kcal', label: 'goals.kcal', unit: 'goals.kcalUnit', min: 300, max: 2000, step: 25, value: 750, on: true },
@@ -86,7 +89,7 @@ function MacroCard({ macro, on, value, onToggle, onValue }: {
   return (
     <div className={`card macro${on ? ' macro--on' : ''}`}>
       <div className="macro__head">
-        <span className="macro__label">{label}</span>
+        <span className="macro__label"><span className="macro__icon" aria-hidden><Icon name={ICONS[macro.key]} size={18} /></span>{label}</span>
         {on && <MacroValue value={value} min={macro.min} max={macro.max} unit={t(macro.unit)} label={label} onValue={onValue} />}
         <Switch checked={on} onChange={onToggle} label={label} />
       </div>
@@ -132,7 +135,6 @@ export function GoalsScreen({ editing }: { editing?: boolean }) {
   return (
     <Step back progress={editing ? undefined : setup} onSkip={editing ? undefined : setup.next}
       title={t('goals.title')}
-      subtitle={<span className="ob__lock"><Icon name="lock" size={16} /> {t('goals.privacy')}</span>}
       action={{ label: editing ? t('app.save') : undefined, onClick: () => void save(), disabled: busy }}>
       <div className="stack stack--sm">
         {MACROS.map((m) => (
