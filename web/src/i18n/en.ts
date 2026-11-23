@@ -126,6 +126,8 @@ export const en = {
     love: 'I love',
     addPlaceholder: 'Search an ingredient',
     add: 'Add',
+    groupMeta: 'All {n} items',
+    garlicWarning: 'Heads up: about 7 in 10 of our recipes use garlic, so your decks will have far fewer dishes to choose from.',
     createAndNever: 'Create and never show me',
     createAndLove: 'Create and add to what I love',
     diets: { everything: 'I eat everything', flexitarian: 'Flexitarian', pescatarian: 'Pescatarian', vegetarian: 'Vegetarian' },

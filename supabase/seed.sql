@@ -1443,3 +1443,76 @@ from (values
 ) as v(allergen, ingredient)
 join public.ingredient_catalog c on c.name = v.ingredient
 on conflict do nothing;
+
+-- Ingredient groups (migrations/20261206000001_ingredient_groups.sql): the
+-- catalogue items each group stands for, preparations included (chorizo and
+-- most sausages are pork, pesto holds parmesan, puff pastry butter, fish
+-- sauce and dashi are fish). Cheeses made only from sheep's or goat's milk
+-- (feta, pecorino, chèvre, kefalotyri) are not cow's milk but are dairy and
+-- cheese; halloumi and blue cheese often hold cow's milk, so they are in.
+-- Pastes where fish or shrimp is a minor, unsure part (curry paste, kimchi,
+-- nasi goreng paste) are left out of fish and seafood: those are dislikes,
+-- not allergies (the allergens link them). Chilli covers what carries real
+-- heat, not paprika or black pepper. Red meat is beef, veal, lamb and pork
+-- (as health advice counts it), so it holds Beef, Lamb and Pork.
+insert into public.ingredient_group_members (group_key, ingredient)
+select v.group_key, v.ingredient
+from (values
+  ('pork', 'pork tenderloin'), ('pork', 'pork belly'), ('pork', 'pork chop'), ('pork', 'pork shoulder'),
+  ('pork', 'ground pork'), ('pork', 'bacon'), ('pork', 'ham'), ('pork', 'prosciutto'), ('pork', 'salt pork'),
+  ('pork', 'sausage'), ('pork', 'chorizo'), ('pork', 'andouille sausage'), ('pork', 'kielbasa'), ('pork', 'char siu'),
+  ('beef', 'beef steak'), ('beef', 'beef stew meat'), ('beef', 'ground beef'), ('beef', 'beef stock'),
+  ('beef', 'veal'), ('beef', 'merguez'), ('beef', 'gravy mix'),
+  ('lamb', 'lamb'), ('lamb', 'merguez'),
+  ('poultry', 'chicken'), ('poultry', 'whole chicken'), ('poultry', 'chicken breast'), ('poultry', 'chicken thigh'),
+  ('poultry', 'chicken drumsticks'), ('poultry', 'chicken wings'), ('poultry', 'ground chicken'),
+  ('poultry', 'chicken stock'), ('poultry', 'turkey breast'), ('poultry', 'turkey thigh'), ('poultry', 'ground turkey'),
+  ('cow_milk', 'milk'), ('cow_milk', 'butter'), ('cow_milk', 'cream'), ('cow_milk', 'crème fraîche'),
+  ('cow_milk', 'plain yogurt'), ('cow_milk', 'greek yogurt'), ('cow_milk', 'skyr'), ('cow_milk', 'fromage blanc'),
+  ('cow_milk', 'cottage cheese'), ('cow_milk', 'cream cheese'), ('cow_milk', 'ricotta'), ('cow_milk', 'mozzarella'),
+  ('cow_milk', 'parmesan'), ('cow_milk', 'cheddar'), ('cow_milk', 'emmental'), ('cow_milk', 'fontina'),
+  ('cow_milk', 'reblochon'), ('cow_milk', 'blue cheese'), ('cow_milk', 'cheese curds'), ('cow_milk', 'paneer'),
+  ('cow_milk', 'queso fresco'), ('cow_milk', 'halloumi'), ('cow_milk', 'pesto'), ('cow_milk', 'puff pastry'),
+  ('cow_milk', 'gravy mix'),
+  ('fish', 'anchovies'), ('fish', 'cod fillet'), ('fish', 'hake'), ('fish', 'mackerel'), ('fish', 'salmon fillet'),
+  ('fish', 'salt cod'), ('fish', 'sardines'), ('fish', 'sea bass'), ('fish', 'sea bream'), ('fish', 'smoked haddock'),
+  ('fish', 'smoked mackerel'), ('fish', 'smoked salmon'), ('fish', 'sole'), ('fish', 'swordfish'), ('fish', 'trout'),
+  ('fish', 'tuna'), ('fish', 'tuna steak'), ('fish', 'fish sauce'), ('fish', 'fish stock'), ('fish', 'dashi'),
+  ('fish', 'worcestershire sauce'),
+  ('seafood', 'prawns'), ('seafood', 'clams'), ('seafood', 'mussels'), ('seafood', 'octopus'), ('seafood', 'squid'),
+  ('seafood', 'oyster sauce'),
+  ('dairy', 'milk'), ('dairy', 'butter'), ('dairy', 'cream'), ('dairy', 'crème fraîche'), ('dairy', 'plain yogurt'),
+  ('dairy', 'greek yogurt'), ('dairy', 'skyr'), ('dairy', 'fromage blanc'), ('dairy', 'cottage cheese'),
+  ('dairy', 'cream cheese'), ('dairy', 'ricotta'), ('dairy', 'mozzarella'), ('dairy', 'parmesan'), ('dairy', 'cheddar'),
+  ('dairy', 'emmental'), ('dairy', 'fontina'), ('dairy', 'reblochon'), ('dairy', 'blue cheese'), ('dairy', 'cheese curds'),
+  ('dairy', 'paneer'), ('dairy', 'queso fresco'), ('dairy', 'halloumi'), ('dairy', 'feta'), ('dairy', 'pecorino'),
+  ('dairy', 'goat cheese'), ('dairy', 'kefalotyri'), ('dairy', 'pesto'), ('dairy', 'puff pastry'), ('dairy', 'gravy mix'),
+  ('cheese', 'blue cheese'), ('cheese', 'cheddar'), ('cheese', 'cheese curds'), ('cheese', 'cottage cheese'),
+  ('cheese', 'cream cheese'), ('cheese', 'emmental'), ('cheese', 'feta'), ('cheese', 'fontina'), ('cheese', 'goat cheese'),
+  ('cheese', 'halloumi'), ('cheese', 'kefalotyri'), ('cheese', 'mozzarella'), ('cheese', 'paneer'), ('cheese', 'parmesan'),
+  ('cheese', 'pecorino'), ('cheese', 'queso fresco'), ('cheese', 'reblochon'), ('cheese', 'ricotta'), ('cheese', 'pesto'),
+  ('eggs', 'eggs'), ('eggs', 'mayonnaise'),
+  ('mushrooms', 'mushrooms'), ('mushrooms', 'dried porcini'), ('mushrooms', 'wood ear mushrooms'),
+  ('chilli', 'fresh chilli'), ('chilli', 'scotch bonnet'), ('chilli', 'dried mexican chillies'), ('chilli', 'chili flakes'),
+  ('chilli', 'chili powder'), ('chilli', 'kashmiri chili powder'), ('chilli', 'aleppo pepper'), ('chilli', 'gochugaru'),
+  ('chilli', 'chilli oil'), ('chilli', 'chipotle paste'), ('chilli', 'harissa'), ('chilli', 'hot sauce'), ('chilli', 'sriracha'),
+  ('chilli', 'sweet chilli sauce'), ('chilli', 'gochujang'), ('chilli', 'doubanjiang'), ('chilli', 'curry paste'),
+  ('chilli', 'nasi goreng paste'), ('chilli', 'aji amarillo paste'), ('chilli', 'berbere'), ('chilli', 'cajun seasoning'),
+  ('chilli', 'jerk seasoning'), ('chilli', 'curry powder'), ('chilli', 'sichuan pepper'),
+  ('onions', 'onion'), ('onions', 'shallot'), ('onions', 'pearl onions'), ('onions', 'spring onion'), ('onions', 'leek'),
+  ('onions', 'chives'),
+  ('garlic', 'garlic'), ('garlic', 'pesto'), ('garlic', 'harissa'), ('garlic', 'jerk seasoning'),
+  ('red_meat', 'beef steak'), ('red_meat', 'beef stew meat'), ('red_meat', 'ground beef'), ('red_meat', 'beef stock'),
+  ('red_meat', 'veal'), ('red_meat', 'merguez'), ('red_meat', 'gravy mix'), ('red_meat', 'lamb'),
+  ('red_meat', 'pork tenderloin'), ('red_meat', 'pork belly'), ('red_meat', 'pork chop'), ('red_meat', 'pork shoulder'),
+  ('red_meat', 'ground pork'), ('red_meat', 'bacon'), ('red_meat', 'ham'), ('red_meat', 'prosciutto'), ('red_meat', 'salt pork'),
+  ('red_meat', 'sausage'), ('red_meat', 'chorizo'), ('red_meat', 'andouille sausage'), ('red_meat', 'kielbasa'), ('red_meat', 'char siu'),
+  ('legumes', 'black beans'), ('legumes', 'black-eyed beans'), ('legumes', 'broad beans'), ('legumes', 'butter beans'),
+  ('legumes', 'canned fava beans'), ('legumes', 'kidney beans'), ('legumes', 'white beans'), ('legumes', 'chickpeas'),
+  ('legumes', 'dried chickpeas'), ('legumes', 'green lentils'), ('legumes', 'red lentils'), ('legumes', 'moong dal'),
+  ('legumes', 'frozen peas'),
+  ('alcohol', 'white wine'), ('alcohol', 'red wine'), ('alcohol', 'beer'), ('alcohol', 'cider'),
+  ('alcohol', 'marsala'), ('alcohol', 'sherry'), ('alcohol', 'rice wine'), ('alcohol', 'mirin')
+) as v(group_key, ingredient)
+join public.ingredient_catalog c on c.name = v.ingredient
+on conflict do nothing;
