@@ -14,11 +14,11 @@ import { DietOptions, saveDiet } from './Diet.tsx';
 
 // Offered as one-tap chips: catalogue items people often feel strongly about.
 const SUGGESTED = {
-  never: ['champignons', 'olives', 'coriandre', 'aubergine', 'céleri', 'fenouil', 'piment'],
+  never: ['olives', 'coriandre', 'aubergine', 'céleri', 'fenouil'],
   love: ['pavé de saumon', 'avocat', 'œufs', 'crevettes', 'feta', 'pois chiches', 'pâtes'],
 } as const;
 /** Ingredient groups offered first under "Never show me". */
-const SUGGESTED_GROUPS = ['pork', 'cow_milk'];
+const SUGGESTED_GROUPS = ['pork', 'cheese', 'cow_milk', 'fish', 'mushrooms', 'chilli'];
 const RESULTS = 5;
 
 /** A rule's name: its group or catalogue item in the app's language, else the text it was saved with. */

@@ -19,9 +19,9 @@ import { Step } from './Step.tsx';
 /** The allergens offered, in this order (the EU's 14 minus the rare ones). */
 const ALLERGENS = ['nuts', 'peanuts', 'milk', 'gluten', 'eggs', 'fish', 'crustaceans', 'soy', 'sesame'];
 /** Groups offered as one-tap suggestions, before the items. */
-const SUGGESTED_GROUPS = ['pork', 'cow_milk'];
+const SUGGESTED_GROUPS = ['pork', 'cheese', 'cow_milk', 'fish', 'seafood', 'mushrooms', 'chilli'];
 /** One-tap suggestions; only those in the catalogue show. */
-const SUGGESTED = ['coriandre', 'champignons', 'olives', 'abats', 'chou-fleur', 'betterave', 'piment'];
+const SUGGESTED = ['coriandre', 'olives', 'abats', 'chou-fleur', 'betterave'];
 
 export function NoEatScreen() {
   const { t, locale } = useI18n();

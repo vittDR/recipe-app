@@ -1446,9 +1446,14 @@ on conflict do nothing;
 
 -- Ingredient groups (migrations/20261206000001_ingredient_groups.sql): the
 -- catalogue items each group stands for, preparations included (chorizo and
--- most sausages are pork, pesto holds parmesan, puff pastry butter). Cheeses
--- made only from sheep's or goat's milk (feta, pecorino, chèvre, kefalotyri)
--- are not cow's milk; halloumi and blue cheese often are, so they are in.
+-- most sausages are pork, pesto holds parmesan, puff pastry butter, fish
+-- sauce and dashi are fish). Cheeses made only from sheep's or goat's milk
+-- (feta, pecorino, chèvre, kefalotyri) are not cow's milk but are dairy and
+-- cheese; halloumi and blue cheese often hold cow's milk, so they are in.
+-- Pastes where fish or shrimp is a minor, unsure part (curry paste, kimchi,
+-- nasi goreng paste) are left out of fish and seafood: those are dislikes,
+-- not allergies (the allergens link them). Chilli covers what carries real
+-- heat, not paprika or black pepper.
 insert into public.ingredient_group_members (group_key, ingredient)
 select v.group_key, v.ingredient
 from (values
@@ -1468,6 +1473,37 @@ from (values
   ('cow_milk', 'reblochon'), ('cow_milk', 'blue cheese'), ('cow_milk', 'cheese curds'), ('cow_milk', 'paneer'),
   ('cow_milk', 'queso fresco'), ('cow_milk', 'halloumi'), ('cow_milk', 'pesto'), ('cow_milk', 'puff pastry'),
   ('cow_milk', 'gravy mix'),
+  ('fish', 'anchovies'), ('fish', 'cod fillet'), ('fish', 'hake'), ('fish', 'mackerel'), ('fish', 'salmon fillet'),
+  ('fish', 'salt cod'), ('fish', 'sardines'), ('fish', 'sea bass'), ('fish', 'sea bream'), ('fish', 'smoked haddock'),
+  ('fish', 'smoked mackerel'), ('fish', 'smoked salmon'), ('fish', 'sole'), ('fish', 'swordfish'), ('fish', 'trout'),
+  ('fish', 'tuna'), ('fish', 'tuna steak'), ('fish', 'fish sauce'), ('fish', 'fish stock'), ('fish', 'dashi'),
+  ('fish', 'worcestershire sauce'),
+  ('seafood', 'prawns'), ('seafood', 'clams'), ('seafood', 'mussels'), ('seafood', 'octopus'), ('seafood', 'squid'),
+  ('seafood', 'oyster sauce'),
+  ('dairy', 'milk'), ('dairy', 'butter'), ('dairy', 'cream'), ('dairy', 'crème fraîche'), ('dairy', 'plain yogurt'),
+  ('dairy', 'greek yogurt'), ('dairy', 'skyr'), ('dairy', 'fromage blanc'), ('dairy', 'cottage cheese'),
+  ('dairy', 'cream cheese'), ('dairy', 'ricotta'), ('dairy', 'mozzarella'), ('dairy', 'parmesan'), ('dairy', 'cheddar'),
+  ('dairy', 'emmental'), ('dairy', 'fontina'), ('dairy', 'reblochon'), ('dairy', 'blue cheese'), ('dairy', 'cheese curds'),
+  ('dairy', 'paneer'), ('dairy', 'queso fresco'), ('dairy', 'halloumi'), ('dairy', 'feta'), ('dairy', 'pecorino'),
+  ('dairy', 'goat cheese'), ('dairy', 'kefalotyri'), ('dairy', 'pesto'), ('dairy', 'puff pastry'), ('dairy', 'gravy mix'),
+  ('cheese', 'blue cheese'), ('cheese', 'cheddar'), ('cheese', 'cheese curds'), ('cheese', 'cottage cheese'),
+  ('cheese', 'cream cheese'), ('cheese', 'emmental'), ('cheese', 'feta'), ('cheese', 'fontina'), ('cheese', 'goat cheese'),
+  ('cheese', 'halloumi'), ('cheese', 'kefalotyri'), ('cheese', 'mozzarella'), ('cheese', 'paneer'), ('cheese', 'parmesan'),
+  ('cheese', 'pecorino'), ('cheese', 'queso fresco'), ('cheese', 'reblochon'), ('cheese', 'ricotta'), ('cheese', 'pesto'),
+  ('eggs', 'eggs'), ('eggs', 'mayonnaise'),
+  ('mushrooms', 'mushrooms'), ('mushrooms', 'dried porcini'), ('mushrooms', 'wood ear mushrooms'),
+  ('chilli', 'fresh chilli'), ('chilli', 'scotch bonnet'), ('chilli', 'dried mexican chillies'), ('chilli', 'chili flakes'),
+  ('chilli', 'chili powder'), ('chilli', 'kashmiri chili powder'), ('chilli', 'aleppo pepper'), ('chilli', 'gochugaru'),
+  ('chilli', 'chilli oil'), ('chilli', 'chipotle paste'), ('chilli', 'harissa'), ('chilli', 'hot sauce'), ('chilli', 'sriracha'),
+  ('chilli', 'sweet chilli sauce'), ('chilli', 'gochujang'), ('chilli', 'doubanjiang'), ('chilli', 'curry paste'),
+  ('chilli', 'nasi goreng paste'), ('chilli', 'aji amarillo paste'), ('chilli', 'berbere'), ('chilli', 'cajun seasoning'),
+  ('chilli', 'jerk seasoning'), ('chilli', 'curry powder'), ('chilli', 'sichuan pepper'),
+  ('alliums', 'onion'), ('alliums', 'shallot'), ('alliums', 'pearl onions'), ('alliums', 'spring onion'), ('alliums', 'leek'),
+  ('alliums', 'chives'), ('alliums', 'garlic'),
+  ('legumes', 'black beans'), ('legumes', 'black-eyed beans'), ('legumes', 'broad beans'), ('legumes', 'butter beans'),
+  ('legumes', 'canned fava beans'), ('legumes', 'kidney beans'), ('legumes', 'white beans'), ('legumes', 'chickpeas'),
+  ('legumes', 'dried chickpeas'), ('legumes', 'green lentils'), ('legumes', 'red lentils'), ('legumes', 'moong dal'),
+  ('legumes', 'frozen peas'),
   ('alcohol', 'white wine'), ('alcohol', 'red wine'), ('alcohol', 'beer'), ('alcohol', 'cider'),
   ('alcohol', 'marsala'), ('alcohol', 'sherry'), ('alcohol', 'rice wine'), ('alcohol', 'mirin')
 ) as v(group_key, ingredient)

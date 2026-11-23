@@ -1,7 +1,9 @@
 -- Ingredient groups ("macro ingredients"): one name for a whole family of
 -- catalogue items, so that someone who doesn't eat pork says so once and
--- gets no pork tenderloin, bacon, ham, sausage, chorizo… and someone who
--- avoids cow's milk gets no butter, cream, yoghurt or cow's cheese.
+-- gets no pork tenderloin, bacon, ham, sausage, chorizo… someone who avoids
+-- cow's milk gets no butter, cream, yoghurt or cow's cheese, and someone who
+-- hates cheese gets no cheese at all. Meat, fish, seafood, dairy, cheese, eggs,
+-- mushrooms, chilli, the onion family, legumes and alcohol.
 -- A "never" (or "love") rule names either one catalogue item (product_id)
 -- or one group (group_key); a group stands for every item linked to it.
 -- The links are in seed.sql, next to the allergen links.
@@ -18,11 +20,20 @@ create table if not exists public.ingredient_groups (
 
 insert into public.ingredient_groups (key, name_fr, name_en, name_it, aliases, position) values
   ('pork', 'Porc (tout)', 'Pork (all)', 'Maiale (tutto)', '{porc,pork,maiale,cochon,charcuterie,halal,casher,kosher}', 1),
-  ('beef', 'Bœuf et veau (tout)', 'Beef and veal (all)', 'Manzo e vitello (tutto)', '{boeuf,bœuf,beef,veau,veal,manzo,vitello}', 2),
-  ('lamb', 'Agneau et mouton (tout)', 'Lamb and mutton (all)', 'Agnello e montone (tutto)', '{agneau,mouton,lamb,mutton,agnello}', 3),
+  ('beef', 'Bœuf et veau (tout)', 'Beef and veal (all)', 'Manzo e vitello (tutto)', '{boeuf,bœuf,beef,veau,veal,manzo,vitello,viande rouge,red meat}', 2),
+  ('lamb', 'Agneau et mouton (tout)', 'Lamb and mutton (all)', 'Agnello e montone (tutto)', '{agneau,mouton,lamb,mutton,agnello,viande rouge,red meat}', 3),
   ('poultry', 'Volaille (tout)', 'Poultry (all)', 'Pollame (tutto)', '{volaille,poulet,dinde,poultry,chicken,turkey,pollo,tacchino}', 4),
-  ('cow_milk', 'Lait de vache et dérivés', 'Cow''s milk and dairy', 'Latte vaccino e derivati', '{lait,lait de vache,laitage,laitages,produits laitiers,crème,yaourt,fromage,milk,cow milk,dairy,cream,yoghurt,yogurt,cheese,latte,latticini}', 5),
-  ('alcohol', 'Alcool (vin, bière…)', 'Alcohol (wine, beer…)', 'Alcol (vino, birra…)', '{alcool,vin,bière,alcohol,wine,beer,alcol,vino,birra}', 6)
+  ('fish', 'Poisson (tout)', 'Fish (all)', 'Pesce (tutto)', '{poisson,poissons,fish,pesce,sauce poisson,fish sauce}', 5),
+  ('seafood', 'Fruits de mer et crustacés', 'Seafood and shellfish', 'Frutti di mare e crostacei', '{fruits de mer,crustacés,coquillages,crevettes,moules,seafood,shellfish,prawns,shrimp,mussels,frutti di mare,crostacei}', 6),
+  ('cow_milk', 'Lait de vache et dérivés', 'Cow''s milk and dairy', 'Latte vaccino e derivati', '{lait,lait de vache,laitage,laitages,crème,yaourt,beurre,milk,cow milk,cream,yoghurt,yogurt,butter,latte,panna,burro}', 7),
+  ('dairy', 'Produits laitiers (tous laits)', 'Dairy (any milk)', 'Latticini (ogni latte)', '{produits laitiers,laitages,lait,lactose,dairy,milk,latticini,latte,vegan,végétalien}', 8),
+  ('cheese', 'Fromage (tout)', 'Cheese (all)', 'Formaggio (tutto)', '{fromage,fromages,cheese,formaggio,formaggi}', 9),
+  ('eggs', 'Œufs (et mayonnaise)', 'Eggs (and mayonnaise)', 'Uova (e maionese)', '{oeuf,œuf,oeufs,œufs,egg,eggs,uova,uovo,mayonnaise}', 10),
+  ('mushrooms', 'Champignons (tous)', 'Mushrooms (all)', 'Funghi (tutti)', '{champignon,champignons,cèpes,mushroom,mushrooms,porcini,funghi}', 11),
+  ('chilli', 'Piment et épicé', 'Chilli and spicy', 'Peperoncino e piccante', '{piment,piments,épicé,piquant,chilli,chili,spicy,hot,piccante,peperoncino}', 12),
+  ('alliums', 'Oignon, ail et poireau', 'Onion, garlic and leek', 'Cipolla, aglio e porro', '{oignon,oignons,ail,poireau,échalote,ciboulette,onion,onions,garlic,leek,shallot,chives,cipolla,aglio,porro,alliacées,alliums}', 13),
+  ('legumes', 'Légumineuses (haricots, lentilles…)', 'Legumes (beans, lentils…)', 'Legumi (fagioli, lenticchie…)', '{légumineuses,legumineuses,haricots,lentilles,pois chiches,petits pois,legumes,pulses,beans,lentils,chickpeas,peas,legumi,fagioli,lenticchie,ceci}', 14),
+  ('alcohol', 'Alcool (vin, bière…)', 'Alcohol (wine, beer…)', 'Alcol (vino, birra…)', '{alcool,vin,bière,alcohol,wine,beer,alcol,vino,birra}', 15)
 on conflict (key) do update set
   name_fr = excluded.name_fr, name_en = excluded.name_en, name_it = excluded.name_it,
   aliases = excluded.aliases, position = excluded.position;
