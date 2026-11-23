@@ -990,6 +990,11 @@ export const en = {
       subtitle: 'Your first deck is served. What’s for dinner tonight?',
       start: 'Deal my first deck',
     },
+    equipment: {
+      title: 'What’s in your kitchen?',
+      subtitle: 'So we only suggest recipes you can make at home.',
+      items: { oven: 'Oven', airFryer: 'Air fryer', blender: 'Blender' },
+    },
   },
 } as const;
 

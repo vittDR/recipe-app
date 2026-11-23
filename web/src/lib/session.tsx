@@ -81,7 +81,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       return;
     }
     const [h, ms] = await Promise.all([
-      supabase.from('households').select('id, name, owner_id, timezone, prompt_time, reminder_time, deck_defaults')
+      supabase.from('households').select('id, name, owner_id, timezone, prompt_time, reminder_time, deck_defaults, equipment')
         .eq('id', householdId).single(),
       supabase.from('household_members').select('user_id, joined_at, profile:profiles(id, first_name, color, locale)')
         .eq('household_id', householdId).order('joined_at'),

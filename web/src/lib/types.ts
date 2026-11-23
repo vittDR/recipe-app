@@ -29,6 +29,8 @@ export interface Household {
   reminder_time: string;
   /** Weeknight deck defaults from onboarding ({maxMinutes, mood, filters}); {} when never set. */
   deck_defaults: Record<string, unknown>;
+  /** Appliances it has (logic/facets.ts APPLIANCES); null: never asked, all assumed. */
+  equipment: string[] | null;
 }
 
 export interface Member {

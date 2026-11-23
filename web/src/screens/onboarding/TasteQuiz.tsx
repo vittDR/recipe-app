@@ -25,6 +25,7 @@ import { Button, Screen, Spinner, imageStyle, recipeEmoji } from '../../componen
 import { useI18n } from '../../i18n/index.tsx';
 import { useCatalog, useLive, useSave } from '../../lib/hooks.ts';
 import { recipeTitle } from '../../lib/recipeText.ts';
+import { missingAppliances, normaliseEquipment } from '@logic/facets.ts';
 import { useSetup } from '../../lib/onboarding.ts';
 import { useSession } from '../../lib/session.tsx';
 import { StepBar } from './Step.tsx';
@@ -59,7 +60,7 @@ function seeded(seed: number) {
 
 export function TasteQuizScreen({ editing }: { editing?: boolean }) {
   const { t } = useI18n();
-  const { userId } = useSession();
+  const { userId, household } = useSession();
   const catalog = useCatalog();
   const navigate = useNavigate();
   const save = useSave();
@@ -86,6 +87,8 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
       if (diet === 'vegetarian' && cls !== 'veg') continue;
       if (diet === 'pescatarian' && cls === 'meat') continue;
       if (r.recipe_ingredients.some((i) => !i.optional && i.product_id && never.has(i.product_id))) continue;
+      // Not a dish this kitchen can make (no oven, no air fryer…): never dealt, so not asked about.
+      if (missingAppliances(normaliseEquipment(r.equipment), household?.equipment).length) continue;
       const classification = classifyRow(r, catalog);
       const plates = rowPlates(r, catalog, classification);
       if (!plates.length) continue;
@@ -95,7 +98,7 @@ export function TasteQuizScreen({ editing }: { editing?: boolean }) {
       });
     }
     return dishes;
-  }, [data, catalog]);
+  }, [data, catalog, household?.equipment]);
   const byId = useMemo(() => new Map((pool ?? []).map((d) => [d.id, d])), [pool]);
 
   const [seed] = useState(() => Math.floor(Math.random() * 1e9));

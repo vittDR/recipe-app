@@ -111,3 +111,20 @@ export function matchesFilters(r: FacetRecipe, filters: Iterable<RecipeFilter>):
   for (const f of filters) if (!matchesFilter(r, f)) return false;
   return true;
 }
+
+/**
+ * Appliances a household says it has (onboarding, households.equipment): only
+ * the ones our recipes call for. A recipe needing one the household lacks is
+ * never dealt. No answer (null) means everything is there.
+ */
+export const APPLIANCES = ['oven', 'air fryer', 'blender'] as const;
+export type Appliance = (typeof APPLIANCES)[number];
+
+/** What a recipe needs that the household doesn't have; empty when it can be made. */
+export function missingAppliances(equipment: Equipment | null | undefined, owned: readonly string[] | null | undefined): Appliance[] {
+  if (!equipment || !owned) return [];
+  const needs: Appliance[] = [];
+  if (equipment.oven) needs.push('oven');
+  for (const a of APPLIANCES) if (a !== 'oven' && equipment.special.includes(a)) needs.push(a);
+  return needs.filter((a) => !owned.includes(a));
+}

@@ -988,5 +988,10 @@ export const fr: Dictionary = {
       subtitle: 'Votre premier deck est servi. On mange quoi ce soir ?',
       start: 'Lancer mon premier deck',
     },
+    equipment: {
+      title: 'Qu’avez-vous en cuisine ?',
+      subtitle: 'Pour ne vous proposer que des recettes faisables chez vous.',
+      items: { oven: 'Four', airFryer: 'Air fryer', blender: 'Blender' },
+    },
   },
 };

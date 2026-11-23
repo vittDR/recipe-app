@@ -14,7 +14,7 @@ const TABS = ['/', '/recipes', '/groceries', '/us'];
 const ONBOARDING = [
   '/welcome', '/install', '/signin', '/onboarding/profile', '/onboarding/household', '/join',
   '/onboarding/invite', '/onboarding/diet', '/onboarding/no-eat', '/onboarding/weeknight', '/onboarding/goals',
-  '/onboarding/week', '/onboarding/notifications', '/onboarding/quiz', '/onboarding/done',
+  '/onboarding/week', '/onboarding/notifications', '/onboarding/equipment', '/onboarding/quiz', '/onboarding/done',
 ];
 
 const depth = (path: string) => (TABS.includes(path) ? 0 : path.split('/').filter(Boolean).length);

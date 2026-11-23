@@ -4109,3 +4109,54 @@ body:has(.moment) .tabbar {
   font: var(--t-body);
   color: var(--ink-2);
 }
+
+/* Kitchen equipment: tiles three to a row; a ticked one is accent, with a check. */
+.appliances {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.appliance {
+  position: relative;
+  height: 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: 0 var(--space-2);
+  border: 0;
+  border-radius: 18px;
+  background: var(--surface);
+  box-shadow: var(--shadow-card), inset 0 0 0 1px var(--ob-edge);
+  color: var(--ink-2);
+  font: inherit;
+}
+
+.appliance[aria-pressed='true'] {
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  box-shadow: inset 0 0 0 1.5px var(--accent);
+}
+
+.appliance__check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--on-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.appliance__name {
+  font: var(--t-footnote);
+  font-weight: 600;
+  text-align: center;
+  line-height: 16px;
+}
