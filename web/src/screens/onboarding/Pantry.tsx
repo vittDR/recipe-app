@@ -76,13 +76,14 @@ export function PantryScreen({ editing }: { editing?: boolean }) {
         {PANTRY_GROUPS.map((g) => {
           const on = !!have?.has(g);
           return (
-            <button key={g} type="button" className="appliance" aria-pressed={on} onClick={() => toggle(g)}>
+            <button key={g} type="button" className="appliance appliance--pantry" aria-pressed={on} onClick={() => toggle(g)}>
               {on && <span className="appliance__check" aria-hidden><Icon name="check" size={11} strokeWidth={3.6} /></span>}
               <svg width="36" height="36" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.9"
                 strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                 <path d={PANTRY_PATHS[g]} />
               </svg>
               <span className="appliance__name">{t(`ob.pantry.groups.${g}`)}</span>
+              <span className="appliance__hint">{t(`ob.pantry.examples.${g}`)}</span>
             </button>
           );
         })}

@@ -12,7 +12,7 @@ import { Step } from './Step.tsx';
 /** Each diet's icon, in a tile tinted by meaning: sage for the plant-based ones. */
 const DIET_ICONS: Record<Diet, { icon: IconName; tile: 'accent' | 'sage' | 'iris' }> = {
   everything: { icon: 'utensils', tile: 'accent' },
-  flexitarian: { icon: 'sprout', tile: 'sage' },
+  flexitarian: { icon: 'flexi', tile: 'sage' },
   pescatarian: { icon: 'fish', tile: 'iris' },
   vegetarian: { icon: 'leaf', tile: 'sage' },
 };
