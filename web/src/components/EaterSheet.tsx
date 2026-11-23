@@ -150,7 +150,6 @@ export function EaterSheet({ open, eater, onClose }: {
           <div className="list-row eater-portion">
             <span className="list-row__main">
               <span className="list-row__title">{t('eaters.portion')}</span>
-              <span className="list-row__meta">{t('eaters.portionHint')}</span>
             </span>
             <span className="eater-portion__stepper">
               <button type="button" className="icon-btn icon-btn--filled" aria-label={`${t('eaters.portion')} −`}
@@ -160,7 +159,7 @@ export function EaterSheet({ open, eater, onClose }: {
                 disabled={draft.portion >= PORTION_MAX} onClick={() => stepPortion(1)}><Icon name="plus" size={18} /></button>
             </span>
           </div>
-          <ListRow title={t('eaters.noEat')} meta={excluded.length ? excluded.join(', ') : t('eaters.noEatNone')} chevron
+          <ListRow title={t('eaters.noEat')} meta={excluded.length ? excluded.join(', ') : undefined} chevron
             onClick={() => setView('exclusions')} />
         </div>
       </div>

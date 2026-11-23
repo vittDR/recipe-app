@@ -4521,7 +4521,3 @@ body:has(.moment) .tabbar {
   font-weight: 600;
 }
 
-.who-tile__portion {
-  color: var(--muted);
-  font-size: 11px;
-}

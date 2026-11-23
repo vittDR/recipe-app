@@ -146,4 +146,6 @@ test('several meals: one line per product and unit, amounts added up', () => {
     ['p-onion|g', 400, [1], true],
   ]);
   assert.equal(lines[0].ingredient.name, 'onion');
+  // Bought recently for one meal: leaving basil out says nothing about the pantry. Salt does.
+  assert.deepEqual(lines.map((l) => l.covered), [false, true, false, false]);
 });

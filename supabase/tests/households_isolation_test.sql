@@ -83,7 +83,7 @@ select pg_temp.check((select count(*) = 0 from grocery_items), 'lists are privat
 select pg_temp.check((select count(*) = 0 from meals), 'meals are private');
 select pg_temp.check((select count(*) = 7 from plan_days), 'B sees only its own plan');
 select pg_temp.check((select count(*) = 0 from plan_dates), 'this week''s days are private');
-select pg_temp.check((select count(*) = (select count(*) from ingredient_catalog where is_staple) from household_staples),
+select pg_temp.check((select count(*) = (select count(*) from starter_staples()) from household_staples),
                      'B sees only its own staples');
 select pg_temp.check((select count(*) = 0 from decks) and (select count(*) = 0 from deck_cards)
                      and (select count(*) = 0 from deck_members), 'decks are private');

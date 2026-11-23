@@ -10,7 +10,7 @@ import {
 import type { Mood } from '../lib/types.ts';
 import { useI18n } from '../i18n/index.tsx';
 import { Icon } from './Icon.tsx';
-import { EATER_COLOR, portionText, usePortionTotal } from '../lib/eaters.ts';
+import { EATER_COLOR, usePortionTotal } from '../lib/eaters.ts';
 import { Avatar, Button, Chip, ListRow, Section, Sheet, SheetHeader } from './ui.tsx';
 
 export interface DeckSettings {
@@ -243,7 +243,6 @@ export function DeckSettingsSheet({ open, onClose, settings, onChange, table, on
                   {on && <span className="who-tile__check" aria-hidden><Icon name="check" size={10} strokeWidth={3.6} /></span>}
                   <Avatar name={m.name} color={m.color} />
                   <span className="who-tile__name">{m.id === table.me ? t('app.you') : m.name}</span>
-                  <span className="who-tile__portion">1</span>
                 </button>
               );
             })}
@@ -255,7 +254,6 @@ export function DeckSettingsSheet({ open, onClose, settings, onChange, table, on
                   {on && <span className="who-tile__check" aria-hidden><Icon name="check" size={10} strokeWidth={3.6} /></span>}
                   <Avatar name={e.name} color={EATER_COLOR} />
                   <span className="who-tile__name">{e.name}</span>
-                  <span className="who-tile__portion">{portionText(e.portion)}</span>
                 </button>
               );
             })}
