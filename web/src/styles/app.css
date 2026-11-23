@@ -3241,8 +3241,35 @@ body:has(.moment) .tabbar {
   color: var(--muted);
 }
 
+/* Cards on the onboarding screens get a hairline edge in dark mode, where
+   the card and the page are close in colour and shadows don't show. */
+:root {
+  --ob-edge: transparent;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ob-edge: var(--line-strong);
+  }
+}
+
+:root[data-theme="dark"] {
+  --ob-edge: var(--line-strong);
+}
+
+.ob .card,
+.ob .list,
+.ob .code-box {
+  box-shadow: var(--shadow-card), inset 0 0 0 1px var(--ob-edge);
+}
+
 .ob-choice {
   padding: var(--space-5);
+}
+
+/* Two choice cards in a row are separate cards, not rows of one list. */
+.ob-choice.list-row + .ob-choice.list-row {
+  box-shadow: var(--shadow-card), inset 0 0 0 1px var(--ob-edge);
 }
 
 .link-btn {
@@ -3272,26 +3299,15 @@ body:has(.moment) .tabbar {
   color: var(--ink);
 }
 
-.option[aria-checked='true'] {
+.ob .option[aria-checked='true'] {
   box-shadow: 0 0 0 2px var(--accent), var(--shadow-card);
 }
 
-.option__plate {
-  width: 52px;
-  height: 52px;
-  border-radius: 14px;
-  overflow: hidden;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.option__plate img {
-  width: 64px;
-  height: 64px;
-  object-fit: cover;
-  object-position: top;
+/* The diet's icon, in a tinted tile. */
+.option .icon-tile {
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
 }
 
 .option__text {
@@ -3348,11 +3364,11 @@ body:has(.moment) .tabbar {
   font-weight: 700;
 }
 
-.code-box--current {
+.ob .code-box--current {
   box-shadow: inset 0 0 0 2px var(--accent);
 }
 
-.code-box--error {
+.ob .code-box--error {
   box-shadow: inset 0 0 0 2px var(--danger);
 }
 
@@ -3392,8 +3408,8 @@ body:has(.moment) .tabbar {
   box-shadow: inset 0 0 0 2px var(--accent);
 }
 
-.code-entry:not(:focus-within) .code-box--current:not(.code-box--error) {
-  box-shadow: var(--shadow-card);
+.ob .code-entry:not(:focus-within) .code-box--current:not(.code-box--error) {
+  box-shadow: var(--shadow-card), inset 0 0 0 1px var(--ob-edge);
 }
 
 /* Goals: a switch per macro, a slider once it's on. */

@@ -1,11 +1,7 @@
-// 05 Diet: one of four, each with a plate. Saved as the taste rule 'diet'
+// 05 Diet: one of four, each with an icon. Saved as the taste rule 'diet'
 // (no rule = eats everything); filters every deck this person eats from.
 import { useEffect, useState } from 'react';
-import mushroomRisotto from '../../assets/deck/mushroom-risotto.webp';
-import pokeBowl from '../../assets/deck/poke-bowl.webp';
-import roastChicken from '../../assets/deck/roast-chicken.webp';
-import steak from '../../assets/deck/steak.webp';
-import { Icon } from '../../components/Icon.tsx';
+import { Icon, type IconName } from '../../components/Icon.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { useSetup } from '../../lib/onboarding.ts';
 import { useSession } from '../../lib/session.tsx';
@@ -13,11 +9,12 @@ import { supabase } from '../../lib/supabase.ts';
 import { DIETS, type Diet } from '../../lib/types.ts';
 import { Step } from './Step.tsx';
 
-export const DIET_PLATES: Record<Diet, { img: string; bg: string }> = {
-  everything: { img: steak, bg: '#d9a19b' },
-  flexitarian: { img: roastChicken, bg: '#fae1ce' },
-  pescatarian: { img: pokeBowl, bg: '#e7d9f7' },
-  vegetarian: { img: mushroomRisotto, bg: '#d9aebb' },
+/** Each diet's icon, in a tile tinted by meaning: sage for the plant-based ones. */
+const DIET_ICONS: Record<Diet, { icon: IconName; tile: 'accent' | 'sage' | 'iris' }> = {
+  everything: { icon: 'utensils', tile: 'accent' },
+  flexitarian: { icon: 'sprout', tile: 'sage' },
+  pescatarian: { icon: 'fish', tile: 'iris' },
+  vegetarian: { icon: 'leaf', tile: 'sage' },
 };
 
 /** The four diets as radio cards; shared with Us > Tastes. */
@@ -27,7 +24,7 @@ export function DietOptions({ value, onChange }: { value: Diet; onChange: (d: Di
     <div className="stack stack--sm" role="radiogroup" aria-label={t('tastes.diet')}>
       {DIETS.map((d) => (
         <button key={d} type="button" role="radio" aria-checked={value === d} className="card option" onClick={() => onChange(d)}>
-          <span className="option__plate" style={{ background: DIET_PLATES[d].bg }}><img src={DIET_PLATES[d].img} alt="" /></span>
+          <span className={`icon-tile icon-tile--${DIET_ICONS[d].tile}`}><Icon name={DIET_ICONS[d].icon} size={22} /></span>
           <span className="option__text">
             <span className="option__title">{t(`tastes.diets.${d}`)}</span>
             <span className="option__meta">{t(`tastes.dietMeta.${d}`)}</span>
