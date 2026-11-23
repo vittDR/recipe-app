@@ -3386,8 +3386,11 @@ body:has(.moment) .tabbar {
   box-shadow: var(--shadow-card), inset 0 0 0 1px var(--ob-edge);
 }
 
-.ob-choice {
+/* A list row made a card: the row's own rule (no background) would otherwise win. */
+.list-row.ob-choice {
   padding: var(--space-5);
+  background: var(--surface);
+  border-radius: var(--radius-xl);
 }
 
 /* Two choice cards in a row are separate cards, not rows of one list. */
