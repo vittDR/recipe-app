@@ -21,7 +21,7 @@ select pg_temp.check(exists (select 1 from ingredient_group_members where group_
 select pg_temp.check(exists (select 1 from ingredient_group_members where group_key = 'cow_milk' and ingredient = 'plain yogurt'), 'cow''s milk covers yoghurt');
 select pg_temp.check(not exists (select 1 from ingredient_group_members where group_key = 'cow_milk' and ingredient in ('feta', 'pecorino', 'goat cheese')),
   'sheep and goat cheeses are not cow''s milk');
-select pg_temp.check((select count(*) = 15 from ingredient_groups), 'fifteen groups');
+select pg_temp.check((select count(*) = 17 from ingredient_groups), 'seventeen groups');
 -- Every cheese in the catalogue (its classification says dairy protein or cheese sauce, or "cheese" in its name) is in Cheese.
 select pg_temp.check(not exists (select 1 from ingredient_catalog c
   where (c.name ~ 'cheese|mozzarella|parmesan|ricotta|feta|pecorino|cheddar|emmental|fontina|reblochon|halloumi|paneer|queso|kefalotyri'
@@ -31,6 +31,13 @@ select pg_temp.check(not exists (select ingredient from ingredient_group_members
                                  except select ingredient from ingredient_group_members where group_key = 'dairy'), 'cow''s milk is part of dairy');
 select pg_temp.check(not exists (select ingredient from ingredient_group_members where group_key = 'cheese'
                                  except select ingredient from ingredient_group_members where group_key = 'dairy'), 'cheese is part of dairy');
+select pg_temp.check(not exists (select ingredient from ingredient_group_members where group_key in ('beef', 'lamb', 'pork')
+                                 except select ingredient from ingredient_group_members where group_key = 'red_meat')
+                     and not exists (select ingredient from ingredient_group_members where group_key = 'red_meat'
+                                 except select ingredient from ingredient_group_members where group_key in ('beef', 'lamb', 'pork')),
+  'red meat is beef, lamb and pork');
+select pg_temp.check(not exists (select 1 from ingredient_group_members where group_key = 'onions' and ingredient = 'garlic'), 'garlic is not in onions');
+select pg_temp.check(exists (select 1 from ingredient_group_members where group_key = 'garlic' and ingredient = 'garlic'), 'garlic has its group');
 -- Every fish and shellfish in the catalogue is in Fish or Seafood.
 select pg_temp.check(not exists (select 1 from ingredient_catalog c where c.traits && '{protein:fish,protein:shellfish}'
   and c.name not in (select ingredient from ingredient_group_members where group_key in ('fish', 'seafood'))), 'every fish and shellfish is grouped');

@@ -1453,7 +1453,8 @@ on conflict do nothing;
 -- Pastes where fish or shrimp is a minor, unsure part (curry paste, kimchi,
 -- nasi goreng paste) are left out of fish and seafood: those are dislikes,
 -- not allergies (the allergens link them). Chilli covers what carries real
--- heat, not paprika or black pepper.
+-- heat, not paprika or black pepper. Red meat is beef, veal, lamb and pork
+-- (as health advice counts it), so it holds Beef, Lamb and Pork.
 insert into public.ingredient_group_members (group_key, ingredient)
 select v.group_key, v.ingredient
 from (values
@@ -1498,8 +1499,14 @@ from (values
   ('chilli', 'sweet chilli sauce'), ('chilli', 'gochujang'), ('chilli', 'doubanjiang'), ('chilli', 'curry paste'),
   ('chilli', 'nasi goreng paste'), ('chilli', 'aji amarillo paste'), ('chilli', 'berbere'), ('chilli', 'cajun seasoning'),
   ('chilli', 'jerk seasoning'), ('chilli', 'curry powder'), ('chilli', 'sichuan pepper'),
-  ('alliums', 'onion'), ('alliums', 'shallot'), ('alliums', 'pearl onions'), ('alliums', 'spring onion'), ('alliums', 'leek'),
-  ('alliums', 'chives'), ('alliums', 'garlic'),
+  ('onions', 'onion'), ('onions', 'shallot'), ('onions', 'pearl onions'), ('onions', 'spring onion'), ('onions', 'leek'),
+  ('onions', 'chives'),
+  ('garlic', 'garlic'), ('garlic', 'pesto'), ('garlic', 'harissa'), ('garlic', 'jerk seasoning'),
+  ('red_meat', 'beef steak'), ('red_meat', 'beef stew meat'), ('red_meat', 'ground beef'), ('red_meat', 'beef stock'),
+  ('red_meat', 'veal'), ('red_meat', 'merguez'), ('red_meat', 'gravy mix'), ('red_meat', 'lamb'),
+  ('red_meat', 'pork tenderloin'), ('red_meat', 'pork belly'), ('red_meat', 'pork chop'), ('red_meat', 'pork shoulder'),
+  ('red_meat', 'ground pork'), ('red_meat', 'bacon'), ('red_meat', 'ham'), ('red_meat', 'prosciutto'), ('red_meat', 'salt pork'),
+  ('red_meat', 'sausage'), ('red_meat', 'chorizo'), ('red_meat', 'andouille sausage'), ('red_meat', 'kielbasa'), ('red_meat', 'char siu'),
   ('legumes', 'black beans'), ('legumes', 'black-eyed beans'), ('legumes', 'broad beans'), ('legumes', 'butter beans'),
   ('legumes', 'canned fava beans'), ('legumes', 'kidney beans'), ('legumes', 'white beans'), ('legumes', 'chickpeas'),
   ('legumes', 'dried chickpeas'), ('legumes', 'green lentils'), ('legumes', 'red lentils'), ('legumes', 'moong dal'),

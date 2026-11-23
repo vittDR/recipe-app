@@ -10,7 +10,7 @@ import { Chip, ListRow, SearchField, toast } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { useLive } from '../../lib/hooks.ts';
 import { useSetup } from '../../lib/onboarding.ts';
-import { groupName, searchProducts, useGroceryCatalog, useIngredientGroups } from '../../lib/products.ts';
+import { avoidsGarlic, groupName, searchProducts, useGroceryCatalog, useIngredientGroups } from '../../lib/products.ts';
 import { useSession } from '../../lib/session.tsx';
 import { must, supabase } from '../../lib/supabase.ts';
 import type { TasteRule } from '../../lib/types.ts';
@@ -19,7 +19,7 @@ import { Step } from './Step.tsx';
 /** The allergens offered, in this order (the EU's 14 minus the rare ones). */
 const ALLERGENS = ['nuts', 'peanuts', 'milk', 'gluten', 'eggs', 'fish', 'crustaceans', 'soy', 'sesame'];
 /** Groups offered as one-tap suggestions, before the items. */
-const SUGGESTED_GROUPS = ['pork', 'cheese', 'cow_milk', 'fish', 'seafood', 'mushrooms', 'chilli'];
+const SUGGESTED_GROUPS = ['pork', 'red_meat', 'cheese', 'cow_milk', 'fish', 'seafood', 'mushrooms', 'chilli'];
 /** One-tap suggestions; only those in the catalogue show. */
 const SUGGESTED = ['coriandre', 'olives', 'abats', 'chou-fleur', 'betterave'];
 
@@ -134,6 +134,7 @@ export function NoEatScreen() {
               <Chip key={p.id} variant="dashed" onClick={() => void addNever(p)}>+ {productName(p, locale)}</Chip>
             ))}
           </div>
+          {avoidsGarlic(never, catalog ?? null) && <p className="small muted" role="status">{t('tastes.garlicWarning')}</p>}
         </section>
       </div>
     </Step>

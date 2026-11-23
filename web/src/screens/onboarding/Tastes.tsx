@@ -6,7 +6,7 @@ import { Icon } from '../../components/Icon.tsx';
 import { Button, Chip, CreateRow, ListRow, Screen, SearchField, Section, toast } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { useLive, useSave } from '../../lib/hooks.ts';
-import { groupName, searchProducts, useGroceryCatalog, useIngredientGroups, type GroceryCatalog } from '../../lib/products.ts';
+import { avoidsGarlic, groupName, searchProducts, useGroceryCatalog, useIngredientGroups, type GroceryCatalog } from '../../lib/products.ts';
 import { useSession } from '../../lib/session.tsx';
 import { must, supabase } from '../../lib/supabase.ts';
 import type { Diet, TasteRule } from '../../lib/types.ts';
@@ -18,7 +18,7 @@ const SUGGESTED = {
   love: ['pavé de saumon', 'avocat', 'œufs', 'crevettes', 'feta', 'pois chiches', 'pâtes'],
 } as const;
 /** Ingredient groups offered first under "Never show me". */
-const SUGGESTED_GROUPS = ['pork', 'cheese', 'cow_milk', 'fish', 'mushrooms', 'chilli'];
+const SUGGESTED_GROUPS = ['pork', 'red_meat', 'cheese', 'cow_milk', 'fish', 'mushrooms', 'chilli'];
 const RESULTS = 5;
 
 /** A rule's name: its group or catalogue item in the app's language, else the text it was saved with. */
@@ -97,6 +97,7 @@ function RuleList({
             <Chip key={p.id} onClick={() => onAdd(p)}>+ {productName(p, locale)}</Chip>
           ))}
         </div>
+        {kind === 'never' && avoidsGarlic(mine, catalog) && <p className="small muted" role="status">{t('tastes.garlicWarning')}</p>}
         <SearchField value={query} onChange={setQuery} placeholder={t('tastes.addPlaceholder')} label={label}
           onEnter={() => (groupResults[0] ? pickGroup(groupResults[0]) : results[0] ? pick(results[0]) : typed && !exact && create())} />
         {typed && (groupResults.length > 0 || results.length > 0 || !exact) && (

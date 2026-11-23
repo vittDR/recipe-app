@@ -152,6 +152,15 @@ export function useIngredientGroups() {
   });
 }
 
+/**
+ * Whether these never rules leave out garlic (its group or the item itself):
+ * most recipes hold some, so the screens say what that costs.
+ */
+export function avoidsGarlic(rules: { kind: string; product_id: string | null; group_key: string | null }[], catalog: GroceryCatalog | null): boolean {
+  return rules.some((r) => r.kind === 'never'
+    && (r.group_key === 'garlic' || (!!r.product_id && catalog?.index.get(r.product_id)?.ingredient === 'garlic')));
+}
+
 /** A group's name in the app's language. */
 export function groupName(g: Pick<IngredientGroup, 'name_fr' | 'name_en'>, locale: string): string {
   return locale === 'en' ? g.name_en : g.name_fr;
