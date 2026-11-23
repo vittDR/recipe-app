@@ -441,7 +441,8 @@ households. Each person belongs to one household.
 | Table | Key | What it holds |
 | --- | --- | --- |
 | `profiles` | `id` = `auth.users.id` | First name, colour, locale (`en`/`fr`). Created automatically by a trigger on sign-up. |
-| `households` | `id` | Name, `owner_id` (the one place ownership is stored), IANA `timezone`, `prompt_time` (17:30) and `reminder_time` (18:30), plus `last_prompt_on`/`last_reminder_on` so each prompt goes out once per local day. |
+| `households` | `id` | Name, `owner_id` (the one place ownership is stored), IANA `timezone`, `prompt_time` (17:30) and `reminder_time` (18:30), plus `last_prompt_on`/`last_reminder_on` so each prompt goes out once per local day. `deck_defaults`: the weeknight defaults from onboarding. `equipment`: the keys of the `appliances` it has (null = never asked, all assumed). |
+| `appliances` | `key` | The twelve kitchen appliances onboarding asks about (`name_fr`, `name_en`, `position`), as `logic/facets.ts` lists them. A recipe needing one a household lacks (its oven, or one of `equipment.special`) is never dealt; today recipes only need the oven, air fryer and blender. |
 | `household_members` | `(household_id, user_id)` | Who belongs where. A unique index allows one household per user, and the server functions rely on it (`my_household_id()`). |
 | `app_admins` | `user_id` | Who edits the shared catalogue (Us > Edit the catalog, shown only to them). No policies: add someone in the SQL editor with `insert into public.app_admins (user_id) values ('<profile id>');`. |
 | `invites` | `code` | 6-character codes (no `I`, `O`, `0`, `1`), valid 48 hours, single use. Expired ones are purged nightly. |
