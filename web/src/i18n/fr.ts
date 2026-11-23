@@ -124,6 +124,7 @@ export const fr: Dictionary = {
     love: 'J’adore',
     addPlaceholder: 'Chercher un ingrédient',
     add: 'Ajouter',
+    groupMeta: 'Les {n} produits',
     createAndNever: 'Créer et ne jamais proposer',
     createAndLove: 'Créer et ajouter à ce que j’adore',
     diets: { everything: 'Je mange de tout', flexitarian: 'Flexitarien', pescatarian: 'Pescétarien', vegetarian: 'Végétarien' },

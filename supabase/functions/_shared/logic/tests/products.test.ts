@@ -104,3 +104,25 @@ test('a new item\'s aisle comes from a product in its name', () => {
   assert.equal(suggestAisle(idx, 'lessive écologique'), 'household');
   assert.equal(suggestAisle(idx, 'Swiffer'), null);
 });
+
+test('a group rule stands for every product of its ingredients', async () => {
+  const { groupsFrom, ruleProductIds, searchGroups } = await import('../products.ts');
+  const groups = groupsFrom(
+    [
+      { key: 'cow_milk', name_fr: 'Lait de vache et dérivés', name_en: "Cow's milk and dairy", aliases: ['yaourt', 'dairy'], position: 2 },
+      { key: 'pork', name_fr: 'Porc (tout)', name_en: 'Pork (all)', aliases: ['charcuterie'], position: 1 },
+    ],
+    [
+      { group_key: 'pork', ingredient: 'pork tenderloin' }, { group_key: 'pork', ingredient: 'sausage' },
+      { group_key: 'pork', ingredient: 'bacon' }, { group_key: 'cow_milk', ingredient: 'butter' },
+    ],
+  );
+  assert.deepEqual(groups.map((g) => g.key), ['pork', 'cow_milk']);
+  const productOf = (i: string) => ({ 'pork tenderloin': 'p1', sausage: 'p2', butter: 'p3' } as Record<string, string>)[i];
+  assert.deepEqual(ruleProductIds([{ product_id: null, group_key: 'pork' }, { product_id: 'x' }], groups, productOf).sort(), ['p1', 'p2', 'x']);
+  assert.deepEqual(searchGroups(groups, 'porc').map((g) => g.key), ['pork']);
+  assert.deepEqual(searchGroups(groups, 'Lait').map((g) => g.key), ['cow_milk']);
+  assert.deepEqual(searchGroups(groups, 'yaourts').map((g) => g.key), ['cow_milk']);
+  assert.deepEqual(searchGroups(groups, 'vache').map((g) => g.key), ['cow_milk']);
+  assert.deepEqual(searchGroups(groups, 'chou').map((g) => g.key), []);
+});
