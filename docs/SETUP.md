@@ -532,6 +532,19 @@ each time a deck is dealt.
 - **Photos** ship with the app (`web/public/recipe-photos/`); there is no storage bucket.
 - **pg_cron jobs**: `dineamite-prompts` (every 5 minutes, queues the evening prompt and reminder), `dineamite-grocery-pushes` (every minute, "<name> added N items"), `dineamite-push-dispatch` (every minute, only does anything when `push_outbox` has unsent rows), `dineamite-purge-invites` (nightly), `dineamite-purge-list-history` (weekly).
 
+### Test accounts (going through onboarding again)
+
+An account listed in `public.test_accounts` starts over every time it signs in: the households it made (if only test accounts are in them) are deleted with everything in them, it leaves any real household it joined, its goals, tastes and notifications go, and it lands on onboarding again with its first name kept. Nobody else's data is touched. A token refresh isn't a sign-in, so a session in progress is never reset. Sign out and sign in again ("J'ai déjà un compte") to start over.
+
+Make an account a test account in **SQL Editor** (create it first by signing up in the app):
+
+```sql
+insert into public.test_accounts (user_id)
+select id from auth.users where email = 'the-account@example.com';
+```
+
+Delete its row from `public.test_accounts` to make it an ordinary account again.
+
 ### Changing the schema
 
 Never edit a migration that has already been applied. Add a new file named
