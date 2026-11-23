@@ -282,3 +282,59 @@ export function defaultAmount(p: Pick<Product, 'default_aisle' | 'default_unit' 
 export function suggestAisle(index: ProductIndex, name: string): Aisle | null {
   return (index.find(name) ?? index.find(withoutQualifiers(name)) ?? index.contained(name))?.default_aisle ?? null;
 }
+
+/**
+ * A family of catalogue items one rule can name at once ("Pork (all)",
+ * "Cow's milk and dairy"): public.ingredient_groups and the ingredients
+ * linked to it in ingredient_group_members.
+ */
+export interface IngredientGroup {
+  key: string;
+  name_fr: string;
+  name_en: string;
+  aliases: string[];
+  position: number;
+  /** Catalogue ingredient names it stands for. */
+  ingredients: string[];
+}
+
+/** Groups from their rows and their member links, in their order. */
+export function groupsFrom(
+  rows: Omit<IngredientGroup, 'ingredients'>[],
+  members: { group_key: string; ingredient: string }[],
+): IngredientGroup[] {
+  return rows
+    .map((g) => ({ ...g, aliases: g.aliases ?? [], ingredients: members.filter((m) => m.group_key === g.key).map((m) => m.ingredient) }))
+    .sort((a, b) => a.position - b.position);
+}
+
+/** Groups whose name or an alias has a word starting with what was typed ("porc", "lait", "dairy"). */
+export function searchGroups(groups: IngredientGroup[], query: string): IngredientGroup[] {
+  const q = productKey(query);
+  if (!q) return [];
+  return groups.filter((g) => [g.name_fr, g.name_en, ...g.aliases].some((n) => {
+    const key = productKey(n);
+    return key.startsWith(q) || key.includes(` ${q}`);
+  }));
+}
+
+/**
+ * The products a set of rules rules out (or loves): those named, plus every
+ * product of an ingredient in a group named.
+ */
+export function ruleProductIds(
+  rules: { product_id: string | null; group_key?: string | null }[],
+  groups: IngredientGroup[],
+  productOfIngredient: (ingredient: string) => string | undefined,
+): string[] {
+  const ids = new Set<string>();
+  for (const r of rules) {
+    if (r.product_id) ids.add(r.product_id);
+    const g = r.group_key ? groups.find((x) => x.key === r.group_key) : undefined;
+    for (const ingredient of g?.ingredients ?? []) {
+      const id = productOfIngredient(ingredient);
+      if (id) ids.add(id);
+    }
+  }
+  return [...ids];
+}

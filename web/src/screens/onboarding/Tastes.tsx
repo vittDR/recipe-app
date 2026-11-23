@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { productName, type Product } from '@logic/products.ts';
+import { productName, searchGroups, type IngredientGroup, type Product } from '@logic/products.ts';
 import { CreateItemSheet } from '../../components/GrocerySheets.tsx';
 import { Icon } from '../../components/Icon.tsx';
 import { Button, Chip, CreateRow, ListRow, Screen, SearchField, Section, toast } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { useLive, useSave } from '../../lib/hooks.ts';
-import { searchProducts, useGroceryCatalog, type GroceryCatalog } from '../../lib/products.ts';
+import { avoidsGarlic, groupName, searchProducts, useGroceryCatalog, useIngredientGroups, type GroceryCatalog } from '../../lib/products.ts';
 import { useSession } from '../../lib/session.tsx';
 import { must, supabase } from '../../lib/supabase.ts';
 import type { Diet, TasteRule } from '../../lib/types.ts';
@@ -14,17 +14,22 @@ import { DietOptions, saveDiet } from './Diet.tsx';
 
 // Offered as one-tap chips: catalogue items people often feel strongly about.
 const SUGGESTED = {
-  never: ['champignons', 'olives', 'coriandre', 'aubergine', 'céleri', 'fenouil', 'piment'],
+  never: ['olives', 'coriandre', 'aubergine', 'céleri', 'fenouil'],
   love: ['pavé de saumon', 'avocat', 'œufs', 'crevettes', 'feta', 'pois chiches', 'pâtes'],
 } as const;
+/** Ingredient groups offered first under "Never show me". */
+const SUGGESTED_GROUPS = ['pork', 'red_meat', 'cheese', 'cow_milk', 'fish', 'mushrooms', 'chilli'];
 const RESULTS = 5;
 
-/** A rule's name: its catalogue item in the app's language, else the text it was saved with. */
+/** A rule's name: its group or catalogue item in the app's language, else the text it was saved with. */
 function useRuleName() {
   const { locale } = useI18n();
   const { household } = useSession();
   const { data: catalog } = useGroceryCatalog(household!.id);
+  const { data: groups } = useIngredientGroups();
   return (r: TasteRule) => {
+    const g = r.group_key ? groups?.find((x) => x.key === r.group_key) : undefined;
+    if (g) return groupName(g, locale);
     const p = r.product_id ? catalog?.index.get(r.product_id) : undefined;
     return p ? productName(p, locale) : r.value;
   };
@@ -34,14 +39,19 @@ function RuleList({
   kind,
   rules,
   catalog,
+  groups,
   onAdd,
+  onAddGroup,
   onCreate,
   onRemove,
 }: {
   kind: 'never' | 'love';
   rules: TasteRule[];
   catalog: GroceryCatalog | null;
+  /** Ingredient groups on offer ("Pork (all)"); none for "I love". */
+  groups: IngredientGroup[];
   onAdd: (p: Product) => void;
+  onAddGroup: (g: IngredientGroup) => void;
   /** Not in the catalog yet: open the New catalog item sheet with this name. */
   onCreate: (name: string) => void;
   onRemove: (rule: TasteRule) => void;
@@ -54,12 +64,19 @@ function RuleList({
   const suggestions = catalog
     ? SUGGESTED[kind].map((n) => catalog.index.find(n)).filter((p): p is Product => !!p && !have.has(p.id))
     : [];
+  const haveGroups = new Set(mine.map((r) => r.group_key));
+  const groupSuggestions = groups.filter((g) => SUGGESTED_GROUPS.includes(g.key) && !haveGroups.has(g.key));
   const typed = query.trim();
   const { results: found, exact } = searchProducts(catalog, typed, { limit: RESULTS });
   const results = found.filter((p) => !have.has(p.id));
+  const groupResults = searchGroups(groups, typed).filter((g) => !haveGroups.has(g.key));
   const label = t(kind === 'never' ? 'tastes.never' : 'tastes.love');
   const pick = (p: Product) => {
     onAdd(p);
+    setQuery('');
+  };
+  const pickGroup = (g: IngredientGroup) => {
+    onAddGroup(g);
     setQuery('');
   };
   const create = () => {
@@ -73,14 +90,22 @@ function RuleList({
           {mine.map((r) => (
             <Chip key={r.id} onRemove={() => onRemove(r)} removeLabel={`${t('app.delete')} ${nameOf(r)}`}>{nameOf(r)}</Chip>
           ))}
+          {groupSuggestions.map((g) => (
+            <Chip key={g.key} onClick={() => onAddGroup(g)}>+ {groupName(g, locale)}</Chip>
+          ))}
           {suggestions.map((p) => (
             <Chip key={p.id} onClick={() => onAdd(p)}>+ {productName(p, locale)}</Chip>
           ))}
         </div>
+        {kind === 'never' && avoidsGarlic(mine, catalog) && <p className="small muted" role="status">{t('tastes.garlicWarning')}</p>}
         <SearchField value={query} onChange={setQuery} placeholder={t('tastes.addPlaceholder')} label={label}
-          onEnter={() => (results[0] ? pick(results[0]) : typed && !exact && create())} />
-        {typed && (results.length > 0 || !exact) && (
+          onEnter={() => (groupResults[0] ? pickGroup(groupResults[0]) : results[0] ? pick(results[0]) : typed && !exact && create())} />
+        {typed && (groupResults.length > 0 || results.length > 0 || !exact) && (
           <div className="list" role="listbox" aria-label={label}>
+            {groupResults.map((g) => (
+              <ListRow key={g.key} role="option" title={groupName(g, locale)} meta={t('tastes.groupMeta', { n: g.ingredients.length })}
+                trailing={<Icon name="plus" size={20} />} onClick={() => pickGroup(g)} />
+            ))}
             {results.map((p) => (
               <ListRow key={p.id} role="option" title={productName(p, locale)} trailing={<Icon name="plus" size={20} />}
                 onClick={() => pick(p)} />
@@ -102,6 +127,7 @@ export function TastesScreen({ editing }: { editing?: boolean }) {
   const navigate = useNavigate();
   const save = useSave();
   const { data: catalog, reload: reloadCatalog } = useGroceryCatalog(household!.id);
+  const { data: groups } = useIngredientGroups();
   const [creating, setCreating] = useState<{ kind: 'never' | 'love'; name: string } | null>(null);
   const { data, reload } = useLive<TasteRule[]>(`tastes:${userId}`, async () =>
     must(await supabase.from('taste_rules').select('*').eq('user_id', userId!).order('created_at')) as TasteRule[]);
@@ -117,6 +143,11 @@ export function TastesScreen({ editing }: { editing?: boolean }) {
     await reload();
   };
   const add = (kind: 'never' | 'love', p: Product) => addRule(kind, p.name_fr, p.id);
+  const addGroup = async (g: IngredientGroup) => {
+    if (rules.some((r) => r.kind === 'never' && r.group_key === g.key)) return;
+    await save(supabase.from('taste_rules').upsert({ user_id: userId, kind: 'never', value: g.name_fr, group_key: g.key }, { onConflict: 'user_id,kind,value' }));
+    await reload();
+  };
   // A new household item, as from the groceries search, then the rule on it.
   const create = async (kind: 'never' | 'love', { name, section, unit }: { name: string; section: string; unit: string | null }) => {
     setCreating(null);
@@ -141,10 +172,10 @@ export function TastesScreen({ editing }: { editing?: boolean }) {
         <Section label={t('tastes.diet')} flush>
           <DietOptions value={diet} onChange={(d) => void setDiet(d)} />
         </Section>
-        <RuleList kind="never" rules={rules} catalog={catalog}
-          onAdd={(p) => void add('never', p)} onCreate={(name) => setCreating({ kind: 'never', name })} onRemove={(r) => void remove(r)} />
-        <RuleList kind="love" rules={rules} catalog={catalog}
-          onAdd={(p) => void add('love', p)} onCreate={(name) => setCreating({ kind: 'love', name })} onRemove={(r) => void remove(r)} />
+        <RuleList kind="never" rules={rules} catalog={catalog} groups={groups ?? []}
+          onAdd={(p) => void add('never', p)} onAddGroup={(g) => void addGroup(g)} onCreate={(name) => setCreating({ kind: 'never', name })} onRemove={(r) => void remove(r)} />
+        <RuleList kind="love" rules={rules} catalog={catalog} groups={[]}
+          onAdd={(p) => void add('love', p)} onAddGroup={() => {}} onCreate={(name) => setCreating({ kind: 'love', name })} onRemove={(r) => void remove(r)} />
       </div>
       <div className="spacer spacer--gap" />
       <Button block onClick={() => (editing ? navigate(-1) : navigate('/onboarding/quiz', { replace: true }))}>
