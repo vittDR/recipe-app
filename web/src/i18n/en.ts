@@ -721,15 +721,10 @@ export const en = {
     },
   },
   quiz: {
-    question: 'How often would you want this for dinner?',
     pass: 'Not for me',
     sometimes: 'Now and then',
     yes: 'Regularly',
     must: 'A favourite',
-    pairQuestion: 'On a normal weeknight, which one?',
-    pick: 'This one: {title}',
-    either: 'Either',
-    neither: 'Neither',
     progress: '{n} of {total}',
     intro: 'Tell us how often you’d want each dish. Your first decks start from it.',
     skip: 'Skip for now',
@@ -757,7 +752,6 @@ export const en = {
     introText: 'We’ll show you a few dishes: tell us how often you’d like each one for dinner. Your decks start from your answers, then keep learning from every swipe.',
     start: 'Start',
     finish: 'Finish',
-    prompt: 'For dinner, this dish…',
     answers: { pass: 'Not for me', sometimes: 'Now and then', yes: 'Often', must: 'A favourite' },
   },
   rating: {

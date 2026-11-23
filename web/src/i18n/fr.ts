@@ -719,15 +719,10 @@ export const fr: Dictionary = {
     },
   },
   quiz: {
-    question: 'À quelle fréquence aimeriez-vous ce plat au dîner ?',
     pass: 'Pas pour moi',
     sometimes: 'De temps en temps',
     yes: 'Régulièrement',
     must: 'Un de mes préférés',
-    pairQuestion: 'Un soir de semaine ordinaire, lequel ?',
-    pick: 'Celui-ci : {title}',
-    either: 'L’un ou l’autre',
-    neither: 'Aucun des deux',
     progress: '{n} sur {total}',
     intro: 'Dites-nous à quelle fréquence vous aimeriez chaque plat. Vos premiers decks partiront de là.',
     skip: 'Plus tard',
@@ -755,7 +750,6 @@ export const fr: Dictionary = {
     introText: 'Quelques plats vont défiler : dites-nous à quelle fréquence vous aimeriez les manger au dîner. Vos decks partiront de vos réponses, puis apprendront de chaque swipe.',
     start: 'Commencer',
     finish: 'Terminer',
-    prompt: 'Au dîner, ce plat…',
     answers: { pass: 'Pas pour moi', sometimes: 'De temps en temps', yes: 'Souvent', must: 'Un favori' },
   },
   rating: {
