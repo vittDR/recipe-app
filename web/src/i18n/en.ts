@@ -1005,7 +1005,7 @@ export const en = {
     },
     done: {
       title: 'All set!',
-      subtitle: 'Your first deck is served. What’s for dinner tonight?',
+      subtitle: 'You are ready to deal your first deck. What’s for dinner tonight?',
       start: 'Deal my first deck',
     },
     equipment: {
