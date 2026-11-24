@@ -88,7 +88,7 @@ function RuleList({
       <div className="stack">
         <div className="chips">
           {mine.map((r) => (
-            <Chip key={r.id} onRemove={() => onRemove(r)} removeLabel={`${t('app.delete')} ${nameOf(r)}`}>{nameOf(r)}</Chip>
+            <Chip key={r.id} pressed onRemove={() => onRemove(r)} removeLabel={`${t('app.delete')} ${nameOf(r)}`}>{nameOf(r)}</Chip>
           ))}
           {groupSuggestions.map((g) => (
             <Chip key={g.key} onClick={() => onAddGroup(g)}>+ {groupName(g, locale)}</Chip>
@@ -169,9 +169,18 @@ export function TastesScreen({ editing }: { editing?: boolean }) {
   return (
     <Screen back={editing} title={t('tastes.title')} subtitle={t('tastes.subtitle')} plain>
       <div className="stack stack--lg">
-        <Section label={t('tastes.diet')} flush>
-          <DietOptions value={diet} onChange={(d) => void setDiet(d)} />
-        </Section>
+        {editing ? (
+          <div className="list">
+            <ListRow to="/us/diet" tile="sage" icon={<Icon name="leaf" size={18} />} title={t('tastes.diet')}
+              meta={t(`tastes.diets.${diet}`)} />
+            <ListRow to="/us/quiz" tile="accent" icon={<Icon name="star" size={18} />} title={t('us.quizAgain')}
+              meta={t('us.quizMeta')} />
+          </div>
+        ) : (
+          <Section label={t('tastes.diet')} flush>
+            <DietOptions value={diet} onChange={(d) => void setDiet(d)} />
+          </Section>
+        )}
         <RuleList kind="never" rules={rules} catalog={catalog} groups={groups ?? []}
           onAdd={(p) => void add('never', p)} onAddGroup={(g) => void addGroup(g)} onCreate={(name) => setCreating({ kind: 'never', name })} onRemove={(r) => void remove(r)} />
         <RuleList kind="love" rules={rules} catalog={catalog} groups={[]}
