@@ -32,6 +32,28 @@ test('plate-like features are left to style', () => {
     ['protein:fish', 'sauce:tomato', 'cod']);
 });
 
+test('a cuisine or a cut is learned once, as its namespaced twin', () => {
+  assert.deepEqual(tasteFeatures(['thai', 'cuisine:thai', 'asian', 'cuisine:asian', 'prawns', 'cut:prawns', 'lime', 'flavour:citrus']),
+    ['cuisine:thai', 'cuisine:asian', 'cut:prawns', 'lime', 'flavour:citrus']);
+});
+
+test("a dish's own effect: answers about it move it more than dishes like it", () => {
+  const p = plate(0.3);
+  const m = fitStyle([{ plate: p, features: ['protein:fish', 'recipe:a'], y: 4 }]);
+  const same = m.frequency([p], ['protein:fish', 'recipe:a']);
+  const like = m.frequency([p], ['protein:fish', 'recipe:b']);
+  assert.ok(same > like + 0.1, `${same} vs ${like}`);
+  assert.ok(like > fitStyle([]).frequency([p], ['protein:fish']));
+});
+
+test('signals carry their dish', () => {
+  const { observations } = observationsFor(
+    [{ kind: 'starter', verdict: 'yes', features: ['protein:fish'], at: new Date().toISOString(), recipeId: 'r1' }],
+    () => [plate(0.3)],
+  );
+  assert.deepEqual(observations[0].features, ['protein:fish', 'recipe:r1']);
+});
+
 test('style: someone who wants rich plates rarely', () => {
   const obs: Observation[] = [];
   for (let i = 0; i <= 10; i++) obs.push({ plate: plate(i / 10), features: [], y: Math.max(0, 3.5 - 4 * (i / 10)) });

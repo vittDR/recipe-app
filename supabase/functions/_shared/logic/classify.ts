@@ -14,8 +14,9 @@
 
 import { type Difficulty, type Equipment } from './facets.ts';
 import { type CatalogEntry, type Catalog, estimateMacros, gramsOf, type NormalisedIngredient } from './ingredients.ts';
+import { type Flavour, flavoursOf, type IngredientFamily } from './flavours.ts';
 
-export const CLASSIFICATION_VERSION = 8;
+export const CLASSIFICATION_VERSION = 9;
 
 export const PROTEIN_GROUPS = [
   'poultry', 'beef', 'pork', 'lamb', 'veal', 'game', 'offal', 'fish', 'shellfish', 'eggs', 'legumes', 'soy', 'dairy',
@@ -126,6 +127,15 @@ export const LEAN_MAX_KCAL = 700;
 export const LOW_KCAL_MAX = 500;
 export const HIGH_FIBRE_MIN_G = 8;
 export const EVERYDAY_MAX_MIN = 45;
+/** Effort, a taste like any other: some people happily spend an hour, others want it done in 20 minutes. */
+/** No "easy": most of the library is, so it says nothing. */
+export const EFFORT = ['quick', 'long', 'hard', 'short_list', 'long_list'] as const;
+export type Effort = (typeof EFFORT)[number];
+export const EFFORT_QUICK_MAX_MIN = 25;
+export const EFFORT_LONG_MIN_MIN = 60;
+/** Required lines that aren't staples. */
+export const EFFORT_SHORT_LIST_MAX = 6;
+export const EFFORT_LONG_LIST_MIN = 13;
 /** Grams per serving from which a seasonal ingredient sets the recipe's season: about a portion of vegetables, so half a pepper in a stew or one tomato in a sauce doesn't. */
 export const SEASON_MIN_G = 75;
 export const SEASONS = ['spring', 'summer', 'autumn', 'winter'] as const;
@@ -200,6 +210,12 @@ export interface RecipeClassification {
   veg_g: number | null;
   nutrition_goals: NutritionGoal[];
   meal_intents: MealIntent[];
+  /** What it tastes like beyond its plate (flavours.ts); null when no ingredient could be read. */
+  flavours: Flavour[] | null;
+  /** Families of ingredient it leans on: mushrooms, cheese… (flavours.ts); null when unreadable. */
+  ingredient_families: IngredientFamily[] | null;
+  /** How much work it is: quick or long, easy or hard, a short or long list (EFFORT_*). */
+  effort: Effort[];
   /** Fields set from the recipe's own tags or cuisine rather than worked out. */
   sourced: string[];
 }
@@ -498,6 +514,18 @@ export function classifyRecipe(input: ClassifyInput): RecipeClassification {
   }
   if (cuisines.size) sourced.add('cuisines');
 
+  const { flavours, families: ingredientFamilies } = flavoursOf(required.flatMap((i) => (i.catalog
+    ? [{ name: i.catalog.name, grams: perServing(i) }]
+    : [])));
+  const effort = new Set<Effort>();
+  const minutes = input.totalMin ?? (input.prepMin !== null || input.cookMin !== null ? (input.prepMin ?? 0) + (input.cookMin ?? 0) : null);
+  if (minutes !== null && minutes > 0 && minutes <= EFFORT_QUICK_MAX_MIN) effort.add('quick');
+  if (minutes !== null && minutes >= EFFORT_LONG_MIN_MIN) effort.add('long');
+  if (input.difficulty === 'hard') effort.add('hard');
+  const lines = required.filter((i) => !(i.is_staple || i.catalog?.is_staple)).length;
+  if (input.ingredients.length && lines <= EFFORT_SHORT_LIST_MAX) effort.add('short_list');
+  if (lines >= EFFORT_LONG_LIST_MIN) effort.add('long_list');
+
   return {
     version: CLASSIFICATION_VERSION,
     cuisines: [...cuisines],
@@ -517,6 +545,9 @@ export function classifyRecipe(input: ClassifyInput): RecipeClassification {
     veg_g: readable ? Math.round(required.filter((i) => isVegetable(i.catalog)).reduce((sum, i) => sum + (perServing(i) ?? 0), 0)) : null,
     nutrition_goals: ordered(NUTRITION_GOALS, goals),
     meal_intents: ordered(MEAL_INTENTS, intents),
+    flavours: readable ? flavours : null,
+    ingredient_families: readable ? ingredientFamilies : null,
+    effort: ordered(EFFORT, effort),
     sourced: [...sourced].sort(),
   };
 }
@@ -608,8 +639,11 @@ export function classifyRow(row: ClassifiableRow, catalog: Catalog): RecipeClass
  * Features for preference learning, namespaced so the same word means one
  * thing ("sauce:coconut" is not the ingredient "coconut milk"). Heat is
  * cumulative ("heat:2+" for anything at least medium) so a liking for spicy
- * food is one feature, not five unrelated ones. Cuisines stay plain names,
- * like the cuisine tags they come from. Season is left out: when a dish is
+ * food is one feature, not five unrelated ones. Cuisines are there twice: as
+ * plain names, like the cuisine tags they come from (what the v1 profile and
+ * accepted patterns read), and as cuisine:<name>, which style.ts learns on
+ * with a weight of its own. The main protein items are cut:<ingredient>
+ * (chicken thigh, not just poultry). Season is left out: when a dish is
  * cooked says nothing about whether someone likes it.
  */
 export function classificationFeatures(c: RecipeClassification): string[] {
@@ -622,6 +656,11 @@ export function classificationFeatures(c: RecipeClassification): string[] {
     ...c.cooking_methods.map((v) => `method:${v}`),
     ...c.nutrition_goals.map((v) => `goal:${v}`),
     ...c.meal_intents.map((v) => `intent:${v}`),
+    ...c.cuisines.map((v) => `cuisine:${v}`),
+    ...(c.protein_items ?? []).map((v) => `cut:${v}`),
+    ...(c.flavours ?? []).map((v) => `flavour:${v}`),
+    ...(c.ingredient_families ?? []).map((v) => `family:${v}`),
+    ...(c.effort ?? []).map((v) => `effort:${v}`),
   ];
   if (c.heat_level !== null) {
     if (c.heat_level === 0) out.push('heat:0');

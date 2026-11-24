@@ -790,7 +790,7 @@ export const en = {
     profile: 'Your taste profile',
     likes: 'You like',
     dislikes: 'Less keen on',
-    profileEmpty: 'Swipe, cook and rate a few meals and your tastes show up here.',
+    profileEmpty: 'Nothing set yet. Add what you love or never eat; your decks also learn from every swipe and meal.',
     quiz: 'Take the taste quiz',
     advanced: 'Advanced',
     advancedHint: 'How you like to eat',

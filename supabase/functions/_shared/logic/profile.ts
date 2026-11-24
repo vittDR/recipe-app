@@ -310,6 +310,9 @@ export function occasionalKinds(signals: Signal[]): Set<string> {
   return kinds;
 }
 
+/** The feature for a dish's own effect (style.ts): the same key occasionalKinds uses for the dish. */
+export const dishFeature = (recipeId: string) => `recipe:${recipeId}`;
+
 /** The keys a recipe is matched on against occasionalKinds. */
 export function kindKeys(recipeId: string, features: string[] | undefined): string[] {
   return [`recipe:${recipeId}`, ...(features ?? []).filter((f) => f.startsWith('dish:'))];

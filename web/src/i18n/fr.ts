@@ -788,7 +788,7 @@ export const fr: Dictionary = {
     profile: 'Vos goûts',
     likes: 'Vous aimez',
     dislikes: 'Moins fan de',
-    profileEmpty: 'Swipez, cuisinez et notez quelques repas : vos goûts apparaîtront ici.',
+    profileEmpty: 'Rien pour l’instant. Ajoutez ce que vous adorez ou ne mangez jamais ; vos decks apprennent aussi de chaque swipe et de chaque repas.',
     quiz: 'Faire le quiz des goûts',
     advanced: 'Avancé',
     advancedHint: 'Votre façon de manger',

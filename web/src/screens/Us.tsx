@@ -10,7 +10,7 @@ import { APPLIANCES } from '@logic/facets.ts';
 import { APPLIANCE_LABEL } from './onboarding/Equipment.tsx';
 import { macrosOf, splitPot, targetsOf } from '@logic/portions.ts';
 import {
-  buildProfile, DIET_FEATURE, profileHighlights, signalsFor, type MealRow, type PortionRow, type StyleLevel, type SwipeRow,
+  signalsFor, type MealRow, type PortionRow, type StyleLevel, type SwipeRow,
   type TasteSignalRow,
 } from '@logic/profile.ts';
 import { dietAdherence } from '@logic/recommend.ts';
@@ -21,18 +21,15 @@ import { Icon } from '../components/Icon.tsx';
 import { Link } from 'react-router';
 import { AvatarPair, Button, ListRow, Screen, TabHeader, Tag } from '../components/ui.tsx';
 import { LOCALE_NAMES, useI18n } from '../i18n/index.tsx';
-import { classLabel } from '../lib/classes.ts';
 import { useCatalog, useLive, useSave } from '../lib/hooks.ts';
 import { groupName, useGroceryCatalog, useIngredientGroups } from '../lib/products.ts';
 import { pushState, type PushState } from '../lib/push.ts';
 import { useSession } from '../lib/session.tsx';
 import { must, supabase } from '../lib/supabase.ts';
-import { useTags } from '../lib/tags.ts';
 import type { TasteRule } from '../lib/types.ts';
 
 interface Loaded {
   rules: TasteRule[];
-  profile: ReturnType<typeof profileHighlights>;
   /** 0..1, how much this person sticks to their goals (recommend.ts). */
   adherence: number;
   quizDone: boolean;
@@ -57,7 +54,6 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' | 'a
   const [push, setPush] = useState<PushState>('unsupported');
   const { data: catalog } = useGroceryCatalog(household!.id);
   const { data: groups } = useIngredientGroups();
-  const { tags } = useTags(household!.id);
   const ingredientCatalog = useCatalog();
   const save = useSave();
   const [edited, setEdited] = useState<Map<StyleRegion, StyleLevel>>(new Map());
@@ -111,9 +107,6 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' | 'a
           return split ? split.plates[0].fits : null;
         };
         const mySignals = signalsFor(userId!, rows, (id) => features.get(id), fitsNow);
-        const full = buildProfile(mySignals);
-        // Shown as tastes: what a dish does for the diet is the goals' business.
-        const tastes = new Map([...full].filter(([f]) => !DIET_FEATURE.test(f)));
         // The same model the deck uses (style.ts styleModelFor), and what they set themselves.
         const { observations, pairs, edits } = observationsFor(mySignals, (id) => plates.get(id));
         const style = ingredientCatalog && (observations.length >= STYLE_MIN_OBSERVATIONS || edits.length > 0)
@@ -122,7 +115,8 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' | 'a
             stated: edits.map((e): [StyleRegion, StyleLevel] => [e.region, e.level]),
           }
           : null;
-        return { profile: profileHighlights(tastes, { limit: 5 }), adherence: dietAdherence(mySignals), style };
+        // What was learned isn't shown as tastes: only what they said themselves (rules, the style edits).
+        return { adherence: dietAdherence(mySignals), style };
       })(),
       quizDone: rows.tasteSignals.some((x) => x.kind === 'starter'),
     };
@@ -138,14 +132,7 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' | 'a
     void pushState().then(setPush).catch(() => setPush('unsupported'));
   }, []);
 
-  // Tags, ingredients and rules on catalogue items read in the app's language.
-  const labelOf = (value: string) => {
-    const classified = classLabel(value, t);
-    if (classified) return classified;
-    if (tags?.find(value)?.name === value) return tags.label(value, locale);
-    const p = catalog?.index.ofIngredient(value);
-    return p ? productName(p, locale) : value;
-  };
+  // Rules on catalogue items read in the app's language.
   const nameOf = (r: TasteRule) => {
     const g = r.group_key ? groups?.find((x) => x.key === r.group_key) : undefined;
     if (g) return groupName(g, locale);
@@ -164,7 +151,6 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' | 'a
     ...(diet ? [{ key: 'diet', label: t(`tastes.${diet as 'pescatarian' | 'vegetarian'}`), tone: undefined }] : []),
     ...never.map((n) => ({ key: `n:${n}`, label: t('us.without', { item: n }), tone: undefined })),
     ...love.map((n) => ({ key: `l:${n}`, label: n, tone: 'accent' as const })),
-    ...(data?.profile.likes ?? []).map((x) => ({ key: `p:${x.feature}`, label: labelOf(x.feature), tone: 'accent' as const })),
   ];
 
   if (view === 'advanced') {
