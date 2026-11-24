@@ -1001,7 +1001,7 @@ export const fr: Dictionary = {
     },
     done: {
       title: 'C’est prêt !',
-      subtitle: 'Votre premier deck est servi. On mange quoi ce soir ?',
+      subtitle: 'Vous êtes prêt à lancer votre premier deck. On mange quoi ce soir ?',
       start: 'Lancer mon premier deck',
     },
     equipment: {
