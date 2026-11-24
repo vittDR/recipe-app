@@ -783,7 +783,6 @@ export const fr: Dictionary = {
     householdMeta_other: 'Foyer · {count} membres',
     edit: 'Modifier',
     without: 'Sans {item}',
-    dietMinded: 'Vous choisissez surtout ce qui colle à vos objectifs : on s’y tient, avec de temps en temps un plaisir qui devrait vous plaire.',
     profile: 'Vos goûts',
     likes: 'Vous aimez',
     dislikes: 'Moins fan de',

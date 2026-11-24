@@ -785,7 +785,6 @@ export const en = {
     householdMeta_other: 'Household · {count} members',
     edit: 'Edit',
     without: 'No {item}',
-    dietMinded: 'You mostly pick what fits your goals, so we keep to that, with the odd treat we think you’d love.',
     profile: 'Your taste profile',
     likes: 'You like',
     dislikes: 'Less keen on',

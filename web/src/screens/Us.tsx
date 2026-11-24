@@ -13,7 +13,6 @@ import {
   buildProfile, DIET_FEATURE, profileHighlights, signalsFor, type MealRow, type PortionRow, type StyleLevel, type SwipeRow,
   type TasteSignalRow,
 } from '@logic/profile.ts';
-import { dietAdherence } from '@logic/recommend.ts';
 import { productName } from '@logic/products.ts';
 import { AllergiesCard } from '../components/Allergies.tsx';
 import { StyleRows } from '../components/StyleSummary.tsx';
@@ -33,8 +32,6 @@ import type { TasteRule } from '../lib/types.ts';
 interface Loaded {
   rules: TasteRule[];
   profile: ReturnType<typeof profileHighlights>;
-  /** 0..1, how much this person sticks to their goals (recommend.ts). */
-  adherence: number;
   /**
    * Their style by kind of plate (style.ts styleSummary), from everything they
    * chose, the same model the deck uses; with what they set themselves. Null
@@ -118,7 +115,7 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
             stated: edits.map((e): [StyleRegion, StyleLevel] => [e.region, e.level]),
           }
           : null;
-        return { profile: profileHighlights(tastes, { limit: 5 }), adherence: dietAdherence(mySignals), style };
+        return { profile: profileHighlights(tastes, { limit: 5 }), style };
       })(),
     };
   });
@@ -180,7 +177,6 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
               ))}
             </div>
           ) : <p className="muted t-callout m-0">{t('us.profileEmpty')}</p>}
-          {data && data.adherence >= 0.6 && <p className="t-callout muted m-0">{t('us.dietMinded')}</p>}
         </Link>
 
         {data?.style && (
