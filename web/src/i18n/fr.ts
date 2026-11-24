@@ -992,7 +992,7 @@ export const fr: Dictionary = {
       promptTitle: 'On mange quoi ce soir ?',
       promptBody: '{name} a lancé le deck. À vous de swiper !',
       decidedTitle: 'C’est décidé !',
-      decidedBody: 'Poulet rôti ce soir. 4 ingrédients à acheter.',
+      decidedBody: 'Curry de pois chiches ce soir. 4 ingrédients à acheter.',
     },
     done: {
       title: 'C’est prêt !',
