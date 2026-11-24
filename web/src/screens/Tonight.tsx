@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { combineProposals, scaleQuantity } from '@logic/groceries.ts';
+import { filtersForDiet } from '@logic/deckFilters.ts';
 import { RATINGS, type Rating } from '@logic/profile.ts';
 import { Link, useNavigate, useSearchParams } from 'react-router';
 import { AddToListSheet, loadProposalsMany, type MealForList } from '../components/AddToListSheet.tsx';
@@ -11,6 +12,7 @@ import {
 } from '../components/ui.tsx';
 import { useI18n } from '../i18n/index.tsx';
 import { pickDeckArt } from '../lib/deckArt.ts';
+import { useDiet } from '../lib/diet.ts';
 import { useEaters } from '../lib/eaters.ts';
 import { householdDefaults, loadLastSettings, saveLastSettings, type LastSettings } from '../lib/deckSettings.ts';
 import { recipeTitle } from '../lib/recipeText.ts';
@@ -89,6 +91,8 @@ export function TonightScreen() {
     setParams(date === today ? {} : { day: date }, { replace: true });
   };
 
+  // The art, the protein choices and the deck follow this person's diet.
+  const diet = useDiet();
   const { data, loading, set } = useLive<TonightData>(
     `tonight:${household!.id}:${today}:${selected}`,
     async () => {
@@ -181,9 +185,11 @@ export function TonightScreen() {
   const since = profile?.onboarded_at ? Date.parse(profile.onboarded_at) : 0;
   const last = [remembered, data?.lastDeck].filter((x): x is LastSettings => !!x && Date.parse(x.at) >= since)
     .sort((a, b) => b.at.localeCompare(a.at))[0];
-  const settings: DeckSettings = picked ?? (last
+  const chosen: DeckSettings = picked ?? (last
     ? { ...who, maxMinutes: last.maxMinutes, mood: last.mood, filters: last.filters }
     : { ...who, ...householdDefaults(household), ...(household?.deck_defaults?.mood ? {} : { mood: data?.favouriteMood ?? 'any' }) });
+  // A protein picked before the diet changed (chicken, now vegetarian) would leave nothing to deal.
+  const settings: DeckSettings = { ...chosen, filters: filtersForDiet(chosen.filters, diet ?? 'everything') };
   const pick = (s: DeckSettings) => {
     setPicked(s);
     setRemembered(saveLastSettings(userId!, s));
@@ -282,7 +288,7 @@ export function TonightScreen() {
 
   // The week (strip, meals) carries over while another evening's deck loads.
   const dayLoading = !data || data.forDate !== selected;
-  if (loading && !data) return <Screen>{header}<Spinner /></Screen>;
+  if ((loading && !data) || !diet) return <Screen>{header}<Spinner /></Screen>;
 
   const deck = dayLoading ? null : data?.deck ?? null;
   const open = deck?.status === 'open';
@@ -396,7 +402,7 @@ export function TonightScreen() {
     const starter = deck.started_by !== userId && !myProgress?.swiped_count;
     const others = deck.who_eating.filter((u) => u !== userId);
     // Same cards as this deck's no-match screen, should it come to that.
-    const [front, back] = pickDeckArt(deck.id, 2, deck.mood);
+    const [front, back] = pickDeckArt(deck.id, 2, deck.mood, diet ?? undefined);
     main = (
       <article className="card card--flush join-card">
         <div className={`join-card__art${starter ? ' join-card__art--iris' : ''}`} aria-hidden>
@@ -477,7 +483,7 @@ export function TonightScreen() {
   } else {
     // No deck yet: dealing the deck is the only big action. New cards each
     // evening, to the mood about to be dealt; the best fit in front.
-    const [mid, left, right] = pickDeckArt(selected, 3, settings.mood);
+    const [mid, left, right] = pickDeckArt(selected, 3, settings.mood, diet ?? undefined);
     const ask = isToday ? t('tonight.ask')
       : selected === week[1] ? t('tonight.askTomorrow') : t('tonight.askOn', { day: weekday(selected) });
     main = (
@@ -514,8 +520,11 @@ export function TonightScreen() {
         {rating}
         {main}
       </div>
-      <DeckSettingsSheet open={settingsOpen} onClose={() => setSettingsOpen(false)} settings={settings} onChange={pick}
-        table={table} dealing={dealing} error={error} onDeal={() => void deal()} />
+      <DeckSettingsSheet open={settingsOpen} onClose={() => setSettingsOpen(false)}
+        title={isToday ? t('tonight.settingsTitle')
+          : selected === week[1] ? t('tonight.settingsTitleTomorrow') : t('tonight.settingsTitleOn', { day: weekday(selected) })}
+        settings={settings} onChange={pick}
+        table={table} diet={diet} dealing={dealing} error={error} onDeal={() => void deal()} />
       <WeekSheet open={weekOpen} onClose={() => setWeekOpen(false)} days={stripDays} today={today}
         onToggle={(d, c) => void toggleDay(d, c)} back={eveningPath(selected, today)} />
       {groceries && (

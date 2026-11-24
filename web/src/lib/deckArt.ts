@@ -15,7 +15,7 @@ import springRolls from '../assets/deck/spring-rolls.webp';
 import steak from '../assets/deck/steak.webp';
 import stirFry from '../assets/deck/stir-fry.webp';
 import tacos from '../assets/deck/tacos.webp';
-import type { Mood } from './types.ts';
+import type { Diet, Mood } from './types.ts';
 
 /** Illustrated recipe cards for the deck fans (Tonight, no match), by the colour of the card. */
 const CARDS = {
@@ -38,6 +38,23 @@ const CARDS = {
   croqueMonsieur: [croqueMonsieur, 'pink'],
 } as const;
 type Card = keyof typeof CARDS;
+
+/** What each card shows, for the diets: meat, fish (or seafood), or neither. */
+const MEAT: Card[] = ['burger', 'croqueMonsieur', 'roastChicken', 'steak', 'tacos'];
+const FISH: Card[] = ['salmon', 'scallops', 'pokeBowl'];
+
+/**
+ * The cards a diet can be shown: no meat for pescatarians, neither meat nor
+ * fish for vegetarians. Flexitarians see meat only when nothing else fits.
+ */
+function dietCards(diet: Diet): { ok: Card[]; last: Card[] } {
+  const all = Object.keys(CARDS) as Card[];
+  const meat = (c: Card) => MEAT.includes(c);
+  if (diet === 'vegetarian') return { ok: all.filter((c) => !meat(c) && !FISH.includes(c)), last: [] };
+  if (diet === 'pescatarian') return { ok: all.filter((c) => !meat(c)), last: [] };
+  if (diet === 'flexitarian') return { ok: all.filter((c) => !meat(c)), last: MEAT };
+  return { ok: all, last: [] };
+}
 
 /**
  * The cards that look like each mood; a card can suit several. A mood with
@@ -74,15 +91,16 @@ function shuffle<T>(items: T[], random: () => number): T[] {
 
 /**
  * `n` different cards for a mood, most fitting first (put it in front), and
- * no two of one colour while another card can stand in. Picked from a seed
+ * no two of one colour while another card can stand in. Only cards that suit
+ * the viewer's diet (a vegetarian never sees a steak). Picked from a seed
  * so a screen keeps the same cards across live refreshes and only changes
  * when the seed or mood does (a new day, a new deck).
  */
-export function pickDeckArt(seed: string, n: number, mood: Mood | null = 'any'): string[] {
+export function pickDeckArt(seed: string, n: number, mood: Mood | null = 'any', diet: Diet = 'everything'): string[] {
   const random = seeded(seed);
-  const all = Object.keys(CARDS) as Card[];
-  const fits = !mood || mood === 'any' ? all : MOOD_ART[mood];
-  const order = [...shuffle(fits, random), ...shuffle(all.filter((c) => !fits.includes(c)), random)];
+  const { ok, last } = dietCards(diet);
+  const fits = !mood || mood === 'any' ? ok : MOOD_ART[mood].filter((c) => ok.includes(c));
+  const order = [...shuffle(fits, random), ...shuffle(ok.filter((c) => !fits.includes(c)), random), ...shuffle(last, random)];
   const colours = new Set<string>();
   const picked: Card[] = [];
   for (const c of order) {

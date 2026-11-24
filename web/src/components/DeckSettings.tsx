@@ -5,9 +5,9 @@
 // design: a one-line summary on Ce soir opens them in a sheet.
 import { useState } from 'react';
 import {
-  type DeckFilters, FILTER_BASES, FILTER_EFFORTS, FILTER_CUISINES, FILTER_PROTEINS, FILTER_SPICES, filterCount, MAX_KCAL_LIMIT, MIN_PROTEIN_LIMIT,
+  type DeckFilters, FILTER_BASES, FILTER_EFFORTS, FILTER_CUISINES, FILTER_SPICES, filterCount, MAX_KCAL_LIMIT, MIN_PROTEIN_LIMIT, proteinsForDiet,
 } from '@logic/deckFilters.ts';
-import type { Mood } from '../lib/types.ts';
+import type { Diet, Mood } from '../lib/types.ts';
 import { useI18n } from '../i18n/index.tsx';
 import { Icon } from './Icon.tsx';
 import { EATER_COLOR, usePortionTotal } from '../lib/eaters.ts';
@@ -133,13 +133,17 @@ function AmountInput({ label, unit, value, max, onChange }: {
   );
 }
 
-export function DeckSettingsSheet({ open, onClose, settings, onChange, table, onDeal, dealing, error }: {
+export function DeckSettingsSheet({ open, onClose, title, settings, onChange, table, diet, onDeal, dealing, error }: {
   open: boolean;
   onClose: () => void;
+  /** The evening the deck is for: "Tonight’s deck", "Tomorrow’s deck", "Thursday’s deck". */
+  title: string;
   settings: DeckSettings;
   onChange: (s: DeckSettings) => void;
   /** Who could eat tonight. */
   table: Table;
+  /** The dealer's diet: only the proteins it allows are offered. */
+  diet: Diet;
   onDeal: () => void;
   dealing: boolean;
   error: string | null;
@@ -174,7 +178,7 @@ export function DeckSettingsSheet({ open, onClose, settings, onChange, table, on
           action={<Button small variant="text" onClick={() => setView('main')}>{t('app.done')}</Button>} />
         <Section label={t('tonight.filters.protein')} flush>
           <div className="chips">
-            {FILTER_PROTEINS.map((p) => (
+            {proteinsForDiet(diet).map((p) => (
               <Chip key={p} pressed={!!f.proteins?.includes(p)} onClick={() => setFilters({ ...f, proteins: toggle(f.proteins, p) })}>
                 {t(`tonight.filters.proteins.${p}`)}
               </Chip>
@@ -225,8 +229,8 @@ export function DeckSettingsSheet({ open, onClose, settings, onChange, table, on
   }
 
   return (
-    <Sheet open={open} onClose={close} label={t('tonight.settingsTitle')}>
-      <SheetHeader title={t('tonight.settingsTitle')} />
+    <Sheet open={open} onClose={close} label={title}>
+      <SheetHeader title={title} />
       {shared && (
         <Section label={t('tonight.whoEating')} flush
           action={<span className="who-count">

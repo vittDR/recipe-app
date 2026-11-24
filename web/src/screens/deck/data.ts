@@ -1,5 +1,6 @@
+import { loadDiet } from '../../lib/diet.ts';
 import { must, supabase } from '../../lib/supabase.ts';
-import type { Deck, DeckCard, DeckMemberProgress, MemberPortion, Swipe } from '../../lib/types.ts';
+import type { Deck, DeckCard, Diet, DeckMemberProgress, MemberPortion, Swipe } from '../../lib/types.ts';
 
 export interface DeckData {
   deck: Deck;
@@ -11,10 +12,12 @@ export interface DeckData {
   fits: Map<string, Map<string, boolean>>;
   /** recipe_id -> partners who made it a must-have (only must-haves are shared mid-deck). */
   partnerMusts: Map<string, string[]>;
+  /** This person's diet, for the deck art. */
+  diet: Diet;
 }
 
 export async function loadDeck(id: string, userId: string): Promise<DeckData> {
-  const [deck, cards, portions, progress, swipes, fits, musts] = await Promise.all([
+  const [deck, cards, portions, progress, swipes, fits, musts, diet] = await Promise.all([
     supabase.from('decks').select('*').eq('id', id).single(),
     supabase.from('deck_cards').select('*, recipe:recipes(*)').eq('deck_id', id).order('position'),
     supabase.from('member_portions').select('recipe_id, kcal, protein_g, servings, fits').eq('deck_id', id),
@@ -22,6 +25,7 @@ export async function loadDeck(id: string, userId: string): Promise<DeckData> {
     supabase.from('swipes').select('*').eq('deck_id', id).eq('user_id', userId),
     supabase.rpc('member_fits', { p_deck: id }),
     supabase.rpc('partner_musts', { p_deck: id }),
+    loadDiet(userId),
   ]);
   const fitMap = new Map<string, Map<string, boolean>>();
   for (const f of (must(fits) ?? []) as { recipe_id: string; user_id: string; fits: boolean }[]) {
@@ -41,5 +45,6 @@ export async function loadDeck(id: string, userId: string): Promise<DeckData> {
     mySwipes: must(swipes) as Swipe[],
     fits: fitMap,
     partnerMusts,
+    diet,
   };
 }

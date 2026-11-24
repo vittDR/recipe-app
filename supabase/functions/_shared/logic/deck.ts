@@ -207,6 +207,13 @@ export function seasonFit(recipe: Pick<CandidateRecipe, 'seasons'>, season: Seas
 const usesProduct = (productIds: string[] | undefined, ids: string[]) =>
   ids.length > 0 && !!productIds?.some((id) => ids.includes(id));
 
+/** Whether a dish of this diet class suits someone on this diet; flexitarians eat meat, just less of it. */
+export function fitsDiet(dietClass: 'veg' | 'fish' | 'meat', diet: Diet): boolean {
+  if (diet === 'vegetarian') return dietClass === 'veg';
+  if (diet === 'pescatarian') return dietClass !== 'meat';
+  return true;
+}
+
 export function passesHardFilters(recipe: CandidateRecipe, members: DeckMember[], opts: DeckOptions): boolean {
   if (opts.recentlyCooked?.has(recipe.id)) return false;
   if (opts.exclude?.has(recipe.id)) return false;
@@ -217,8 +224,7 @@ export function passesHardFilters(recipe: CandidateRecipe, members: DeckMember[]
   const essential = recipe.productIds?.filter((id) => !recipe.optionalProductIds?.includes(id));
   const names = recipe.allIngredients ?? recipe.ingredientNames;
   for (const m of members) {
-    if (m.diet === 'vegetarian' && recipe.dietClass !== 'veg') return false;
-    if (m.diet === 'pescatarian' && recipe.dietClass === 'meat') return false;
+    if (!fitsDiet(recipe.dietClass, m.diet)) return false;
     if (usesProduct(essential, m.never)) return false;
     if (m.allergies?.length && names.some((n) => m.allergies!.includes(n.toLowerCase()))) return false;
   }

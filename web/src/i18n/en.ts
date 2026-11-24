@@ -135,6 +135,8 @@ export const en = {
   tonight: {
     ask: 'What’s for dinner tonight?',
     settingsTitle: 'Tonight’s deck',
+    settingsTitleTomorrow: 'Tomorrow’s deck',
+    settingsTitleOn: '{day}’s deck',
     timeLabel: 'Time',
     upTo: '≤ {n} min',
     underHour: '≤ 1 h',
