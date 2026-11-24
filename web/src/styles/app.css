@@ -4413,15 +4413,19 @@ body:has(.moment) .tabbar {
 
 .eater-sheet__head {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  /* Equal sides keep the title centred on the sheet, whatever Cancel's width. */
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 8px;
   margin-bottom: 16px;
 }
 
+.eater-sheet__head > .link-btn {
+  justify-self: start;
+}
+
 .eater-sheet__head::after {
   content: '';
-  width: 1px;
 }
 
 .eater-sheet__title {
