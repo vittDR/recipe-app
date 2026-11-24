@@ -110,8 +110,41 @@ function toggle<T extends string>(list: T[] | undefined, v: T): T[] | undefined 
 }
 
 /**
+ * The stepper's value, typed directly: tapping it opens the numeric keypad.
+ * Only the number is typed (the unit stays after it); it applies on blur or
+ * Enter, capped at `max`, and an empty field or 0 lifts the limit.
+ */
+function AmountValue({ label, unit, value, max, onChange }: {
+  label: string;
+  unit: string;
+  value: number;
+  max: number;
+  onChange: (v: number | undefined) => void;
+}) {
+  const [draft, setDraft] = useState<string | null>(null);
+  const shown = draft ?? String(value);
+  const commit = () => {
+    if (draft === null) return;
+    const n = Number.parseInt(draft, 10);
+    onChange(Number.isFinite(n) && n > 0 ? Math.min(n, max) : undefined);
+    setDraft(null);
+  };
+  return (
+    <label className="nutrition-row__value tabular">
+      <input className="nutrition-row__input" type="text" inputMode="numeric" pattern="[0-9]*" enterKeyHint="done"
+        aria-label={label} value={shown} style={{ width: `${Math.max(shown.length, 1)}ch` }}
+        onFocus={(e) => { setDraft(String(value)); e.target.select(); }}
+        onChange={(e) => setDraft(e.target.value.replace(/\D/g, '').slice(0, 4))}
+        onBlur={commit}
+        onKeyDown={(e) => { if (e.key === 'Enter') e.currentTarget.blur(); }} />
+      {' '}{unit}
+    </label>
+  );
+}
+
+/**
  * A nutrition limit as a settings row: icon tile, name, "per serving", then a
- * − value + stepper. Unset, the stepper is a "No limit" pill that starts it at
+ * − value + stepper whose value can be typed. Unset, the stepper is a "No limit" pill that starts it at
  * `start`; stepping below `min` lifts the limit again.
  */
 function NutritionRow({ icon, label, unit, value, start, step, min, max, onChange }: {
@@ -141,7 +174,7 @@ function NutritionRow({ icon, label, unit, value, start, step, min, max, onChang
             onClick={() => onChange(value - step < min ? undefined : value - step)}>
             <Icon name="minus" size={18} />
           </button>
-          <span className="nutrition-row__value tabular" aria-live="polite">{value} {unit}</span>
+          <AmountValue label={label} unit={unit} value={value} max={max} onChange={onChange} />
           <button type="button" className="nutrition-row__step" aria-label={`${label} +`} disabled={value >= max}
             onClick={() => onChange(Math.min(max, value + step))}>
             <Icon name="plus" size={18} />

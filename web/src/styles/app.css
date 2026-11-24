@@ -3282,6 +3282,23 @@ body:has(.moment) .tabbar {
   white-space: nowrap;
 }
 
+.nutrition-row__input {
+  box-sizing: content-box;
+  min-width: 1ch;
+  padding: 2px 1px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: right;
+}
+
+.nutrition-row__input:focus {
+  outline: none;
+  background: var(--accent-soft);
+}
+
 /* ===========================================================================
    Onboarding v2 (design/onboarding/HANDOFF.md)
    ======================================================================== */
