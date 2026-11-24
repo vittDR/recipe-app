@@ -4043,7 +4043,7 @@ body:has(.moment) .tabbar {
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  padding: 8px 14px 8px 8px;
+  padding: 6px 14px 6px 6px;
   border-radius: 22px;
   background: var(--accent);
   color: var(--on-accent);
@@ -4056,12 +4056,8 @@ body:has(.moment) .tabbar {
   animation: landing-badge 12s infinite;
 }
 
-.landing__avatars {
-  display: inline-flex;
-}
-
-.landing__avatars .avatar + .avatar {
-  margin-left: -8px;
+.landing__match .avatar {
+  /* The app's pair, its separating ring in the badge's colour instead of the page's. */
   box-shadow: 0 0 0 2px var(--accent);
 }
 
