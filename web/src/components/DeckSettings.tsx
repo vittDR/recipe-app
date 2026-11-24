@@ -133,9 +133,11 @@ function AmountInput({ label, unit, value, max, onChange }: {
   );
 }
 
-export function DeckSettingsSheet({ open, onClose, settings, onChange, table, diet, onDeal, dealing, error }: {
+export function DeckSettingsSheet({ open, onClose, title, settings, onChange, table, diet, onDeal, dealing, error }: {
   open: boolean;
   onClose: () => void;
+  /** The evening the deck is for: "Tonight’s deck", "Tomorrow’s deck", "Thursday’s deck". */
+  title: string;
   settings: DeckSettings;
   onChange: (s: DeckSettings) => void;
   /** Who could eat tonight. */
@@ -227,8 +229,8 @@ export function DeckSettingsSheet({ open, onClose, settings, onChange, table, di
   }
 
   return (
-    <Sheet open={open} onClose={close} label={t('tonight.settingsTitle')}>
-      <SheetHeader title={t('tonight.settingsTitle')} />
+    <Sheet open={open} onClose={close} label={title}>
+      <SheetHeader title={title} />
       {shared && (
         <Section label={t('tonight.whoEating')} flush
           action={<span className="who-count">

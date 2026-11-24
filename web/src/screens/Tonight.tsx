@@ -520,7 +520,10 @@ export function TonightScreen() {
         {rating}
         {main}
       </div>
-      <DeckSettingsSheet open={settingsOpen} onClose={() => setSettingsOpen(false)} settings={settings} onChange={pick}
+      <DeckSettingsSheet open={settingsOpen} onClose={() => setSettingsOpen(false)}
+        title={isToday ? t('tonight.settingsTitle')
+          : selected === week[1] ? t('tonight.settingsTitleTomorrow') : t('tonight.settingsTitleOn', { day: weekday(selected) })}
+        settings={settings} onChange={pick}
         table={table} diet={diet} dealing={dealing} error={error} onDeal={() => void deal()} />
       <WeekSheet open={weekOpen} onClose={() => setWeekOpen(false)} days={stripDays} today={today}
         onToggle={(d, c) => void toggleDay(d, c)} back={eveningPath(selected, today)} />

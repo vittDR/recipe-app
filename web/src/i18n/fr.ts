@@ -133,6 +133,8 @@ export const fr: Dictionary = {
   tonight: {
     ask: 'On mange quoi ce soir ?',
     settingsTitle: 'Le deck de ce soir',
+    settingsTitleTomorrow: 'Le deck de demain',
+    settingsTitleOn: 'Le deck de {day}',
     timeLabel: 'Temps',
     upTo: '≤ {n} min',
     underHour: '≤ 1 h',
