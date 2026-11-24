@@ -156,9 +156,9 @@ with an additive kernel:
   ("rich is fine if it's high protein").
 - `t(f)`: **taste**, a sum of one effect per feature, each with a prior
   variance set by its kind (`TASTE_VARIANCE`): dish family and protein 1, heat
-  0.8, sauce 0.5, family of ingredients 0.4, starch 0.4, cuisine and cut 0.3,
-  flavour note 0.25, the dish itself 0.25, effort 0.2, cooking method 0.15,
-  and a plain feature (ingredient, tag) 0.08. Section 7 has the features added
+  0.8, sauce 0.5, starch 0.4, cooking method 0.15, the dish itself and a
+  family of ingredients 0.1, cuisine, cut and a plain feature (ingredient,
+  tag) 0.08, flavour note 0.06, effort 0.05. Section 7 has the features added
   in v2.1. A dish family can matter a lot; one
   ingredient among fifteen matters only a little. Plate-like features
   (`goal:*`, `intent:*`, `texture:*`, cream / cheese / mayonnaise sauces,

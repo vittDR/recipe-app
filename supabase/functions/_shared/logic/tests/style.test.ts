@@ -42,7 +42,7 @@ test("a dish's own effect: answers about it move it more than dishes like it", (
   const m = fitStyle([{ plate: p, features: ['protein:fish', 'recipe:a'], y: 4 }]);
   const same = m.frequency([p], ['protein:fish', 'recipe:a']);
   const like = m.frequency([p], ['protein:fish', 'recipe:b']);
-  assert.ok(same > like + 0.1, `${same} vs ${like}`);
+  assert.ok(same > like + 0.03, `${same} vs ${like}`);
   assert.ok(like > fitStyle([]).frequency([p], ['protein:fish']));
 });
 

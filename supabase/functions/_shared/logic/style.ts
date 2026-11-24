@@ -100,7 +100,9 @@ export const STYLE_DEFAULTS: Required<StyleOptions> = {
  */
 export const TASTE_VARIANCE: Record<string, number> = {
   dish: 1, protein: 1, sauce: 0.5, starch: 0.4, heat: 0.8, method: 0.15, plain: 0.08,
-  cuisine: 0.3, cut: 0.3, family: 0.4, flavour: 0.25, effort: 0.2, recipe: 0.25,
+  // Tuned in the simulation (docs/taste-profiles.md §7): larger, with a quiz's worth of answers, they
+  // spread what was said too thin and did worse than without them.
+  cuisine: 0.08, cut: 0.08, family: 0.1, flavour: 0.06, effort: 0.05, recipe: 0.1,
 };
 /**
  * Features that describe the plate rather than what's in it: style already
