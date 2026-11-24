@@ -14,9 +14,13 @@
 //   squared-exponential kernel, so a few answers give a broad trend and more
 //   answers add detail.
 // - t, taste: how much what's in the dish moves that. A sum of one effect per
-//   feature (dish:curry, protein:fish, an ingredient…), each with a prior by
-//   kind of feature, so a dish family can matter a lot and a single
-//   ingredient only a little.
+//   feature (dish:curry, protein:fish, cuisine:thai, flavour:citrus,
+//   family:mushrooms, an ingredient…), each with a prior by kind of feature,
+//   so a dish family can matter a lot and a single ingredient only a little.
+//   Each dish also has an effect of its own (recipe:<id>), which nothing
+//   about other dishes explains; its prior mean can come from what other
+//   households thought of it (population.ts), so a dish most people love
+//   starts a little ahead.
 // Fitting both at once (not one after the other) is what lets a pass on a cod
 // curry be put down to fish or to richness by the other answers. The posterior
 // variance says where the model is unsure, which is what the quiz asks about
@@ -27,7 +31,7 @@
 // Pure and deterministic, apart from the injected random of the quiz.
 
 import { PLATE_AXES, type Plate, plateDistance } from './plate.ts';
-import { PROFILE_HALF_LIFE_DAYS, type Signal, type StyleLevel } from './profile.ts';
+import { dishFeature, PROFILE_HALF_LIFE_DAYS, type Signal, type StyleLevel } from './profile.ts';
 
 /** A quiz answer's frequency: not for me, now and then, regularly, a favourite. */
 export const FREQUENCY = { pass: 0, sometimes: 1, yes: 3, must: 4 } as const;
@@ -71,18 +75,34 @@ export interface StyleOptions {
   noise?: number;
   /** Frequency points between the chosen plate and the other in a pair. */
   pairStep?: number;
+  /**
+   * Prior mean of a feature's effect, 0 when absent: what other people's
+   * answers say about a dish (recipe:<id>, population.ts).
+   */
+  featureMean?: (feature: string) => number;
+  /** Prior variances by kind of feature, over TASTE_VARIANCE (tuning, scripts/taste-sim.ts). */
+  variance?: Partial<Record<string, number>>;
 }
 export const STYLE_DEFAULTS: Required<StyleOptions> = {
   levelVariance: 1, lengthscale: 0.15, styleVariance: 1, trendVariance: 4, tasteScale: 1, noise: 1, pairStep: 1.5,
+  featureMean: () => 0,
+  variance: {},
 };
 
 /**
  * Prior variance of one feature's effect, by kind: how far one feature can
  * move a dish's frequency (√ of it, in frequency points). Plain features are
- * ingredients, tags and cuisines, and a dish has many: each says little.
+ * ingredients and tags, and a dish has many: each says little. A cuisine, the
+ * cut of the protein (cut:chicken thigh), a family of ingredients
+ * (family:mushrooms) or a flavour note (flavour:citrus) can say a lot more.
+ * recipe: is the dish's own effect, about the sd of what's left once
+ * everything else is known (docs/taste-profiles.md, simulation).
  */
 export const TASTE_VARIANCE: Record<string, number> = {
   dish: 1, protein: 1, sauce: 0.5, starch: 0.4, heat: 0.8, method: 0.15, plain: 0.08,
+  // Tuned in the simulation (docs/taste-profiles.md §7): larger, with a quiz's worth of answers, they
+  // spread what was said too thin and did worse than without them.
+  cuisine: 0.08, cut: 0.08, family: 0.1, flavour: 0.06, effort: 0.05, recipe: 0.1,
 };
 /**
  * Features that describe the plate rather than what's in it: style already
@@ -94,9 +114,15 @@ const groupOf = (f: string) => {
   const i = f.indexOf(':');
   return i < 0 ? 'plain' : f.slice(0, i);
 };
-/** The features taste is learned on, deduplicated. */
-export const tasteFeatures = (features: string[]) =>
-  [...new Set(features)].filter((f) => !PLATE_FEATURE.test(f) && groupOf(f) in TASTE_VARIANCE);
+/** Namespaced features that stand for a plain one: "cuisine:thai" is "thai", "cut:prawns" is "prawns". */
+const TWIN = /^(cuisine|cut):(.+)$/;
+/** The features taste is learned on, deduplicated; a plain feature with a namespaced twin is learned once, as the twin. */
+export const tasteFeatures = (features: string[]) => {
+  const all = new Set(features);
+  const twins = new Set(features.flatMap((f) => TWIN.exec(f)?.[2] ?? []));
+  return [...all].filter((f) => !PLATE_FEATURE.test(f) && groupOf(f) in TASTE_VARIANCE && !twins.has(f));
+};
+export { dishFeature };
 
 const clampF = (v: number) => Math.max(0, Math.min(MAX_FREQUENCY, v));
 
@@ -190,7 +216,12 @@ export function fitStyle(obs: Observation[], pairs: PairObservation[] = [], opti
     for (const axis of PLATE_AXES) lin += (a[axis] - MIDDLE[axis]) * (b[axis] - MIDDLE[axis]);
     return o.levelVariance + o.trendVariance * lin + o.styleVariance * Math.exp(-(d * d) / (2 * o.lengthscale * o.lengthscale));
   };
-  const fv = (f: string) => o.tasteScale * TASTE_VARIANCE[groupOf(f)];
+  const fv = (f: string) => o.tasteScale * (o.variance[groupOf(f)] ?? TASTE_VARIANCE[groupOf(f)]);
+  const fm = (fs: Set<string>) => {
+    let s = 0;
+    for (const f of fs) s += o.featureMean(f);
+    return s;
+  };
   const kTaste = (a: Set<string>, b: Set<string>) => {
     let s = 0;
     for (const f of a) if (b.has(f)) s += fv(f);
@@ -201,7 +232,7 @@ export function fitStyle(obs: Observation[], pairs: PairObservation[] = [], opti
     ...obs.map((x) => ({
       kind: 'dish' as const, plate: x.plate, features: x.features, feats: new Set(tasteFeatures(x.features)),
       y: x.y - PRIOR_LEVEL, noise: o.noise / wOf(x),
-    })),
+    })).map((p) => ({ ...p, y: p.y - fm(p.feats) })),
     ...pairs.flatMap((pr) => {
       const step = pr.choice === 'a' ? o.pairStep : pr.choice === 'b' ? -o.pairStep : 0;
       const out: (Point & { y: number; noise: number; feats?: Set<string> })[] = [
@@ -248,12 +279,15 @@ export function fitStyle(obs: Observation[], pairs: PairObservation[] = [], opti
 
   const style = (p: Plate) => PRIOR_LEVEL + dot(sVec(p), alpha);
   const mean = PRIOR_LEVEL + points.reduce((sum, q, i) => sum + (q.kind === 'dish' ? o.levelVariance * alpha[i] : 0), 0);
-  const tasteOf = (fs: Set<string>) => dot(tVec(fs), alpha);
+  const tasteOf = (fs: Set<string>) => fm(fs) + dot(tVec(fs), alpha);
   const taste = (features: string[]) => tasteOf(new Set(tasteFeatures(features)));
   const raw = (plates: Plate[], features: string[]) =>
     (plates.length ? Math.max(...plates.map(style)) : mean) + taste(features);
 
   const tasteWeights = new Map<string, { t: number; n: number }>();
+  for (const q of points) {
+    for (const f of q.feats ?? []) if (!tasteWeights.has(f)) tasteWeights.set(f, { t: o.featureMean(f), n: 0 });
+  }
   points.forEach((q, i) => {
     if (q.kind !== 'dish') return;
     for (const f of q.feats!) {
@@ -505,7 +539,9 @@ export function observationsFor(
         w = SIGNAL_WEIGHT.cooked;
         break;
     }
-    if (y !== null) observations.push({ plate: p, features: s.features, y, weight: w * fade(s.at) });
+    if (y !== null) {
+      observations.push({ plate: p, features: [...s.features, dishFeature(s.recipeId!)], y, weight: w * fade(s.at) });
+    }
   }
   if (observations.length > MAX_OBSERVATIONS) {
     observations.sort((a, b) => (b.weight ?? 1) - (a.weight ?? 1));

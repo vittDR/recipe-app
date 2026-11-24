@@ -10,7 +10,7 @@ import { APPLIANCES } from '@logic/facets.ts';
 import { APPLIANCE_LABEL } from './onboarding/Equipment.tsx';
 import { macrosOf, splitPot, targetsOf } from '@logic/portions.ts';
 import {
-  buildProfile, DIET_FEATURE, profileHighlights, signalsFor, type MealRow, type PortionRow, type StyleLevel, type SwipeRow,
+  signalsFor, type MealRow, type PortionRow, type StyleLevel, type SwipeRow,
   type TasteSignalRow,
 } from '@logic/profile.ts';
 import { dietAdherence } from '@logic/recommend.ts';
@@ -21,18 +21,15 @@ import { Icon } from '../components/Icon.tsx';
 import { Link } from 'react-router';
 import { AvatarPair, Button, ListRow, Screen, TabHeader, Tag } from '../components/ui.tsx';
 import { LOCALE_NAMES, useI18n } from '../i18n/index.tsx';
-import { classLabel } from '../lib/classes.ts';
 import { useCatalog, useLive, useSave } from '../lib/hooks.ts';
 import { groupName, useGroceryCatalog, useIngredientGroups } from '../lib/products.ts';
 import { pushState, type PushState } from '../lib/push.ts';
 import { useSession } from '../lib/session.tsx';
 import { must, supabase } from '../lib/supabase.ts';
-import { useTags } from '../lib/tags.ts';
 import type { TasteRule } from '../lib/types.ts';
 
 interface Loaded {
   rules: TasteRule[];
-  profile: ReturnType<typeof profileHighlights>;
   /** 0..1, how much this person sticks to their goals (recommend.ts). */
   adherence: number;
   quizDone: boolean;
@@ -47,14 +44,16 @@ interface Loaded {
 /** Choices the style is read from before the summary is shown: about a quiz's worth of a start. */
 const STYLE_MIN_OBSERVATIONS = 5;
 
-/** The Nous tab; `preferences` is its sub-menu: allergies, tastes and goals. */
-export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
+/**
+ * The Nous tab; `preferences` is its sub-menu: allergies, tastes and goals, and
+ * `advanced` is under that: how they like to eat, which most people never need to touch.
+ */
+export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' | 'advanced' }) {
   const { t, tn, locale } = useI18n();
   const { userId, members, goals, household, signOut, isCatalogAdmin, memberColor } = useSession();
   const [push, setPush] = useState<PushState>('unsupported');
   const { data: catalog } = useGroceryCatalog(household!.id);
   const { data: groups } = useIngredientGroups();
-  const { tags } = useTags(household!.id);
   const ingredientCatalog = useCatalog();
   const save = useSave();
   const [edited, setEdited] = useState<Map<StyleRegion, StyleLevel>>(new Map());
@@ -108,9 +107,6 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
           return split ? split.plates[0].fits : null;
         };
         const mySignals = signalsFor(userId!, rows, (id) => features.get(id), fitsNow);
-        const full = buildProfile(mySignals);
-        // Shown as tastes: what a dish does for the diet is the goals' business.
-        const tastes = new Map([...full].filter(([f]) => !DIET_FEATURE.test(f)));
         // The same model the deck uses (style.ts styleModelFor), and what they set themselves.
         const { observations, pairs, edits } = observationsFor(mySignals, (id) => plates.get(id));
         const style = ingredientCatalog && (observations.length >= STYLE_MIN_OBSERVATIONS || edits.length > 0)
@@ -119,7 +115,8 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
             stated: edits.map((e): [StyleRegion, StyleLevel] => [e.region, e.level]),
           }
           : null;
-        return { profile: profileHighlights(tastes, { limit: 5 }), adherence: dietAdherence(mySignals), style };
+        // What was learned isn't shown as tastes: only what they said themselves (rules, the style edits).
+        return { adherence: dietAdherence(mySignals), style };
       })(),
       quizDone: rows.tasteSignals.some((x) => x.kind === 'starter'),
     };
@@ -135,14 +132,7 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
     void pushState().then(setPush).catch(() => setPush('unsupported'));
   }, []);
 
-  // Tags, ingredients and rules on catalogue items read in the app's language.
-  const labelOf = (value: string) => {
-    const classified = classLabel(value, t);
-    if (classified) return classified;
-    if (tags?.find(value)?.name === value) return tags.label(value, locale);
-    const p = catalog?.index.ofIngredient(value);
-    return p ? productName(p, locale) : value;
-  };
+  // Rules on catalogue items read in the app's language.
   const nameOf = (r: TasteRule) => {
     const g = r.group_key ? groups?.find((x) => x.key === r.group_key) : undefined;
     if (g) return groupName(g, locale);
@@ -161,8 +151,24 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
     ...(diet ? [{ key: 'diet', label: t(`tastes.${diet as 'pescatarian' | 'vegetarian'}`), tone: undefined }] : []),
     ...never.map((n) => ({ key: `n:${n}`, label: t('us.without', { item: n }), tone: undefined })),
     ...love.map((n) => ({ key: `l:${n}`, label: n, tone: 'accent' as const })),
-    ...(data?.profile.likes ?? []).map((x) => ({ key: `p:${x.feature}`, label: labelOf(x.feature), tone: 'accent' as const })),
   ];
+
+  if (view === 'advanced') {
+    return (
+      <Screen back="/us/preferences" title={t('us.advanced')}>
+        <div className="stack stack--blocks">
+          <section className="card stack">
+            <span className="card__title">{t('quiz.summaryTitle')}</span>
+            <p className="t-callout muted m-0">{t('us.styleHint')}</p>
+            {data?.style ? (
+              <StyleRows summary={data.style.summary} stated={new Map([...data.style.stated, ...edited])}
+                onChange={(region, level) => void setStyle(region, level)} />
+            ) : data && <p className="t-callout muted m-0">{t('us.styleEmpty')}</p>}
+          </section>
+        </div>
+      </Screen>
+    );
+  }
 
   if (view === 'preferences') {
     return (
@@ -187,14 +193,6 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
           <Link to="/us/quiz" className="t-callout accent-link">{data?.quizDone ? t('us.quizAgain') : t('us.quiz')} ›</Link>
         </section>
 
-        {data?.style && (
-          <section className="card stack">
-            <span className="card__title">{t('quiz.summaryTitle')}</span>
-            <p className="t-callout muted m-0">{t('us.styleHint')}</p>
-            <StyleRows summary={data.style.summary} stated={new Map([...data.style.stated, ...edited])}
-              onChange={(region, level) => void setStyle(region, level)} />
-          </section>
-        )}
           <div className="list">
           <ListRow to="/us/goals" tile="plain" icon={<Icon name="star" size={18} />} title={t('us.yourGoals')}
             meta={goals ? [
@@ -209,6 +207,10 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
                   .map((a) => t(`ob.equipment.items.${APPLIANCE_LABEL[a]}`)).join(', ')
                 : t('us.equipmentNone'))
               : t('us.equipmentAll')} />
+          </div>
+          <div className="list">
+            <ListRow to="/us/preferences/advanced" tile="plain" icon={<Icon name="sliders" size={18} />} title={t('us.advanced')}
+              meta={t('us.advancedHint')} />
           </div>
         </div>
       </Screen>
