@@ -23,7 +23,7 @@ export function NoMatchView({ data }: { data: DeckData }) {
   const [dealing, setDealing] = useState(false);
   const { deck } = data;
   // The two cards Tonight showed for this deck.
-  const [right, left] = pickDeckArt(deck.id, 2, deck.mood);
+  const [right, left] = pickDeckArt(deck.id, 2, deck.mood, data.diet);
   const home = eveningPath(deck.for_date, todayIn(household!.timezone));
 
   const deal = async () => {

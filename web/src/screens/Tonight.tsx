@@ -19,7 +19,7 @@ import { comingDays, cooksOn, eveningPath, useEveningName } from '../lib/plan.ts
 import { INGREDIENT_SELECT } from '../lib/products.ts';
 import { useSession } from '../lib/session.tsx';
 import { callFunction, must, supabase } from '../lib/supabase.ts';
-import type { Deck, DeckMemberProgress, Meal, Mood, PlanDate, PlanDay, Recipe, RecipeIngredient, Verdict } from '../lib/types.ts';
+import type { Deck, DeckMemberProgress, Diet, Meal, Mood, PlanDate, PlanDay, Recipe, RecipeIngredient, Verdict } from '../lib/types.ts';
 
 type MealRecipe = Pick<Recipe, 'id' | 'title' | 'language' | 'translations' | 'image_path' | 'tags' | 'total_min' | 'difficulty'
   | 'protein_g_per_serving' | 'servings'>;
@@ -27,6 +27,8 @@ type PlannedMeal = Meal & { listed_at: string | null; recipe: MealRecipe | null;
 type RateMeal = { id: string; recipe_id: string; recipe: Pick<Recipe, 'title' | 'language' | 'translations'> | null };
 
 interface TonightData {
+  /** This person's diet, so the deck art never shows them what they don't eat. */
+  diet: Diet;
   /** The evening the deck part was loaded for. */
   forDate: string;
   deck: Deck | null;
@@ -92,7 +94,7 @@ export function TonightScreen() {
   const { data, loading, set } = useLive<TonightData>(
     `tonight:${household!.id}:${today}:${selected}`,
     async () => {
-      const [decks, meals, plan, dates, recent, rated, liked, mine, lastAny] = await Promise.all([
+      const [decks, meals, plan, dates, recent, rated, liked, mine, lastAny, diet] = await Promise.all([
         supabase.from('decks').select('*').eq('household_id', household!.id).eq('for_date', selected)
           .neq('status', 'closed').order('created_at', { ascending: false }).limit(1),
         supabase.from('meals').select(`id, for_date, recipe_id, status, deck_id, listed_at, deck:decks(who_eating, extra_eaters), recipe:recipes(${MEAL_RECIPE})`)
@@ -110,6 +112,7 @@ export function TonightScreen() {
           .eq('started_by', userId!).order('created_at', { ascending: false }).limit(1),
         supabase.from('decks').select('who_eating, extra_eaters').eq('household_id', household!.id)
           .order('created_at', { ascending: false }).limit(1),
+        supabase.from('taste_rules').select('value').eq('user_id', userId!).eq('kind', 'diet').maybeSingle(),
       ]);
       const ratedMeals = new Set((must(rated) as { meal_id: string }[]).map((x) => x.meal_id));
       type RecentMeal = RateMeal & { for_date: string; status: string; deck: { who_eating: string[] } | null };
@@ -134,6 +137,7 @@ export function TonightScreen() {
       const [top, second] = [...counts].sort((a, b) => b[1] - a[1]);
       const last = (must(mine) as Pick<Deck, 'max_minutes' | 'mood' | 'filters' | 'created_at'>[])[0];
       return {
+        diet: ((must(diet) as { value: Diet } | null)?.value) ?? 'everything',
         forDate: selected,
         deck,
         progress: must(progress) as DeckMemberProgress[],
@@ -396,7 +400,7 @@ export function TonightScreen() {
     const starter = deck.started_by !== userId && !myProgress?.swiped_count;
     const others = deck.who_eating.filter((u) => u !== userId);
     // Same cards as this deck's no-match screen, should it come to that.
-    const [front, back] = pickDeckArt(deck.id, 2, deck.mood);
+    const [front, back] = pickDeckArt(deck.id, 2, deck.mood, data?.diet);
     main = (
       <article className="card card--flush join-card">
         <div className={`join-card__art${starter ? ' join-card__art--iris' : ''}`} aria-hidden>
@@ -477,7 +481,7 @@ export function TonightScreen() {
   } else {
     // No deck yet: dealing the deck is the only big action. New cards each
     // evening, to the mood about to be dealt; the best fit in front.
-    const [mid, left, right] = pickDeckArt(selected, 3, settings.mood);
+    const [mid, left, right] = pickDeckArt(selected, 3, settings.mood, data?.diet);
     const ask = isToday ? t('tonight.ask')
       : selected === week[1] ? t('tonight.askTomorrow') : t('tonight.askOn', { day: weekday(selected) });
     main = (
