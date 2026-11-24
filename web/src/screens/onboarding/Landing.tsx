@@ -8,7 +8,7 @@ import mushroomRisotto from '../../assets/deck/mushroom-risotto.webp';
 import springRolls from '../../assets/deck/spring-rolls.webp';
 import steak from '../../assets/deck/steak.webp';
 import { APP_WORDMARK } from '../../brand.ts';
-import { Button } from '../../components/ui.tsx';
+import { AvatarPair, Button } from '../../components/ui.tsx';
 import { useI18n, type MessageKey } from '../../i18n/index.tsx';
 import { installVariant } from '../../lib/onboarding.ts';
 
@@ -40,10 +40,10 @@ export function LandingDeck({ you, partner }: { you: string; partner: string }) 
             style={{ left: `calc(50% + ${c.left - 195}px)`, top: c.top, width: c.w, height: c.h, background: c.c, animationDelay: `${c.d}s` }} />
         ))}
         <div className="landing__match">
-          <span className="landing__avatars">
-            <span className="avatar avatar--sm" style={{ background: 'var(--person-1)' }}>{you}</span>
-            <span className="avatar avatar--sm" style={{ background: 'var(--iris)' }}>{partner}</span>
-          </span>
+          <AvatarPair people={[
+            { id: 'you', name: you, color: 'var(--person-1)' },
+            { id: 'partner', name: partner, color: 'var(--iris)' },
+          ]} />
           {t('ob.landing.match')}
         </div>
         {CARDS.map((card, i) => (
