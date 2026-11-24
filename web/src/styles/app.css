@@ -4586,3 +4586,9 @@ body:has(.moment) .tabbar {
   gap: var(--space-2);
   padding: var(--space-3) var(--space-2);
 }
+
+/* Us > Preferences: the whole tastes summary opens Your tastes. */
+.tastes-card {
+  text-decoration: none;
+  color: inherit;
+}

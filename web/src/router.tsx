@@ -7,7 +7,7 @@ import { enableNavMotion, useNavDirection } from './lib/navMotion.ts';
 import { useScrollMemory } from './lib/scrollMemory.ts';
 import { useSession } from './lib/session.tsx';
 import { AccountScreen } from './screens/onboarding/Account.tsx';
-import { DietScreen } from './screens/onboarding/Diet.tsx';
+import { DietEditScreen, DietScreen } from './screens/onboarding/Diet.tsx';
 import { DoneScreen } from './screens/onboarding/Done.tsx';
 import { EatersScreen } from './screens/onboarding/Eaters.tsx';
 import { EquipmentScreen } from './screens/onboarding/Equipment.tsx';
@@ -154,6 +154,7 @@ export const router = createBrowserRouter([
       { path: '/us/equipment', element: <EquipmentScreen editing /> },
       { path: '/us/pantry', element: <PantryScreen editing /> },
       { path: '/us/tastes', element: <TastesScreen editing /> },
+      { path: '/us/diet', element: <DietEditScreen /> },
       { path: '/us/quiz', element: <TasteQuizScreen editing /> },
       { path: '/us/notifications', element: <NotificationsScreen /> },
       { path: '/us/catalog', element: <CatalogScreen /> },

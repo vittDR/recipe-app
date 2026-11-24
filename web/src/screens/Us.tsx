@@ -35,7 +35,6 @@ interface Loaded {
   profile: ReturnType<typeof profileHighlights>;
   /** 0..1, how much this person sticks to their goals (recommend.ts). */
   adherence: number;
-  quizDone: boolean;
   /**
    * Their style by kind of plate (style.ts styleSummary), from everything they
    * chose, the same model the deck uses; with what they set themselves. Null
@@ -121,7 +120,6 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
           : null;
         return { profile: profileHighlights(tastes, { limit: 5 }), adherence: dietAdherence(mySignals), style };
       })(),
-      quizDone: rows.tasteSignals.some((x) => x.kind === 'starter'),
     };
   });
   const rules = data?.rules ?? [];
@@ -170,10 +168,10 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
         <div className="stack stack--blocks">
         <AllergiesCard />
 
-        <section className="card stack">
+        <Link to="/us/tastes" className="card stack tastes-card">
           <div className="row row--between">
             <span className="card__title">{t('us.yourTastes')}</span>
-            <Link to="/us/tastes" className="t-callout accent-link">{t('us.edit')}</Link>
+            <span className="chevron"><Icon name="chevron" size={18} /></span>
           </div>
           {tasteChips.length > 0 ? (
             <div className="chips">
@@ -183,9 +181,7 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
             </div>
           ) : <p className="muted t-callout m-0">{t('us.profileEmpty')}</p>}
           {data && data.adherence >= 0.6 && <p className="t-callout muted m-0">{t('us.dietMinded')}</p>}
-          {data && data.adherence <= 0.3 && <p className="t-callout muted m-0">{t('us.dietRelaxed')}</p>}
-          <Link to="/us/quiz" className="t-callout accent-link">{data?.quizDone ? t('us.quizAgain') : t('us.quiz')} ›</Link>
-        </section>
+        </Link>
 
         {data?.style && (
           <section className="card stack">

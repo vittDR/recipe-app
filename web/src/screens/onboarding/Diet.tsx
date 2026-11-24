@@ -2,10 +2,13 @@
 // (no rule = eats everything); filters every deck this person eats from.
 import { useEffect, useState } from 'react';
 import { Icon, type IconName } from '../../components/Icon.tsx';
+import { Button, Screen } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { useSetup } from '../../lib/onboarding.ts';
+import { useNavigate } from 'react-router';
+import { useLive } from '../../lib/hooks.ts';
 import { useSession } from '../../lib/session.tsx';
-import { supabase } from '../../lib/supabase.ts';
+import { must, supabase } from '../../lib/supabase.ts';
 import { DIETS, type Diet } from '../../lib/types.ts';
 import { Step } from './Step.tsx';
 
@@ -66,5 +69,30 @@ export function DietScreen() {
     <Step back={false} progress={setup} title={t('ob.diet.title')} action={{ onClick: () => void next(), disabled: busy }}>
       <DietOptions value={diet} onChange={setDiet} />
     </Step>
+  );
+}
+
+/** Us > Preferences > Your tastes > Diet: the same four options, saved as they're tapped. */
+export function DietEditScreen() {
+  const { t } = useI18n();
+  const { userId } = useSession();
+  const navigate = useNavigate();
+  const { data, reload } = useLive<Diet>(`diet:${userId}`, async () => {
+    const row = must(await supabase.from('taste_rules').select('value').eq('user_id', userId!).eq('kind', 'diet').maybeSingle()) as { value: string } | null;
+    return row && DIETS.includes(row.value as Diet) ? row.value as Diet : 'everything';
+  });
+  const [picked, setPicked] = useState<Diet | null>(null);
+  const value = picked ?? data ?? 'everything';
+  const choose = async (d: Diet) => {
+    setPicked(d);
+    await saveDiet(userId!, d);
+    await reload();
+  };
+  return (
+    <Screen back title={t('tastes.diet')} plain>
+      <DietOptions value={value} onChange={(d) => void choose(d)} />
+      <div className="spacer spacer--gap" />
+      <Button block onClick={() => navigate(-1)}>{t('app.done')}</Button>
+    </Screen>
   );
 }
