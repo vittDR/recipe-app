@@ -47,8 +47,11 @@ interface Loaded {
 /** Choices the style is read from before the summary is shown: about a quiz's worth of a start. */
 const STYLE_MIN_OBSERVATIONS = 5;
 
-/** The Nous tab; `preferences` is its sub-menu: allergies, tastes and goals. */
-export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
+/**
+ * The Nous tab; `preferences` is its sub-menu: allergies, tastes and goals, and
+ * `advanced` is under that: how they like to eat, which most people never need to touch.
+ */
+export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' | 'advanced' }) {
   const { t, tn, locale } = useI18n();
   const { userId, members, goals, household, signOut, isCatalogAdmin, memberColor } = useSession();
   const [push, setPush] = useState<PushState>('unsupported');
@@ -164,6 +167,23 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
     ...(data?.profile.likes ?? []).map((x) => ({ key: `p:${x.feature}`, label: labelOf(x.feature), tone: 'accent' as const })),
   ];
 
+  if (view === 'advanced') {
+    return (
+      <Screen back="/us/preferences" title={t('us.advanced')}>
+        <div className="stack stack--blocks">
+          <section className="card stack">
+            <span className="card__title">{t('quiz.summaryTitle')}</span>
+            <p className="t-callout muted m-0">{t('us.styleHint')}</p>
+            {data?.style ? (
+              <StyleRows summary={data.style.summary} stated={new Map([...data.style.stated, ...edited])}
+                onChange={(region, level) => void setStyle(region, level)} />
+            ) : data && <p className="t-callout muted m-0">{t('us.styleEmpty')}</p>}
+          </section>
+        </div>
+      </Screen>
+    );
+  }
+
   if (view === 'preferences') {
     return (
       <Screen back="/us" title={t('us.preferences')}>
@@ -187,14 +207,6 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
           <Link to="/us/quiz" className="t-callout accent-link">{data?.quizDone ? t('us.quizAgain') : t('us.quiz')} ›</Link>
         </section>
 
-        {data?.style && (
-          <section className="card stack">
-            <span className="card__title">{t('quiz.summaryTitle')}</span>
-            <p className="t-callout muted m-0">{t('us.styleHint')}</p>
-            <StyleRows summary={data.style.summary} stated={new Map([...data.style.stated, ...edited])}
-              onChange={(region, level) => void setStyle(region, level)} />
-          </section>
-        )}
           <div className="list">
           <ListRow to="/us/goals" tile="plain" icon={<Icon name="star" size={18} />} title={t('us.yourGoals')}
             meta={goals ? [
@@ -209,6 +221,10 @@ export function UsScreen({ view = 'main' }: { view?: 'main' | 'preferences' }) {
                   .map((a) => t(`ob.equipment.items.${APPLIANCE_LABEL[a]}`)).join(', ')
                 : t('us.equipmentNone'))
               : t('us.equipmentAll')} />
+          </div>
+          <div className="list">
+            <ListRow to="/us/preferences/advanced" tile="plain" icon={<Icon name="sliders" size={18} />} title={t('us.advanced')}
+              meta={t('us.advancedHint')} />
           </div>
         </div>
       </Screen>
