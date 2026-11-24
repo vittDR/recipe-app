@@ -994,7 +994,12 @@ export const en = {
       promptTitle: 'What’s for dinner tonight?',
       promptBody: '{name} dealt the deck. Your turn to swipe!',
       decidedTitle: 'It’s decided!',
-      decidedBody: 'Roast chicken tonight. 4 ingredients to buy.',
+      decidedBody: {
+        everything: 'Roast chicken tonight. 4 ingredients to buy.',
+        flexitarian: 'Mushroom risotto tonight. 4 ingredients to buy.',
+        pescatarian: 'Baked salmon tonight. 4 ingredients to buy.',
+        vegetarian: 'Chickpea curry tonight. 4 ingredients to buy.',
+      },
     },
     done: {
       title: 'All set!',
