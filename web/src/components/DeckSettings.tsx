@@ -9,7 +9,7 @@ import {
 } from '@logic/deckFilters.ts';
 import type { Diet, Mood } from '../lib/types.ts';
 import { useI18n } from '../i18n/index.tsx';
-import { Icon } from './Icon.tsx';
+import { Icon, type IconName } from './Icon.tsx';
 import { EATER_COLOR, usePortionTotal } from '../lib/eaters.ts';
 import { Avatar, Button, Chip, ListRow, Section, Sheet, SheetHeader } from './ui.tsx';
 
@@ -109,27 +109,46 @@ function toggle<T extends string>(list: T[] | undefined, v: T): T[] | undefined 
   return next.length ? next : undefined;
 }
 
-/** A whole number typed in a box with its unit after it; emptied, it is no filter. */
-function AmountInput({ label, unit, value, max, onChange }: {
+/**
+ * A nutrition limit as a settings row: icon tile, name, "per serving", then a
+ * − value + stepper. Unset, the stepper is a "No limit" pill that starts it at
+ * `start`; stepping below `min` lifts the limit again.
+ */
+function NutritionRow({ icon, label, unit, value, start, step, min, max, onChange }: {
+  icon: IconName;
   label: string;
   unit: string;
   value: number | undefined;
+  start: number;
+  step: number;
+  min: number;
   max: number;
   onChange: (v: number | undefined) => void;
 }) {
+  const { t } = useI18n();
   return (
-    <label className="field amount-field">
-      <span className="field__label">{label}</span>
-      <span className="amount-input">
-        <input className="input tabular" type="text" inputMode="numeric" pattern="[0-9]*" placeholder="—"
-          value={value ?? ''}
-          onChange={(e) => {
-            const n = Number.parseInt(e.target.value.replace(/\D/g, ''), 10);
-            onChange(Number.isFinite(n) && n > 0 ? Math.min(n, max) : undefined);
-          }} />
-        <span className="amount-input__unit" aria-hidden>{unit}</span>
+    <div className="list-row nutrition-row" role="group" aria-label={label}>
+      <span className="icon-tile icon-tile--plain"><Icon name={icon} size={18} /></span>
+      <span className="list-row__main">
+        <span className="list-row__title">{label}</span>
+        <span className="list-row__meta">{t('recipe.perServing')}</span>
       </span>
-    </label>
+      {value == null ? (
+        <button type="button" className="nutrition-row__none" onClick={() => onChange(start)}>{t('tonight.filters.noLimit')}</button>
+      ) : (
+        <span className="nutrition-row__stepper">
+          <button type="button" className="nutrition-row__step" aria-label={`${label} −`}
+            onClick={() => onChange(value - step < min ? undefined : value - step)}>
+            <Icon name="minus" size={18} />
+          </button>
+          <span className="nutrition-row__value tabular" aria-live="polite">{value} {unit}</span>
+          <button type="button" className="nutrition-row__step" aria-label={`${label} +`} disabled={value >= max}
+            onClick={() => onChange(Math.min(max, value + step))}>
+            <Icon name="plus" size={18} />
+          </button>
+        </span>
+      )}
+    </div>
   );
 }
 
@@ -185,14 +204,14 @@ export function DeckSettingsSheet({ open, onClose, title, settings, onChange, ta
             ))}
           </div>
         </Section>
-        <section className="section">
-          <div className="amount-fields">
-            <AmountInput label={t('tonight.filters.maxKcal')} unit={t('tonight.filters.kcalPerServing')} value={f.maxKcal} max={MAX_KCAL_LIMIT}
-              onChange={(v) => setFilters({ ...f, maxKcal: v })} />
-            <AmountInput label={t('tonight.filters.minProtein')} unit={t('tonight.filters.gPerServing')} value={f.minProteinG} max={MIN_PROTEIN_LIMIT}
-              onChange={(v) => setFilters({ ...f, minProteinG: v })} />
+        <Section label={t('tonight.filters.nutrition')}>
+          <div className="list">
+            <NutritionRow icon="flame" label={t('tonight.filters.maxKcal')} unit="kcal" value={f.maxKcal}
+              start={700} step={50} min={200} max={MAX_KCAL_LIMIT} onChange={(v) => setFilters({ ...f, maxKcal: v })} />
+            <NutritionRow icon="dumbbell" label={t('tonight.filters.minProtein')} unit="g" value={f.minProteinG}
+              start={30} step={5} min={5} max={MIN_PROTEIN_LIMIT} onChange={(v) => setFilters({ ...f, minProteinG: v })} />
           </div>
-        </section>
+        </Section>
         <Section label={t('tonight.filters.cuisine')}>
           <div className="chips">
             {FILTER_CUISINES.map((c) => (
