@@ -156,8 +156,10 @@ with an additive kernel:
   ("rich is fine if it's high protein").
 - `t(f)`: **taste**, a sum of one effect per feature, each with a prior
   variance set by its kind (`TASTE_VARIANCE`): dish family and protein 1, heat
-  0.8, sauce 0.5, starch 0.4, cooking method 0.15, and a plain feature
-  (ingredient, tag, cuisine) 0.08. A dish family can matter a lot; one
+  0.8, sauce 0.5, starch 0.4, cooking method 0.15, the dish itself and a
+  family of ingredients 0.1, cuisine, cut and a plain feature (ingredient,
+  tag) 0.08, flavour note 0.06, effort 0.05. Section 7 has the features added
+  in v2.1. A dish family can matter a lot; one
   ingredient among fifteen matters only a little. Plate-like features
   (`goal:*`, `intent:*`, `texture:*`, cream / cheese / mayonnaise sauces,
   deep-fried) are left out, because style already covers them.
@@ -403,7 +405,75 @@ plate without optional lines can be stored next to the classification.
 | migrations | **done**: `pair` kind and `other_recipe_id` (`20261201000001`); `style` kind with no recipe (`20261202000001`) |
 | tests | **done**: plate vectors for known dishes, style/taste separation, pairs, a synthetic person recovered from 26 quiz answers on the library, deck: style decides, the now-and-then share, shared decks, adjustable dishes, half goal fit |
 
+## 7. Beyond the plate (v2.1)
+
+The four plate axes and the v1 features (dish, protein, sauce, starch, heat,
+method, plain ingredients and tags) left most of what the catalogue knows
+unused, or barely used. A cuisine counted as much as one ingredient, the
+specific protein item wasn't learned at all, and there was nothing about
+flavour, effort or what other people think of a dish. v2.1 adds:
+
+| What | Feature | From |
+| --- | --- | --- |
+| Cuisine, with its own weight | `cuisine:thai`, `cuisine:asian` | the classification's cuisines; the plain name is then not learned again (`tasteFeatures`) |
+| The protein item | `cut:chicken thigh` | `protein_items`; same rule against the plain ingredient |
+| Flavour notes | `flavour:citrus`, `umami`, `warm_spice`, `smoky`… | `flavours.ts`, from the required lines (docs/recipe-classification.md) |
+| Families of ingredient | `family:mushrooms`, `cheese`, `olives_capers`… | `flavours.ts` |
+| Effort | `effort:quick`, `long`, `hard`, `short_list`, `long_list` | time, difficulty, required lines |
+| The dish itself | `recipe:<id>` | every signal about the dish, and the deck when it scores it |
+| Other households | the prior mean of `recipe:<id>` | `population.ts`, migration `population_answers` |
+
+**Other households.** `population_answers(p_exclude)` sums every quiz answer,
+rating and deck yes / "not for me" on a library dish, each relative to that
+person's mean answer, leaving out people with fewer than 5 answers and the
+people being dealt for. `effectsFromSums` shrinks each dish's mean
+difference by 4 pseudo-answers and caps it at ±1 frequency point. It becomes
+the dish's starting point (`StyleOptions.featureMean`): the person's own
+answers about it take over as they come. A household's copy of a library
+dish counts for the dish. deal-deck deals without it if the call fails.
+
+**Nothing learned is shown.** The Us screen's "Your tastes" lists only what
+people said themselves (diet, never and love rules). "How you like to eat"
+moved under Preferences › Advanced.
+
+**Results.** `node scripts/taste-sim.ts --features` compares the v1 features
+with the v2.1 ones. In it, each dish's own effect is partly shared (sd 0.4,
+the same for everyone) and partly personal (sd 0.3), and 80 other people
+answered 50 dishes each. `--extended` adds tastes only the new features name
+(not keen on mushrooms, loves fresh herbs, Japanese food, salmon…) to each
+persona. ρ against the true frequency on the dishes not shown (top-12 hit
+rate), 4 people per persona, after the 26 quiz cards and after 60 more
+answers (deck swipes and ratings, half weight):
+
+| | Tastes v1 can name: quiz | + 60 | With v2-only tastes: quiz | + 60 |
+| --- | --- | --- | --- | --- |
+| v1 features | 0.55 (0.68) | 0.62 (0.74) | 0.55 (0.66) | 0.63 (0.71) |
+| v2.1, no other households | 0.52 (0.65) | 0.62 (0.70) | 0.56 (0.71) | 0.66 (0.79) |
+| **v2.1** | **0.57 (0.71)** | **0.66 (0.74)** | **0.56 (0.72)** | **0.66 (0.75)** |
+
+- **The weights matter more than the features.** With the variances first
+  tried (cuisine and cut 0.3, family 0.4, flavour 0.25, effort 0.2, the dish
+  0.25), the new features did worse on a quiz's worth of answers (0.51): a
+  dish has many of them, and 26 answers were spread too thin. About a
+  quarter of that (`TASTE_VARIANCE`) gives the table above; `--variance`
+  takes other values.
+- **Other households help most.** They fix the cold start for what v1 could
+  already learn, and help the people who answer "regularly" to nearly
+  everything (generous 0.53 → 0.58 after 60 answers).
+- **Without them**, at launch or with few households, v2.1 is about level
+  with v1 after the quiz for tastes v1 can name (0.52 against 0.55; with 4
+  people per persona, a difference of 0.03 is within the noise), and better
+  for the rest.
+- The truth here is made of the same kinds of features the model learns on,
+  so this shows the model can use them, not that people's tastes are made of
+  them. Real answers will tell.
+
 ## Open points
+
+- v2.1 (§7): check the population effect against real answers once there are
+  a few dozen households, and whether its shrinkage (4) and cap (±1) need
+  tuning. `population_answers` sums everything on each deal; if that gets
+  slow, keep it in a table refreshed by cron.
 
 - The library fixture (`logic/tests/fixtures/library.json`) is a snapshot.
   Refresh it with `node scripts/export-plates.ts` after classification or

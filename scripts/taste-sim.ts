@@ -9,6 +9,8 @@
 //   node scripts/taste-sim.ts --seeds 20      # more simulated people per persona
 //   node scripts/taste-sim.ts --lengths 20,32 # quiz lengths to compare
 //   node scripts/taste-sim.ts --diag          # the truth's ceiling, and the model with many answers
+//   node scripts/taste-sim.ts --features      # v2 features (cuisine, cut, flavour, family, effort), the dish's
+//                                             # own effect and other households' answers, against the v1 features
 //
 // Reads logic/tests/fixtures/library.json (scripts/export-plates.ts).
 
@@ -20,6 +22,8 @@ import {
   type StyleOptions,
 } from '../supabase/functions/_shared/logic/style.ts';
 import type { RecipeClassification } from '../supabase/functions/_shared/logic/classify.ts';
+import { dishFeature } from '../supabase/functions/_shared/logic/profile.ts';
+import { type PopulationAnswer, populationEffects, populationMean } from '../supabase/functions/_shared/logic/population.ts';
 
 const root = new URL('..', import.meta.url).pathname;
 interface Row {
@@ -59,6 +63,8 @@ interface Persona {
   diet?: 'vegetarian' | 'pescatarian';
   style: (p: Plate) => number;
   tastes: Record<string, number>;
+  /** Tastes only the v2 features name (--features --extended): cuisines, cuts, flavours, families, effort. */
+  extra?: Record<string, number>;
 }
 const over = (v: number, at: number) => Math.max(0, v - at);
 
@@ -67,28 +73,33 @@ const PERSONAS: Persona[] = [
     name: 'mostly balanced',
     style: (p) => 3.3 - 6 * over(p.rich, 0.35) + 1 * (p.protein - 0.4) + 0.6 * (p.veg - 0.5) - 1.5 * over(0.2, p.carb),
     tastes: { 'protein:poultry': 0.6, 'protein:fish': 0.4, 'dish:soup': -0.8 },
+    extra: { 'flavour:fresh_herbs': 0.5, 'family:mushrooms': -1.2, 'cuisine:asian': 0.5, 'cut:chicken thigh': 0.5 },
   },
   {
     name: 'generous',
     style: (p) => 2 + 2 * p.rich - 0.8 * over(p.veg, 0.6) + 0.5 * p.carb,
     tastes: { 'sauce:tomato': 0.6, 'dish:pasta_dish': 0.8, 'dish:salad': -1.5 },
+    extra: { 'family:cheese': 0.8, 'cuisine:italian': 0.6, 'effort:long': 0.4, 'flavour:smoky': 0.6 },
   },
   {
     name: 'lean fish lover',
     diet: 'pescatarian',
     style: (p) => 3 - 7 * over(p.rich, 0.3) + 1.5 * (p.protein - 0.4),
     tastes: { 'protein:fish': 1.5, 'protein:shellfish': 1, 'protein:eggs': -1, 'heat:2+': 0.5 },
+    extra: { 'flavour:citrus': 0.7, 'cuisine:japanese': 0.7, 'cut:salmon fillet': 0.6, 'family:coconut': -0.8 },
   },
   {
     name: 'vegetarian comfort',
     diet: 'vegetarian',
     style: (p) => 2.2 + 1.5 * p.rich + 0.5 * p.carb - 0.8 * over(p.protein, 0.5),
     tastes: { 'dish:curry': 1.2, 'protein:legumes': 0.5, 'dish:salad': -1 },
+    extra: { 'flavour:warm_spice': 0.8, 'family:cheese': 0.6, 'family:aubergine': -1, 'cut:tofu': -0.8 },
   },
   {
     name: 'picky, no spice',
     style: (p) => 3 - 3 * over(p.veg, 0.55) - 2 * over(0.3, p.carb),
     tastes: { 'heat:2+': -2.5, 'dish:soup': -2, 'dish:salad': -1.5, 'protein:offal': -3, 'protein:lamb': -1.5 },
+    extra: { 'family:olives_capers': -1.2, 'flavour:tangy': -0.6, 'effort:long_list': -0.7, 'family:mushrooms': -1 },
   },
   // Its style and tastes are drawn per seed: guards against tuning to the personas above.
   { name: 'random', style: () => 0, tastes: {} },
@@ -100,19 +111,41 @@ const TASTE_POOL = [
   'sauce:tomato', 'sauce:coconut', 'sauce:soy_based', 'heat:2+', 'starch:rice', 'starch:potato', 'italian', 'asian', 'indian',
 ];
 
+const EXTRA_POOL = [
+  'cuisine:indian', 'cuisine:italian', 'cuisine:mexican', 'cuisine:japanese', 'cuisine:middle eastern', 'cuisine:french',
+  'cut:chicken thigh', 'cut:chicken breast', 'cut:prawns', 'cut:salmon fillet', 'cut:tofu', 'cut:ground beef',
+  'flavour:fresh_herbs', 'flavour:citrus', 'flavour:umami', 'flavour:smoky', 'flavour:warm_spice', 'flavour:sweet',
+  'flavour:tangy', 'flavour:nutty', 'family:mushrooms', 'family:cheese', 'family:olives_capers', 'family:pulses',
+  'family:coconut', 'family:aubergine', 'effort:quick', 'effort:long', 'effort:long_list',
+];
+const EXTENDED = args.includes('--extended');
+
 function draw(persona: Persona, seed: number): Persona {
-  if (persona.name !== 'random') return persona;
+  if (persona.name !== 'random') return EXTENDED ? { ...persona, tastes: { ...persona.tastes, ...persona.extra } } : persona;
   const r = rng(seed * 7919);
   const c = { protein: gauss(r), rich: gauss(r) * 2, veg: gauss(r), carb: gauss(r) };
   const base = 2 + gauss(r) * 0.6;
   const tastes: Record<string, number> = {};
   for (const f of TASTE_POOL) if (r() < 0.35) tastes[f] = gauss(r) * 1.2;
+  if (EXTENDED) for (const f of EXTRA_POOL) if (r() < 0.25) tastes[f] = gauss(r) * 0.9;
   return {
     name: 'random',
     style: (p) => base + c.protein * (p.protein - 0.4) + c.rich * (p.rich - 0.3) + c.veg * (p.veg - 0.55) + c.carb * (p.carb - 0.6),
     tastes,
   };
 }
+
+/**
+ * How much better or worse a dish is than its features say, for everyone:
+ * with --features, a dish's own effect (sd 0.5) is this shared part (sd 0.4)
+ * plus a personal one (sd 0.3), so other people's answers can teach it.
+ */
+const SHARED = args.includes('--features');
+const quality = (() => {
+  const r = rng(4242);
+  return new Map(library.map((d) => [d.id, gauss(r)]));
+})();
+const dishEffect = (id: string, r: () => number) => (SHARED ? 0.4 * quality.get(id)! + 0.3 * gauss(r) : 0.5 * gauss(r));
 
 /** A person's true frequency for every dish they could be offered, with a dish-of-its-own effect taste can't explain. */
 function truth(persona: Persona, seed: number) {
@@ -126,7 +159,7 @@ function truth(persona: Persona, seed: number) {
     const style = Math.max(...d.plates.map((p) => persona.style(p)));
     const fs = new Set(d.features);
     const taste = Object.entries(persona.tastes).reduce((s, [f, v]) => s + (fs.has(f) ? v : 0), 0);
-    F.set(d.id, Math.max(0, Math.min(4, style + taste + 0.5 * gauss(r))));
+    F.set(d.id, Math.max(0, Math.min(4, style + taste + dishEffect(d.id, r))));
     clean.set(d.id, Math.max(0, Math.min(4, style + taste)));
   }
   return { allowed, F, clean };
@@ -260,7 +293,82 @@ const fmt = (v: number) => v.toFixed(2);
 
 // ---------------------------------------------------------------------------
 
-if (args.includes('--diag')) {
+if (args.includes('--features')) {
+  // v1 features against v2 ones, the dish's own effect and other households'
+  // answers, after the quiz (26 cards) and after the quiz plus some history
+  // (answers on random dishes, like deck swipes and ratings at half weight).
+  const V2 = /^(cuisine|cut|flavour|family|effort|recipe):/;
+  const variants = [
+    { name: 'v1 features', v2: false, dish: false, population: false },
+    { name: 'v2 features', v2: true, dish: false, population: false },
+    { name: 'v2 + dish effect', v2: true, dish: true, population: false },
+    { name: 'v2 + dish + others', v2: true, dish: true, population: true },
+  ];
+  const featuresOf = (d: Dish, v: (typeof variants)[number]) => [
+    ...(v.v2 ? d.features : d.features.filter((f) => !V2.test(f))), ...(v.dish ? [dishFeature(d.id)] : []),
+  ];
+  // Other households: people drawn like the random persona, 50 answers each on dishes of their choosing.
+  const others = (n: number) => {
+    const answers: PopulationAnswer[] = [];
+    for (let i = 0; i < n; i++) {
+      const persona = draw(PERSONAS[PERSONAS.length - 1], 1000 + i);
+      const { allowed, F } = truth(persona, 5000 + i);
+      const r = rng(9000 + i);
+      for (const d of [...allowed].sort(() => r() - 0.5).slice(0, 50)) {
+        answers.push({ userId: `u${i}`, recipeId: d.id, y: answer(F.get(d.id)!, r), weight: 1 });
+      }
+    }
+    return populationMean(populationEffects(answers));
+  };
+  const variance = args.includes('--variance') ? JSON.parse(args[args.indexOf('--variance') + 1]) as Record<string, number> : {};
+  const only = args.includes('--only') ? args[args.indexOf('--only') + 1] : null;
+  const population = others(Number(args[args.indexOf('--others') + 1]) || 80);
+  const historyLengths = [0, 60];
+  console.log(`${library.length} dishes, ${SEEDS} people per persona${EXTENDED ? ', with v2-only tastes' : ''}. ρ against the true frequency (top-12 hit rate), 26 quiz cards then n history answers.\n`);
+  for (const v of variants.filter((x) => !only || x.name === only)) {
+    const cells: string[] = [];
+    for (const nHistory of historyLengths) {
+      const rho: number[] = [];
+      const top: number[] = [];
+      const perPersona: string[] = [];
+      for (const base of PERSONAS) {
+        const pr: number[] = [];
+        for (let seed = 1; seed <= SEEDS; seed++) {
+          const persona = draw(base, seed);
+          const { allowed, F, clean } = truth(persona, seed * 101 + base.name.length);
+          const r = rng(seed * 31 + 7);
+          const options: StyleOptions = { variance, ...(v.population ? { featureMean: population } : {}) };
+          const pool = allowed.map((d) => ({ ...candidate(d), features: featuresOf(d, v) }));
+          const shown: { candidate: QuizCandidate; y: number }[] = [];
+          while (shown.length < 26) {
+            const next = nextQuizCard(pool, shown, [], r, options);
+            if (!next) break;
+            shown.push({ candidate: next, y: answer(F.get(next.id)!, r) });
+          }
+          const seen = new Set(shown.map((x) => x.candidate.id));
+          const history = pool.filter((c) => !seen.has(c.id)).sort(() => r() - 0.5).slice(0, nHistory);
+          for (const c of history) seen.add(c.id);
+          const model = fitStyle([
+            ...shown.map(obsOf),
+            ...history.map((c) => ({ plate: c.plate, features: c.features, y: answer(F.get(c.id)!, r), weight: 0.5 })),
+          ], [], options);
+          const test = allowed.filter((d) => !seen.has(d.id));
+          const fit = test.map((d) => model.frequency(d.plates, featuresOf(d, v)));
+          // Against the full truth: the shared part of a dish's own effect can be learned from others.
+          const truthF = test.map((d) => F.get(d.id)!);
+          const p = spearman(fit, truthF);
+          rho.push(p);
+          pr.push(p);
+          const cut = [...truthF].sort((a, b) => b - a)[Math.floor(truthF.length / 4)];
+          top.push(fit.map((f, i) => [f, i] as const).sort((a, b) => b[0] - a[0]).slice(0, 12).filter(([, i]) => truthF[i] >= cut).length / 12);
+        }
+        perPersona.push(`${base.name} ${fmt(mean(pr))}`);
+      }
+      cells.push(`+${nHistory}: ${fmt(mean(rho))} (${fmt(mean(top))})  [${perPersona.join(' · ')}]`);
+    }
+    console.log(v.name.padEnd(20), cells.join('\n'.padEnd(22)));
+  }
+} else if (args.includes('--diag')) {
   // Ceiling: the noiseless truth against the truth. Then the model with many random answers.
   for (const base of PERSONAS) {
     const row: string[] = [];

@@ -16,6 +16,7 @@ import {
 import { dietAdherence } from '../_shared/logic/recommend.ts';
 import { type Plate, rowPlates } from '../_shared/logic/plate.ts';
 import { styleModelFor } from '../_shared/logic/style.ts';
+import { effectsFromSums, populationMean } from '../_shared/logic/population.ts';
 import { groupsFrom, ruleProductIds } from '../_shared/logic/products.ts';
 
 const MOODS: Mood[] = ['any', 'comfort', 'light', 'healthy', 'quick', 'fancy'];
@@ -62,7 +63,7 @@ Deno.serve(async (req) => {
     .filter((x) => x.verdict !== 'pass').map((x) => x.recipe_id)));
 
   const since = (days: number) => new Date(Date.now() - days * 86_400_000).toISOString();
-  const [goals, rules, swipes, recipes, meals, pantry, catalog, signals, allergies, allergenLinks, groupRows, groupLinks, groupProducts] = await Promise.all([
+  const [goals, rules, swipes, recipes, meals, pantry, catalog, signals, allergies, allergenLinks, groupRows, groupLinks, groupProducts, population] = await Promise.all([
     admin.from('member_goals').select('*').in('user_id', eaters),
     admin.from('taste_rules').select('user_id, kind, value, product_id, group_key').in('user_id', eaters),
     admin.from('swipes').select('user_id, deck_id, recipe_id, verdict, created_at, decks!inner(household_id, mood, filters)')
@@ -84,6 +85,8 @@ Deno.serve(async (req) => {
     admin.from('ingredient_groups').select('key, name_fr, name_en, aliases, position'),
     admin.from('ingredient_group_members').select('group_key, ingredient'),
     admin.from('products').select('id, ingredient').is('household_id', null).not('ingredient', 'is', null),
+    // What other households thought of each library dish, the eaters left out (logic/population.ts).
+    admin.rpc('population_answers', { p_exclude: eaters }),
   ]);
   for (const r of [goals, rules, swipes, recipes, meals, pantry, catalog, signals, allergies, allergenLinks, groupRows, groupLinks, groupProducts]) {
     if (r.error) return json({ error: r.error.message }, 500);
@@ -94,6 +97,16 @@ Deno.serve(async (req) => {
     ? await admin.from('member_portions').select('deck_id, recipe_id, user_id, fits').in('deck_id', swipedDecks).in('user_id', eaters)
     : { data: [], error: null };
   if (portions.error) return json({ error: portions.error.message }, 500);
+
+  // A nice-to-have: without it (the migration not applied yet), every dish starts from its features alone.
+  if (population.error) console.warn('population_answers', population.error.message);
+  const effects = effectsFromSums(population.error ? null : population.data as Record<string, [number, number]> | null);
+  // A household's copy of a library dish starts where the dish does.
+  for (const r of recipes.data ?? []) {
+    const e = r.copied_from ? effects.get(r.copied_from as string) : undefined;
+    if (e !== undefined) effects.set(r.id, e);
+  }
+  const featureMean = populationMean(effects);
 
   const groups = groupsFrom(groupRows.data ?? [], groupLinks.data ?? []);
   const productOfIngredient = new Map((groupProducts.data ?? []).map((p) => [p.ingredient as string, p.id as string]));
@@ -200,7 +213,7 @@ Deno.serve(async (req) => {
       weights,
       profile,
       // How often they want each dish (logic/style.ts): what the deck scores on.
-      style: styleModelFor(memberSignals, (id) => platesById.get(id)),
+      style: styleModelFor(memberSignals, (id) => platesById.get(id), Date.now(), { featureMean }),
       adherence: dietAdherence(memberSignals),
       occasional: occasionalKinds(memberSignals),
     };
@@ -224,7 +237,8 @@ Deno.serve(async (req) => {
   }
 
   // Specific features only (protein, dish, cuisine…): "dinner" or a staple says nothing about taste.
-  const lean = new Set([...likedBefore].flatMap((id) => featuresById.get(id) ?? []).filter((f) => f.includes(':')));
+  // Effort ("quick", "a long list") is shared by too many dishes to lean on.
+  const lean = new Set([...likedBefore].flatMap((id) => featuresById.get(id) ?? []).filter((f) => f.includes(':') && !f.startsWith('effort:')));
   // Kept on the recipes; cleared by the database when a recipe or its ingredients change.
   if (fresh.length) await admin.rpc('store_classifications', { p_rows: fresh });
 

@@ -67,13 +67,24 @@ for the deck and learning.
 | `veg_g` | grams of vegetables per serving | `isVegetable()`: produce that isn't a starch, citrus or above 120 kcal/100 g (garlic, avocado), plus tinned tomatoes and vegetables; optional lines left out |
 | `nutrition_goals` | high_protein, lean, low_kcal, high_fibre | numbers only (below) |
 | `meal_intents` | comfort, indulgent, light, fuel, everyday, special_occasion | mood tags (sourced), then rules (below) |
+| `flavours` | fresh_herbs, woody_herbs, citrus, umami, smoky, warm_spice, sweet, tangy, nutty, garlicky | required lines, by catalogue name (`logic/flavours.ts`, below) |
+| `ingredient_families` | mushrooms, cheese, olives_capers, nuts, coconut, pulses, alcohol, aubergine | required lines, by catalogue name (`flavours.ts`); alcohol and coconut from 30 g a serving |
+| `effort` | quick (≤ 25 min), long (≥ 60 min), hard, short_list (≤ 6 lines that aren't staples), long_list (≥ 13) | `total_min` (else prep + cook), `difficulty`, the required lines |
 
 `sourced` lists the fields a tag or the cuisine set rather than a rule.
 
-Deliberately left for later, because they're the hardest to derive
-consistently and the library is too small to learn them yet: the five
-flavour axes (sweetness, tanginess, richness…), textures, aromatic notes,
-relative cost and make-ahead suitability.
+**Flavours** (version 9) are notes, not axes: a dish has the note when its
+required lines add up to 1 point of it, where a main ingredient of the note
+is 1 (fresh coriander for fresh herbs, soy sauce for umami, cumin for warm
+spice) and a supporting one ½ (lemon for citrus, mushrooms for umami,
+paprika for smoky). Garlic is in most recipes, so a dish is garlicky only
+from `GARLICKY_MIN_G` (8 g) a serving; sugar, honey and syrups make a dish
+sweet from `SWEET_MIN_G` (8 g). Richness isn't a note: it's an axis of the
+plate (`plate.ts`). In the library, warm spice, umami and fresh herbs are the
+commonest (about a third of the dishes each), smoky, garlicky and citrus the
+rarest (about 1 in 25).
+
+Still left for later: textures, relative cost and make-ahead suitability.
 
 ### Nutrition goals and meal intents: two axes
 
@@ -177,8 +188,12 @@ Swipe learning (`logic/preferences.ts`) uses tags, non-staple ingredient
 names and the classification as **namespaced features**: `protein:fish`,
 `dish:curry`, `sauce:coconut`, `method:deep_fried`, `goal:lean`,
 `intent:comfort`, `texture:brothy`, and cumulative heat (`heat:2+` is
-"medium or hotter", so a liking for spicy food is one signal). Cuisines stay
-plain names, like their tags. Tags that name a classified feature become it
+"medium or hotter", so a liking for spicy food is one signal). Also
+`flavour:citrus`, `family:mushrooms`, `effort:quick`, the main protein items
+as `cut:chicken thigh`, and the cuisines as `cuisine:thai`. Cuisines are
+there as plain names too, like their tags, for the v1 profile; the style
+model learns each cuisine and cut once, as the namespaced feature
+(docs/taste-profiles.md). Tags that name a classified feature become it
 (`curry` → `dish:curry`), including patterns accepted before v1, so nothing
 counts twice.
 

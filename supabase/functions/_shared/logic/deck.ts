@@ -15,7 +15,7 @@
 import { SEASONS, type MealIntent, type Season } from './classify.ts';
 import { type DeckFacets, type DeckFilters, filterCount, matchesDeckFilters } from './deckFilters.ts';
 import { type Equipment, missingAppliances } from './facets.ts';
-import { kindKeys, type TasteProfile } from './profile.ts';
+import { dishFeature, kindKeys, type TasteProfile } from './profile.ts';
 import {
   diversePick, fitWeight, similarity, TREAT_ADHERENCE, TREAT_MAX_FIT, TREAT_MIN_TASTE, tasteScore, uncertainty,
 } from './recommend.ts';
@@ -294,11 +294,13 @@ export function scoreRecipe(
     let fitFactor = 1;
     let frequency: number | null = null;
     if (m.style && recipe.plates?.length) {
-      const f = m.style.frequency(recipe.plates, features);
+      // The dish's own effect too: what this person (and other households, population.ts) said about this very dish.
+      const own = [...features, dishFeature(recipe.id)];
+      const f = m.style.frequency(recipe.plates, own);
       frequency = f;
-      taste = tasteOfFrequency(m.style.rawFrequency(recipe.plates, features));
-      explore += m.style.uncertainty(recipe.plates[0], features);
-      if (recipe.plates.length > 1 && f - m.style.frequency([recipe.plates[0]], features) >= ADJUSTABLE_GAIN) adjustable = true;
+      taste = tasteOfFrequency(m.style.rawFrequency(recipe.plates, own));
+      explore += m.style.uncertainty(recipe.plates[0], own);
+      if (recipe.plates.length > 1 && f - m.style.frequency([recipe.plates[0]], own) >= ADJUSTABLE_GAIN) adjustable = true;
       fitFactor = STYLE_FIT_FACTOR;
     } else if (m.profile) {
       taste = tasteScore(features, m.profile);

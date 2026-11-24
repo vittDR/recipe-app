@@ -275,3 +275,17 @@ test('season: the seasons the main seasonal ingredients share, or the recipe\'s 
     ['winter', 'winter', 'spring', 'spring', 'summer', 'summer', 'autumn', 'autumn', 'winter']);
 });
 
+
+test('flavour, ingredient families and effort, as features', () => {
+  const c = classifyRecipe(input({
+    lines: [['chicken breast', 300, 'g'], ['parmesan', 40, 'g'], ['lemon', 1, 'piece'], ['garlic', 20, 'g']],
+    cuisine: 'Italian', totalMin: 20, difficulty: 'hard',
+  }));
+  assert.deepEqual(c.flavours, ['umami', 'garlicky']);
+  assert.deepEqual(c.ingredient_families, ['cheese']);
+  assert.deepEqual(c.effort, ['quick', 'hard', 'short_list']);
+  const f = classificationFeatures(c);
+  for (const x of ['italian', 'cuisine:italian', 'cuisine:mediterranean', 'cut:chicken breast', 'flavour:umami', 'family:cheese', 'effort:quick']) {
+    assert.ok(f.includes(x), x);
+  }
+});
