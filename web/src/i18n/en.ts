@@ -137,6 +137,7 @@ export const en = {
     settingsTitle: 'Tonight’s deck',
     settingsTitleTomorrow: 'Tomorrow’s deck',
     settingsTitleOn: '{day}’s deck',
+    timeUnits: { min: 'min', h: 'hour' },
     timeLabel: 'Time',
     upTo: '≤ {n} min',
     underHour: '≤ 1 h',

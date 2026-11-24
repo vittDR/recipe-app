@@ -4553,3 +4553,201 @@ body:has(.moment) .tabbar {
   gap: var(--space-2);
   padding: var(--space-3) var(--space-2);
 }
+
+/* ---------- Deck settings: choices drawn like the who tiles ----------
+   Outlined surface tiles, no drop shadow; the selected one takes the accent
+   ring and soft fill. One-of choices sit in an even grid, many-of ones are
+   pills with a check. */
+
+.choice-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.choice-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+  min-height: 52px;
+  padding: var(--space-3) var(--space-1);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--ink-2);
+  text-align: center;
+  cursor: pointer;
+}
+
+.choice-tile svg {
+  color: var(--ink-2);
+  margin-bottom: 2px;
+}
+
+.choice-tile__big {
+  font: var(--t-headline);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.choice-tile__label {
+  max-width: 100%;
+  font: var(--t-label);
+  overflow-wrap: anywhere;
+}
+
+/* Under a number the label is its unit: smaller and quieter. */
+.choice-tile__big + .choice-tile__label {
+  font: var(--t-caption);
+  color: var(--muted);
+}
+
+.choice-tile[aria-pressed='true'] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+.choice-tile[aria-pressed='true'] svg,
+.choice-tile[aria-pressed='true'] .choice-tile__big,
+.choice-tile[aria-pressed='true'] .choice-tile__label {
+  color: var(--accent-strong);
+}
+
+.pick-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 40px;
+  padding: 0 var(--space-5);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--ink);
+  font: var(--t-label);
+  font-size: 14px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.pick-chip[aria-pressed='true'] {
+  padding-left: var(--space-3);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+.pick-chip__check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+/* Calories and protein: outlined like the tiles; a value set is a filter on, so it takes the accent. */
+.deck-sheet .amount-input .input {
+  box-shadow: none;
+  border: 1.5px solid var(--line);
+  font: var(--t-headline);
+  font-variant-numeric: tabular-nums;
+}
+
+.deck-sheet .amount-input .input:focus {
+  border-color: var(--accent);
+  box-shadow: none;
+}
+
+.deck-sheet .amount-input--set .input {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+.deck-sheet .amount-input--set .amount-input__unit {
+  color: var(--accent-strong);
+}
+
+.deck-sheet .amount-input__unit {
+  font: var(--t-footnote);
+}
+
+/* "More filters": one outlined row with a soft icon tile, and a count once filters are on. */
+.more-filters {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+  margin-top: var(--space-8);
+  padding: var(--space-4) var(--space-5) var(--space-4) var(--space-4);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.more-filters[aria-pressed='true'] {
+  border-color: var(--accent);
+}
+
+.more-filters__icon {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+.more-filters__main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.more-filters__title {
+  font: var(--t-headline);
+}
+
+.more-filters__meta {
+  font: var(--t-footnote);
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.more-filters[aria-pressed='true'] .more-filters__meta {
+  color: var(--accent-strong);
+}
+
+.more-filters__count {
+  flex: none;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: var(--radius-full);
+  background: var(--accent);
+  color: var(--on-accent);
+  font: var(--t-caption);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.more-filters .chevron {
+  color: var(--faint);
+  display: inline-flex;
+}
