@@ -2,7 +2,7 @@
 // age band (which sets the default portion), portion in quarter steps, and
 // what they don't eat (the same allergens and catalogue search as a member's
 // "Je ne mange pas"). Used in onboarding (04e) and household settings (24).
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { productName } from '@logic/products.ts';
 import { useI18n } from '../i18n/index.tsx';
 import {
@@ -35,15 +35,20 @@ export function EaterSheet({ open, eater, onClose }: {
   const [query, setQuery] = useState('');
   const [busy, setBusy] = useState(false);
 
-  // Each opening starts from the person being edited, or blank.
-  useEffect(() => {
-    if (!open) return;
-    setDraft(eater ? {
-      name: eater.name, age_band: eater.age_band, portion: eater.portion, allergens: eater.allergens, never_products: eater.never_products,
-    } : blank);
-    setView('main');
-    setQuery('');
-  }, [open, eater]);
+  // Each opening starts from the person being edited, or blank, on the first
+  // page. Set while rendering, so the sheet never shows the last opening's
+  // page, even for a frame, before it slides up.
+  const [openFor, setOpenFor] = useState<{ open: boolean; eater?: Eater | null }>({ open: false });
+  if (openFor.open !== open || (open && openFor.eater !== eater)) {
+    setOpenFor({ open, eater });
+    if (open) {
+      setDraft(eater ? {
+        name: eater.name, age_band: eater.age_band, portion: eater.portion, allergens: eater.allergens, never_products: eater.never_products,
+      } : blank);
+      setView('main');
+      setQuery('');
+    }
+  }
 
   const pickBand = (b: AgeBand) => setDraft((d) => ({ ...d, age_band: b, portion: DEFAULT_PORTION[b] }));
   const stepPortion = (dir: 1 | -1) => setDraft((d) => ({
@@ -85,7 +90,7 @@ export function EaterSheet({ open, eater, onClose }: {
   if (view === 'exclusions') {
     const results = searchProducts(catalog, query, { limit: 6 }).results.filter((p) => !draft.never_products.includes(p.id));
     return (
-      <Sheet open={open} onClose={onClose} label={t('eaters.noEat')} className="sheet--fixed eater-sheet">
+      <Sheet open={open} onClose={onClose} label={t('eaters.noEat')} className="sheet--fixed eater-sheet" depth={1}>
         <div className="eater-sheet__head">
           <button type="button" className="link-btn" onClick={() => setView('main')}>{t('app.back')}</button>
           <h2 className="eater-sheet__title">{t('eaters.noEatOf', { name: draft.name.trim() || t('eaters.thisPerson') })}</h2>

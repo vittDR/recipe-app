@@ -2,7 +2,7 @@
 // Checkbox, Switch, Avatar, Screen, Field, SearchField, Stepper, ProgressBar,
 // Sheet, SheetHeader, Toast and confirmation sheets.
 
-import { useEffect, useRef, useState, type ButtonHTMLAttributes, type ReactNode, type Ref } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type ButtonHTMLAttributes, type ReactNode, type Ref } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useLocation, useNavigate } from 'react-router';
 import { useI18n } from '../i18n/index.tsx';
@@ -418,13 +418,25 @@ function useScrollLock(active: boolean) {
 const SHEET_CLOSE_DISTANCE = 120;
 const SHEET_CLOSE_SPEED = 0.6;
 
-export function Sheet({ open, onClose, children, label, className = '' }: {
+/** Moving between a sheet's pages: the same curve as its slide up. */
+const SHEET_PAGE_MOTION: KeyframeAnimationOptions = { duration: 280, easing: 'cubic-bezier(0.2, 0.9, 0.3, 1)' };
+
+const reducedMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+
+export function Sheet({ open, onClose, children, label, className = '', depth = 0 }: {
   open: boolean;
   onClose: () => void;
   children: ReactNode;
   label: string;
   /** e.g. sheet--fixed: full height whatever the content. */
   className?: string;
+  /**
+   * Which page of the sheet is showing, for a sheet that opens a page of its
+   * own (a "Don't eat" list inside a person's sheet): 0 is the first. When it
+   * changes, the sheet grows or shrinks to the new page, which slides in from
+   * the right going deeper and from the left coming back.
+   */
+  depth?: number;
 }) {
   const sheetRef = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
@@ -445,6 +457,26 @@ export function Sheet({ open, onClose, children, label, className = '' }: {
     const timer = window.setTimeout(() => setMounted(false), 400);
     return () => window.clearTimeout(timer);
   }, [closing]);
+
+  // Between pages. The height the sheet had is measured after every commit,
+  // so the new page can grow or shrink it from there.
+  const shown = useRef({ open, depth, height: 0 });
+  useLayoutEffect(() => {
+    const sheet = sheetRef.current;
+    const before = shown.current;
+    shown.current = { open, depth, height: sheet?.offsetHeight ?? 0 };
+    if (!sheet || !open || !before.open || before.depth === depth || reducedMotion()) return;
+    sheet.scrollTop = 0;
+    const height = sheet.offsetHeight;
+    if (before.height && before.height !== height) {
+      sheet.animate([{ height: `${before.height}px` }, { height: `${height}px` }], SHEET_PAGE_MOTION);
+    }
+    const from = depth > before.depth ? 40 : -40;
+    for (const page of sheet.children) {
+      if (page.classList.contains('sheet__grabber')) continue;
+      page.animate([{ opacity: 0, transform: `translateX(${from}px)` }, { opacity: 1, transform: 'none' }], SHEET_PAGE_MOTION);
+    }
+  });
 
   useEffect(() => {
     if (!open) return;
