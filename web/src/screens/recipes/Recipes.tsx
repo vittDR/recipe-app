@@ -5,8 +5,11 @@ import { Button, Chip, ListRow, RecipeThumb, Screen, SearchField, Sheet, SheetHe
 import { useI18n } from '../../i18n/index.tsx';
 import { recipeTitle, allTitles } from '../../lib/recipeText.ts';
 import type { ClassifiableRow } from '@logic/classify.ts';
+import { fitsDiet } from '@logic/deck.ts';
 import { RECIPE_FILTERS, type RecipeFilter, matchesFilters } from '@logic/facets.ts';
+import { dietClassOf } from '@logic/ingredients.ts';
 import { effortLabels, facetsOf } from '../../lib/facets.ts';
+import { useDiet } from '../../lib/diet.ts';
 import { todayIn, useCatalog, useLive } from '../../lib/hooks.ts';
 import { useSession } from '../../lib/session.tsx';
 import { must, supabase } from '../../lib/supabase.ts';
@@ -58,7 +61,14 @@ export function RecipesScreen() {
   [{ table: 'recipes', filter: `household_id=eq.${household!.id}` }]);
 
   const day = useMemo(() => todayIn(household!.timezone), [household]);
-  const ordered = useMemo(() => dailyOrder(data ?? [], day), [data, day]);
+  // Only what this person eats: a vegetarian never sees the household's steak. The catalogue keeps every ingredient.
+  const diet = useDiet();
+  const library = useMemo(() => (data && catalog && diet
+    ? data.filter((r) => fitsDiet(dietClassOf(r.recipe_ingredients.map((i) => catalog.find(i.name))), diet))
+    : []), [data, catalog, diet]);
+  const ordered = useMemo(() => dailyOrder(library, day), [library, day]);
+  // Facet chips that would show everything (veggie for a vegetarian) or nothing (fish for one) are left out.
+  const facetChoices = RECIPE_FILTERS.filter((f) => !(diet === 'vegetarian' && (f === 'veggie' || f === 'fish')));
 
   const shown = useMemo(() => {
     // Every word must match the title, a tag or an ingredient, in either language: "quick chicken" and "poulet rapide" work.
@@ -85,7 +95,7 @@ export function RecipesScreen() {
   const filters: Filter[] = ['all', ...RECIPE_COLLECTIONS];
   return (
     <Screen>
-      <TabHeader overline={data ? tn('recipes.count', data.length) : undefined} title={t('recipes.title')} right={
+      <TabHeader overline={data && catalog && diet ? tn('recipes.count', library.length) : undefined} title={t('recipes.title')} right={
         <button type="button" className="fab" aria-label={t('recipes.add')} onClick={() => setAdding(true)}>
           <Icon name="plus" size={26} strokeWidth={2.4} />
         </button>
@@ -96,9 +106,9 @@ export function RecipesScreen() {
           {filters.map((f) => <Chip key={f} pressed={filter === f} onClick={() => setFilter(f)}>{t(f === 'all' ? 'recipes.all' : `collection.${f}`)}</Chip>)}
         </div>
         <div className="chips chips--scroll" role="group" aria-label={t('recipes.filters')}>
-          {RECIPE_FILTERS.map((f) => <Chip key={f} pressed={facets.has(f)} onClick={() => toggle(f)}>{t(`recipes.${f}`)}</Chip>)}
+          {facetChoices.map((f) => <Chip key={f} pressed={facets.has(f)} onClick={() => toggle(f)}>{t(`recipes.${f}`)}</Chip>)}
         </div>
-        {(loading && !data) || !catalog ? <Spinner /> : (
+        {(loading && !data) || !catalog || !diet ? <Spinner /> : (
           <>
             {(facets.size > 0 || filter !== 'all' || query.trim()) && (
               <div className="row row--between">

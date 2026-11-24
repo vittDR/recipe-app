@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { askedFor, deckFacets, filterCount, matchesDeckFilters, normaliseFilters } from '../deckFilters.ts';
+import { askedFor, deckFacets, filterCount, filtersForDiet, matchesDeckFilters, normaliseFilters, proteinsForDiet } from '../deckFilters.ts';
 
 const c = (over: Partial<Parameters<typeof deckFacets>[0]> = {}) => ({
   protein_groups: [], protein_items: [], cuisines: [], starch_bases: [], heat_level: 0, ...over,
@@ -74,4 +74,16 @@ test('effort: the minimum keeps easy dishes, some leaves out hard ones, unknown 
   assert.equal(matchesDeckFilters({ ...f, difficulty: null }, { effort: 'minimum' }), true);
   assert.deepEqual(normaliseFilters({ effort: 'some' }), { effort: 'some' });
   assert.deepEqual(normaliseFilters({ effort: 'lots' }), {});
+});
+
+test('protein choices follow the diet', () => {
+  assert.deepEqual(proteinsForDiet('vegetarian'), ['eggs', 'tofu', 'pulses']);
+  assert.deepEqual(proteinsForDiet('pescatarian'), ['fish', 'prawns', 'eggs', 'tofu', 'pulses']);
+  assert.equal(proteinsForDiet('flexitarian').length, 10);
+  assert.equal(proteinsForDiet('everything').length, 10);
+  // Choices the diet rules out are dropped; an emptied row is no filter.
+  assert.deepEqual(filtersForDiet({ proteins: ['chicken', 'tofu'], spice: 'mild' }, 'vegetarian'), { proteins: ['tofu'], spice: 'mild' });
+  assert.deepEqual(filtersForDiet({ proteins: ['beef'], maxKcal: 600 }, 'pescatarian'), { maxKcal: 600 });
+  const f = { proteins: ['beef' as const] };
+  assert.equal(filtersForDiet(f, 'everything'), f);
 });

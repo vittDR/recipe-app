@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { combineProposals, scaleQuantity } from '@logic/groceries.ts';
+import { filtersForDiet } from '@logic/deckFilters.ts';
 import { RATINGS, type Rating } from '@logic/profile.ts';
 import { Link, useNavigate, useSearchParams } from 'react-router';
 import { AddToListSheet, loadProposalsMany, type MealForList } from '../components/AddToListSheet.tsx';
@@ -11,6 +12,7 @@ import {
 } from '../components/ui.tsx';
 import { useI18n } from '../i18n/index.tsx';
 import { pickDeckArt } from '../lib/deckArt.ts';
+import { useDiet } from '../lib/diet.ts';
 import { useEaters } from '../lib/eaters.ts';
 import { householdDefaults, loadLastSettings, saveLastSettings, type LastSettings } from '../lib/deckSettings.ts';
 import { recipeTitle } from '../lib/recipeText.ts';
@@ -19,7 +21,7 @@ import { comingDays, cooksOn, eveningPath, useEveningName } from '../lib/plan.ts
 import { INGREDIENT_SELECT } from '../lib/products.ts';
 import { useSession } from '../lib/session.tsx';
 import { callFunction, must, supabase } from '../lib/supabase.ts';
-import type { Deck, DeckMemberProgress, Diet, Meal, Mood, PlanDate, PlanDay, Recipe, RecipeIngredient, Verdict } from '../lib/types.ts';
+import type { Deck, DeckMemberProgress, Meal, Mood, PlanDate, PlanDay, Recipe, RecipeIngredient, Verdict } from '../lib/types.ts';
 
 type MealRecipe = Pick<Recipe, 'id' | 'title' | 'language' | 'translations' | 'image_path' | 'tags' | 'total_min' | 'difficulty'
   | 'protein_g_per_serving' | 'servings'>;
@@ -27,8 +29,6 @@ type PlannedMeal = Meal & { listed_at: string | null; recipe: MealRecipe | null;
 type RateMeal = { id: string; recipe_id: string; recipe: Pick<Recipe, 'title' | 'language' | 'translations'> | null };
 
 interface TonightData {
-  /** This person's diet, so the deck art never shows them what they don't eat. */
-  diet: Diet;
   /** The evening the deck part was loaded for. */
   forDate: string;
   deck: Deck | null;
@@ -91,10 +91,12 @@ export function TonightScreen() {
     setParams(date === today ? {} : { day: date }, { replace: true });
   };
 
+  // The art, the protein choices and the deck follow this person's diet.
+  const diet = useDiet();
   const { data, loading, set } = useLive<TonightData>(
     `tonight:${household!.id}:${today}:${selected}`,
     async () => {
-      const [decks, meals, plan, dates, recent, rated, liked, mine, lastAny, diet] = await Promise.all([
+      const [decks, meals, plan, dates, recent, rated, liked, mine, lastAny] = await Promise.all([
         supabase.from('decks').select('*').eq('household_id', household!.id).eq('for_date', selected)
           .neq('status', 'closed').order('created_at', { ascending: false }).limit(1),
         supabase.from('meals').select(`id, for_date, recipe_id, status, deck_id, listed_at, deck:decks(who_eating, extra_eaters), recipe:recipes(${MEAL_RECIPE})`)
@@ -112,7 +114,6 @@ export function TonightScreen() {
           .eq('started_by', userId!).order('created_at', { ascending: false }).limit(1),
         supabase.from('decks').select('who_eating, extra_eaters').eq('household_id', household!.id)
           .order('created_at', { ascending: false }).limit(1),
-        supabase.from('taste_rules').select('value').eq('user_id', userId!).eq('kind', 'diet').maybeSingle(),
       ]);
       const ratedMeals = new Set((must(rated) as { meal_id: string }[]).map((x) => x.meal_id));
       type RecentMeal = RateMeal & { for_date: string; status: string; deck: { who_eating: string[] } | null };
@@ -137,7 +138,6 @@ export function TonightScreen() {
       const [top, second] = [...counts].sort((a, b) => b[1] - a[1]);
       const last = (must(mine) as Pick<Deck, 'max_minutes' | 'mood' | 'filters' | 'created_at'>[])[0];
       return {
-        diet: ((must(diet) as { value: Diet } | null)?.value) ?? 'everything',
         forDate: selected,
         deck,
         progress: must(progress) as DeckMemberProgress[],
@@ -185,9 +185,11 @@ export function TonightScreen() {
   const since = profile?.onboarded_at ? Date.parse(profile.onboarded_at) : 0;
   const last = [remembered, data?.lastDeck].filter((x): x is LastSettings => !!x && Date.parse(x.at) >= since)
     .sort((a, b) => b.at.localeCompare(a.at))[0];
-  const settings: DeckSettings = picked ?? (last
+  const chosen: DeckSettings = picked ?? (last
     ? { ...who, maxMinutes: last.maxMinutes, mood: last.mood, filters: last.filters }
     : { ...who, ...householdDefaults(household), ...(household?.deck_defaults?.mood ? {} : { mood: data?.favouriteMood ?? 'any' }) });
+  // A protein picked before the diet changed (chicken, now vegetarian) would leave nothing to deal.
+  const settings: DeckSettings = { ...chosen, filters: filtersForDiet(chosen.filters, diet ?? 'everything') };
   const pick = (s: DeckSettings) => {
     setPicked(s);
     setRemembered(saveLastSettings(userId!, s));
@@ -286,7 +288,7 @@ export function TonightScreen() {
 
   // The week (strip, meals) carries over while another evening's deck loads.
   const dayLoading = !data || data.forDate !== selected;
-  if (loading && !data) return <Screen>{header}<Spinner /></Screen>;
+  if ((loading && !data) || !diet) return <Screen>{header}<Spinner /></Screen>;
 
   const deck = dayLoading ? null : data?.deck ?? null;
   const open = deck?.status === 'open';
@@ -400,7 +402,7 @@ export function TonightScreen() {
     const starter = deck.started_by !== userId && !myProgress?.swiped_count;
     const others = deck.who_eating.filter((u) => u !== userId);
     // Same cards as this deck's no-match screen, should it come to that.
-    const [front, back] = pickDeckArt(deck.id, 2, deck.mood, data?.diet);
+    const [front, back] = pickDeckArt(deck.id, 2, deck.mood, diet ?? undefined);
     main = (
       <article className="card card--flush join-card">
         <div className={`join-card__art${starter ? ' join-card__art--iris' : ''}`} aria-hidden>
@@ -481,7 +483,7 @@ export function TonightScreen() {
   } else {
     // No deck yet: dealing the deck is the only big action. New cards each
     // evening, to the mood about to be dealt; the best fit in front.
-    const [mid, left, right] = pickDeckArt(selected, 3, settings.mood, data?.diet);
+    const [mid, left, right] = pickDeckArt(selected, 3, settings.mood, diet ?? undefined);
     const ask = isToday ? t('tonight.ask')
       : selected === week[1] ? t('tonight.askTomorrow') : t('tonight.askOn', { day: weekday(selected) });
     main = (
@@ -519,7 +521,7 @@ export function TonightScreen() {
         {main}
       </div>
       <DeckSettingsSheet open={settingsOpen} onClose={() => setSettingsOpen(false)} settings={settings} onChange={pick}
-        table={table} dealing={dealing} error={error} onDeal={() => void deal()} />
+        table={table} diet={diet} dealing={dealing} error={error} onDeal={() => void deal()} />
       <WeekSheet open={weekOpen} onClose={() => setWeekOpen(false)} days={stripDays} today={today}
         onToggle={(d, c) => void toggleDay(d, c)} back={eveningPath(selected, today)} />
       {groceries && (

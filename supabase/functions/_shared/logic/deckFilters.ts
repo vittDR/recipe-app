@@ -5,6 +5,7 @@
 // Pure, shared by deal-deck, the web app and the learning (profile.ts).
 
 import { CUISINE_PARENTS, type RecipeClassification } from './classify.ts';
+import type { Diet } from './deck.ts';
 
 export const FILTER_PROTEINS = ['chicken', 'turkey', 'beef', 'pork', 'lamb', 'fish', 'prawns', 'eggs', 'tofu', 'pulses'] as const;
 export const FILTER_CUISINES = [
@@ -15,6 +16,26 @@ export const FILTER_BASES = ['rice', 'pasta', 'noodles', 'potatoes', 'bread', 'g
 export const FILTER_SPICES = ['any', 'mild', 'spicy'] as const;
 
 export type FilterProtein = (typeof FILTER_PROTEINS)[number];
+
+const MEAT_PROTEINS: FilterProtein[] = ['chicken', 'turkey', 'beef', 'pork', 'lamb'];
+const FISH_PROTEINS: FilterProtein[] = ['fish', 'prawns'];
+
+/** The protein choices that make sense for a diet: no meat for pescatarians, no meat or fish for vegetarians. */
+export function proteinsForDiet(diet: Diet): FilterProtein[] {
+  if (diet === 'vegetarian') return FILTER_PROTEINS.filter((p) => !MEAT_PROTEINS.includes(p) && !FISH_PROTEINS.includes(p));
+  if (diet === 'pescatarian') return FILTER_PROTEINS.filter((p) => !MEAT_PROTEINS.includes(p));
+  return [...FILTER_PROTEINS];
+}
+
+/** The filters without protein choices the diet rules out (picked before the diet changed, say). */
+export function filtersForDiet(filters: DeckFilters, diet: Diet): DeckFilters {
+  if (!filters.proteins) return filters;
+  const allowed = proteinsForDiet(diet);
+  const proteins = filters.proteins.filter((p) => allowed.includes(p));
+  if (proteins.length === filters.proteins.length) return filters;
+  const { proteins: _, ...rest } = filters;
+  return proteins.length ? { ...rest, proteins } : rest;
+}
 export type FilterCuisine = (typeof FILTER_CUISINES)[number];
 export type FilterBase = (typeof FILTER_BASES)[number];
 export type FilterSpice = (typeof FILTER_SPICES)[number];

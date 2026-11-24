@@ -1,3 +1,4 @@
+import { loadDiet } from '../../lib/diet.ts';
 import { must, supabase } from '../../lib/supabase.ts';
 import type { Deck, DeckCard, Diet, DeckMemberProgress, MemberPortion, Swipe } from '../../lib/types.ts';
 
@@ -24,7 +25,7 @@ export async function loadDeck(id: string, userId: string): Promise<DeckData> {
     supabase.from('swipes').select('*').eq('deck_id', id).eq('user_id', userId),
     supabase.rpc('member_fits', { p_deck: id }),
     supabase.rpc('partner_musts', { p_deck: id }),
-    supabase.from('taste_rules').select('value').eq('user_id', userId).eq('kind', 'diet').maybeSingle(),
+    loadDiet(userId),
   ]);
   const fitMap = new Map<string, Map<string, boolean>>();
   for (const f of (must(fits) ?? []) as { recipe_id: string; user_id: string; fits: boolean }[]) {
@@ -44,6 +45,6 @@ export async function loadDeck(id: string, userId: string): Promise<DeckData> {
     mySwipes: must(swipes) as Swipe[],
     fits: fitMap,
     partnerMusts,
-    diet: ((must(diet) as { value: Diet } | null)?.value) ?? 'everything',
+    diet,
   };
 }
