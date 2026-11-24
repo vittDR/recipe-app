@@ -320,10 +320,12 @@ if (args.includes('--features')) {
     }
     return populationMean(populationEffects(answers));
   };
+  const variance = args.includes('--variance') ? JSON.parse(args[args.indexOf('--variance') + 1]) as Record<string, number> : {};
+  const only = args.includes('--only') ? args[args.indexOf('--only') + 1] : null;
   const population = others(Number(args[args.indexOf('--others') + 1]) || 80);
   const historyLengths = [0, 60];
   console.log(`${library.length} dishes, ${SEEDS} people per persona${EXTENDED ? ', with v2-only tastes' : ''}. ρ against the true frequency (top-12 hit rate), 26 quiz cards then n history answers.\n`);
-  for (const v of variants) {
+  for (const v of variants.filter((x) => !only || x.name === only)) {
     const cells: string[] = [];
     for (const nHistory of historyLengths) {
       const rho: number[] = [];
@@ -335,7 +337,7 @@ if (args.includes('--features')) {
           const persona = draw(base, seed);
           const { allowed, F, clean } = truth(persona, seed * 101 + base.name.length);
           const r = rng(seed * 31 + 7);
-          const options: StyleOptions = v.population ? { featureMean: population } : {};
+          const options: StyleOptions = { variance, ...(v.population ? { featureMean: population } : {}) };
           const pool = allowed.map((d) => ({ ...candidate(d), features: featuresOf(d, v) }));
           const shown: { candidate: QuizCandidate; y: number }[] = [];
           while (shown.length < 26) {

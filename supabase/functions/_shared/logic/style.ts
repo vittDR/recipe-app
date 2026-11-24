@@ -80,10 +80,13 @@ export interface StyleOptions {
    * answers say about a dish (recipe:<id>, population.ts).
    */
   featureMean?: (feature: string) => number;
+  /** Prior variances by kind of feature, over TASTE_VARIANCE (tuning, scripts/taste-sim.ts). */
+  variance?: Partial<Record<string, number>>;
 }
 export const STYLE_DEFAULTS: Required<StyleOptions> = {
   levelVariance: 1, lengthscale: 0.15, styleVariance: 1, trendVariance: 4, tasteScale: 1, noise: 1, pairStep: 1.5,
   featureMean: () => 0,
+  variance: {},
 };
 
 /**
@@ -211,7 +214,7 @@ export function fitStyle(obs: Observation[], pairs: PairObservation[] = [], opti
     for (const axis of PLATE_AXES) lin += (a[axis] - MIDDLE[axis]) * (b[axis] - MIDDLE[axis]);
     return o.levelVariance + o.trendVariance * lin + o.styleVariance * Math.exp(-(d * d) / (2 * o.lengthscale * o.lengthscale));
   };
-  const fv = (f: string) => o.tasteScale * TASTE_VARIANCE[groupOf(f)];
+  const fv = (f: string) => o.tasteScale * (o.variance[groupOf(f)] ?? TASTE_VARIANCE[groupOf(f)]);
   const fm = (fs: Set<string>) => {
     let s = 0;
     for (const f of fs) s += o.featureMean(f);
