@@ -173,7 +173,7 @@ export function DeckSettingsSheet({ open, onClose, title, settings, onChange, ta
   if (view === 'filters') {
     // A list that only selects: "OK" in the title row takes you back to the deck.
     return (
-      <Sheet open={open} onClose={close} label={t('tonight.filters.heading')}>
+      <Sheet open={open} onClose={close} label={t('tonight.filters.heading')} depth={1}>
         <SheetHeader title={t('tonight.filters.heading')}
           action={<Button small variant="text" onClick={() => setView('main')}>{t('app.done')}</Button>} />
         <Section label={t('tonight.filters.protein')} flush>
