@@ -1,6 +1,6 @@
 # Seed recipe library
 
-813 recipes:
+903 recipes:
 
 - **109 from recipe sites (hidden in the app** since November 2026: the library view and the deck leave out the `web` collection; they still open from past decks and meals): 25 Italian, 24 French, 25 Asian, 25 from other cuisines and 10 "treat" dishes.
 - **10 AI-generated recipes**, whose Poulet basquaise replaced the Chef Simon one.
@@ -13,6 +13,7 @@
 - **200 vegetarian weeknight dinners** (November 2026), for the vegetarian and vegan diets, written to the [weeknight rules](../../docs/recipe-library-plan.md#weeknight-rules): all six met, 10 to 40 min, at least 30 g of protein a serving from eggs, tofu, smoked tofu, soy mince, seitan, paneer, halloumi, skyr, cottage cheese or edamame, and 480 to 810 kcal. 86 are vegan, 82 use the air fryer, and they span 8 groups of cuisines. All have illustrations.
 - **59 weeknight plates** (November 2026), written to the [weeknight rules](../../docs/recipe-library-plan.md#weeknight-rules): healthy, 40 min or less, at least 30 g of protein and 25 % of the calories from it, no exotic ingredients, at most 10 lines that aren't staples or garnishes, and a protein, sauce, everyday carb and vegetable.
 - **95 of the earlier recipes were reworked** (94, plus the chicken chow mein) at the same time because they failed just one of those rules (see [CATALOG-FIT-2026-11.md](../../docs/CATALOG-FIT-2026-11.md)).
+- **90 Italian pasta dishes** (November 2026), also kept on their own in `italian-pasta.json`: 60 regional dishes cooked the Italian way (sauce matched to the shape, pecorino or parmigiano by region, no cheese on seafood, no cream, pasta finished in the pan with its water) and 30 everyday ones made only with supermarket ingredients. They aren't written to the weeknight rules. Three cheeses were added to the catalogue for them: provola, provolone and Valtellina Casera. Cime di rapa and friarielli count as broccoli, ricotta salata as ricotta, scampi as prawns and cuttlefish ink as squid. The fried dishes overstate kcal because the frying oil counts in full. Their photos were supplied with them.
 
 | File | What it is |
 | --- | --- |
@@ -51,7 +52,7 @@ To replace or add photos, run `scripts/download_images.py` (needs `pip install r
 - **Low protein:** eight of the healthy recipes estimate under 25 g per serving: Cozze alla tarantina, Frittata di zucchine e ricotta, Œufs pochés épinards et lentilles, Chicken tinga, Moules marinières, Spaghetti alle vongole, Poulet à l'estragon, Crispy scallion ginger salmon.
 - **Bone-in and in-shell weights overcount** protein and kcal, because the catalogue is per edible weight (satay drumsticks, Peruvian chicken, Moroccan tagine, mussels, clams).
 - **Long `total_min`** for marinated or soaked dishes (tandoori chicken 415 min, brandade 1,485 min), so the time filter treats them as slow. They're tagged `make ahead`. Their `prep_min` and `cook_min` stay short.
-- **AI-generated recipes:** 704 recipes (`ai_generated_recipe: true`) were written by Claude rather than taken from a site. None has a source link, and none has been tested in a kitchen. The first 10 have AI-generated photos; the other 694 have illustrations.
+- **AI-generated recipes:** 794 recipes (`ai_generated_recipe: true`) were written by Claude rather than taken from a site. None has a source link, and none has been tested in a kitchen. The first 10 have AI-generated photos; the other 694 have illustrations, and the 90 Italian pasta dishes have photos supplied with them.
 - **How the original library was checked:** many recipe sites refused automated reading, so quantities were often set from search summaries and the classic proportions of each dish. None has been cooked to test it.
 - **Ingredient mappings:** a few ingredients are mapped to the nearest catalogue entry rather than added (sour cream to crème fraîche, Comté to emmental, Napa cabbage to cabbage). Exotic ingredients the dish can't do without are kept and flagged.
 - **Protein:** the weeknight rules ask for 30 g a serving and 25 % of the calories. Recipes that miss it are mostly built on pulses, halloumi or cheese, or are long braises; they stay as written (gołąbki, pumpkin and sage risotto, rajma, chana masala, halloumi fajitas…).
