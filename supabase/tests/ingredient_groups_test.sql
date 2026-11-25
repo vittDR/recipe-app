@@ -15,7 +15,7 @@ begin
 end $$;
 
 select pg_temp.check((select count(*) = 14 from ingredient_group_members where group_key = 'pork'), 'pork covers its 14 items');
-select pg_temp.check((select count(*) = 25 from ingredient_group_members where group_key = 'cow_milk'), 'cow''s milk covers its 25 items');
+select pg_temp.check((select count(*) = 28 from ingredient_group_members where group_key = 'cow_milk'), 'cow''s milk covers its 28 items');
 select pg_temp.check(exists (select 1 from ingredient_group_members where group_key = 'pork' and ingredient = 'sausage'), 'pork covers sausage');
 select pg_temp.check(exists (select 1 from ingredient_group_members where group_key = 'pork' and ingredient = 'chorizo'), 'pork covers chorizo');
 select pg_temp.check(exists (select 1 from ingredient_group_members where group_key = 'cow_milk' and ingredient = 'plain yogurt'), 'cow''s milk covers yoghurt');

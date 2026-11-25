@@ -9,6 +9,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/spaghetti-alla-carbonara.webp",
     "cuisine": "italian",
     "tags": [
       "comfort",
@@ -94,6 +95,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/bucatini-all-amatriciana.webp",
     "cuisine": "italian",
     "tags": [
       "comfort",
@@ -178,6 +180,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/tonnarelli-cacio-e-pepe.webp",
     "cuisine": "italian",
     "tags": [
       "quick",
@@ -252,6 +255,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/rigatoni-alla-gricia.webp",
     "cuisine": "italian",
     "tags": [
       "quick",
@@ -326,6 +330,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/penne-all-arrabbiata.webp",
     "cuisine": "italian",
     "tags": [
       "vegan",
@@ -410,6 +415,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/spaghetti-aglio-olio-e-peperoncino.webp",
     "cuisine": "italian",
     "tags": [
       "quick",
@@ -490,6 +496,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/spaghetti-alla-puttanesca.webp",
     "cuisine": "italian",
     "tags": [
       "budget",
@@ -589,6 +596,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-e-patate-con-la-provola.webp",
     "cuisine": "italian",
     "tags": [
       "comfort",
@@ -705,6 +713,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/spaghetti-alla-nerano.webp",
     "cuisine": "italian",
     "tags": [
       "vegetarian",
@@ -798,6 +807,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/ziti-alla-genovese.webp",
     "cuisine": "italian",
     "tags": [
       "comfort",
@@ -902,6 +912,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/linguine-allo-scoglio.webp",
     "cuisine": "italian",
     "tags": [
       "fancy",
@@ -1008,6 +1019,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-e-piselli.webp",
     "cuisine": "italian",
     "tags": [
       "comfort",
@@ -1105,6 +1117,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/spaghetti-al-pomodoro-e-basilico.webp",
     "cuisine": "italian",
     "tags": [
       "vegetarian",
@@ -1190,6 +1203,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-e-cucozza.webp",
     "cuisine": "italian",
     "tags": [
       "comfort",
@@ -1288,6 +1302,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/spaghetti-al-limone.webp",
     "cuisine": "italian",
     "tags": [
       "quick",
@@ -1375,6 +1390,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-alla-norma.webp",
     "cuisine": "italian",
     "tags": [
       "vegetarian",
@@ -1466,6 +1482,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/busiate-al-pesto-alla-trapanese.webp",
     "cuisine": "italian",
     "tags": [
       "vegetarian",
@@ -1559,6 +1576,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/maccheroni-con-pesce-spada-e-melanzane.webp",
     "cuisine": "italian",
     "tags": [
       "summer",
@@ -1657,6 +1675,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-ca-muddica.webp",
     "cuisine": "italian",
     "tags": [
       "quick",
@@ -1745,6 +1764,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/bucatini-con-i-broccoli-arriminati.webp",
     "cuisine": "italian",
     "tags": [
       "winter",
@@ -1846,6 +1866,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/orecchiette-con-le-cime-di-rapa.webp",
     "cuisine": "italian",
     "tags": [
       "winter",
@@ -1934,6 +1955,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/spaghetti-all-assassina.webp",
     "cuisine": "italian",
     "tags": [
       "spicy",
@@ -2023,6 +2045,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/cavatelli-cozze-e-fagioli.webp",
     "cuisine": "italian",
     "tags": [
       "comfort",
@@ -2114,6 +2137,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/ciceri-e-tria.webp",
     "cuisine": "italian",
     "tags": [
       "comfort",
@@ -2217,6 +2241,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/maccheroni-alla-pastora.webp",
     "cuisine": "italian",
     "tags": [
       "quick",
@@ -2299,6 +2324,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/malloreddus-alla-campidanese.webp",
     "cuisine": "italian",
     "tags": [
       "comfort",
@@ -2393,6 +2419,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/fregola-con-le-arselle.webp",
     "cuisine": "italian",
     "tags": [
       "comfort",
@@ -2487,6 +2514,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/pici-all-aglione.webp",
     "cuisine": "italian",
     "tags": [
       "vegan",
@@ -2570,6 +2598,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/pici-alle-briciole.webp",
     "cuisine": "italian",
     "tags": [
       "vegan",
@@ -2650,6 +2679,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/strangozzi-alla-spoletina.webp",
     "cuisine": "italian",
     "tags": [
       "vegan",
@@ -2733,6 +2763,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/pappardelle-al-sugo-di-coniglio.webp",
     "cuisine": "italian",
     "tags": [
       "comfort",
@@ -2853,6 +2884,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/tagliatelle-al-ragu-alla-bolognese.webp",
     "cuisine": "italian",
     "tags": [
       "comfort",
@@ -2973,6 +3005,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/tagliatelle-ai-funghi-porcini.webp",
     "cuisine": "italian",
     "tags": [
       "autumn",
@@ -3061,6 +3094,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/gramigna-alla-salsiccia.webp",
     "cuisine": "italian",
     "tags": [
       "comfort",
@@ -3151,6 +3185,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/trofie-al-pesto-genovese-con-patate-e-fagiolini.webp",
     "cuisine": "italian",
     "tags": [
       "vegetarian",
@@ -3250,6 +3285,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/bigoli-in-salsa.webp",
     "cuisine": "italian",
     "tags": [
       "budget",
@@ -3333,6 +3369,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/pizzoccheri-della-valtellina.webp",
     "cuisine": "italian",
     "tags": [
       "comfort",
@@ -3428,6 +3465,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/tajarin-burro-e-salvia.webp",
     "cuisine": "italian",
     "tags": [
       "quick",
@@ -3506,6 +3544,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/chitarra-con-le-pallottine.webp",
     "cuisine": "italian",
     "tags": [
       "comfort",
@@ -3608,6 +3647,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/paccheri-al-ragu-napoletano.webp",
     "cuisine": "italian",
     "tags": [
       "comfort",
@@ -3712,6 +3752,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/spaghetti-alla-scarpariello.webp",
     "cuisine": "italian",
     "tags": [
       "quick",
@@ -3803,6 +3844,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/vermicelli-con-le-vongole-fujute.webp",
     "cuisine": "italian",
     "tags": [
       "quick",
@@ -3891,6 +3933,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-e-broccoli.webp",
     "cuisine": "italian",
     "tags": [
       "comfort",
@@ -3978,6 +4021,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-salsiccia-e-friarielli.webp",
     "cuisine": "italian",
     "tags": [
       "comfort",
@@ -4065,6 +4109,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/linguine-al-sugo-di-polpo.webp",
     "cuisine": "italian",
     "tags": [
       "comfort",
@@ -4160,6 +4205,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/frittata-di-maccheroni.webp",
     "cuisine": "italian",
     "tags": [
       "comfort",
@@ -4247,6 +4293,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/spaghetti-alla-carrettiera.webp",
     "cuisine": "italian",
     "tags": [
       "quick",
@@ -4332,6 +4379,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/spaghetti-al-nero-di-seppia.webp",
     "cuisine": "italian",
     "tags": [
       "fancy",
@@ -4430,6 +4478,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/fettuccine-ai-carciofi.webp",
     "cuisine": "italian",
     "tags": [
       "spring",
@@ -4529,6 +4578,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/orecchiette-al-ragu-di-braciole.webp",
     "cuisine": "italian",
     "tags": [
       "comfort",
@@ -4636,6 +4686,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/chitarra-al-ragu-d-agnello-e-peperoni.webp",
     "cuisine": "italian",
     "tags": [
       "comfort",
@@ -4741,6 +4792,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-alla-pecorara.webp",
     "cuisine": "italian",
     "tags": [
       "vegetarian",
@@ -4843,6 +4895,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/spaghetti-alla-busara.webp",
     "cuisine": "italian",
     "tags": [
       "fancy",
@@ -4940,6 +4993,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/penne-strascicate-alla-fiorentina.webp",
     "cuisine": "italian",
     "tags": [
       "comfort",
@@ -5049,6 +5103,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/tagliatelle-al-prosciutto.webp",
     "cuisine": "italian",
     "tags": [
       "quick",
@@ -5126,6 +5181,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/spaghetti-col-tonno.webp",
     "cuisine": "italian",
     "tags": [
       "budget",
@@ -5218,6 +5274,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/tortelli-d-erbetta-burro-e-parmigiano.webp",
     "cuisine": "italian",
     "tags": [
       "fancy",
@@ -5322,6 +5379,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/passatelli-in-brodo.webp",
     "cuisine": "italian",
     "tags": [
       "soup",
@@ -5407,6 +5465,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/culurgiones-al-pomodoro.webp",
     "cuisine": "italian",
     "tags": [
       "fancy",
@@ -5510,6 +5569,7 @@
     "source_type": "seed",
     "ai_generated_recipe": true,
     "source_name": "Claude",
+    "image_url": "/recipe-photos/trofie-al-sugo-di-noci.webp",
     "cuisine": "italian",
     "tags": [
       "vegetarian",
@@ -5584,6 +5644,2702 @@
           "Pestare l'aglio con un pizzico di sale nel mortaio, poi le noci e il pane, fino a ottenere una crema liscia.",
           "Unire il parmigiano, poi l'olio poco alla volta, e allungare con un cucchiaio del latte dell'ammollo se serve.",
           "Cuocere le trofie in acqua salata fino al dente e condirle con la salsa in una ciotola, fuori dal fuoco, aggiungendo acqua di cottura finché è cremosa. Servire."
+        ]
+      }
+    }
+  },
+  {
+    "id": "4b0dc00d-110f-5d52-8f59-e96bef5a0f2f",
+    "title": "Pasta zucchine e uova",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 15,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-zucchine-e-uova.webp",
+    "cuisine": "italian",
+    "tags": [
+      "quick",
+      "vegetarian",
+      "budget",
+      "summer",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "af5e1b11-6605-5627-83b0-2dda173e1176",
+        "text": "200 g pasta, spaghetti or mezze maniche"
+      },
+      {
+        "id": "ae8e2b06-f193-5ccb-8c3f-f2c3d2582416",
+        "text": "2 zucchini, in thin half-moons"
+      },
+      {
+        "id": "f593be85-c7fb-552d-bf29-23b1c14865fa",
+        "text": "1 clove garlic, crushed"
+      },
+      {
+        "id": "4e089ec7-4e8f-5249-a886-504a69a117ce",
+        "text": "2 eggs"
+      },
+      {
+        "id": "b5cc4952-5f99-5658-8ca0-5634d59ba12f",
+        "text": "40 g parmesan, grated"
+      },
+      {
+        "id": "6cd7349b-232f-5241-be2b-6612a0c10b4d",
+        "text": "5 g fresh basil"
+      },
+      {
+        "id": "001c7f3d-b884-5eac-ae6d-d419df2cf05b",
+        "text": "3 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "df1552ac-ac0a-55ad-9115-4880e7964d08",
+        "text": "salt"
+      },
+      {
+        "id": "d53bc04c-e38b-5ace-9075-6b30196d0207",
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Gently fry the garlic in the oil for 1 min, add the zucchini with a pinch of salt and cook over medium heat for 10 min until soft and golden. Remove the garlic.",
+      "Beat the eggs with the parmesan and plenty of pepper.",
+      "Cook the pasta in salted water until al dente and move it into the zucchini pan with a ladle of cooking water.",
+      "Off the heat, pour in the eggs and toss quickly until creamy, adding cooking water if needed.",
+      "Serve with torn basil."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes aux courgettes et aux œufs",
+        "steps": [
+          "Faire revenir doucement l'ail dans l'huile 1 min, ajouter les courgettes avec une pincée de sel et cuire à feu moyen 10 min jusqu'à ce qu'elles soient tendres et dorées. Retirer l'ail.",
+          "Battre les œufs avec le parmesan et beaucoup de poivre.",
+          "Cuire les pâtes dans l'eau salée jusqu'à al dente et les transférer dans la poêle de courgettes avec une louche d'eau de cuisson.",
+          "Hors du feu, verser les œufs et mélanger vivement jusqu'à ce que ce soit crémeux, avec de l'eau de cuisson si besoin.",
+          "Servir avec le basilic déchiré."
+        ]
+      },
+      "it": {
+        "title": "Pasta zucchine e uova",
+        "steps": [
+          "Soffriggere dolcemente l'aglio nell'olio per 1 min, aggiungere le zucchine con un pizzico di sale e cuocere a fuoco medio per 10 min finché sono morbide e dorate. Togliere l'aglio.",
+          "Sbattere le uova con il parmigiano e abbondante pepe.",
+          "Cuocere la pasta in acqua salata fino al dente e trasferirla nella padella delle zucchine con un mestolo di acqua di cottura.",
+          "Fuori dal fuoco, versare le uova e mescolare velocemente finché è cremosa, con acqua di cottura se serve.",
+          "Servire con il basilico spezzettato."
+        ]
+      }
+    }
+  },
+  {
+    "id": "99ddb309-bdde-5005-a8ee-7dd00f1cdb4f",
+    "title": "Pasta piselli e prosciutto cotto",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 5,
+    "cook_min": 20,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-piselli-e-prosciutto-cotto.webp",
+    "cuisine": "italian",
+    "tags": [
+      "quick",
+      "kid-friendly",
+      "budget",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "77c48e86-4dee-5a4f-bb3d-d269fafb1677",
+        "text": "200 g pasta, farfalle or ditali"
+      },
+      {
+        "id": "7fb3628f-21dc-5793-b3cc-dc248b675c3a",
+        "text": "200 g frozen peas"
+      },
+      {
+        "id": "d7e4a67b-bb0f-5d5d-9f89-e0bea8217533",
+        "text": "100 g ham, in small cubes"
+      },
+      {
+        "id": "24d303a9-45ab-5fae-b119-06c7cd76a067",
+        "text": "0.5 onion, finely chopped"
+      },
+      {
+        "id": "23ecfe6d-88ff-5044-8f37-ba128a053948",
+        "text": "20 g butter"
+      },
+      {
+        "id": "e5d92be4-ac16-533f-a500-ecb076de70f7",
+        "text": "1 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "19f92d03-cfb0-5370-b596-b09c3dabfb02",
+        "text": "30 g parmesan, grated"
+      },
+      {
+        "id": "463eb5b3-a546-5cab-a24d-130a5c628e5b",
+        "text": "salt"
+      },
+      {
+        "id": "ef53f18e-120e-5040-ba6c-2335ecf48ea9",
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Gently fry the onion in the butter and oil for 5 min.",
+      "Add the peas, a pinch of salt and a ladle of water and cook for 8 min until tender.",
+      "Add the ham and warm it through for 2 min.",
+      "Cook the pasta in salted water until al dente and toss it in the pan with a splash of cooking water.",
+      "Off the heat, stir in the parmesan and serve with pepper."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes aux petits pois et au jambon",
+        "steps": [
+          "Faire revenir doucement l'oignon dans le beurre et l'huile 5 min.",
+          "Ajouter les petits pois, une pincée de sel et une louche d'eau et cuire 8 min jusqu'à ce qu'ils soient tendres.",
+          "Ajouter le jambon et le réchauffer 2 min.",
+          "Cuire les pâtes dans l'eau salée jusqu'à al dente et les faire sauter dans la poêle avec un peu d'eau de cuisson.",
+          "Hors du feu, incorporer le parmesan et servir poivré."
+        ]
+      },
+      "it": {
+        "title": "Pasta piselli e prosciutto cotto",
+        "steps": [
+          "Soffriggere dolcemente la cipolla nel burro e nell'olio per 5 min.",
+          "Aggiungere i piselli, un pizzico di sale e un mestolo d'acqua e cuocere 8 min finché sono teneri.",
+          "Aggiungere il prosciutto cotto e scaldarlo 2 min.",
+          "Cuocere la pasta in acqua salata fino al dente e saltarla in padella con un goccio di acqua di cottura.",
+          "Fuori dal fuoco, unire il parmigiano e servire con pepe."
+        ]
+      }
+    }
+  },
+  {
+    "id": "ee813104-191d-5939-ac7e-289239fa3e2a",
+    "title": "Pasta al pomodoro e ricotta",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 5,
+    "cook_min": 20,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-al-pomodoro-e-ricotta.webp",
+    "cuisine": "italian",
+    "tags": [
+      "vegetarian",
+      "kid-friendly",
+      "budget",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "d3ef7822-7fb8-5e8b-bff3-03e5588fd382",
+        "text": "200 g pasta, rigatoni or penne"
+      },
+      {
+        "id": "6c3bbe7b-3df4-567a-b976-beea733d3e8e",
+        "text": "400 g passata"
+      },
+      {
+        "id": "0862403f-f401-5b25-8891-800f3c7eb1da",
+        "text": "1 clove garlic, crushed"
+      },
+      {
+        "id": "6591a05b-6c9f-5307-8af1-52ace72bdc49",
+        "text": "150 g ricotta"
+      },
+      {
+        "id": "1f663e4c-7f6b-5628-9df4-f6c740455279",
+        "text": "20 g parmesan, grated"
+      },
+      {
+        "id": "b6c30a6b-30ba-5827-b65b-12aaf39386d0",
+        "text": "5 g fresh basil"
+      },
+      {
+        "id": "70a21c08-e73c-51bf-aed8-3100f35934b9",
+        "text": "2 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "e01e47fd-48bd-5d78-89bc-9924544bcb90",
+        "text": "salt"
+      },
+      {
+        "id": "fcc66bb1-2da7-54e3-985d-fe2da17c6e22",
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Gently fry the garlic in the oil for 1 min, add the passata with a pinch of salt and simmer for 15 min. Remove the garlic and add the basil.",
+      "Work the ricotta with the parmesan, pepper and a spoonful of hot pasta water until smooth.",
+      "Cook the pasta in salted water until al dente and toss it in the tomato sauce.",
+      "Serve with spoonfuls of the ricotta on top, to stir in at the table."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes à la tomate et à la ricotta",
+        "steps": [
+          "Faire revenir doucement l'ail dans l'huile 1 min, ajouter la passata avec une pincée de sel et laisser mijoter 15 min. Retirer l'ail et ajouter le basilic.",
+          "Travailler la ricotta avec le parmesan, du poivre et une cuillerée d'eau de cuisson chaude jusqu'à ce qu'elle soit lisse.",
+          "Cuire les pâtes dans l'eau salée jusqu'à al dente et les mélanger à la sauce tomate.",
+          "Servir avec des cuillerées de ricotta par-dessus, à mélanger à table."
+        ]
+      },
+      "it": {
+        "title": "Pasta al pomodoro e ricotta",
+        "steps": [
+          "Soffriggere dolcemente l'aglio nell'olio per 1 min, aggiungere la passata con un pizzico di sale e cuocere 15 min. Togliere l'aglio e aggiungere il basilico.",
+          "Lavorare la ricotta con il parmigiano, il pepe e un cucchiaio di acqua di cottura calda finché è liscia.",
+          "Cuocere la pasta in acqua salata fino al dente e condirla con il sugo.",
+          "Servire con cucchiaiate di ricotta sopra, da mescolare a tavola."
+        ]
+      }
+    }
+  },
+  {
+    "id": "8927eeba-177b-5e65-841e-a794e4c0a62a",
+    "title": "Pasta salsiccia e funghi",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 20,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-salsiccia-e-funghi.webp",
+    "cuisine": "italian",
+    "tags": [
+      "comfort",
+      "autumn",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "df578a62-1987-5397-b930-0b7a290eedc3",
+        "text": "200 g pasta, penne or casarecce"
+      },
+      {
+        "id": "bb853593-1164-54f3-b07a-ca9f1e257553",
+        "text": "200 g sausage, casing removed"
+      },
+      {
+        "id": "2a1d8ae9-141c-596c-bf4d-1980264aa351",
+        "text": "250 g mushrooms, sliced"
+      },
+      {
+        "id": "460634a9-264f-5d62-99d1-61903d4ef439",
+        "text": "1 clove garlic, crushed"
+      },
+      {
+        "id": "3bf28b18-f8bf-5a81-8445-25363dce6b57",
+        "text": "60 ml white wine"
+      },
+      {
+        "id": "8003ae9b-69f6-5cc5-8e83-d860dfb39f29",
+        "text": "5 g parsley, chopped"
+      },
+      {
+        "id": "2f1e9068-4036-5b55-8097-883ec87b7ddd",
+        "text": "2 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "af180844-d4a1-5570-9863-504057959524",
+        "text": "20 g parmesan, grated",
+        "optional": true
+      },
+      {
+        "id": "fcc276d7-c008-53fc-b44d-86df622522a9",
+        "text": "salt"
+      },
+      {
+        "id": "527d89cd-585c-5a24-97b6-20b85eb4312c",
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Brown the sausage in the oil, breaking it up, for 5 min.",
+      "Add the garlic and the mushrooms and cook over high heat for 6 min until golden.",
+      "Pour in the wine and let it evaporate. Season and remove the garlic.",
+      "Cook the pasta in salted water until al dente and toss it in the pan with a splash of cooking water and the parsley.",
+      "Serve, with parmesan if you like."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes à la saucisse et aux champignons",
+        "steps": [
+          "Faire dorer la saucisse dans l'huile en l'émiettant 5 min.",
+          "Ajouter l'ail et les champignons et cuire à feu vif 6 min jusqu'à ce qu'ils soient dorés.",
+          "Déglacer au vin et le laisser s'évaporer. Assaisonner et retirer l'ail.",
+          "Cuire les pâtes dans l'eau salée jusqu'à al dente et les faire sauter dans la poêle avec un peu d'eau de cuisson et le persil.",
+          "Servir, avec du parmesan si on le souhaite."
+        ]
+      },
+      "it": {
+        "title": "Pasta salsiccia e funghi",
+        "steps": [
+          "Rosolare la salsiccia nell'olio, sbriciolandola, per 5 min.",
+          "Aggiungere l'aglio e i funghi e cuocere a fuoco vivo per 6 min finché sono dorati.",
+          "Sfumare con il vino e farlo evaporare. Regolare di sale e pepe e togliere l'aglio.",
+          "Cuocere la pasta in acqua salata fino al dente e saltarla in padella con un goccio di acqua di cottura e il prezzemolo.",
+          "Servire, con parmigiano a piacere."
+        ]
+      }
+    }
+  },
+  {
+    "id": "7f0fc990-57e8-56ac-86f5-0ac667871791",
+    "title": "Pasta zucchine e pomodorini",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 15,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-zucchine-e-pomodorini.webp",
+    "cuisine": "italian",
+    "tags": [
+      "quick",
+      "vegan",
+      "summer",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "153fb386-57e2-5462-8a78-54f954eee7c3",
+        "text": "200 g pasta, fusilli or penne"
+      },
+      {
+        "id": "91d64334-022b-5852-ac66-464a04a455ab",
+        "text": "1 zucchini, in small cubes"
+      },
+      {
+        "id": "64a66c35-8599-58e7-bd03-aa970261aaed",
+        "text": "200 g cherry tomatoes, halved"
+      },
+      {
+        "id": "ac6cb73d-dd89-522e-af62-67af4c3dbd3b",
+        "text": "1 clove garlic, crushed"
+      },
+      {
+        "id": "9e74a9d7-02b1-58b3-a175-abde24fb279d",
+        "text": "5 g fresh basil"
+      },
+      {
+        "id": "37b6dd04-f3e2-52bc-8485-d77d8b1ccce7",
+        "text": "3 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "f6180b5b-92f8-5666-a600-c415b1bed2d2",
+        "text": "20 g parmesan, grated",
+        "optional": true
+      },
+      {
+        "id": "4c96d588-ce00-5705-98ae-6655bdf2cfc1",
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "Gently fry the garlic in the oil for 1 min, add the zucchini with a pinch of salt and cook over high heat for 5 min.",
+      "Add the cherry tomatoes and cook for 5 min more until they soften. Remove the garlic.",
+      "Cook the pasta in salted water until al dente and toss it in the pan with a splash of cooking water.",
+      "Serve with basil (and parmesan, if using)."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes aux courgettes et tomates cerises",
+        "steps": [
+          "Faire revenir doucement l'ail dans l'huile 1 min, ajouter la courgette avec une pincée de sel et cuire à feu vif 5 min.",
+          "Ajouter les tomates cerises et cuire encore 5 min jusqu'à ce qu'elles ramollissent. Retirer l'ail.",
+          "Cuire les pâtes dans l'eau salée jusqu'à al dente et les faire sauter dans la poêle avec un peu d'eau de cuisson.",
+          "Servir avec le basilic (et le parmesan, si utilisé)."
+        ]
+      },
+      "it": {
+        "title": "Pasta zucchine e pomodorini",
+        "steps": [
+          "Soffriggere dolcemente l'aglio nell'olio per 1 min, aggiungere la zucchina con un pizzico di sale e cuocere a fuoco vivo per 5 min.",
+          "Aggiungere i pomodorini e cuocere altri 5 min finché si ammorbidiscono. Togliere l'aglio.",
+          "Cuocere la pasta in acqua salata fino al dente e saltarla in padella con un goccio di acqua di cottura.",
+          "Servire con il basilico (e il parmigiano, se si usa)."
+        ]
+      }
+    }
+  },
+  {
+    "id": "3cbe89ff-817f-5dc1-8864-f3150efb1672",
+    "title": "Pasta al pesto di rucola",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 12,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-al-pesto-di-rucola.webp",
+    "cuisine": "italian",
+    "tags": [
+      "quick",
+      "vegetarian",
+      "spring",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 1,
+      "oven": false,
+      "special": [
+        "blender"
+      ]
+    },
+    "ingredients": [
+      {
+        "id": "f09f409b-aef0-52c3-9a2f-c26bf7c50bf0",
+        "text": "200 g pasta, trofie or fusilli"
+      },
+      {
+        "id": "f9d0825d-6685-5cba-8332-83a59b19dc77",
+        "text": "60 g arugula"
+      },
+      {
+        "id": "0b92a78f-d69c-5c76-8df9-9706216dbaac",
+        "text": "20 g almonds, or pine nuts"
+      },
+      {
+        "id": "1d4f317b-ad20-52b7-aa48-5c5d56a607dc",
+        "text": "30 g parmesan, grated"
+      },
+      {
+        "id": "102a7643-7291-5c10-a97f-a964d47399a7",
+        "text": "0.5 clove garlic"
+      },
+      {
+        "id": "260cfdf5-a818-5cc6-b01e-0f1831c9b222",
+        "text": "60 ml extra-virgin olive oil"
+      },
+      {
+        "id": "fdedd6dc-4f1c-5ce6-ad6f-5b51a983a6f2",
+        "text": "100 g cherry tomatoes, quartered",
+        "optional": true
+      },
+      {
+        "id": "a3ff2ca8-9243-5529-b8a9-bf470af06d49",
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "Blend the arugula, almonds, parmesan, garlic, oil and a pinch of salt into a coarse pesto, pulsing so it doesn't heat up.",
+      "Cook the pasta in salted water until al dente.",
+      "Loosen the pesto with 2–3 tbsp of the cooking water in a large bowl.",
+      "Drain the pasta and toss it with the pesto off the heat (and the cherry tomatoes). Serve."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes au pesto de roquette",
+        "steps": [
+          "Mixer la roquette, les amandes, le parmesan, l'ail, l'huile et une pincée de sel en un pesto grossier, par impulsions pour qu'il ne chauffe pas.",
+          "Cuire les pâtes dans l'eau salée jusqu'à al dente.",
+          "Détendre le pesto avec 2 à 3 c. à soupe d'eau de cuisson dans un grand saladier.",
+          "Égoutter les pâtes et les mélanger au pesto hors du feu (avec les tomates cerises). Servir."
+        ]
+      },
+      "it": {
+        "title": "Pasta al pesto di rucola",
+        "steps": [
+          "Frullare rucola, mandorle, parmigiano, aglio, olio e un pizzico di sale fino a ottenere un pesto grossolano, a impulsi perché non si scaldi.",
+          "Cuocere la pasta in acqua salata fino al dente.",
+          "Allungare il pesto con 2–3 cucchiai di acqua di cottura in una ciotola larga.",
+          "Scolare la pasta e condirla con il pesto fuori dal fuoco (e i pomodorini). Servire."
+        ]
+      }
+    }
+  },
+  {
+    "id": "86c818a7-bc0f-536e-a82a-0a88ab2c9023",
+    "title": "Pasta melanzane e pomodorini",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 25,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-melanzane-e-pomodorini.webp",
+    "cuisine": "italian",
+    "tags": [
+      "vegan",
+      "summer",
+      "mediterranean",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "75cf4525-e6e6-5f68-b426-ec2e4ea02896",
+        "text": "200 g pasta, mezze maniche or penne"
+      },
+      {
+        "id": "0415899e-941b-523b-a4bd-5f018b3f2e68",
+        "text": "1 eggplant, in small cubes"
+      },
+      {
+        "id": "37b128ee-8d0b-51f0-b642-540436220859",
+        "text": "250 g cherry tomatoes, halved"
+      },
+      {
+        "id": "ce102bd3-4d6f-5399-b1eb-a5e324ef2f0f",
+        "text": "1 clove garlic, crushed"
+      },
+      {
+        "id": "86a879e3-7c6a-5f4b-bb6e-4ad9a201f60d",
+        "text": "5 g fresh basil"
+      },
+      {
+        "id": "84d145b5-7952-5ca8-88ad-15bb1a07371b",
+        "text": "4 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "1b64ae80-7dc1-54c1-b805-43b86524cca1",
+        "text": "30 g ricotta, or grated parmesan",
+        "optional": true
+      },
+      {
+        "id": "27f8ebbe-7cb9-50b7-abd7-0c396fb16bc7",
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "Cook the eggplant in 3 tbsp oil over medium-high heat with the garlic for 12 min, stirring, until soft and golden. Salt it.",
+      "Add the cherry tomatoes and the rest of the oil and cook for 8 min more. Remove the garlic and tear in the basil.",
+      "Cook the pasta in salted water until al dente and toss it in the pan with a splash of cooking water.",
+      "Serve, with a little ricotta or parmesan on top if you like."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes aux aubergines et tomates cerises",
+        "steps": [
+          "Cuire l'aubergine dans 3 c. à soupe d'huile à feu moyen-vif avec l'ail 12 min en remuant, jusqu'à ce qu'elle soit tendre et dorée. Saler.",
+          "Ajouter les tomates cerises et le reste de l'huile et cuire encore 8 min. Retirer l'ail et ajouter le basilic déchiré.",
+          "Cuire les pâtes dans l'eau salée jusqu'à al dente et les faire sauter dans la poêle avec un peu d'eau de cuisson.",
+          "Servir, avec un peu de ricotta ou de parmesan par-dessus si on le souhaite."
+        ]
+      },
+      "it": {
+        "title": "Pasta melanzane e pomodorini",
+        "steps": [
+          "Cuocere la melanzana in 3 cucchiai d'olio a fuoco medio-alto con l'aglio per 12 min, mescolando, finché è morbida e dorata. Salare.",
+          "Aggiungere i pomodorini e il resto dell'olio e cuocere altri 8 min. Togliere l'aglio e spezzettare il basilico.",
+          "Cuocere la pasta in acqua salata fino al dente e saltarla in padella con un goccio di acqua di cottura.",
+          "Servire, con un po' di ricotta o parmigiano sopra a piacere."
+        ]
+      }
+    }
+  },
+  {
+    "id": "6c42fa60-8724-5de1-a1ba-c33ad4f0893a",
+    "title": "Pasta al forno",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 15,
+    "cook_min": 60,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-al-forno.webp",
+    "cuisine": "italian",
+    "tags": [
+      "comfort",
+      "oven",
+      "batch cooking",
+      "kid-friendly",
+      "italian"
+    ],
+    "difficulty": "medium",
+    "equipment": {
+      "pots": 2,
+      "oven": true,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "35665454-1205-5f7a-806c-755fa7236c87",
+        "text": "200 g pasta, rigatoni or penne"
+      },
+      {
+        "id": "31c9b9ec-9208-52f2-9fe7-476e9175c0c0",
+        "text": "200 g ground beef"
+      },
+      {
+        "id": "b9aaaac0-cc9a-5a02-90bc-1c3590508b2d",
+        "text": "0.5 onion, finely chopped"
+      },
+      {
+        "id": "73d1a82a-8812-5a80-bb91-d60698f03060",
+        "text": "1 carrot, finely chopped"
+      },
+      {
+        "id": "ab35602c-15bf-5dce-9cfc-f6f256a77a6d",
+        "text": "500 g passata"
+      },
+      {
+        "id": "9ba3daa2-48d1-5c87-89fa-1a843ede74eb",
+        "text": "60 ml red wine"
+      },
+      {
+        "id": "66dac691-3243-5c43-8b6e-6e2231873d78",
+        "text": "125 g mozzarella, diced and drained"
+      },
+      {
+        "id": "c3186465-7339-5a30-a205-f61656cdf080",
+        "text": "50 g parmesan, grated"
+      },
+      {
+        "id": "e10aae4a-af8c-5664-afde-8c1f324becbe",
+        "text": "5 g fresh basil"
+      },
+      {
+        "id": "8094381d-54ff-5721-a5bb-ded818cc4929",
+        "text": "2 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "9bf478d5-511f-5fd3-98e6-fed60e54bae0",
+        "text": "salt"
+      },
+      {
+        "id": "46148303-c641-50b1-b592-046f33cd2815",
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Gently fry the onion and carrot in the oil for 6 min, add the beef and brown it for 8 min, breaking it up.",
+      "Pour in the wine and let it evaporate, then add the passata, basil and a pinch of salt and simmer for 25 min.",
+      "Heat the oven to 200 °C. Cook the pasta in salted water for half its usual time and drain it.",
+      "Mix the pasta with most of the sauce, half the mozzarella and half the parmesan and tip it into a baking dish.",
+      "Top with the rest of the sauce, mozzarella and parmesan and bake for 20 min until bubbling and golden.",
+      "Rest for 5 min before serving."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes au four à l'italienne",
+        "steps": [
+          "Faire revenir doucement l'oignon et la carotte dans l'huile 6 min, ajouter le bœuf et le faire dorer 8 min en l'émiettant.",
+          "Déglacer au vin et le laisser s'évaporer, puis ajouter la passata, le basilic et une pincée de sel et laisser mijoter 25 min.",
+          "Préchauffer le four à 200 °C. Cuire les pâtes dans l'eau salée la moitié du temps habituel et les égoutter.",
+          "Mélanger les pâtes avec la majeure partie de la sauce, la moitié de la mozzarella et la moitié du parmesan et verser dans un plat à four.",
+          "Couvrir du reste de sauce, de mozzarella et de parmesan et enfourner 20 min jusqu'à ce que ce soit doré et bouillonnant.",
+          "Laisser reposer 5 min avant de servir."
+        ]
+      },
+      "it": {
+        "title": "Pasta al forno",
+        "steps": [
+          "Soffriggere dolcemente cipolla e carota nell'olio per 6 min, aggiungere il macinato e rosolarlo 8 min, sgranandolo.",
+          "Sfumare con il vino e farlo evaporare, poi aggiungere la passata, il basilico e un pizzico di sale e cuocere 25 min.",
+          "Scaldare il forno a 200 °C. Cuocere la pasta in acqua salata per metà del tempo indicato e scolarla.",
+          "Mescolare la pasta con gran parte del sugo, metà della mozzarella e metà del parmigiano e versarla in una pirofila.",
+          "Coprire con il resto del sugo, della mozzarella e del parmigiano e infornare per 20 min finché è dorata e sfrigolante.",
+          "Lasciar riposare 5 min prima di servire."
+        ]
+      }
+    }
+  },
+  {
+    "id": "329c7e4f-434b-5636-9925-62c832fad816",
+    "title": "Pasta zucca e salsiccia",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 25,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-zucca-e-salsiccia.webp",
+    "cuisine": "italian",
+    "tags": [
+      "comfort",
+      "autumn",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "b0a2b8fb-db6d-5f0e-b70f-28a20f34883e",
+        "text": "200 g pasta, mezze maniche or penne"
+      },
+      {
+        "id": "6b3217f9-33cb-5c55-ba15-213e5f114a5a",
+        "text": "350 g pumpkin, peeled, in small cubes"
+      },
+      {
+        "id": "84f196fb-9030-5a21-9738-3424dadfc951",
+        "text": "200 g sausage, casing removed"
+      },
+      {
+        "id": "fe22ff27-6ddb-5eb5-999e-0a332e432761",
+        "text": "0.5 onion, finely chopped"
+      },
+      {
+        "id": "5da77f6b-222e-5bda-aa1f-6bee2bed5a60",
+        "text": "1 rosemary, sprig"
+      },
+      {
+        "id": "44f52846-0691-5f67-93ef-b509f113c955",
+        "text": "2 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "a5441256-2100-500e-9151-28a136de0571",
+        "text": "30 g parmesan, grated"
+      },
+      {
+        "id": "3a0d7085-f066-54fa-83f4-193f9ea047dc",
+        "text": "salt"
+      },
+      {
+        "id": "a73b4c7c-313b-5d38-b121-2413bfbd8eb8",
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Brown the sausage in the oil, breaking it up, for 5 min, then add the onion and rosemary for 3 min.",
+      "Add the pumpkin, a pinch of salt and a ladle of water, cover and cook for 15 min, until the pumpkin is soft and partly breaks into a cream. Remove the rosemary.",
+      "Cook the pasta in salted water until al dente and toss it in the pan with a splash of cooking water.",
+      "Off the heat, stir in the parmesan and serve with pepper."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes à la courge et à la saucisse",
+        "steps": [
+          "Faire dorer la saucisse dans l'huile en l'émiettant 5 min, puis ajouter l'oignon et le romarin 3 min.",
+          "Ajouter la courge, une pincée de sel et une louche d'eau, couvrir et cuire 15 min, jusqu'à ce que la courge soit tendre et se défasse en partie en crème. Retirer le romarin.",
+          "Cuire les pâtes dans l'eau salée jusqu'à al dente et les faire sauter dans la poêle avec un peu d'eau de cuisson.",
+          "Hors du feu, incorporer le parmesan et servir poivré."
+        ]
+      },
+      "it": {
+        "title": "Pasta zucca e salsiccia",
+        "steps": [
+          "Rosolare la salsiccia nell'olio, sbriciolandola, per 5 min, poi aggiungere cipolla e rosmarino per 3 min.",
+          "Aggiungere la zucca, un pizzico di sale e un mestolo d'acqua, coprire e cuocere 15 min, finché la zucca è morbida e in parte diventa crema. Togliere il rosmarino.",
+          "Cuocere la pasta in acqua salata fino al dente e saltarla in padella con un goccio di acqua di cottura.",
+          "Fuori dal fuoco, unire il parmigiano e servire con pepe."
+        ]
+      }
+    }
+  },
+  {
+    "id": "5c3c422a-5a04-561f-834d-2a5cde1dd678",
+    "title": "Pasta ai funghi trifolati",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 15,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-ai-funghi-trifolati.webp",
+    "cuisine": "italian",
+    "tags": [
+      "quick",
+      "vegan",
+      "autumn",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "706f6e8a-62ab-5da5-85ca-5b56eec04d65",
+        "text": "200 g pasta, tagliatelle or linguine"
+      },
+      {
+        "id": "87ce9342-6720-5d52-91f0-8f5e936ee519",
+        "text": "350 g mushrooms, sliced"
+      },
+      {
+        "id": "8cb5cdf6-3dc9-5c28-ad74-00a70e83fe0b",
+        "text": "2 cloves garlic, crushed"
+      },
+      {
+        "id": "347370d9-b430-58b0-a4c6-08bb2c7eb1e7",
+        "text": "1 pinch chili flakes"
+      },
+      {
+        "id": "5afdbb31-5cae-55e5-ae58-2bfa9ef683f8",
+        "text": "10 g parsley, chopped"
+      },
+      {
+        "id": "f09f2b53-66e2-5616-849b-73da42cf3053",
+        "text": "4 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "4435bfbc-4bc2-50dc-8a82-4934eb107bcd",
+        "text": "20 g parmesan, grated",
+        "optional": true
+      },
+      {
+        "id": "977cf869-9043-5e55-aa92-677ccbfa00bc",
+        "text": "salt"
+      },
+      {
+        "id": "098da3a2-55ee-5290-8d75-44c8a48f8828",
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Gently fry the garlic and chilli in the oil for 1 min.",
+      "Add the mushrooms and cook over high heat for 8 min, without stirring too often, until they release their liquid and turn golden. Season and remove the garlic.",
+      "Cook the pasta in salted water until al dente and toss it in the pan with a ladle of cooking water and the parsley.",
+      "Serve with pepper (and parmesan, if using)."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes aux champignons à l'ail et au persil",
+        "steps": [
+          "Faire revenir doucement l'ail et le piment dans l'huile 1 min.",
+          "Ajouter les champignons et cuire à feu vif 8 min, sans trop remuer, jusqu'à ce qu'ils rendent leur eau et dorent. Assaisonner et retirer l'ail.",
+          "Cuire les pâtes dans l'eau salée jusqu'à al dente et les faire sauter dans la poêle avec une louche d'eau de cuisson et le persil.",
+          "Servir poivré (avec du parmesan, si utilisé)."
+        ]
+      },
+      "it": {
+        "title": "Pasta ai funghi trifolati",
+        "steps": [
+          "Soffriggere dolcemente aglio e peperoncino nell'olio per 1 min.",
+          "Aggiungere i funghi e cuocere a fuoco vivo per 8 min, senza mescolare troppo, finché rilasciano l'acqua e si dorano. Regolare di sale e pepe e togliere l'aglio.",
+          "Cuocere la pasta in acqua salata fino al dente e saltarla in padella con un mestolo di acqua di cottura e il prezzemolo.",
+          "Servire con pepe (e parmigiano, se si usa)."
+        ]
+      }
+    }
+  },
+  {
+    "id": "fcd55a10-413a-59b1-8c6e-06e89d45e301",
+    "title": "Pasta al ragù di salsiccia",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 35,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-al-ragu-di-salsiccia.webp",
+    "cuisine": "italian",
+    "tags": [
+      "comfort",
+      "kid-friendly",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "40cd8a04-9987-5776-b58b-efe1f8c001c2",
+        "text": "200 g pasta, rigatoni or penne"
+      },
+      {
+        "id": "02b1e3a4-6157-53c8-b934-eb3eda5018b7",
+        "text": "250 g sausage, casing removed"
+      },
+      {
+        "id": "4672619f-ae93-55dc-b272-add7379c658c",
+        "text": "0.5 onion, finely chopped"
+      },
+      {
+        "id": "6d9bb13d-6d5f-5635-83cf-5dcb5d6dee63",
+        "text": "80 ml red wine"
+      },
+      {
+        "id": "aa77fbee-9dbb-5ddd-8616-719d6d75f0b2",
+        "text": "400 g passata"
+      },
+      {
+        "id": "3acb186f-3a36-5a99-8195-9eee2973a353",
+        "text": "2 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "e1f78a0d-cc3b-5e23-9475-f6a8b9bca691",
+        "text": "30 g parmesan, grated"
+      },
+      {
+        "id": "b79ea06b-b4d3-5034-a05b-d5f49db3fd6c",
+        "text": "salt"
+      },
+      {
+        "id": "aa9d2581-cf18-56e5-b2dd-3f98dce13464",
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Gently fry the onion in the oil for 5 min, add the sausage and brown it for 6 min, breaking it up.",
+      "Pour in the wine and let it evaporate.",
+      "Add the passata and a pinch of salt and simmer for 20 min until thick.",
+      "Cook the pasta in salted water until al dente and toss it in the ragù with a splash of cooking water.",
+      "Serve with parmesan and pepper."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes au ragù de saucisse",
+        "steps": [
+          "Faire revenir doucement l'oignon dans l'huile 5 min, ajouter la saucisse et la faire dorer 6 min en l'émiettant.",
+          "Déglacer au vin et le laisser s'évaporer.",
+          "Ajouter la passata et une pincée de sel et laisser mijoter 20 min jusqu'à ce que la sauce épaississe.",
+          "Cuire les pâtes dans l'eau salée jusqu'à al dente et les mélanger au ragù avec un peu d'eau de cuisson.",
+          "Servir avec du parmesan et du poivre."
+        ]
+      },
+      "it": {
+        "title": "Pasta al ragù di salsiccia",
+        "steps": [
+          "Soffriggere dolcemente la cipolla nell'olio per 5 min, aggiungere la salsiccia e rosolarla 6 min, sbriciolandola.",
+          "Sfumare con il vino e farlo evaporare.",
+          "Aggiungere la passata e un pizzico di sale e cuocere 20 min finché il sugo è denso.",
+          "Cuocere la pasta in acqua salata fino al dente e condirla con il ragù e un goccio di acqua di cottura.",
+          "Servire con parmigiano e pepe."
+        ]
+      }
+    }
+  },
+  {
+    "id": "42383031-548f-5da1-8b41-557004473250",
+    "title": "Pasta spinaci e ricotta",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 5,
+    "cook_min": 15,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-spinaci-e-ricotta.webp",
+    "cuisine": "italian",
+    "tags": [
+      "quick",
+      "vegetarian",
+      "kid-friendly",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "11d6b8b6-7696-5e89-b056-e8443143020a",
+        "text": "200 g pasta, penne or fusilli"
+      },
+      {
+        "id": "baeea9fd-fda4-53c7-ba4d-6c4467368930",
+        "text": "200 g spinach"
+      },
+      {
+        "id": "e6e5fc9b-2d83-51d2-8aa1-7abf5d840b43",
+        "text": "150 g ricotta"
+      },
+      {
+        "id": "b683709b-4d7e-51c6-b61a-72db53e0d366",
+        "text": "30 g parmesan, grated"
+      },
+      {
+        "id": "3d988828-b6d1-5a39-a4fb-e2b06eea51ea",
+        "text": "1 clove garlic, crushed"
+      },
+      {
+        "id": "7ab883f6-0b45-5b89-a2ee-b5a2cda5dfa2",
+        "text": "1 pinch nutmeg"
+      },
+      {
+        "id": "e4927b3c-2589-5590-82d1-4f8013c97028",
+        "text": "2 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "1ea47885-d44b-5427-8b1c-9d9c74421334",
+        "text": "salt"
+      },
+      {
+        "id": "14f0dc65-c00b-5a02-bbce-b1e11f7d0f79",
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Wilt the spinach in the oil with the garlic and a pinch of salt for 3 min. Remove the garlic and chop the spinach roughly.",
+      "In a large bowl, mix the ricotta with the parmesan, nutmeg, pepper and the spinach.",
+      "Cook the pasta in salted water until al dente.",
+      "Loosen the ricotta mixture with a ladle of cooking water, add the drained pasta and toss until creamy. Serve."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes aux épinards et à la ricotta",
+        "steps": [
+          "Faire tomber les épinards dans l'huile avec l'ail et une pincée de sel 3 min. Retirer l'ail et hacher grossièrement les épinards.",
+          "Dans un grand saladier, mélanger la ricotta avec le parmesan, la muscade, du poivre et les épinards.",
+          "Cuire les pâtes dans l'eau salée jusqu'à al dente.",
+          "Détendre le mélange à la ricotta avec une louche d'eau de cuisson, ajouter les pâtes égouttées et mélanger jusqu'à ce que ce soit crémeux. Servir."
+        ]
+      },
+      "it": {
+        "title": "Pasta spinaci e ricotta",
+        "steps": [
+          "Appassire gli spinaci nell'olio con l'aglio e un pizzico di sale per 3 min. Togliere l'aglio e tritare grossolanamente gli spinaci.",
+          "In una ciotola larga, mescolare la ricotta con il parmigiano, la noce moscata, il pepe e gli spinaci.",
+          "Cuocere la pasta in acqua salata fino al dente.",
+          "Allungare la crema di ricotta con un mestolo di acqua di cottura, aggiungere la pasta scolata e mescolare finché è cremosa. Servire."
+        ]
+      }
+    }
+  },
+  {
+    "id": "63363838-c35f-5194-8b3d-df25c888fdb8",
+    "title": "Pasta alla sorrentina",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 5,
+    "cook_min": 20,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-alla-sorrentina.webp",
+    "cuisine": "italian",
+    "tags": [
+      "vegetarian",
+      "kid-friendly",
+      "comfort",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "9b92ec98-bad8-5e53-a622-a0abfcfbcc87",
+        "text": "200 g pasta, rigatoni or mezze maniche"
+      },
+      {
+        "id": "ba307fa0-2f9f-5ff9-8172-8efb3c6c430c",
+        "text": "400 g passata"
+      },
+      {
+        "id": "dc68e634-73a0-5556-a52a-63a03eceb17c",
+        "text": "1 clove garlic, crushed"
+      },
+      {
+        "id": "ac17e03e-cdad-5744-ac5f-15c97840f702",
+        "text": "125 g mozzarella, diced and drained"
+      },
+      {
+        "id": "1f20350c-1a48-5411-b952-dd2c028b8a81",
+        "text": "20 g parmesan, grated"
+      },
+      {
+        "id": "e56cf8a5-342a-5041-a34b-675f202b1530",
+        "text": "5 g fresh basil"
+      },
+      {
+        "id": "5dacb140-9b32-5ff2-a002-725d0aa59dbd",
+        "text": "2 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "07531341-7cc9-5179-a6f9-7ca17cdc4bb5",
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "Gently fry the garlic in the oil for 1 min, add the passata with a pinch of salt and simmer for 15 min. Remove the garlic and tear in the basil.",
+      "Cook the pasta in salted water until al dente and toss it in the sauce.",
+      "Off the heat, add the mozzarella and the parmesan and stir until the mozzarella starts to melt into strings.",
+      "Serve at once."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes à la sorrentine (tomate et mozzarella)",
+        "steps": [
+          "Faire revenir doucement l'ail dans l'huile 1 min, ajouter la passata avec une pincée de sel et laisser mijoter 15 min. Retirer l'ail et ajouter le basilic déchiré.",
+          "Cuire les pâtes dans l'eau salée jusqu'à al dente et les mélanger à la sauce.",
+          "Hors du feu, ajouter la mozzarella et le parmesan et remuer jusqu'à ce que la mozzarella commence à filer.",
+          "Servir aussitôt."
+        ]
+      },
+      "it": {
+        "title": "Pasta alla sorrentina",
+        "steps": [
+          "Soffriggere dolcemente l'aglio nell'olio per 1 min, aggiungere la passata con un pizzico di sale e cuocere 15 min. Togliere l'aglio e spezzettare il basilico.",
+          "Cuocere la pasta in acqua salata fino al dente e condirla con il sugo.",
+          "Fuori dal fuoco, aggiungere la mozzarella e il parmigiano e mescolare finché la mozzarella inizia a filare.",
+          "Servire subito."
+        ]
+      }
+    }
+  },
+  {
+    "id": "9fe8a347-7290-556d-aca3-7bcee5510c31",
+    "title": "Pasta con la peperonata",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 30,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-con-la-peperonata.webp",
+    "cuisine": "italian",
+    "tags": [
+      "vegan",
+      "summer",
+      "mediterranean",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "7c4e46a3-da7f-5fa3-bab5-bbff965d6ec5",
+        "text": "200 g pasta, penne or fusilli"
+      },
+      {
+        "id": "ef1dc1a3-556f-5816-ae5a-26d1f3592fe5",
+        "text": "2 bell pepper, red and yellow, in strips"
+      },
+      {
+        "id": "17dbbd3e-38ad-5597-bbc5-db0e4729ea64",
+        "text": "1 onion, sliced"
+      },
+      {
+        "id": "2973e33c-1e38-5fb3-b18c-9b9b88d26684",
+        "text": "200 g canned tomatoes, peeled"
+      },
+      {
+        "id": "c274e2aa-3444-5b41-8958-65928ec2393a",
+        "text": "5 g fresh basil"
+      },
+      {
+        "id": "6b00d4e2-ea6a-5fec-b3de-6c7ca7427079",
+        "text": "4 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "69afb026-13fc-58ec-a207-b2632ad3bf23",
+        "text": "20 g parmesan, grated",
+        "optional": true
+      },
+      {
+        "id": "ffc564c7-9e11-5271-80c5-1d123f25a873",
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "Cook the onion and peppers in the oil with a pinch of salt over medium heat for 10 min, stirring.",
+      "Add the tomatoes, crush them, cover and cook for 15 min until the peppers are very soft.",
+      "Tear in the basil.",
+      "Cook the pasta in salted water until al dente and toss it in the peperonata with a splash of cooking water.",
+      "Serve (with parmesan, if using)."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes à la peperonata (poivrons fondants)",
+        "steps": [
+          "Cuire l'oignon et les poivrons dans l'huile avec une pincée de sel à feu moyen 10 min en remuant.",
+          "Ajouter les tomates, les écraser, couvrir et cuire 15 min jusqu'à ce que les poivrons soient très tendres.",
+          "Ajouter le basilic déchiré.",
+          "Cuire les pâtes dans l'eau salée jusqu'à al dente et les faire sauter dans la peperonata avec un peu d'eau de cuisson.",
+          "Servir (avec du parmesan, si utilisé)."
+        ]
+      },
+      "it": {
+        "title": "Pasta con la peperonata",
+        "steps": [
+          "Cuocere cipolla e peperoni nell'olio con un pizzico di sale a fuoco medio per 10 min, mescolando.",
+          "Aggiungere i pomodori, schiacciarli, coprire e cuocere 15 min finché i peperoni sono molto morbidi.",
+          "Spezzettare il basilico.",
+          "Cuocere la pasta in acqua salata fino al dente e saltarla nella peperonata con un goccio di acqua di cottura.",
+          "Servire (con parmigiano, se si usa)."
+        ]
+      }
+    }
+  },
+  {
+    "id": "39b68fe8-b8cf-53fd-8af6-9e19e8decd39",
+    "title": "Pasta gamberi e zucchine",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 15,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-gamberi-e-zucchine.webp",
+    "cuisine": "italian",
+    "tags": [
+      "quick",
+      "summer",
+      "mediterranean",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "ac6f0a7e-b536-5568-b809-86ff411f31c7",
+        "text": "200 g pasta, linguine or spaghetti"
+      },
+      {
+        "id": "5e648f52-c722-530b-a5fa-c7fb3d210db2",
+        "text": "200 g prawns, peeled"
+      },
+      {
+        "id": "00e2d867-eb9d-5a24-ae76-4f1f8c543860",
+        "text": "1 zucchini, in small cubes"
+      },
+      {
+        "id": "0990743f-e49c-52ef-8a8a-3737b80a2ac3",
+        "text": "1 clove garlic, crushed"
+      },
+      {
+        "id": "b2ae3fbd-cc4b-5952-ae8c-d6a0d6fa19da",
+        "text": "50 ml white wine"
+      },
+      {
+        "id": "bdf807eb-906a-5707-b1f3-a1444ef1229f",
+        "text": "1 pinch chili flakes"
+      },
+      {
+        "id": "c7163d15-0aac-52d8-bc0e-3cd303b7f8fc",
+        "text": "1 lemon, zest only"
+      },
+      {
+        "id": "f0ecb647-21e2-54fe-8dd4-537ab967499f",
+        "text": "5 g parsley, chopped"
+      },
+      {
+        "id": "ef484cb3-8d81-5905-a5c1-e08bcfd6b0b9",
+        "text": "3 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "e749a658-fb46-59fc-8847-7b7b63f462d0",
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "Gently fry the garlic and chilli in the oil for 1 min, add the zucchini with a pinch of salt and cook over high heat for 5 min.",
+      "Add the prawns and cook for 2 min, then pour in the wine and let it evaporate. Remove the garlic.",
+      "Cook the pasta in salted water until 1 min short of al dente and finish it in the pan with a ladle of cooking water.",
+      "Serve with the parsley and lemon zest."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes aux crevettes et courgettes",
+        "steps": [
+          "Faire revenir doucement l'ail et le piment dans l'huile 1 min, ajouter la courgette avec une pincée de sel et cuire à feu vif 5 min.",
+          "Ajouter les crevettes et cuire 2 min, puis déglacer au vin et le laisser s'évaporer. Retirer l'ail.",
+          "Cuire les pâtes dans l'eau salée jusqu'à 1 min avant al dente et finir la cuisson dans la poêle avec une louche d'eau de cuisson.",
+          "Servir avec le persil et le zeste de citron."
+        ]
+      },
+      "it": {
+        "title": "Pasta gamberi e zucchine",
+        "steps": [
+          "Soffriggere dolcemente aglio e peperoncino nell'olio per 1 min, aggiungere la zucchina con un pizzico di sale e cuocere a fuoco vivo per 5 min.",
+          "Aggiungere i gamberi e cuocere 2 min, poi sfumare con il vino e farlo evaporare. Togliere l'aglio.",
+          "Cuocere la pasta in acqua salata fino a 1 min prima del dente e terminare la cottura in padella con un mestolo di acqua di cottura.",
+          "Servire con il prezzemolo e la scorza di limone."
+        ]
+      }
+    }
+  },
+  {
+    "id": "f911da96-02eb-50fb-be68-be5e0cc2e39c",
+    "title": "Spaghetti con le cozze",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 15,
+    "cook_min": 15,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/spaghetti-con-le-cozze.webp",
+    "cuisine": "italian",
+    "tags": [
+      "quick",
+      "mediterranean",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "8cb88152-8cb0-5e75-b52a-54d7e831899d",
+        "text": "200 g pasta, spaghetti"
+      },
+      {
+        "id": "bc146e5c-18b4-5813-b329-72a4579569c8",
+        "text": "800 g mussels, in shell, cleaned"
+      },
+      {
+        "id": "b074cecd-a14b-54f0-a25e-3a879ae1060b",
+        "text": "150 g cherry tomatoes, halved"
+      },
+      {
+        "id": "530975ac-1313-5c97-9df3-f637deaacbce",
+        "text": "2 cloves garlic, crushed"
+      },
+      {
+        "id": "e1e2c34c-ec80-5ef2-82f7-0f7454adfd32",
+        "text": "1 pinch chili flakes"
+      },
+      {
+        "id": "6dfb6e94-3532-594f-a607-96a68fcc0849",
+        "text": "10 g parsley, chopped"
+      },
+      {
+        "id": "a0e8e00d-7316-56ff-9599-cf94cc39aa99",
+        "text": "4 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "6d4dea80-b1f3-58d4-bb1a-5aead01da79a",
+        "text": "black pepper"
+      },
+      {
+        "id": "7ed322b4-b81b-5d00-adac-1c04cbf5b6a5",
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "Open the mussels in a hot covered pan with 1 tbsp oil for 3–4 min. Shell most of them and strain the liquid.",
+      "In the same pan, gently fry the garlic and chilli in the rest of the oil, then add the cherry tomatoes for 3 min.",
+      "Add the mussel liquid and cook for 2 min. Remove the garlic.",
+      "Cook the spaghetti in lightly salted water until 1 min short of al dente and finish them in the pan with all the mussels.",
+      "Serve with the parsley and black pepper."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Spaghetti aux moules",
+        "steps": [
+          "Faire ouvrir les moules dans une poêle chaude couverte avec 1 c. à soupe d'huile 3 à 4 min. En décortiquer la plupart et filtrer le jus.",
+          "Dans la même poêle, faire revenir doucement l'ail et le piment dans le reste de l'huile, puis ajouter les tomates cerises 3 min.",
+          "Ajouter le jus des moules et cuire 2 min. Retirer l'ail.",
+          "Cuire les spaghetti dans l'eau légèrement salée jusqu'à 1 min avant al dente et finir la cuisson dans la poêle avec toutes les moules.",
+          "Servir avec le persil et du poivre noir."
+        ]
+      },
+      "it": {
+        "title": "Spaghetti con le cozze",
+        "steps": [
+          "Far aprire le cozze in una padella calda coperta con 1 cucchiaio d'olio per 3–4 min. Sgusciarne la maggior parte e filtrare il liquido.",
+          "Nella stessa padella, soffriggere dolcemente aglio e peperoncino nel resto dell'olio, poi aggiungere i pomodorini per 3 min.",
+          "Aggiungere il liquido delle cozze e cuocere 2 min. Togliere l'aglio.",
+          "Cuocere gli spaghetti in acqua poco salata fino a 1 min prima del dente e terminare la cottura in padella con tutte le cozze.",
+          "Servire con il prezzemolo e pepe nero."
+        ]
+      }
+    }
+  },
+  {
+    "id": "2872398b-8995-5f4d-a22c-41cb3d5b77b9",
+    "title": "Pasta al ragù bianco",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 15,
+    "cook_min": 50,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-al-ragu-bianco.webp",
+    "cuisine": "italian",
+    "tags": [
+      "comfort",
+      "batch cooking",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "7b9ec9dc-a53c-55c8-849b-cb0b929b131a",
+        "text": "200 g pasta, rigatoni or tagliatelle"
+      },
+      {
+        "id": "87d1b1c8-976f-586f-b0e6-f4a5e477e355",
+        "text": "150 g ground beef"
+      },
+      {
+        "id": "be4b60ef-a3c6-5d0b-845e-6814e2ffe27b",
+        "text": "150 g ground pork"
+      },
+      {
+        "id": "e142ff47-cbbc-503c-81e2-b4a056bfb0a5",
+        "text": "0.5 onion, finely chopped"
+      },
+      {
+        "id": "ca5e43a9-aebc-5ed4-867a-333e3b3d16e3",
+        "text": "1 carrot, finely chopped"
+      },
+      {
+        "id": "e21e3c9c-1f13-56e0-8133-e04394fe02e6",
+        "text": "1 celery, stalk, finely chopped"
+      },
+      {
+        "id": "2fa35de6-aaa1-5923-81b3-b79055607944",
+        "text": "100 ml white wine"
+      },
+      {
+        "id": "e7a303b9-a7cf-5e8a-9cd4-8f7d79f92442",
+        "text": "300 ml beef stock, hot"
+      },
+      {
+        "id": "2ff7b6b1-8acf-5a96-8ccf-cddd1b961543",
+        "text": "1 rosemary, sprig"
+      },
+      {
+        "id": "b1af6869-f278-58d8-9b64-f16782274816",
+        "text": "2 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "a4c84d1d-0c86-53c4-8a08-4ded63df0268",
+        "text": "30 g parmesan, grated"
+      },
+      {
+        "id": "09b2ae39-8f13-5700-92fd-12941ba047d6",
+        "text": "salt"
+      },
+      {
+        "id": "92203851-0a25-5e9f-9df4-d123ae91dbb7",
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Gently fry the onion, carrot and celery in the oil for 8 min.",
+      "Add both meats and the rosemary and brown well, breaking the meat up, for 10 min.",
+      "Pour in the wine and let it evaporate.",
+      "Add a ladle of stock, cover and simmer for 30 min, adding stock as it dries, until tender and saucy. Remove the rosemary and season.",
+      "Cook the pasta in salted water until al dente and toss it in the ragù with a splash of cooking water.",
+      "Off the heat, stir in the parmesan and serve with pepper."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes au ragù blanc",
+        "steps": [
+          "Faire revenir doucement l'oignon, la carotte et le céleri dans l'huile 8 min.",
+          "Ajouter les deux viandes et le romarin et faire bien dorer en émiettant la viande 10 min.",
+          "Déglacer au vin et le laisser s'évaporer.",
+          "Ajouter une louche de bouillon, couvrir et laisser mijoter 30 min en ajoutant du bouillon au fur et à mesure, jusqu'à ce que ce soit tendre et nappant. Retirer le romarin et assaisonner.",
+          "Cuire les pâtes dans l'eau salée jusqu'à al dente et les mélanger au ragù avec un peu d'eau de cuisson.",
+          "Hors du feu, incorporer le parmesan et servir poivré."
+        ]
+      },
+      "it": {
+        "title": "Pasta al ragù bianco",
+        "steps": [
+          "Soffriggere dolcemente cipolla, carota e sedano nell'olio per 8 min.",
+          "Aggiungere i due macinati e il rosmarino e rosolare bene, sgranando la carne, per 10 min.",
+          "Sfumare con il vino e farlo evaporare.",
+          "Aggiungere un mestolo di brodo, coprire e cuocere 30 min, unendo brodo quando si asciuga, finché è tenero e morbido. Togliere il rosmarino e regolare di sale e pepe.",
+          "Cuocere la pasta in acqua salata fino al dente e condirla con il ragù e un goccio di acqua di cottura.",
+          "Fuori dal fuoco, unire il parmigiano e servire con pepe."
+        ]
+      }
+    }
+  },
+  {
+    "id": "ea17d945-1957-5edc-9d1f-03c4e6a149de",
+    "title": "Pasta con gli asparagi",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 15,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-con-gli-asparagi.webp",
+    "cuisine": "italian",
+    "tags": [
+      "quick",
+      "vegetarian",
+      "spring",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "895f8ce5-362d-5f2a-8ef2-5ae53074e2d7",
+        "text": "200 g pasta, penne or casarecce"
+      },
+      {
+        "id": "845a4c70-5d94-5cbb-831a-7080d81b6368",
+        "text": "300 g asparagus, woody ends snapped off"
+      },
+      {
+        "id": "e13ecae2-acb9-5969-96f8-e0848c1c6160",
+        "text": "0.5 onion, finely chopped"
+      },
+      {
+        "id": "be781de5-3c35-5f05-ba5a-98fdce26c3e2",
+        "text": "20 g butter"
+      },
+      {
+        "id": "2ce2692c-fef6-5d30-88b0-2b5e9663e56c",
+        "text": "1 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "c8e24f42-3c09-5dd8-b7bf-61e7c47cf2f3",
+        "text": "40 g parmesan, grated"
+      },
+      {
+        "id": "ab8e619b-f864-5b5a-be3e-4c78eb7cae1f",
+        "text": "1 lemon, zest only"
+      },
+      {
+        "id": "78c89008-2201-5518-87d7-5bd76d5d5482",
+        "text": "salt"
+      },
+      {
+        "id": "d938acd2-b13f-5cb3-b258-6a907ee24b4e",
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Cut the asparagus into short pieces, keeping the tips apart.",
+      "Gently fry the onion in the butter and oil for 5 min, add the asparagus stems with a pinch of salt and a ladle of water and cook for 5 min.",
+      "Add the tips and cook for 3 min more.",
+      "Cook the pasta in salted water until al dente and toss it in the pan with a ladle of cooking water.",
+      "Off the heat, add the parmesan and toss until creamy. Serve with lemon zest and pepper."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes aux asperges",
+        "steps": [
+          "Couper les asperges en tronçons en gardant les pointes à part.",
+          "Faire revenir doucement l'oignon dans le beurre et l'huile 5 min, ajouter les tiges d'asperges avec une pincée de sel et une louche d'eau et cuire 5 min.",
+          "Ajouter les pointes et cuire encore 3 min.",
+          "Cuire les pâtes dans l'eau salée jusqu'à al dente et les faire sauter dans la poêle avec une louche d'eau de cuisson.",
+          "Hors du feu, ajouter le parmesan et mélanger jusqu'à ce que ce soit crémeux. Servir avec le zeste de citron et du poivre."
+        ]
+      },
+      "it": {
+        "title": "Pasta con gli asparagi",
+        "steps": [
+          "Tagliare gli asparagi a pezzetti, tenendo da parte le punte.",
+          "Soffriggere dolcemente la cipolla nel burro e nell'olio per 5 min, aggiungere i gambi con un pizzico di sale e un mestolo d'acqua e cuocere 5 min.",
+          "Aggiungere le punte e cuocere altri 3 min.",
+          "Cuocere la pasta in acqua salata fino al dente e saltarla in padella con un mestolo di acqua di cottura.",
+          "Fuori dal fuoco, aggiungere il parmigiano e mantecare finché è cremosa. Servire con scorza di limone e pepe."
+        ]
+      }
+    }
+  },
+  {
+    "id": "643a41c8-5a4d-58be-928e-d5225ec799b1",
+    "title": "Pasta con fave, pecorino e menta",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 15,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-con-fave-pecorino-e-menta.webp",
+    "cuisine": "italian",
+    "tags": [
+      "quick",
+      "vegetarian",
+      "spring",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "209bc8f7-6bba-506c-949e-f34483bf5582",
+        "text": "200 g pasta, orecchiette or mezze maniche"
+      },
+      {
+        "id": "5d078592-d15a-5830-b586-1e0531266207",
+        "text": "300 g broad beans, frozen"
+      },
+      {
+        "id": "fa857656-baa4-50ba-a091-b08c9c09a1be",
+        "text": "0.5 onion, finely chopped"
+      },
+      {
+        "id": "f1df9dbc-61cb-52af-8481-26aa2036cf4f",
+        "text": "40 g Pecorino Romano, grated"
+      },
+      {
+        "id": "73d563df-1f55-547b-85eb-1b470bed9e83",
+        "text": "6 fresh mint, leaves"
+      },
+      {
+        "id": "5a3a6ed3-1532-5237-8280-8954aa3059dc",
+        "text": "3 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "07faf812-1a03-5907-bc3a-5a11460558c2",
+        "text": "salt"
+      },
+      {
+        "id": "c541e81b-9828-5f58-b3ec-adaf592f2e4a",
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Blanch the broad beans for 2 min, cool them and slip off their skins.",
+      "Gently fry the onion in the oil for 5 min, add the beans, a pinch of salt and a ladle of water and cook for 5 min, mashing a few of them.",
+      "Cook the pasta in salted water until al dente and toss it in the pan with a ladle of cooking water.",
+      "Off the heat, add the Pecorino and the torn mint and toss until creamy. Serve with pepper."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes aux fèves, pecorino et menthe",
+        "steps": [
+          "Blanchir les fèves 2 min, les refroidir et retirer leur peau.",
+          "Faire revenir doucement l'oignon dans l'huile 5 min, ajouter les fèves, une pincée de sel et une louche d'eau et cuire 5 min en en écrasant quelques-unes.",
+          "Cuire les pâtes dans l'eau salée jusqu'à al dente et les faire sauter dans la poêle avec une louche d'eau de cuisson.",
+          "Hors du feu, ajouter le pecorino et la menthe déchirée et mélanger jusqu'à ce que ce soit crémeux. Servir poivré."
+        ]
+      },
+      "it": {
+        "title": "Pasta con fave, pecorino e menta",
+        "steps": [
+          "Sbollentare le fave per 2 min, raffreddarle e sbucciarle.",
+          "Soffriggere dolcemente la cipolla nell'olio per 5 min, aggiungere le fave, un pizzico di sale e un mestolo d'acqua e cuocere 5 min, schiacciandone qualcuna.",
+          "Cuocere la pasta in acqua salata fino al dente e saltarla in padella con un mestolo di acqua di cottura.",
+          "Fuori dal fuoco, aggiungere il pecorino e la menta spezzettata e mantecare finché è cremosa. Servire con pepe."
+        ]
+      }
+    }
+  },
+  {
+    "id": "892c2f23-7bbf-54e2-aa81-36bf65e79ccd",
+    "title": "Pasta al pesto di cavolo nero",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 15,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-al-pesto-di-cavolo-nero.webp",
+    "cuisine": "italian",
+    "tags": [
+      "quick",
+      "vegetarian",
+      "winter",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 1,
+      "oven": false,
+      "special": [
+        "blender"
+      ]
+    },
+    "ingredients": [
+      {
+        "id": "2715fade-6627-547d-a2c9-5664055b4059",
+        "text": "200 g pasta, penne or trofie"
+      },
+      {
+        "id": "1073d5d1-37a3-5adb-970b-93c231bc2694",
+        "text": "150 g kale, cavolo nero or curly kale, stems removed"
+      },
+      {
+        "id": "130d5ec8-7d83-5341-a0a1-af9fff0e2e4f",
+        "text": "1 clove garlic"
+      },
+      {
+        "id": "bff540d7-68fe-5272-8881-5e3ba2e1624d",
+        "text": "20 g walnuts, or almonds"
+      },
+      {
+        "id": "38235bec-4db1-5e0f-8c91-2c91dab18a52",
+        "text": "30 g parmesan, grated"
+      },
+      {
+        "id": "e6cb51d8-574b-5dbd-9b54-14f1e1cfc91d",
+        "text": "60 ml extra-virgin olive oil"
+      },
+      {
+        "id": "02dbb2b6-cddd-514c-9615-e1a0773bec39",
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "Blanch the kale and garlic in the boiling salted pasta water for 4 min, then lift them out with a slotted spoon.",
+      "Blend the kale, garlic, walnuts, parmesan, oil and a ladle of the water into a smooth pesto. Season.",
+      "Cook the pasta in the same water until al dente.",
+      "Toss the pasta with the pesto off the heat, adding cooking water until creamy. Serve."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes au pesto de chou kale",
+        "steps": [
+          "Blanchir le chou et l'ail 4 min dans l'eau salée bouillante des pâtes, puis les retirer à l'écumoire.",
+          "Mixer le chou, l'ail, les noix, le parmesan, l'huile et une louche d'eau en un pesto lisse. Assaisonner.",
+          "Cuire les pâtes dans la même eau jusqu'à al dente.",
+          "Mélanger les pâtes au pesto hors du feu en ajoutant de l'eau de cuisson jusqu'à ce que ce soit crémeux. Servir."
+        ]
+      },
+      "it": {
+        "title": "Pasta al pesto di cavolo nero",
+        "steps": [
+          "Sbollentare il cavolo nero e l'aglio per 4 min nell'acqua salata bollente della pasta, poi scolarli con una schiumarola.",
+          "Frullare cavolo, aglio, noci, parmigiano, olio e un mestolo d'acqua fino a ottenere un pesto liscio. Regolare di sale.",
+          "Cuocere la pasta nella stessa acqua fino al dente.",
+          "Condire la pasta con il pesto fuori dal fuoco, aggiungendo acqua di cottura finché è cremosa. Servire."
+        ]
+      }
+    }
+  },
+  {
+    "id": "558c1f9f-b9cd-5fd5-bfcd-6e365ad155c2",
+    "title": "Pasta gorgonzola e noci",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 5,
+    "cook_min": 12,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-gorgonzola-e-noci.webp",
+    "cuisine": "italian",
+    "tags": [
+      "quick",
+      "vegetarian",
+      "comfort",
+      "winter",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "40e13d6a-0d67-5764-8976-a933c414f0e3",
+        "text": "200 g pasta, penne or gnocchetti"
+      },
+      {
+        "id": "cf45a1f0-64dd-513d-a4e8-20582f7b26e5",
+        "text": "100 g gorgonzola, dolce"
+      },
+      {
+        "id": "4417c154-c09e-5aa8-87a0-0d5b960ecd33",
+        "text": "60 ml milk"
+      },
+      {
+        "id": "a58520a8-b3de-5708-9166-efa8ee4c938e",
+        "text": "30 g walnuts, roughly chopped"
+      },
+      {
+        "id": "eb1c3e87-b60c-55b1-a824-c400319e6330",
+        "text": "15 g parmesan, grated"
+      },
+      {
+        "id": "b4ea2202-ed0d-55aa-be59-918f72e338a2",
+        "text": "black pepper"
+      },
+      {
+        "id": "6264fae8-5f04-5ae5-b509-8ad49064222c",
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "Melt the gorgonzola with the milk in a large pan over low heat, stirring, until smooth.",
+      "Toast the walnuts in a dry pan for 2 min.",
+      "Cook the pasta in salted water until al dente and move it into the gorgonzola pan with a splash of cooking water.",
+      "Toss over low heat for 1 min, add the parmesan and toss until creamy.",
+      "Serve topped with the walnuts and pepper."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes au gorgonzola et aux noix",
+        "steps": [
+          "Faire fondre le gorgonzola avec le lait dans une grande poêle à feu doux en remuant, jusqu'à ce que ce soit lisse.",
+          "Faire griller les noix 2 min dans une poêle sans matière grasse.",
+          "Cuire les pâtes dans l'eau salée jusqu'à al dente et les transférer dans la poêle au gorgonzola avec un peu d'eau de cuisson.",
+          "Mélanger 1 min à feu doux, ajouter le parmesan et mélanger jusqu'à ce que ce soit crémeux.",
+          "Servir parsemé de noix et de poivre."
+        ]
+      },
+      "it": {
+        "title": "Pasta gorgonzola e noci",
+        "steps": [
+          "Sciogliere il gorgonzola con il latte in una padella larga a fuoco basso, mescolando, finché è liscio.",
+          "Tostare le noci in una padella senza grassi per 2 min.",
+          "Cuocere la pasta in acqua salata fino al dente e trasferirla nella padella del gorgonzola con un goccio di acqua di cottura.",
+          "Mantecare 1 min a fuoco basso, aggiungere il parmigiano e mescolare finché è cremosa.",
+          "Servire con le noci e pepe."
+        ]
+      }
+    }
+  },
+  {
+    "id": "3bbd7aa8-ab21-5c6a-88db-70373e72e8c0",
+    "title": "Pasta burro e parmigiano",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 2,
+    "cook_min": 12,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-burro-e-parmigiano.webp",
+    "cuisine": "italian",
+    "tags": [
+      "quick",
+      "vegetarian",
+      "kid-friendly",
+      "budget",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "caa582a2-23a7-5bdb-b116-c1be912fa203",
+        "text": "200 g pasta, tagliatelle or spaghetti"
+      },
+      {
+        "id": "0b1027a7-31c0-5da8-b76c-1613fe9b70db",
+        "text": "40 g butter, cold, in cubes"
+      },
+      {
+        "id": "aeb7cde9-df9f-5cf5-8de8-17faeb2ad83d",
+        "text": "50 g parmesan, finely grated"
+      },
+      {
+        "id": "d27a1994-7155-5d41-bb9e-e99dc07598bd",
+        "text": "black pepper"
+      },
+      {
+        "id": "8f7784e7-a04c-55bd-b6b0-012e03099662",
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "Cook the pasta in salted water until al dente.",
+      "Put the butter in a warm pan and lift the pasta into it with a ladle of cooking water.",
+      "Toss off the heat until the butter melts, then add the parmesan a little at a time, tossing and adding splashes of water until silky.",
+      "Serve with pepper."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes au beurre et au parmesan",
+        "steps": [
+          "Cuire les pâtes dans l'eau salée jusqu'à al dente.",
+          "Mettre le beurre dans une poêle chaude et y transférer les pâtes avec une louche d'eau de cuisson.",
+          "Mélanger hors du feu jusqu'à ce que le beurre fonde, puis ajouter le parmesan peu à peu, en mélangeant et en ajoutant un peu d'eau jusqu'à ce que ce soit soyeux.",
+          "Servir poivré."
+        ]
+      },
+      "it": {
+        "title": "Pasta burro e parmigiano",
+        "steps": [
+          "Cuocere la pasta in acqua salata fino al dente.",
+          "Mettere il burro in una padella calda e trasferirvi la pasta con un mestolo di acqua di cottura.",
+          "Mantecare fuori dal fuoco finché il burro si scioglie, poi aggiungere il parmigiano poco alla volta, mescolando e unendo acqua finché è vellutata.",
+          "Servire con pepe."
+        ]
+      }
+    }
+  },
+  {
+    "id": "f53c2940-8547-5eed-9f70-a680aebe98f2",
+    "title": "Pasta alla crudaiola",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 12,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-alla-crudaiola.webp",
+    "cuisine": "italian",
+    "tags": [
+      "quick",
+      "vegetarian",
+      "summer",
+      "no-cook",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 1,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "9153f8e7-3d99-5b78-9ee1-612ffd4eb7e3",
+        "text": "200 g pasta, fusilli or penne"
+      },
+      {
+        "id": "1f93950b-e4c4-5492-8e3c-edc27f1b4eac",
+        "text": "300 g cherry tomatoes, quartered"
+      },
+      {
+        "id": "ad36d4c9-d86a-5314-9373-a92ca77c7ca2",
+        "text": "125 g mozzarella, diced and drained"
+      },
+      {
+        "id": "0db0c494-3eba-5b14-b6ad-1dd50fbf8e7b",
+        "text": "30 g olives, black, pitted, halved"
+      },
+      {
+        "id": "fb28b805-5453-5e83-b67a-d4524bbb7b21",
+        "text": "10 g fresh basil"
+      },
+      {
+        "id": "9584c240-c1fd-518f-9331-48f6f31fd8a4",
+        "text": "1 pinch dried oregano"
+      },
+      {
+        "id": "4c4677b5-6bbd-577e-a7b9-07db61dd6842",
+        "text": "4 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "50c924f1-ca68-54aa-89b6-968dcfe3ea9b",
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "In a large bowl, mix the tomatoes, olives, torn basil, oregano, oil and a pinch of salt and leave for 10 min.",
+      "Cook the pasta in salted water until al dente, drain it and rinse it briefly under cold water so it doesn't melt the mozzarella completely.",
+      "Toss the pasta with the tomatoes, then fold in the mozzarella.",
+      "Serve warm or at room temperature."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes à la crudaiola (tomates crues et mozzarella)",
+        "steps": [
+          "Dans un grand saladier, mélanger les tomates, les olives, le basilic déchiré, l'origan, l'huile et une pincée de sel et laisser reposer 10 min.",
+          "Cuire les pâtes dans l'eau salée jusqu'à al dente, les égoutter et les passer rapidement sous l'eau froide pour qu'elles ne fassent pas fondre toute la mozzarella.",
+          "Mélanger les pâtes aux tomates, puis incorporer la mozzarella.",
+          "Servir tiède ou à température ambiante."
+        ]
+      },
+      "it": {
+        "title": "Pasta alla crudaiola",
+        "steps": [
+          "In una ciotola larga, mescolare pomodorini, olive, basilico spezzettato, origano, olio e un pizzico di sale e lasciar riposare 10 min.",
+          "Cuocere la pasta in acqua salata fino al dente, scolarla e passarla brevemente sotto l'acqua fredda perché non sciolga del tutto la mozzarella.",
+          "Condire la pasta con i pomodorini, poi unire la mozzarella.",
+          "Servire tiepida o a temperatura ambiente."
+        ]
+      }
+    }
+  },
+  {
+    "id": "b129ce35-efc9-5c75-badb-c014485c1c47",
+    "title": "Pasta sgombro e pomodorini",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 5,
+    "cook_min": 15,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-sgombro-e-pomodorini.webp",
+    "cuisine": "italian",
+    "tags": [
+      "quick",
+      "budget",
+      "mediterranean",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "e36cf9e8-c5b3-51f1-a75a-d1fb3e181c5a",
+        "text": "200 g pasta, spaghetti or penne"
+      },
+      {
+        "id": "7aa23020-6a6e-5a68-9324-c6707686dd55",
+        "text": "150 g mackerel, canned in olive oil, drained"
+      },
+      {
+        "id": "eafd9d86-3ccb-519f-a74f-6ee26be82a62",
+        "text": "200 g cherry tomatoes, halved"
+      },
+      {
+        "id": "0832da2c-bdef-5c12-97aa-265533fe62c9",
+        "text": "1 clove garlic, crushed"
+      },
+      {
+        "id": "20208c44-49ac-55df-88ba-56ff4dd904b7",
+        "text": "1 tbsp capers, rinsed"
+      },
+      {
+        "id": "34a95642-0ace-5e55-8428-d1adf5465919",
+        "text": "1 pinch chili flakes"
+      },
+      {
+        "id": "43771581-9602-5a7d-9948-9d42e6be289c",
+        "text": "5 g parsley, chopped"
+      },
+      {
+        "id": "ad183380-c6db-5d79-bcb8-5da72cabf6ae",
+        "text": "2 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "39b9acd5-4561-53fe-b124-518854e68b3b",
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "Gently fry the garlic and chilli in the oil for 1 min, add the cherry tomatoes and capers and cook for 6 min.",
+      "Add the mackerel in large flakes and warm it for 2 min without stirring too much. Remove the garlic.",
+      "Cook the pasta in salted water until al dente and toss it gently in the pan with a splash of cooking water.",
+      "Serve with parsley."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes au maquereau et tomates cerises",
+        "steps": [
+          "Faire revenir doucement l'ail et le piment dans l'huile 1 min, ajouter les tomates cerises et les câpres et cuire 6 min.",
+          "Ajouter le maquereau en gros morceaux et le réchauffer 2 min sans trop remuer. Retirer l'ail.",
+          "Cuire les pâtes dans l'eau salée jusqu'à al dente et les mélanger délicatement dans la poêle avec un peu d'eau de cuisson.",
+          "Servir avec le persil."
+        ]
+      },
+      "it": {
+        "title": "Pasta sgombro e pomodorini",
+        "steps": [
+          "Soffriggere dolcemente aglio e peperoncino nell'olio per 1 min, aggiungere pomodorini e capperi e cuocere 6 min.",
+          "Aggiungere lo sgombro a pezzi grossi e scaldarlo 2 min senza mescolare troppo. Togliere l'aglio.",
+          "Cuocere la pasta in acqua salata fino al dente e saltarla delicatamente in padella con un goccio di acqua di cottura.",
+          "Servire con il prezzemolo."
+        ]
+      }
+    }
+  },
+  {
+    "id": "521b35da-9379-505a-8584-b5f5862f7e81",
+    "title": "Pasta calamari e pomodorini",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 20,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-calamari-e-pomodorini.webp",
+    "cuisine": "italian",
+    "tags": [
+      "mediterranean",
+      "summer",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "8fdee17f-7a16-5570-9604-a480751dd877",
+        "text": "200 g pasta, spaghetti or mezzi paccheri"
+      },
+      {
+        "id": "b06fd2f5-69d0-5ef9-a6b7-32849792cdf5",
+        "text": "300 g squid, rings"
+      },
+      {
+        "id": "f734a690-a3fb-5009-9422-a78729498618",
+        "text": "250 g cherry tomatoes, halved"
+      },
+      {
+        "id": "8049223f-25aa-5419-99a7-f1dd3901906e",
+        "text": "2 cloves garlic, crushed"
+      },
+      {
+        "id": "2238410b-fffc-5280-b0d3-a6b191a3d4f0",
+        "text": "60 ml white wine"
+      },
+      {
+        "id": "c5d00036-d534-5cd1-b41a-2746b62e2343",
+        "text": "1 pinch chili flakes"
+      },
+      {
+        "id": "a48c95a4-23a3-5284-ac22-5c08a63f7c44",
+        "text": "10 g parsley, chopped"
+      },
+      {
+        "id": "b21f93e2-09fc-571f-aa2e-319c39601351",
+        "text": "3 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "2ee1a313-ea85-5bfb-b65a-a97ad919de02",
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "Gently fry the garlic and chilli in the oil for 1 min, add the squid and cook over high heat for 2 min.",
+      "Pour in the wine and let it evaporate.",
+      "Add the cherry tomatoes and a pinch of salt and cook for 10 min until saucy. Remove the garlic.",
+      "Cook the pasta in salted water until 1 min short of al dente and finish it in the pan with a splash of cooking water.",
+      "Serve with parsley."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes aux calamars et tomates cerises",
+        "steps": [
+          "Faire revenir doucement l'ail et le piment dans l'huile 1 min, ajouter les calamars et cuire à feu vif 2 min.",
+          "Déglacer au vin et le laisser s'évaporer.",
+          "Ajouter les tomates cerises et une pincée de sel et cuire 10 min jusqu'à obtenir une sauce. Retirer l'ail.",
+          "Cuire les pâtes dans l'eau salée jusqu'à 1 min avant al dente et finir la cuisson dans la poêle avec un peu d'eau de cuisson.",
+          "Servir avec le persil."
+        ]
+      },
+      "it": {
+        "title": "Pasta calamari e pomodorini",
+        "steps": [
+          "Soffriggere dolcemente aglio e peperoncino nell'olio per 1 min, aggiungere i calamari e cuocere a fuoco vivo per 2 min.",
+          "Sfumare con il vino e farlo evaporare.",
+          "Aggiungere i pomodorini e un pizzico di sale e cuocere 10 min finché fanno il sugo. Togliere l'aglio.",
+          "Cuocere la pasta in acqua salata fino a 1 min prima del dente e terminare la cottura in padella con un goccio di acqua di cottura.",
+          "Servire con il prezzemolo."
+        ]
+      }
+    }
+  },
+  {
+    "id": "ae3bb047-cf37-550e-a07b-ad924dfa9800",
+    "title": "Pasta porri e pancetta",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 20,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-porri-e-pancetta.webp",
+    "cuisine": "italian",
+    "tags": [
+      "comfort",
+      "winter",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "e4f88de5-5c8d-5e3c-947e-a67287f2dfb1",
+        "text": "200 g pasta, penne or fusilli"
+      },
+      {
+        "id": "e6a04118-e6dd-5582-8279-b699df3285e4",
+        "text": "2 leek, white and light green parts, sliced"
+      },
+      {
+        "id": "6b385242-90ef-5650-b8be-7efcb5ff08f8",
+        "text": "80 g pancetta, diced"
+      },
+      {
+        "id": "7743e480-6dcd-5119-b77c-f4e0c341b576",
+        "text": "50 ml white wine"
+      },
+      {
+        "id": "5ee8e125-0ed0-5ad9-94fc-8419a8d8f29e",
+        "text": "1 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "9dbd6429-1173-5653-a4f0-5a1434c4cc56",
+        "text": "30 g parmesan, grated"
+      },
+      {
+        "id": "17f7b6e7-6c91-5faa-bbf7-2e67a7278a94",
+        "text": "salt"
+      },
+      {
+        "id": "c2edcf95-7dae-559a-92c5-7f56281f868b",
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Brown the pancetta in the oil for 4 min.",
+      "Add the leeks with a pinch of salt, pour in the wine and a ladle of water, cover and cook gently for 12 min until very soft.",
+      "Cook the pasta in salted water until al dente and toss it in the pan with a ladle of cooking water.",
+      "Off the heat, add the parmesan and toss until creamy. Serve with pepper."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes aux poireaux et à la pancetta",
+        "steps": [
+          "Faire dorer la pancetta dans l'huile 4 min.",
+          "Ajouter les poireaux avec une pincée de sel, verser le vin et une louche d'eau, couvrir et cuire doucement 12 min jusqu'à ce qu'ils soient très tendres.",
+          "Cuire les pâtes dans l'eau salée jusqu'à al dente et les faire sauter dans la poêle avec une louche d'eau de cuisson.",
+          "Hors du feu, ajouter le parmesan et mélanger jusqu'à ce que ce soit crémeux. Servir poivré."
+        ]
+      },
+      "it": {
+        "title": "Pasta porri e pancetta",
+        "steps": [
+          "Rosolare la pancetta nell'olio per 4 min.",
+          "Aggiungere i porri con un pizzico di sale, versare il vino e un mestolo d'acqua, coprire e cuocere dolcemente 12 min finché sono molto morbidi.",
+          "Cuocere la pasta in acqua salata fino al dente e saltarla in padella con un mestolo di acqua di cottura.",
+          "Fuori dal fuoco, aggiungere il parmigiano e mantecare finché è cremosa. Servire con pepe."
+        ]
+      }
+    }
+  },
+  {
+    "id": "b432b647-50fe-5ab1-b12b-8d13453d34f1",
+    "title": "Pasta con fagiolini e pomodoro",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 25,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-con-fagiolini-e-pomodoro.webp",
+    "cuisine": "italian",
+    "tags": [
+      "vegan",
+      "summer",
+      "budget",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "12eba553-03b0-5590-85d8-99887505eebf",
+        "text": "200 g pasta, ditali or penne"
+      },
+      {
+        "id": "3b265a27-b57f-5845-834b-ff0dbaf3be7a",
+        "text": "250 g green beans, in short lengths"
+      },
+      {
+        "id": "2e25b1eb-f7a1-5f25-ac77-b9fe367ed022",
+        "text": "300 g canned tomatoes, peeled"
+      },
+      {
+        "id": "680d697d-9546-5ee1-b9a3-49e90c24ab47",
+        "text": "1 clove garlic, crushed"
+      },
+      {
+        "id": "d459571e-6e3b-5b3d-9ca0-4821e0c1bc5e",
+        "text": "5 g fresh basil"
+      },
+      {
+        "id": "132e733a-48ff-56ee-9f9d-a8561e4e780c",
+        "text": "3 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "a7ee2435-9b43-513a-b8ec-a76c892d03bf",
+        "text": "20 g pecorino, grated",
+        "optional": true
+      },
+      {
+        "id": "4a09e1ba-f746-534c-988c-4baa0da2408a",
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "Gently fry the garlic in the oil for 1 min, add the tomatoes with a pinch of salt and crush them.",
+      "Add the green beans and a ladle of water, cover and cook for 15 min until the beans are tender and the sauce thick. Remove the garlic and tear in the basil.",
+      "Cook the pasta in salted water until al dente and toss it in the sauce with a splash of cooking water.",
+      "Serve (with Pecorino, if using)."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes aux haricots verts et à la tomate",
+        "steps": [
+          "Faire revenir doucement l'ail dans l'huile 1 min, ajouter les tomates avec une pincée de sel et les écraser.",
+          "Ajouter les haricots verts et une louche d'eau, couvrir et cuire 15 min jusqu'à ce que les haricots soient tendres et la sauce épaisse. Retirer l'ail et ajouter le basilic déchiré.",
+          "Cuire les pâtes dans l'eau salée jusqu'à al dente et les faire sauter dans la sauce avec un peu d'eau de cuisson.",
+          "Servir (avec du pecorino, si utilisé)."
+        ]
+      },
+      "it": {
+        "title": "Pasta con fagiolini e pomodoro",
+        "steps": [
+          "Soffriggere dolcemente l'aglio nell'olio per 1 min, aggiungere i pomodori con un pizzico di sale e schiacciarli.",
+          "Aggiungere i fagiolini e un mestolo d'acqua, coprire e cuocere 15 min finché i fagiolini sono teneri e il sugo denso. Togliere l'aglio e spezzettare il basilico.",
+          "Cuocere la pasta in acqua salata fino al dente e saltarla nel sugo con un goccio di acqua di cottura.",
+          "Servire (con pecorino, se si usa)."
+        ]
+      }
+    }
+  },
+  {
+    "id": "2104aa13-6d1e-50ec-b862-fade801c98a6",
+    "title": "Pasta verza e salsiccia",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 25,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-verza-e-salsiccia.webp",
+    "cuisine": "italian",
+    "tags": [
+      "comfort",
+      "winter",
+      "budget",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "714b3f78-ea89-53a0-859c-646888a48c66",
+        "text": "200 g pasta, penne or orecchiette"
+      },
+      {
+        "id": "8ac06e88-2eb2-5ba5-8531-7114fca2a6ac",
+        "text": "300 g cabbage, savoy, in thin strips"
+      },
+      {
+        "id": "241671f3-ed5f-5342-b571-b3f43986d474",
+        "text": "200 g sausage, casing removed"
+      },
+      {
+        "id": "83b85abf-1e6e-5f5c-91e1-0095a1d0a664",
+        "text": "1 clove garlic, crushed"
+      },
+      {
+        "id": "818a1d9c-cb8f-5d89-8376-b24514fd5eb3",
+        "text": "50 ml white wine"
+      },
+      {
+        "id": "64d89f49-ccfe-59b2-8071-9f000dfb7b8f",
+        "text": "1 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "f9a358d3-3943-5499-b907-bc26cdc494d5",
+        "text": "30 g parmesan, grated"
+      },
+      {
+        "id": "0c0afe63-e1b9-582a-b1c1-e7b4d3faa28f",
+        "text": "salt"
+      },
+      {
+        "id": "b4e94a85-fe56-5764-9fdb-76984eace52f",
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Brown the sausage in the oil, breaking it up, for 5 min.",
+      "Add the garlic and the cabbage with a pinch of salt, pour in the wine and a ladle of water, cover and cook for 15 min until the cabbage is soft. Remove the garlic.",
+      "Cook the pasta in salted water until al dente and toss it in the pan with a splash of cooking water.",
+      "Off the heat, stir in the parmesan and serve with pepper."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes au chou et à la saucisse",
+        "steps": [
+          "Faire dorer la saucisse dans l'huile en l'émiettant 5 min.",
+          "Ajouter l'ail et le chou avec une pincée de sel, verser le vin et une louche d'eau, couvrir et cuire 15 min jusqu'à ce que le chou soit tendre. Retirer l'ail.",
+          "Cuire les pâtes dans l'eau salée jusqu'à al dente et les faire sauter dans la poêle avec un peu d'eau de cuisson.",
+          "Hors du feu, incorporer le parmesan et servir poivré."
+        ]
+      },
+      "it": {
+        "title": "Pasta verza e salsiccia",
+        "steps": [
+          "Rosolare la salsiccia nell'olio, sbriciolandola, per 5 min.",
+          "Aggiungere l'aglio e la verza con un pizzico di sale, sfumare con il vino e un mestolo d'acqua, coprire e cuocere 15 min finché la verza è morbida. Togliere l'aglio.",
+          "Cuocere la pasta in acqua salata fino al dente e saltarla in padella con un goccio di acqua di cottura.",
+          "Fuori dal fuoco, unire il parmigiano e servire con pepe."
+        ]
+      }
+    }
+  },
+  {
+    "id": "506fdf04-e04e-5927-8f3a-931f04d51bbe",
+    "title": "Pasta e cavolfiore",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 30,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-e-cavolfiore.webp",
+    "cuisine": "italian",
+    "tags": [
+      "comfort",
+      "vegetarian",
+      "winter",
+      "budget",
+      "one-pot",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 1,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "22603752-eefa-57ff-b6c9-715f8c35bd38",
+        "text": "160 g pasta, pasta mista"
+      },
+      {
+        "id": "2bced4ed-3b2b-5b83-9925-7d68c9eff9a6",
+        "text": "500 g cauliflower, in small florets"
+      },
+      {
+        "id": "0ed493a1-5450-57d8-bae5-57b544a3a138",
+        "text": "1 clove garlic, crushed"
+      },
+      {
+        "id": "378cc46e-f50e-57b2-8488-472bb90f786c",
+        "text": "1 pinch chili flakes"
+      },
+      {
+        "id": "bb20d0e0-5908-5dce-bdb4-40523cbfbc21",
+        "text": "1 tbsp tomato paste"
+      },
+      {
+        "id": "40e85338-90a9-5d44-a966-4e3def1b8d3d",
+        "text": "700 ml vegetable stock, hot"
+      },
+      {
+        "id": "f30f768c-d123-58de-8ef6-afb91b344296",
+        "text": "30 g parmesan, grated"
+      },
+      {
+        "id": "a9047428-48b2-55f0-a4fd-6bc2d984f85d",
+        "text": "3 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "26719cb8-08d1-59ae-84cf-916b0d529c6c",
+        "text": "salt"
+      },
+      {
+        "id": "96337406-8be3-5be9-bf13-9c6922436455",
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Gently fry the garlic and chilli in the oil for 1 min, then stir in the tomato paste.",
+      "Add the cauliflower with a pinch of salt, pour in half the stock and simmer for 12 min until soft. Remove the garlic and break up the cauliflower with a spoon.",
+      "Add the pasta and cook it in the pot, adding the rest of the stock a little at a time, until al dente and creamy.",
+      "Off the heat, stir in the parmesan and serve with pepper."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pasta e cavolfiore (pâtes au chou-fleur)",
+        "steps": [
+          "Faire revenir doucement l'ail et le piment dans l'huile 1 min, puis incorporer le concentré de tomate.",
+          "Ajouter le chou-fleur avec une pincée de sel, verser la moitié du bouillon et laisser mijoter 12 min jusqu'à ce qu'il soit tendre. Retirer l'ail et écraser le chou-fleur à la cuillère.",
+          "Ajouter les pâtes et les cuire dans la casserole en ajoutant le reste du bouillon peu à peu, jusqu'à ce qu'elles soient al dente et crémeuses.",
+          "Hors du feu, incorporer le parmesan et servir poivré."
+        ]
+      },
+      "it": {
+        "title": "Pasta e cavolfiore",
+        "steps": [
+          "Soffriggere dolcemente aglio e peperoncino nell'olio per 1 min, poi unire il concentrato.",
+          "Aggiungere il cavolfiore con un pizzico di sale, versare metà del brodo e cuocere 12 min finché è morbido. Togliere l'aglio e sbriciolare il cavolfiore con un cucchiaio.",
+          "Aggiungere la pasta e cuocerla nella pentola unendo il resto del brodo poco alla volta, finché è al dente e cremosa.",
+          "Fuori dal fuoco, unire il parmigiano e servire con pepe."
+        ]
+      }
+    }
+  },
+  {
+    "id": "09ce266c-5c71-5670-bf15-0c8f4bd87194",
+    "title": "Pasta ai quattro formaggi",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 5,
+    "cook_min": 15,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "image_url": "/recipe-photos/pasta-ai-quattro-formaggi.webp",
+    "cuisine": "italian",
+    "tags": [
+      "quick",
+      "vegetarian",
+      "comfort",
+      "treat",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "9bf695e4-fecb-5842-a813-bf27bb49898d",
+        "text": "200 g pasta, penne or rigatoni"
+      },
+      {
+        "id": "95a00c23-c870-5ed5-aef4-8d69b633add3",
+        "text": "50 g gorgonzola, dolce"
+      },
+      {
+        "id": "7b92f6e9-fce2-59d6-a8fd-8fcd53dc4d33",
+        "text": "50 g fontina, diced"
+      },
+      {
+        "id": "aae1169a-834c-5a97-b791-44ae36cfa918",
+        "text": "40 g emmental, diced"
+      },
+      {
+        "id": "e42bad0b-50af-5da1-a433-a58a9201ac2c",
+        "text": "30 g parmesan, grated"
+      },
+      {
+        "id": "f8897f64-0745-5fec-80bd-cdb852a4c6c9",
+        "text": "100 ml milk"
+      },
+      {
+        "id": "8d83d1c0-f82e-5bcc-80ed-bd0222ca95c8",
+        "text": "15 g butter"
+      },
+      {
+        "id": "9a47da96-234f-5b14-9dbe-e7ecf181e318",
+        "text": "black pepper"
+      },
+      {
+        "id": "13046dc7-613d-53d5-a397-892ff08f22d4",
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "Warm the milk and butter in a large pan over low heat.",
+      "Add the gorgonzola, fontina and emmental and stir until melted and smooth, without letting it boil.",
+      "Cook the pasta in salted water until al dente and move it into the cheese pan with a splash of cooking water.",
+      "Add the parmesan and toss over low heat for 1 min until creamy.",
+      "Serve with pepper."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes aux quatre fromages",
+        "steps": [
+          "Chauffer le lait et le beurre dans une grande poêle à feu doux.",
+          "Ajouter le gorgonzola, la fontina et l'emmental et remuer jusqu'à ce qu'ils soient fondus et lisses, sans faire bouillir.",
+          "Cuire les pâtes dans l'eau salée jusqu'à al dente et les transférer dans la poêle aux fromages avec un peu d'eau de cuisson.",
+          "Ajouter le parmesan et mélanger 1 min à feu doux jusqu'à ce que ce soit crémeux.",
+          "Servir poivré."
+        ]
+      },
+      "it": {
+        "title": "Pasta ai quattro formaggi",
+        "steps": [
+          "Scaldare il latte e il burro in una padella larga a fuoco basso.",
+          "Aggiungere gorgonzola, fontina ed emmental e mescolare finché sono sciolti e lisci, senza far bollire.",
+          "Cuocere la pasta in acqua salata fino al dente e trasferirla nella padella dei formaggi con un goccio di acqua di cottura.",
+          "Aggiungere il parmigiano e mantecare 1 min a fuoco basso finché è cremosa.",
+          "Servire con pepe."
         ]
       }
     }
