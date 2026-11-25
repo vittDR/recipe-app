@@ -3701,5 +3701,1891 @@
         ]
       }
     }
+  },
+  {
+    "id": "6b4e44bc-161f-5bf9-9f07-25cceeeb6690",
+    "title": "Spaghetti alla scarpariello",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 5,
+    "cook_min": 15,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "italian",
+    "tags": [
+      "quick",
+      "vegetarian",
+      "summer",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "631dd68c-2ddc-5955-81cc-4db6fed749fe",
+        "text": "200 g pasta, spaghetti"
+      },
+      {
+        "id": "c8573559-8b9f-5673-9874-d8b72ee95e71",
+        "text": "300 g cherry tomatoes, halved"
+      },
+      {
+        "id": "dcd98da8-8b53-5ed1-bc4e-a7a823bbfb61",
+        "text": "1 clove garlic, crushed"
+      },
+      {
+        "id": "dafef5ca-3034-5147-821f-bb001703d0da",
+        "text": "1 pinch chili flakes"
+      },
+      {
+        "id": "4764c7fb-8ef3-5e8c-84ca-bebef301822e",
+        "text": "10 g fresh basil"
+      },
+      {
+        "id": "c9f61b98-7678-559f-8c36-e3a5a87bd0d2",
+        "text": "25 g Pecorino Romano, grated"
+      },
+      {
+        "id": "a1026688-c235-5890-8fa5-7f834e28a1e7",
+        "text": "25 g parmigiano reggiano, grated"
+      },
+      {
+        "id": "0e25b9be-4d5a-5d21-b48a-c28e58655637",
+        "text": "3 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "5628dc12-d4a6-53d3-b0fb-d9c0bcb0ea69",
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "Gently fry the garlic and chilli in the oil for 1 min.",
+      "Add the cherry tomatoes with a pinch of salt and cook over high heat for 8 min, pressing them so they release their juice. Remove the garlic.",
+      "Cook the spaghetti in salted water until 1 min short of al dente and finish them in the sauce with a ladle of cooking water.",
+      "Off the heat, add both cheeses and the basil and toss hard until creamy.",
+      "Serve."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Spaghetti alla scarpariello",
+        "steps": [
+          "Faire revenir doucement l'ail et le piment dans l'huile 1 min.",
+          "Ajouter les tomates cerises avec une pincée de sel et cuire à feu vif 8 min en les pressant pour qu'elles rendent leur jus. Retirer l'ail.",
+          "Cuire les spaghetti dans l'eau salée jusqu'à 1 min avant al dente et finir la cuisson dans la sauce avec une louche d'eau de cuisson.",
+          "Hors du feu, ajouter les deux fromages et le basilic et mélanger vigoureusement jusqu'à ce que ce soit crémeux.",
+          "Servir."
+        ]
+      },
+      "it": {
+        "title": "Spaghetti alla scarpariello",
+        "steps": [
+          "Soffriggere dolcemente aglio e peperoncino nell'olio per 1 min.",
+          "Aggiungere i pomodorini con un pizzico di sale e cuocere a fuoco vivo per 8 min, schiacciandoli perché rilascino il succo. Togliere l'aglio.",
+          "Cuocere gli spaghetti in acqua salata fino a 1 min prima del dente e terminare la cottura nel sugo con un mestolo di acqua di cottura.",
+          "Fuori dal fuoco, aggiungere i due formaggi e il basilico e mantecare energicamente finché è cremoso.",
+          "Servire."
+        ]
+      }
+    }
+  },
+  {
+    "id": "2fc88e2c-e0c0-51e2-81c0-0c3f5ba3d231",
+    "title": "Vermicelli con le vongole fujute",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 5,
+    "cook_min": 15,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "italian",
+    "tags": [
+      "quick",
+      "vegan",
+      "budget",
+      "summer",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "a3b02b18-7285-5068-bc33-2234026afdcb",
+        "text": "200 g pasta, vermicelli or spaghetti"
+      },
+      {
+        "id": "0d2be3e7-db27-5e1a-acc5-86a37870e741",
+        "text": "200 g cherry tomatoes, halved"
+      },
+      {
+        "id": "6b928449-d937-50d0-9855-245816f05993",
+        "text": "2 cloves garlic, crushed"
+      },
+      {
+        "id": "dc7fc11c-de60-52af-a268-b521638bb3f3",
+        "text": "1 pinch chili flakes"
+      },
+      {
+        "id": "f0157a4b-7804-5fd5-bc0c-15692e526e27",
+        "text": "10 g parsley, chopped"
+      },
+      {
+        "id": "be0de21b-9852-5099-8e43-369a14dac302",
+        "text": "4 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "78ad66e2-c7d9-5e02-95a0-cc71655762a2",
+        "text": "salt"
+      },
+      {
+        "id": "df3195f8-ae38-5de8-b3e8-ad0dd6748e95",
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Gently fry the garlic and chilli in the oil for 2 min.",
+      "Add the cherry tomatoes and cook over high heat for 5 min, until they just collapse. Remove the garlic.",
+      "Cook the vermicelli in salted water until 1 min short of al dente.",
+      "Finish them in the pan with a ladle of cooking water and half the parsley, tossing until the sauce is glossy.",
+      "Serve with the rest of the parsley and black pepper."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Vermicelli aux vongole fujute (tomates, ail et persil)",
+        "steps": [
+          "Faire revenir doucement l'ail et le piment dans l'huile 2 min.",
+          "Ajouter les tomates cerises et cuire à feu vif 5 min, jusqu'à ce qu'elles commencent à éclater. Retirer l'ail.",
+          "Cuire les vermicelli dans l'eau salée jusqu'à 1 min avant al dente.",
+          "Finir la cuisson dans la poêle avec une louche d'eau de cuisson et la moitié du persil, en mélangeant jusqu'à ce que la sauce soit brillante.",
+          "Servir avec le reste du persil et du poivre noir."
+        ]
+      },
+      "it": {
+        "title": "Vermicelli con le vongole fujute",
+        "steps": [
+          "Soffriggere dolcemente aglio e peperoncino nell'olio per 2 min.",
+          "Aggiungere i pomodorini e cuocere a fuoco vivo per 5 min, finché appassiscono appena. Togliere l'aglio.",
+          "Cuocere i vermicelli in acqua salata fino a 1 min prima del dente.",
+          "Terminare la cottura in padella con un mestolo di acqua di cottura e metà del prezzemolo, saltando finché il sugo è lucido.",
+          "Servire con il resto del prezzemolo e pepe nero."
+        ]
+      }
+    }
+  },
+  {
+    "id": "49d2d3c2-cb42-51cc-aae0-6f92c0367527",
+    "title": "Pasta e broccoli",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 25,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "italian",
+    "tags": [
+      "comfort",
+      "vegan",
+      "budget",
+      "winter",
+      "one-pot",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 1,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "0f63853e-6793-524a-886d-ddfec9fa2664",
+        "text": "160 g pasta, pasta mista"
+      },
+      {
+        "id": "134ea28d-aa06-5c76-86d9-97c987b7ed70",
+        "text": "400 g broccoli, in small florets, stalk peeled and diced"
+      },
+      {
+        "id": "99fc10ca-0ced-5adc-9aae-1c7a254933ba",
+        "text": "2 cloves garlic, crushed"
+      },
+      {
+        "id": "6772b4ba-9deb-5c65-9be2-b275e2482be7",
+        "text": "1 pinch chili flakes"
+      },
+      {
+        "id": "3a4e53c5-2eaf-545f-a949-37b7aea8c6a4",
+        "text": "700 ml vegetable stock, hot"
+      },
+      {
+        "id": "b8f207a7-95d9-5d79-992d-b578d96a8c35",
+        "text": "3 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "fab095c0-ca2d-5898-b262-cdb7718a0aec",
+        "text": "20 g Pecorino Romano, grated",
+        "optional": true
+      },
+      {
+        "id": "f5106a46-20cb-5350-ab67-729ff5f9a6b8",
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "Gently fry the garlic and chilli in the oil for 1 min.",
+      "Add the broccoli with a pinch of salt and stir for 3 min, then pour in half the stock and simmer for 10 min, until soft. Remove the garlic and break up the broccoli with a spoon.",
+      "Add the pasta and cook it in the pot, adding the rest of the stock a little at a time, until al dente and creamy.",
+      "Serve with a drizzle of oil (and Pecorino, if using)."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pasta e broccoli",
+        "steps": [
+          "Faire revenir doucement l'ail et le piment dans l'huile 1 min.",
+          "Ajouter le brocoli avec une pincée de sel et remuer 3 min, puis verser la moitié du bouillon et laisser mijoter 10 min, jusqu'à ce qu'il soit tendre. Retirer l'ail et écraser le brocoli à la cuillère.",
+          "Ajouter les pâtes et les cuire dans la casserole en ajoutant le reste du bouillon peu à peu, jusqu'à ce qu'elles soient al dente et crémeuses.",
+          "Servir avec un filet d'huile (et du pecorino, si utilisé)."
+        ]
+      },
+      "it": {
+        "title": "Pasta e broccoli",
+        "steps": [
+          "Soffriggere dolcemente aglio e peperoncino nell'olio per 1 min.",
+          "Aggiungere i broccoli con un pizzico di sale e mescolare 3 min, poi versare metà del brodo e cuocere 10 min, finché sono morbidi. Togliere l'aglio e sbriciolare i broccoli con un cucchiaio.",
+          "Aggiungere la pasta e cuocerla nella pentola unendo il resto del brodo poco alla volta, finché è al dente e cremosa.",
+          "Servire con un filo d'olio (e pecorino, se si usa)."
+        ]
+      }
+    }
+  },
+  {
+    "id": "8f3780df-6eb6-5a74-abde-bacbe030507f",
+    "title": "Pasta salsiccia e friarielli",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 15,
+    "cook_min": 20,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "italian",
+    "tags": [
+      "comfort",
+      "winter",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "cb480f0d-6e5e-5360-9d56-d201df270a1c",
+        "text": "200 g pasta, mezzi paccheri or penne"
+      },
+      {
+        "id": "47f537fc-89f2-5a86-bc7e-9da85944eee7",
+        "text": "400 g broccoli, friarielli (broccoli rabe), tough stalks removed"
+      },
+      {
+        "id": "b120164a-c3e5-5d83-800e-387d14524a6e",
+        "text": "200 g sausage, casing removed"
+      },
+      {
+        "id": "1e9aae79-af5c-567d-b5d1-a6ffe04132c7",
+        "text": "2 cloves garlic, crushed"
+      },
+      {
+        "id": "51547ac7-b4ac-59ad-8bca-8e3049233fb3",
+        "text": "1 pinch chili flakes"
+      },
+      {
+        "id": "f2c51ae3-46ee-53c9-a69c-5dfaa1a29087",
+        "text": "4 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "4cba712a-0c3b-56c8-9c84-cadfb179fb59",
+        "text": "20 g Pecorino Romano, grated",
+        "optional": true
+      },
+      {
+        "id": "63a02759-ad0f-5778-b38b-7a3193940141",
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "Brown the sausage in 1 tbsp oil, breaking it up, for 6 min, then lift it out.",
+      "In the same pan, gently fry the garlic and chilli in the rest of the oil for 1 min.",
+      "Add the raw friarielli with a pinch of salt, cover and cook for 10 min, stirring now and then, until tender. Remove the garlic.",
+      "Put the sausage back.",
+      "Cook the pasta in salted water until al dente and toss it in the pan with a splash of cooking water. Serve, with Pecorino if you like."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pâtes à la saucisse et aux friarielli",
+        "steps": [
+          "Faire dorer la saucisse dans 1 c. à soupe d'huile en l'émiettant 6 min, puis la retirer.",
+          "Dans la même poêle, faire revenir doucement l'ail et le piment dans le reste de l'huile 1 min.",
+          "Ajouter les friarielli crus avec une pincée de sel, couvrir et cuire 10 min en remuant de temps en temps, jusqu'à ce qu'ils soient tendres. Retirer l'ail.",
+          "Remettre la saucisse.",
+          "Cuire les pâtes dans l'eau salée jusqu'à al dente et les faire sauter dans la poêle avec un peu d'eau de cuisson. Servir, avec du pecorino si on le souhaite."
+        ]
+      },
+      "it": {
+        "title": "Pasta salsiccia e friarielli",
+        "steps": [
+          "Rosolare la salsiccia in 1 cucchiaio d'olio, sbriciolandola, per 6 min, poi toglierla.",
+          "Nella stessa padella, soffriggere dolcemente aglio e peperoncino nel resto dell'olio per 1 min.",
+          "Aggiungere i friarielli crudi con un pizzico di sale, coprire e cuocere 10 min mescolando ogni tanto, finché sono teneri. Togliere l'aglio.",
+          "Rimettere la salsiccia.",
+          "Cuocere la pasta in acqua salata fino al dente e saltarla in padella con un goccio di acqua di cottura. Servire, con pecorino a piacere."
+        ]
+      }
+    }
+  },
+  {
+    "id": "db325334-5129-52d5-ad0c-f92d7ce88be9",
+    "title": "Linguine al sugo di polpo",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 15,
+    "cook_min": 75,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "italian",
+    "tags": [
+      "comfort",
+      "mediterranean",
+      "fancy",
+      "italian"
+    ],
+    "difficulty": "medium",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "e1a9c9d0-504b-5e10-bc4d-f8e90b7eff80",
+        "text": "200 g pasta, linguine"
+      },
+      {
+        "id": "d97a69df-c87d-50de-a324-0450ad8d4f56",
+        "text": "500 g octopus, cleaned, in pieces"
+      },
+      {
+        "id": "d5d8aaa3-1a1a-5177-8f83-efa0a6e09dd0",
+        "text": "400 g canned tomatoes, peeled"
+      },
+      {
+        "id": "1f7e724e-01e3-5f98-868f-7e652ce6b811",
+        "text": "2 cloves garlic, crushed"
+      },
+      {
+        "id": "ca577a2b-87d8-5c24-8ca9-c615d92ad996",
+        "text": "30 g olives, black Gaeta, pitted"
+      },
+      {
+        "id": "151c2ba2-c8dd-59f9-9764-eee255dfbf3d",
+        "text": "1 tbsp capers, rinsed"
+      },
+      {
+        "id": "f2701784-76bd-552a-aae2-4ff44c178b73",
+        "text": "1 pinch chili flakes"
+      },
+      {
+        "id": "fe90067f-93bd-5bf5-8e66-3dc905d62e5b",
+        "text": "10 g parsley, chopped"
+      },
+      {
+        "id": "cb9eb698-98d4-52b2-b4c4-5d78e94b3f4a",
+        "text": "4 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "875a87e7-4480-5f5b-89ca-9217c46185a0",
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "Gently fry the garlic and chilli in the oil for 1 min, then add the octopus and stir for 3 min.",
+      "Add the tomatoes, olives, capers and half the parsley, crush the tomatoes, cover and cook over the lowest heat for about 1 hour, until the octopus is tender. Do not add salt until the end.",
+      "Uncover and cook for 5 min more if the sauce is thin. Taste for salt and remove the garlic.",
+      "Cook the linguine in salted water until 1 min short of al dente and finish them in the sauce with a little cooking water.",
+      "Serve with the rest of the parsley."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Linguine à la sauce au poulpe",
+        "steps": [
+          "Faire revenir doucement l'ail et le piment dans l'huile 1 min, puis ajouter le poulpe et remuer 3 min.",
+          "Ajouter les tomates, les olives, les câpres et la moitié du persil, écraser les tomates, couvrir et cuire à feu très doux environ 1 heure, jusqu'à ce que le poulpe soit tendre. Ne saler qu'à la fin.",
+          "Découvrir et cuire encore 5 min si la sauce est liquide. Rectifier le sel et retirer l'ail.",
+          "Cuire les linguine dans l'eau salée jusqu'à 1 min avant al dente et finir la cuisson dans la sauce avec un peu d'eau de cuisson.",
+          "Servir avec le reste du persil."
+        ]
+      },
+      "it": {
+        "title": "Linguine al sugo di polpo",
+        "steps": [
+          "Soffriggere dolcemente aglio e peperoncino nell'olio per 1 min, poi aggiungere il polpo e mescolare 3 min.",
+          "Aggiungere pomodori, olive, capperi e metà del prezzemolo, schiacciare i pomodori, coprire e cuocere a fuoco minimo per circa 1 ora, finché il polpo è tenero. Non salare fino alla fine.",
+          "Scoprire e cuocere altri 5 min se il sugo è liquido. Regolare di sale e togliere l'aglio.",
+          "Cuocere le linguine in acqua salata fino a 1 min prima del dente e terminare la cottura nel sugo con poca acqua di cottura.",
+          "Servire con il resto del prezzemolo."
+        ]
+      }
+    }
+  },
+  {
+    "id": "135bf5b7-242a-5d80-8c77-d1c17980cdeb",
+    "title": "Frittata di maccheroni",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 25,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "italian",
+    "tags": [
+      "comfort",
+      "picnic",
+      "leftovers",
+      "vegetarian",
+      "italian"
+    ],
+    "difficulty": "medium",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "780d1148-9e49-576e-a9c0-f0f6ec98707b",
+        "text": "160 g pasta, spaghetti or leftover cooked spaghetti"
+      },
+      {
+        "id": "92a838d2-ad5a-52d6-9a3a-4412a63134ca",
+        "text": "4 eggs"
+      },
+      {
+        "id": "3a77f1f8-f9f5-50e7-a702-ad43f3383d42",
+        "text": "40 g parmigiano reggiano, grated"
+      },
+      {
+        "id": "89c700aa-d606-5df3-8ee0-e6b7944b73ba",
+        "text": "20 g Pecorino Romano, grated"
+      },
+      {
+        "id": "4ad8666a-bddf-5971-89a4-177c6f01ee1b",
+        "text": "3 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "ddeb17e3-c2a0-5900-ad16-146b31bcce48",
+        "text": "black pepper"
+      },
+      {
+        "id": "49997b35-097d-535a-89a9-d0691a4ea187",
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "Cook the spaghetti in salted water until al dente, drain them and let them cool a little (or use leftovers).",
+      "Beat the eggs with both cheeses and plenty of pepper, then mix in the spaghetti so every strand is coated.",
+      "Heat the oil in a 22–24 cm non-stick pan, pour in the spaghetti and press them flat.",
+      "Cook over medium-low heat for 8–10 min until a golden crust forms underneath.",
+      "Turn the frittata over with a plate and cook the other side for 6–8 min until golden and set.",
+      "Serve hot, warm or at room temperature, in wedges."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Frittata di maccheroni (omelette de spaghetti)",
+        "steps": [
+          "Cuire les spaghetti dans l'eau salée jusqu'à al dente, les égoutter et les laisser tiédir (ou utiliser des restes).",
+          "Battre les œufs avec les deux fromages et beaucoup de poivre, puis y mélanger les spaghetti pour bien les enrober.",
+          "Chauffer l'huile dans une poêle antiadhésive de 22 à 24 cm, verser les spaghetti et les tasser.",
+          "Cuire à feu moyen-doux 8 à 10 min jusqu'à ce qu'une croûte dorée se forme dessous.",
+          "Retourner la frittata à l'aide d'une assiette et cuire l'autre face 6 à 8 min jusqu'à ce qu'elle soit dorée et prise.",
+          "Servir chaud, tiède ou à température ambiante, en parts."
+        ]
+      },
+      "it": {
+        "title": "Frittata di maccheroni",
+        "steps": [
+          "Cuocere gli spaghetti in acqua salata fino al dente, scolarli e lasciarli intiepidire (o usare degli avanzi).",
+          "Sbattere le uova con i due formaggi e abbondante pepe, poi unire gli spaghetti in modo che ogni filo sia condito.",
+          "Scaldare l'olio in una padella antiaderente da 22–24 cm, versare gli spaghetti e pressarli.",
+          "Cuocere a fuoco medio-basso per 8–10 min finché si forma una crosta dorata sotto.",
+          "Girare la frittata aiutandosi con un piatto e cuocere l'altro lato per 6–8 min finché è dorata e rappresa.",
+          "Servire calda, tiepida o a temperatura ambiente, a spicchi."
+        ]
+      }
+    }
+  },
+  {
+    "id": "97376e52-e680-54e0-b5cf-88aaa6b5a023",
+    "title": "Spaghetti alla carrettiera",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 10,
+    "cook_min": 12,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "italian",
+    "tags": [
+      "quick",
+      "vegetarian",
+      "summer",
+      "no-cook",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 1,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "9edd4b43-b23d-5fc5-aead-80818348db4c",
+        "text": "200 g pasta, spaghetti"
+      },
+      {
+        "id": "3f1eebea-4be0-5096-b42c-490a9ee80126",
+        "text": "400 g tomato, very ripe, chopped"
+      },
+      {
+        "id": "e9b5bfa3-7a52-5254-8061-8d34c07ba4f6",
+        "text": "2 cloves garlic, finely chopped"
+      },
+      {
+        "id": "ba4683c2-973e-5bc7-b3fc-fb0054fb05c9",
+        "text": "10 g fresh basil, torn"
+      },
+      {
+        "id": "bcfa6a89-bc72-5076-a2c2-cb033a2551cc",
+        "text": "1 pinch chili flakes"
+      },
+      {
+        "id": "9ec83a1a-a5b9-50ed-b03d-b81d03c1c88e",
+        "text": "40 g pecorino, Siciliano, grated"
+      },
+      {
+        "id": "8dfe5536-ecf5-529a-afbf-9fc56e1456a0",
+        "text": "4 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "97f05890-7bc4-5521-b5f8-f286af21a393",
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "In a large bowl, mix the tomatoes, garlic, basil, chilli, oil and a pinch of salt and leave for at least 10 min.",
+      "Cook the spaghetti in salted water until al dente.",
+      "Drain them and toss them straight into the bowl with the raw sauce.",
+      "Add the Pecorino, toss again and serve."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Spaghetti alla carrettiera (sauce crue tomate et ail)",
+        "steps": [
+          "Dans un grand saladier, mélanger les tomates, l'ail, le basilic, le piment, l'huile et une pincée de sel et laisser reposer au moins 10 min.",
+          "Cuire les spaghetti dans l'eau salée jusqu'à al dente.",
+          "Les égoutter et les verser directement dans le saladier avec la sauce crue.",
+          "Ajouter le pecorino, mélanger de nouveau et servir."
+        ]
+      },
+      "it": {
+        "title": "Spaghetti alla carrettiera",
+        "steps": [
+          "In una ciotola larga, mescolare pomodori, aglio, basilico, peperoncino, olio e un pizzico di sale e lasciar riposare almeno 10 min.",
+          "Cuocere gli spaghetti in acqua salata fino al dente.",
+          "Scolarli e versarli direttamente nella ciotola con il condimento crudo.",
+          "Aggiungere il pecorino, mescolare di nuovo e servire."
+        ]
+      }
+    }
+  },
+  {
+    "id": "1c8de0cd-6061-5d0f-b2ef-0a8f05f1d35a",
+    "title": "Spaghetti al nero di seppia",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 20,
+    "cook_min": 30,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "italian",
+    "tags": [
+      "fancy",
+      "mediterranean",
+      "italian"
+    ],
+    "difficulty": "medium",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "a2f6d591-3fd8-5607-b28f-b71c0f84b78a",
+        "text": "200 g pasta, spaghetti"
+      },
+      {
+        "id": "b7621f70-33bb-57c8-a520-fe650d00d9e5",
+        "text": "300 g squid, cuttlefish, cleaned, in strips"
+      },
+      {
+        "id": "8f38731c-7f0d-5bb6-bc02-cf7a04c6ac6e",
+        "text": "8 g squid ink, cuttlefish ink sachets"
+      },
+      {
+        "id": "a7264e99-e7ca-5fe5-bffd-6a9a65fdedf7",
+        "text": "2 cloves garlic, crushed"
+      },
+      {
+        "id": "3b74e283-66a3-53a8-81f8-9fad0e46d66e",
+        "text": "60 ml white wine"
+      },
+      {
+        "id": "07e52987-6fe2-5e59-8280-5106d62878ce",
+        "text": "100 g passata",
+        "optional": true
+      },
+      {
+        "id": "ffc807ac-78ae-57fa-8622-c4634c7a10de",
+        "text": "1 pinch chili flakes"
+      },
+      {
+        "id": "6025006c-c12d-528b-b49e-d36d14c8ccc2",
+        "text": "10 g parsley, chopped"
+      },
+      {
+        "id": "e8698b18-a499-50b6-998a-105893a595d7",
+        "text": "4 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "d9774f3c-5868-535d-862a-1dd1e046d715",
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "Gently fry the garlic and chilli in the oil for 1 min, then add the cuttlefish and cook over high heat for 3 min.",
+      "Pour in the wine and let it evaporate. Add the passata, if using, and a ladle of hot water.",
+      "Cover and simmer for 20 min until the cuttlefish is tender, adding water if it dries.",
+      "Stir in the ink with a few spoonfuls of water and cook for 2 min. Remove the garlic and check the salt.",
+      "Cook the spaghetti in salted water until 1 min short of al dente and finish them in the black sauce with a splash of cooking water.",
+      "Serve with parsley."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Spaghetti à l'encre de seiche",
+        "steps": [
+          "Faire revenir doucement l'ail et le piment dans l'huile 1 min, puis ajouter la seiche et cuire à feu vif 3 min.",
+          "Déglacer au vin et le laisser s'évaporer. Ajouter la passata, si utilisée, et une louche d'eau chaude.",
+          "Couvrir et laisser mijoter 20 min jusqu'à ce que la seiche soit tendre, en ajoutant de l'eau si ça sèche.",
+          "Incorporer l'encre avec quelques cuillerées d'eau et cuire 2 min. Retirer l'ail et rectifier le sel.",
+          "Cuire les spaghetti dans l'eau salée jusqu'à 1 min avant al dente et finir la cuisson dans la sauce noire avec un peu d'eau de cuisson.",
+          "Servir avec le persil."
+        ]
+      },
+      "it": {
+        "title": "Spaghetti al nero di seppia",
+        "steps": [
+          "Soffriggere dolcemente aglio e peperoncino nell'olio per 1 min, poi aggiungere le seppie e cuocere a fuoco vivo per 3 min.",
+          "Sfumare con il vino e farlo evaporare. Aggiungere la passata, se si usa, e un mestolo di acqua calda.",
+          "Coprire e cuocere 20 min finché le seppie sono tenere, aggiungendo acqua se si asciuga.",
+          "Unire il nero con qualche cucchiaio d'acqua e cuocere 2 min. Togliere l'aglio e regolare di sale.",
+          "Cuocere gli spaghetti in acqua salata fino a 1 min prima del dente e terminare la cottura nel sugo nero con un goccio di acqua di cottura.",
+          "Servire con il prezzemolo."
+        ]
+      }
+    }
+  },
+  {
+    "id": "d2f8bb52-f3ca-574d-9367-794d54cf798d",
+    "title": "Fettuccine ai carciofi",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 20,
+    "cook_min": 20,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "italian",
+    "tags": [
+      "spring",
+      "vegetarian",
+      "italian"
+    ],
+    "difficulty": "medium",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "dd8e4f19-8f69-5557-a553-1fcbac95c1b4",
+        "text": "250 g pasta, fresh egg fettuccine"
+      },
+      {
+        "id": "88bbf342-5349-5baa-a167-a65c6bcc9218",
+        "text": "3 artichoke, Roman or violet"
+      },
+      {
+        "id": "2a8511c8-2562-5e88-95b4-9d4113ad84a6",
+        "text": "1 lemon, for the water"
+      },
+      {
+        "id": "defa93d2-8d98-56ae-950e-d9e7e369523f",
+        "text": "1 clove garlic, crushed"
+      },
+      {
+        "id": "f07219ae-f140-5ca6-b838-dd818211b87b",
+        "text": "50 ml white wine"
+      },
+      {
+        "id": "5c2d448c-90b8-5f08-ad06-49fb843b3fae",
+        "text": "5 g parsley, chopped"
+      },
+      {
+        "id": "a10ada9a-76ed-5455-8a53-91a11ac0317f",
+        "text": "4 fresh mint, leaves",
+        "optional": true
+      },
+      {
+        "id": "a4c7cb12-aa44-5815-8417-93f9135877c2",
+        "text": "30 g Pecorino Romano, grated"
+      },
+      {
+        "id": "279f11bd-ff05-5f20-ba6c-ca18097bc232",
+        "text": "4 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "d21d36b5-5d02-5bd0-9b46-5642eeea088c",
+        "text": "salt"
+      },
+      {
+        "id": "b5c9a8d0-4721-5f7f-9f66-95a0064cc201",
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Trim the artichokes down to the tender hearts, remove the choke and slice them thinly, dropping the slices into water with lemon juice as you go.",
+      "Gently fry the garlic in the oil for 1 min, then add the drained artichokes and a pinch of salt and cook over medium heat for 5 min.",
+      "Pour in the wine, let it evaporate, then add a ladle of water, cover and cook for 10 min until tender. Remove the garlic.",
+      "Cook the fettuccine in salted water for 2–3 min and toss them with the artichokes, parsley (and mint) and a ladle of cooking water.",
+      "Off the heat, add the Pecorino and toss until creamy. Serve with pepper."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Fettuccine aux artichauts",
+        "steps": [
+          "Parer les artichauts jusqu'aux cœurs tendres, retirer le foin et les émincer finement, en plongeant les tranches au fur et à mesure dans de l'eau citronnée.",
+          "Faire revenir doucement l'ail dans l'huile 1 min, puis ajouter les artichauts égouttés et une pincée de sel et cuire à feu moyen 5 min.",
+          "Déglacer au vin, le laisser s'évaporer, puis ajouter une louche d'eau, couvrir et cuire 10 min jusqu'à ce qu'ils soient tendres. Retirer l'ail.",
+          "Cuire les fettuccine dans l'eau salée 2 à 3 min et les mélanger aux artichauts, au persil (et à la menthe) avec une louche d'eau de cuisson.",
+          "Hors du feu, ajouter le pecorino et mélanger jusqu'à ce que ce soit crémeux. Servir poivré."
+        ]
+      },
+      "it": {
+        "title": "Fettuccine ai carciofi",
+        "steps": [
+          "Pulire i carciofi fino ai cuori teneri, eliminare la barba e affettarli sottili, mettendo le fette man mano in acqua acidulata con il limone.",
+          "Soffriggere dolcemente l'aglio nell'olio per 1 min, poi aggiungere i carciofi scolati e un pizzico di sale e cuocere a fuoco medio per 5 min.",
+          "Sfumare con il vino, farlo evaporare, poi aggiungere un mestolo d'acqua, coprire e cuocere 10 min finché sono teneri. Togliere l'aglio.",
+          "Cuocere le fettuccine in acqua salata per 2–3 min e saltarle con i carciofi, il prezzemolo (e la menta) e un mestolo di acqua di cottura.",
+          "Fuori dal fuoco, aggiungere il pecorino e mantecare finché è cremoso. Servire con pepe."
+        ]
+      }
+    }
+  },
+  {
+    "id": "6865ce3a-4224-5052-862c-47064801d119",
+    "title": "Orecchiette al ragù di braciole",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 25,
+    "cook_min": 150,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "italian",
+    "tags": [
+      "comfort",
+      "stew",
+      "winter",
+      "fancy",
+      "italian"
+    ],
+    "difficulty": "medium",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "0ca15914-3cf7-59ec-8e32-bdcdfc282acc",
+        "text": "200 g pasta, orecchiette"
+      },
+      {
+        "id": "329a3736-1eea-50bf-9889-4c5d3bab1c8a",
+        "text": "250 g beef steak, in 4 thin slices"
+      },
+      {
+        "id": "0414b4e2-f163-5750-a1d1-8232ec629014",
+        "text": "1 clove garlic, finely chopped"
+      },
+      {
+        "id": "1d9b0132-2978-5954-a4b5-eef3caf141aa",
+        "text": "10 g parsley, chopped"
+      },
+      {
+        "id": "0ee40298-e188-5834-a04e-d4fe7d39d05b",
+        "text": "30 g pecorino, grated, plus more to serve"
+      },
+      {
+        "id": "fd915b2d-79b3-5f82-8b05-4b67967c5190",
+        "text": "0.5 onion, finely chopped"
+      },
+      {
+        "id": "3ec2318b-b1aa-5855-89c6-f9bf58e9f63b",
+        "text": "80 ml red wine"
+      },
+      {
+        "id": "acdcb484-9948-5578-bf89-c91e5d706956",
+        "text": "600 g passata"
+      },
+      {
+        "id": "cac1de08-1f3d-56c4-94ad-f16b0466f235",
+        "text": "5 g fresh basil"
+      },
+      {
+        "id": "501ccac2-90fd-55b9-a683-93b202451399",
+        "text": "3 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "f40d9479-03a2-543a-a571-4121c15d6f41",
+        "text": "salt"
+      },
+      {
+        "id": "e7d6f828-a874-51be-b509-6e3ee6473bf8",
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Pound the beef slices thin. Scatter them with the garlic, parsley, half the Pecorino, salt and pepper, roll them up tightly and tie or secure them with a toothpick.",
+      "Brown the rolls in the oil on all sides, then add the onion and cook gently for 5 min.",
+      "Pour in the wine and let it evaporate, then add the passata, the basil and a glass of water.",
+      "Cover and simmer over the lowest heat for 2 hours, turning the rolls now and then, until the sauce is thick and the meat tender.",
+      "Lift out the braciole and keep them warm for a second course.",
+      "Cook the orecchiette in salted water until al dente, toss them with the sauce and serve with the rest of the Pecorino."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Orecchiette au ragù de braciole (paupiettes de bœuf)",
+        "steps": [
+          "Aplatir finement les tranches de bœuf. Les parsemer d'ail, de persil, de la moitié du pecorino, de sel et de poivre, les rouler serré et les ficeler ou les fermer avec un cure-dent.",
+          "Faire dorer les roulés dans l'huile sur toutes les faces, puis ajouter l'oignon et cuire doucement 5 min.",
+          "Déglacer au vin et le laisser s'évaporer, puis ajouter la passata, le basilic et un verre d'eau.",
+          "Couvrir et laisser mijoter à feu très doux 2 heures en retournant les roulés de temps en temps, jusqu'à ce que la sauce soit épaisse et la viande tendre.",
+          "Retirer les braciole et les garder au chaud pour un second plat.",
+          "Cuire les orecchiette dans l'eau salée jusqu'à al dente, les mélanger à la sauce et servir avec le reste du pecorino."
+        ]
+      },
+      "it": {
+        "title": "Orecchiette al ragù di braciole",
+        "steps": [
+          "Battere sottili le fettine di manzo. Cospargerle con aglio, prezzemolo, metà del pecorino, sale e pepe, arrotolarle strette e legarle o fermarle con uno stecchino.",
+          "Rosolare gli involtini nell'olio su tutti i lati, poi aggiungere la cipolla e cuocere dolcemente 5 min.",
+          "Sfumare con il vino e farlo evaporare, poi aggiungere la passata, il basilico e un bicchiere d'acqua.",
+          "Coprire e cuocere a fuoco minimo per 2 ore, girando ogni tanto le braciole, finché il sugo è denso e la carne tenera.",
+          "Togliere le braciole e tenerle in caldo per il secondo.",
+          "Cuocere le orecchiette in acqua salata fino al dente, condirle con il sugo e servire con il resto del pecorino."
+        ]
+      }
+    }
+  },
+  {
+    "id": "4dfbb95d-c037-5569-800f-00950b71f193",
+    "title": "Chitarra al ragù d'agnello e peperoni",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 15,
+    "cook_min": 75,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "italian",
+    "tags": [
+      "comfort",
+      "stew",
+      "italian"
+    ],
+    "difficulty": "medium",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "4d8817eb-5715-51d1-a5c7-0f6028e4a77e",
+        "text": "250 g pasta, fresh spaghetti alla chitarra (or 200 g dried)"
+      },
+      {
+        "id": "6ec3205a-403d-52c8-bb6d-62b7313ff10d",
+        "text": "300 g lamb, shoulder, in small cubes"
+      },
+      {
+        "id": "7ca89127-73ff-5d65-8eb5-43fb3d8e725a",
+        "text": "1 bell pepper, red, in strips"
+      },
+      {
+        "id": "d2438800-012a-54d8-8fc9-9c2ffaf8fa19",
+        "text": "2 cloves garlic, crushed"
+      },
+      {
+        "id": "a14ca7fe-17af-5163-8465-48e35a942393",
+        "text": "1 bay leaf"
+      },
+      {
+        "id": "ef68edca-16d7-5486-bf33-1d103aea0e38",
+        "text": "80 ml white wine"
+      },
+      {
+        "id": "e509cc1c-55a8-5a3f-8368-5b365067eced",
+        "text": "300 g canned tomatoes, peeled"
+      },
+      {
+        "id": "7c75fd57-66f1-5e6b-bda9-bac770b0d168",
+        "text": "1 pinch chili flakes"
+      },
+      {
+        "id": "2eb821d9-658b-55c7-9790-5505e6b56062",
+        "text": "30 g pecorino, grated"
+      },
+      {
+        "id": "9141d6ff-1205-515c-8b79-65adfce63a36",
+        "text": "3 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "ff746617-e511-5d09-8dc5-26de3625f0e9",
+        "text": "salt"
+      },
+      {
+        "id": "940f07c9-8ac8-5be2-aa9e-020e00de693b",
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Brown the lamb in the oil with the garlic and bay leaf over high heat for 6 min.",
+      "Pour in the wine and let it evaporate.",
+      "Add the tomatoes, the chilli and a pinch of salt, cover and simmer for 40 min.",
+      "Add the peppers and cook for 25 min more, until the lamb is tender and the sauce thick. Remove the garlic and bay leaf.",
+      "Cook the pasta in salted water until al dente and toss it in the ragù.",
+      "Serve with Pecorino and pepper."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Spaghetti alla chitarra au ragù d'agneau et poivrons",
+        "steps": [
+          "Faire dorer l'agneau dans l'huile avec l'ail et le laurier à feu vif 6 min.",
+          "Déglacer au vin et le laisser s'évaporer.",
+          "Ajouter les tomates, le piment et une pincée de sel, couvrir et laisser mijoter 40 min.",
+          "Ajouter les poivrons et cuire encore 25 min, jusqu'à ce que l'agneau soit tendre et la sauce épaisse. Retirer l'ail et le laurier.",
+          "Cuire les pâtes dans l'eau salée jusqu'à al dente et les mélanger au ragù.",
+          "Servir avec du pecorino et du poivre."
+        ]
+      },
+      "it": {
+        "title": "Chitarra al ragù d'agnello e peperoni",
+        "steps": [
+          "Rosolare l'agnello nell'olio con aglio e alloro a fuoco vivo per 6 min.",
+          "Sfumare con il vino e farlo evaporare.",
+          "Aggiungere i pomodori, il peperoncino e un pizzico di sale, coprire e cuocere 40 min.",
+          "Aggiungere i peperoni e cuocere altri 25 min, finché l'agnello è tenero e il sugo denso. Togliere aglio e alloro.",
+          "Cuocere la pasta in acqua salata fino al dente e condirla con il ragù.",
+          "Servire con pecorino e pepe."
+        ]
+      }
+    }
+  },
+  {
+    "id": "f9a6976d-a7fc-5ddc-ab8a-df046e227d78",
+    "title": "Pasta alla pecorara",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 20,
+    "cook_min": 30,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "italian",
+    "tags": [
+      "vegetarian",
+      "summer",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "5942a484-4b5d-5920-8dd9-8164d0479581",
+        "text": "200 g pasta, maccheroni alla chitarra or mezze maniche"
+      },
+      {
+        "id": "ee9c2164-b25a-5c55-b2ab-425554b16b72",
+        "text": "150 g eggplant, in small cubes"
+      },
+      {
+        "id": "b8fc08f2-f20d-5d76-a946-854dd298faae",
+        "text": "150 g zucchini, in small cubes"
+      },
+      {
+        "id": "e64055a3-3432-5ffb-9c93-a03c4b7b01a1",
+        "text": "0.5 bell pepper, in small cubes"
+      },
+      {
+        "id": "df29075e-e194-5da0-b5e4-5ec9ee262eec",
+        "text": "0.5 onion, finely chopped"
+      },
+      {
+        "id": "f882d7ae-52cb-5860-bd53-cd7f049d7623",
+        "text": "250 g canned tomatoes, peeled"
+      },
+      {
+        "id": "f7e62eab-5476-5002-90f4-e6a56d43fe96",
+        "text": "100 g ricotta, sheep's milk"
+      },
+      {
+        "id": "01674740-d193-5a6e-a433-8dae14502b98",
+        "text": "20 g pecorino, grated"
+      },
+      {
+        "id": "37db56b5-068a-5443-a4a1-c2097b1de708",
+        "text": "5 g fresh basil"
+      },
+      {
+        "id": "f4e671f4-9cdf-5ec2-acdf-226a48ef8d52",
+        "text": "4 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "302bf3de-0b70-55a9-9ac9-202bd12f743d",
+        "text": "salt"
+      },
+      {
+        "id": "4ac7f7f2-cdb3-5e9a-937a-b324c8242b5c",
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Gently fry the onion in the oil for 5 min.",
+      "Add the eggplant, zucchini and pepper with a pinch of salt and cook over medium heat for 10 min, stirring, until soft and lightly golden.",
+      "Add the tomatoes, crush them and simmer for 15 min. Tear in the basil.",
+      "Cook the pasta in salted water until al dente and toss it in the sauce with a splash of cooking water.",
+      "Serve with spoonfuls of ricotta, the Pecorino and black pepper."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Pasta alla pecorara (légumes du potager et ricotta)",
+        "steps": [
+          "Faire revenir doucement l'oignon dans l'huile 5 min.",
+          "Ajouter l'aubergine, la courgette et le poivron avec une pincée de sel et cuire à feu moyen 10 min en remuant, jusqu'à ce qu'ils soient tendres et légèrement dorés.",
+          "Ajouter les tomates, les écraser et laisser mijoter 15 min. Ajouter le basilic déchiré.",
+          "Cuire les pâtes dans l'eau salée jusqu'à al dente et les faire sauter dans la sauce avec un peu d'eau de cuisson.",
+          "Servir avec des cuillerées de ricotta, le pecorino et du poivre noir."
+        ]
+      },
+      "it": {
+        "title": "Pasta alla pecorara",
+        "steps": [
+          "Soffriggere dolcemente la cipolla nell'olio per 5 min.",
+          "Aggiungere melanzana, zucchina e peperone con un pizzico di sale e cuocere a fuoco medio per 10 min mescolando, finché sono morbidi e appena dorati.",
+          "Aggiungere i pomodori, schiacciarli e cuocere 15 min. Spezzettare il basilico.",
+          "Cuocere la pasta in acqua salata fino al dente e saltarla nel sugo con un goccio di acqua di cottura.",
+          "Servire con cucchiaiate di ricotta, il pecorino e pepe nero."
+        ]
+      }
+    }
+  },
+  {
+    "id": "e16409e7-056c-5b85-acec-cd1e44611540",
+    "title": "Spaghetti alla busara",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 15,
+    "cook_min": 20,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "italian",
+    "tags": [
+      "fancy",
+      "mediterranean",
+      "italian"
+    ],
+    "difficulty": "medium",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "c84f0a34-cb6c-54b0-8b0d-294811f63e26",
+        "text": "200 g pasta, spaghetti"
+      },
+      {
+        "id": "95a14fe2-8966-5dfa-80b5-4d31bef9360e",
+        "text": "400 g prawns, scampi (langoustines), shell on"
+      },
+      {
+        "id": "7fe6ea9b-cbd7-517b-a3da-ec8b69bc25ac",
+        "text": "2 cloves garlic, finely chopped"
+      },
+      {
+        "id": "844d19ee-a8f5-5026-9f91-f995a4706a16",
+        "text": "80 ml white wine"
+      },
+      {
+        "id": "7f41c075-27dc-5245-8d00-803e319ffc28",
+        "text": "200 g canned tomatoes, peeled"
+      },
+      {
+        "id": "f0349554-c5fe-5eee-a5bd-7c54054a2638",
+        "text": "1 tbsp breadcrumbs"
+      },
+      {
+        "id": "bbc11c1f-df9c-5c23-9497-b8386f6db4ad",
+        "text": "1 pinch chili flakes"
+      },
+      {
+        "id": "645eb4f7-c8a9-547f-8621-5cbaef68e49d",
+        "text": "10 g parsley, chopped"
+      },
+      {
+        "id": "2aea5860-0893-5d10-9958-0f05d74762ac",
+        "text": "4 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "c9cdcdda-20ea-5917-b792-b766076858a0",
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "Split the scampi along the back with scissors so the sauce gets in.",
+      "Gently fry the garlic and chilli in the oil for 1 min, then add the scampi and cook over high heat for 2 min.",
+      "Pour in the wine and let it evaporate, then add the tomatoes, the breadcrumbs, half the parsley and a pinch of salt.",
+      "Simmer for 8 min until the sauce thickens.",
+      "Cook the spaghetti in salted water until 1 min short of al dente and finish them in the sauce with a splash of cooking water.",
+      "Serve with the scampi on top and the rest of the parsley."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Spaghetti alla busara (langoustines à la tomate)",
+        "steps": [
+          "Inciser les langoustines sur le dos avec des ciseaux pour que la sauce pénètre.",
+          "Faire revenir doucement l'ail et le piment dans l'huile 1 min, puis ajouter les langoustines et cuire à feu vif 2 min.",
+          "Déglacer au vin et le laisser s'évaporer, puis ajouter les tomates, la chapelure, la moitié du persil et une pincée de sel.",
+          "Laisser mijoter 8 min jusqu'à ce que la sauce épaississe.",
+          "Cuire les spaghetti dans l'eau salée jusqu'à 1 min avant al dente et finir la cuisson dans la sauce avec un peu d'eau de cuisson.",
+          "Servir avec les langoustines par-dessus et le reste du persil."
+        ]
+      },
+      "it": {
+        "title": "Spaghetti alla busara",
+        "steps": [
+          "Incidere gli scampi sul dorso con le forbici perché il sugo penetri.",
+          "Soffriggere dolcemente aglio e peperoncino nell'olio per 1 min, poi aggiungere gli scampi e cuocere a fuoco vivo per 2 min.",
+          "Sfumare con il vino e farlo evaporare, poi aggiungere i pomodori, il pangrattato, metà del prezzemolo e un pizzico di sale.",
+          "Cuocere 8 min finché il sugo si addensa.",
+          "Cuocere gli spaghetti in acqua salata fino a 1 min prima del dente e terminare la cottura nel sugo con un goccio di acqua di cottura.",
+          "Servire con gli scampi sopra e il resto del prezzemolo."
+        ]
+      }
+    }
+  },
+  {
+    "id": "7c918662-81e3-56fe-b6c8-b5eea6506ab3",
+    "title": "Penne strascicate alla fiorentina",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 15,
+    "cook_min": 100,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "italian",
+    "tags": [
+      "comfort",
+      "batch cooking",
+      "italian"
+    ],
+    "difficulty": "medium",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "e8ca3728-d36c-560e-834f-e1f5fea4a1d6",
+        "text": "200 g pasta, penne"
+      },
+      {
+        "id": "7c571b03-7330-5531-bad8-0835aeb038f4",
+        "text": "200 g ground beef"
+      },
+      {
+        "id": "d53940e2-8f33-5f86-b6fb-d3c97a282434",
+        "text": "0.5 onion, finely chopped"
+      },
+      {
+        "id": "7a67e3bb-59da-5ff5-b8b4-aaf47a6110d5",
+        "text": "0.5 carrot, finely chopped"
+      },
+      {
+        "id": "182695c4-6236-5ddf-b760-c3e8ce23cf40",
+        "text": "0.5 celery, stalk, finely chopped"
+      },
+      {
+        "id": "8e5196f4-e91a-59b8-ad44-cba40663ade2",
+        "text": "1 clove garlic, finely chopped"
+      },
+      {
+        "id": "2ccb2886-bb50-5ca3-b60c-22ca8a22024f",
+        "text": "80 ml red wine"
+      },
+      {
+        "id": "68ba9ab3-fa14-5706-a6f1-c443877f3c6e",
+        "text": "300 g canned tomatoes, peeled"
+      },
+      {
+        "id": "f1aaa810-d6c4-5683-8cb0-7d3372242114",
+        "text": "200 ml beef stock, hot"
+      },
+      {
+        "id": "1a86032d-1bd2-5ca8-8e5d-0e2de5398d62",
+        "text": "30 g parmigiano reggiano, grated"
+      },
+      {
+        "id": "5a2970e5-2556-5505-b038-37ff9d266521",
+        "text": "3 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "5c5ea1cc-fee9-53b9-bc70-c9222a1ec7cc",
+        "text": "salt"
+      },
+      {
+        "id": "ace55de2-d0c1-5310-a39b-3574310942d8",
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Gently fry the onion, carrot, celery and garlic in the oil for 10 min.",
+      "Add the beef and brown it well, breaking it up, for 10 min. Pour in the wine and let it evaporate.",
+      "Add the tomatoes, crush them, season and simmer, covered, for 1 hour 15 min, adding a little stock when it dries.",
+      "Cook the penne in salted water until 3 min short of al dente.",
+      "Drain them into the ragù and finish cooking them there over medium heat for 3 min, stirring and dragging them through the sauce with a ladle of stock or cooking water until they are coated and the sauce clings.",
+      "Off the heat, stir in the Parmigiano and serve."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Penne strascicate à la florentine",
+        "steps": [
+          "Faire revenir doucement l'oignon, la carotte, le céleri et l'ail dans l'huile 10 min.",
+          "Ajouter le bœuf et le faire bien dorer en l'émiettant 10 min. Déglacer au vin et le laisser s'évaporer.",
+          "Ajouter les tomates, les écraser, assaisonner et laisser mijoter à couvert 1 h 15 en ajoutant un peu de bouillon quand ça sèche.",
+          "Cuire les penne dans l'eau salée jusqu'à 3 min avant al dente.",
+          "Les égoutter dans le ragù et finir la cuisson 3 min à feu moyen, en remuant et en les traînant dans la sauce avec une louche de bouillon ou d'eau de cuisson jusqu'à ce qu'elles soient bien enrobées.",
+          "Hors du feu, incorporer le parmesan et servir."
+        ]
+      },
+      "it": {
+        "title": "Penne strascicate alla fiorentina",
+        "steps": [
+          "Soffriggere dolcemente cipolla, carota, sedano e aglio nell'olio per 10 min.",
+          "Aggiungere il macinato e rosolarlo bene, sgranandolo, per 10 min. Sfumare con il vino e farlo evaporare.",
+          "Aggiungere i pomodori, schiacciarli, regolare di sale e pepe e cuocere coperto per 1 ora e 15 min, aggiungendo poco brodo quando si asciuga.",
+          "Cuocere le penne in acqua salata fino a 3 min prima del dente.",
+          "Scolarle nel ragù e terminare la cottura lì a fuoco medio per 3 min, mescolando e strascicandole nel sugo con un mestolo di brodo o acqua di cottura finché sono ben condite.",
+          "Fuori dal fuoco, unire il parmigiano e servire."
+        ]
+      }
+    }
+  },
+  {
+    "id": "f3469f00-7480-5c75-993e-0fa0b61fa7b1",
+    "title": "Tagliatelle al prosciutto",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 5,
+    "cook_min": 8,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "italian",
+    "tags": [
+      "quick",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "e40ea3cc-fa84-5038-8847-ccae5a3292e5",
+        "text": "250 g pasta, fresh egg tagliatelle"
+      },
+      {
+        "id": "17ac487b-651c-53d4-88bd-001a994132cf",
+        "text": "80 g prosciutto, Parma, in thin strips (fat included)"
+      },
+      {
+        "id": "0e8dfef3-3f3e-5ed9-9e5c-a0e52e06293f",
+        "text": "40 g butter"
+      },
+      {
+        "id": "51b1dce9-4278-5fbc-b5f7-57bb0841e442",
+        "text": "30 g parmigiano reggiano, grated"
+      },
+      {
+        "id": "6af954fe-05cc-505c-b7e9-c4bafc8626c2",
+        "text": "black pepper"
+      },
+      {
+        "id": "4a61226c-2ba8-5139-9d00-acfafa192ae2",
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "Melt the butter in a large pan over low heat, add the prosciutto and warm it for 2 min without letting it crisp.",
+      "Cook the tagliatelle in salted water for 2–3 min.",
+      "Lift them into the pan with a ladle of cooking water and toss for 30 seconds.",
+      "Off the heat, add the Parmigiano and toss until glossy.",
+      "Serve with pepper."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Tagliatelle au jambon de Parme",
+        "steps": [
+          "Faire fondre le beurre dans une grande poêle à feu doux, ajouter le jambon et le réchauffer 2 min sans le laisser croustiller.",
+          "Cuire les tagliatelle dans l'eau salée 2 à 3 min.",
+          "Les transférer dans la poêle avec une louche d'eau de cuisson et mélanger 30 secondes.",
+          "Hors du feu, ajouter le parmesan et mélanger jusqu'à ce que ce soit brillant.",
+          "Servir poivré."
+        ]
+      },
+      "it": {
+        "title": "Tagliatelle al prosciutto",
+        "steps": [
+          "Sciogliere il burro in una padella larga a fuoco basso, aggiungere il prosciutto e scaldarlo 2 min senza farlo diventare croccante.",
+          "Cuocere le tagliatelle in acqua salata per 2–3 min.",
+          "Trasferirle in padella con un mestolo di acqua di cottura e saltarle 30 secondi.",
+          "Fuori dal fuoco, aggiungere il parmigiano e mantecare finché sono lucide.",
+          "Servire con pepe."
+        ]
+      }
+    }
+  },
+  {
+    "id": "a5f704f0-6dfc-53f1-971d-18fa06f2a9f5",
+    "title": "Spaghetti col tonno",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 5,
+    "cook_min": 20,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "italian",
+    "tags": [
+      "budget",
+      "quick",
+      "kid-friendly",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "4a847fdf-e5f4-5bc5-8d94-37d9f03ba564",
+        "text": "200 g pasta, spaghetti"
+      },
+      {
+        "id": "78e74816-f1fa-5302-95bf-02b846c53a4e",
+        "text": "160 g tuna, in olive oil, drained"
+      },
+      {
+        "id": "b8edec67-4008-5137-9b19-06710f857a60",
+        "text": "0.5 onion, finely chopped"
+      },
+      {
+        "id": "5f0facd2-b25c-5f85-8ea5-ec82bc15052c",
+        "text": "300 g passata"
+      },
+      {
+        "id": "09defdf0-fbbd-5736-89f6-ef567acf84a5",
+        "text": "20 g butter"
+      },
+      {
+        "id": "fe010672-3874-5a7e-af8c-5e73ed3ab2b8",
+        "text": "10 g parsley, chopped"
+      },
+      {
+        "id": "75315a2c-d8ea-586b-a828-c06e0e8544a4",
+        "text": "1 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "9659e9ff-73d2-5dfd-97be-3c5be5615992",
+        "text": "salt"
+      },
+      {
+        "id": "550a8e5b-8f7a-5038-af26-cad853edec2f",
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Gently fry the onion in the butter and oil for 6 min until soft.",
+      "Add the tuna, breaking it up with a fork, and stir for 2 min.",
+      "Add the passata with a pinch of salt and simmer for 10 min.",
+      "Cook the spaghetti in salted water until al dente and toss them in the sauce with a splash of cooking water.",
+      "Serve with parsley and pepper."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Spaghetti au thon et à la tomate",
+        "steps": [
+          "Faire revenir doucement l'oignon dans le beurre et l'huile 6 min jusqu'à ce qu'il soit tendre.",
+          "Ajouter le thon en l'émiettant à la fourchette et remuer 2 min.",
+          "Ajouter la passata avec une pincée de sel et laisser mijoter 10 min.",
+          "Cuire les spaghetti dans l'eau salée jusqu'à al dente et les faire sauter dans la sauce avec un peu d'eau de cuisson.",
+          "Servir avec le persil et du poivre."
+        ]
+      },
+      "it": {
+        "title": "Spaghetti col tonno",
+        "steps": [
+          "Soffriggere dolcemente la cipolla nel burro e nell'olio per 6 min finché è morbida.",
+          "Aggiungere il tonno, sbriciolandolo con una forchetta, e mescolare 2 min.",
+          "Aggiungere la passata con un pizzico di sale e cuocere 10 min.",
+          "Cuocere gli spaghetti in acqua salata fino al dente e saltarli nel sugo con un goccio di acqua di cottura.",
+          "Servire con prezzemolo e pepe."
+        ]
+      }
+    }
+  },
+  {
+    "id": "85cea5be-0e7f-53a5-988a-8fb10a1de52c",
+    "title": "Tortelli d'erbetta burro e parmigiano",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 75,
+    "cook_min": 15,
+    "total_min": 120,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "italian",
+    "tags": [
+      "fancy",
+      "vegetarian",
+      "italian"
+    ],
+    "difficulty": "hard",
+    "equipment": {
+      "pots": 2,
+      "oven": false,
+      "special": [
+        "rolling pin"
+      ]
+    },
+    "ingredients": [
+      {
+        "id": "76c851dd-00a1-56b9-a18e-6f22e84c1d7f",
+        "text": "200 g flour, 00"
+      },
+      {
+        "id": "14df404e-aed5-5db7-ac07-141a21a2f3e1",
+        "text": "2 eggs"
+      },
+      {
+        "id": "93c0fada-bc1c-5ca5-858a-af9d322f55e3",
+        "text": "300 g spinach, or Swiss chard (erbette), stems removed"
+      },
+      {
+        "id": "fc0712a2-da39-578c-a0f8-dc6b07c4b0bb",
+        "text": "200 g ricotta, well drained"
+      },
+      {
+        "id": "42c33c39-40f6-59ba-a16a-a9fdb8b5ba42",
+        "text": "60 g parmigiano reggiano, grated"
+      },
+      {
+        "id": "bf4cc479-6263-5a2b-8a1c-73ed192e4f38",
+        "text": "1 egg, for the filling"
+      },
+      {
+        "id": "d55fa36d-9e4f-57ed-8688-7284e5809a25",
+        "text": "1 pinch nutmeg"
+      },
+      {
+        "id": "75c93fa1-3126-5715-adda-110a5b596233",
+        "text": "50 g butter"
+      },
+      {
+        "id": "30d97f30-055b-5126-97d9-1f06508cbed9",
+        "text": "30 g parmigiano reggiano, grated, to serve"
+      },
+      {
+        "id": "6d370b98-c377-5af5-b877-e7a0718a9fdf",
+        "text": "salt"
+      },
+      {
+        "id": "45ca05a4-638d-5555-bb7c-e442bd28b401",
+        "text": "black pepper"
+      }
+    ],
+    "steps": [
+      "Knead the flour and the 2 eggs into a smooth, firm dough for 10 min, wrap it and rest it for 30 min.",
+      "Wilt the greens in a covered pan with a pinch of salt, squeeze them very dry and chop them finely.",
+      "Mix the greens with the ricotta, the 60 g Parmigiano, the egg, nutmeg, salt and pepper.",
+      "Roll the dough into thin sheets. Put teaspoons of filling 4 cm apart, fold the sheet over, press out the air and cut into squares, sealing the edges well.",
+      "Cook the tortelli in salted water at a gentle boil for 4–5 min and lift them out with a slotted spoon.",
+      "Layer them on warm plates with the melted butter and the remaining Parmigiano and serve."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Tortelli aux blettes, beurre et parmesan",
+        "steps": [
+          "Pétrir la farine et les 2 œufs en une pâte lisse et ferme pendant 10 min, l'emballer et la laisser reposer 30 min.",
+          "Faire tomber les légumes verts dans une poêle couverte avec une pincée de sel, les presser pour bien les essorer et les hacher finement.",
+          "Mélanger les légumes avec la ricotta, les 60 g de parmesan, l'œuf, la muscade, du sel et du poivre.",
+          "Étaler la pâte en feuilles fines. Déposer des cuillerées à café de farce à 4 cm d'écart, replier la pâte, chasser l'air et découper en carrés en soudant bien les bords.",
+          "Cuire les tortelli dans l'eau salée à petite ébullition 4 à 5 min et les retirer à l'écumoire.",
+          "Les disposer en couches dans des assiettes chaudes avec le beurre fondu et le reste du parmesan et servir."
+        ]
+      },
+      "it": {
+        "title": "Tortelli d'erbetta burro e parmigiano",
+        "steps": [
+          "Impastare la farina e le 2 uova fino a ottenere un impasto liscio e sodo per 10 min, avvolgerlo e farlo riposare 30 min.",
+          "Appassire le erbette in una padella coperta con un pizzico di sale, strizzarle molto bene e tritarle finemente.",
+          "Mescolare le erbette con la ricotta, i 60 g di parmigiano, l'uovo, la noce moscata, sale e pepe.",
+          "Stendere la pasta in sfoglie sottili. Disporre cucchiaini di ripieno a 4 cm di distanza, ripiegare la sfoglia, far uscire l'aria e tagliare a quadrati, sigillando bene i bordi.",
+          "Cuocere i tortelli in acqua salata a bollore leggero per 4–5 min e scolarli con una schiumarola.",
+          "Disporli a strati nei piatti caldi con il burro fuso e il parmigiano rimasto e servire."
+        ]
+      }
+    }
+  },
+  {
+    "id": "b0b70f8d-da42-527d-a0fa-fe7733708c27",
+    "title": "Passatelli in brodo",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 15,
+    "cook_min": 10,
+    "total_min": 55,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "italian",
+    "tags": [
+      "soup",
+      "comfort",
+      "winter",
+      "italian"
+    ],
+    "difficulty": "medium",
+    "equipment": {
+      "pots": 1,
+      "oven": false,
+      "special": []
+    },
+    "ingredients": [
+      {
+        "id": "669df389-4b95-5345-8263-8c0214222152",
+        "text": "80 g breadcrumbs, fine, from stale bread"
+      },
+      {
+        "id": "408f8329-e5f2-5ba0-b69f-92b083e4404b",
+        "text": "70 g parmigiano reggiano, grated"
+      },
+      {
+        "id": "534d02f3-4ef9-51da-808c-a15cb9de5c7e",
+        "text": "2 eggs"
+      },
+      {
+        "id": "5799a3b0-8c58-5565-8a7b-7b5d9a9d7b85",
+        "text": "1 pinch nutmeg"
+      },
+      {
+        "id": "4c86f21d-5ced-59d9-ad43-5ecfd6407608",
+        "text": "1 lemon, zest only",
+        "optional": true
+      },
+      {
+        "id": "06c08b3a-198e-5b33-84ee-a03ccaa82346",
+        "text": "1 l beef stock"
+      },
+      {
+        "id": "ea79b6e0-18c2-598d-aac7-3e74183d350e",
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "Mix the breadcrumbs, Parmigiano, eggs, nutmeg (and lemon zest) with a pinch of salt into a firm, compact dough. Wrap it and rest it for 30 min.",
+      "Bring the stock to a gentle boil.",
+      "Push the dough through a potato ricer with large holes (or a passatelli iron) straight over the pot, cutting the strands about 4 cm long with a knife.",
+      "Simmer for 1–2 min, until the passatelli float.",
+      "Rest off the heat for 1 min and serve in the stock."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Passatelli en bouillon",
+        "steps": [
+          "Mélanger la chapelure, le parmesan, les œufs, la muscade (et le zeste de citron) avec une pincée de sel en une pâte ferme et compacte. L'emballer et la laisser reposer 30 min.",
+          "Porter le bouillon à légère ébullition.",
+          "Presser la pâte dans un presse-purée à gros trous (ou un fer à passatelli) directement au-dessus de la casserole, en coupant les brins d'environ 4 cm au couteau.",
+          "Laisser frémir 1 à 2 min, jusqu'à ce que les passatelli remontent à la surface.",
+          "Laisser reposer 1 min hors du feu et servir dans le bouillon."
+        ]
+      },
+      "it": {
+        "title": "Passatelli in brodo",
+        "steps": [
+          "Impastare pangrattato, parmigiano, uova, noce moscata (e scorza di limone) con un pizzico di sale fino a ottenere un impasto sodo e compatto. Avvolgerlo e farlo riposare 30 min.",
+          "Portare il brodo a un bollore leggero.",
+          "Passare l'impasto in uno schiacciapatate a fori larghi (o con il ferro per passatelli) direttamente sopra la pentola, tagliando i passatelli lunghi circa 4 cm con un coltello.",
+          "Cuocere 1–2 min, finché i passatelli vengono a galla.",
+          "Lasciar riposare 1 min fuori dal fuoco e servire nel brodo."
+        ]
+      }
+    }
+  },
+  {
+    "id": "77f440dc-72ee-52c6-b18e-a46ea3d8a08b",
+    "title": "Culurgiones al pomodoro",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 90,
+    "cook_min": 40,
+    "total_min": 160,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "italian",
+    "tags": [
+      "fancy",
+      "vegetarian",
+      "italian"
+    ],
+    "difficulty": "hard",
+    "equipment": {
+      "pots": 3,
+      "oven": false,
+      "special": [
+        "rolling pin"
+      ]
+    },
+    "ingredients": [
+      {
+        "id": "b8090eba-a5c3-56eb-8623-e7a5c1a158f9",
+        "text": "200 g flour, durum wheat semolina"
+      },
+      {
+        "id": "4667aa6d-c3ca-50ff-a600-511f5da0276e",
+        "text": "300 g potato, floury"
+      },
+      {
+        "id": "045f73d6-57ad-55a3-8fea-b7b511ea8e68",
+        "text": "60 g pecorino sardo, grated"
+      },
+      {
+        "id": "a4bc96e1-9c16-53d9-920e-96d57f3b0dc4",
+        "text": "6 fresh mint, leaves, chopped"
+      },
+      {
+        "id": "71f8bada-d11d-5f29-86d4-4afd76dbd605",
+        "text": "1 clove garlic, finely chopped"
+      },
+      {
+        "id": "f676f357-0424-5351-a679-f28661ecf583",
+        "text": "400 g passata"
+      },
+      {
+        "id": "2e3bae20-a5c5-55f6-9044-dc3edeac63dc",
+        "text": "1 clove garlic, crushed, for the sauce"
+      },
+      {
+        "id": "8c78e263-950e-5d28-9f70-a1f59124d824",
+        "text": "5 g fresh basil"
+      },
+      {
+        "id": "b2fc53d2-bdb1-590d-8b0b-87a8baad43a9",
+        "text": "4 tbsp extra-virgin olive oil"
+      },
+      {
+        "id": "b6076ac7-02cf-5d00-9574-d2e44b4af782",
+        "text": "20 g pecorino sardo, grated, to serve"
+      },
+      {
+        "id": "10cab796-6589-5be5-b2f0-39e4bcdf7e79",
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "Knead the semolina with 100 ml lukewarm water, 1 tbsp oil and a pinch of salt into a smooth dough for 10 min, wrap it and rest it for 30 min.",
+      "Boil the potatoes in their skins until tender, about 25 min, then peel and mash them.",
+      "Mix the potatoes with the Pecorino, mint, chopped garlic and 1 tbsp oil. Season and roll into walnut-sized balls.",
+      "Roll the dough thin and cut 8 cm rounds. Put a ball of filling in the centre of each, fold the round in half and pinch it closed from the bottom upwards in alternating pleats, like an ear of wheat.",
+      "Meanwhile, gently fry the crushed garlic in the remaining oil, add the passata and basil with a pinch of salt and simmer for 15 min.",
+      "Cook the culurgiones in salted water at a gentle boil for 5–6 min, lift them out and serve with the sauce and Pecorino."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Culurgiones à la sauce tomate",
+        "steps": [
+          "Pétrir la semoule avec 100 ml d'eau tiède, 1 c. à soupe d'huile et une pincée de sel en une pâte lisse pendant 10 min, l'emballer et la laisser reposer 30 min.",
+          "Cuire les pommes de terre dans leur peau jusqu'à ce qu'elles soient tendres, environ 25 min, puis les peler et les écraser.",
+          "Mélanger les pommes de terre avec le pecorino, la menthe, l'ail haché et 1 c. à soupe d'huile. Assaisonner et former des boules de la taille d'une noix.",
+          "Étaler la pâte finement et découper des disques de 8 cm. Mettre une boule de farce au centre de chacun, plier le disque en deux et le fermer en pinçant de bas en haut en plis alternés, comme un épi de blé.",
+          "Pendant ce temps, faire revenir doucement l'ail écrasé dans le reste de l'huile, ajouter la passata et le basilic avec une pincée de sel et laisser mijoter 15 min.",
+          "Cuire les culurgiones dans l'eau salée à petite ébullition 5 à 6 min, les retirer et servir avec la sauce et le pecorino."
+        ]
+      },
+      "it": {
+        "title": "Culurgiones al pomodoro",
+        "steps": [
+          "Impastare la semola con 100 ml di acqua tiepida, 1 cucchiaio d'olio e un pizzico di sale fino a ottenere un impasto liscio per 10 min, avvolgerlo e farlo riposare 30 min.",
+          "Lessare le patate con la buccia finché sono tenere, circa 25 min, poi sbucciarle e schiacciarle.",
+          "Mescolare le patate con il pecorino, la menta, l'aglio tritato e 1 cucchiaio d'olio. Regolare di sale e formare palline grandi come una noce.",
+          "Stendere la pasta sottile e ricavare dischi da 8 cm. Mettere una pallina di ripieno al centro di ciascuno, piegare il disco a metà e chiuderlo pizzicando dal basso verso l'alto a pieghe alternate, a forma di spiga.",
+          "Nel frattempo, soffriggere dolcemente l'aglio schiacciato nell'olio rimasto, aggiungere la passata e il basilico con un pizzico di sale e cuocere 15 min.",
+          "Cuocere i culurgiones in acqua salata a bollore leggero per 5–6 min, scolarli e servirli con il sugo e il pecorino."
+        ]
+      }
+    }
+  },
+  {
+    "id": "945d7f39-d6a7-52b4-bb9e-f5b09c040923",
+    "title": "Trofie al sugo di noci",
+    "language": "en",
+    "servings": 2,
+    "prep_min": 15,
+    "cook_min": 12,
+    "source_type": "seed",
+    "ai_generated_recipe": true,
+    "source_name": "Claude",
+    "cuisine": "italian",
+    "tags": [
+      "vegetarian",
+      "autumn",
+      "italian"
+    ],
+    "difficulty": "easy",
+    "equipment": {
+      "pots": 1,
+      "oven": false,
+      "special": [
+        "mortar and pestle"
+      ]
+    },
+    "ingredients": [
+      {
+        "id": "896260f6-893c-56e1-9db1-76fb1840067a",
+        "text": "200 g pasta, trofie"
+      },
+      {
+        "id": "310dfc90-07e7-5a8d-abfa-d28f76d8c419",
+        "text": "60 g walnuts, shelled"
+      },
+      {
+        "id": "41fa2ce7-3430-53bb-bd8f-f4bfd9ec128c",
+        "text": "20 g bread, crustless"
+      },
+      {
+        "id": "c9566560-b8af-5037-be75-7d7ff3a97cdf",
+        "text": "50 ml milk"
+      },
+      {
+        "id": "98fa1ce5-7abc-56cd-a7be-a5e517f559fe",
+        "text": "0.5 clove garlic"
+      },
+      {
+        "id": "57bb6703-e92c-553e-afd7-f82f3ff32428",
+        "text": "20 g parmigiano reggiano, grated"
+      },
+      {
+        "id": "b8508632-15bf-5386-827d-0363d26fb15c",
+        "text": "30 ml extra-virgin olive oil, mild Ligurian"
+      },
+      {
+        "id": "84c7ac49-16f8-57ae-b43a-a1a104a45d72",
+        "text": "salt"
+      }
+    ],
+    "steps": [
+      "Soak the bread in the milk for 5 min, then squeeze it lightly.",
+      "Blanch the walnuts in boiling water for 1 min and rub off as much of the skins as you can.",
+      "Pound the garlic with a pinch of salt in a mortar, then the walnuts and the bread, into a smooth paste.",
+      "Stir in the Parmigiano, then the oil a little at a time, and thin with a spoonful of the soaking milk if needed.",
+      "Cook the trofie in salted water until al dente and toss them with the sauce in a bowl, off the heat, adding cooking water until creamy. Serve."
+    ],
+    "translations": {
+      "fr": {
+        "title": "Trofie à la sauce aux noix",
+        "steps": [
+          "Faire tremper le pain dans le lait 5 min, puis l'essorer légèrement.",
+          "Blanchir les noix 1 min dans l'eau bouillante et frotter pour retirer le plus de peau possible.",
+          "Piler l'ail avec une pincée de sel au mortier, puis les noix et le pain, jusqu'à obtenir une pâte lisse.",
+          "Incorporer le parmesan, puis l'huile peu à peu, et détendre avec une cuillerée de lait de trempage si besoin.",
+          "Cuire les trofie dans l'eau salée jusqu'à al dente et les mélanger à la sauce dans un saladier, hors du feu, en ajoutant de l'eau de cuisson jusqu'à ce que ce soit crémeux. Servir."
+        ]
+      },
+      "it": {
+        "title": "Trofie al sugo di noci",
+        "steps": [
+          "Ammollare il pane nel latte per 5 min, poi strizzarlo leggermente.",
+          "Sbollentare le noci 1 min e strofinarle per togliere quanta più pellicina possibile.",
+          "Pestare l'aglio con un pizzico di sale nel mortaio, poi le noci e il pane, fino a ottenere una crema liscia.",
+          "Unire il parmigiano, poi l'olio poco alla volta, e allungare con un cucchiaio del latte dell'ammollo se serve.",
+          "Cuocere le trofie in acqua salata fino al dente e condirle con la salsa in una ciotola, fuori dal fuoco, aggiungendo acqua di cottura finché è cremosa. Servire."
+        ]
+      }
+    }
   }
 ]
