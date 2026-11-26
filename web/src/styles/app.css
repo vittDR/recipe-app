@@ -2056,7 +2056,6 @@ button.grocery-row__amount {
 
 .summary-row--hero .summary-row__text {
   color: var(--on-accent);
-  text-align: center;
 }
 
 .summary-row {
