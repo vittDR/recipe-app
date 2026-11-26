@@ -2040,8 +2040,8 @@ button.grocery-row__amount {
 }
 
 .summary-row.summary-row--hero {
-  min-height: 48px;
-  padding: var(--space-3) var(--space-5);
+  min-height: 44px;
+  padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-lg);
   background: rgba(255, 255, 255, 0.14);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.32);
@@ -2056,11 +2056,7 @@ button.grocery-row__amount {
 
 .summary-row--hero .summary-row__text {
   color: var(--on-accent);
-}
-
-.summary-row--hero .chevron {
-  color: var(--on-accent);
-  opacity: 0.8;
+  text-align: center;
 }
 
 .summary-row {
