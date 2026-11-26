@@ -2090,7 +2090,7 @@ button.grocery-row__amount {
 }
 
 .deck-bar__value .avatars .avatar + .avatar {
-  margin-left: -9px;
+  margin-left: -5px;
 }
 
 .deck-bar__filters {

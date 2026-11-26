@@ -91,7 +91,7 @@ export function useDeckLabels() {
   };
 }
 
-/** At most this many faces in the bar's "who" cell; the count says the rest. */
+/** Up to this many eating, the bar's "who" cell shows their faces; more, just how many. */
 const BAR_FACES = 4;
 
 /**
@@ -118,16 +118,17 @@ export function DeckSettingsBar({ settings, table, onOpen }: {
         <button type="button" className="deck-bar__cell" onClick={() => onOpen('main')}>
           <span className="deck-bar__label">{t('tonight.whoShort')}</span>
           <span className="deck-bar__value">
-            <span className="avatars">
-              {faces.slice(0, BAR_FACES).map((f) => <Avatar key={f.id} name={f.name} color={f.color} />)}
-            </span>
-            <span className="tabular">{faces.length}</span>
+            {faces.length <= BAR_FACES ? (
+              <span className="avatars" role="img" aria-label={faces.map((f) => f.name).join(', ')}>
+                {faces.map((f) => <Avatar key={f.id} name={f.name} color={f.color} />)}
+              </span>
+            ) : <span className="tabular">{faces.length}</span>}
           </span>
         </button>
       )}
       <button type="button" className="deck-bar__cell" onClick={() => onOpen('main')}>
         <span className="deck-bar__label">{t('tonight.timeLabel')}</span>
-        <span className="deck-bar__value">{m === null ? t('tonight.anyTime') : t('tonight.minutes', { n: m })}</span>
+        <span className="deck-bar__value">{m === null ? <Icon name="infinity" size={24} label={t('tonight.anyTime')} /> : t('tonight.minutes', { n: m })}</span>
       </button>
       <button type="button" className="deck-bar__cell" onClick={() => onOpen('main')}>
         <span className="deck-bar__label">{t('tonight.mood')}</span>
