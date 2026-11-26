@@ -773,6 +773,8 @@ export const fr: Dictionary = {
     favorite: 'Favori',
     addFavorite: 'Ajouter aux favoris',
     removeFavorite: 'Retirer des favoris',
+    addedFavorite: 'Ajoutée aux favoris',
+    removedFavorite: 'Retirée des favoris',
     favoriteHint: 'Revient plus souvent dans vos decks',
     save: 'Enregistrer',
   },

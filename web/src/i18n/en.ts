@@ -775,6 +775,8 @@ export const en = {
     favorite: 'Favorite',
     addFavorite: 'Add to favorites',
     removeFavorite: 'Remove from favorites',
+    addedFavorite: 'Added to favorites',
+    removedFavorite: 'Removed from favorites',
     favoriteHint: 'Shows up more often in your decks',
     save: 'Save',
   },

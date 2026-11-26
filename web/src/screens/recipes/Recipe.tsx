@@ -74,7 +74,8 @@ export function RecipeScreen() {
   const favorite = !!data.mark?.favorite;
   const toggleFavorite = async (on: boolean) => {
     set((d) => d && { ...d, mark: { recipe_id: recipe.id, stars: null, rated_by: null, rated_at: null, ...d.mark, favorite: on } });
-    if (!(await save(saveFavorite(household!.id, recipe.id, on)))) void reload();
+    const done = on ? t('rating.addedFavorite') : t('rating.removedFavorite');
+    if (!(await save(saveFavorite(household!.id, recipe.id, on), done))) void reload();
   };
   // "Cooked 3 times · ★ 4", from the household's meals and rating.
   const overline = [data.cooked > 0 && tn('recipe.cookedTimes', data.cooked), data.mark?.stars && `★ ${data.mark.stars}`]
