@@ -349,3 +349,15 @@ test("an extra eater's never items and allergies rule recipes out; no extra eate
   assert.equal(passesHardFilters(r, [eater], { extraEaters: [{ never: ['p-pine'], allergies: [] }] }), true, 'an optional line can be left out');
   assert.equal(passesHardFilters(r, [eater], { extraEaters: [{ never: [], allergies: ['pine nuts'] }] }), false, 'allergies count optional lines too');
 });
+
+test('a household favourite ranks higher and says so, but recently cooked still waits', () => {
+  const recipes = [recipe('risotto'), recipe('dal'), recipe('tacos')];
+  const opts = { random: fixed, favorites: new Set(['risotto', 'tacos']) };
+  const plain = scoreRecipe(recipes[0], [member()], undefined, { random: fixed });
+  const fav = scoreRecipe(recipes[0], [member()], undefined, opts);
+  assert.ok(fav.score > plain.score);
+  assert.equal(fav.reason, 'favorite');
+  const deck = buildDeck(recipes, [member()], new Map(), { ...opts, size: 2, recentlyCooked: new Set(['tacos']) });
+  assert.equal(deck[0].recipeId, 'risotto');
+  assert.ok(!deck.some((c) => c.recipeId === 'tacos'));
+});

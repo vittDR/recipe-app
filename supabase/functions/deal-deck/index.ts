@@ -12,7 +12,7 @@ import { Catalog, type CatalogEntry } from '../_shared/logic/ingredients.ts';
 import { recipeFeatures } from '../_shared/logic/preferences.ts';
 import { macrosOf, type RecipeMacros, splitPot, targetsOf } from '../_shared/logic/portions.ts';
 import {
-  buildProfile, signalsFor, weightsOf, type MealRow, type PortionRow, type SwipeRow, type TasteSignalRow, kindKeys, occasionalKinds } from '../_shared/logic/profile.ts';
+  buildProfile, signalsFor, weightsOf, type HouseholdRatingRow, type MealRow, type PortionRow, type SwipeRow, type TasteSignalRow, kindKeys, occasionalKinds } from '../_shared/logic/profile.ts';
 import { dietAdherence } from '../_shared/logic/recommend.ts';
 import { type Plate, rowPlates } from '../_shared/logic/plate.ts';
 import { styleModelFor } from '../_shared/logic/style.ts';
@@ -63,7 +63,7 @@ Deno.serve(async (req) => {
     .filter((x) => x.verdict !== 'pass').map((x) => x.recipe_id)));
 
   const since = (days: number) => new Date(Date.now() - days * 86_400_000).toISOString();
-  const [goals, rules, swipes, recipes, meals, pantry, catalog, signals, allergies, allergenLinks, groupRows, groupLinks, groupProducts, population] = await Promise.all([
+  const [goals, rules, swipes, recipes, meals, pantry, catalog, signals, allergies, allergenLinks, groupRows, groupLinks, groupProducts, population, ratings] = await Promise.all([
     admin.from('member_goals').select('*').in('user_id', eaters),
     admin.from('taste_rules').select('user_id, kind, value, product_id, group_key').in('user_id', eaters),
     admin.from('swipes').select('user_id, deck_id, recipe_id, verdict, created_at, decks!inner(household_id, mood, filters)')
@@ -87,8 +87,10 @@ Deno.serve(async (req) => {
     admin.from('products').select('id, ingredient').is('household_id', null).not('ingredient', 'is', null),
     // What other households thought of each library dish, the eaters left out (logic/population.ts).
     admin.rpc('population_answers', { p_exclude: eaters }),
+    // The household's stars and favourites (never another household's).
+    admin.from('household_recipes').select('recipe_id, stars, rated_at, favorite').eq('household_id', householdId),
   ]);
-  for (const r of [goals, rules, swipes, recipes, meals, pantry, catalog, signals, allergies, allergenLinks, groupRows, groupLinks, groupProducts]) {
+  for (const r of [goals, rules, swipes, recipes, meals, pantry, catalog, signals, allergies, allergenLinks, groupRows, groupLinks, groupProducts, ratings]) {
     if (r.error) return json({ error: r.error.message }, 500);
   }
   // Whether each swiped card fit each eater when it was dealt: what lets the diet explain a pass away.
@@ -180,7 +182,13 @@ Deno.serve(async (req) => {
     tasteSignals: (signals.data ?? []) as TasteSignalRow[],
     meals: (meals.data ?? []).map((m) => ({ ...m, who_eating: one(m.deck as { who_eating: string[] } | null)?.who_eating ?? null })) as MealRow[],
     portions: (portions.data ?? []) as PortionRow[],
+    // An unrated meal says nothing; a rated dish teaches everyone who ate it (logic/profile.ts).
+    ratings: (ratings.data ?? []) as HouseholdRatingRow[],
+    today: new Date().toISOString().slice(0, 10),
   };
+  // Favourites come up more often; a favourite seed dish the household copied, as its copy.
+  const favorites = new Set((ratings.data ?? []).filter((r) => r.favorite).map((r) => r.recipe_id as string));
+  for (const r of recipes.data ?? []) if (r.copied_from && favorites.has(r.copied_from as string)) favorites.add(r.id);
   // Per-serving macros, carbs, fat and fibre from each recipe's classification (worked out above).
   const macrosById = new Map<string, RecipeMacros>(candidates.map((c) => [c.id, c]));
   for (const r of recipes.data ?? []) if (r.copied_from) macrosById.set(r.copied_from as string, macrosById.get(r.id)!);
@@ -270,6 +278,7 @@ Deno.serve(async (req) => {
     lean,
     recentKinds,
     recentlyDealt,
+    favorites,
     // The evening's season (from its month, in the household's time zone): dishes of the season come first.
     season: seasonOfMonth(Number(forDate.slice(5, 7))),
     // Recipes needing an appliance the household lacks are never dealt (null: never asked).

@@ -47,12 +47,14 @@ export function WeekStrip({ days, today, selected, onSelect }: {
   );
 }
 
-/** This week: the next seven evenings, each switched in or out for that date only. */
-export function WeekSheet({ open, onClose, days, today, onToggle, back }: {
+/** This week: the next seven evenings, each switched in or out for that date only; the calendar for the rest. */
+export function WeekSheet({ open, onClose, days, today, selected, onToggle, back }: {
   open: boolean;
   onClose: () => void;
   days: StripDay[];
   today: string;
+  /** The evening Ce soir shows: the calendar marks it. */
+  selected: string;
   onToggle: (date: string, cook: boolean) => void;
   /** Where the regular schedule's back button returns. */
   back: string;
@@ -80,6 +82,10 @@ export function WeekSheet({ open, onClose, days, today, onToggle, back }: {
         })}
       </div>
       <div className="list mt-6">
+        <ListRow to={`/calendar?from=${selected}`} tile="accent" icon={<Icon name="calendar" size={18} />}
+          title={t('calendar.open')} meta={t('calendar.openHint')} />
+      </div>
+      <div className="list mt-4">
         <ListRow to="/us/plan" state={{ back }} tile="accent" icon={<Icon name="calendar" size={18} />}
           title={t('week.usual')} meta={t('week.usualHint')} />
       </div>

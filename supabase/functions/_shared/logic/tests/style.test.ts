@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { type Plate, plateDistance, platesOf } from '../plate.ts';
 import {
   COOKED_FREQUENCY, FREQUENCY, fitStyle, nextQuizCard, nextQuizPair, type Observation, observationsFor, PAIR_MIN_DISTANCE,
-  type QuizCandidate, RATING_FREQUENCY, SIGNAL_WEIGHT, STYLE_HALF_LIFE_DAYS, STYLE_REGIONS, styleModelFor, styleSummary, SWIPE_FREQUENCY,
+  type QuizCandidate, RATING_FREQUENCY, STARS_FREQUENCY, SIGNAL_WEIGHT, STYLE_HALF_LIFE_DAYS, STYLE_REGIONS, styleModelFor, styleSummary, SWIPE_FREQUENCY,
   tasteFeatures, withStyleEdits,
 } from '../style.ts';
 import { type MealRow, type Signal, signalsFor, type SwipeRow, type TasteSignalRow } from '../profile.ts';
@@ -230,6 +230,19 @@ test('signals become frequencies, weighted by what they say', () => {
     [COOKED_FREQUENCY, SIGNAL_WEIGHT.cooked],
   ]);
   assert.equal(pairs.length, 0);
+});
+
+test('the household\'s stars rate the dish: every meal of it, the cooked ones included', () => {
+  const { observations } = observationsFor([
+    { kind: 'rating', rating: 'fine', stars: 4, recipeId: 'other', features: [], at: daysAgo(0) },
+    { kind: 'cooked', recipeId: 'other', mealId: 'm1', features: [], at: daysAgo(0) },
+    { kind: 'cooked', recipeId: 'other', mealId: 'm2', features: [], at: daysAgo(0) },
+    { kind: 'rating', rating: 'not_again', stars: 1, recipeId: 'rich', features: [], at: daysAgo(0) },
+  ], platesById, now);
+  assert.deepEqual(observations.map((o) => [o.y, o.weight]), [
+    [STARS_FREQUENCY[3], SIGNAL_WEIGHT.rating],
+    [STARS_FREQUENCY[0], SIGNAL_WEIGHT.rating],
+  ]);
 });
 
 test('older signals fade', () => {

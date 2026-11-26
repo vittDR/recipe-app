@@ -1,0 +1,73 @@
+{
+  "feature": "Calendar + rating",
+  "page": "Calendar and Rating",
+  "width": 390,
+  "screens": [
+    {
+      "id": "01-this-week",
+      "canvas_board": "cal2-Week-myvt",
+      "height": 844,
+      "html": "screens/html/01-this-week.html",
+      "png": "screens/png/01-this-week.png",
+      "links_to": [
+        "02-calendar"
+      ],
+      "notes": "This week sheet with the new Calendar card at the bottom"
+    },
+    {
+      "id": "02-calendar",
+      "canvas_board": "cal-Calendar-0lwv",
+      "height": 1130,
+      "html": "screens/html/02-calendar.html",
+      "png": "screens/png/02-calendar.png",
+      "links_to": [
+        "03-past-day"
+      ],
+      "notes": "Calendar, scrolls through months (board shows Nov + Dec)"
+    },
+    {
+      "id": "03-past-day",
+      "canvas_board": "cal2-PastDay-40ax",
+      "height": 844,
+      "html": "screens/html/03-past-day.html",
+      "png": "screens/png/03-past-day.png",
+      "links_to": [
+        "04-rate-sheet"
+      ],
+      "notes": "Home for a past date, not rated yet"
+    },
+    {
+      "id": "04-rate-sheet",
+      "canvas_board": "cal3-Rate-nyal",
+      "height": 844,
+      "html": "screens/html/04-rate-sheet.html",
+      "png": "screens/png/04-rate-sheet.png",
+      "links_to": [
+        "05-past-day-rated"
+      ],
+      "notes": "Rate sheet: stars + favorite heart"
+    },
+    {
+      "id": "05-past-day-rated",
+      "canvas_board": "cal3-PastDayRated-9mti",
+      "height": 844,
+      "html": "screens/html/05-past-day-rated.html",
+      "png": "screens/png/05-past-day-rated.png",
+      "links_to": [
+        "04-rate-sheet"
+      ],
+      "notes": "Home for a past date, rated + favorite"
+    },
+    {
+      "id": "06-recipe",
+      "canvas_board": "cal3-Recipe-k6mw",
+      "height": 1600,
+      "html": "screens/html/06-recipe.html",
+      "png": "screens/png/06-recipe.png",
+      "links_to": [
+        "05-past-day-rated"
+      ],
+      "notes": "Recipe screen with heart button, only used gear listed"
+    }
+  ]
+}

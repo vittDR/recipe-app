@@ -48,10 +48,8 @@ export function RecipeBody({ recipe, ingredients, atHome, plate, overline, ingre
   const { linesAmount } = useAmount();
   const catalog = useCatalog();
   const exotic = new Set(catalog ? exoticIngredients(ingredients.map((i) => i.name), catalog) : []);
-  const cookware = [
-    ...equipmentLabels(recipe.equipment, i18n).map((e) => e.label),
-    ...(recipe.equipment && !recipe.equipment.oven ? [t('equipment.noOven')] : []),
-  ];
+  // Only the gear the recipe uses; nothing it doesn't ("no oven").
+  const cookware = equipmentLabels(recipe.equipment, i18n).map((e) => e.label);
   const lines = groupIngredients(ingredients);
   const steps = recipeSteps(recipe, locale);
   const anyHome = lines.some((g) => g.some((l) => atHome?.has(l.id)));
