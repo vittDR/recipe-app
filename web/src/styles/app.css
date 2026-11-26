@@ -4856,55 +4856,6 @@ body:has(.moment) .tabbar {
   gap: var(--space-4);
 }
 
-/* Ce soir: how was a recent dinner? */
-.rate-prompt {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-  padding: var(--space-4) var(--space-2) var(--space-4) var(--space-4);
-}
-
-.rate-prompt__thumb {
-  flex: none;
-  width: 52px;
-  height: 52px;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  background: var(--sunken);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.rate-prompt__thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.rate-prompt__stars {
-  display: flex;
-  margin-top: var(--space-1);
-}
-
-.rate-prompt__star {
-  display: inline-flex;
-  padding: 2px;
-  border: 0;
-  background: none;
-  color: var(--line-strong);
-  cursor: pointer;
-}
-
-.rate-prompt__star:hover,
-.rate-prompt__star:focus-visible {
-  color: var(--star);
-}
-
-.rate-prompt__close {
-  align-self: flex-start;
-}
-
 /* ---------- A past evening on Ce soir ---------- */
 
 .past-day {
@@ -4914,6 +4865,7 @@ body:has(.moment) .tabbar {
 }
 
 .past-day__photo {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;

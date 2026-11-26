@@ -17,7 +17,7 @@ import { useDiet } from '../lib/diet.ts';
 import { useEaters } from '../lib/eaters.ts';
 import { householdDefaults, loadLastSettings, saveLastSettings, type LastSettings } from '../lib/deckSettings.ts';
 import { recipeTitle } from '../lib/recipeText.ts';
-import { addDays, daysBetween, isDate, weekOf } from '../lib/dates.ts';
+import { daysBetween, isDate, weekOf } from '../lib/dates.ts';
 import { isoWeekday, todayIn, useLive, useSave } from '../lib/hooks.ts';
 import { comingDays, cooksOn, eveningPath, useEveningName } from '../lib/plan.ts';
 import { INGREDIENT_SELECT } from '../lib/products.ts';
@@ -44,8 +44,6 @@ interface TonightData {
   meals: PlannedMeal[];
   plan: PlanDay[];
   dates: PlanDate[];
-  /** A recent meal this person ate whose dish the household hasn't rated yet. */
-  toRate: RateMeal | null;
   /** The household's ratings and hearts. */
   marks: HouseholdRecipe[];
   /** The mood this person says yes to most, as the deck's silent default when nothing was picked before. */
@@ -56,17 +54,6 @@ interface TonightData {
   lastWho: { members: string[]; eaters: string[] } | null;
 }
 
-/** Meals from this many days back are offered for a rating on Ce soir. */
-const RATE_DAYS = 3;
-/** Meals whose rating prompt was closed, on this phone. */
-const SKIP_KEY = 'dineamite:rate-skipped';
-function loadSkipped(): string[] {
-  try {
-    return JSON.parse(localStorage.getItem(SKIP_KEY) ?? '[]') as string[];
-  } catch {
-    return [];
-  }
-}
 const MEAL_RECIPE = 'id, title, language, translations, image_path, tags, total_min, difficulty, protein_g_per_serving, servings';
 
 export function TonightScreen() {
@@ -93,7 +80,6 @@ export function TonightScreen() {
   const [dealing, setDealing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [nudged, setNudged] = useState(false);
-  const [skipped, setSkipped] = useState(loadSkipped);
   const [rateOpen, setRateOpen] = useState<{ meal: RateMeal; stars?: number } | null>(null);
   const [pickOpen, setPickOpen] = useState(false);
 
@@ -135,16 +121,13 @@ export function TonightScreen() {
     async () => {
       // The strip's week, and the coming one This week switches.
       const days = [...new Set([...week, ...coming])];
-      const [decks, meals, plan, dates, recent, marks, liked, mine, lastAny] = await Promise.all([
+      const [decks, meals, plan, dates, marks, liked, mine, lastAny] = await Promise.all([
         supabase.from('decks').select('*').eq('household_id', household!.id).eq('for_date', selected)
           .neq('status', 'closed').order('created_at', { ascending: false }).limit(1),
         supabase.from('meals').select(`id, for_date, recipe_id, status, deck_id, listed_at, deck:decks(who_eating, extra_eaters), recipe:recipes(${MEAL_RECIPE})`)
           .eq('household_id', household!.id).in('for_date', days),
         supabase.from('plan_days').select('*').eq('household_id', household!.id),
         supabase.from('plan_dates').select('*').eq('household_id', household!.id).in('for_date', days),
-        supabase.from('meals').select(`id, for_date, recipe_id, status, deck:decks(who_eating), recipe:recipes(${MEAL_RECIPE})`)
-          .eq('household_id', household!.id).gte('for_date', addDays(today, -RATE_DAYS)).lte('for_date', today)
-          .neq('status', 'skipped').order('for_date', { ascending: false }),
         supabase.from('household_recipes').select(HOUSEHOLD_RECIPE).eq('household_id', household!.id),
         supabase.from('swipes').select('deck:decks(mood)').eq('user_id', userId!).neq('verdict', 'pass')
           .order('created_at', { ascending: false }).limit(150),
@@ -154,12 +137,6 @@ export function TonightScreen() {
           .order('created_at', { ascending: false }).limit(1),
       ]);
       const householdMarks = must(marks) as HouseholdRecipe[];
-      const ratedRecipes = new Set(householdMarks.filter((x) => x.stars).map((x) => x.recipe_id));
-      type RecentMeal = RateMeal & { status: string; deck: { who_eating: string[] } | null };
-      // Eaten: an earlier day, or cooked tonight; by this person when the deck says who ate. A dish
-      // the household rated already (on either phone) isn't asked about again.
-      const toRate = (must(recent) as unknown as RecentMeal[]).find((m) => !ratedRecipes.has(m.recipe_id) && m.recipe
-        && (m.for_date < today || m.status === 'cooked') && (!m.deck || m.deck.who_eating.includes(userId!))) ?? null;
       const deck = (must(decks) as Deck[])[0] ?? null;
       const [progress, yeses, cards] = deck
         ? await Promise.all([
@@ -186,7 +163,6 @@ export function TonightScreen() {
         meals: must(meals) as unknown as PlannedMeal[],
         plan: must(plan) as PlanDay[],
         dates: must(dates) as PlanDate[],
-        toRate: toRate && { id: toRate.id, recipe_id: toRate.recipe_id, for_date: toRate.for_date, recipe: toRate.recipe },
         marks: householdMarks,
         // Only a clear preference: enough yeses, and well ahead of the next mood.
         favouriteMood: top && top[1] >= 8 && top[1] >= 2 * (second?.[1] ?? 0) ? top[0] : 'any',
@@ -290,15 +266,6 @@ export function TonightScreen() {
     }
   };
 
-  // Not asked again on this phone; unrated, the meal says nothing about anyone's taste.
-  const skipRating = (mealId: string) => {
-    const next = [...skipped.filter((id) => id !== mealId), mealId].slice(-30);
-    setSkipped(next);
-    try {
-      localStorage.setItem(SKIP_KEY, JSON.stringify(next));
-    } catch { /* private mode: asked again next time */ }
-  };
-
   // A past evening with nothing logged: what was eaten, as cooked (it was).
   const logMeal = async (recipeId: string) => {
     setPickOpen(false);
@@ -369,27 +336,6 @@ export function TonightScreen() {
   const strip = <WeekStrip today={today} selected={selected} onSelect={selectDay} days={stripDays} />;
 
   const markOf = (recipeId: string) => data?.marks.find((x) => x.recipe_id === recipeId) ?? null;
-  const toRate = data?.toRate && !markOf(data.toRate.recipe_id)?.stars && !skipped.includes(data.toRate.id) ? data.toRate : null;
-  // Tonight: how was a recent dinner? A tap on a star opens the rate sheet on it.
-  const rating = isToday && toRate?.recipe && (
-    <section className="card rate-prompt" aria-label={t('rating.rate')}>
-      <span className="rate-prompt__thumb"><RecipeThumb recipe={toRate.recipe} /></span>
-      <span className="grow">
-        <span className="card__title d-block">{t('rating.question', { title: recipeTitle(toRate.recipe, locale) })}</span>
-        <span className="rate-prompt__stars">
-          {[1, 2, 3, 4, 5].map((n) => (
-            <button key={n} type="button" className="rate-prompt__star" aria-label={tn('rating.star', n)}
-              onClick={() => setRateOpen({ meal: toRate, stars: n })}>
-              <Icon name="star" size={26} strokeWidth={1.6} />
-            </button>
-          ))}
-        </span>
-      </span>
-      <button type="button" className="icon-btn rate-prompt__close" aria-label={t('app.close')} onClick={() => skipRating(toRate.id)}>
-        <Icon name="x" size={18} />
-      </button>
-    </section>
-  );
 
   const upcomingSection = upcoming.length > 0 && (
     <Section label={t('tonight.upcoming')}>
@@ -435,8 +381,9 @@ export function TonightScreen() {
   let main: React.ReactNode;
   if (dayLoading) {
     main = <Spinner />;
-  } else if (isPast && dayMeal) {
-    // A past evening: what we ate, who ate, and the household's rating. The picture opens the recipe.
+  } else if (dayMeal && !open && (isPast || dayMeal.status === 'cooked')) {
+    // Eaten (a past evening, or tonight once cooked): what we ate, who ate, and the household's
+    // rating, with Rate right in the card. The picture opens the recipe.
     const r = dayMeal.recipe!;
     const mark = markOf(r.id);
     const ate = dayMeal.deck?.who_eating ?? members.map((m) => m.user_id);
@@ -446,9 +393,11 @@ export function TonightScreen() {
     const eaters = ate.map((id) => ({ id, name: memberName(id), color: memberColor(id) }));
     const openRate = () => setRateOpen({ meal: { id: dayMeal.id, recipe_id: r.id, for_date: dayMeal.for_date, recipe: r } });
     main = (
+      <>
       <article className="card past-day">
         <Link to={`/recipes/${r.id}`} className="past-day__photo" style={imageStyle(r.image_path)} aria-label={recipeTitle(r, locale)}>
           {!imageStyle(r.image_path) && <span aria-hidden>{recipeEmoji(r.title, r.tags)}</span>}
+          {isToday && <span className="glass-badge"><Icon name="check" size={16} strokeWidth={2.4} />{t('tonight.cookedBadge')}</span>}
         </Link>
         <div className="past-day__body">
           <h2 className="t-title-s m-0">{recipeTitle(r, locale)}</h2>
@@ -472,6 +421,9 @@ export function TonightScreen() {
             : <Button block onClick={openRate}><Icon name="star" size={20} /> {t('rating.rate')}</Button>}
         </div>
       </article>
+      {!isPast && upcomingSection}
+      {!isPast && groceriesCard}
+      </>
     );
   } else if (isPast) {
     // Nothing logged that evening (not designed yet): a way to add what we ate.
@@ -636,7 +588,6 @@ export function TonightScreen() {
       <div className="tonight">
         {header}
         {strip}
-        {rating}
         {main}
       </div>
       {!isToday && (
