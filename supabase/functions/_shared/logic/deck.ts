@@ -148,6 +148,8 @@ export interface DeckOptions {
   recentlyDealt?: Map<string, number>;
   /** The evening's season (classify.ts seasonOfMonth): dishes of the season come first. */
   season?: Season;
+  /** The household's favourite dishes (household_recipes.favorite): they come up more often (FAVORITE_BONUS). */
+  favorites?: Set<string>;
   /** Appliances the household has (facets.ts APPLIANCES); null or absent: all of them. */
   appliances?: string[] | null;
   /**
@@ -187,6 +189,13 @@ export const ROTATION_PENALTY = 0.35;
 export const ROTATION_MAX_DECKS = 3;
 /** How far back dealt decks count, in days. */
 export const ROTATION_DAYS = 14;
+
+/**
+ * A household favourite is worth this much more: about as much as a dish
+ * someone loves an ingredient of, so it comes up often. It still gives way to
+ * rotation, recently cooked and every hard filter.
+ */
+export const FAVORITE_BONUS = 1;
 
 /** A seasonal dish (not all year) of this season: worth this much more. */
 export const SEASON_BONUS = 0.5;
@@ -339,11 +348,13 @@ export function scoreRecipe(
 
   const rotation = ROTATION_PENALTY * Math.min(ROTATION_MAX_DECKS, opts.recentlyDealt?.get(recipe.id) ?? 0);
 
+  const favorite = opts.favorites?.has(recipe.id) ? FAVORITE_BONUS : 0;
+
   const base = fitW * fit + 1 * love + 1.2 * moodScore(recipe, opts.mood) + 1 * pantryScore + 0.8 * liked + 1.2 * lean
-    + seasonScore - rotation - flexi + novelty;
+    + seasonScore + favorite - rotation - flexi + novelty;
   const score = base + 1.5 * pref + EXPLORE_WEIGHT * explore;
 
-  const reason = pantryHits.length > 0 ? `pantry:${pantryHits[0]}` : love > 0 ? 'love' : null;
+  const reason = pantryHits.length > 0 ? `pantry:${pantryHits[0]}` : favorite ? 'favorite' : love > 0 ? 'love' : null;
   return { score: Math.round(score * 1000) / 1000, split, reason, taste: pref, tastes, frequencies, adjustable, base, explore };
 }
 

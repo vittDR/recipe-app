@@ -107,3 +107,33 @@ test('quiz pairs are read with both dishes, and only style learns from them', ()
   assert.equal(signalWeight(signals[0]).weight, 0);
   assert.equal(buildProfile(signals).size, 0);
 });
+
+test('household stars: each person who ate the dish learns them once; an unrated meal says nothing', () => {
+  const meals = [
+    { id: 'm1', recipe_id: 'risotto', for_date: '2026-05-20', status: 'planned', who_eating: ['lisa', 'dario'] },
+    { id: 'm2', recipe_id: 'risotto', for_date: '2026-05-25', status: 'cooked', who_eating: ['lisa'] },
+    { id: 'm3', recipe_id: 'dal', for_date: '2026-05-26', status: 'cooked', who_eating: ['lisa', 'dario'] },
+    { id: 'm4', recipe_id: 'curry', for_date: '2026-05-27', status: 'skipped', who_eating: ['lisa', 'dario'] },
+    // Tomorrow's plan isn't eaten yet.
+    { id: 'm5', recipe_id: 'curry', for_date: '2026-06-02', status: 'planned', who_eating: ['lisa', 'dario'] },
+  ];
+  const ratings = [
+    { recipe_id: 'risotto', stars: 4, rated_at: at(1) },
+    { recipe_id: 'curry', stars: 1, rated_at: at(1) },
+    { recipe_id: 'pho', stars: null, rated_at: null },
+  ];
+  // Rated before the stars, one meal at a time: still counts, unless the dish now has stars.
+  const tasteSignals = [
+    { user_id: 'dario', recipe_id: 'risotto', kind: 'rating' as const, value: 'loved', deck_id: null, meal_id: 'm1', created_at: at(10) },
+  ];
+  const rows = { swipes: [], tasteSignals, meals, ratings, today: '2026-06-01' };
+  const of = (who: string) => signalsFor(who, rows, () => ['x']).map((s) => (s.kind === 'rating'
+    ? `rating:${s.recipeId}:${s.stars}:${s.rating}` : s.kind === 'cooked' ? `cooked:${s.mealId}` : s.kind)).sort();
+  // Lisa ate the risotto twice (the past plan counts as eaten); the dal is unrated, so it says nothing.
+  assert.deepEqual(of('lisa'), ['cooked:m1', 'cooked:m2', 'rating:risotto:4:fine']);
+  // Dario only had the first risotto; his old per-meal rating gives way to the household's stars.
+  assert.deepEqual(of('dario'), ['cooked:m1', 'rating:risotto:4:fine']);
+  // Without the household's ratings (before the stars), every cooked meal counts.
+  const before = signalsFor('lisa', { swipes: [], tasteSignals: [], meals }, () => ['x']).map((s) => s.kind === 'cooked' && s.mealId);
+  assert.deepEqual(before, ['m2', 'm3']);
+});

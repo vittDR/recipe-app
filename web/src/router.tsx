@@ -34,6 +34,7 @@ import { RecipeScreen } from './screens/recipes/Recipe.tsx';
 import { RecipesScreen } from './screens/recipes/Recipes.tsx';
 import { CatalogScreen } from './screens/Catalog.tsx';
 import { NotificationsScreen } from './screens/Notifications.tsx';
+import { CalendarScreen } from './screens/Calendar.tsx';
 import { PlanScreen } from './screens/Plan.tsx';
 import { ProfileSettingsScreen } from './screens/ProfileSettings.tsx';
 import { SettingsScreen } from './screens/Settings.tsx';
@@ -162,6 +163,7 @@ export const router = createBrowserRouter([
       { path: '/us/profile', element: <ProfileSettingsScreen /> },
       { path: '/us/invite', element: <InviteScreen editing /> },
       { path: '/us/plan', element: <PlanScreen /> },
+      { path: '/calendar', element: <CalendarScreen /> },
       { path: '/us/household', element: <SettingsScreen /> },
       // Older addresses, from before these moved under Us.
       { path: '/invite', element: <Navigate to="/us/invite" replace /> },

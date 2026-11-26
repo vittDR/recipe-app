@@ -44,6 +44,11 @@ export type StarterVerdict = Verdict | 'sometimes';
 export type Rating = 'loved' | 'fine' | 'not_again' | 'not_eaten';
 export const RATINGS: Rating[] = ['loved', 'fine', 'not_again'];
 
+/** The household's stars (household_recipes), on the old scale: 5 loved, 4–3 fine, 2–1 not again. */
+export function ratingOfStars(stars: number): Rating {
+  return stars >= 5 ? 'loved' : stars >= 3 ? 'fine' : 'not_again';
+}
+
 /** A quiz pair answer (style.ts PairChoice): the first dish, the second, either, neither. */
 export type PairValue = 'a' | 'b' | 'either' | 'neither';
 
@@ -59,7 +64,8 @@ export type Signal =
   }
   | { kind: 'starter'; verdict: StarterVerdict; features: string[]; at: string; fits?: boolean | null; recipeId?: string }
   | { kind: 'cooked'; features: string[]; at: string; recipeId?: string; mealId?: string }
-  | { kind: 'rating'; rating: Rating; features: string[]; at: string; recipeId?: string; mealId?: string }
+  /** stars: the household's 1–5 rating of the dish (no mealId); without it, a person's rating of one meal (before stars). */
+  | { kind: 'rating'; rating: Rating; stars?: number; features: string[]; at: string; recipeId?: string; mealId?: string }
   /** "On a normal weeknight, which one?": only style learns from it (style.ts), not this profile. */
   | { kind: 'pair'; choice: PairValue; recipeId: string; otherRecipeId: string; features: string[]; at: string }
   /** On the taste summary, how often they want a kind of plate (style.ts STYLE_REGIONS). No recipe. */
@@ -232,18 +238,35 @@ export interface TasteSignalRow {
   other_recipe_id?: string | null;
 }
 export interface MealRow { id: string; recipe_id: string; for_date: string; status: string; who_eating?: string[] | null }
+/** household_recipes: the household's rating of a dish (one for everyone, whoever set it). */
+export interface HouseholdRatingRow { recipe_id: string; stars: number | null; rated_at: string | null }
 /** member_portions: whether a deck card fit a person's goals when it was dealt. */
 export interface PortionRow { deck_id: string; recipe_id: string; user_id: string; fits: boolean }
 
-/** One person's signals: their deck swipes (with pass reasons), quiz answers, ratings and the meals they ate. */
+/**
+ * One person's signals: their deck swipes (with pass reasons), quiz answers, ratings and the meals they ate.
+ *
+ * With `ratings` (the household's stars), a meal says something only once the
+ * dish is rated: an unrated meal counts as not eaten. Each person who ate a
+ * rated dish (a meal not skipped, cooked or in the past before `today`) learns
+ * the household's stars once, as of when they were set. Meals rated one by one
+ * before the stars still count for whoever rated them, unless the dish now has
+ * stars. Without `ratings`, every cooked meal counts (as before the stars).
+ */
 export function signalsFor(
   userId: string,
-  rows: { swipes: SwipeRow[]; tasteSignals: TasteSignalRow[]; meals: MealRow[]; portions?: PortionRow[] },
+  rows: {
+    swipes: SwipeRow[]; tasteSignals: TasteSignalRow[]; meals: MealRow[]; portions?: PortionRow[];
+    ratings?: HouseholdRatingRow[];
+    /** YYYY-MM-DD: meals before it that weren't skipped were eaten, cooked or not. */
+    today?: string;
+  },
   featuresOf: (recipeId: string) => string[] | undefined,
   /** Whether a recipe fits this person's goals now: for quiz answers, which have no deck. */
   fitsNow?: (recipeId: string) => boolean | null,
 ): Signal[] {
   const mine = rows.tasteSignals.filter((t) => t.user_id === userId);
+  const starred = new Map((rows.ratings ?? []).flatMap((r) => (r.stars ? [[r.recipe_id, r] as const] : [])));
   const fitAtDeal = new Map((rows.portions ?? []).filter((p) => p.user_id === userId)
     .map((p) => [`${p.deck_id}:${p.recipe_id}`, p.fits]));
   const reasons = new Map(mine.filter((t) => t.kind === 'reason').map((t) => [`${t.deck_id}:${t.recipe_id}`, t.value as PassReason]));
@@ -275,6 +298,7 @@ export function signalsFor(
       }));
     }
     if (t.kind === 'rating') {
+      if (starred.has(recipeId)) continue;
       push(recipeId, (features) => ({
         kind: 'rating', rating: t.value as Rating, features, at: t.created_at, recipeId, mealId: t.meal_id ?? undefined,
       }));
@@ -287,10 +311,27 @@ export function signalsFor(
     }
   }
   const notEaten = new Set(mine.filter((t) => t.kind === 'rating' && t.value === 'not_eaten').map((t) => t.meal_id));
-  for (const m of rows.meals) {
-    if (m.status !== 'cooked' || notEaten.has(m.id)) continue;
-    if (m.who_eating && !m.who_eating.includes(userId)) continue;
+  const ratedMeals = new Set(mine.filter((t) => t.kind === 'rating' && t.value !== 'not_eaten').map((t) => t.meal_id));
+  const mineAte = (m: MealRow) => !m.who_eating || m.who_eating.includes(userId);
+  if (!rows.ratings) {
+    for (const m of rows.meals) {
+      if (m.status !== 'cooked' || notEaten.has(m.id) || !mineAte(m)) continue;
+      push(m.recipe_id, (features) => ({ kind: 'cooked', features, at: `${m.for_date}T20:00:00Z`, recipeId: m.recipe_id, mealId: m.id }));
+    }
+    return out;
+  }
+  const eaten = rows.meals.filter((m) => m.status !== 'skipped' && mineAte(m)
+    && (m.status === 'cooked' || (!!rows.today && m.for_date < rows.today)));
+  for (const m of eaten) {
+    if (!starred.has(m.recipe_id) && !ratedMeals.has(m.id)) continue;
     push(m.recipe_id, (features) => ({ kind: 'cooked', features, at: `${m.for_date}T20:00:00Z`, recipeId: m.recipe_id, mealId: m.id }));
+  }
+  for (const [recipeId, r] of starred) {
+    if (!eaten.some((m) => m.recipe_id === recipeId)) continue;
+    const stars = r.stars!;
+    push(recipeId, (features) => ({
+      kind: 'rating', rating: ratingOfStars(stars), stars, features, at: r.rated_at ?? new Date().toISOString(), recipeId,
+    }));
   }
   return out;
 }

@@ -204,6 +204,15 @@ export interface Meal {
   deck_id: string | null;
 }
 
+/** household_recipes: the household's rating of a dish (1–5, whoever set it last) and its heart. */
+export interface HouseholdRecipe {
+  recipe_id: string;
+  stars: number | null;
+  rated_by: string | null;
+  rated_at: string | null;
+  favorite: boolean;
+}
+
 export interface PlanDay {
   household_id: string;
   weekday: number;

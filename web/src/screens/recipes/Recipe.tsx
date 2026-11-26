@@ -3,16 +3,17 @@ import { useNavigate, useParams } from 'react-router';
 import { classifyRow } from '@logic/classify.ts';
 import { AddToListSheet, loadProposals } from '../../components/AddToListSheet.tsx';
 import { Icon } from '../../components/Icon.tsx';
+import { HeartButton, HOUSEHOLD_RECIPE, saveFavorite } from '../../components/Rating.tsx';
 import { RecipeBody } from '../../components/RecipeBody.tsx';
 import { Button, confirmSheet, Screen, Spinner, Tag, imageStyle, recipeEmoji } from '../../components/ui.tsx';
 import { useI18n } from '../../i18n/index.tsx';
 import { visibleTags } from '../../lib/classes.ts';
 import { dietClassOf } from '@logic/ingredients.ts';
-import { useCatalog, useLive, useSave } from '../../lib/hooks.ts';
+import { todayIn, useCatalog, useLive, useSave } from '../../lib/hooks.ts';
 import { INGREDIENT_SELECT } from '../../lib/products.ts';
 import { useSession } from '../../lib/session.tsx';
 import { must, supabase } from '../../lib/supabase.ts';
-import type { Recipe, RecipeIngredient } from '../../lib/types.ts';
+import type { HouseholdRecipe, Recipe, RecipeIngredient } from '../../lib/types.ts';
 
 interface Portion {
   kcal: number;
@@ -28,6 +29,8 @@ interface RecipeData {
   /** Ingredient ids probably at home. */
   atHome: Set<string>;
   cooked: number;
+  /** The household's rating and heart. */
+  mark: HouseholdRecipe | null;
 }
 
 /** One vertical scroll: photo, facts, cookware, ingredients, steps; cooking at the bottom. */
@@ -39,13 +42,17 @@ export function RecipeScreen() {
   const navigate = useNavigate();
   const save = useSave();
   const [sheet, setSheet] = useState(false);
-  const { data, reload } = useLive<RecipeData>(`recipe:${id}`, async () => {
-    const [r, ings, p, cooked] = await Promise.all([
+  const today = todayIn(household!.timezone);
+  const { data, reload, set } = useLive<RecipeData>(`recipe:${id}`, async () => {
+    const [r, ings, p, cooked, mark] = await Promise.all([
       supabase.from('recipes').select('*').eq('id', id!).single(),
       supabase.from('recipe_ingredients').select(INGREDIENT_SELECT).eq('recipe_id', id!).order('position'),
       supabase.rpc('my_portion', { p_recipe: id }),
+      // Cooked, or planned for an evening that's past: eaten all the same.
       supabase.from('meals').select('id', { count: 'exact', head: true })
-        .eq('household_id', household!.id).eq('recipe_id', id!).eq('status', 'cooked'),
+        .eq('household_id', household!.id).eq('recipe_id', id!).neq('status', 'skipped')
+        .or(`status.eq.cooked,for_date.lt.${today}`),
+      supabase.from('household_recipes').select(HOUSEHOLD_RECIPE).eq('household_id', household!.id).eq('recipe_id', id!).maybeSingle(),
     ]);
     const ingredients = must(ings) as RecipeIngredient[];
     const proposals = await loadProposals(household!.id, ingredients);
@@ -55,14 +62,23 @@ export function RecipeScreen() {
       portion: ((p.data ?? []) as Portion[])[0] ?? null,
       atHome: new Set(proposals.filter((x) => !x.add).map((x) => x.ingredient.id)),
       cooked: cooked.count ?? 0,
+      mark: (mark.data as HouseholdRecipe | null) ?? null,
     };
-  });
+  }, [{ table: 'household_recipes', filter: `household_id=eq.${household!.id}` }]);
   const listMeals = useMemo(() => (data ? [{ recipe: data.recipe, ingredients: data.ingredients }] : []), [data]);
 
   if (!data) return <Screen back><Spinner /></Screen>;
   const { recipe, ingredients, portion } = data;
 
   const own = recipe.household_id === household!.id;
+  const favorite = !!data.mark?.favorite;
+  const toggleFavorite = async (on: boolean) => {
+    set((d) => d && { ...d, mark: { recipe_id: recipe.id, stars: null, rated_by: null, rated_at: null, ...d.mark, favorite: on } });
+    if (!(await save(saveFavorite(household!.id, recipe.id, on)))) void reload();
+  };
+  // "Cooked 3 times · ★ 4", from the household's meals and rating.
+  const overline = [data.cooked > 0 && tn('recipe.cookedTimes', data.cooked), data.mark?.stars && `★ ${data.mark.stars}`]
+    .filter(Boolean).join(' · ');
   // Worked out from the ingredients, steps and tags, like for every recipe (logic/classify.ts).
   const about = catalog
     ? visibleTags(classifyRow({ ...recipe, recipe_ingredients: ingredients }, catalog), dietClassOf(ingredients.map((i) => catalog.find(i.name))), t)
@@ -79,11 +95,14 @@ export function RecipeScreen() {
         <button type="button" className="icon-btn icon-btn--glass recipe-photo__left" aria-label={t('app.back')} onClick={() => navigate(-1)}>
           <Icon name="back" />
         </button>
+        <span className="recipe-photo__right">
+          <HeartButton glass on={favorite} onChange={(on) => void toggleFavorite(on)} />
+        </span>
       </div>
       <div className="recipe-sheet">
         <RecipeBody recipe={recipe} ingredients={ingredients} atHome={data.atHome}
           plate={portion && { kcal: portion.kcal, protein_g: portion.protein_g }}
-          overline={data.cooked > 0 ? tn('recipe.cookedTimes', data.cooked) : undefined}
+          overline={overline || undefined}
           ingredientsAction={(
             <Button small variant="text" onClick={() => setSheet(true)}><Icon name="basket" size={18} /> {t('tonight.groceries')}</Button>
           )}>

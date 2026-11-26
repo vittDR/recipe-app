@@ -1,14 +1,15 @@
 import { useMemo, useState } from 'react';
 import { combineProposals, scaleQuantity } from '@logic/groceries.ts';
 import { filtersForDiet } from '@logic/deckFilters.ts';
-import { RATINGS, type Rating } from '@logic/profile.ts';
 import { Link, useNavigate, useSearchParams } from 'react-router';
 import { AddToListSheet, loadProposalsMany, type MealForList } from '../components/AddToListSheet.tsx';
 import { DeckSettingsBar, DeckSettingsSheet, everyone, MOODS, type Table, useDeckLabels, type DeckSettings } from '../components/DeckSettings.tsx';
 import { Icon } from '../components/Icon.tsx';
+import { PickRecipeSheet } from '../components/PickRecipeSheet.tsx';
+import { HOUSEHOLD_RECIPE, RateSheet, Stars } from '../components/Rating.tsx';
 import { WeekSheet, WeekStrip, type StripDay } from '../components/WeekStrip.tsx';
 import {
-  Avatar, AvatarPair, Button, Chip, ListRow, ProgressBar, RecipeThumb, Screen, Section, Spinner, Tag, TabHeader, imageStyle, recipeEmoji,
+  Avatar, AvatarPair, Button, ListRow, ProgressBar, RecipeThumb, Screen, Section, Spinner, Tag, TabHeader, imageStyle, recipeEmoji,
 } from '../components/ui.tsx';
 import { useI18n } from '../i18n/index.tsx';
 import { pickDeckArt } from '../lib/deckArt.ts';
@@ -16,17 +17,20 @@ import { useDiet } from '../lib/diet.ts';
 import { useEaters } from '../lib/eaters.ts';
 import { householdDefaults, loadLastSettings, saveLastSettings, type LastSettings } from '../lib/deckSettings.ts';
 import { recipeTitle } from '../lib/recipeText.ts';
+import { addDays, daysBetween, isDate, weekOf } from '../lib/dates.ts';
 import { isoWeekday, todayIn, useLive, useSave } from '../lib/hooks.ts';
 import { comingDays, cooksOn, eveningPath, useEveningName } from '../lib/plan.ts';
 import { INGREDIENT_SELECT } from '../lib/products.ts';
 import { useSession } from '../lib/session.tsx';
 import { callFunction, must, supabase } from '../lib/supabase.ts';
-import type { Deck, DeckMemberProgress, Meal, Mood, PlanDate, PlanDay, Recipe, RecipeIngredient, Verdict } from '../lib/types.ts';
+import type {
+  Deck, DeckMemberProgress, HouseholdRecipe, Meal, Mood, PlanDate, PlanDay, Recipe, RecipeIngredient, Verdict,
+} from '../lib/types.ts';
 
 type MealRecipe = Pick<Recipe, 'id' | 'title' | 'language' | 'translations' | 'image_path' | 'tags' | 'total_min' | 'difficulty'
   | 'protein_g_per_serving' | 'servings'>;
 type PlannedMeal = Meal & { listed_at: string | null; recipe: MealRecipe | null; deck: { who_eating: string[]; extra_eaters: string[] } | null };
-type RateMeal = { id: string; recipe_id: string; recipe: Pick<Recipe, 'title' | 'language' | 'translations'> | null };
+type RateMeal = { id: string; recipe_id: string; for_date: string; recipe: MealRecipe | null };
 
 interface TonightData {
   /** The evening the deck part was loaded for. */
@@ -40,8 +44,10 @@ interface TonightData {
   meals: PlannedMeal[];
   plan: PlanDay[];
   dates: PlanDate[];
-  /** A recent meal this person ate and hasn't said how it was. */
+  /** A recent meal this person ate whose dish the household hasn't rated yet. */
   toRate: RateMeal | null;
+  /** The household's ratings and hearts. */
+  marks: HouseholdRecipe[];
   /** The mood this person says yes to most, as the deck's silent default when nothing was picked before. */
   favouriteMood: Mood;
   /** The settings of the last deck this person dealt, on any device. */
@@ -50,9 +56,17 @@ interface TonightData {
   lastWho: { members: string[]; eaters: string[] } | null;
 }
 
-/** Meals from this many days back are offered for a rating. */
+/** Meals from this many days back are offered for a rating on Ce soir. */
 const RATE_DAYS = 3;
-const daysBefore = (date: string, n: number) => new Date(Date.parse(`${date}T12:00:00Z`) - n * 86_400_000).toISOString().slice(0, 10);
+/** Meals whose rating prompt was closed, on this phone. */
+const SKIP_KEY = 'dineamite:rate-skipped';
+function loadSkipped(): string[] {
+  try {
+    return JSON.parse(localStorage.getItem(SKIP_KEY) ?? '[]') as string[];
+  } catch {
+    return [];
+  }
+}
 const MEAL_RECIPE = 'id, title, language, translations, image_path, tags, total_min, difficulty, protein_g_per_serving, servings';
 
 export function TonightScreen() {
@@ -79,15 +93,27 @@ export function TonightScreen() {
   const [dealing, setDealing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [nudged, setNudged] = useState(false);
-  const [rated, setRated] = useState<string | null>(null);
+  const [skipped, setSkipped] = useState(loadSkipped);
+  const [rateOpen, setRateOpen] = useState<{ meal: RateMeal; stars?: number } | null>(null);
+  const [pickOpen, setPickOpen] = useState(false);
 
-  // Tonight and the six evenings after it; the strip picks which one Ce soir is about.
-  const week = comingDays(tz);
+  // Any evening, from the strip or the calendar (/?day=). The strip shows tonight and the
+  // six evenings after it, or, for an evening outside those, Monday to Sunday of its week.
+  const coming = comingDays(tz);
   const [params, setParams] = useSearchParams();
   const day = params.get('day');
-  const selected = day && week.includes(day) ? day : today;
+  const selected = isDate(day) ? day : today;
+  const week = coming.includes(selected) ? coming : weekOf(selected);
   const isToday = selected === today;
+  const isPast = selected < today;
   const eveningName = useEveningName();
+  const { tn } = useI18n();
+  // The title: Tonight, Tomorrow, a weekday this week, Yesterday, In 8 days, 9 days ago.
+  const titleOf = (date: string) => {
+    if (coming.includes(date)) return eveningName(date, today);
+    const n = daysBetween(today, date);
+    return n === -1 ? t('calendar.yesterday') : n > 0 ? tn('calendar.inDays', n) : tn('calendar.daysAgo', -n);
+  };
   const selectDay = (date: string) => {
     if (date === selected) return;
     setPicked(null);
@@ -95,24 +121,31 @@ export function TonightScreen() {
     setNudged(false);
     setParams(date === today ? {} : { day: date }, { replace: true });
   };
+  const backToTonight = () => {
+    setPicked(null);
+    setError(null);
+    setNudged(false);
+    setParams({}, { replace: true });
+  };
 
   // The art, the protein choices and the deck follow this person's diet.
   const diet = useDiet();
   const { data, loading, set } = useLive<TonightData>(
     `tonight:${household!.id}:${today}:${selected}`,
     async () => {
-      const [decks, meals, plan, dates, recent, rated, liked, mine, lastAny] = await Promise.all([
+      // The strip's week, and the coming one This week switches.
+      const days = [...new Set([...week, ...coming])];
+      const [decks, meals, plan, dates, recent, marks, liked, mine, lastAny] = await Promise.all([
         supabase.from('decks').select('*').eq('household_id', household!.id).eq('for_date', selected)
           .neq('status', 'closed').order('created_at', { ascending: false }).limit(1),
         supabase.from('meals').select(`id, for_date, recipe_id, status, deck_id, listed_at, deck:decks(who_eating, extra_eaters), recipe:recipes(${MEAL_RECIPE})`)
-          .eq('household_id', household!.id).gte('for_date', week[0]).lte('for_date', week[6]),
+          .eq('household_id', household!.id).in('for_date', days),
         supabase.from('plan_days').select('*').eq('household_id', household!.id),
-        supabase.from('plan_dates').select('*').eq('household_id', household!.id).gte('for_date', week[0]).lte('for_date', week[6]),
-        supabase.from('meals').select('id, for_date, recipe_id, status, deck:decks(who_eating), recipe:recipes(title, language, translations)')
-          .eq('household_id', household!.id).gte('for_date', daysBefore(today, RATE_DAYS)).lte('for_date', today)
+        supabase.from('plan_dates').select('*').eq('household_id', household!.id).in('for_date', days),
+        supabase.from('meals').select(`id, for_date, recipe_id, status, deck:decks(who_eating), recipe:recipes(${MEAL_RECIPE})`)
+          .eq('household_id', household!.id).gte('for_date', addDays(today, -RATE_DAYS)).lte('for_date', today)
           .neq('status', 'skipped').order('for_date', { ascending: false }),
-        supabase.from('taste_signals').select('meal_id').eq('user_id', userId!).eq('kind', 'rating')
-          .gte('created_at', `${daysBefore(today, RATE_DAYS + 7)}T00:00:00Z`),
+        supabase.from('household_recipes').select(HOUSEHOLD_RECIPE).eq('household_id', household!.id),
         supabase.from('swipes').select('deck:decks(mood)').eq('user_id', userId!).neq('verdict', 'pass')
           .order('created_at', { ascending: false }).limit(150),
         supabase.from('decks').select('max_minutes, mood, filters, created_at').eq('household_id', household!.id)
@@ -120,10 +153,12 @@ export function TonightScreen() {
         supabase.from('decks').select('who_eating, extra_eaters').eq('household_id', household!.id)
           .order('created_at', { ascending: false }).limit(1),
       ]);
-      const ratedMeals = new Set((must(rated) as { meal_id: string }[]).map((x) => x.meal_id));
-      type RecentMeal = RateMeal & { for_date: string; status: string; deck: { who_eating: string[] } | null };
-      // Eaten: an earlier day, or cooked tonight; by this person when the deck says who ate.
-      const toRate = (must(recent) as unknown as RecentMeal[]).find((m) => !ratedMeals.has(m.id)
+      const householdMarks = must(marks) as HouseholdRecipe[];
+      const ratedRecipes = new Set(householdMarks.filter((x) => x.stars).map((x) => x.recipe_id));
+      type RecentMeal = RateMeal & { status: string; deck: { who_eating: string[] } | null };
+      // Eaten: an earlier day, or cooked tonight; by this person when the deck says who ate. A dish
+      // the household rated already (on either phone) isn't asked about again.
+      const toRate = (must(recent) as unknown as RecentMeal[]).find((m) => !ratedRecipes.has(m.recipe_id) && m.recipe
         && (m.for_date < today || m.status === 'cooked') && (!m.deck || m.deck.who_eating.includes(userId!))) ?? null;
       const deck = (must(decks) as Deck[])[0] ?? null;
       const [progress, yeses, cards] = deck
@@ -151,7 +186,8 @@ export function TonightScreen() {
         meals: must(meals) as unknown as PlannedMeal[],
         plan: must(plan) as PlanDay[],
         dates: must(dates) as PlanDate[],
-        toRate: toRate && { id: toRate.id, recipe_id: toRate.recipe_id, recipe: toRate.recipe },
+        toRate: toRate && { id: toRate.id, recipe_id: toRate.recipe_id, for_date: toRate.for_date, recipe: toRate.recipe },
+        marks: householdMarks,
         // Only a clear preference: enough yeses, and well ahead of the next mood.
         favouriteMood: top && top[1] >= 8 && top[1] >= 2 * (second?.[1] ?? 0) ? top[0] : 'any',
         lastDeck: last ? { maxMinutes: last.max_minutes, mood: last.mood ?? 'any', filters: last.filters ?? {}, at: last.created_at } : null,
@@ -163,6 +199,7 @@ export function TonightScreen() {
       { table: 'decks', filter: `household_id=eq.${household!.id}` },
       { table: 'meals', filter: `household_id=eq.${household!.id}` },
       { table: 'plan_dates', filter: `household_id=eq.${household!.id}` },
+      { table: 'household_recipes', filter: `household_id=eq.${household!.id}` },
     ],
   );
 
@@ -202,8 +239,8 @@ export function TonightScreen() {
 
   // Meals still to cook this week, tonight first: what the groceries card covers.
   const planned = useMemo(() => (data?.meals ?? [])
-    .filter((m) => m.recipe && m.status !== 'skipped' && m.status !== 'cooked')
-    .sort((a, b) => a.for_date.localeCompare(b.for_date)), [data?.meals]);
+    .filter((m) => m.recipe && m.status !== 'skipped' && m.status !== 'cooked' && m.for_date >= today)
+    .sort((a, b) => a.for_date.localeCompare(b.for_date)), [data?.meals, today]);
   // The groceries card only counts meals whose ingredients haven't gone to the list yet.
   const unlisted = useMemo(() => planned.filter((m) => !m.listed_at), [planned]);
   const unlistedKey = unlisted.map((m) => m.id).join(',');
@@ -253,11 +290,21 @@ export function TonightScreen() {
     }
   };
 
-  const rate = async (meal: RateMeal, rating: Rating) => {
-    setRated(meal.id);
-    await save(supabase.from('taste_signals').upsert(
-      { user_id: userId, recipe_id: meal.recipe_id, kind: 'rating', value: rating, meal_id: meal.id },
-      { onConflict: 'user_id,key' },
+  // Not asked again on this phone; unrated, the meal says nothing about anyone's taste.
+  const skipRating = (mealId: string) => {
+    const next = [...skipped.filter((id) => id !== mealId), mealId].slice(-30);
+    setSkipped(next);
+    try {
+      localStorage.setItem(SKIP_KEY, JSON.stringify(next));
+    } catch { /* private mode: asked again next time */ }
+  };
+
+  // A past evening with nothing logged: what was eaten, as cooked (it was).
+  const logMeal = async (recipeId: string) => {
+    setPickOpen(false);
+    await save(supabase.from('meals').upsert(
+      { household_id: household!.id, for_date: selected, recipe_id: recipeId, status: 'cooked' },
+      { onConflict: 'household_id,for_date' },
     ));
   };
 
@@ -280,7 +327,7 @@ export function TonightScreen() {
 
   const people = [userId!, ...partners.map((p) => p.user_id)].map((id) => ({ id, name: memberName(id), color: memberColor(id) }));
   const header = (
-    <TabHeader overline={cap(longFormat.format(new Date(`${selected}T12:00:00Z`)))} title={eveningName(selected, today)}
+    <TabHeader overline={cap(longFormat.format(new Date(`${selected}T12:00:00Z`)))} title={titleOf(selected)}
       right={(
         <span className="tab-header__actions">
           <button type="button" className="icon-btn icon-btn--filled" aria-label={t('week.open')} onClick={() => setWeekOpen(true)}>
@@ -308,23 +355,39 @@ export function TonightScreen() {
     members: deck.who_eating, eaters: deck.extra_eaters ?? [], maxMinutes: deck.max_minutes, mood: deck.mood, filters: deck.filters ?? {},
   }, table);
 
-  const stripDays: StripDay[] = week.map((date) => ({
+  const stripDays: StripDay[] = week.map((date) => {
+    const chosen = !!data?.meals.some((m) => m.for_date === date && m.status !== 'skipped');
+    // A past evening is what happened: a dinner logged, or nothing.
+    return { date, chosen, together: date < today ? chosen : cooksOn(date, data?.plan, data?.dates) };
+  });
+  // This week's sheet switches tonight and the next six evenings, whatever the strip shows.
+  const weekDays: StripDay[] = coming.map((date) => ({
     date,
     together: cooksOn(date, data?.plan, data?.dates),
     chosen: !!data?.meals.some((m) => m.for_date === date && m.status !== 'skipped'),
   }));
   const strip = <WeekStrip today={today} selected={selected} onSelect={selectDay} days={stripDays} />;
 
-  const rating = isToday && data?.toRate && rated !== data.toRate.id && (
-    <section className="card stack" aria-label={t('rating.title')}>
-      <span className="card__title">
-        {t('rating.question', { title: data.toRate.recipe ? recipeTitle(data.toRate.recipe, locale) : '' })}
+  const markOf = (recipeId: string) => data?.marks.find((x) => x.recipe_id === recipeId) ?? null;
+  const toRate = data?.toRate && !markOf(data.toRate.recipe_id)?.stars && !skipped.includes(data.toRate.id) ? data.toRate : null;
+  // Tonight: how was a recent dinner? A tap on a star opens the rate sheet on it.
+  const rating = isToday && toRate?.recipe && (
+    <section className="card rate-prompt" aria-label={t('rating.rate')}>
+      <span className="rate-prompt__thumb"><RecipeThumb recipe={toRate.recipe} /></span>
+      <span className="grow">
+        <span className="card__title d-block">{t('rating.question', { title: recipeTitle(toRate.recipe, locale) })}</span>
+        <span className="rate-prompt__stars">
+          {[1, 2, 3, 4, 5].map((n) => (
+            <button key={n} type="button" className="rate-prompt__star" aria-label={tn('rating.star', n)}
+              onClick={() => setRateOpen({ meal: toRate, stars: n })}>
+              <Icon name="star" size={26} strokeWidth={1.6} />
+            </button>
+          ))}
+        </span>
       </span>
-      <div className="chips">
-        {[...RATINGS, 'not_eaten' as const].map((r) => (
-          <Chip key={r} onClick={() => void rate(data.toRate!, r)}>{t(`rating.${r}`)}</Chip>
-        ))}
-      </div>
+      <button type="button" className="icon-btn rate-prompt__close" aria-label={t('app.close')} onClick={() => skipRating(toRate.id)}>
+        <Icon name="x" size={18} />
+      </button>
     </section>
   );
 
@@ -353,7 +416,7 @@ export function TonightScreen() {
     if (unlisted.length > 1) return t('tonight.groceriesMany', { recipes: unlisted.length, n: groceries.toBuy });
     const d = unlisted[0].for_date;
     return d === today ? t('tonight.groceriesTonight', { n: groceries.toBuy })
-      : d === week[1] ? t('tonight.groceriesTomorrow', { n: groceries.toBuy })
+      : d === coming[1] ? t('tonight.groceriesTomorrow', { n: groceries.toBuy })
         : t('tonight.groceriesOn', { day: weekday(d), n: groceries.toBuy });
   };
   const groceriesCard = planned.length > 0 && (unlisted.length === 0 || groceries) && (
@@ -372,6 +435,54 @@ export function TonightScreen() {
   let main: React.ReactNode;
   if (dayLoading) {
     main = <Spinner />;
+  } else if (isPast && dayMeal) {
+    // A past evening: what we ate, who ate, and the household's rating. The picture opens the recipe.
+    const r = dayMeal.recipe!;
+    const mark = markOf(r.id);
+    const ate = dayMeal.deck?.who_eating ?? members.map((m) => m.user_id);
+    const portions = ate.length + (dayMeal.deck?.extra_eaters?.length ?? 0);
+    const facts = [r.total_min && t('swipe.minutes', { n: r.total_min }), portions > 0 && tn('calendar.portions', portions)]
+      .filter(Boolean).join(' · ');
+    const eaters = ate.map((id) => ({ id, name: memberName(id), color: memberColor(id) }));
+    const openRate = () => setRateOpen({ meal: { id: dayMeal.id, recipe_id: r.id, for_date: dayMeal.for_date, recipe: r } });
+    main = (
+      <article className="card past-day">
+        <Link to={`/recipes/${r.id}`} className="past-day__photo" style={imageStyle(r.image_path)} aria-label={recipeTitle(r, locale)}>
+          {!imageStyle(r.image_path) && <span aria-hidden>{recipeEmoji(r.title, r.tags)}</span>}
+        </Link>
+        <div className="past-day__body">
+          <h2 className="t-title-s m-0">{recipeTitle(r, locale)}</h2>
+          <span className="past-day__facts muted">
+            {eaters.length > 0 && <AvatarPair people={eaters} />}
+            {facts}
+          </span>
+          {mark?.stars ? (
+            <span className="past-day__rating">
+              <Stars value={mark.stars} size={20} />
+              {mark.favorite && <Tag tone="accent"><Icon name="heart" filled size={12} /> {t('rating.favorite')}</Tag>}
+            </span>
+          ) : (
+            <button type="button" className="past-day__rating past-day__rating--empty" onClick={openRate}>
+              <Stars value={null} size={20} />
+              <span className="muted">{t('rating.notRated')}</span>
+            </button>
+          )}
+          {mark?.stars
+            ? <Button block variant="secondary" onClick={openRate}>{t('rating.edit')}</Button>
+            : <Button block onClick={openRate}><Icon name="star" size={20} /> {t('rating.rate')}</Button>}
+        </div>
+      </article>
+    );
+  } else if (isPast) {
+    // Nothing logged that evening (not designed yet): a way to add what we ate.
+    main = (
+      <section className="card past-day past-day--empty">
+        <span className="icon-tile"><Icon name="utensils" size={20} /></span>
+        <h2 className="t-title-s m-0">{t('calendar.nothing')}</h2>
+        <p className="muted m-0">{t('calendar.nothingHint')}</p>
+        <Button block variant="secondary" onClick={() => setPickOpen(true)}><Icon name="plus" size={20} /> {t('calendar.add')}</Button>
+      </section>
+    );
   } else if (dayMeal && !open) {
     // Decided: this evening first, then what's coming, then one groceries card for all.
     const r = dayMeal.recipe!;
@@ -491,7 +602,7 @@ export function TonightScreen() {
     // takes what height is left, so the button sits above the tab bar.
     const [mid, left, right] = pickDeckArt(selected, 3, settings.mood, diet ?? undefined);
     const ask = isToday ? t('tonight.ask')
-      : selected === week[1] ? t('tonight.askTomorrow') : t('tonight.askOn', { day: weekday(selected) });
+      : selected === coming[1] ? t('tonight.askTomorrow') : t('tonight.askOn', { day: weekday(selected) });
     main = (
       <>
         <section className="card deal-card">
@@ -528,13 +639,21 @@ export function TonightScreen() {
         {rating}
         {main}
       </div>
+      {!isToday && (
+        <button type="button" className="back-tonight" onClick={backToTonight}>{t('calendar.backTonight')}</button>
+      )}
       <DeckSettingsSheet open={settingsOpen} onClose={() => setSettingsOpen(false)} startOn={settingsView}
         title={isToday ? t('tonight.settingsTitle')
-          : selected === week[1] ? t('tonight.settingsTitleTomorrow') : t('tonight.settingsTitleOn', { day: weekday(selected) })}
+          : selected === coming[1] ? t('tonight.settingsTitleTomorrow') : t('tonight.settingsTitleOn', { day: weekday(selected) })}
         settings={settings} onChange={pick}
         table={table} diet={diet} dealing={dealing} error={error} onDeal={() => void deal()} />
-      <WeekSheet open={weekOpen} onClose={() => setWeekOpen(false)} days={stripDays} today={today}
+      <WeekSheet open={weekOpen} onClose={() => setWeekOpen(false)} days={weekDays} today={today} selected={selected}
         onToggle={(d, c) => void toggleDay(d, c)} back={eveningPath(selected, today)} />
+      {rateOpen?.meal.recipe && (
+        <RateSheet open onClose={() => setRateOpen(null)} recipe={rateOpen.meal.recipe} initialStars={rateOpen.stars}
+          dateLabel={cap(longFormat.format(new Date(`${rateOpen.meal.for_date}T12:00:00Z`)))} rating={markOf(rateOpen.meal.recipe_id)} />
+      )}
+      <PickRecipeSheet open={pickOpen} onClose={() => setPickOpen(false)} onPick={(id) => void logMeal(id)} />
       {groceries && (
         <AddToListSheet open={listOpen} onClose={() => setListOpen(false)} meals={groceries.meals} />
       )}

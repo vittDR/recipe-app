@@ -24,7 +24,7 @@ type Leaves<T, P extends string = ''> = {
 
 export type MessageKey = Leaves<typeof en>;
 /** Keys whose value is a list of strings. */
-export type ListKey = 'plan.days' | 'plan.daysLong' | 'household.suggestions';
+export type ListKey = 'plan.days' | 'plan.daysLong' | 'household.suggestions' | 'rating.labels';
 type PluralBase<K extends string> = K extends `${infer B}_one` ? B : never;
 export type PluralKey = PluralBase<MessageKey>;
 

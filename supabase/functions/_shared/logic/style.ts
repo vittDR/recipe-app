@@ -476,6 +476,8 @@ export const SIGNAL_WEIGHT = {
 } as const;
 export const SWIPE_FREQUENCY = { yes: 3, must: 4, not_for_me: 0 } as const;
 export const RATING_FREQUENCY = { loved: 4, fine: 2.5, not_again: 0 } as const;
+/** The household's stars on the frequency scale: 1 not for us … 3 fine … 5 a favourite. */
+export const STARS_FREQUENCY = [0, 1, 2.5, 3.25, 4] as const;
 export const COOKED_FREQUENCY = 3;
 /** Older signals fade, as in the taste profile. */
 export const STYLE_HALF_LIFE_DAYS = PROFILE_HALF_LIFE_DAYS;
@@ -496,6 +498,8 @@ export function observationsFor(
   const plate = (id: string | undefined) => (id ? platesOf(id)?.[0] : undefined);
   // A rating says more than having cooked it.
   const rated = new Set(signals.flatMap((s) => (s.kind === 'rating' && s.mealId ? [s.mealId] : [])));
+  // The household's stars are about the dish: every meal of it.
+  const starred = new Set(signals.flatMap((s) => (s.kind === 'rating' && s.stars && s.recipeId ? [s.recipeId] : [])));
   const observations: Observation[] = [];
   const pairs: PairObservation[] = [];
   const edits: StyleEdit[] = [];
@@ -531,11 +535,12 @@ export function observationsFor(
         w = SIGNAL_WEIGHT.swipe;
         break;
       case 'rating':
-        if (s.rating !== 'not_eaten') y = RATING_FREQUENCY[s.rating];
+        if (s.stars) y = STARS_FREQUENCY[Math.min(5, Math.max(1, Math.round(s.stars))) - 1];
+        else if (s.rating !== 'not_eaten') y = RATING_FREQUENCY[s.rating];
         w = SIGNAL_WEIGHT.rating;
         break;
       case 'cooked':
-        if (!s.mealId || !rated.has(s.mealId)) y = COOKED_FREQUENCY;
+        if ((!s.mealId || !rated.has(s.mealId)) && !(s.recipeId && starred.has(s.recipeId))) y = COOKED_FREQUENCY;
         w = SIGNAL_WEIGHT.cooked;
         break;
     }
