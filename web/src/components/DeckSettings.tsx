@@ -92,7 +92,7 @@ export function useDeckLabels() {
 }
 
 /** Up to this many eating, the bar's "who" cell shows their faces; more, just how many. */
-const BAR_FACES = 4;
+const BAR_FACES = 3;
 
 /**
  * Tonight's settings as a bar under the deal card: who eats (when there is
