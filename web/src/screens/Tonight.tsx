@@ -494,18 +494,20 @@ export function TonightScreen() {
       : selected === week[1] ? t('tonight.askTomorrow') : t('tonight.askOn', { day: weekday(selected) });
     main = (
       <>
-        <div className="deal-hero" aria-hidden>
-          <div className="deal-hero__art">
-            <img className="fan fan--left fan--art" src={left} alt="" />
-            <img className="fan fan--right fan--art" src={right} alt="" />
-            <img className="fan fan--mid fan--art" src={mid} alt="" />
+        <section className="card deal-card">
+          <div className="deal-hero" aria-hidden>
+            <div className="deal-hero__art">
+              <img className="fan fan--left fan--art" src={left} alt="" />
+              <img className="fan fan--right fan--art" src={right} alt="" />
+              <img className="fan fan--mid fan--art" src={mid} alt="" />
+            </div>
           </div>
-        </div>
-        <h2 className="deal-hero__title">{deck?.status === 'no_match' ? t('noMatch.again') : ask}</h2>
-        <DeckSettingsBar settings={settings} table={table} onOpen={openSettings} />
-        <Button block className="deal-hero__btn" disabled={dealing} onClick={() => void deal()}>
-          {dealing ? t('tonight.dealing') : t('tonight.deal')}
-        </Button>
+          <h2 className="deal-hero__title">{deck?.status === 'no_match' ? t('noMatch.again') : ask}</h2>
+          <DeckSettingsBar settings={settings} table={table} onOpen={openSettings} />
+          <Button block className="deal-hero__btn" disabled={dealing} onClick={() => void deal()}>
+            {dealing ? t('tonight.dealing') : t('tonight.deal')}
+          </Button>
+        </section>
         {error && !settingsOpen && <p className="notice">{error}</p>}
         {!shared && (
           <div className="list">

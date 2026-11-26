@@ -1941,16 +1941,26 @@ button.grocery-row__amount {
   outline-offset: 2px;
 }
 
-/* The deal card: terracotta, a fan of cards, the question and one white button. */
-/* Only the deck art: it takes the height the screen has left (none of its
-   own), so the deal button stays above the tab bar; the cards scale to it. */
+/* One white card holds the deal: the art, the question, the settings bar and
+   the button. It takes the height the screen has left, so the button stays
+   above the tab bar; only the art gives way. */
+.deal-card {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-5);
+  border-radius: var(--radius-2xl);
+}
+
+/* The deck art: what height the card has left; the cards scale to it. */
 .deal-hero {
   flex: 1 1 0;
-  min-height: 150px;
+  min-height: 140px;
   position: relative;
   overflow: hidden;
   container-type: size;
-  border-radius: var(--radius-2xl);
+  border-radius: var(--radius-xl);
   background: var(--accent-soft);
 }
 
@@ -2029,10 +2039,45 @@ button.grocery-row__amount {
 .deal-hero__title {
   flex: none;
   /* Closer to the bar it asks about than to the art. */
-  margin: var(--space-2) var(--space-1) calc(var(--space-3) - var(--space-5));
+  margin: var(--space-2) var(--space-2) calc(var(--space-3) - var(--space-5));
   color: var(--ink);
   font: 700 24px/1.15 var(--font-sans);
   letter-spacing: -0.02em;
+}
+
+/* Inside the deal card the bar sits on a soft tint, not a second shadow. */
+.deal-card .deck-bar {
+  background: var(--paper);
+  box-shadow: none;
+  border-radius: var(--radius-lg);
+}
+
+.deal-card .deck-bar__value .avatar {
+  box-shadow: 0 0 0 2px var(--paper);
+}
+
+/* The card's padding takes width from the bar: tighter cells keep four faces,
+   "30 min" and "Réconfort" whole on a phone. */
+.deal-card .deck-bar__cell {
+  padding: var(--space-4) var(--space-3);
+}
+
+.deal-card .deck-bar__value {
+  font-size: 16px;
+}
+
+.deal-card .deck-bar__value .avatar {
+  width: 24px;
+  height: 24px;
+  font-size: 11px;
+}
+
+.deal-card .deck-bar__filters {
+  width: 44px;
+}
+
+.deal-card .deck-bar__badge {
+  right: 2px;
 }
 
 .deal-hero__btn {
