@@ -1,6 +1,7 @@
 // Calendar (design/calendar/HANDOFF.md §3): every evening, month by month.
 // Starts on this month; earlier months are above, back to the household's
-// first logged dinner. Tapping a date opens Ce soir for that evening.
+// first logged dinner. Tapping a date opens Ce soir for that evening; Today
+// scrolls back to today.
 //   today                          filled terracotta circle
 //   past, dinner logged            the dish, round, its number under it
 //   future, dish decided           the dish with a terracotta ring
@@ -57,6 +58,12 @@ export function CalendarScreen() {
   for (let m = monthStart(earliest); m <= last; m = monthStart(m, 1)) months.push(m);
   const meals = new Map((data?.meals ?? []).filter((m) => m.recipe).map((m) => [m.for_date, m]));
 
+  // Today: back to today's date, wherever the calendar is scrolled.
+  const todayCell = useRef<HTMLButtonElement>(null);
+  const scrollToToday = () => todayCell.current?.scrollIntoView({
+    block: 'center', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+  });
+
   // Opens on this month: the earlier ones are a scroll up.
   const current = useRef<HTMLElement>(null);
   const scrolled = useRef(false);
@@ -81,7 +88,7 @@ export function CalendarScreen() {
             <Icon name="back" />
           </button>
           <h1 className="calendar__title">{t('calendar.title')}</h1>
-          <button type="button" className="calendar__today" onClick={() => navigate('/')}>{t('calendar.today')}</button>
+          <button type="button" className="calendar__today" onClick={scrollToToday}>{t('calendar.today')}</button>
         </div>
         <div className="calendar__weekdays" aria-hidden>
           {letters.map((l, i) => <span key={i}>{l}</span>)}
@@ -105,7 +112,7 @@ export function CalendarScreen() {
                     const src = meal?.recipe ? thumbUrl(meal.recipe.image_path) : null;
                     const cls = ['calendar__day', `calendar__day--${state}`, date === from && date !== today && 'calendar__day--from'].filter(Boolean).join(' ');
                     return (
-                      <button key={date} type="button" className={cls}
+                      <button key={date} type="button" className={cls} ref={date === today ? todayCell : undefined}
                         style={i === 0 ? { gridColumnStart: isoWeekday(date) } : undefined}
                         aria-label={long.format(new Date(`${date}T12:00:00Z`))} aria-current={date === today ? 'date' : undefined}
                         onClick={() => navigate(eveningPath(date, today))}>
