@@ -135,6 +135,7 @@ export const fr: Dictionary = {
     settingsTitle: 'Le deck de ce soir',
     settingsTitleTomorrow: 'Le deck de demain',
     settingsTitleOn: 'Le deck de {day}',
+    whoShort: 'Qui',
     timeLabel: 'Temps',
     upTo: '≤ {n} min',
     underHour: '≤ 1 h',

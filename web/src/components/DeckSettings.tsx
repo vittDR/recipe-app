@@ -1,8 +1,8 @@
 // Tonight's deck settings: who eats (members and extra eaters, one tile
 // each), time, mood, and "more filters" (protein,
 // cuisine, base, spice, calories and protein per serving) in a second view of
-// the same sheet. Secondary by
-// design: a one-line summary on Ce soir opens them in a sheet.
+// the same sheet. On Ce soir a bar under the deal card shows who, time and
+// mood and opens them in a sheet.
 import { useState } from 'react';
 import {
   type DeckFilters, FILTER_BASES, FILTER_EFFORTS, FILTER_CUISINES, FILTER_SPICES, filterCount, MAX_KCAL_LIMIT, MIN_PROTEIN_LIMIT, proteinsForDiet,
@@ -91,20 +91,54 @@ export function useDeckLabels() {
   };
 }
 
-/** The summary row: opens the sheet. */
+/** At most this many faces in the bar's "who" cell; the count says the rest. */
+const BAR_FACES = 4;
+
 /**
- * Tonight's settings in one line, opening the sheet. `hero` is the pill
- * inside the terracotta deal card, the secondary action above its button:
- * text only, no icon or chevron, so it stays slim.
+ * Tonight's settings as a bar under the deal card: who eats (when there is
+ * anyone else), time and mood each open the sheet; the sliders open its more
+ * filters, badged with how many are on.
  */
-export function DeckSummaryRow({ settings, table, onClick, hero }: { settings: DeckSettings; table: Table; onClick: () => void; hero?: boolean }) {
+export function DeckSettingsBar({ settings, table, onOpen }: {
+  settings: DeckSettings;
+  table: Table;
+  onOpen: (view: 'main' | 'filters') => void;
+}) {
+  const { t } = useI18n();
   const labels = useDeckLabels();
+  const faces = [
+    ...table.members.filter((m) => settings.members.includes(m.id)),
+    ...table.eaters.filter((e) => settings.eaters.includes(e.id)).map((e) => ({ id: e.id, name: e.name, color: EATER_COLOR })),
+  ];
+  const count = filterCount(settings.filters);
+  const m = settings.maxMinutes;
   return (
-    <button type="button" className={hero ? 'summary-row summary-row--hero' : 'card summary-row'} onClick={onClick}>
-      {!hero && <Icon name={settings.members.length + settings.eaters.length > 1 ? 'people' : 'person'} size={20} />}
-      <span className="summary-row__text">{labels.summary(settings, table)}</span>
-      {!hero && <span className="chevron"><Icon name="chevron" size={18} /></span>}
-    </button>
+    <div className="card deck-bar">
+      {hasOthers(table) && (
+        <button type="button" className="deck-bar__cell" onClick={() => onOpen('main')}>
+          <span className="deck-bar__label">{t('tonight.whoShort')}</span>
+          <span className="deck-bar__value">
+            <span className="avatars">
+              {faces.slice(0, BAR_FACES).map((f) => <Avatar key={f.id} name={f.name} color={f.color} />)}
+            </span>
+            <span className="tabular">{faces.length}</span>
+          </span>
+        </button>
+      )}
+      <button type="button" className="deck-bar__cell" onClick={() => onOpen('main')}>
+        <span className="deck-bar__label">{t('tonight.timeLabel')}</span>
+        <span className="deck-bar__value">{m === null ? t('tonight.anyTime') : t('tonight.minutes', { n: m })}</span>
+      </button>
+      <button type="button" className="deck-bar__cell" onClick={() => onOpen('main')}>
+        <span className="deck-bar__label">{t('tonight.mood')}</span>
+        <span className="deck-bar__value">{labels.mood(settings.mood)}</span>
+      </button>
+      <button type="button" className="deck-bar__filters" onClick={() => onOpen('filters')}
+        aria-label={count ? `${t('tonight.filters.title')} (${count})` : t('tonight.filters.title')}>
+        <Icon name="sliders" size={22} />
+        {count > 0 && <span className="deck-bar__badge tabular">{count}</span>}
+      </button>
+    </div>
   );
 }
 
@@ -190,8 +224,10 @@ function NutritionRow({ icon, label, unit, value, start, step, min, max, onChang
   );
 }
 
-export function DeckSettingsSheet({ open, onClose, title, settings, onChange, table, diet, onDeal, dealing, error }: {
+export function DeckSettingsSheet({ open, onClose, title, settings, onChange, table, diet, onDeal, dealing, error, startOn = 'main' }: {
   open: boolean;
+  /** The view the sheet opens on: the deck settings, or straight to more filters. */
+  startOn?: 'main' | 'filters';
   onClose: () => void;
   /** The evening the deck is for: "Tonight’s deck", "Tomorrow’s deck", "Thursday’s deck". */
   title: string;
@@ -209,9 +245,11 @@ export function DeckSettingsSheet({ open, onClose, title, settings, onChange, ta
   const labels = useDeckLabels();
   const portions = usePortionTotal();
   const shared = hasOthers(table);
-  const [view, setView] = useState<'main' | 'filters'>('main');
+  // Null until the person moves between views: the sheet shows `startOn`.
+  const [moved, setView] = useState<'main' | 'filters' | null>(null);
+  const view = moved ?? startOn;
   const close = () => {
-    setView('main');
+    setView(null);
     onClose();
   };
   const f = settings.filters;
@@ -228,11 +266,12 @@ export function DeckSettingsSheet({ open, onClose, title, settings, onChange, ta
   );
 
   if (view === 'filters') {
-    // A list that only selects: "OK" in the title row takes you back to the deck.
+    // A list that only selects: "OK" in the title row takes you back to the
+    // deck, or closes the sheet when it opened straight here.
     return (
       <Sheet open={open} onClose={close} label={t('tonight.filters.heading')} depth={1}>
         <SheetHeader title={t('tonight.filters.heading')}
-          action={<Button small variant="text" onClick={() => setView('main')}>{t('app.done')}</Button>} />
+          action={<Button small variant="text" onClick={() => (startOn === 'filters' && !moved ? close() : setView('main'))}>{t('app.done')}</Button>} />
         <Section label={t('tonight.filters.protein')} flush>
           <div className="chips">
             {proteinsForDiet(diet).map((p) => (
