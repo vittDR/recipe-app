@@ -57,7 +57,7 @@ stateDiagram-v2
 
 | State | Screen | Notes |
 | --- | --- | --- |
-| No deck | `ce-soir-no-deck` | Week strip, big terracotta "Lancer le deck" card, one summary row for settings |
+| No deck | `ce-soir-no-deck` | Week strip, big terracotta "Lancer le deck" card with the settings pill above its button |
 | Deck settings | `ce-soir-deck-settings`, `ce-soir-envies` | Bottom sheets |
 | P launched, I have not swiped | `ce-soir-partner-launched` | Only "Commencer à swiper" |
 | I finished, P has not started | `ce-soir-waiting` | The most common waiting state. "Relancer P" nudges her |

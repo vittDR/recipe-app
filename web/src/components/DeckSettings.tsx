@@ -92,10 +92,14 @@ export function useDeckLabels() {
 }
 
 /** The summary row: opens the sheet. */
-export function DeckSummaryRow({ settings, table, onClick }: { settings: DeckSettings; table: Table; onClick: () => void }) {
+/**
+ * Tonight's settings in one line, opening the sheet. `hero` is the pill
+ * inside the terracotta deal card, the secondary action above its button.
+ */
+export function DeckSummaryRow({ settings, table, onClick, hero }: { settings: DeckSettings; table: Table; onClick: () => void; hero?: boolean }) {
   const labels = useDeckLabels();
   return (
-    <button type="button" className="card summary-row" onClick={onClick}>
+    <button type="button" className={hero ? 'summary-row summary-row--hero' : 'card summary-row'} onClick={onClick}>
       <Icon name={settings.members.length + settings.eaters.length > 1 ? 'people' : 'person'} size={20} />
       <span className="summary-row__text">{labels.summary(settings, table)}</span>
       <span className="chevron"><Icon name="chevron" size={18} /></span>

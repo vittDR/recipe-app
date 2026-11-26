@@ -495,12 +495,14 @@ export function TonightScreen() {
             <img className="fan fan--mid fan--art" src={mid} alt="" />
           </div>
           <h2 className="deal-hero__title">{deck?.status === 'no_match' ? t('noMatch.again') : ask}</h2>
-          <button type="button" className="btn btn--block deal-hero__btn" disabled={dealing} onClick={() => void deal()}>
-            {dealing ? t('tonight.dealing') : t('tonight.deal')}
-          </button>
+          <div className="deal-hero__actions">
+            <DeckSummaryRow hero settings={settings} table={table} onClick={() => setSettingsOpen(true)} />
+            <button type="button" className="btn btn--block deal-hero__btn" disabled={dealing} onClick={() => void deal()}>
+              {dealing ? t('tonight.dealing') : t('tonight.deal')}
+            </button>
+          </div>
         </section>
         {error && !settingsOpen && <p className="notice">{error}</p>}
-        <DeckSummaryRow settings={settings} table={table} onClick={() => setSettingsOpen(true)} />
         {!shared && (
           <div className="list">
             <ListRow to="/us/invite" tile="accent" icon={<Icon name="people" size={18} />} title={t('tonight.noPartner')} />

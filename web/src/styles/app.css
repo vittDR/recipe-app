@@ -2022,11 +2022,45 @@ button.grocery-row__amount {
   letter-spacing: -0.02em;
 }
 
+/* Settings pill (secondary) over the deal button (primary): same width,
+   corners and rhythm, the pill a quiet glass outline on the terracotta. */
+.deal-hero__actions {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
 .deal-hero__btn {
   position: relative;
   background: var(--surface);
   color: var(--accent-text);
   font-weight: 700;
+  box-shadow: 0 6px 16px rgba(80, 24, 12, 0.22);
+}
+
+.summary-row.summary-row--hero {
+  min-height: 48px;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.32);
+  color: var(--on-accent);
+  transition: transform 0.12s ease, background 0.12s ease;
+}
+
+.summary-row.summary-row--hero:active {
+  transform: scale(0.98);
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.summary-row--hero .summary-row__text {
+  color: var(--on-accent);
+}
+
+.summary-row--hero .chevron {
+  color: var(--on-accent);
+  opacity: 0.8;
 }
 
 .summary-row {
