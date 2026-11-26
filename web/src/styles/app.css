@@ -1828,7 +1828,8 @@ button.grocery-row__amount {
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
-  min-height: calc(100dvh - 128px - env(safe-area-inset-bottom) - env(safe-area-inset-top));
+  /* The screen's height less its top and bottom padding (the tab bar). */
+  min-height: calc(100dvh - var(--space-4) - 128px - env(safe-area-inset-bottom) - env(safe-area-inset-top));
 }
 
 .tonight .tab-header {
@@ -1941,15 +1942,14 @@ button.grocery-row__amount {
 }
 
 /* The deal card: terracotta, a fan of cards, the question and one white button. */
+/* Only the deck art: it takes the height the screen has left (none of its
+   own), so the deal button stays above the tab bar; the cards scale to it. */
 .deal-hero {
-  flex: 1;
-  min-height: 340px;
+  flex: 1 1 0;
+  min-height: 150px;
   position: relative;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  padding: var(--space-7);
+  container-type: size;
   border-radius: var(--radius-2xl);
   background: var(--accent-soft);
 }
@@ -1988,19 +1988,33 @@ button.grocery-row__amount {
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
 }
 
-/* The cards take the room above the title and sit centred in it,
-   so a tall screen adds space around them, not one gap under them. */
+/* The cards sit centred, at most their full 190px tall and otherwise 72% of
+   the card; their spread scales with them. */
 .deal-hero .deal-hero__art {
-  position: relative;
-  inset: auto;
-  flex: 1;
-  min-height: 260px;
-  margin: 0 calc(-1 * var(--space-7)) calc(-1 * var(--space-7));
+  inset: 0;
+  height: auto;
 }
 
 .deal-hero .fan {
+  --fan-h: min(190px, 72cqh);
   top: 50%;
-  margin-top: -95px;
+  width: auto;
+  height: var(--fan-h);
+  aspect-ratio: 150 / 190;
+  margin: 0;
+  translate: -50% -50%;
+}
+
+.deal-hero .fan--left {
+  transform: translateX(calc(var(--fan-h) * -0.24)) rotate(-12deg);
+}
+
+.deal-hero .fan--right {
+  transform: translateX(calc(var(--fan-h) * 0.24)) translateY(calc(var(--fan-h) * -0.04)) rotate(9deg);
+}
+
+.deal-hero .fan--mid {
+  transform: translateY(calc(var(--fan-h) * 0.03)) rotate(-2deg);
 }
 
 /* Illustrated cards (deal hero, join card, no match): the artwork carries its own colour and corners. */
@@ -2013,10 +2027,10 @@ button.grocery-row__amount {
 }
 
 .deal-hero__title {
-  position: relative;
-  margin: 0;
+  flex: none;
+  /* Closer to the bar it asks about than to the art. */
+  margin: var(--space-2) var(--space-1) calc(var(--space-3) - var(--space-5));
   color: var(--ink);
-  text-align: center;
   font: 700 24px/1.15 var(--font-sans);
   letter-spacing: -0.02em;
 }

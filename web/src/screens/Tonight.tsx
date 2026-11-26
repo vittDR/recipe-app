@@ -487,20 +487,21 @@ export function TonightScreen() {
     );
   } else {
     // No deck yet: dealing the deck is the only big action. New cards each
-    // evening, to the mood about to be dealt; the best fit in front.
+    // evening, to the mood about to be dealt; the best fit in front. The art
+    // takes what height is left, so the button sits above the tab bar.
     const [mid, left, right] = pickDeckArt(selected, 3, settings.mood, diet ?? undefined);
     const ask = isToday ? t('tonight.ask')
       : selected === week[1] ? t('tonight.askTomorrow') : t('tonight.askOn', { day: weekday(selected) });
     main = (
       <>
-        <section className="deal-hero">
-          <h2 className="deal-hero__title">{deck?.status === 'no_match' ? t('noMatch.again') : ask}</h2>
-          <div className="deal-hero__art" aria-hidden>
+        <div className="deal-hero" aria-hidden>
+          <div className="deal-hero__art">
             <img className="fan fan--left fan--art" src={left} alt="" />
             <img className="fan fan--right fan--art" src={right} alt="" />
             <img className="fan fan--mid fan--art" src={mid} alt="" />
           </div>
-        </section>
+        </div>
+        <h2 className="deal-hero__title">{deck?.status === 'no_match' ? t('noMatch.again') : ask}</h2>
         <DeckSettingsBar settings={settings} table={table} onOpen={openSettings} />
         <Button block className="deal-hero__btn" disabled={dealing} onClick={() => void deal()}>
           {dealing ? t('tonight.dealing') : t('tonight.deal')}
