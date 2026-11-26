@@ -301,6 +301,13 @@ a {
   box-shadow: var(--shadow-card);
 }
 
+/* On a white card a white button disappears: it takes a sunken fill and a hairline instead. */
+.card .btn--secondary,
+.card .btn--dark {
+  background: var(--sunken);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+}
+
 .btn--text {
   background: none;
   color: var(--accent-text);
