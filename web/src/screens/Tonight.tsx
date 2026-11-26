@@ -4,7 +4,7 @@ import { filtersForDiet } from '@logic/deckFilters.ts';
 import { RATINGS, type Rating } from '@logic/profile.ts';
 import { Link, useNavigate, useSearchParams } from 'react-router';
 import { AddToListSheet, loadProposalsMany, type MealForList } from '../components/AddToListSheet.tsx';
-import { DeckSettingsSheet, DeckSummaryRow, everyone, MOODS, type Table, useDeckLabels, type DeckSettings } from '../components/DeckSettings.tsx';
+import { DeckSettingsBar, DeckSettingsSheet, everyone, MOODS, type Table, useDeckLabels, type DeckSettings } from '../components/DeckSettings.tsx';
 import { Icon } from '../components/Icon.tsx';
 import { WeekSheet, WeekStrip, type StripDay } from '../components/WeekStrip.tsx';
 import {
@@ -69,6 +69,11 @@ export function TonightScreen() {
   const [picked, setPicked] = useState<DeckSettings | null>(null);
   const [remembered, setRemembered] = useState(() => loadLastSettings(userId!));
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [settingsView, setSettingsView] = useState<'main' | 'filters'>('main');
+  const openSettings = (view: 'main' | 'filters') => {
+    setSettingsView(view);
+    setSettingsOpen(true);
+  };
   const [listOpen, setListOpen] = useState(false);
   const [weekOpen, setWeekOpen] = useState(false);
   const [dealing, setDealing] = useState(false);
@@ -243,7 +248,7 @@ export function TonightScreen() {
       navigate(`/deck/${res.deck_id}`);
     } catch (e) {
       setError(e instanceof Error && e.message === 'no_recipes' ? t('tonight.noRecipes') : t('app.error'));
-      setSettingsOpen(true);
+      openSettings('main');
       setDealing(false);
     }
   };
@@ -489,18 +494,18 @@ export function TonightScreen() {
     main = (
       <>
         <section className="deal-hero">
+          <h2 className="deal-hero__title">{deck?.status === 'no_match' ? t('noMatch.again') : ask}</h2>
           <div className="deal-hero__art" aria-hidden>
             <img className="fan fan--left fan--art" src={left} alt="" />
             <img className="fan fan--right fan--art" src={right} alt="" />
             <img className="fan fan--mid fan--art" src={mid} alt="" />
           </div>
-          <h2 className="deal-hero__title">{deck?.status === 'no_match' ? t('noMatch.again') : ask}</h2>
-          <button type="button" className="btn btn--block deal-hero__btn" disabled={dealing} onClick={() => void deal()}>
-            {dealing ? t('tonight.dealing') : t('tonight.deal')}
-          </button>
         </section>
+        <DeckSettingsBar settings={settings} table={table} onOpen={openSettings} />
+        <Button block className="deal-hero__btn" disabled={dealing} onClick={() => void deal()}>
+          {dealing ? t('tonight.dealing') : t('tonight.deal')}
+        </Button>
         {error && !settingsOpen && <p className="notice">{error}</p>}
-        <DeckSummaryRow settings={settings} table={table} onClick={() => setSettingsOpen(true)} />
         {!shared && (
           <div className="list">
             <ListRow to="/us/invite" tile="accent" icon={<Icon name="people" size={18} />} title={t('tonight.noPartner')} />
@@ -520,7 +525,7 @@ export function TonightScreen() {
         {rating}
         {main}
       </div>
-      <DeckSettingsSheet open={settingsOpen} onClose={() => setSettingsOpen(false)}
+      <DeckSettingsSheet open={settingsOpen} onClose={() => setSettingsOpen(false)} startOn={settingsView}
         title={isToday ? t('tonight.settingsTitle')
           : selected === week[1] ? t('tonight.settingsTitleTomorrow') : t('tonight.settingsTitleOn', { day: weekday(selected) })}
         settings={settings} onChange={pick}
