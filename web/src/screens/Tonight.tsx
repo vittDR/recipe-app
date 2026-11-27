@@ -297,10 +297,22 @@ export function TonightScreen() {
     <TabHeader overline={cap(longFormat.format(new Date(`${selected}T12:00:00Z`)))} title={titleOf(selected)}
       right={(
         <span className="tab-header__actions">
-          <button type="button" className="icon-btn icon-btn--filled" aria-label={t('week.open')} onClick={() => setWeekOpen(true)}>
-            <Icon name="calendar" size={20} />
-          </button>
-          {members.length > 0 && <AvatarPair people={people} />}
+          {/* The calendar button; on another evening than tonight it extends into "Today". */}
+          <span className={`day-switch${isToday ? '' : ' day-switch--away'}`}>
+            <button type="button" className="day-switch__cal" aria-label={t('week.open')} onClick={() => setWeekOpen(true)}>
+              <Icon name="calendar" size={20} />
+            </button>
+            <span className="day-switch__more" aria-hidden={isToday}>
+              <span className="day-switch__inner">
+                <span className="day-switch__rule" />
+                <button type="button" className="day-switch__today" tabIndex={isToday ? -1 : undefined} onClick={backToTonight}>
+                  <Icon name="undo" size={16} strokeWidth={2.4} /> {t('calendar.today')}
+                </button>
+              </span>
+            </span>
+          </span>
+          {/* Away from tonight the header keeps to the date and the way back. */}
+          {members.length > 0 && isToday && <AvatarPair people={people} />}
         </span>
       )} />
   );
@@ -411,9 +423,8 @@ export function TonightScreen() {
               {mark.favorite && <Tag tone="accent"><Icon name="heart" filled size={12} /> {t('rating.favorite')}</Tag>}
             </span>
           ) : (
-            <button type="button" className="past-day__rating past-day__rating--empty" onClick={openRate}>
+            <button type="button" className="past-day__rating past-day__rating--empty" aria-label={t('rating.rate')} onClick={openRate}>
               <Stars value={null} size={20} />
-              <span className="muted">{t('rating.notRated')}</span>
             </button>
           )}
           {mark?.stars
@@ -585,14 +596,11 @@ export function TonightScreen() {
 
   return (
     <Screen>
-      <div className="tonight">
+      <div className={`tonight${isToday ? '' : ' tonight--away'}`}>
         {header}
         {strip}
         {main}
       </div>
-      {!isToday && (
-        <button type="button" className="back-tonight" onClick={backToTonight}>{t('calendar.backTonight')}</button>
-      )}
       <DeckSettingsSheet open={settingsOpen} onClose={() => setSettingsOpen(false)} startOn={settingsView}
         title={isToday ? t('tonight.settingsTitle')
           : selected === coming[1] ? t('tonight.settingsTitleTomorrow') : t('tonight.settingsTitleOn', { day: weekday(selected) })}

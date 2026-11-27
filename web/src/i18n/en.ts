@@ -766,7 +766,6 @@ export const en = {
   rating: {
     rate: 'Rate',
     edit: 'Edit rating',
-    notRated: 'Not rated yet',
     question: 'How was {title}?',
     labels: ['Not for us', 'Meh', 'Fine', 'Really good', 'A favourite'],
     star_one: '{count} star',
@@ -784,9 +783,7 @@ export const en = {
     title: 'Calendar',
     today: 'Today',
     open: 'Calendar',
-    openHint: 'See what you ate, or plan further ahead',
     earlier: 'Scroll up for earlier months',
-    backTonight: 'Back to tonight',
     yesterday: 'Yesterday',
     inDays_one: 'In {count} day',
     inDays_other: 'In {count} days',
@@ -902,11 +899,10 @@ export const en = {
   },
   week: {
     open: 'This week',
-    hint: 'Tick the evenings you cook at home. The others follow your regular schedule.',
     today: 'Today',
     tomorrow: 'Tomorrow',
     usual: 'Regular schedule',
-    usualHint: 'The evenings ticked by default, and prompt times',
+    usualHint: 'Default evenings and reminders',
   },
   plan: {
     title: 'Regular schedule',

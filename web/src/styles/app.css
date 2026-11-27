@@ -4910,28 +4910,6 @@ body:has(.moment) .tabbar {
   padding: var(--space-6);
 }
 
-/* Floats above the tab bar while Ce soir shows another evening than tonight. */
-.back-tonight {
-  position: fixed;
-  left: 50%;
-  bottom: calc(env(safe-area-inset-bottom) + 26px + 62px + var(--space-5));
-  transform: translateX(-50%);
-  padding: var(--space-4) var(--space-7);
-  border: 0;
-  border-radius: var(--radius-full);
-  background: var(--ink);
-  color: var(--paper);
-  font: 700 17px/1.2 var(--font-sans);
-  box-shadow: var(--shadow-raised);
-  z-index: 19;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.tonight:has(+ .back-tonight) {
-  padding-bottom: 64px;
-}
-
 /* ---------- Calendar ---------- */
 
 .calendar {
@@ -5095,4 +5073,103 @@ body:has(.moment) .tabbar {
   margin: var(--space-8) 0 0;
   text-align: center;
   color: var(--muted);
+}
+
+/* ---------- Ce soir's calendar button and its "Today" extension ---------- */
+
+.day-switch {
+  display: inline-flex;
+  align-items: center;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+
+.day-switch__cal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: none;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+/* Grows out of the button (and back) when Ce soir leaves tonight (or returns). */
+.day-switch__more {
+  display: grid;
+  grid-template-columns: 0fr;
+  opacity: 0;
+  transition: grid-template-columns 260ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 180ms ease;
+}
+
+.day-switch--away .day-switch__more {
+  grid-template-columns: 1fr;
+  opacity: 1;
+}
+
+.day-switch__inner {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.day-switch__rule {
+  flex: none;
+  width: 1px;
+  height: 22px;
+  background: var(--line);
+}
+
+.day-switch__today {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 44px;
+  padding: 0 var(--space-5) 0 var(--space-3);
+  border: 0;
+  background: none;
+  color: var(--accent-text);
+  font: 700 14px/1 var(--font-sans);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.day-switch:not(.day-switch--away) .day-switch__today {
+  visibility: hidden;
+  transition: visibility 0s 260ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .day-switch__more {
+    transition: none;
+  }
+}
+
+/* A small tinted link on a sheet's title line ("Calendar"). */
+.pill-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 40px;
+  padding: 0 var(--space-5) 0 var(--space-4);
+  border-radius: var(--radius-full);
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  font: 700 15px/1 var(--font-sans);
+  text-decoration: none;
+  white-space: nowrap;
+  flex: none;
+}
+
+/* Another evening than tonight: a longer title ("9 days ago") beside the calendar button and Today. */
+.tonight--away .tab-header__title {
+  font-size: 30px;
+  line-height: 36px;
 }

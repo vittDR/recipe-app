@@ -764,7 +764,6 @@ export const fr: Dictionary = {
   rating: {
     rate: 'Noter',
     edit: 'Modifier la note',
-    notRated: 'Pas encore noté',
     question: 'C’était comment, {title} ?',
     labels: ['Pas pour nous', 'Bof', 'Correct', 'Vraiment bon', 'Un favori'],
     star_one: '{count} étoile',
@@ -782,9 +781,7 @@ export const fr: Dictionary = {
     title: 'Calendrier',
     today: 'Aujourd’hui',
     open: 'Calendrier',
-    openHint: 'Revoir ce que vous avez mangé, ou prévoir plus loin',
     earlier: 'Remontez pour les mois précédents',
-    backTonight: 'Revenir à ce soir',
     yesterday: 'Hier',
     inDays_one: 'Dans {count} jour',
     inDays_other: 'Dans {count} jours',
@@ -900,11 +897,10 @@ export const fr: Dictionary = {
   },
   week: {
     open: 'Cette semaine',
-    hint: 'Cochez les soirs où vous cuisinez. Les autres suivent votre programme régulier.',
     today: 'Aujourd’hui',
     tomorrow: 'Demain',
     usual: 'Programme régulier',
-    usualHint: 'Les soirs cochés par défaut et les heures des rappels',
+    usualHint: 'Soirs par défaut et rappels',
   },
   plan: {
     title: 'Programme régulier',

@@ -5,6 +5,7 @@
 //   selected evening               terracotta circle
 // Today has a terracotta letter. Which evenings are in is set in WeekSheet,
 // from the calendar button in Ce soir's title bar.
+import { Link } from 'react-router';
 import { useI18n } from '../i18n/index.tsx';
 import { isoWeekday } from '../lib/hooks.ts';
 import { Icon } from './Icon.tsx';
@@ -63,9 +64,17 @@ export function WeekSheet({ open, onClose, days, today, selected, onToggle, back
   const names = list('plan.daysLong');
   const short = list('plan.days');
   const dayMonth = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', timeZone: 'UTC' });
+  // "Nov 26 – Dec 2": the seven evenings the list switches.
+  const range = days.length ? new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', timeZone: 'UTC' })
+    .formatRange(new Date(`${days[0].date}T12:00:00Z`), new Date(`${days[days.length - 1].date}T12:00:00Z`)) : undefined;
   return (
     <Sheet open={open} onClose={onClose} label={t('us.thisWeek')}>
-      <SheetHeader title={t('us.thisWeek')} subtitle={t('week.hint')} />
+      <SheetHeader title={t('us.thisWeek')} subtitle={range}
+        action={(
+          <Link to={`/calendar?from=${selected}`} className="pill-link">
+            <Icon name="calendar" size={18} /> {t('calendar.open')}
+          </Link>
+        )} />
       <div className="list">
         {days.map((d, i) => {
           const name = names[isoWeekday(d.date) - 1];
@@ -81,12 +90,8 @@ export function WeekSheet({ open, onClose, days, today, selected, onToggle, back
           );
         })}
       </div>
-      <div className="list mt-6">
-        <ListRow to={`/calendar?from=${selected}`} tile="accent" icon={<Icon name="calendar" size={18} />}
-          title={t('calendar.open')} meta={t('calendar.openHint')} />
-      </div>
       <div className="list mt-4">
-        <ListRow to="/us/plan" state={{ back }} tile="accent" icon={<Icon name="calendar" size={18} />}
+        <ListRow to="/us/plan" state={{ back }} tile="plain" icon={<Icon name="sync" size={18} />}
           title={t('week.usual')} meta={t('week.usualHint')} />
       </div>
     </Sheet>
