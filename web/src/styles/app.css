@@ -1952,6 +1952,8 @@ button.grocery-row__amount {
    the button. It takes the height the screen has left, so the button stays
    above the tab bar; only the art gives way. */
 .deal-card {
+  /* The question's size follows the card's width. */
+  container-type: inline-size;
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
@@ -2048,7 +2050,10 @@ button.grocery-row__amount {
   /* Closer to the bar it asks about than to the art. */
   margin: var(--space-2) var(--space-2) calc(var(--space-3) - var(--space-5));
   color: var(--ink);
-  font: 700 24px/1.15 var(--font-sans);
+  /* One line: 20px, smaller for a long question ("…on Wednesday?") so it still fits
+     the card's width (--title-len is its length in characters, set by Ce soir). */
+  font: 700 20px/1.2 var(--font-sans);
+  font-size: clamp(15px, calc((100cqi - 2 * var(--space-5) - 2 * var(--space-2)) / (var(--title-len, 26) * 0.52)), 20px);
   letter-spacing: -0.02em;
 }
 

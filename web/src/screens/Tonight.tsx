@@ -576,7 +576,10 @@ export function TonightScreen() {
               <img className="fan fan--mid fan--art" src={mid} alt="" />
             </div>
           </div>
-          <h2 className="deal-hero__title">{deck?.status === 'no_match' ? t('noMatch.again') : ask}</h2>
+          {(() => {
+            const question = deck?.status === 'no_match' ? t('noMatch.again') : ask;
+            return <h2 className="deal-hero__title" style={{ '--title-len': question.length } as React.CSSProperties}>{question}</h2>;
+          })()}
           <DeckSettingsBar settings={settings} table={table} onOpen={openSettings} />
           <Button block className="deal-hero__btn" disabled={dealing} onClick={() => void deal()}>
             {dealing ? t('tonight.dealing') : t('tonight.deal')}
