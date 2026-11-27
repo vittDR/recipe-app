@@ -5173,3 +5173,70 @@ body:has(.moment) .tabbar {
   font-size: 30px;
   line-height: 36px;
 }
+
+/* ---------- The deal card in terracotta: tonight's one big action ---------- */
+
+.card.deal-card {
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: var(--shadow-accent);
+}
+
+.deal-card .deal-hero {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.deal-card .deal-hero__title {
+  color: var(--on-accent);
+}
+
+/* The settings bar shows through: white type on a lighter wash, hairlines in white. */
+.deal-card .deck-bar {
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.24);
+}
+
+.deal-card .deck-bar__cell,
+.deal-card .deck-bar__filters {
+  color: var(--on-accent);
+}
+
+.deal-card .deck-bar__cell:active,
+.deal-card .deck-bar__filters:active {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.deal-card .deck-bar__cell + .deck-bar__cell,
+.deal-card .deck-bar__filters {
+  border-left-color: rgba(255, 255, 255, 0.24);
+}
+
+.deal-card .deck-bar__label {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.deal-card .deck-bar__value .avatar {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.deal-card .deck-bar__badge {
+  background: var(--on-accent);
+  color: var(--accent);
+}
+
+/* The button turns white, so it still reads as the one thing to press. */
+.deal-card .deal-hero__btn {
+  background: var(--on-accent);
+  color: var(--accent);
+  box-shadow: 0 6px 16px rgba(80, 20, 8, 0.18);
+}
+
+.deal-card .deal-hero__btn:disabled {
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--accent);
+}
+
+.deal-card .deal-hero__btn:focus-visible {
+  outline: 2px solid var(--on-accent);
+  outline-offset: 3px;
+}
